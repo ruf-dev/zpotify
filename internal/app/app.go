@@ -69,9 +69,9 @@ func (a *App) Start() (err error) {
 	select {
 	case err := <-errC:
 		if err != nil {
-			log.Error().Err(err).Msg("error during application startup ")
+			log.Error().Err(err).Msg("error during application startup")
 		} else {
-			log.Info().Msg("all done")
+			log.Info().Msg("All jobs are done")
 		}
 	case <-interaptedC:
 		log.Info().Msg("received interrupt signal")
