@@ -1,0 +1,13 @@
+app_info:
+    name: go.zpotify.ru/zpotify
+    version: v0.0.1
+    startup_duration: 10s
+environment:
+    - name: log-level
+      type: string
+      enum: [Trace, Debug, Info, Warn, Error, Fatal, Panic]
+      value: Info
+    - name: log-format
+      type: string
+      enum: [JSON, TEXT]
+      value: TEXT
