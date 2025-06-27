@@ -5,6 +5,14 @@ app_info:
 data_sources:
     - resource_name: telegram
       api_key: ""
+    - resource_name: postgres
+      migrations_folder: ./migrations
+      host: localhost
+      port: 5432
+      user: zpotify
+      pwd: ""
+      name: zpotify
+      ssl_mode: ""
 environment:
     - name: log_level
       type: string

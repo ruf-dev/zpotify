@@ -8,4 +8,5 @@ import (
 
 type DataSourcesConfig struct {
 	Telegram *resources.Telegram
+	Postgres *resources.Postgres
 }
