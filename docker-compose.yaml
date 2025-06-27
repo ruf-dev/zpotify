@@ -1,0 +1,12 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: zpotify
+      POSTGRES_PASSWORD:
+      POSTGRES_DB: zpotify_db
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - '15432:5432'
+    volumes:
+      - ./data/pg:/var/lib/postgresql/data

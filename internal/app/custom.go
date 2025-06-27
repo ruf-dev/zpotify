@@ -7,25 +7,43 @@ import (
 	"context"
 
 	"go.redsock.ru/rerrors"
+	"golang.org/x/sync/errgroup"
 
 	"go.zpotify.ru/zpotify/internal/transport/telegram"
+	"go.zpotify.ru/zpotify/internal/transport/zpotify_api_impl"
+	"go.zpotify.ru/zpotify/pkg/docs"
 )
 
 type Custom struct {
+	grpcImpl *zpotify_api_impl.Impl
+
 	telegram *telegram.Server
 }
 
 func (c *Custom) Init(a *App) error {
 	c.telegram = telegram.NewServer(a.Cfg, a.Telegram)
+
+	c.grpcImpl = zpotify_api_impl.New()
+
+	a.ServerMaster.AddImplementation(c.grpcImpl)
+	a.ServerMaster.AddHttpHandler(docs.Swagger())
+
 	return nil
 }
 
 // Start - launch custom handlers
 // Even if you won't use it keep it for proper work
 func (c *Custom) Start(ctx context.Context) error {
-	err := c.telegram.Start(ctx)
+
+	eg, ctx := errgroup.WithContext(ctx)
+
+	eg.Go(func() error {
+		return c.telegram.Start(ctx)
+	})
+
+	err := eg.Wait()
 	if err != nil {
-		return rerrors.Wrap(err, "error starting telegram listener")
+		return rerrors.Wrap(err)
 	}
 
 	return nil
@@ -34,10 +52,15 @@ func (c *Custom) Start(ctx context.Context) error {
 // Stop - gracefully stop custom handlers
 // Even if you won't use it keep it for proper work
 func (c *Custom) Stop() error {
-	err := c.telegram.Stop()
-	if err != nil {
-		return rerrors.Wrap(err, "error stopping telegram listener")
-	}
+	eg := errgroup.Group{}
 
+	eg.Go(func() error {
+		return c.telegram.Stop()
+	})
+
+	err := eg.Wait()
+	if err != nil {
+		return rerrors.Wrap(err)
+	}
 	return nil
 }

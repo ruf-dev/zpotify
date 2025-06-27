@@ -13,6 +13,11 @@ data_sources:
       pwd: ""
       name: zpotify
       ssl_mode: ""
+servers:
+    80:
+        /{GRPC}:
+            module: go.zpotify.ru/zpotify
+            gateway: /api
 environment:
     - name: log_level
       type: string
