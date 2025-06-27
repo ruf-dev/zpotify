@@ -5,23 +5,39 @@ package app
 
 import (
 	"context"
+
+	"go.redsock.ru/rerrors"
+
+	"go.zpotify.ru/zpotify/internal/transport/telegram"
 )
 
-type Custom struct{}
+type Custom struct {
+	telegram *telegram.Server
+}
 
 func (c *Custom) Init(a *App) error {
-	// Repository, Service logic, transport registration happens here
+	c.telegram = telegram.NewServer(a.Cfg, a.Telegram)
 	return nil
 }
 
 // Start - launch custom handlers
 // Even if you won't use it keep it for proper work
 func (c *Custom) Start(ctx context.Context) error {
+	err := c.telegram.Start(ctx)
+	if err != nil {
+		return rerrors.Wrap(err, "error starting telegram listener")
+	}
+
 	return nil
 }
 
 // Stop - gracefully stop custom handlers
 // Even if you won't use it keep it for proper work
 func (c *Custom) Stop() error {
+	err := c.telegram.Stop()
+	if err != nil {
+		return rerrors.Wrap(err, "error stopping telegram listener")
+	}
+
 	return nil
 }

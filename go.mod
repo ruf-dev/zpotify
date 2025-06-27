@@ -3,6 +3,7 @@ module go.zpotify.ru/zpotify
 go 1.24.2
 
 require (
+	github.com/Red-Sock/go_tg v0.0.26
 	github.com/rs/zerolog v1.34.0
 	go.redsock.ru/rerrors v0.0.4
 	go.redsock.ru/toolbox v0.0.11
@@ -11,8 +12,10 @@ require (
 )
 
 require (
+	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/sirupsen/logrus v1.9.3 // indirect
 	go.redsock.ru/evon v0.0.28 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250519155744-55703ea1f237 // indirect
