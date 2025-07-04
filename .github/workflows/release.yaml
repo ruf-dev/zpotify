@@ -19,7 +19,7 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: build
-        uses: RedSockActions/release_image@v1.0.36
+        uses: RedSockActions/release_image@v1.0.37
         with:
           DRYRUN: true
           REGISTRY_USER: ${{ vars.REGISTRY_USER }}
@@ -69,7 +69,7 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Release image
-        uses: RedSockActions/release_image@v1.0.36
+        uses: RedSockActions/release_image@v1.0.37
         with:
           REGISTRY_USER: ${{ vars.REGISTRY_USER }}
           REGISTRY_PWD:  ${{ secrets.REGISTRY_PWD }}
