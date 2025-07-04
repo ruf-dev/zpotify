@@ -10,7 +10,6 @@ import (
 	"golang.org/x/sync/errgroup"
 
 	"go.zpotify.ru/zpotify/internal/transport/telegram"
-	"go.zpotify.ru/zpotify/internal/transport/web"
 	"go.zpotify.ru/zpotify/internal/transport/zpotify_api_impl"
 	"go.zpotify.ru/zpotify/pkg/docs"
 )
@@ -27,7 +26,6 @@ func (c *Custom) Init(a *App) error {
 	c.grpcImpl = zpotify_api_impl.New()
 
 	a.ServerMaster.AddImplementation(c.grpcImpl)
-	a.ServerMaster.AddHttpHandler("/", web.NewServer())
 	a.ServerMaster.AddHttpHandler(docs.Swagger())
 	return nil
 }
