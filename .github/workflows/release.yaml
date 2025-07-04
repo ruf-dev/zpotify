@@ -87,3 +87,30 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           VERSION: ${{ needs.tag-release.outputs.tag }}
           WORKING_DIRECTORY: pkg/web/@vervstack/matreshka
+
+  ui-release:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Build
+        run: |
+          cd pkg/web/ZpotifyUI && \
+          yarn install && \
+          yarn build
+
+      - name: Minio Deploy
+        uses: marverlous811/minio-upload@v1.2.0
+        with:
+          endpoint: ${{ secrets.MINIO_ENDPOINT }}
+          access_key: ${{ secrets.MINIO_ACCESS_KEY }}
+          secret_key: ${{ secrets.MINIO_SECRET_KEY }}
+          bucket: 'zpotify-ru'
+          local_path: './pkg/web/ZpotifyUI/dist/*'
+          remote_path: '/'
+          recursive: true

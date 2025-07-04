@@ -16,7 +16,7 @@ root, body {
 }
 
 :root {
-  --main-bg-color: #ffffff;
+  --main-bg-color: #000000;
 }
 
 /*TODO: DO FOR different screen sizes*/
