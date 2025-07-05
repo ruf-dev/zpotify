@@ -8,15 +8,19 @@ import (
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 
+	"go.zpotify.ru/zpotify/internal/service"
 	"go.zpotify.ru/zpotify/pkg/zpotify_api"
 )
 
 type Impl struct {
 	zpotify_api.UnimplementedZpotifyAPIServer
+	fileService service.FileService
 }
 
-func New() *Impl {
-	return &Impl{}
+func New(service *service.Service) *Impl {
+	return &Impl{
+		fileService: service.FileService(),
+	}
 }
 
 func (impl *Impl) Register(server grpc.ServiceRegistrar) {

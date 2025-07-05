@@ -1,0 +1,5 @@
+### Get telegram direct link (with file id)
+GET {{zpotify-api}}/api/link/CQACAgIAAxkBAAMOaGjpbYLz_IY6_wHiwtxSjQvZAcQAAvABAALs5vlJwnxurt15HQM2BA
+
+### Get telegram direct link (with file unique id)
+GET {{zpotify-api}}/api/link/AgAD8AEAAuzm-Uk

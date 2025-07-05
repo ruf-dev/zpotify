@@ -7,6 +7,7 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/config"
 	"go.zpotify.ru/zpotify/internal/responses"
+	"go.zpotify.ru/zpotify/internal/transport/telegram/default_handler"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/version"
 )
 
@@ -24,6 +25,8 @@ func NewServer(cfg config.Config, bot *client.Bot) (s *Server) {
 	{
 		// Add handlers here
 		s.bot.AddCommandHandler(version.New(rm))
+
+		s.bot.SetDefaultCommandHandler(default_handler.New(rm))
 	}
 
 	return s

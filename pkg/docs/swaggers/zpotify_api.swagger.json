@@ -16,6 +16,36 @@
     "application/json"
   ],
   "paths": {
+    "/api/link/{tgId}": {
+      "get": {
+        "operationId": "ZpotifyAPI_GetLink",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetLinkResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tgId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZpotifyAPI"
+        ]
+      }
+    },
     "/api/version": {
       "get": {
         "operationId": "ZpotifyAPI_Version",
@@ -23,7 +53,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/VersionResponse"
+              "$ref": "#/definitions/zpotify_apiVersionResponse"
             }
           },
           "default": {
@@ -40,18 +70,6 @@
     }
   },
   "definitions": {
-    "VersionResponse": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "string"
-        },
-        "clientTimestamp": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -77,6 +95,26 @@
             "type": "object",
             "$ref": "#/definitions/protobufAny"
           }
+        }
+      }
+    },
+    "zpotify_apiGetLinkResponse": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiVersionResponse": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "clientTimestamp": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     }

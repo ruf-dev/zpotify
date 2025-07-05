@@ -60,6 +60,42 @@ func (*Version) Descriptor() ([]byte, []int) {
 	return file_zpotify_api_proto_rawDescGZIP(), []int{0}
 }
 
+type GetLink struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetLink) Reset() {
+	*x = GetLink{}
+	mi := &file_zpotify_api_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetLink) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetLink) ProtoMessage() {}
+
+func (x *GetLink) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_api_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetLink.ProtoReflect.Descriptor instead.
+func (*GetLink) Descriptor() ([]byte, []int) {
+	return file_zpotify_api_proto_rawDescGZIP(), []int{1}
+}
+
 type Version_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -68,7 +104,7 @@ type Version_Request struct {
 
 func (x *Version_Request) Reset() {
 	*x = Version_Request{}
-	mi := &file_zpotify_api_proto_msgTypes[1]
+	mi := &file_zpotify_api_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -80,7 +116,7 @@ func (x *Version_Request) String() string {
 func (*Version_Request) ProtoMessage() {}
 
 func (x *Version_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[1]
+	mi := &file_zpotify_api_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -106,7 +142,7 @@ type Version_Response struct {
 
 func (x *Version_Response) Reset() {
 	*x = Version_Response{}
-	mi := &file_zpotify_api_proto_msgTypes[2]
+	mi := &file_zpotify_api_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -118,7 +154,7 @@ func (x *Version_Response) String() string {
 func (*Version_Response) ProtoMessage() {}
 
 func (x *Version_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[2]
+	mi := &file_zpotify_api_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -148,6 +184,94 @@ func (x *Version_Response) GetClientTimestamp() *timestamppb.Timestamp {
 	return nil
 }
 
+type GetLink_Request struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TgId          string                 `protobuf:"bytes,1,opt,name=tg_id,json=tgId,proto3" json:"tg_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetLink_Request) Reset() {
+	*x = GetLink_Request{}
+	mi := &file_zpotify_api_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetLink_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetLink_Request) ProtoMessage() {}
+
+func (x *GetLink_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_api_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetLink_Request.ProtoReflect.Descriptor instead.
+func (*GetLink_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_api_proto_rawDescGZIP(), []int{1, 0}
+}
+
+func (x *GetLink_Request) GetTgId() string {
+	if x != nil {
+		return x.TgId
+	}
+	return ""
+}
+
+type GetLink_Response struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Url           string                 `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetLink_Response) Reset() {
+	*x = GetLink_Response{}
+	mi := &file_zpotify_api_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetLink_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetLink_Response) ProtoMessage() {}
+
+func (x *GetLink_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_api_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetLink_Response.ProtoReflect.Descriptor instead.
+func (*GetLink_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_api_proto_rawDescGZIP(), []int{1, 1}
+}
+
+func (x *GetLink_Response) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
 var File_zpotify_api_proto protoreflect.FileDescriptor
 
 const file_zpotify_api_proto_rawDesc = "" +
@@ -157,10 +281,16 @@ const file_zpotify_api_proto_rawDesc = "" +
 	"\aRequest\x1ak\n" +
 	"\bResponse\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12E\n" +
-	"\x10client_timestamp\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x0fclientTimestamp2j\n" +
+	"\x10client_timestamp\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x0fclientTimestamp\"G\n" +
+	"\aGetLink\x1a\x1e\n" +
+	"\aRequest\x12\x13\n" +
+	"\x05tg_id\x18\x01 \x01(\tR\x04tgId\x1a\x1c\n" +
+	"\bResponse\x12\x10\n" +
+	"\x03url\x18\x02 \x01(\tR\x03url2\xcd\x01\n" +
 	"\n" +
 	"ZpotifyAPI\x12\\\n" +
-	"\aVersion\x12\x1c.zpotify_api.Version.Request\x1a\x1d.zpotify_api.Version.Response\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/api/versionBC\x92\x82\x19\f@zpotify/apiZ1go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_apib\x06proto3"
+	"\aVersion\x12\x1c.zpotify_api.Version.Request\x1a\x1d.zpotify_api.Version.Response\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/api/version\x12a\n" +
+	"\aGetLink\x12\x1c.zpotify_api.GetLink.Request\x1a\x1d.zpotify_api.GetLink.Response\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/api/link/{tg_id}BC\x92\x82\x19\f@zpotify/apiZ1go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_api_proto_rawDescOnce sync.Once
@@ -174,19 +304,24 @@ func file_zpotify_api_proto_rawDescGZIP() []byte {
 	return file_zpotify_api_proto_rawDescData
 }
 
-var file_zpotify_api_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_zpotify_api_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_zpotify_api_proto_goTypes = []any{
 	(*Version)(nil),               // 0: zpotify_api.Version
-	(*Version_Request)(nil),       // 1: zpotify_api.Version.Request
-	(*Version_Response)(nil),      // 2: zpotify_api.Version.Response
-	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
+	(*GetLink)(nil),               // 1: zpotify_api.GetLink
+	(*Version_Request)(nil),       // 2: zpotify_api.Version.Request
+	(*Version_Response)(nil),      // 3: zpotify_api.Version.Response
+	(*GetLink_Request)(nil),       // 4: zpotify_api.GetLink.Request
+	(*GetLink_Response)(nil),      // 5: zpotify_api.GetLink.Response
+	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
 }
 var file_zpotify_api_proto_depIdxs = []int32{
-	3, // 0: zpotify_api.Version.Response.client_timestamp:type_name -> google.protobuf.Timestamp
-	1, // 1: zpotify_api.ZpotifyAPI.Version:input_type -> zpotify_api.Version.Request
-	2, // 2: zpotify_api.ZpotifyAPI.Version:output_type -> zpotify_api.Version.Response
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
+	6, // 0: zpotify_api.Version.Response.client_timestamp:type_name -> google.protobuf.Timestamp
+	2, // 1: zpotify_api.ZpotifyAPI.Version:input_type -> zpotify_api.Version.Request
+	4, // 2: zpotify_api.ZpotifyAPI.GetLink:input_type -> zpotify_api.GetLink.Request
+	3, // 3: zpotify_api.ZpotifyAPI.Version:output_type -> zpotify_api.Version.Response
+	5, // 4: zpotify_api.ZpotifyAPI.GetLink:output_type -> zpotify_api.GetLink.Response
+	3, // [3:5] is the sub-list for method output_type
+	1, // [1:3] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
 	1, // [1:1] is the sub-list for extension extendee
 	0, // [0:1] is the sub-list for field type_name
@@ -203,7 +338,7 @@ func file_zpotify_api_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_api_proto_rawDesc), len(file_zpotify_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

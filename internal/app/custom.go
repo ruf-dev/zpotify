@@ -9,21 +9,25 @@ import (
 	"go.redsock.ru/rerrors"
 	"golang.org/x/sync/errgroup"
 
+	"go.zpotify.ru/zpotify/internal/service"
 	"go.zpotify.ru/zpotify/internal/transport/telegram"
 	"go.zpotify.ru/zpotify/internal/transport/zpotify_api_impl"
 	"go.zpotify.ru/zpotify/pkg/docs"
 )
 
 type Custom struct {
-	grpcImpl *zpotify_api_impl.Impl
+	service *service.Service
 
+	grpcImpl *zpotify_api_impl.Impl
 	telegram *telegram.Server
 }
 
 func (c *Custom) Init(a *App) error {
-	c.telegram = telegram.NewServer(a.Cfg, a.Telegram)
 
-	c.grpcImpl = zpotify_api_impl.New()
+	c.service = service.New(a.Telegram)
+
+	c.telegram = telegram.NewServer(a.Cfg, a.Telegram)
+	c.grpcImpl = zpotify_api_impl.New(c.service)
 
 	a.ServerMaster.AddImplementation(c.grpcImpl)
 	a.ServerMaster.AddHttpHandler(docs.Swagger())

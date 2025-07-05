@@ -15,6 +15,12 @@ service ZpotifyAPI {
       get: "/api/version"
     };
   };
+
+  rpc GetLink(GetLink.Request) returns (GetLink.Response) {
+    option (google.api.http) = {
+      get: "/api/link/{tg_id}"
+    };
+  };
 }
 
 message Version {
@@ -23,5 +29,16 @@ message Version {
   message Response {
     string version = 1;
     google.protobuf.Timestamp client_timestamp = 2;
+  }
+}
+
+
+message GetLink {
+  message Request{
+    string tg_id = 1;
+  }
+
+  message Response {
+    string url = 2;
   }
 }

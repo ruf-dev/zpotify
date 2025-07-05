@@ -3,28 +3,37 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 .WorkInProgressHeader {
-    animation: workInProgressAnim 4s ease infinite;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
     font-size: 2em;
+    font-weight: bold;
+    background: linear-gradient(270deg, #D9007F, #00d95a);
+    background-size: 600% 600%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: workInProgressAnim 5s ease infinite;
 }
 
 @keyframes workInProgressAnim {
     0% {
         background-position: 0 50%;
-        color: black;
     }
     50% {
         background-position: 100% 50%;
-        color: white;
     }
     100% {
         background-position: 0 50%;
-        color: black;
     }
+}
+
+
+.Logo {
+    max-width: 4em;
+    max-height: 4em;
+}
+
+.Logo:hover {
+    cursor: pointer;
 }
