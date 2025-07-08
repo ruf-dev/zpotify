@@ -10,9 +10,7 @@ export default function HomePage() {
             <div
                 className={cls.Logo +' '+ (isPlaying ? '' : cls.paused )}
                 onClick={() => setIsPlaying(!isPlaying)}
-
             >
-
                 <AnimatedZ/>
             </div>
             <p className={cls.WorkInProgressHeader}>
