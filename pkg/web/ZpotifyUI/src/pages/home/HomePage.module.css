@@ -32,8 +32,22 @@
 .Logo {
     max-width: 4em;
     max-height: 4em;
+    animation: logoRotatingAnim 10s linear infinite;
 }
 
 .Logo:hover {
     cursor: pointer;
+}
+
+@keyframes logoRotatingAnim {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.Logo.paused {
+    animation-play-state: paused;
 }

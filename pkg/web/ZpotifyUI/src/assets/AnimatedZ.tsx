@@ -1,6 +1,6 @@
 import '@/assets/AnimatedZ.css';
 
-const BrushReveal = () => {
+export default function AnimatedZ() {
     return (
         <svg width="64" height="64" viewBox="0 0 914 914" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -52,5 +52,3 @@ const BrushReveal = () => {
         </svg>
     );
 };
-
-export default BrushReveal;
