@@ -1,0 +1,63 @@
+#topLine {
+    animation: topLineAnim 3s ease forwards infinite;
+}
+
+#midLine {
+    animation: midLineAnim 3s ease forwards infinite;
+    animation-delay: 0.25s;
+}
+
+#bottomLine {
+    animation: bottomLineAnim 3s ease forwards infinite;
+    animation-delay: 0.5s;
+}
+
+
+@keyframes topLineAnim {
+    0% {
+        width: 0;
+    }
+    25% {
+        width: 914px;
+    }
+    80% {
+        width: 914px;
+    }
+    100% {
+        width: 0
+    }
+}
+
+@keyframes midLineAnim {
+    0% {
+        x: 914;
+        width: 0;
+    }
+    30% {
+        x: 0;
+        width: 914px;
+    }
+    60% {
+        x: 0;
+        width: 914px;
+    }
+    100% {
+        x: 914;
+        width: 0;
+    }
+}
+
+@keyframes bottomLineAnim {
+    0% {
+        width: 0;
+    }
+    25% {
+        width: 914px;
+    }
+    50% {
+        width: 914px;
+    }
+    100% {
+        width: 0
+    }
+}

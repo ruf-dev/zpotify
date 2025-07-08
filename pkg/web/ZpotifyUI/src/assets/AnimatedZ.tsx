@@ -1,19 +1,19 @@
-import './BrushReveal.css';
+import '@/assets/AnimatedZ.css';
 
 const BrushReveal = () => {
     return (
         <svg width="64" height="64" viewBox="0 0 914 914" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
                 <clipPath id="clip1">
-                    <rect id="revealRect1" x="0" y="0" width="0" height="914" />
+                    <rect id="topLine" x="0" y="0" width="0" height="914" />
                 </clipPath>
 
                 <clipPath id="clip2">
-                    <rect id="revealRect2" x="0" y="0" width="0" height="914" />
+                    <rect id="midLine" x="0" y="0" width="0" height="914" />
                 </clipPath>
 
                 <clipPath id="clip3">
-                    <rect id="revealRect3" x="0" y="0" width="0" height="914" />
+                    <rect id="bottomLine" x="0" y="0" width="0" height="914" />
                 </clipPath>
 
                 <clipPath id="clip0_36_178">
