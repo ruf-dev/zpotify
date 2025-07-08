@@ -1,0 +1,47 @@
+#revealRect1 {
+    animation: brushReveal 3s ease forwards infinite;
+}
+
+#revealRect2 {
+    animation: brushRevealRightToLeft 3s ease forwards infinite;
+    animation-delay: 0.25s;
+}
+
+#revealRect3 {
+    animation: brushReveal 3s ease forwards infinite;
+    animation-delay: 0.5s;
+}
+
+@keyframes brushReveal {
+    0% {
+        width: 0;
+    }
+    25% {
+        width: 914px;
+    }
+    50% {
+        width: 914px;
+    }
+    100% {
+        width: 0
+    }
+}
+
+@keyframes brushRevealRightToLeft {
+    0% {
+        x: 914;
+        width: 0;
+    }
+    30% {
+        x: 0;
+        width: 914px;
+    }
+    60% {
+        x: 0;
+        width: 914px;
+    }
+    100% {
+        x: 914;
+        width: 0;
+    }
+}
