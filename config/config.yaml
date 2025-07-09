@@ -22,13 +22,13 @@ servers:
         /{GRPC}:
             module: go.zpotify.ru/zpotify
             gateway: /api
-        name: MASTER2
+        name: MASTER
 environment:
-    - name: log_level
-      type: string
-      enum: [Trace, Debug, Info, Warn, Error, Fatal, Panic]
-      value: Info
     - name: log_format
       type: string
       enum: [JSON, TEXT]
       value: TEXT
+    - name: log_level
+      type: string
+      enum: [Trace, Debug, Info, Warn, Error, Fatal, Panic]
+      value: Info
