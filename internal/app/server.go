@@ -13,10 +13,5 @@ func (a *App) InitServers() (err error) {
 		return rerrors.Wrap(err, "error during \"MASTER\" server initialization, with name: MASTER")
 	}
 
-	a.ServerMaster, err = transport.NewServerManager(a.Ctx, a.Cfg.Servers.MASTER.Port)
-	if err != nil {
-		return rerrors.Wrap(err, "error during \"MASTER\" server initialization, with name: MASTER")
-	}
-
 	return nil
 }

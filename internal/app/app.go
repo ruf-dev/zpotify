@@ -25,7 +25,6 @@ type App struct {
 	Postgres *sql.DB
 	/* Servers managers */
 	ServerMaster *transport.ServersManager
-	ServerMaster *transport.ServersManager
 
 	Custom Custom
 }
