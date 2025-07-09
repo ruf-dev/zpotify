@@ -3,3 +3,6 @@ GET {{zpotify-api}}/api/link/CQACAgIAAxkBAAMOaGjpbYLz_IY6_wHiwtxSjQvZAcQAAvABAAL
 
 ### Get telegram direct link (with file unique id)
 GET {{zpotify-api}}/api/link/AgAD8AEAAuzm-Uk
+
+### Get audion
+GET {{zpotify-api}}/wapi/audio/CQACAgIAAxkBAAMOaGjpbYLz_IY6_wHiwtxSjQvZAcQAAvABAALs5vlJwnxurt15HQM2BA

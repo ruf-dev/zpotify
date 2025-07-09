@@ -18,6 +18,11 @@ servers:
         /{GRPC}:
             module: go.zpotify.ru/zpotify
             gateway: /api
+    8087:
+        /{GRPC}:
+            module: go.zpotify.ru/zpotify
+            gateway: /api
+        name: MASTER2
 environment:
     - name: log_level
       type: string

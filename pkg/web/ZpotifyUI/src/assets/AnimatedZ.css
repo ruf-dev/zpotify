@@ -1,3 +1,16 @@
+#circle {
+    animation: circleAnim 1s infinite linear;
+}
+
+@keyframes circleAnim {
+    from {
+
+    }
+    to {
+
+    }
+}
+
 #topLine {
     animation: topLineAnim 3s ease forwards infinite;
 }
@@ -11,7 +24,6 @@
     animation: bottomLineAnim 3s ease forwards infinite;
     animation-delay: 0.5s;
 }
-
 
 @keyframes topLineAnim {
     0% {

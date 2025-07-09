@@ -11,6 +11,7 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/service"
 	"go.zpotify.ru/zpotify/internal/transport/telegram"
+	"go.zpotify.ru/zpotify/internal/transport/wapi"
 	"go.zpotify.ru/zpotify/internal/transport/zpotify_api_impl"
 	"go.zpotify.ru/zpotify/pkg/docs"
 )
@@ -23,7 +24,6 @@ type Custom struct {
 }
 
 func (c *Custom) Init(a *App) error {
-
 	c.service = service.New(a.Telegram)
 
 	c.telegram = telegram.NewServer(a.Cfg, a.Telegram)
@@ -31,6 +31,7 @@ func (c *Custom) Init(a *App) error {
 
 	a.ServerMaster.AddImplementation(c.grpcImpl)
 	a.ServerMaster.AddHttpHandler(docs.Swagger())
+	a.ServerMaster.AddHttpHandler("/wapi/", wapi.New())
 	return nil
 }
 

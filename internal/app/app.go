@@ -24,7 +24,8 @@ type App struct {
 	Telegram *go_tg.Bot
 	Postgres *sql.DB
 	/* Servers managers */
-	ServerMaster *transport.ServersManager
+	ServerMaster  *transport.ServersManager
+	ServerMaster2 *transport.ServersManager
 
 	Custom Custom
 }
@@ -58,8 +59,8 @@ func New() (app App, err error) {
 func (a *App) Start() (err error) {
 	var eg *errgroup.Group
 	eg, a.Ctx = errgroup.WithContext(a.Ctx)
-	eg.Go(a.ServerMaster.Start)
-	closer.Add(func() error { return a.ServerMaster.Stop() })
+	eg.Go(a.ServerMaster2.Start)
+	closer.Add(func() error { return a.ServerMaster2.Stop() })
 
 	eg.Go(func() error {
 		return a.Custom.Start(a.Ctx)

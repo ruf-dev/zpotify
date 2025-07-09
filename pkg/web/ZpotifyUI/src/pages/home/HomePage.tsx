@@ -13,10 +13,13 @@ export default function HomePage() {
             >
                 <AnimatedZ/>
             </div>
+            <audio controls>
+                <source src="http://localhost:8087/wapi/audio/CQACAgIAAxkBAAMOaGjpbYLz_IY6_wHiwtxSjQvZAcQAAvABAALs5vlJwnxurt15HQM2BA" type="audio/ogg" />
+                Your browser does not support the audio element.
+            </audio>
             <p className={cls.WorkInProgressHeader}>
                 Soon, There will be some great music. Keep in touch
             </p>
-            <audio></audio>
         </div>
     )
 }
