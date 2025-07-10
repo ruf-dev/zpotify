@@ -1,4 +1,4 @@
-package version
+package start
 
 import (
 	tgapi "github.com/Red-Sock/go_tg/interfaces"
@@ -21,7 +21,7 @@ func New(rm *responses.ResponseManager) *Handler {
 }
 
 func (h *Handler) Handle(in *model.MessageIn, out tgapi.Chat) error {
-	msg := response.NewMessage(h.rm.Hello(responses.ParseLangFromChatMessage(in)))
+	msg := response.NewMessage(h.rm.Hello(in.Ctx))
 	return out.SendMessage(msg)
 }
 

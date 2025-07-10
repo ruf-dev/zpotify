@@ -14,12 +14,12 @@ import (
 
 type Impl struct {
 	zpotify_api.UnimplementedZpotifyAPIServer
-	fileService service.FileService
+	fileService service.AudioService
 }
 
-func New(service *service.Service) *Impl {
+func New(srv service.Service) *Impl {
 	return &Impl{
-		fileService: service.FileService(),
+		fileService: srv.FileService(),
 	}
 }
 

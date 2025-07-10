@@ -10,6 +10,7 @@ import (
 	"golang.org/x/sync/errgroup"
 
 	"go.zpotify.ru/zpotify/internal/service"
+	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/transport/telegram"
 	"go.zpotify.ru/zpotify/internal/transport/wapi"
 	"go.zpotify.ru/zpotify/internal/transport/zpotify_api_impl"
@@ -17,16 +18,23 @@ import (
 )
 
 type Custom struct {
-	service *service.Service
+	storage storage.Storage
+	service service.Service
 
 	grpcImpl *zpotify_api_impl.Impl
 	telegram *telegram.Server
 }
 
-func (c *Custom) Init(a *App) error {
-	c.service = service.New(a.Telegram)
+func (c *Custom) Init(a *App) (err error) {
+	c.storage = storage.NewStorage(a.Postgres)
 
-	c.telegram = telegram.NewServer(a.Cfg, a.Telegram)
+	c.service = service.New(a.Telegram, c.storage)
+
+	c.telegram, err = telegram.NewServer(a.Telegram, c.service)
+	if err != nil {
+		return rerrors.Wrap(err, "error creating telegram server")
+	}
+
 	c.grpcImpl = zpotify_api_impl.New(c.service)
 
 	a.ServerMaster.AddImplementation(c.grpcImpl)

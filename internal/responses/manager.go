@@ -1,6 +1,7 @@
 package responses
 
 import (
+	"context"
 	_ "embed"
 	"encoding/json"
 )
@@ -36,9 +37,8 @@ func New() *ResponseManager {
 	return rm
 }
 
-func (m *ResponseManager) Hello(local lang) string {
-	r := m.getResponses(local)
-
+func (m *ResponseManager) Hello(ctx context.Context) string {
+	r := m.getResponses(LangFromCtx(ctx))
 	return r.Hello
 }
 
@@ -58,4 +58,18 @@ func loadLocal(bytes []byte) (r responses) {
 	}
 
 	return r
+}
+
+type contextLangKey struct{}
+
+func LangToCtx(ctx context.Context, l lang) context.Context {
+	return context.WithValue(ctx, contextLangKey{}, l)
+}
+func LangFromCtx(ctx context.Context) lang {
+	v, _ := ctx.Value(contextLangKey{}).(lang)
+	if v == "" {
+		return defaultLocale
+	}
+
+	return v
 }
