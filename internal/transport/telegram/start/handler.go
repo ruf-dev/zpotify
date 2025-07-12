@@ -11,10 +11,10 @@ import (
 const Command = "/start"
 
 type Handler struct {
-	rm *localization.ResponseManager
+	rm *localization.ResponseBuilder
 }
 
-func New(rm *localization.ResponseManager) *Handler {
+func New(rm *localization.ResponseBuilder) *Handler {
 	return &Handler{
 		rm: rm,
 	}

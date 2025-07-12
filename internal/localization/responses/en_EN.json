@@ -1,3 +1,9 @@
 {
-  "hello": "Hi! This is a Zpotify Music Bot!"
+  "hello": "Hi! This is a Zpotify Music Bot!",
+  "file": {
+    "not_provided": "Provide a file to save",
+    "success_adding": "Successfully saved file",
+    "already_exists":  "File already added",
+    "user_now_allowed_to_add": "You can't add files"
+  }
 }

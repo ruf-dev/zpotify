@@ -9,6 +9,7 @@ import (
 	"go.redsock.ru/rerrors"
 	"golang.org/x/sync/errgroup"
 
+	tgApi "go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/service"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/pg"
@@ -19,7 +20,9 @@ import (
 )
 
 type Custom struct {
-	storage storage.Storage
+	storage     storage.Storage
+	tgApiClient tgApi.TgApiClient
+
 	service service.Service
 
 	grpcImpl *zpotify_api_impl.Impl
@@ -29,7 +32,9 @@ type Custom struct {
 func (c *Custom) Init(a *App) (err error) {
 	c.storage = pg.NewStorage(a.Postgres)
 
-	c.service = service.New(a.Telegram, c.storage)
+	c.tgApiClient = tgApi.NewTgApiClient(a.Telegram.Bot.Token)
+
+	c.service = service.New(c.tgApiClient, c.storage)
 
 	c.telegram, err = telegram.NewServer(a.Telegram, c.service)
 	if err != nil {

@@ -21,12 +21,12 @@ const (
 	defaultLocale Locale = En
 )
 
-type ResponseManager struct {
+type ResponseBuilder struct {
 	responses map[Locale]responses
 }
 
-func New() *ResponseManager {
-	rm := &ResponseManager{
+func New() *ResponseBuilder {
+	rm := &ResponseBuilder{
 		responses: make(map[Locale]responses),
 	}
 
@@ -37,12 +37,32 @@ func New() *ResponseManager {
 	return rm
 }
 
-func (m *ResponseManager) Hello(ctx context.Context) string {
+func (m *ResponseBuilder) Hello(ctx context.Context) string {
 	r := m.getResponses(LangFromCtx(ctx))
 	return r.Hello
 }
 
-func (m *ResponseManager) getResponses(local Locale) responses {
+func (m *ResponseBuilder) NoFileProvided(ctx context.Context) string {
+	r := m.getResponses(LangFromCtx(ctx))
+	return r.File.NotProvided
+}
+
+func (m *ResponseBuilder) SuccessSavingFile(ctx context.Context) string {
+	r := m.getResponses(LangFromCtx(ctx))
+	return r.File.SuccessAdding
+}
+
+func (m *ResponseBuilder) FileAlreadyExists(ctx context.Context) string {
+	r := m.getResponses(LangFromCtx(ctx))
+	return r.File.AlreadyExists
+}
+
+func (m *ResponseBuilder) UserNowAllowedToAddFile(ctx context.Context) string {
+	r := m.getResponses(LangFromCtx(ctx))
+	return r.File.UserNowAllowedToAdd
+}
+
+func (m *ResponseBuilder) getResponses(local Locale) responses {
 	r, ok := m.responses[local]
 	if ok {
 		return r

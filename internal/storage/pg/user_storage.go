@@ -32,7 +32,7 @@ func (s *UserStorage) Upsert(ctx context.Context, user domain.UserInfo) error {
 		user.TgId, user.TgUserName,
 	)
 	if err != nil {
-		return rerrors.Wrap(err, "error upserting user")
+		return rerrors.Wrap(wrapPgErr(err), "error upserting user")
 	}
 
 	return nil
@@ -50,7 +50,7 @@ func (s *UserStorage) SaveSettings(ctx context.Context, userTgId int64, settings
 		userTgId,
 		settings.Locale)
 	if err != nil {
-		return rerrors.Wrap(err, "error saving settings")
+		return rerrors.Wrap(wrapPgErr(err), "error saving settings")
 	}
 
 	return nil
@@ -62,17 +62,24 @@ func (s *UserStorage) GetUser(ctx context.Context, tgUserId int64) (u domain.Use
 	err = s.db.QueryRowContext(ctx, `
 		SELECT 
 			u.tg_username,
-			settings.locale
+			settings.locale,
+			COALESCE(permissions.can_upload, '0') 
 		FROM users u
-		LEFT JOIN user_settings settings on u.tg_id = settings.user_tg_id
+		LEFT JOIN user_settings    AS settings 
+		ON        u.tg_id           = settings.user_tg_id
+		LEFT JOIN user_permissions AS permissions 
+		ON        u.tg_id           = permissions.user_tg_id
+		
 		WHERE u.tg_id = $1`,
 		u.TgId).
 		Scan(
-			u.TgUserName,
-			u.Locale,
+			&u.TgUserName,
+			&u.Locale,
+
+			&u.Permissions.CanUpload,
 		)
 	if err != nil {
-		return u, rerrors.Wrap(err, "error getting user from db")
+		return u, rerrors.Wrap(wrapPgErr(err), "error getting user from db")
 	}
 
 	return u, nil

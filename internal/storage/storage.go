@@ -10,6 +10,7 @@ import (
 
 type Storage interface {
 	User() UserStorage
+	FileMeta() FileMetaStorage
 
 	TxManager() *tx_manager.TxManager
 }
@@ -20,4 +21,9 @@ type UserStorage interface {
 	GetUser(ctx context.Context, id int64) (domain.User, error)
 
 	WithTx(tx *sql.Tx) UserStorage
+}
+
+type FileMetaStorage interface {
+	// Add - saves meta to storage. Can return ErrAlreadyExists error
+	Add(ctx context.Context, user domain.FileMeta) error
 }

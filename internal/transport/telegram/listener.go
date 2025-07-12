@@ -10,6 +10,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/localization"
 	"go.zpotify.ru/zpotify/internal/service"
+	"go.zpotify.ru/zpotify/internal/transport/telegram/add"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/default_handler"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/start"
 )
@@ -70,6 +71,7 @@ func NewServer(bot *client.Bot, service service.Service) (s *Server, err error) 
 	{
 		// Add handlers here
 		s.bot.AddCommandHandler(start.New(responsesBuilder))
+		s.bot.AddCommandHandler(add.New(service.FileService(), responsesBuilder))
 
 		s.bot.SetDefaultCommandHandler(default_handler.New(responsesBuilder))
 	}

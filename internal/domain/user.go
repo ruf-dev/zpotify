@@ -3,6 +3,7 @@ package domain
 type User struct {
 	UserInfo
 	UserSettings
+	Permissions UserPermissions
 }
 
 type UserInfo struct {
@@ -12,4 +13,8 @@ type UserInfo struct {
 
 type UserSettings struct {
 	Locale string
+}
+
+type UserPermissions struct {
+	CanUpload bool
 }
