@@ -4,14 +4,14 @@ import (
 	tgapi "github.com/Red-Sock/go_tg/interfaces"
 	"github.com/Red-Sock/go_tg/model"
 
-	"go.zpotify.ru/zpotify/internal/responses"
+	"go.zpotify.ru/zpotify/internal/localization"
 )
 
 type Handler struct {
-	rm *responses.ResponseManager
+	rm *localization.ResponseManager
 }
 
-func New(rm *responses.ResponseManager) *Handler {
+func New(rm *localization.ResponseManager) *Handler {
 	return &Handler{
 		rm: rm,
 	}

@@ -2,11 +2,13 @@ package pg
 
 import (
 	"context"
+	"database/sql"
 
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/storage"
 )
 
 type UserStorage struct {
@@ -19,11 +21,14 @@ func NewUserStorage(db sqldb.DB) *UserStorage {
 	}
 }
 
-func (s *UserStorage) Upsert(ctx context.Context, user domain.User) error {
+func (s *UserStorage) Upsert(ctx context.Context, user domain.UserInfo) error {
 	_, err := s.db.ExecContext(ctx, `
 		INSERT INTO users
 				(tg_id, tg_username) 
-		VALUES  (   $1,          $2)`,
+		VALUES  (   $1,          $2) 
+		ON CONFLICT (tg_id) 
+		DO UPDATE SET
+		              tg_username = excluded.tg_username`,
 		user.TgId, user.TgUserName,
 	)
 	if err != nil {
@@ -31,4 +36,48 @@ func (s *UserStorage) Upsert(ctx context.Context, user domain.User) error {
 	}
 
 	return nil
+}
+
+func (s *UserStorage) SaveSettings(ctx context.Context, userTgId int64, settings domain.UserSettings) error {
+	_, err := s.db.ExecContext(ctx, `
+		INSERT INTO user_settings 
+		       (user_tg_id, locale) 
+		VALUES (        $1,     $2)
+		ON CONFLICT (user_tg_id) 
+		DO UPDATE SET
+		              locale = EXCLUDED.locale
+		`,
+		userTgId,
+		settings.Locale)
+	if err != nil {
+		return rerrors.Wrap(err, "error saving settings")
+	}
+
+	return nil
+}
+
+func (s *UserStorage) GetUser(ctx context.Context, tgUserId int64) (u domain.User, err error) {
+	u.TgId = tgUserId
+
+	err = s.db.QueryRowContext(ctx, `
+		SELECT 
+			u.tg_username,
+			settings.locale
+		FROM users u
+		LEFT JOIN user_settings settings on u.tg_id = settings.user_tg_id
+		WHERE u.tg_id = $1`,
+		u.TgId).
+		Scan(
+			u.TgUserName,
+			u.Locale,
+		)
+	if err != nil {
+		return u, rerrors.Wrap(err, "error getting user from db")
+	}
+
+	return u, nil
+}
+
+func (s *UserStorage) WithTx(tx *sql.Tx) storage.UserStorage {
+	return NewUserStorage(tx)
 }

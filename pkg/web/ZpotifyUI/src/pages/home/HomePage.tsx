@@ -18,7 +18,7 @@ export default function HomePage() {
                 Your browser does not support the audio element.
             </audio>
             <p className={cls.WorkInProgressHeader}>
-                Soon, There will be some great music. Keep in touch
+               Zpotify Soon, There will be some great music. Keep in touch. Гойда, братья!
             </p>
         </div>
     )

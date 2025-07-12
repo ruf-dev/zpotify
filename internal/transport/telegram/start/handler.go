@@ -5,16 +5,16 @@ import (
 	"github.com/Red-Sock/go_tg/model"
 	"github.com/Red-Sock/go_tg/model/response"
 
-	"go.zpotify.ru/zpotify/internal/responses"
+	"go.zpotify.ru/zpotify/internal/localization"
 )
 
 const Command = "/start"
 
 type Handler struct {
-	rm *responses.ResponseManager
+	rm *localization.ResponseManager
 }
 
-func New(rm *responses.ResponseManager) *Handler {
+func New(rm *localization.ResponseManager) *Handler {
 	return &Handler{
 		rm: rm,
 	}

@@ -11,6 +11,7 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/service"
 	"go.zpotify.ru/zpotify/internal/storage"
+	"go.zpotify.ru/zpotify/internal/storage/pg"
 	"go.zpotify.ru/zpotify/internal/transport/telegram"
 	"go.zpotify.ru/zpotify/internal/transport/wapi"
 	"go.zpotify.ru/zpotify/internal/transport/zpotify_api_impl"
@@ -26,7 +27,7 @@ type Custom struct {
 }
 
 func (c *Custom) Init(a *App) (err error) {
-	c.storage = storage.NewStorage(a.Postgres)
+	c.storage = pg.NewStorage(a.Postgres)
 
 	c.service = service.New(a.Telegram, c.storage)
 

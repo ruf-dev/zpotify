@@ -1,4 +1,4 @@
-package responses
+package localization
 
 import (
 	"context"
@@ -7,27 +7,27 @@ import (
 )
 
 var (
-	//go:embed en_EN.json
+	//go:embed responses/en_EN.json
 	enEn []byte
-	//go:embed ru_RU.json
+	//go:embed responses/ru_RU.json
 	ruRu []byte
 )
 
-type lang string
+type Locale string
 
 const (
-	Ru            lang = "ru_RU"
-	En            lang = "en_EN"
-	defaultLocale lang = En
+	Ru            Locale = "ru"
+	En            Locale = "en"
+	defaultLocale Locale = En
 )
 
 type ResponseManager struct {
-	responses map[lang]responses
+	responses map[Locale]responses
 }
 
 func New() *ResponseManager {
 	rm := &ResponseManager{
-		responses: make(map[lang]responses),
+		responses: make(map[Locale]responses),
 	}
 
 	rm.responses[Ru] = loadLocal(ruRu)
@@ -42,7 +42,7 @@ func (m *ResponseManager) Hello(ctx context.Context) string {
 	return r.Hello
 }
 
-func (m *ResponseManager) getResponses(local lang) responses {
+func (m *ResponseManager) getResponses(local Locale) responses {
 	r, ok := m.responses[local]
 	if ok {
 		return r
@@ -62,11 +62,11 @@ func loadLocal(bytes []byte) (r responses) {
 
 type contextLangKey struct{}
 
-func LangToCtx(ctx context.Context, l lang) context.Context {
+func LangToCtx(ctx context.Context, l Locale) context.Context {
 	return context.WithValue(ctx, contextLangKey{}, l)
 }
-func LangFromCtx(ctx context.Context) lang {
-	v, _ := ctx.Value(contextLangKey{}).(lang)
+func LangFromCtx(ctx context.Context) Locale {
+	v, _ := ctx.Value(contextLangKey{}).(Locale)
 	if v == "" {
 		return defaultLocale
 	}

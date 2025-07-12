@@ -43,4 +43,5 @@ type AudioService interface {
 
 type UserService interface {
 	Init(ctx context.Context, user domain.User) error
+	Get(ctx context.Context, tgId int64) (domain.User, error)
 }

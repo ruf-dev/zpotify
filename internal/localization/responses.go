@@ -1,4 +1,4 @@
-package responses
+package localization
 
 // responses - contains all available user responses
 // Read ONLY struct

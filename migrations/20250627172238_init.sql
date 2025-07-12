@@ -1,30 +1,37 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
-    id          SERIAL PRIMARY KEY,
-    tg_id       INT8 NOT NULL,
+    tg_id       INT8 NOT NULL PRIMARY KEY,
     tg_username TEXT NOT NULL
 );
 
-CREATE TYPE user_locale AS ENUM ('en', 'ru');
-
-CREATE TABLE user_settings
+CREATE TABLE IF NOT EXISTS locales
 (
-    user_id INT4 REFERENCES users (id),
-    locale  user_locale NOT NULL
+    id TEXT PRIMARY KEY
 );
 
-CREATE TABLE admins
+INSERT INTO locales (id)
+VALUES ('en'),
+       ('ru')
+ON CONFLICT DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS user_settings
 (
-    user_id    INT4 REFERENCES users (id),
-    can_edit   BIT DEFAULT '0',
-    can_review BIT DEFAULT '0'
+    user_tg_id INT4 REFERENCES users (tg_id)  UNIQUE,
+    locale  TEXT REFERENCES locales (id) NOT NULL DEFAULT 'en'
+);
+
+CREATE TABLE IF NOT EXISTS admins
+(
+    user_tg_id    INT4 REFERENCES users (tg_id),
+    can_edit   BIT DEFAULT '0' NOT NULL,
+    can_review BIT DEFAULT '0' NOT NULL
 );
 
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
-SELECT 'down SQL query';
+
 -- +goose StatementEnd
