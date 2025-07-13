@@ -76,7 +76,10 @@ jobs:
           DISABLE_CHECKOUT: true
 
   ui-release:
-    runs-on: ubuntu-24.04
+    if: ${{ needs.tag-release.outputs.tag != '' }}
+    runs-on: ${{ vars.UBUNTU_IMAGE }}
+    needs:
+      - tag-release
     steps:
       - name: Checkout
         uses: actions/checkout@v4
