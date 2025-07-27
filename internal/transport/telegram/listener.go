@@ -71,7 +71,7 @@ func NewServer(bot *client.Bot, service service.Service) (s *Server, err error) 
 	{
 		// Add handlers here
 		s.bot.AddCommandHandler(start.New(responsesBuilder))
-		s.bot.AddCommandHandler(add.New(service.FileService(), responsesBuilder))
+		s.bot.AddCommandHandler(add.New(service.AudioService(), responsesBuilder))
 
 		s.bot.SetDefaultCommandHandler(default_handler.New(responsesBuilder))
 	}

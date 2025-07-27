@@ -1,10 +1,33 @@
 package wapi
 
 import (
+	"io"
 	"net/http"
+
+	"github.com/rs/zerolog/log"
 )
 
+type GetAudioReq struct {
+	FileId string
+}
+
 func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	fileId := r.URL.Query().Get("fileId")
+
+	stream, err := s.audioService.Stream(ctx, fileId)
+	if err != nil {
+		log.Err(err).Msg("error streaming audio")
+		return
+	}
+
+	_, err = io.Copy(w, stream)
+	if err != nil {
+		log.Err(err).Msg("error streaming audio")
+		return
+	}
+
+	return
 	//TODO
 	//// Replace with dynamic file path fetching logic
 	//telegramFilePath := "documents/file_123.ogg"

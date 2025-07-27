@@ -45,7 +45,7 @@ func (c *Custom) Init(a *App) (err error) {
 
 	a.ServerMaster.AddImplementation(c.grpcImpl)
 	a.ServerMaster.AddHttpHandler(docs.Swagger())
-	a.ServerMaster.AddHttpHandler("/wapi/", wapi.New())
+	a.ServerMaster.AddHttpHandler("/wapi/", wapi.New(c.service.AudioService()))
 	return nil
 }
 

@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"io"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 
@@ -12,7 +13,7 @@ import (
 )
 
 type Service interface {
-	FileService() AudioService
+	AudioService() AudioService
 	UserService() UserService
 }
 
@@ -28,7 +29,7 @@ func New(tgApiClient telegram.TgApiClient, dataStorage storage.Storage) Service 
 	}
 }
 
-func (s *service) FileService() AudioService {
+func (s *service) AudioService() AudioService {
 	return s.fileService
 }
 
@@ -39,6 +40,8 @@ func (s *service) UserService() UserService {
 type AudioService interface {
 	GetInfo(ctx context.Context, uniqueFileId string) (*tgbotapi.File, error)
 	Save(ctx context.Context, req domain.FileMeta) (domain.SaveFileMetaResp, error)
+
+	Stream(ctx context.Context, uniqueFileId string) (io.Reader, error)
 }
 
 type UserService interface {

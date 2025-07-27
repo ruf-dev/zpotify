@@ -2,6 +2,7 @@ package v1
 
 import (
 	"context"
+	"io"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"go.redsock.ru/rerrors"
@@ -49,6 +50,15 @@ func (s *FileService) Save(ctx context.Context, meta domain.FileMeta) (out domai
 	default:
 		return out, rerrors.Wrap(err, "error saving meta to zpotify's storage")
 	}
+}
+
+func (s *FileService) Stream(ctx context.Context, uniqueFileId string) (io.Reader, error) {
+	f, err := s.tgApi.OpenFile(ctx, uniqueFileId)
+	if err != nil {
+		return nil, err
+	}
+
+	return f, nil
 }
 
 func (s *FileService) GetInfo(ctx context.Context, uniqueFileId string) (*tgbotapi.File, error) {

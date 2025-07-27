@@ -3,6 +3,7 @@ package telegram
 import (
 	"context"
 	"encoding/json"
+	"io"
 	"net/http"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -11,15 +12,19 @@ import (
 
 type TgApiClient interface {
 	GetFile(ctx context.Context, uniqueFileId string) (*tgbotapi.File, error)
+	OpenFile(ctx context.Context, uniqueFileId string) (io.ReadCloser, error)
 }
 
 type tgApi struct {
 	telegramLink string
+
+	token string
 }
 
 func NewTgApiClient(token string) TgApiClient {
 	return &tgApi{
 		telegramLink: "https://api.telegram.org/bot" + token + "/",
+		token:        token,
 	}
 }
 
@@ -50,4 +55,20 @@ func (t *tgApi) GetFile(ctx context.Context, uniqueFileId string) (*tgbotapi.Fil
 	}
 
 	return &r.Result, nil
+}
+
+func (t *tgApi) OpenFile(ctx context.Context, uniqueFileId string) (io.ReadCloser, error) {
+	f, err := t.GetFile(ctx, uniqueFileId)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error getting file meta")
+	}
+
+	l := f.Link(t.token)
+
+	resp, err := http.Get(l)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error opening file")
+	}
+
+	return resp.Body, nil
 }

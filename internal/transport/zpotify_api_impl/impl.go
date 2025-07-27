@@ -19,7 +19,7 @@ type Impl struct {
 
 func New(srv service.Service) *Impl {
 	return &Impl{
-		fileService: srv.FileService(),
+		fileService: srv.AudioService(),
 	}
 }
 
