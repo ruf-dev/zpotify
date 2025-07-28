@@ -4,8 +4,6 @@ import (
 	"context"
 	"io"
 
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-
 	"go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/domain"
 	v1 "go.zpotify.ru/zpotify/internal/service/v1"
@@ -38,8 +36,8 @@ func (s *service) UserService() UserService {
 }
 
 type AudioService interface {
-	GetInfo(ctx context.Context, uniqueFileId string) (*tgbotapi.File, error)
-	Save(ctx context.Context, req domain.FileMeta) (domain.SaveFileMetaResp, error)
+	GetInfo(ctx context.Context, uniqueFileId string) (domain.FileMeta, error)
+	Save(ctx context.Context, req domain.AddAudio) (domain.SaveFileMetaResp, error)
 
 	Stream(ctx context.Context, uniqueFileId string) (io.Reader, error)
 }

@@ -28,7 +28,6 @@ func New(s service.AudioService, rb *localization.ResponseBuilder) *Handler {
 }
 
 func (h *Handler) Handle(in *model.MessageIn, out tgapi.Chat) error {
-
 	audio := findAudio(in)
 	if audio == nil {
 		mo := &response.MessageOut{
@@ -38,12 +37,12 @@ func (h *Handler) Handle(in *model.MessageIn, out tgapi.Chat) error {
 		return out.SendMessage(mo)
 	}
 
-	req := domain.FileMeta{
-		AddedByTgId: in.From.ID,
-		Title:       audio.Title,
-		Author:      audio.Performer,
-		TgUniqueId:  audio.FileUniqueID,
-		TgFileId:    audio.FileID,
+	req := domain.AddAudio{
+		UniqueFileId: audio.FileUniqueID,
+		TgFileId:     audio.FileID,
+		AddedByTgId:  in.From.ID,
+		Title:        audio.Title,
+		Author:       audio.Performer,
 	}
 
 	resp, err := h.audioService.Save(in.Ctx, req)

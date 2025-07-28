@@ -1,11 +1,18 @@
 package domain
 
+type AddAudio struct {
+	UniqueFileId string
+	TgFileId     string
+	AddedByTgId  int64
+	Title        string
+	Author       string
+}
+
 type FileMeta struct {
+	TgFile
 	AddedByTgId int64
 	Title       string
 	Author      string
-	TgUniqueId  string
-	TgFileId    string
 }
 
 type SaveFileCode int64
@@ -19,4 +26,10 @@ const (
 
 type SaveFileMetaResp struct {
 	Code SaveFileCode
+}
+
+type TgFile struct {
+	UniqueFileId string
+	FileId       string
+	FilePath     string
 }

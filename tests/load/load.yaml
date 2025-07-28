@@ -1,0 +1,17 @@
+phantom:
+  address: host.docker.internal
+  port: "8087"
+  header_http: "1.1"
+  headers:
+    - "[Host: loadtest.zpotify.ru]"
+    - "[Connection: close]"
+  uris:
+    - /wapi/audio?fileId=CQACAgIAAxkBAAMOaGjpbYLz_IY6_wHiwtxSjQvZAcQAAvABAALs5vlJwnxurt15HQM2BA
+  load_profile:
+    load_type: rps
+    schedule: line(1, 10, 10s)
+
+console:
+  enabled: true
+telegraf:
+  enabled: false

@@ -20,3 +20,7 @@ node_modules
 .idea
 proto_deps
 
+
+#Load testing
+tests/load/tank_errors.log
+tests/logs/*

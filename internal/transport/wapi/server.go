@@ -19,7 +19,7 @@ func New(audioService service.AudioService) http.Handler {
 		mux: http.ServeMux{},
 	}
 
-	srv.mux.HandleFunc("/wapi/audio/", srv.GetAudio)
+	srv.mux.HandleFunc("/wapi/audio", srv.GetAudio)
 
 	return &srv.mux
 }

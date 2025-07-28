@@ -1,8 +1,5 @@
-### Get telegram direct link (with file id)
-GET {{zpotify-api}}/api/link/CQACAgIAAxkBAAMOaGjpbYLz_IY6_wHiwtxSjQvZAcQAAvABAALs5vlJwnxurt15HQM2BA
-
-### Get telegram direct link (with file unique id)
-GET {{zpotify-api}}/api/link/AgAD8AEAAuzm-Uk
-
 ### Get audio
-GET {{zpotify-api}}/wapi/audio?fileId=CQACAgIAAxkBAAMOaGjpbYLz_IY6_wHiwtxSjQvZAcQAAvABAALs5vlJwnxurt15HQM2BA
+GET {{zpotify-api}}/wapi/audio?fileId=AgAD8AEAAuzm-Uk
+
+### Get unknown audio
+GET {{zpotify-api}}/wapi/audio?fileId=unknown

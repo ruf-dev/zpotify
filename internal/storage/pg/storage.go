@@ -8,6 +8,7 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
+	"go.zpotify.ru/zpotify/internal/user_errors"
 )
 
 type dataStorage struct {
@@ -37,6 +38,10 @@ func (d *dataStorage) TxManager() *tx_manager.TxManager {
 }
 
 func wrapPgErr(err error) error {
+	if errors.Is(err, sql.ErrNoRows) {
+		return user_errors.NotFound("")
+	}
+
 	pgErr := &pq.Error{}
 	if !errors.As(err, &pgErr) {
 		return err

@@ -26,4 +26,6 @@ type UserStorage interface {
 type FileMetaStorage interface {
 	// Add - saves meta to storage. Can return ErrAlreadyExists error
 	Add(ctx context.Context, user domain.FileMeta) error
+	// Get - gets file
+	Get(ctx context.Context, uniqueFileId string) (domain.FileMeta, error)
 }
