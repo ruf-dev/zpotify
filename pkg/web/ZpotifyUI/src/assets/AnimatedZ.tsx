@@ -2,7 +2,11 @@ import '@/assets/AnimatedZ.css';
 
 export default function AnimatedZ() {
     return (
-        <svg width="64" height="64" viewBox="0 0 914 914" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            width="64"
+            height="64"
+            viewBox="0 0 914 914"
+            fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
                 <clipPath id="clip1">
                     <rect id="topLine" x="0" y="0" width="0" height="914"/>

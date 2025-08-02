@@ -14,8 +14,11 @@ export default function useAudioPlayer() {
             audio.pause();
             setIsPlaying(false);
         } else {
-            audio.play().catch(console.error);
             setIsPlaying(true);
+            audio.play().catch((err) => {
+                console.log(err)
+                setIsPlaying(false)
+            });
         }
 
         return isPlaying

@@ -14,8 +14,14 @@ export default function TrackRewindButton({previous}: TrackRewindButton) {
                     transform: previous ? 'scaleX(-1)' : 'none',
                 }}
                 viewBox="0 0 32 32">
-                <rect x="18" y="9" width="5" height="14"/>
-                <polygon points="9,9 9,23 18,16 "/>
+                <rect
+                    x="18" y="9" width="5" height="14"
+                    fill={'black'}
+                />
+                <polygon
+                    points="9,9 9,23 18,16 "
+                    fill={'black'}
+                />
             </svg>
         </div>
     )

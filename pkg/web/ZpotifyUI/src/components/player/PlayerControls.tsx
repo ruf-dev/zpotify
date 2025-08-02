@@ -13,8 +13,7 @@ export interface PlayerProps {
 
 export default function PlayerControls({trackUrl, onPlayToggle}: PlayerProps): JSX.Element {
     if (!onPlayToggle) {
-        onPlayToggle = (_: boolean) => {
-        }
+        onPlayToggle = (_: boolean) => {}
     }
 
     const {isPlaying, togglePlay} = useAudioPlayer();
@@ -29,6 +28,7 @@ export default function PlayerControls({trackUrl, onPlayToggle}: PlayerProps): J
                 previous
             />
             <PlayPauseButton
+                isPlaying={isPlaying}
                 onClick={() => togglePlay(trackUrl)}
             />
             <TrackRewindButton

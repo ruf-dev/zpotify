@@ -1,10 +1,80 @@
-.HomePage {
+.InitPage {
     padding-top: 50vh;
+
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
+
+.Player {
+    display: flex;
+
+    width: 4em;
+    height: 4em;
+
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    background: #B3005E;
+    border-radius: 6em;
+
+    transition: all 0.3s ease-in-out;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.Player.open {
+    /*4 for logo, 1 for gap 8 for controls*/
+    width: 13em;
+}
+
+.Logo {
+    max-width: 4em;
+    max-height: 4em;
+    animation: logoRotatingAnim 10s linear infinite;
+    animation-play-state: paused;
+    flex: 1;
+
+    position: absolute;
+    left: 0;
+}
+
+.Logo:hover {
+    cursor: pointer;
+}
+
+@keyframes logoRotatingAnim {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.Logo.playing {
+    animation-play-state: running;
+}
+
+.PlayerControls {
+    margin-right: 0.5em;
+    overflow: hidden;
+    opacity: 0;
+    display: none;
+
+    position: absolute;
+    right: 0;
+}
+
+.PlayerControls.open {
+    opacity: 100%;
+    display: flex;
+}
+
 
 .WorkInProgressHeader {
     font-size: 2em;
@@ -28,31 +98,3 @@
     }
 }
 
-
-.Logo {
-    max-width: 4em;
-    max-height: 4em;
-    animation: logoRotatingAnim 10s linear infinite;
-}
-
-.Logo:hover {
-    cursor: pointer;
-}
-
-@keyframes logoRotatingAnim {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.Logo.paused {
-    animation-play-state: paused;
-}
-
-
-.hiddenPlayer {
-    /*display: none;*/
-}
