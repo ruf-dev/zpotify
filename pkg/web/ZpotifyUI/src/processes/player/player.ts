@@ -17,7 +17,7 @@ export default function useAudioPlayer() {
             setIsPlaying(true);
             audio.play().catch((err) => {
                 console.log(err)
-                setIsPlaying(false)
+                // setIsPlaying(false)
             });
         }
 

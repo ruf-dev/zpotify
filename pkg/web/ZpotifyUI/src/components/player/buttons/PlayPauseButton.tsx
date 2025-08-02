@@ -1,4 +1,3 @@
-
 import cn from 'classnames';
 
 import cls from "@/components/player/buttons/PlayPauseButton.module.css";
@@ -15,6 +14,12 @@ export default function PlayPauseButton({isPlaying, onClick}: PlayPauseButtonPro
             className={cls.PlayPauseWrapper}
             onClick={onClick}
         >
+            <div className={cls.InnerTriangleWrapper}>
+                <div className={cn(cls.InnerTriangle, {
+                    [cls.Active]: isPlaying
+                })}/>
+            </div>
+
             <div className={
                 cn(cls.Stick, cls.Stick1, {
                     [cls.Active]: isPlaying,
