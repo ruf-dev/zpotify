@@ -15,12 +15,15 @@ service ZpotifyAPI {
       get: "/api/version"
     };
   };
+}
 
-  rpc GetLink(GetLink.Request) returns (GetLink.Response) {
+service UserAPI {
+  rpc Register(Register.Request) returns (Register.Response) {
     option (google.api.http) = {
-      get: "/api/link/{tg_id}"
+      post: "/api/user"
+      body: "*"
     };
-  };
+  }
 }
 
 message Version {
@@ -41,4 +44,9 @@ message GetLink {
   message Response {
     string url = 2;
   }
+}
+
+message Register {
+  message Request {}
+  message Response {}
 }

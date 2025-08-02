@@ -1,0 +1,61 @@
+.PlayPauseWrapper {
+    width: 2.75em;
+    height: 2.75em;
+    box-sizing: border-box;
+
+    border: 1px solid black;
+    border-radius: 5px;
+
+    position: relative;
+
+    transition: all 0.25s ease;
+}
+
+.PlayPauseWrapper:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+.Stick {
+    width: 10%;
+    height: 82%;
+    box-sizing: border-box;
+    position: absolute;
+    top: 10%;
+    left: 20%;
+    background-color: black;
+    transition: all 0.125s ease;
+    border-radius: 15px;
+}
+
+.Stick1, .Stick2, .Stick3  {
+    left: 10%;
+}
+
+.Stick1.Active {
+    left: 70%;
+}
+
+.Stick2 {
+    transform-origin: top left;
+    transform: translateY(8%) rotate(-62.5deg);
+    height: 89%;
+}
+
+.Stick2.Active {
+    transform: rotate(0deg);
+    height: 82%;
+    left: 20%;
+}
+
+.Stick3 {
+    transform-origin: bottom left;
+    transform: translateY(-14%) translateX(-8%) rotate(62.5deg);
+    height: 89%;
+}
+
+.Stick3.Active {
+    transform: rotate(0deg);
+    height: 82%;
+    left: 20%;
+}

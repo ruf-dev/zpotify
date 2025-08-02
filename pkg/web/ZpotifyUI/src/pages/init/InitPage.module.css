@@ -51,3 +51,8 @@
 .Logo.paused {
     animation-play-state: paused;
 }
+
+
+.hiddenPlayer {
+    /*display: none;*/
+}

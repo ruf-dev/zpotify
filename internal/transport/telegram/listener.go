@@ -69,11 +69,12 @@ func NewServer(bot *client.Bot, service service.Service) (s *Server, err error) 
 		return ctx
 	}
 	{
-		// Add handlers here
 		s.bot.AddCommandHandler(start.New(responsesBuilder))
-		s.bot.AddCommandHandler(add.New(service.AudioService(), responsesBuilder))
 
-		s.bot.SetDefaultCommandHandler(default_handler.New(responsesBuilder))
+		addHandler := add.New(service.AudioService(), responsesBuilder)
+		s.bot.AddCommandHandler(addHandler)
+
+		s.bot.SetDefaultCommandHandler(default_handler.New(responsesBuilder, addHandler))
 	}
 
 	return s, nil

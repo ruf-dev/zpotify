@@ -5,19 +5,19 @@ export default function AnimatedZ() {
         <svg width="64" height="64" viewBox="0 0 914 914" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
                 <clipPath id="clip1">
-                    <rect id="topLine" x="0" y="0" width="0" height="914" />
+                    <rect id="topLine" x="0" y="0" width="0" height="914"/>
                 </clipPath>
 
                 <clipPath id="clip2">
-                    <rect id="midLine" x="0" y="0" width="0" height="914" />
+                    <rect id="midLine" x="0" y="0" width="0" height="914"/>
                 </clipPath>
 
                 <clipPath id="clip3">
-                    <rect id="bottomLine" x="0" y="0" width="0" height="914" />
+                    <rect id="bottomLine" x="0" y="0" width="0" height="914"/>
                 </clipPath>
 
                 <clipPath id="clip0_36_178">
-                    <rect width="914" height="914" fill="white" />
+                    <rect width="914" height="914" fill="white"/>
                 </clipPath>
             </defs>
 

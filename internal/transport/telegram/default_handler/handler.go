@@ -7,21 +7,29 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/localization"
 	v1 "go.zpotify.ru/zpotify/internal/service/v1"
+	"go.zpotify.ru/zpotify/internal/transport/telegram/add"
 )
 
 type Handler struct {
 	responseBuilder *localization.ResponseBuilder
 
 	fileService v1.FileService
+
+	addHandler *add.Handler
 }
 
-func New(responseBuilder *localization.ResponseBuilder) *Handler {
+func New(responseBuilder *localization.ResponseBuilder, addHandler *add.Handler) *Handler {
 	return &Handler{
 		responseBuilder: responseBuilder,
+		addHandler:      addHandler,
 	}
 }
 
 func (h *Handler) Handle(in *model.MessageIn, out tgapi.Chat) error {
+	if in.Audio != nil && in.Chat.ID == in.From.ID {
+		return h.addHandler.Handle(in, out)
+	}
+
 	return out.SendMessage(&response.MessageOut{
 		Text: "Welcome to Zpotify!",
 	})

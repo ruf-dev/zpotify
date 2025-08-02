@@ -6,10 +6,10 @@ phantom:
     - "[Host: loadtest.zpotify.ru]"
     - "[Connection: close]"
   uris:
-    - /wapi/audio?fileId=CQACAgIAAxkBAAMOaGjpbYLz_IY6_wHiwtxSjQvZAcQAAvABAALs5vlJwnxurt15HQM2BA
+    - /wapi/audio?fileId=AgAD8AEAAuzm-Uk
   load_profile:
     load_type: rps
-    schedule: line(1, 10, 10s)
+    schedule: line(1, 100, 1m)
 
 console:
   enabled: true

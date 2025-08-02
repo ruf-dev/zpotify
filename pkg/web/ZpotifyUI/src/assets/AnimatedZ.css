@@ -1,3 +1,11 @@
+svg {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
 #circle {
     animation: circleAnim 1s infinite linear;
 }
