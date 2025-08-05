@@ -1,5 +1,4 @@
-import {JSX, useEffect} from "react";
-import useAudioPlayer from "@/processes/player/player.ts";
+import {JSX} from "react";
 
 import PlayPauseButton from "@/components/player/buttons/PlayPauseButton.tsx";
 import TrackRewindButton from "@/components/player/buttons/TrackRewindButton.tsx";
@@ -7,21 +6,11 @@ import TrackRewindButton from "@/components/player/buttons/TrackRewindButton.tsx
 import cls from "@/components/player/PlayerControls.module.css"
 
 export interface PlayerProps {
-    trackUrl: string
-    onPlayToggle?: (isPlaying: boolean) => void
+    isPlaying: boolean
+    togglePlay: () => void
 }
 
-export default function PlayerControls({trackUrl, onPlayToggle}: PlayerProps): JSX.Element {
-    if (!onPlayToggle) {
-        onPlayToggle = (_: boolean) => {}
-    }
-
-    const {isPlaying, togglePlay} = useAudioPlayer();
-
-    useEffect(() => {
-        onPlayToggle(isPlaying);
-    }, [isPlaying]);
-
+export default function PlayerControls({ isPlaying, togglePlay}: PlayerProps): JSX.Element {
     return (
         <div className={cls.PlayerControlsWrapper}>
             <TrackRewindButton
@@ -29,7 +18,7 @@ export default function PlayerControls({trackUrl, onPlayToggle}: PlayerProps): J
             />
             <PlayPauseButton
                 isPlaying={isPlaying}
-                onClick={() => togglePlay(trackUrl)}
+                onClick={() => togglePlay()}
             />
             <TrackRewindButton
                 next

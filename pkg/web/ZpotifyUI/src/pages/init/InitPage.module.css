@@ -23,8 +23,6 @@
     transition: all 0.3s ease-in-out;
 
     position: relative;
-
-    overflow: hidden;
 }
 
 .Player.open {
@@ -33,20 +31,36 @@
 }
 
 .Logo {
-    max-width: 4em;
-    max-height: 4em;
-    animation: logoRotatingAnim 10s linear infinite;
-    animation-play-state: paused;
+    width: 4em;
+    height: 4em;
+    animation: logoPulsing 2s linear infinite;
     flex: 1;
 
     position: absolute;
     left: 0;
+    background: var(--main-fg-color);
+    border-radius: 16em;
 }
 
-.Logo:hover {
+.Logo.playing {
+    animation: logoRotatingAnim 10s linear infinite;
+}
+
+.Logo:hover:not(.playing) {
     cursor: pointer;
 }
 
+@keyframes logoPulsing {
+    0% {
+        box-shadow: 0 0 0 0 rgba(217, 0, 127, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(217, 0, 127, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(217, 0, 127, 0);
+    }
+}
 @keyframes logoRotatingAnim {
     from {
         transform: rotate(0deg);
@@ -54,10 +68,6 @@
     to {
         transform: rotate(360deg);
     }
-}
-
-.Logo.playing {
-    animation-play-state: running;
 }
 
 .PlayerControls {
@@ -79,7 +89,7 @@
 .WorkInProgressHeader {
     font-size: 2em;
     font-weight: bold;
-    background: linear-gradient(270deg, #D9007F, #00d95a);
+    background: linear-gradient(270deg, var(--main-fg-color), #00d95a);
     background-size: 600% 600%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

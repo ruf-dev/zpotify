@@ -75,7 +75,7 @@ func (s *FileService) Stream(ctx context.Context, uniqueFileId string) (io.Reade
 
 	f, err := s.tgApi.OpenFile(ctx, file.TgFile)
 	if err != nil {
-		return nil, err
+		return nil, rerrors.Wrap(err, "error opening file from Telegram to stream")
 	}
 
 	return f, nil

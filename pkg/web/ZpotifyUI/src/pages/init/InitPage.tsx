@@ -1,41 +1,58 @@
 import cn from 'classnames';
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 import api from "@/app/api/api.ts";
+import {AudioPlayer} from "@/processes/player/player.ts";
 
 import cls from '@/pages/init/InitPage.module.css';
 
 import PlayerControls from "@/components/player/PlayerControls.tsx";
 import AnimatedZ from "@/assets/AnimatedZ.tsx";
-import {useState} from "react";
+import {Path} from "@/app/routing/Router.tsx";
 
-export default function InitPage() {
+interface InitPageProps {
+    AudioPlayer: AudioPlayer
+}
+
+export default function InitPage({AudioPlayer}: InitPageProps) {
     const trackUrl = `${api()}/wapi/audio?fileId=AgADBGcAAscmoEg`;
 
-    const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
 
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [isClickedOnLogo, setIsClickedOnLogo] = useState(false);
+
+    useEffect(() => {
+        setTimeout(() => {
+            if (isClickedOnLogo) {
+                console.log(isClickedOnLogo);
+                navigate(Path.HomePage)
+            }
+        }, 2000)
+    }, [isClickedOnLogo]);
 
     return (
         <div className={cls.InitPage}>
             <div className={
                 cn(cls.Player, {
-                    [cls.open]: isOpen
+                    [cls.open]: isClickedOnLogo,
                 })}>
 
                 <div className={
                     cn(cls.PlayerControls, {
-                        [cls.open]: isOpen,
+                        [cls.open]: isClickedOnLogo,
                     })}>
                     <PlayerControls
-                        trackUrl={trackUrl}
-                        onPlayToggle={setIsPlaying}
+                        isPlaying={AudioPlayer.isPlaying}
+                        togglePlay={() => AudioPlayer.togglePlay(trackUrl)}
                     />
                 </div>
+
                 <div
                     className={cn(cls.Logo, {
-                        [cls.playing]: isPlaying
+                        [cls.playing]: isClickedOnLogo
                     })}
-                    onClick={() => setIsOpen(!isOpen)}>
+                    onClick={() => setIsClickedOnLogo(true)}>
                     <AnimatedZ/>
                 </div>
 

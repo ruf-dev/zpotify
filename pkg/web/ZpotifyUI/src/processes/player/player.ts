@@ -1,6 +1,11 @@
 import {useState} from "react";
 
-export default function useAudioPlayer() {
+export interface AudioPlayer {
+    isPlaying: boolean;
+    togglePlay: (trackUrl: string | undefined) => void;
+}
+
+export default function useAudioPlayer(): AudioPlayer {
     const [audio] = useState(() => new Audio());
 
     const [isPlaying, setIsPlaying] = useState(false);

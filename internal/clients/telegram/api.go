@@ -89,6 +89,11 @@ func (t *tgApi) OpenFile(ctx context.Context, file domain.TgFile) (io.ReadCloser
 
 	switch resp.StatusCode {
 	case http.StatusNotFound:
+		f, err := t.GetFile(ctx, file.FileId)
+		if err != nil {
+		// TODO implement failover
+			_ = f
+		}
 		return nil, rerrors.Wrap(user_errors.NotFound("tg file"))
 	default:
 		return nil, rerrors.Wrap(user_errors.ErrUnexpected)
