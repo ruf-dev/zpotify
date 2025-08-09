@@ -91,10 +91,16 @@ func (t *tgApi) OpenFile(ctx context.Context, file domain.TgFile) (io.ReadCloser
 	case http.StatusNotFound:
 		f, err := t.GetFile(ctx, file.FileId)
 		if err != nil {
-		// TODO implement failover
-			_ = f
+			return nil, rerrors.Wrap(err, "error getting file from telegram")
 		}
-		return nil, rerrors.Wrap(user_errors.NotFound("tg file"))
+
+		// TODO if not found then need to refetch
+		newF := domain.TgFile{
+			FileId:   f.FileID,
+			FilePath: f.FilePath,
+		}
+		return t.OpenFile(ctx, newF)
+
 	default:
 		return nil, rerrors.Wrap(user_errors.ErrUnexpected)
 	}

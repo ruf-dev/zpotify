@@ -2,7 +2,8 @@ import {useState} from "react";
 
 export interface AudioPlayer {
     isPlaying: boolean;
-    togglePlay: (trackUrl: string | undefined) => void;
+    togglePlay: () => boolean;
+    preload: (trackUrl: string) => void;
 }
 
 export default function useAudioPlayer(): AudioPlayer {
@@ -10,9 +11,10 @@ export default function useAudioPlayer(): AudioPlayer {
 
     const [isPlaying, setIsPlaying] = useState(false);
 
-    const togglePlay = (trackUrl: string | undefined): boolean => {
-        if (trackUrl && audio.src != trackUrl) {
-            audio.src = trackUrl;
+
+    function togglePlay(): boolean {
+        if (!audio.src) {
+            return false
         }
 
         if (isPlaying) {
@@ -22,15 +24,21 @@ export default function useAudioPlayer(): AudioPlayer {
             setIsPlaying(true);
             audio.play().catch((err) => {
                 console.log(err)
-                // setIsPlaying(false)
             });
         }
 
         return isPlaying
     }
 
+    function preload(trackUrl: string): void {
+        audio.src = trackUrl
+        audio.load()
+    }
+
+
     return {
         isPlaying,
         togglePlay,
+        preload
     }
 }

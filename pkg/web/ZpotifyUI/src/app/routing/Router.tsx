@@ -5,6 +5,7 @@ import ErrorPage from "@/pages/error/ErrorPage.tsx";
 
 import useAudioPlayer from "@/processes/player/player.ts";
 import HomePage from "@/pages/home/HomePage.tsx";
+import useUser from "@/processes/user/user.ts";
 
 export enum Path {
     HomePage = "/",
@@ -12,7 +13,8 @@ export enum Path {
 }
 
 export default function Router() {
-    const audioPlayer = useAudioPlayer()
+    const audioPlayer = useAudioPlayer();
+    const user = useUser();
 
     return (
         <Routes>
@@ -24,7 +26,9 @@ export default function Router() {
 
             <Route
                 path={Path.HomePage}
-                element={<HomePage AudioPlayer={audioPlayer}/>}
+                element={<HomePage
+                    audioPlayer={audioPlayer}
+                    user={user.username ? user : undefined}/>}
                 errorElement={<ErrorPage/>}
             />
 
