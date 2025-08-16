@@ -37,9 +37,15 @@ CREATE TABLE IF NOT EXISTS files_meta
     title          TEXT NOT NULL,
     author         TEXT
 );
--- INSERT INTO public.files_meta (tg_unique_id, tg_file_id, added_by_tg_id, title, author) VALUES ('AgAD8AEAAuzm-Uk', 'CQACAgIAAxkBAAMOaGjpbYLz_IY6_wHiwtxSjQvZAcQAAvABAALs5vlJwnxurt15HQM2BA', 743523416, 'Leave Out All The Rest', 'Linkin Park');
 
-
+CREATE TABLE IF NOT EXISTS user_sessions
+(
+    user_id           INT8 REFERENCES users (tg_id),
+    access_token      TEXT PRIMARY KEY,
+    refresh_token     TEXT UNIQUE,
+    access_expire_at  TIMESTAMP,
+    refresh_expire_at TIMESTAMP
+);
 
 -- +goose StatementEnd
 

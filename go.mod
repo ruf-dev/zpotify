@@ -6,13 +6,15 @@ require (
 	github.com/Red-Sock/go-swagger-ui v0.0.2
 	github.com/Red-Sock/go_tg v0.0.26
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
+	github.com/golang-jwt/jwt/v5 v5.3.0
+	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.1
-	github.com/hashicorp/golang-lru/v2 v2.0.7
 	github.com/lib/pq v1.10.9
 	github.com/pressly/goose/v3 v3.24.3
 	github.com/rs/cors v1.11.1
 	github.com/rs/zerolog v1.34.0
 	github.com/soheilhy/cmux v0.1.5
+	github.com/stretchr/testify v1.10.0
 	go.redsock.ru/protoc-gen-npm v0.0.12
 	go.redsock.ru/rerrors v0.0.4
 	go.redsock.ru/toolbox v0.0.11

@@ -56,42 +56,47 @@ func local_request_ZpotifyAPI_Version_0(ctx context.Context, marshaler runtime.M
 	return msg, metadata, err
 }
 
-func request_ZpotifyAPI_GetLink_0(ctx context.Context, marshaler runtime.Marshaler, client ZpotifyAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UserAPI_Auth_0(ctx context.Context, marshaler runtime.Marshaler, client UserAPIClient, req *http.Request, pathParams map[string]string) (UserAPI_AuthClient, runtime.ServerMetadata, error) {
 	var (
-		protoReq GetLink_Request
+		protoReq Auth_Request
 		metadata runtime.ServerMetadata
-		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	stream, err := client.Auth(ctx, &protoReq)
+	if err != nil {
+		return nil, metadata, err
+	}
+	header, err := stream.Header()
+	if err != nil {
+		return nil, metadata, err
+	}
+	metadata.HeaderMD = header
+	return stream, metadata, nil
+}
+
+func request_UserAPI_Me_0(ctx context.Context, marshaler runtime.Marshaler, client UserAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq Me_Request
+		metadata runtime.ServerMetadata
 	)
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
-	val, ok := pathParams["tg_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tg_id")
-	}
-	protoReq.TgId, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tg_id", err)
-	}
-	msg, err := client.GetLink(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.Me(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_ZpotifyAPI_GetLink_0(ctx context.Context, marshaler runtime.Marshaler, server ZpotifyAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_UserAPI_Me_0(ctx context.Context, marshaler runtime.Marshaler, server UserAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq GetLink_Request
+		protoReq Me_Request
 		metadata runtime.ServerMetadata
-		err      error
 	)
-	val, ok := pathParams["tg_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "tg_id")
-	}
-	protoReq.TgId, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "tg_id", err)
-	}
-	msg, err := server.GetLink(ctx, &protoReq)
+	msg, err := server.Me(ctx, &protoReq)
 	return msg, metadata, err
 }
 
@@ -121,25 +126,41 @@ func RegisterZpotifyAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		}
 		forward_ZpotifyAPI_Version_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_ZpotifyAPI_GetLink_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+
+	return nil
+}
+
+// RegisterUserAPIHandlerServer registers the http handlers for service UserAPI to "mux".
+// UnaryRPC     :call UserAPIServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterUserAPIHandlerFromEndpoint instead.
+// GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
+func RegisterUserAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux, server UserAPIServer) error {
+	mux.Handle(http.MethodPost, pattern_UserAPI_Auth_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+	mux.Handle(http.MethodGet, pattern_UserAPI_Me_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zpotify_api.ZpotifyAPI/GetLink", runtime.WithHTTPPathPattern("/api/link/{tg_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zpotify_api.UserAPI/Me", runtime.WithHTTPPathPattern("/api/user"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_ZpotifyAPI_GetLink_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UserAPI_Me_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_ZpotifyAPI_GetLink_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserAPI_Me_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -198,32 +219,96 @@ func RegisterZpotifyAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux,
 		}
 		forward_ZpotifyAPI_Version_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_ZpotifyAPI_GetLink_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zpotify_api.ZpotifyAPI/GetLink", runtime.WithHTTPPathPattern("/api/link/{tg_id}"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_ZpotifyAPI_GetLink_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_ZpotifyAPI_GetLink_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-	})
 	return nil
 }
 
 var (
 	pattern_ZpotifyAPI_Version_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "version"}, ""))
-	pattern_ZpotifyAPI_GetLink_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"api", "link", "tg_id"}, ""))
 )
 
 var (
 	forward_ZpotifyAPI_Version_0 = runtime.ForwardResponseMessage
-	forward_ZpotifyAPI_GetLink_0 = runtime.ForwardResponseMessage
+)
+
+// RegisterUserAPIHandlerFromEndpoint is same as RegisterUserAPIHandler but
+// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
+func RegisterUserAPIHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.NewClient(endpoint, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
+	return RegisterUserAPIHandler(ctx, mux, conn)
+}
+
+// RegisterUserAPIHandler registers the http handlers for service UserAPI to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
+func RegisterUserAPIHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterUserAPIHandlerClient(ctx, mux, NewUserAPIClient(conn))
+}
+
+// RegisterUserAPIHandlerClient registers the http handlers for service UserAPI
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "UserAPIClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "UserAPIClient"
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// "UserAPIClient" to call the correct interceptors. This client ignores the HTTP middlewares.
+func RegisterUserAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux, client UserAPIClient) error {
+	mux.Handle(http.MethodPost, pattern_UserAPI_Auth_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zpotify_api.UserAPI/Auth", runtime.WithHTTPPathPattern("/api/user/auth"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_UserAPI_Auth_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_UserAPI_Auth_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_UserAPI_Me_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zpotify_api.UserAPI/Me", runtime.WithHTTPPathPattern("/api/user"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_UserAPI_Me_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_UserAPI_Me_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	return nil
+}
+
+var (
+	pattern_UserAPI_Auth_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "user", "auth"}, ""))
+	pattern_UserAPI_Me_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "user"}, ""))
+)
+
+var (
+	forward_UserAPI_Auth_0 = runtime.ForwardResponseStream
+	forward_UserAPI_Me_0   = runtime.ForwardResponseMessage
 )

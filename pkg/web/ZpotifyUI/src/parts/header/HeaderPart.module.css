@@ -1,0 +1,33 @@
+.Header {
+    width: 100%;
+    height: 5vh;
+    background: var(--secondary-bg-color);
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.LogoContainer {
+    flex: 1;
+
+    display: flex;
+    justify-content: start;
+    padding: 0.25em;
+}
+
+.Logo {
+    width: 4vh;
+    height: 4vh;
+}
+
+.Logo:hover {
+    cursor: pointer;
+}
+
+.SearchContainer {
+    flex: 2;
+}
+
+.UserContainer {
+    flex: 1
+}

@@ -1,0 +1,43 @@
+.TelegramAuth {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+    gap: 1em;
+
+    background: #27a7e7;
+    border-radius: 15em;
+    transition: all 0.1s ease-in-out;
+}
+
+.TelegramAuth.IsLoading {
+    background: #778991;
+}
+
+.TelegramAuth.IsLoading:hover {
+    cursor: auto;
+    scale: 1;
+}
+
+.TelegramAuth:hover {
+    cursor: pointer;
+    scale: 1.05;
+}
+
+.TgLogo {
+    display: flex;
+
+    flex: 1;
+}
+
+.AuthButton {
+    flex: 2;
+    border-radius: 15em;
+
+    display: flex;
+    justify-content: center;
+}

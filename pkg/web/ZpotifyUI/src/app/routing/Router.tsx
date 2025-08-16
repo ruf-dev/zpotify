@@ -3,9 +3,9 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import InitPage from "@/pages/init/InitPage.tsx";
 import ErrorPage from "@/pages/error/ErrorPage.tsx";
 
-import useAudioPlayer from "@/processes/player/player.ts";
+import useAudioPlayer from "@/hooks/player/player.ts";
 import HomePage from "@/pages/home/HomePage.tsx";
-import useUser from "@/processes/user/user.ts";
+import useUser from "@/hooks/user/user.ts";
 
 export enum Path {
     HomePage = "/",
@@ -20,7 +20,9 @@ export default function Router() {
         <Routes>
             <Route
                 path={Path.IntiPage}
-                element={<InitPage AudioPlayer={audioPlayer}/>}
+                element={<InitPage
+                    UserState={user}
+                    AudioPlayer={audioPlayer}/>}
                 errorElement={<ErrorPage/>}
             />
 
@@ -28,7 +30,7 @@ export default function Router() {
                 path={Path.HomePage}
                 element={<HomePage
                     audioPlayer={audioPlayer}
-                    user={user.username ? user : undefined}/>}
+                    user={user}/>}
                 errorElement={<ErrorPage/>}
             />
 

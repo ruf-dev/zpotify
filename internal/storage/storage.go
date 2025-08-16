@@ -11,6 +11,7 @@ import (
 type Storage interface {
 	User() UserStorage
 	FileMeta() FileMetaStorage
+	SessionStorage() SessionStorage
 
 	TxManager() *tx_manager.TxManager
 }
@@ -28,4 +29,15 @@ type FileMetaStorage interface {
 	Add(ctx context.Context, user domain.FileMeta) error
 	// Get - gets file
 	Get(ctx context.Context, uniqueFileId string) (domain.FileMeta, error)
+}
+
+type SessionStorage interface {
+	Upsert(ctx context.Context, user domain.UserSession) error
+	GetByAccessToken(ctx context.Context, accessToken string) (domain.UserSession, error)
+	GetByRefreshToken(ctx context.Context, refreshToken string) (domain.UserSession, error)
+
+	Delete(ctx context.Context, token string) error
+	ListByUserId(ctx context.Context, id int64) ([]domain.UserSession, error)
+
+	WithTx(tx *sql.Tx) SessionStorage
 }

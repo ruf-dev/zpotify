@@ -14,14 +14,18 @@ import (
 type dataStorage struct {
 	userStorage     *UserStorage
 	fileMetaStorage *FileMetaStorage
-	conn            *sql.DB
+	sessionStorage  *SessionStorage
+
+	conn *sql.DB
 }
 
 func NewStorage(conn *sql.DB) storage.Storage {
 	return &dataStorage{
 		userStorage:     NewUserStorage(conn),
 		fileMetaStorage: NewFileMetaStorage(conn),
-		conn:            conn,
+		sessionStorage:  NewSessionStorage(conn),
+
+		conn: conn,
 	}
 }
 
@@ -31,6 +35,10 @@ func (d *dataStorage) FileMeta() storage.FileMetaStorage {
 
 func (d *dataStorage) User() storage.UserStorage {
 	return d.userStorage
+}
+
+func (d *dataStorage) SessionStorage() storage.SessionStorage {
+	return d.sessionStorage
 }
 
 func (d *dataStorage) TxManager() *tx_manager.TxManager {

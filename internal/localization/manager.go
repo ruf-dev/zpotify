@@ -62,6 +62,11 @@ func (m *ResponseBuilder) UserNowAllowedToAddFile(ctx context.Context) string {
 	return r.File.UserNowAllowedToAdd
 }
 
+func (m *ResponseBuilder) SuccessfullyAuthenticated(ctx context.Context) string {
+	r := m.getResponses(LangFromCtx(ctx))
+	return r.Auth.SuccessfullyAuthenticated
+}
+
 func (m *ResponseBuilder) getResponses(local Locale) responses {
 	r, ok := m.responses[local]
 	if ok {

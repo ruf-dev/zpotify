@@ -7,6 +7,9 @@
   "tags": [
     {
       "name": "ZpotifyAPI"
+    },
+    {
+      "name": "UserAPI"
     }
   ],
   "consumes": [
@@ -16,14 +19,46 @@
     "application/json"
   ],
   "paths": {
-    "/api/link/{tgId}": {
+    "/api/user": {
       "get": {
-        "operationId": "ZpotifyAPI_GetLink",
+        "operationId": "UserAPI_Me",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/zpotify_apiGetLinkResponse"
+              "$ref": "#/definitions/zpotify_apiMeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "UserAPI"
+        ]
+      }
+    },
+    "/api/user/auth": {
+      "post": {
+        "summary": "Only Telegram auth is supported",
+        "operationId": "UserAPI_Auth",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/zpotify_apiAuthResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of zpotify_apiAuthResponse"
             }
           },
           "default": {
@@ -35,14 +70,16 @@
         },
         "parameters": [
           {
-            "name": "tgId",
-            "in": "path",
+            "name": "body",
+            "in": "body",
             "required": true,
-            "type": "string"
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiAuthRequest"
+            }
           }
         ],
         "tags": [
-          "ZpotifyAPI"
+          "UserAPI"
         ]
       }
     },
@@ -70,6 +107,25 @@
     }
   },
   "definitions": {
+    "AuthAuthData": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string"
+        },
+        "refreshToken": {
+          "type": "string"
+        },
+        "accessExpiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "refreshExpiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -98,10 +154,32 @@
         }
       }
     },
-    "zpotify_apiGetLinkResponse": {
+    "zpotify_apiAuthRequest": {
+      "type": "object"
+    },
+    "zpotify_apiAuthResponse": {
       "type": "object",
       "properties": {
-        "url": {
+        "authUuid": {
+          "type": "string"
+        },
+        "authData": {
+          "$ref": "#/definitions/AuthAuthData"
+        }
+      }
+    },
+    "zpotify_apiMeResponse": {
+      "type": "object",
+      "properties": {
+        "userData": {
+          "$ref": "#/definitions/zpotify_apiUserData"
+        }
+      }
+    },
+    "zpotify_apiUserData": {
+      "type": "object",
+      "properties": {
+        "username": {
           "type": "string"
         }
       }

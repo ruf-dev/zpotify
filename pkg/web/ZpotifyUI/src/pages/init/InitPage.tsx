@@ -6,18 +6,31 @@ import api from "@/app/api/api.ts";
 
 import PlayerControls from "@/components/player/PlayerControls.tsx";
 import AnimatedZ from "@/assets/AnimatedZ.tsx";
-import {AudioPlayer} from "@/processes/player/player.ts";
+import {AudioPlayer} from "@/hooks/player/player.ts";
+import {User} from "@/hooks/user/user.ts";
+import AuthMethodsWidget from "@/widgets/AuthMethods/AuthMethodsWidget.tsx";
+import {useNavigate} from "react-router-dom";
+import {Path} from "@/app/routing/Router.tsx";
 
 interface InitPageProps {
     AudioPlayer: AudioPlayer
+
+    UserState: User
 }
 
-export default function InitPage({AudioPlayer}: InitPageProps) {
+export default function InitPage({AudioPlayer, UserState}: InitPageProps) {
     const trackUrl = `${api()}/wapi/audio?fileId=AgADBGcAAscmoEg`;
 
     const [isClickedOnLogo, setIsClickedOnLogo] = useState(false);
     const [isFirstClick, setIsFirstClick] = useState(false);
 
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (UserState.authData) {
+            navigate(Path.HomePage)
+        }
+    }, [UserState.authData]);
 
     useEffect(() => {
         AudioPlayer.preload(trackUrl)
@@ -25,7 +38,8 @@ export default function InitPage({AudioPlayer}: InitPageProps) {
 
     useEffect(() => {
         if (isFirstClick) {
-            AudioPlayer.togglePlay()
+            // TODO
+            // AudioPlayer.togglePlay()
         }
         setIsFirstClick(true)
     }, [isClickedOnLogo]);
@@ -35,7 +49,6 @@ export default function InitPage({AudioPlayer}: InitPageProps) {
             <div className={cn(cls.Player, {
                 [cls.open]: isClickedOnLogo,
             })}>
-
                 <div className={
                     cn(cls.PlayerControls, {
                         [cls.open]: isClickedOnLogo,
@@ -55,6 +68,9 @@ export default function InitPage({AudioPlayer}: InitPageProps) {
                 </div>
             </div>
 
+            <AuthMethodsWidget
+                UserState={UserState}
+            />
 
             <p className={cls.WorkInProgressHeader}>
                 Soon, There will be some great music. Keep in touch

@@ -18,10 +18,17 @@ service ZpotifyAPI {
 }
 
 service UserAPI {
-  rpc Register(Register.Request) returns (Register.Response) {
+  //  Only Telegram auth is supported
+  rpc Auth(Auth.Request) returns (stream Auth.Response) {
     option (google.api.http) = {
-      post: "/api/user"
+      post: "/api/user/auth"
       body: "*"
+    };
+  }
+
+  rpc Me(Me.Request) returns (Me.Response) {
+    option (google.api.http) = {
+      get: "/api/user"
     };
   }
 }
@@ -35,7 +42,6 @@ message Version {
   }
 }
 
-
 message GetLink {
   message Request{
     string tg_id = 1;
@@ -46,7 +52,32 @@ message GetLink {
   }
 }
 
-message Register {
+message Auth {
   message Request {}
-  message Response {}
+
+  message Response {
+    oneof payload {
+      string auth_uuid = 1;
+      AuthData auth_data = 2;
+    }
+  }
+
+  message AuthData {
+    string access_token = 1;
+    string refresh_token = 2;
+    google.protobuf.Timestamp access_expires_at = 3;
+    google.protobuf.Timestamp refresh_expires_at = 4;
+  }
+}
+
+message UserData {
+  string username = 1;
+}
+
+message Me {
+  message Request {}
+
+  message Response {
+    UserData user_data = 1;
+  }
 }

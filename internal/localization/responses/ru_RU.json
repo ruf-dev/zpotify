@@ -5,5 +5,8 @@
     "success_adding": "Файл успешно сохранён",
     "already_exists":  "Файл уже добавлен",
     "user_now_allowed_to_add": "Вы не можете добавлять файлы"
+  },
+  "auth": {
+    "successfully_authenticated": "Успешная авторизация"
   }
 }

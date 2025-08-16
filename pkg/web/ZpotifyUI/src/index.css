@@ -11,12 +11,14 @@ html, root, body {
 
 root, body {
   margin: 0;
-  /*background: var(--main-bg-color);*/
+  background: var(--main-bg-color);
   overflow-x: hidden;
 }
 
 :root {
   --main-bg-color: #000000;
+  --secondary-bg-color: #310049;
+
   --main-fg-color: #d9007f;
 }
 

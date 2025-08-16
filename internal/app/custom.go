@@ -10,6 +10,7 @@ import (
 	"golang.org/x/sync/errgroup"
 
 	tgApi "go.zpotify.ru/zpotify/internal/clients/telegram"
+	"go.zpotify.ru/zpotify/internal/middleware"
 	"go.zpotify.ru/zpotify/internal/service"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/pg"
@@ -17,6 +18,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/transport/wapi"
 	"go.zpotify.ru/zpotify/internal/transport/zpotify_api_impl"
 	"go.zpotify.ru/zpotify/pkg/docs"
+	"go.zpotify.ru/zpotify/pkg/zpotify_api"
 )
 
 type Custom struct {
@@ -42,6 +44,12 @@ func (c *Custom) Init(a *App) (err error) {
 	}
 
 	c.grpcImpl = zpotify_api_impl.New(c.service)
+
+	a.ServerMaster.AddServerOption(
+		middleware.WithInterceptWithAuth(
+			c.service,
+			middleware.WithIgnoredPathAuthOption(zpotify_api.UserAPI_Auth_FullMethodName)),
+	)
 
 	a.ServerMaster.AddImplementation(c.grpcImpl)
 	a.ServerMaster.AddHttpHandler(docs.Swagger())

@@ -1,6 +1,7 @@
-package apptest
+package tests
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -10,6 +11,12 @@ import (
 
 type TestEnv struct {
 	App app.App
+}
+
+func TestMain(m *testing.M) {
+	code := m.Run()
+
+	os.Exit(code)
 }
 
 func NewTestEnv(t *testing.T) (te TestEnv) {
