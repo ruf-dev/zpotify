@@ -1,6 +1,6 @@
 import cls from "@/pages/home/HomePage.module.css"
 
-import {useEffect} from "react";
+import { useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 
 import {AudioPlayer} from "@/hooks/player/player.ts";
@@ -21,8 +21,7 @@ export default function HomePage({user}: HomePageProps) {
         if (!user.authData) {
             navigate(Path.IntiPage)
         }
-    }, []);
-
+    }, [user.authData]);
 
     return (
         <div className={cls.HomePage}>

@@ -5,14 +5,15 @@ import {ErrorCodes} from "@/processes/ErrorCodes.ts";
 
 export interface User {
     userData?: UserInfo
-    setUserdata: (user: UserInfo) => void;
+    setUserData: (user: UserInfo) => void;
 
     authData?: AuthData
     authenticate: (authData: AuthData) => void;
+    logout: () => void
 }
 
 export default function useUser(): User {
-    const [userInfo, setUserInfo] = useState<UserInfo>();
+    const [userData, setUserData] = useState<UserInfo>();
 
     const [authData, setAuthData] =
         useState<AuthData>();
@@ -20,7 +21,6 @@ export default function useUser(): User {
     useEffect(() => {
         const authD = fromLocalStorage()
         setAuthData(authD)
-
 
         if (authD) {
             fetchUserData(authD)
@@ -31,10 +31,13 @@ export default function useUser(): User {
     function authenticate(authData: AuthData) {
         setAuthData(authData);
         toLocalStorage(authData);
+
+        fetchUserData(authData)
     }
 
     function logout() {
         setAuthData(undefined)
+        setUserData(undefined)
         clearLocalStorage()
     }
 
@@ -42,7 +45,7 @@ export default function useUser(): User {
         const s = new UserService(authData)
         s.GetMe()
             .then((userInf) => {
-                setUserInfo(userInf)
+                setUserData(userInf)
             })
             .catch(async (err) => {
                 if (!err.code) {
@@ -62,11 +65,12 @@ export default function useUser(): User {
     }
 
     return {
-        userData: userInfo,
-        setUserdata: setUserInfo,
+        userData,
+        setUserData,
 
         authData,
         authenticate,
+        logout
     }
 }
 

@@ -1,0 +1,28 @@
+.MenuContainer {
+    width: 100%;
+    height: 100%;
+
+    padding: 0.5em;
+    box-sizing: border-box;
+}
+
+.Option {
+    width: 100%;
+    height: 100%;
+    padding: 0.25em;
+}
+
+.Option:hover {
+    cursor: pointer;
+}
+
+.Option.Selected {
+    color: var(--secondary-fg-color);
+    background: var(--secondary-bg-color);
+}
+
+.Separator {
+    width: 100%;
+    height: 1px;
+    background: black;
+}

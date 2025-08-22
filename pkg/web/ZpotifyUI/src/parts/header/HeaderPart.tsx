@@ -18,12 +18,12 @@ export default function HeaderPart({user}: HeaderPartProps) {
             <div className={cls.LogoContainer}>
                 <div
                     className={cls.Logo}
-                    onClick={()=>navigate(Path.HomePage)}>
+                    onClick={() => navigate(Path.HomePage)}>
                     <AnimatedZ/>
                 </div>
             </div>
 
-            <div className={cls.SearchContainer}></div>
+            <div className={cls.SearchContainer}/>
             <div className={cls.UserContainer}>
                 <UserWidget user={user}/>
             </div>

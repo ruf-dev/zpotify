@@ -20,6 +20,7 @@ root, body {
   --secondary-bg-color: #310049;
 
   --main-fg-color: #d9007f;
+  --secondary-fg-color: #d9007f;
 }
 
 /*TODO: DO FOR different screen sizes*/
