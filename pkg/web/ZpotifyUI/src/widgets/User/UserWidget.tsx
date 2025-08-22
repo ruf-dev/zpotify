@@ -14,14 +14,14 @@ interface UserWidgetProps {
 
 export default function UserWidget({user}: UserWidgetProps) {
     if (!user.userData) {
-        return (<div>no data</div>)
+        return null
     }
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const menuOptions = [
-        {label: 'Profile'},
-        {label: 'Settings'},
+        {label: 'Profile', disabled: true},
+        {label: 'Settings', disabled: true},
         {},
         {
             label: 'Logout', onClick: () => {

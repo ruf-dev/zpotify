@@ -21,6 +21,8 @@ root, body {
 
   --main-fg-color: #d9007f;
   --secondary-fg-color: #d9007f;
+
+  --disabled-bg-color: #9f8d98;
 }
 
 /*TODO: DO FOR different screen sizes*/

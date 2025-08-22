@@ -10,6 +10,7 @@ interface MenuProps {
 interface MenuOption {
     label?: string
     onClick?: () => void
+    disabled?: boolean
 }
 
 export default function Menu({options}: MenuProps) {
@@ -37,7 +38,8 @@ function MenuOption({props}: { props: MenuOption }) {
     return (
         <div
             className={cn(cls.Option, {
-                [cls.Selected]: isSelected
+                [cls.Selected]: isSelected,
+                [cls.Disabled]: props.disabled,
             })}
             onPointerEnter={() => setIsSelected(true)}
             onPointerLeave={() => setIsSelected(false)}
