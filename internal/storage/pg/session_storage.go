@@ -34,7 +34,7 @@ func (s *SessionStorage) GetByAccessToken(ctx context.Context, accessToken strin
 	var userSession domain.UserSession
 	err := s.scanSession(r, &userSession)
 	if err != nil {
-		return userSession, rerrors.Wrap(err, "error scanning user session")
+		return userSession, wrapPgErr(err)
 	}
 
 	return userSession, nil
@@ -49,13 +49,13 @@ func (s *SessionStorage) GetByRefreshToken(ctx context.Context, refreshToken str
 			access_expire_at,
 			refresh_expire_at
 		FROM user_sessions
-		WHERE refresh_expire_at = $1
+		WHERE refresh_token = $1
 `, refreshToken)
 
 	var userSession domain.UserSession
 	err := s.scanSession(r, &userSession)
 	if err != nil {
-		return userSession, rerrors.Wrap(err, "error scanning user session")
+		return userSession, wrapPgErr(err)
 	}
 
 	return userSession, nil

@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {AuthData, UserInfo} from "@/model/user.ts";
-import {GetMe} from "@/processes/user.ts";
+import UserService from "@/processes/user.ts";
+import {ErrorCodes} from "@/processes/ErrorCodes.ts";
 
 export interface User {
     userData?: UserInfo
@@ -17,19 +18,47 @@ export default function useUser(): User {
         useState<AuthData>();
 
     useEffect(() => {
-        setAuthData(fromLocalStorage())
+        const authD = fromLocalStorage()
+        setAuthData(authD)
+
+
+        if (authD) {
+            fetchUserData(authD)
+        }
     }, []);
 
-    if (authData) fetchUserData(authData)
 
     function authenticate(authData: AuthData) {
         setAuthData(authData);
         toLocalStorage(authData);
     }
 
+    function logout() {
+        setAuthData(undefined)
+        clearLocalStorage()
+    }
+
     function fetchUserData(authData: AuthData) {
-        GetMe(authData)
-            .then((userInf) => {setUserInfo(userInf)})
+        const s = new UserService(authData)
+        s.GetMe()
+            .then((userInf) => {
+                setUserInfo(userInf)
+            })
+            .catch(async (err) => {
+                if (!err.code) {
+                    logout()
+                }
+
+                if (err.code == ErrorCodes.UNAUTHENTICATED) {
+                    s.RefreshToken().then((ad) => {
+                        setAuthData(ad);
+                    }).catch((err) => {
+                        if (err.code == ErrorCodes.UNAUTHENTICATED) {
+                            logout()
+                        }
+                    })
+                }
+            })
     }
 
     return {
@@ -54,6 +83,11 @@ function fromLocalStorage(): AuthData | undefined {
 
     return JSON.parse(authInfoFromLocalStorage)
 }
+
+function clearLocalStorage() {
+    localStorage.removeItem(getLocalStorageAuthInfoKey())
+}
+
 
 function getLocalStorageAuthInfoKey(): string {
     return "user_auth_info"

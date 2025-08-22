@@ -1,6 +1,8 @@
-import {AuthRequest, AuthResponse, AuthAuthData, UserAPI} from "@zpotify/api";
 import {Observable} from "rxjs";
-import {apiPrefix} from "@/processes/api/api.ts";
+
+import {AuthRequest, AuthResponse, AuthAuthData, UserAPI} from "@zpotify/api";
+
+import {apiPrefix} from "@/processes/api.ts";
 
 export interface AuthResults {
     AuthUUID?: string
@@ -10,6 +12,7 @@ export interface AuthResults {
 export function AuthenticateViaTelegram(): Observable<AuthResults> {
     return new Observable<AuthResults>((subscriber) => {
         const req = {} as AuthRequest;
+
         UserAPI.Auth(req,
             (status: AuthResponse) => subscriber.next({
                 AuthUUID: status.authUuid,
@@ -18,5 +21,6 @@ export function AuthenticateViaTelegram(): Observable<AuthResults> {
             apiPrefix())
     })
 }
+
 
 

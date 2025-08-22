@@ -121,8 +121,9 @@ var ZpotifyAPI_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	UserAPI_Auth_FullMethodName = "/zpotify_api.UserAPI/Auth"
-	UserAPI_Me_FullMethodName   = "/zpotify_api.UserAPI/Me"
+	UserAPI_Auth_FullMethodName         = "/zpotify_api.UserAPI/Auth"
+	UserAPI_RefreshToken_FullMethodName = "/zpotify_api.UserAPI/RefreshToken"
+	UserAPI_Me_FullMethodName           = "/zpotify_api.UserAPI/Me"
 )
 
 // UserAPIClient is the client API for UserAPI service.
@@ -131,6 +132,7 @@ const (
 type UserAPIClient interface {
 	// Only Telegram auth is supported
 	Auth(ctx context.Context, in *Auth_Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Auth_Response], error)
+	RefreshToken(ctx context.Context, in *Refresh_Request, opts ...grpc.CallOption) (*Refresh_Response, error)
 	Me(ctx context.Context, in *Me_Request, opts ...grpc.CallOption) (*Me_Response, error)
 }
 
@@ -161,6 +163,16 @@ func (c *userAPIClient) Auth(ctx context.Context, in *Auth_Request, opts ...grpc
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type UserAPI_AuthClient = grpc.ServerStreamingClient[Auth_Response]
 
+func (c *userAPIClient) RefreshToken(ctx context.Context, in *Refresh_Request, opts ...grpc.CallOption) (*Refresh_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Refresh_Response)
+	err := c.cc.Invoke(ctx, UserAPI_RefreshToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userAPIClient) Me(ctx context.Context, in *Me_Request, opts ...grpc.CallOption) (*Me_Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Me_Response)
@@ -177,6 +189,7 @@ func (c *userAPIClient) Me(ctx context.Context, in *Me_Request, opts ...grpc.Cal
 type UserAPIServer interface {
 	// Only Telegram auth is supported
 	Auth(*Auth_Request, grpc.ServerStreamingServer[Auth_Response]) error
+	RefreshToken(context.Context, *Refresh_Request) (*Refresh_Response, error)
 	Me(context.Context, *Me_Request) (*Me_Response, error)
 	mustEmbedUnimplementedUserAPIServer()
 }
@@ -190,6 +203,9 @@ type UnimplementedUserAPIServer struct{}
 
 func (UnimplementedUserAPIServer) Auth(*Auth_Request, grpc.ServerStreamingServer[Auth_Response]) error {
 	return status.Errorf(codes.Unimplemented, "method Auth not implemented")
+}
+func (UnimplementedUserAPIServer) RefreshToken(context.Context, *Refresh_Request) (*Refresh_Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
 }
 func (UnimplementedUserAPIServer) Me(context.Context, *Me_Request) (*Me_Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Me not implemented")
@@ -226,6 +242,24 @@ func _UserAPI_Auth_Handler(srv interface{}, stream grpc.ServerStream) error {
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type UserAPI_AuthServer = grpc.ServerStreamingServer[Auth_Response]
 
+func _UserAPI_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Refresh_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserAPIServer).RefreshToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserAPI_RefreshToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserAPIServer).RefreshToken(ctx, req.(*Refresh_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UserAPI_Me_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Me_Request)
 	if err := dec(in); err != nil {
@@ -251,6 +285,10 @@ var UserAPI_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "zpotify_api.UserAPI",
 	HandlerType: (*UserAPIServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "RefreshToken",
+			Handler:    _UserAPI_RefreshToken_Handler,
+		},
 		{
 			MethodName: "Me",
 			Handler:    _UserAPI_Me_Handler,

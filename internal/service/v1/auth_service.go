@@ -13,6 +13,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
+	"go.zpotify.ru/zpotify/internal/user_errors"
 )
 
 type authData struct {
@@ -81,6 +82,10 @@ func (a *AuthService) AckAuth(ctx context.Context, authUuid string, tgId int64) 
 func (a *AuthService) AuthWithToken(ctx context.Context, token string) (tgId int64, err error) {
 	accessToken, err := a.sessionStorage.GetByAccessToken(ctx, token)
 	if err != nil {
+		if rerrors.Is(err, user_errors.ErrNotFound) {
+			return 0, rerrors.New("access token not found", codes.Unauthenticated)
+		}
+
 		return 0, rerrors.Wrap(err, "failed to get access token")
 	}
 
@@ -94,6 +99,10 @@ func (a *AuthService) AuthWithToken(ctx context.Context, token string) (tgId int
 func (a *AuthService) Refresh(ctx context.Context, refreshToken string) (domain.UserSession, error) {
 	oldSession, err := a.sessionStorage.GetByRefreshToken(ctx, refreshToken)
 	if err != nil {
+		if rerrors.Is(err, user_errors.ErrNotFound) {
+			return domain.UserSession{}, rerrors.New("refresh token not found", codes.Unauthenticated)
+		}
+
 		return domain.UserSession{}, rerrors.Wrap(err, "failed to get access token")
 	}
 

@@ -26,6 +26,13 @@ service UserAPI {
     };
   }
 
+  rpc RefreshToken(Refresh.Request) returns (Refresh.Response) {
+    option (google.api.http) = {
+      post: "/api/user/refresh_token"
+      body: "*"
+    };
+  }
+
   rpc Me(Me.Request) returns (Me.Response) {
     option (google.api.http) = {
       get: "/api/user"
@@ -79,5 +86,15 @@ message Me {
 
   message Response {
     UserData user_data = 1;
+  }
+}
+
+message Refresh {
+  message Request {
+    string refresh_token = 1;
+  }
+
+  message Response {
+    Auth.AuthData auth_data = 1;
   }
 }

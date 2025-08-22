@@ -212,6 +212,42 @@ func (*Me) Descriptor() ([]byte, []int) {
 	return file_zpotify_api_proto_rawDescGZIP(), []int{4}
 }
 
+type Refresh struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Refresh) Reset() {
+	*x = Refresh{}
+	mi := &file_zpotify_api_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Refresh) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Refresh) ProtoMessage() {}
+
+func (x *Refresh) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_api_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Refresh.ProtoReflect.Descriptor instead.
+func (*Refresh) Descriptor() ([]byte, []int) {
+	return file_zpotify_api_proto_rawDescGZIP(), []int{5}
+}
+
 type Version_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -220,7 +256,7 @@ type Version_Request struct {
 
 func (x *Version_Request) Reset() {
 	*x = Version_Request{}
-	mi := &file_zpotify_api_proto_msgTypes[5]
+	mi := &file_zpotify_api_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -232,7 +268,7 @@ func (x *Version_Request) String() string {
 func (*Version_Request) ProtoMessage() {}
 
 func (x *Version_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[5]
+	mi := &file_zpotify_api_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -258,7 +294,7 @@ type Version_Response struct {
 
 func (x *Version_Response) Reset() {
 	*x = Version_Response{}
-	mi := &file_zpotify_api_proto_msgTypes[6]
+	mi := &file_zpotify_api_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -270,7 +306,7 @@ func (x *Version_Response) String() string {
 func (*Version_Response) ProtoMessage() {}
 
 func (x *Version_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[6]
+	mi := &file_zpotify_api_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -309,7 +345,7 @@ type GetLink_Request struct {
 
 func (x *GetLink_Request) Reset() {
 	*x = GetLink_Request{}
-	mi := &file_zpotify_api_proto_msgTypes[7]
+	mi := &file_zpotify_api_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -321,7 +357,7 @@ func (x *GetLink_Request) String() string {
 func (*GetLink_Request) ProtoMessage() {}
 
 func (x *GetLink_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[7]
+	mi := &file_zpotify_api_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -353,7 +389,7 @@ type GetLink_Response struct {
 
 func (x *GetLink_Response) Reset() {
 	*x = GetLink_Response{}
-	mi := &file_zpotify_api_proto_msgTypes[8]
+	mi := &file_zpotify_api_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -365,7 +401,7 @@ func (x *GetLink_Response) String() string {
 func (*GetLink_Response) ProtoMessage() {}
 
 func (x *GetLink_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[8]
+	mi := &file_zpotify_api_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -396,7 +432,7 @@ type Auth_Request struct {
 
 func (x *Auth_Request) Reset() {
 	*x = Auth_Request{}
-	mi := &file_zpotify_api_proto_msgTypes[9]
+	mi := &file_zpotify_api_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -408,7 +444,7 @@ func (x *Auth_Request) String() string {
 func (*Auth_Request) ProtoMessage() {}
 
 func (x *Auth_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[9]
+	mi := &file_zpotify_api_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -437,7 +473,7 @@ type Auth_Response struct {
 
 func (x *Auth_Response) Reset() {
 	*x = Auth_Response{}
-	mi := &file_zpotify_api_proto_msgTypes[10]
+	mi := &file_zpotify_api_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -449,7 +485,7 @@ func (x *Auth_Response) String() string {
 func (*Auth_Response) ProtoMessage() {}
 
 func (x *Auth_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[10]
+	mi := &file_zpotify_api_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -518,7 +554,7 @@ type Auth_AuthData struct {
 
 func (x *Auth_AuthData) Reset() {
 	*x = Auth_AuthData{}
-	mi := &file_zpotify_api_proto_msgTypes[11]
+	mi := &file_zpotify_api_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -530,7 +566,7 @@ func (x *Auth_AuthData) String() string {
 func (*Auth_AuthData) ProtoMessage() {}
 
 func (x *Auth_AuthData) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[11]
+	mi := &file_zpotify_api_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -582,7 +618,7 @@ type Me_Request struct {
 
 func (x *Me_Request) Reset() {
 	*x = Me_Request{}
-	mi := &file_zpotify_api_proto_msgTypes[12]
+	mi := &file_zpotify_api_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -594,7 +630,7 @@ func (x *Me_Request) String() string {
 func (*Me_Request) ProtoMessage() {}
 
 func (x *Me_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[12]
+	mi := &file_zpotify_api_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -619,7 +655,7 @@ type Me_Response struct {
 
 func (x *Me_Response) Reset() {
 	*x = Me_Response{}
-	mi := &file_zpotify_api_proto_msgTypes[13]
+	mi := &file_zpotify_api_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -631,7 +667,7 @@ func (x *Me_Response) String() string {
 func (*Me_Response) ProtoMessage() {}
 
 func (x *Me_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[13]
+	mi := &file_zpotify_api_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -650,6 +686,94 @@ func (*Me_Response) Descriptor() ([]byte, []int) {
 func (x *Me_Response) GetUserData() *UserData {
 	if x != nil {
 		return x.UserData
+	}
+	return nil
+}
+
+type Refresh_Request struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RefreshToken  string                 `protobuf:"bytes,1,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Refresh_Request) Reset() {
+	*x = Refresh_Request{}
+	mi := &file_zpotify_api_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Refresh_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Refresh_Request) ProtoMessage() {}
+
+func (x *Refresh_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_api_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Refresh_Request.ProtoReflect.Descriptor instead.
+func (*Refresh_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_api_proto_rawDescGZIP(), []int{5, 0}
+}
+
+func (x *Refresh_Request) GetRefreshToken() string {
+	if x != nil {
+		return x.RefreshToken
+	}
+	return ""
+}
+
+type Refresh_Response struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AuthData      *Auth_AuthData         `protobuf:"bytes,1,opt,name=auth_data,json=authData,proto3" json:"auth_data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Refresh_Response) Reset() {
+	*x = Refresh_Response{}
+	mi := &file_zpotify_api_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Refresh_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Refresh_Response) ProtoMessage() {}
+
+func (x *Refresh_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_api_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Refresh_Response.ProtoReflect.Descriptor instead.
+func (*Refresh_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_api_proto_rawDescGZIP(), []int{5, 1}
+}
+
+func (x *Refresh_Response) GetAuthData() *Auth_AuthData {
+	if x != nil {
+		return x.AuthData
 	}
 	return nil
 }
@@ -685,12 +809,18 @@ const file_zpotify_api_proto_rawDesc = "" +
 	"\x02Me\x1a\t\n" +
 	"\aRequest\x1a>\n" +
 	"\bResponse\x122\n" +
-	"\tuser_data\x18\x01 \x01(\v2\x15.zpotify_api.UserDataR\buserData2j\n" +
+	"\tuser_data\x18\x01 \x01(\v2\x15.zpotify_api.UserDataR\buserData\"~\n" +
+	"\aRefresh\x1a.\n" +
+	"\aRequest\x12#\n" +
+	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\x1aC\n" +
+	"\bResponse\x127\n" +
+	"\tauth_data\x18\x01 \x01(\v2\x1a.zpotify_api.Auth.AuthDataR\bauthData2j\n" +
 	"\n" +
 	"ZpotifyAPI\x12\\\n" +
-	"\aVersion\x12\x1c.zpotify_api.Version.Request\x1a\x1d.zpotify_api.Version.Response\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/api/version2\xb1\x01\n" +
+	"\aVersion\x12\x1c.zpotify_api.Version.Request\x1a\x1d.zpotify_api.Version.Response\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/api/version2\xa2\x02\n" +
 	"\aUserAPI\x12Z\n" +
-	"\x04Auth\x12\x19.zpotify_api.Auth.Request\x1a\x1a.zpotify_api.Auth.Response\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/user/auth0\x01\x12J\n" +
+	"\x04Auth\x12\x19.zpotify_api.Auth.Request\x1a\x1a.zpotify_api.Auth.Response\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/user/auth0\x01\x12o\n" +
+	"\fRefreshToken\x12\x1c.zpotify_api.Refresh.Request\x1a\x1d.zpotify_api.Refresh.Response\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/api/user/refresh_token\x12J\n" +
 	"\x02Me\x12\x17.zpotify_api.Me.Request\x1a\x18.zpotify_api.Me.Response\"\x11\x82\xd3\xe4\x93\x02\v\x12\t/api/userBC\x92\x82\x19\f@zpotify/apiZ1go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_apib\x06proto3"
 
 var (
@@ -705,41 +835,47 @@ func file_zpotify_api_proto_rawDescGZIP() []byte {
 	return file_zpotify_api_proto_rawDescData
 }
 
-var file_zpotify_api_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_zpotify_api_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_zpotify_api_proto_goTypes = []any{
 	(*Version)(nil),               // 0: zpotify_api.Version
 	(*GetLink)(nil),               // 1: zpotify_api.GetLink
 	(*Auth)(nil),                  // 2: zpotify_api.Auth
 	(*UserData)(nil),              // 3: zpotify_api.UserData
 	(*Me)(nil),                    // 4: zpotify_api.Me
-	(*Version_Request)(nil),       // 5: zpotify_api.Version.Request
-	(*Version_Response)(nil),      // 6: zpotify_api.Version.Response
-	(*GetLink_Request)(nil),       // 7: zpotify_api.GetLink.Request
-	(*GetLink_Response)(nil),      // 8: zpotify_api.GetLink.Response
-	(*Auth_Request)(nil),          // 9: zpotify_api.Auth.Request
-	(*Auth_Response)(nil),         // 10: zpotify_api.Auth.Response
-	(*Auth_AuthData)(nil),         // 11: zpotify_api.Auth.AuthData
-	(*Me_Request)(nil),            // 12: zpotify_api.Me.Request
-	(*Me_Response)(nil),           // 13: zpotify_api.Me.Response
-	(*timestamppb.Timestamp)(nil), // 14: google.protobuf.Timestamp
+	(*Refresh)(nil),               // 5: zpotify_api.Refresh
+	(*Version_Request)(nil),       // 6: zpotify_api.Version.Request
+	(*Version_Response)(nil),      // 7: zpotify_api.Version.Response
+	(*GetLink_Request)(nil),       // 8: zpotify_api.GetLink.Request
+	(*GetLink_Response)(nil),      // 9: zpotify_api.GetLink.Response
+	(*Auth_Request)(nil),          // 10: zpotify_api.Auth.Request
+	(*Auth_Response)(nil),         // 11: zpotify_api.Auth.Response
+	(*Auth_AuthData)(nil),         // 12: zpotify_api.Auth.AuthData
+	(*Me_Request)(nil),            // 13: zpotify_api.Me.Request
+	(*Me_Response)(nil),           // 14: zpotify_api.Me.Response
+	(*Refresh_Request)(nil),       // 15: zpotify_api.Refresh.Request
+	(*Refresh_Response)(nil),      // 16: zpotify_api.Refresh.Response
+	(*timestamppb.Timestamp)(nil), // 17: google.protobuf.Timestamp
 }
 var file_zpotify_api_proto_depIdxs = []int32{
-	14, // 0: zpotify_api.Version.Response.client_timestamp:type_name -> google.protobuf.Timestamp
-	11, // 1: zpotify_api.Auth.Response.auth_data:type_name -> zpotify_api.Auth.AuthData
-	14, // 2: zpotify_api.Auth.AuthData.access_expires_at:type_name -> google.protobuf.Timestamp
-	14, // 3: zpotify_api.Auth.AuthData.refresh_expires_at:type_name -> google.protobuf.Timestamp
+	17, // 0: zpotify_api.Version.Response.client_timestamp:type_name -> google.protobuf.Timestamp
+	12, // 1: zpotify_api.Auth.Response.auth_data:type_name -> zpotify_api.Auth.AuthData
+	17, // 2: zpotify_api.Auth.AuthData.access_expires_at:type_name -> google.protobuf.Timestamp
+	17, // 3: zpotify_api.Auth.AuthData.refresh_expires_at:type_name -> google.protobuf.Timestamp
 	3,  // 4: zpotify_api.Me.Response.user_data:type_name -> zpotify_api.UserData
-	5,  // 5: zpotify_api.ZpotifyAPI.Version:input_type -> zpotify_api.Version.Request
-	9,  // 6: zpotify_api.UserAPI.Auth:input_type -> zpotify_api.Auth.Request
-	12, // 7: zpotify_api.UserAPI.Me:input_type -> zpotify_api.Me.Request
-	6,  // 8: zpotify_api.ZpotifyAPI.Version:output_type -> zpotify_api.Version.Response
-	10, // 9: zpotify_api.UserAPI.Auth:output_type -> zpotify_api.Auth.Response
-	13, // 10: zpotify_api.UserAPI.Me:output_type -> zpotify_api.Me.Response
-	8,  // [8:11] is the sub-list for method output_type
-	5,  // [5:8] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	12, // 5: zpotify_api.Refresh.Response.auth_data:type_name -> zpotify_api.Auth.AuthData
+	6,  // 6: zpotify_api.ZpotifyAPI.Version:input_type -> zpotify_api.Version.Request
+	10, // 7: zpotify_api.UserAPI.Auth:input_type -> zpotify_api.Auth.Request
+	15, // 8: zpotify_api.UserAPI.RefreshToken:input_type -> zpotify_api.Refresh.Request
+	13, // 9: zpotify_api.UserAPI.Me:input_type -> zpotify_api.Me.Request
+	7,  // 10: zpotify_api.ZpotifyAPI.Version:output_type -> zpotify_api.Version.Response
+	11, // 11: zpotify_api.UserAPI.Auth:output_type -> zpotify_api.Auth.Response
+	16, // 12: zpotify_api.UserAPI.RefreshToken:output_type -> zpotify_api.Refresh.Response
+	14, // 13: zpotify_api.UserAPI.Me:output_type -> zpotify_api.Me.Response
+	10, // [10:14] is the sub-list for method output_type
+	6,  // [6:10] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_api_proto_init() }
@@ -747,7 +883,7 @@ func file_zpotify_api_proto_init() {
 	if File_zpotify_api_proto != nil {
 		return
 	}
-	file_zpotify_api_proto_msgTypes[10].OneofWrappers = []any{
+	file_zpotify_api_proto_msgTypes[11].OneofWrappers = []any{
 		(*Auth_Response_AuthUuid)(nil),
 		(*Auth_Response_AuthData)(nil),
 	}
@@ -757,7 +893,7 @@ func file_zpotify_api_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_api_proto_rawDesc), len(file_zpotify_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   14,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

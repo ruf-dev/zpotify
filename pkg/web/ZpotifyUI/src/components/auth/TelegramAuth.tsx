@@ -28,11 +28,13 @@ export default function TelegramAuth({UserState}: TelegramAuthProps) {
                     }
 
                     if (res.AuthData) {
+                        console.log(new Date(res.AuthData.accessExpiresAt));
+
                         UserState.authenticate({
                             token: res.AuthData.accessToken || "",
                             refreshToken: res.AuthData.refreshToken || "",
-                            accessExpirationDate: res.AuthData.accessExpiresAt,
-                            refreshExpirationDate: res.AuthData.refreshExpiresAt,
+                            accessExpirationDate: new Date(res.AuthData.accessExpiresAt),
+                            refreshExpirationDate: new Date(res.AuthData.refreshExpiresAt),
                         });
                     }
 

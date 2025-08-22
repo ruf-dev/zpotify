@@ -83,6 +83,38 @@
         ]
       }
     },
+    "/api/user/refresh_token": {
+      "post": {
+        "operationId": "UserAPI_RefreshToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiRefreshResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiRefreshRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserAPI"
+        ]
+      }
+    },
     "/api/version": {
       "get": {
         "operationId": "ZpotifyAPI_Version",
@@ -173,6 +205,22 @@
       "properties": {
         "userData": {
           "$ref": "#/definitions/zpotify_apiUserData"
+        }
+      }
+    },
+    "zpotify_apiRefreshRequest": {
+      "type": "object",
+      "properties": {
+        "refreshToken": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiRefreshResponse": {
+      "type": "object",
+      "properties": {
+        "authData": {
+          "$ref": "#/definitions/AuthAuthData"
         }
       }
     },

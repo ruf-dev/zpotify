@@ -3,6 +3,7 @@ package zpotify_api_impl
 import (
 	"context"
 
+	errors "go.redsock.ru/rerrors"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
@@ -18,7 +19,7 @@ func (impl *Impl) Me(ctx context.Context, _ *zpotify_api.Me_Request) (*zpotify_a
 
 	user, err := impl.userService.Get(ctx, tgId)
 	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
+		return nil, errors.Wrap(err)
 	}
 
 	out := &zpotify_api.Me_Response{

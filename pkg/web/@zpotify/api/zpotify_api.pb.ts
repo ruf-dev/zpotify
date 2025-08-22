@@ -69,6 +69,16 @@ export type MeResponse = {
 
 export type Me = Record<string, never>;
 
+export type RefreshRequest = {
+  refreshToken?: string;
+};
+
+export type RefreshResponse = {
+  authData?: AuthAuthData;
+};
+
+export type Refresh = Record<string, never>;
+
 export class ZpotifyAPI {
   static Version(this:void, req: VersionRequest, initReq?: fm.InitReq): Promise<VersionResponse> {
     return fm.fetchRequest<VersionResponse>(`/api/version?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});
@@ -79,6 +89,9 @@ export class ZpotifyAPI {
 export class UserAPI {
   static Auth(this:void, req: AuthRequest, entityNotifier?: fm.NotifyStreamEntityArrival<AuthResponse>, initReq?: fm.InitReq): Promise<void> {
     return fm.fetchStreamingRequest<AuthResponse>(`/api/user/auth`, entityNotifier, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static RefreshToken(this:void, req: RefreshRequest, initReq?: fm.InitReq): Promise<RefreshResponse> {
+    return fm.fetchRequest<RefreshResponse>(`/api/user/refresh_token`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
   static Me(this:void, req: MeRequest, initReq?: fm.InitReq): Promise<MeResponse> {
     return fm.fetchRequest<MeResponse>(`/api/user?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});

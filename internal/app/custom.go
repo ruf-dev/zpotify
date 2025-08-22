@@ -48,7 +48,10 @@ func (c *Custom) Init(a *App) (err error) {
 	a.ServerMaster.AddServerOption(
 		middleware.WithInterceptWithAuth(
 			c.service,
-			middleware.WithIgnoredPathAuthOption(zpotify_api.UserAPI_Auth_FullMethodName)),
+			middleware.WithIgnoredPathAuthOption(
+				zpotify_api.UserAPI_Auth_FullMethodName,
+				zpotify_api.UserAPI_RefreshToken_FullMethodName),
+		),
 	)
 
 	a.ServerMaster.AddImplementation(c.grpcImpl)

@@ -58,4 +58,5 @@ type AuthService interface {
 	InitAuth() (authUuid string, doneC chan domain.UserSession)
 	AckAuth(ctx context.Context, authUuid string, tgId int64) error
 	AuthWithToken(ctx context.Context, s string) (tgId int64, err error)
+	Refresh(ctx context.Context, refreshToken string) (domain.UserSession, error)
 }

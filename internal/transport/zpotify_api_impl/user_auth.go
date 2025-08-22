@@ -21,6 +21,7 @@ func (impl *Impl) Auth(_ *zpotify_api.Auth_Request,
 			AuthUuid: authUuid,
 		},
 	}
+
 	err := respC.Send(initResp)
 	if err != nil {
 		return rerrors.Wrap(err, "send auth response")
@@ -36,12 +37,7 @@ func (impl *Impl) Auth(_ *zpotify_api.Auth_Request,
 
 	userDataResp := &zpotify_api.Auth_Response{
 		Payload: &zpotify_api.Auth_Response_AuthData{
-			AuthData: &zpotify_api.Auth_AuthData{
-				AccessToken:      session.AccessToken,
-				RefreshToken:     session.RefreshToken,
-				AccessExpiresAt:  timestamppb.New(session.AccessExpiresAt),
-				RefreshExpiresAt: timestamppb.New(session.RefreshExpiresAt),
-			},
+			AuthData: toAuthData(session),
 		},
 	}
 
@@ -51,4 +47,13 @@ func (impl *Impl) Auth(_ *zpotify_api.Auth_Request,
 	}
 
 	return nil
+}
+
+func toAuthData(session domain.UserSession) *zpotify_api.Auth_AuthData {
+	return &zpotify_api.Auth_AuthData{
+		AccessToken:      session.AccessToken,
+		RefreshToken:     session.RefreshToken,
+		AccessExpiresAt:  timestamppb.New(session.AccessExpiresAt),
+		RefreshExpiresAt: timestamppb.New(session.RefreshExpiresAt),
+	}
 }

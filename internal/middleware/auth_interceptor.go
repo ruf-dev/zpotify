@@ -3,6 +3,7 @@ package middleware
 import (
 	"context"
 
+	"go.redsock.ru/rerrors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -59,7 +60,7 @@ func WithInterceptWithAuth(srv service.Service, opts ...authOption) grpc.ServerO
 
 			tgId, err := srv.AuthService().AuthWithToken(ctx, auth[0])
 			if err != nil {
-				return nil, status.Error(codes.Internal, err.Error())
+				return nil, rerrors.Wrap(err)
 			}
 
 			ctx = WithTgUserId(ctx, tgId)

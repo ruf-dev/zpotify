@@ -10,5 +10,3 @@ export function apiPrefix(opts?: options) {
 export type options = {
     accessToken: string
 }
-
-

@@ -47,7 +47,7 @@ func (d *dataStorage) TxManager() *tx_manager.TxManager {
 
 func wrapPgErr(err error) error {
 	if errors.Is(err, sql.ErrNoRows) {
-		return user_errors.NotFound("")
+		return user_errors.ErrNotFound
 	}
 
 	pgErr := &pq.Error{}
