@@ -29,10 +29,12 @@ export default function TelegramAuth({UserState}: TelegramAuthProps) {
 
                     if (res.AuthData) {
                         UserState.authenticate({
-                            token: res.AuthData.accessToken || "",
-                            refreshToken: res.AuthData.refreshToken || "",
-                            accessExpirationDate: new Date(res.AuthData.accessExpiresAt),
-                            refreshExpirationDate: new Date(res.AuthData.refreshExpiresAt),
+                            session: {
+                                token: res.AuthData.accessToken || "",
+                                refreshToken: res.AuthData.refreshToken || "",
+                                accessExpirationDate: new Date(res.AuthData.accessExpiresAt),
+                                refreshExpirationDate: new Date(res.AuthData.refreshExpiresAt),
+                            },
                         });
                     }
 

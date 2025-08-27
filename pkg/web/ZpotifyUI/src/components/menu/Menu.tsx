@@ -31,7 +31,6 @@ export default function Menu({options}: MenuProps) {
     )
 }
 
-
 function MenuOption({props}: { props: MenuOption }) {
     const [isSelected, setIsSelected] = useState<boolean>(false)
 

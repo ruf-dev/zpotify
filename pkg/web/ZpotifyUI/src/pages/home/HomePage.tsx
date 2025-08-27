@@ -18,14 +18,15 @@ export default function HomePage({user}: HomePageProps) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user.authData) {
+        if (!user.userData) {
             navigate(Path.IntiPage)
         }
-    }, [user.authData]);
+    }, [user.userData]);
 
     return (
         <div className={cls.HomePage}>
             <HeaderPart user={user}/>
+
         </div>
     )
 }

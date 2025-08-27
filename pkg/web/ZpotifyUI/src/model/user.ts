@@ -3,6 +3,10 @@ export type UserInfo = {
 }
 
 export type AuthData = {
+    session: Session
+}
+
+export type Session = {
     token: string
     refreshToken: string
     accessExpirationDate: Date

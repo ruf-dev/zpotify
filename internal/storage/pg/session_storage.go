@@ -78,8 +78,12 @@ func (s *SessionStorage) Upsert(ctx context.Context, session domain.UserSession)
 }
 
 func (s *SessionStorage) Delete(ctx context.Context, token string) error {
-	//TODO implement me
-	panic("implement me")
+	_, err := s.db.ExecContext(ctx, `DELETE FROM user_sessions WHERE access_token = $1`, token)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
 }
 
 func (s *SessionStorage) ListByUserId(ctx context.Context, tgId int64) ([]domain.UserSession, error) {

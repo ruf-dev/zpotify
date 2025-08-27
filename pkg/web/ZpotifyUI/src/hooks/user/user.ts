@@ -45,11 +45,12 @@ export default function useUser(): User {
         const s = new UserService(authData)
         s.GetMe()
             .then((userInf) => {
+                console.log(userInf)
                 setUserData(userInf)
             })
             .catch(async (err) => {
                 if (!err.code) {
-                    logout()
+                    // logout()
                 }
 
                 if (err.code == ErrorCodes.UNAUTHENTICATED) {
@@ -70,7 +71,7 @@ export default function useUser(): User {
 
         authData,
         authenticate,
-        logout
+        logout,
     }
 }
 
@@ -89,7 +90,7 @@ function fromLocalStorage(): AuthData | undefined {
 }
 
 function clearLocalStorage() {
-    localStorage.removeItem(getLocalStorageAuthInfoKey())
+    // localStorage.removeItem(getLocalStorageAuthInfoKey())
 }
 
 

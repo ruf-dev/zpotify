@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 import cls from "@/widgets/User/UserWidget.module.css";
 
@@ -14,7 +14,7 @@ interface UserWidgetProps {
 
 export default function UserWidget({user}: UserWidgetProps) {
     if (!user.userData) {
-        return null
+        return (<></>)
     }
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,9 +30,29 @@ export default function UserWidget({user}: UserWidgetProps) {
         }
     ]
 
+    const dropdownRef = useRef(null);
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            // @ts-ignore
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsMenuOpen(false);
+            }
+        }
+
+        // Bind the listener
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            // Clean up the listener on unmount
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [dropdownRef]);
+
     return (
         <div className={cls.UserWidget}>
-            <div className={cls.SubMenuContainer}>
+            <div
+                ref={dropdownRef}
+                className={cls.SubMenuContainer}>
                 <div className={cn(cls.SubMenu,
                     {[cls.open]: isMenuOpen})}>
                     <Menu options={menuOptions}/>
@@ -43,7 +63,6 @@ export default function UserWidget({user}: UserWidgetProps) {
                 <div className={cls.Username}>
                     {user.userData.username}
                 </div>
-
 
                 <div className={cls.AvatarContainer}>
                     <div className={cls.Avatar}

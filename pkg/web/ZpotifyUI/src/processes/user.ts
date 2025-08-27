@@ -49,12 +49,12 @@ export default class UserService {
             throw new Error("User is not authenticated")
         }
 
-        if (this.authData.accessExpirationDate < new Date()) {
+        if (this.authData.session.accessExpirationDate < new Date()) {
             await this.refreshToken()
         }
 
 
-        return this.authData.token
+        return this.authData.session.token
     }
 
     RefreshToken() {
@@ -66,22 +66,24 @@ export default class UserService {
             throw new Error("User is not authenticated")
         }
 
-        if (this.authData.refreshExpirationDate < new Date()) {
+        if (this.authData.session.refreshExpirationDate < new Date()) {
             throw new Error("Refresh token expired")
         }
 
         const req: RefreshRequest = {
-            refreshToken: this.authData.refreshToken
+            refreshToken: this.authData.session.refreshToken
         }
 
         return UserAPI.RefreshToken(req, apiPrefix())
             .then((r: RefreshResponse) => {
                 return {
+                    session: {
                         token: r.authData?.accessToken,
                         refreshToken: r.authData?.refreshToken,
                         accessExpirationDate: r.authData?.accessExpiresAt,
                         refreshExpirationDate: r.authData?.refreshExpiresAt,
-                    } as AuthData
+                    }
+                } as AuthData
             })
     }
 }
