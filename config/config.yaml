@@ -27,3 +27,6 @@ environment:
       type: string
       enum: [Trace, Debug, Info, Warn, Error, Fatal, Panic]
       value: Info
+    - name: debug_auth
+      type: boolean
+      value: true

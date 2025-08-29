@@ -12,6 +12,7 @@ type Storage interface {
 	User() UserStorage
 	FileMeta() FileMetaStorage
 	SessionStorage() SessionStorage
+	SongStorage() SongStorage
 
 	TxManager() *tx_manager.TxManager
 }
@@ -42,4 +43,10 @@ type SessionStorage interface {
 	DeleteExpired(ctx context.Context) error
 
 	WithTx(tx *sql.Tx) SessionStorage
+}
+
+type SongStorage interface {
+	Save(ctx context.Context, song domain.SongBase) error
+	List(ctx context.Context, r domain.ListSongs) ([]domain.SongBase, error)
+	Count(ctx context.Context, r domain.ListSongs) (uint64, error)
 }

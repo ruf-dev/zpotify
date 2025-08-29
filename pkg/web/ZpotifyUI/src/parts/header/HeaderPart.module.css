@@ -1,11 +1,11 @@
 .Header {
     width: 100%;
-    height: 8vh;
+    height: 6vh;
+    min-height: 5em;
     background: var(--secondary-bg-color);
 
     display: flex;
     justify-content: space-between;
-
 }
 
 .LogoContainer {

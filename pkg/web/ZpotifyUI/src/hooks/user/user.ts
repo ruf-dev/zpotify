@@ -45,12 +45,11 @@ export default function useUser(): User {
         const s = new UserService(authData)
         s.GetMe()
             .then((userInf) => {
-                console.log(userInf)
                 setUserData(userInf)
             })
             .catch(async (err) => {
-                if (!err.code) {
-                    logout()
+                if (err instanceof TypeError && err.message === "Failed to fetch") {
+                    return
                 }
 
                 if (err.code == ErrorCodes.UNAUTHENTICATED) {

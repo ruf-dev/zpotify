@@ -24,8 +24,12 @@ func Swagger() (p string, handler http.HandlerFunc) {
 	mux.Handle(BasePath, swaggerui.NewHandler(
 		swaggerui.WithBasePath(BasePath),
 		swaggerui.WithHTMLTitle("Swagger"),
-		swaggerui.WithSpecURLs("ZpotifyApi",
+		swaggerui.WithSpecURLs("ZpotifyCommon",
 			[]swaggerui.SpecURL{
+				{
+					Name: "ZpotifyCommon",
+					URL:  path.Join(swaggerPath, "zpotify_common.swagger.json"),
+				},
 				{
 					Name: "ZpotifyApi",
 					URL:  path.Join(swaggerPath, "zpotify_api.swagger.json"),

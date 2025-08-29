@@ -6,6 +6,8 @@ import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 import "npm.proto";
 
+import "zpotify_common.proto";
+
 option go_package = "go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_api";
 option (npm_package) = "@zpotify/api";
 
@@ -15,6 +17,13 @@ service ZpotifyAPI {
       get: "/api/version"
     };
   };
+
+  rpc ListSongs(ListSongs.Request) returns (ListSongs.Response) {
+    option (google.api.http) = {
+      post: "/api/songs",
+      body: "*"
+    };
+  }
 }
 
 service UserAPI {
@@ -96,5 +105,16 @@ message Refresh {
 
   message Response {
     Auth.AuthData auth_data = 1;
+  }
+}
+
+message ListSongs {
+  message Request {
+    Paging paging = 1;
+  }
+
+  message Response {
+    repeated SongBase songs = 1;
+    uint64 total = 2;
   }
 }

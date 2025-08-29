@@ -13,7 +13,7 @@ import (
 type Handler struct {
 	responseBuilder *localization.ResponseBuilder
 
-	fileService v1.FileService
+	fileService v1.AudioService
 
 	addHandler *add.Handler
 }

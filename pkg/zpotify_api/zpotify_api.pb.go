@@ -248,26 +248,26 @@ func (*Refresh) Descriptor() ([]byte, []int) {
 	return file_zpotify_api_proto_rawDescGZIP(), []int{5}
 }
 
-type Logout struct {
+type ListSongs struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Logout) Reset() {
-	*x = Logout{}
+func (x *ListSongs) Reset() {
+	*x = ListSongs{}
 	mi := &file_zpotify_api_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Logout) String() string {
+func (x *ListSongs) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Logout) ProtoMessage() {}
+func (*ListSongs) ProtoMessage() {}
 
-func (x *Logout) ProtoReflect() protoreflect.Message {
+func (x *ListSongs) ProtoReflect() protoreflect.Message {
 	mi := &file_zpotify_api_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -279,8 +279,8 @@ func (x *Logout) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Logout.ProtoReflect.Descriptor instead.
-func (*Logout) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListSongs.ProtoReflect.Descriptor instead.
+func (*ListSongs) Descriptor() ([]byte, []int) {
 	return file_zpotify_api_proto_rawDescGZIP(), []int{6}
 }
 
@@ -814,26 +814,27 @@ func (x *Refresh_Response) GetAuthData() *Auth_AuthData {
 	return nil
 }
 
-type Logout_Request struct {
+type ListSongs_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Paging        *Paging                `protobuf:"bytes,1,opt,name=paging,proto3" json:"paging,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Logout_Request) Reset() {
-	*x = Logout_Request{}
+func (x *ListSongs_Request) Reset() {
+	*x = ListSongs_Request{}
 	mi := &file_zpotify_api_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Logout_Request) String() string {
+func (x *ListSongs_Request) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Logout_Request) ProtoMessage() {}
+func (*ListSongs_Request) ProtoMessage() {}
 
-func (x *Logout_Request) ProtoReflect() protoreflect.Message {
+func (x *ListSongs_Request) ProtoReflect() protoreflect.Message {
 	mi := &file_zpotify_api_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -845,31 +846,40 @@ func (x *Logout_Request) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Logout_Request.ProtoReflect.Descriptor instead.
-func (*Logout_Request) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListSongs_Request.ProtoReflect.Descriptor instead.
+func (*ListSongs_Request) Descriptor() ([]byte, []int) {
 	return file_zpotify_api_proto_rawDescGZIP(), []int{6, 0}
 }
 
-type Logout_Response struct {
+func (x *ListSongs_Request) GetPaging() *Paging {
+	if x != nil {
+		return x.Paging
+	}
+	return nil
+}
+
+type ListSongs_Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Songs         []*SongBase            `protobuf:"bytes,1,rep,name=songs,proto3" json:"songs,omitempty"`
+	Total         uint64                 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Logout_Response) Reset() {
-	*x = Logout_Response{}
+func (x *ListSongs_Response) Reset() {
+	*x = ListSongs_Response{}
 	mi := &file_zpotify_api_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Logout_Response) String() string {
+func (x *ListSongs_Response) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Logout_Response) ProtoMessage() {}
+func (*ListSongs_Response) ProtoMessage() {}
 
-func (x *Logout_Response) ProtoReflect() protoreflect.Message {
+func (x *ListSongs_Response) ProtoReflect() protoreflect.Message {
 	mi := &file_zpotify_api_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -881,16 +891,30 @@ func (x *Logout_Response) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Logout_Response.ProtoReflect.Descriptor instead.
-func (*Logout_Response) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListSongs_Response.ProtoReflect.Descriptor instead.
+func (*ListSongs_Response) Descriptor() ([]byte, []int) {
 	return file_zpotify_api_proto_rawDescGZIP(), []int{6, 1}
+}
+
+func (x *ListSongs_Response) GetSongs() []*SongBase {
+	if x != nil {
+		return x.Songs
+	}
+	return nil
+}
+
+func (x *ListSongs_Response) GetTotal() uint64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
 }
 
 var File_zpotify_api_proto protoreflect.FileDescriptor
 
 const file_zpotify_api_proto_rawDesc = "" +
 	"\n" +
-	"\x11zpotify_api.proto\x12\vzpotify_api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\"\x81\x01\n" +
+	"\x11zpotify_api.proto\x12\vzpotify_api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\x1a\x14zpotify_common.proto\"\x81\x01\n" +
 	"\aVersion\x1a\t\n" +
 	"\aRequest\x1ak\n" +
 	"\bResponse\x12\x18\n" +
@@ -922,19 +946,22 @@ const file_zpotify_api_proto_rawDesc = "" +
 	"\aRequest\x12#\n" +
 	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\x1aC\n" +
 	"\bResponse\x127\n" +
-	"\tauth_data\x18\x01 \x01(\v2\x1a.zpotify_api.Auth.AuthDataR\bauthData\"\x1f\n" +
-	"\x06Logout\x1a\t\n" +
-	"\aRequest\x1a\n" +
-	"\n" +
-	"\bResponse2j\n" +
+	"\tauth_data\x18\x01 \x01(\v2\x1a.zpotify_api.Auth.AuthDataR\bauthData\"\x92\x01\n" +
+	"\tListSongs\x1a6\n" +
+	"\aRequest\x12+\n" +
+	"\x06paging\x18\x01 \x01(\v2\x13.zpotify_api.PagingR\x06paging\x1aM\n" +
+	"\bResponse\x12+\n" +
+	"\x05songs\x18\x01 \x03(\v2\x15.zpotify_api.SongBaseR\x05songs\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x04R\x05total2\xcf\x01\n" +
 	"\n" +
 	"ZpotifyAPI\x12\\\n" +
-	"\aVersion\x12\x1c.zpotify_api.Version.Request\x1a\x1d.zpotify_api.Version.Response\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/api/version2\x84\x03\n" +
+	"\aVersion\x12\x1c.zpotify_api.Version.Request\x1a\x1d.zpotify_api.Version.Response\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/api/version\x12c\n" +
+	"\tListSongs\x12\x1e.zpotify_api.ListSongs.Request\x1a\x1f.zpotify_api.ListSongs.Response\"\x15\x82\xd3\xe4\x93\x02\x0f:\x01*\"\n" +
+	"/api/songs2\xa2\x02\n" +
 	"\aUserAPI\x12Z\n" +
 	"\x04Auth\x12\x19.zpotify_api.Auth.Request\x1a\x1a.zpotify_api.Auth.Response\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/user/auth0\x01\x12o\n" +
 	"\fRefreshToken\x12\x1c.zpotify_api.Refresh.Request\x1a\x1d.zpotify_api.Refresh.Response\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/api/user/refresh_token\x12J\n" +
-	"\x02Me\x12\x17.zpotify_api.Me.Request\x1a\x18.zpotify_api.Me.Response\"\x11\x82\xd3\xe4\x93\x02\v\x12\t/api/user\x12`\n" +
-	"\x06Logout\x12\x1b.zpotify_api.Logout.Request\x1a\x1c.zpotify_api.Logout.Response\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/user/logoutBC\x92\x82\x19\f@zpotify/apiZ1go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_apib\x06proto3"
+	"\x02Me\x12\x17.zpotify_api.Me.Request\x1a\x18.zpotify_api.Me.Response\"\x11\x82\xd3\xe4\x93\x02\v\x12\t/api/userBC\x92\x82\x19\f@zpotify/apiZ1go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_api_proto_rawDescOnce sync.Once
@@ -956,7 +983,7 @@ var file_zpotify_api_proto_goTypes = []any{
 	(*UserData)(nil),              // 3: zpotify_api.UserData
 	(*Me)(nil),                    // 4: zpotify_api.Me
 	(*Refresh)(nil),               // 5: zpotify_api.Refresh
-	(*Logout)(nil),                // 6: zpotify_api.Logout
+	(*ListSongs)(nil),             // 6: zpotify_api.ListSongs
 	(*Version_Request)(nil),       // 7: zpotify_api.Version.Request
 	(*Version_Response)(nil),      // 8: zpotify_api.Version.Response
 	(*GetLink_Request)(nil),       // 9: zpotify_api.GetLink.Request
@@ -968,9 +995,11 @@ var file_zpotify_api_proto_goTypes = []any{
 	(*Me_Response)(nil),           // 15: zpotify_api.Me.Response
 	(*Refresh_Request)(nil),       // 16: zpotify_api.Refresh.Request
 	(*Refresh_Response)(nil),      // 17: zpotify_api.Refresh.Response
-	(*Logout_Request)(nil),        // 18: zpotify_api.Logout.Request
-	(*Logout_Response)(nil),       // 19: zpotify_api.Logout.Response
+	(*ListSongs_Request)(nil),     // 18: zpotify_api.ListSongs.Request
+	(*ListSongs_Response)(nil),    // 19: zpotify_api.ListSongs.Response
 	(*timestamppb.Timestamp)(nil), // 20: google.protobuf.Timestamp
+	(*Paging)(nil),                // 21: zpotify_api.Paging
+	(*SongBase)(nil),              // 22: zpotify_api.SongBase
 }
 var file_zpotify_api_proto_depIdxs = []int32{
 	20, // 0: zpotify_api.Version.Response.client_timestamp:type_name -> google.protobuf.Timestamp
@@ -979,21 +1008,23 @@ var file_zpotify_api_proto_depIdxs = []int32{
 	20, // 3: zpotify_api.Auth.AuthData.refresh_expires_at:type_name -> google.protobuf.Timestamp
 	3,  // 4: zpotify_api.Me.Response.user_data:type_name -> zpotify_api.UserData
 	13, // 5: zpotify_api.Refresh.Response.auth_data:type_name -> zpotify_api.Auth.AuthData
-	7,  // 6: zpotify_api.ZpotifyAPI.Version:input_type -> zpotify_api.Version.Request
-	11, // 7: zpotify_api.UserAPI.Auth:input_type -> zpotify_api.Auth.Request
-	16, // 8: zpotify_api.UserAPI.RefreshToken:input_type -> zpotify_api.Refresh.Request
-	14, // 9: zpotify_api.UserAPI.Me:input_type -> zpotify_api.Me.Request
-	18, // 10: zpotify_api.UserAPI.Logout:input_type -> zpotify_api.Logout.Request
-	8,  // 11: zpotify_api.ZpotifyAPI.Version:output_type -> zpotify_api.Version.Response
-	12, // 12: zpotify_api.UserAPI.Auth:output_type -> zpotify_api.Auth.Response
-	17, // 13: zpotify_api.UserAPI.RefreshToken:output_type -> zpotify_api.Refresh.Response
-	15, // 14: zpotify_api.UserAPI.Me:output_type -> zpotify_api.Me.Response
-	19, // 15: zpotify_api.UserAPI.Logout:output_type -> zpotify_api.Logout.Response
-	11, // [11:16] is the sub-list for method output_type
-	6,  // [6:11] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	21, // 6: zpotify_api.ListSongs.Request.paging:type_name -> zpotify_api.Paging
+	22, // 7: zpotify_api.ListSongs.Response.songs:type_name -> zpotify_api.SongBase
+	7,  // 8: zpotify_api.ZpotifyAPI.Version:input_type -> zpotify_api.Version.Request
+	18, // 9: zpotify_api.ZpotifyAPI.ListSongs:input_type -> zpotify_api.ListSongs.Request
+	11, // 10: zpotify_api.UserAPI.Auth:input_type -> zpotify_api.Auth.Request
+	16, // 11: zpotify_api.UserAPI.RefreshToken:input_type -> zpotify_api.Refresh.Request
+	14, // 12: zpotify_api.UserAPI.Me:input_type -> zpotify_api.Me.Request
+	8,  // 13: zpotify_api.ZpotifyAPI.Version:output_type -> zpotify_api.Version.Response
+	19, // 14: zpotify_api.ZpotifyAPI.ListSongs:output_type -> zpotify_api.ListSongs.Response
+	12, // 15: zpotify_api.UserAPI.Auth:output_type -> zpotify_api.Auth.Response
+	17, // 16: zpotify_api.UserAPI.RefreshToken:output_type -> zpotify_api.Refresh.Response
+	15, // 17: zpotify_api.UserAPI.Me:output_type -> zpotify_api.Me.Response
+	13, // [13:18] is the sub-list for method output_type
+	8,  // [8:13] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_api_proto_init() }
@@ -1001,6 +1032,7 @@ func file_zpotify_api_proto_init() {
 	if File_zpotify_api_proto != nil {
 		return
 	}
+	file_zpotify_common_proto_init()
 	file_zpotify_api_proto_msgTypes[12].OneofWrappers = []any{
 		(*Auth_Response_AuthUuid)(nil),
 		(*Auth_Response_AuthData)(nil),

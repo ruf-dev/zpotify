@@ -7,6 +7,7 @@
 
 import * as fm from "./fetch.pb";
 import * as GoogleProtobufTimestamp from "./google/protobuf/timestamp.pb";
+import * as ZpotifyApiZpotifyCommon from "./zpotify_common.pb";
 
 type Absent<T, K extends keyof T> = { [k in Exclude<keyof T, K>]?: undefined };
 
@@ -79,15 +80,23 @@ export type RefreshResponse = {
 
 export type Refresh = Record<string, never>;
 
-export type LogoutRequest = Record<string, never>;
+export type ListSongsRequest = {
+  paging?: ZpotifyApiZpotifyCommon.Paging;
+};
 
-export type LogoutResponse = Record<string, never>;
+export type ListSongsResponse = {
+  songs?: ZpotifyApiZpotifyCommon.SongBase[];
+  total?: string;
+};
 
-export type Logout = Record<string, never>;
+export type ListSongs = Record<string, never>;
 
 export class ZpotifyAPI {
   static Version(this:void, req: VersionRequest, initReq?: fm.InitReq): Promise<VersionResponse> {
     return fm.fetchRequest<VersionResponse>(`/api/version?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});
+  }
+  static ListSongs(this:void, req: ListSongsRequest, initReq?: fm.InitReq): Promise<ListSongsResponse> {
+    return fm.fetchRequest<ListSongsResponse>(`/api/songs`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }
 
@@ -101,8 +110,5 @@ export class UserAPI {
   }
   static Me(this:void, req: MeRequest, initReq?: fm.InitReq): Promise<MeResponse> {
     return fm.fetchRequest<MeResponse>(`/api/user?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});
-  }
-  static Logout(this:void, req: LogoutRequest, initReq?: fm.InitReq): Promise<LogoutResponse> {
-    return fm.fetchRequest<LogoutResponse>(`/api/user/logout`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }

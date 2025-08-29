@@ -15,6 +15,7 @@ type dataStorage struct {
 	userStorage     *UserStorage
 	fileMetaStorage *FileMetaStorage
 	sessionStorage  *SessionStorage
+	songStorage     *SongsStorage
 
 	conn *sql.DB
 }
@@ -24,6 +25,7 @@ func NewStorage(conn *sql.DB) storage.Storage {
 		userStorage:     NewUserStorage(conn),
 		fileMetaStorage: NewFileMetaStorage(conn),
 		sessionStorage:  NewSessionStorage(conn),
+		songStorage:     NewSongStorage(conn),
 
 		conn: conn,
 	}
@@ -39,6 +41,10 @@ func (d *dataStorage) User() storage.UserStorage {
 
 func (d *dataStorage) SessionStorage() storage.SessionStorage {
 	return d.sessionStorage
+}
+
+func (d *dataStorage) SongStorage() storage.SongStorage {
+	return d.songStorage
 }
 
 func (d *dataStorage) TxManager() *tx_manager.TxManager {

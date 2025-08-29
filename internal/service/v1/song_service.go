@@ -11,21 +11,24 @@ import (
 	"go.zpotify.ru/zpotify/internal/storage"
 )
 
-type FileService struct {
+type AudioService struct {
 	tgApi           telegram.TgApiClient
 	fileMetaStorage storage.FileMetaStorage
 	userStorage     storage.UserStorage
+	songStorage     storage.SongStorage
 }
 
-func NewFileService(tgApi telegram.TgApiClient, dataStorage storage.Storage) *FileService {
-	return &FileService{
+func NewAudioService(tgApi telegram.TgApiClient, dataStorage storage.Storage) *AudioService {
+	return &AudioService{
 		tgApi:           tgApi,
 		fileMetaStorage: dataStorage.FileMeta(),
 		userStorage:     dataStorage.User(),
+		songStorage:     dataStorage.SongStorage(),
 	}
+
 }
 
-func (s *FileService) Save(ctx context.Context, req domain.AddAudio) (out domain.SaveFileMetaResp, err error) {
+func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domain.SaveFileMetaResp, err error) {
 	user, err := s.userStorage.GetUser(ctx, req.AddedByTgId)
 	if err != nil {
 		return out, rerrors.Wrap(err, "error getting user from storage")
@@ -67,7 +70,7 @@ func (s *FileService) Save(ctx context.Context, req domain.AddAudio) (out domain
 	}
 }
 
-func (s *FileService) Stream(ctx context.Context, uniqueFileId string) (io.Reader, error) {
+func (s *AudioService) Stream(ctx context.Context, uniqueFileId string) (io.Reader, error) {
 	file, err := s.fileMetaStorage.Get(ctx, uniqueFileId)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error getting file from storage")
@@ -81,11 +84,32 @@ func (s *FileService) Stream(ctx context.Context, uniqueFileId string) (io.Reade
 	return f, nil
 }
 
-func (s *FileService) GetInfo(ctx context.Context, uniqueFileId string) (domain.FileMeta, error) {
+func (s *AudioService) GetInfo(ctx context.Context, uniqueFileId string) (domain.FileMeta, error) {
 	fileMeta, err := s.fileMetaStorage.Get(ctx, uniqueFileId)
 	if err != nil {
 		return domain.FileMeta{}, rerrors.Wrap(err, "error getting file from storage")
 	}
 
 	return fileMeta, nil
+}
+
+func (s *AudioService) List(ctx context.Context, req domain.ListSongs) (domain.SongsList, error) {
+	if req.Limit == 0 {
+		req.Limit = 10
+	}
+
+	list, err := s.songStorage.List(ctx, req)
+	if err != nil {
+		return domain.SongsList{}, rerrors.Wrap(err, "error listing songs")
+	}
+
+	total, err := s.songStorage.Count(ctx, req)
+	if err != nil {
+		return domain.SongsList{}, rerrors.Wrap(err, "error counting songs")
+	}
+
+	return domain.SongsList{
+		Songs: list,
+		Total: total,
+	}, nil
 }

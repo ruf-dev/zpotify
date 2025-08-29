@@ -56,6 +56,33 @@ func local_request_ZpotifyAPI_Version_0(ctx context.Context, marshaler runtime.M
 	return msg, metadata, err
 }
 
+func request_ZpotifyAPI_ListSongs_0(ctx context.Context, marshaler runtime.Marshaler, client ZpotifyAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListSongs_Request
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	msg, err := client.ListSongs(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_ZpotifyAPI_ListSongs_0(ctx context.Context, marshaler runtime.Marshaler, server ZpotifyAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListSongs_Request
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.ListSongs(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 func request_UserAPI_Auth_0(ctx context.Context, marshaler runtime.Marshaler, client UserAPIClient, req *http.Request, pathParams map[string]string) (UserAPI_AuthClient, runtime.ServerMetadata, error) {
 	var (
 		protoReq Auth_Request
@@ -127,33 +154,6 @@ func local_request_UserAPI_Me_0(ctx context.Context, marshaler runtime.Marshaler
 	return msg, metadata, err
 }
 
-func request_UserAPI_Logout_0(ctx context.Context, marshaler runtime.Marshaler, client UserAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq Logout_Request
-		metadata runtime.ServerMetadata
-	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
-	msg, err := client.Logout(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-}
-
-func local_request_UserAPI_Logout_0(ctx context.Context, marshaler runtime.Marshaler, server UserAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq Logout_Request
-		metadata runtime.ServerMetadata
-	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	msg, err := server.Logout(ctx, &protoReq)
-	return msg, metadata, err
-}
-
 // RegisterZpotifyAPIHandlerServer registers the http handlers for service ZpotifyAPI to "mux".
 // UnaryRPC     :call ZpotifyAPIServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -179,6 +179,26 @@ func RegisterZpotifyAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 		forward_ZpotifyAPI_Version_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_ZpotifyAPI_ListSongs_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zpotify_api.ZpotifyAPI/ListSongs", runtime.WithHTTPPathPattern("/api/songs"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ZpotifyAPI_ListSongs_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ZpotifyAPI_ListSongs_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -235,26 +255,6 @@ func RegisterUserAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 			return
 		}
 		forward_UserAPI_Me_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-	})
-	mux.Handle(http.MethodPost, pattern_UserAPI_Logout_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zpotify_api.UserAPI/Logout", runtime.WithHTTPPathPattern("/api/user/logout"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_UserAPI_Logout_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_UserAPI_Logout_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -313,15 +313,34 @@ func RegisterZpotifyAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux,
 		}
 		forward_ZpotifyAPI_Version_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodPost, pattern_ZpotifyAPI_ListSongs_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zpotify_api.ZpotifyAPI/ListSongs", runtime.WithHTTPPathPattern("/api/songs"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ZpotifyAPI_ListSongs_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ZpotifyAPI_ListSongs_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	return nil
 }
 
 var (
-	pattern_ZpotifyAPI_Version_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "version"}, ""))
+	pattern_ZpotifyAPI_Version_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "version"}, ""))
+	pattern_ZpotifyAPI_ListSongs_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "songs"}, ""))
 )
 
 var (
-	forward_ZpotifyAPI_Version_0 = runtime.ForwardResponseMessage
+	forward_ZpotifyAPI_Version_0   = runtime.ForwardResponseMessage
+	forward_ZpotifyAPI_ListSongs_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterUserAPIHandlerFromEndpoint is same as RegisterUserAPIHandler but
@@ -411,23 +430,6 @@ func RegisterUserAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 		}
 		forward_UserAPI_Me_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_UserAPI_Logout_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zpotify_api.UserAPI/Logout", runtime.WithHTTPPathPattern("/api/user/logout"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_UserAPI_Logout_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_UserAPI_Logout_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-	})
 	return nil
 }
 
@@ -435,12 +437,10 @@ var (
 	pattern_UserAPI_Auth_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "user", "auth"}, ""))
 	pattern_UserAPI_RefreshToken_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "user", "refresh_token"}, ""))
 	pattern_UserAPI_Me_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "user"}, ""))
-	pattern_UserAPI_Logout_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "user", "logout"}, ""))
 )
 
 var (
 	forward_UserAPI_Auth_0         = runtime.ForwardResponseStream
 	forward_UserAPI_RefreshToken_0 = runtime.ForwardResponseMessage
 	forward_UserAPI_Me_0           = runtime.ForwardResponseMessage
-	forward_UserAPI_Logout_0       = runtime.ForwardResponseMessage
 )

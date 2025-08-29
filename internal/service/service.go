@@ -17,21 +17,21 @@ type Service interface {
 }
 
 type service struct {
-	fileService AudioService
-	userService UserService
-	authService AuthService
+	audioService AudioService
+	userService  UserService
+	authService  AuthService
 }
 
 func New(tgApiClient telegram.TgApiClient, dataStorage storage.Storage) Service {
 	return &service{
-		fileService: v1.NewFileService(tgApiClient, dataStorage),
-		userService: v1.NewUserService(dataStorage),
-		authService: v1.NewAuthService(dataStorage),
+		audioService: v1.NewAudioService(tgApiClient, dataStorage),
+		userService:  v1.NewUserService(dataStorage),
+		authService:  v1.NewAuthService(dataStorage),
 	}
 }
 
 func (s *service) AudioService() AudioService {
-	return s.fileService
+	return s.audioService
 }
 
 func (s *service) UserService() UserService {
@@ -45,6 +45,8 @@ func (s *service) AuthService() AuthService {
 type AudioService interface {
 	GetInfo(ctx context.Context, uniqueFileId string) (domain.FileMeta, error)
 	Save(ctx context.Context, req domain.AddAudio) (domain.SaveFileMetaResp, error)
+
+	List(ctx context.Context, req domain.ListSongs) (domain.SongsList, error)
 
 	Stream(ctx context.Context, uniqueFileId string) (io.Reader, error)
 }

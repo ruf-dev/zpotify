@@ -19,6 +19,38 @@
     "application/json"
   ],
   "paths": {
+    "/api/songs": {
+      "post": {
+        "operationId": "ZpotifyAPI_ListSongs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiListSongsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiListSongsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ZpotifyAPI"
+        ]
+      }
+    },
     "/api/user": {
       "get": {
         "operationId": "UserAPI_Me",
@@ -75,38 +107,6 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/zpotify_apiAuthRequest"
-            }
-          }
-        ],
-        "tags": [
-          "UserAPI"
-        ]
-      }
-    },
-    "/api/user/logout": {
-      "post": {
-        "operationId": "UserAPI_Logout",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/zpotify_apiLogoutResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/zpotify_apiLogoutRequest"
             }
           }
         ],
@@ -218,6 +218,14 @@
         }
       }
     },
+    "zpotify_apiArtistBase": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
     "zpotify_apiAuthRequest": {
       "type": "object"
     },
@@ -232,17 +240,48 @@
         }
       }
     },
-    "zpotify_apiLogoutRequest": {
-      "type": "object"
+    "zpotify_apiListSongsRequest": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/zpotify_apiPaging"
+        }
+      }
     },
-    "zpotify_apiLogoutResponse": {
-      "type": "object"
+    "zpotify_apiListSongsResponse": {
+      "type": "object",
+      "properties": {
+        "songs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiSongBase"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
     },
     "zpotify_apiMeResponse": {
       "type": "object",
       "properties": {
         "userData": {
           "$ref": "#/definitions/zpotify_apiUserData"
+        }
+      }
+    },
+    "zpotify_apiPaging": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "offset": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },
@@ -259,6 +298,28 @@
       "properties": {
         "authData": {
           "$ref": "#/definitions/AuthAuthData"
+        }
+      }
+    },
+    "zpotify_apiSongBase": {
+      "type": "object",
+      "properties": {
+        "uniqueId": {
+          "type": "string"
+        },
+        "tittle": {
+          "type": "string"
+        },
+        "artists": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiArtistBase"
+          }
+        },
+        "durationSec": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

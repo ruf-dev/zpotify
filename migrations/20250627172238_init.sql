@@ -47,6 +47,22 @@ CREATE TABLE IF NOT EXISTS user_sessions
     refresh_expire_at TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS artists
+(
+    uuid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT
+);
+
+CREATE TABLE IF NOT EXISTS songs
+(
+    file_id      TEXT REFERENCES files_meta (tg_unique_id) PRIMARY KEY,
+    artists      UUID[],
+    tittle       TEXT,
+    duration_sec INT4,
+    created_at   TIMESTAMP DEFAULT now()
+);
+
+
 -- +goose StatementEnd
 
 -- +goose Down

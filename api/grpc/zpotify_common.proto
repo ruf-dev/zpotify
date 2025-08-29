@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package zpotify_api;
+
+import "npm.proto";
+
+option go_package = "go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_api";
+option (npm_package) = "@zpotify/api";
+
+message Paging {
+  uint64 limit = 1;
+  uint64 offset = 2;
+}
+
+message ArtistBase {
+  string name = 1;
+}
+
+message SongBase {
+  string unique_id = 1;
+  string tittle = 2;
+  repeated ArtistBase artists = 3;
+  int32 duration_sec = 4;
+}
