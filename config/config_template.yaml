@@ -19,6 +19,9 @@ servers:
             module: go.zpotify.ru/zpotify
             gateway: /api
 environment:
+    - name: debug_auth
+      type: bool
+      value: true
     - name: log_format
       type: string
       enum: [JSON, TEXT]

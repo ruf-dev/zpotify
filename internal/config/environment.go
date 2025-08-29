@@ -3,6 +3,7 @@
 package config
 
 type EnvironmentConfig struct {
+	DebugAuth bool
 	LogFormat string
 	LogLevel  string
 }
