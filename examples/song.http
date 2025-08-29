@@ -1,5 +1,5 @@
 POST {{zpotify-api}}/api/songs
 Content-Type: application/json
-Z-User-Tg-Username: alexskilled
+Grpc-Metadata-Z-Tg-Username: alexskilled
 
 {}

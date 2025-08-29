@@ -21,6 +21,7 @@ type UserStorage interface {
 	Upsert(ctx context.Context, user domain.UserInfo) error
 	SaveSettings(ctx context.Context, id int64, settings domain.UserSettings) error
 	GetUser(ctx context.Context, id int64) (domain.User, error)
+	GetUserByUsername(ctx context.Context, username string) (domain.User, error)
 
 	WithTx(tx *sql.Tx) UserStorage
 }

@@ -57,3 +57,12 @@ func (u *UserService) Get(ctx context.Context, tgId int64) (domain.User, error) 
 
 	return user, nil
 }
+
+func (u *UserService) GetByUsername(ctx context.Context, tgUsername string) (domain.User, error) {
+	user, err := u.userStorage.GetUserByUsername(ctx, tgUsername)
+	if err != nil {
+		return user, rerrors.Wrap(err, "error getting user from storage")
+	}
+
+	return user, nil
+}

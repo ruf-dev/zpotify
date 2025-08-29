@@ -3,6 +3,7 @@ package pg
 import (
 	"context"
 	"database/sql"
+	"strings"
 
 	"go.redsock.ru/rerrors"
 
@@ -80,6 +81,36 @@ func (s *UserStorage) GetUser(ctx context.Context, tgUserId int64) (u domain.Use
 		)
 	if err != nil {
 		return u, rerrors.Wrap(wrapPgErr(err), "error getting user from db")
+	}
+
+	return u, nil
+}
+
+func (s *UserStorage) GetUserByUsername(ctx context.Context, username string) (u domain.User, err error) {
+	username = strings.ToLower(username)
+
+	u.TgUserName = username
+
+	err = s.db.QueryRowContext(ctx, `
+		SELECT 
+			u.tg_id,
+			settings.locale,
+			COALESCE(permissions.can_upload, '0') 
+		FROM users u
+		LEFT JOIN user_settings    AS settings 
+		ON        u.tg_id           = settings.user_tg_id
+		LEFT JOIN user_permissions AS permissions 
+		ON        u.tg_id           = permissions.user_tg_id
+		
+		WHERE lower(u.tg_username) = $1`, username).
+		Scan(
+			&u.TgUserName,
+			&u.Locale,
+
+			&u.Permissions.CanUpload,
+		)
+	if err != nil {
+		return u, wrapPgErr(err)
 	}
 
 	return u, nil

@@ -2,6 +2,8 @@ package pg
 
 import (
 	"context"
+	"encoding/json"
+	"time"
 
 	sq "github.com/Masterminds/squirrel"
 	"go.redsock.ru/rerrors"
@@ -37,9 +39,10 @@ func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.S
        )`,
 	).
 		From("songs").
-		Join(`JOIN artists ON artists.uuid = ANY (songs.artists)`).
+		Join(`artists ON artists.uuid = ANY (songs.artists)`).
 		Limit(r.Limit).
 		Offset(r.Offset).
+		GroupBy("songs.file_id", "songs.tittle", "songs.duration_sec").
 		PlaceholderFormat(sq.Dollar)
 
 	builder = s.applyListQueryFilters(builder, r)
@@ -58,16 +61,24 @@ func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.S
 	var songs []domain.SongBase
 	for rows.Next() {
 		var song domain.SongBase
+		var artistsJson []byte
 		err = rows.Scan(
 			&song.UniqueFileId,
 			&song.Tittle,
 			&song.Duration,
-			&song.Artists,
+			&artistsJson,
 		)
 		if err != nil {
 			return nil, wrapPgErr(err)
 		}
 
+		err = json.Unmarshal(artistsJson, &song.Artists)
+		if err != nil {
+			return nil, rerrors.Wrap(err, "error unmarshalling artists from storage to model")
+		}
+		//by default, it simply scans number to time.Duration
+		// so need to multiply it by time.Seconds to get actual seconds
+		song.Duration = song.Duration * time.Second
 		songs = append(songs, song)
 	}
 
