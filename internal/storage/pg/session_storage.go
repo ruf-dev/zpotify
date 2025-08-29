@@ -69,7 +69,7 @@ func (s *SessionStorage) Upsert(ctx context.Context, session domain.UserSession)
 			VALUES	($1, $2, $3, $4, $5)
 	`, session.UserTgId,
 		session.AccessToken, session.RefreshToken,
-		session.AccessExpiresAt, session.RefreshExpiresAt)
+		session.AccessExpiresAt.UTC(), session.RefreshExpiresAt.UTC())
 	if err != nil {
 		return rerrors.Wrap(err, "error upserting user session")
 	}
@@ -96,6 +96,7 @@ func (s *SessionStorage) ListByUserId(ctx context.Context, tgId int64) ([]domain
 			refresh_expire_at
 		FROM user_sessions
 		WHERE user_id = $1
+		ORDER BY refresh_expire_at DESC
 `, tgId)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error listing user's sessions")
@@ -115,6 +116,18 @@ func (s *SessionStorage) ListByUserId(ctx context.Context, tgId int64) ([]domain
 	}
 
 	return sessions, nil
+}
+
+func (s *SessionStorage) DeleteExpired(ctx context.Context) error {
+	_, err := s.db.ExecContext(ctx, `
+		DELETE FROM user_sessions 
+		WHERE refresh_expire_at < now()
+`)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
 }
 
 func (s *SessionStorage) WithTx(tx *sql.Tx) storage.SessionStorage {

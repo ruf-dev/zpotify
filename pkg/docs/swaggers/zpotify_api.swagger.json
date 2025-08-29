@@ -83,6 +83,38 @@
         ]
       }
     },
+    "/api/user/logout": {
+      "post": {
+        "operationId": "UserAPI_Logout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiLogoutResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiLogoutRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserAPI"
+        ]
+      }
+    },
     "/api/user/refresh_token": {
       "post": {
         "operationId": "UserAPI_RefreshToken",
@@ -199,6 +231,12 @@
           "$ref": "#/definitions/AuthAuthData"
         }
       }
+    },
+    "zpotify_apiLogoutRequest": {
+      "type": "object"
+    },
+    "zpotify_apiLogoutResponse": {
+      "type": "object"
     },
     "zpotify_apiMeResponse": {
       "type": "object",

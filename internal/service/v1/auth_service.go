@@ -28,8 +28,9 @@ type AuthService struct {
 
 	txManager *tx_manager.TxManager
 
-	accessTokenTTL  time.Duration
-	refreshTokenTTL time.Duration
+	accessTokenTTL     time.Duration
+	refreshTokenTTL    time.Duration
+	maxSessionsPerUser int
 }
 
 func NewAuthService(data storage.Storage) *AuthService {
@@ -37,8 +38,9 @@ func NewAuthService(data storage.Storage) *AuthService {
 		sessionStorage: data.SessionStorage(),
 		txManager:      data.TxManager(),
 
-		accessTokenTTL:  time.Hour,
-		refreshTokenTTL: time.Hour * 24 * 7,
+		accessTokenTTL:     time.Hour,
+		refreshTokenTTL:    time.Hour * 24 * 7,
+		maxSessionsPerUser: 3,
 	}
 }
 
@@ -65,16 +67,36 @@ func (a *AuthService) AckAuth(ctx context.Context, authUuid string, tgId int64) 
 	if !ok {
 		return rerrors.New("failed mapping %T to authData", c)
 	}
+
 	defer close(ad.outC)
 
-	session := a.generateSession(tgId)
+	newSession := a.generateSession(tgId)
 
-	err := a.sessionStorage.Upsert(ctx, session)
+	err := a.txManager.Execute(func(tx *sql.Tx) error {
+		sessions, err := a.sessionStorage.ListByUserId(ctx, tgId)
+		if err != nil {
+			return rerrors.Wrap(err, "error listing user's sessions")
+		}
+
+		if len(sessions) > a.maxSessionsPerUser {
+			err = a.sessionStorage.Delete(ctx, sessions[len(sessions)-1].AccessToken)
+			if err != nil {
+				return rerrors.Wrap(err, "error deleting oldest session")
+			}
+		}
+
+		err = a.sessionStorage.Upsert(ctx, newSession)
+		if err != nil {
+			return rerrors.Wrap(err, "error saving new session")
+		}
+
+		return nil
+	})
 	if err != nil {
-		return rerrors.Wrap(err, "failed to generate access token")
+		return rerrors.Wrap(err)
 	}
 
-	ad.outC <- session
+	ad.outC <- newSession
 
 	return nil
 }
@@ -89,7 +111,7 @@ func (a *AuthService) AuthWithToken(ctx context.Context, token string) (tgId int
 		return 0, rerrors.Wrap(err, "failed to get access token")
 	}
 
-	if accessToken.AccessExpiresAt.Before(time.Now().UTC()) {
+	if accessToken.AccessExpiresAt.UTC().Before(time.Now().UTC()) {
 		return 0, rerrors.New("access token expired", codes.Unauthenticated)
 	}
 
@@ -106,7 +128,7 @@ func (a *AuthService) Refresh(ctx context.Context, refreshToken string) (domain.
 		return domain.UserSession{}, rerrors.Wrap(err, "failed to get access token")
 	}
 
-	if oldSession.RefreshExpiresAt.Before(time.Now().UTC()) {
+	if oldSession.RefreshExpiresAt.UTC().Before(time.Now().UTC()) {
 		return domain.UserSession{}, rerrors.New("refresh token expired")
 	}
 

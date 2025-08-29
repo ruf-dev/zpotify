@@ -63,7 +63,11 @@ func WithInterceptWithAuth(srv service.Service, opts ...authOption) grpc.ServerO
 				return nil, rerrors.Wrap(err)
 			}
 
-			ctx = WithTgUserId(ctx, tgId)
+			uc := UserContext{
+				TgUserId: tgId,
+			}
+
+			ctx = WithUserContext(ctx, uc)
 
 			return handler(ctx, req)
 		})

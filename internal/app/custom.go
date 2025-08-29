@@ -9,6 +9,8 @@ import (
 	"go.redsock.ru/rerrors"
 	"golang.org/x/sync/errgroup"
 
+	"go.zpotify.ru/zpotify/internal/background"
+	"go.zpotify.ru/zpotify/internal/background/sessions_gc"
 	tgApi "go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/middleware"
 	"go.zpotify.ru/zpotify/internal/service"
@@ -27,8 +29,9 @@ type Custom struct {
 
 	service service.Service
 
-	grpcImpl *zpotify_api_impl.Impl
-	telegram *telegram.Server
+	grpcImpl         *zpotify_api_impl.Impl
+	telegram         *telegram.Server
+	backgroundWorker *background.Worker
 }
 
 func (c *Custom) Init(a *App) (err error) {
@@ -37,6 +40,8 @@ func (c *Custom) Init(a *App) (err error) {
 	c.tgApiClient = tgApi.NewTgApiClient(a.Telegram.Bot.Token)
 
 	c.service = service.New(c.tgApiClient, c.storage)
+
+	c.backgroundWorker = background.New(sessions_gc.New(c.storage))
 
 	c.telegram, err = telegram.NewServer(a.Telegram, c.service)
 	if err != nil {
@@ -70,6 +75,10 @@ func (c *Custom) Start(ctx context.Context) error {
 		return c.telegram.Start(ctx)
 	})
 
+	eg.Go(func() error {
+		return c.backgroundWorker.Start()
+	})
+
 	err := eg.Wait()
 	if err != nil {
 		return rerrors.Wrap(err)
@@ -85,6 +94,10 @@ func (c *Custom) Stop() error {
 
 	eg.Go(func() error {
 		return c.telegram.Stop()
+	})
+
+	eg.Go(func() error {
+		return c.backgroundWorker.Stop()
 	})
 
 	err := eg.Wait()

@@ -27,10 +27,10 @@ export default function InitPage({AudioPlayer, UserState}: InitPageProps) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (UserState.authData) {
+        if (UserState.userData) {
             navigate(Path.HomePage)
         }
-    }, [UserState.authData]);
+    }, [UserState.userData]);
 
     useEffect(() => {
         AudioPlayer.preload(trackUrl)

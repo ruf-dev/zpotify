@@ -6,15 +6,19 @@ import (
 
 type tgUserId struct{}
 
-func WithTgUserId(ctx context.Context, id int64) context.Context {
-	return context.WithValue(ctx, tgUserId{}, id)
+type UserContext struct {
+	TgUserId int64
 }
 
-func GetTgUserId(ctx context.Context) (int64, bool) {
-	v, ok := ctx.Value(tgUserId{}).(int64)
+func WithUserContext(ctx context.Context, uc UserContext) context.Context {
+	return context.WithValue(ctx, tgUserId{}, uc)
+}
+
+func GetUserContext(ctx context.Context) (UserContext, bool) {
+	v, ok := ctx.Value(tgUserId{}).(UserContext)
 	if ok {
 		return v, true
 	}
 
-	return 0, false
+	return v, false
 }

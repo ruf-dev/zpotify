@@ -39,5 +39,7 @@ type SessionStorage interface {
 	Delete(ctx context.Context, token string) error
 	ListByUserId(ctx context.Context, id int64) ([]domain.UserSession, error)
 
+	DeleteExpired(ctx context.Context) error
+
 	WithTx(tx *sql.Tx) SessionStorage
 }

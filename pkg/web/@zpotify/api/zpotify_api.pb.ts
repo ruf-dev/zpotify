@@ -79,6 +79,12 @@ export type RefreshResponse = {
 
 export type Refresh = Record<string, never>;
 
+export type LogoutRequest = Record<string, never>;
+
+export type LogoutResponse = Record<string, never>;
+
+export type Logout = Record<string, never>;
+
 export class ZpotifyAPI {
   static Version(this:void, req: VersionRequest, initReq?: fm.InitReq): Promise<VersionResponse> {
     return fm.fetchRequest<VersionResponse>(`/api/version?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});
@@ -95,5 +101,8 @@ export class UserAPI {
   }
   static Me(this:void, req: MeRequest, initReq?: fm.InitReq): Promise<MeResponse> {
     return fm.fetchRequest<MeResponse>(`/api/user?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});
+  }
+  static Logout(this:void, req: LogoutRequest, initReq?: fm.InitReq): Promise<LogoutResponse> {
+    return fm.fetchRequest<LogoutResponse>(`/api/user/logout`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }

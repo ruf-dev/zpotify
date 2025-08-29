@@ -124,6 +124,7 @@ const (
 	UserAPI_Auth_FullMethodName         = "/zpotify_api.UserAPI/Auth"
 	UserAPI_RefreshToken_FullMethodName = "/zpotify_api.UserAPI/RefreshToken"
 	UserAPI_Me_FullMethodName           = "/zpotify_api.UserAPI/Me"
+	UserAPI_Logout_FullMethodName       = "/zpotify_api.UserAPI/Logout"
 )
 
 // UserAPIClient is the client API for UserAPI service.
@@ -134,6 +135,7 @@ type UserAPIClient interface {
 	Auth(ctx context.Context, in *Auth_Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Auth_Response], error)
 	RefreshToken(ctx context.Context, in *Refresh_Request, opts ...grpc.CallOption) (*Refresh_Response, error)
 	Me(ctx context.Context, in *Me_Request, opts ...grpc.CallOption) (*Me_Response, error)
+	Logout(ctx context.Context, in *Logout_Request, opts ...grpc.CallOption) (*Logout_Response, error)
 }
 
 type userAPIClient struct {
@@ -183,6 +185,16 @@ func (c *userAPIClient) Me(ctx context.Context, in *Me_Request, opts ...grpc.Cal
 	return out, nil
 }
 
+func (c *userAPIClient) Logout(ctx context.Context, in *Logout_Request, opts ...grpc.CallOption) (*Logout_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Logout_Response)
+	err := c.cc.Invoke(ctx, UserAPI_Logout_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserAPIServer is the server API for UserAPI service.
 // All implementations must embed UnimplementedUserAPIServer
 // for forward compatibility.
@@ -191,6 +203,7 @@ type UserAPIServer interface {
 	Auth(*Auth_Request, grpc.ServerStreamingServer[Auth_Response]) error
 	RefreshToken(context.Context, *Refresh_Request) (*Refresh_Response, error)
 	Me(context.Context, *Me_Request) (*Me_Response, error)
+	Logout(context.Context, *Logout_Request) (*Logout_Response, error)
 	mustEmbedUnimplementedUserAPIServer()
 }
 
@@ -209,6 +222,9 @@ func (UnimplementedUserAPIServer) RefreshToken(context.Context, *Refresh_Request
 }
 func (UnimplementedUserAPIServer) Me(context.Context, *Me_Request) (*Me_Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Me not implemented")
+}
+func (UnimplementedUserAPIServer) Logout(context.Context, *Logout_Request) (*Logout_Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
 }
 func (UnimplementedUserAPIServer) mustEmbedUnimplementedUserAPIServer() {}
 func (UnimplementedUserAPIServer) testEmbeddedByValue()                 {}
@@ -278,6 +294,24 @@ func _UserAPI_Me_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserAPI_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Logout_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserAPIServer).Logout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserAPI_Logout_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserAPIServer).Logout(ctx, req.(*Logout_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserAPI_ServiceDesc is the grpc.ServiceDesc for UserAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -292,6 +326,10 @@ var UserAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Me",
 			Handler:    _UserAPI_Me_Handler,
+		},
+		{
+			MethodName: "Logout",
+			Handler:    _UserAPI_Logout_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

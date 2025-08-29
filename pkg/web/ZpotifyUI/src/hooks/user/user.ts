@@ -50,12 +50,12 @@ export default function useUser(): User {
             })
             .catch(async (err) => {
                 if (!err.code) {
-                    // logout()
+                    logout()
                 }
 
                 if (err.code == ErrorCodes.UNAUTHENTICATED) {
                     s.RefreshToken().then((ad) => {
-                        setAuthData(ad);
+                        authenticate(ad);
                     }).catch((err) => {
                         if (err.code == ErrorCodes.UNAUTHENTICATED) {
                             logout()
@@ -90,7 +90,7 @@ function fromLocalStorage(): AuthData | undefined {
 }
 
 function clearLocalStorage() {
-    // localStorage.removeItem(getLocalStorageAuthInfoKey())
+    localStorage.removeItem(getLocalStorageAuthInfoKey())
 }
 
 

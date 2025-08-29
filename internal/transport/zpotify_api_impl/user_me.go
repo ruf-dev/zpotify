@@ -12,12 +12,12 @@ import (
 )
 
 func (impl *Impl) Me(ctx context.Context, _ *zpotify_api.Me_Request) (*zpotify_api.Me_Response, error) {
-	tgId, ok := middleware.GetTgUserId(ctx)
+	uc, ok := middleware.GetUserContext(ctx)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id in context")
 	}
 
-	user, err := impl.userService.Get(ctx, tgId)
+	user, err := impl.userService.Get(ctx, uc.TgUserId)
 	if err != nil {
 		return nil, errors.Wrap(err)
 	}
