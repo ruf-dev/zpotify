@@ -78,8 +78,13 @@ func (a *AuthService) AckAuth(ctx context.Context, authUuid string, tgId int64) 
 			return rerrors.Wrap(err, "error listing user's sessions")
 		}
 
-		if len(sessions) > a.maxSessionsPerUser {
-			err = a.sessionStorage.Delete(ctx, sessions[len(sessions)-1].AccessToken)
+		if len(sessions) >= a.maxSessionsPerUser {
+			extraTokens := make([]string, 0, len(sessions)-a.maxSessionsPerUser)
+			for idx := a.maxSessionsPerUser - 1; idx < len(sessions); idx++ {
+				extraTokens = append(extraTokens, sessions[idx].AccessToken)
+			}
+
+			err = a.sessionStorage.Delete(ctx, extraTokens...)
 			if err != nil {
 				return rerrors.Wrap(err, "error deleting oldest session")
 			}

@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/lib/pq"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
@@ -77,8 +78,8 @@ func (s *SessionStorage) Upsert(ctx context.Context, session domain.UserSession)
 	return nil
 }
 
-func (s *SessionStorage) Delete(ctx context.Context, token string) error {
-	_, err := s.db.ExecContext(ctx, `DELETE FROM user_sessions WHERE access_token = $1`, token)
+func (s *SessionStorage) Delete(ctx context.Context, tokens ...string) error {
+	_, err := s.db.ExecContext(ctx, `DELETE FROM user_sessions WHERE access_token = ANY($1)`, pq.Array(tokens))
 	if err != nil {
 		return wrapPgErr(err)
 	}

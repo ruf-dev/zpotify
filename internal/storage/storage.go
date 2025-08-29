@@ -36,7 +36,7 @@ type SessionStorage interface {
 	GetByAccessToken(ctx context.Context, accessToken string) (domain.UserSession, error)
 	GetByRefreshToken(ctx context.Context, refreshToken string) (domain.UserSession, error)
 
-	Delete(ctx context.Context, token string) error
+	Delete(ctx context.Context, tokens ...string) error
 	ListByUserId(ctx context.Context, id int64) ([]domain.UserSession, error)
 
 	DeleteExpired(ctx context.Context) error
