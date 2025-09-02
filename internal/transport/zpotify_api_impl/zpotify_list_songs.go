@@ -39,7 +39,7 @@ func toSongs(base []domain.SongBase) []*zpotify_api.SongBase {
 func toSong(base domain.SongBase) *zpotify_api.SongBase {
 	return &zpotify_api.SongBase{
 		UniqueId:    base.UniqueFileId,
-		Tittle:      base.Tittle,
+		Title:       base.Title,
 		Artists:     toArtists(base.Artists),
 		DurationSec: int32(base.Duration.Seconds()),
 	}

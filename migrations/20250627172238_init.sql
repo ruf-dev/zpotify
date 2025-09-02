@@ -33,9 +33,7 @@ CREATE TABLE IF NOT EXISTS files_meta
     tg_unique_id   TEXT NOT NULL UNIQUE,
     tg_file_id     TEXT NOT NULL,
     tg_file_path   TEXT NOT NULL,
-    added_by_tg_id INT8 NOT NULL,
-    title          TEXT NOT NULL,
-    author         TEXT
+    added_by_tg_id INT8 NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS user_sessions
@@ -57,7 +55,7 @@ CREATE TABLE IF NOT EXISTS songs
 (
     file_id      TEXT REFERENCES files_meta (tg_unique_id) PRIMARY KEY,
     artists      UUID[],
-    tittle       TEXT,
+    title       TEXT,
     duration_sec INT4,
     created_at   TIMESTAMP DEFAULT now()
 );

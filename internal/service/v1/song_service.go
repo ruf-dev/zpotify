@@ -2,34 +2,46 @@ package v1
 
 import (
 	"context"
+	"database/sql"
 	"io"
+	"strings"
 
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
+	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 )
 
 type AudioService struct {
-	tgApi           telegram.TgApiClient
+	tgApi telegram.TgApiClient
+
+	txManger *tx_manager.TxManager
+
 	fileMetaStorage storage.FileMetaStorage
-	userStorage     storage.UserStorage
-	songStorage     storage.SongStorage
+	songsStorage    storage.SongStorage
+	usersStorage    storage.UserStorage
+	artistStorage   storage.ArtistStorage
 }
 
-func NewAudioService(tgApi telegram.TgApiClient, dataStorage storage.Storage) *AudioService {
+func NewAudioService(
+	tgApi telegram.TgApiClient,
+	dataStorage storage.Storage,
+) *AudioService {
 	return &AudioService{
-		tgApi:           tgApi,
-		fileMetaStorage: dataStorage.FileMeta(),
-		userStorage:     dataStorage.User(),
-		songStorage:     dataStorage.SongStorage(),
-	}
+		tgApi:    tgApi,
+		txManger: dataStorage.TxManager(),
 
+		fileMetaStorage: dataStorage.FileMeta(),
+		songsStorage:    dataStorage.SongStorage(),
+		usersStorage:    dataStorage.User(),
+		artistStorage:   dataStorage.ArtistStorage(),
+	}
 }
 
 func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domain.SaveFileMetaResp, err error) {
-	user, err := s.userStorage.GetUser(ctx, req.AddedByTgId)
+	user, err := s.usersStorage.GetUser(ctx, req.AddedByTgId)
 	if err != nil {
 		return out, rerrors.Wrap(err, "error getting user from storage")
 	}
@@ -51,23 +63,51 @@ func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domai
 			FilePath:     tgFile.FilePath,
 		},
 		AddedByTgId: req.AddedByTgId,
-		Title:       req.Title,
-		Author:      req.Author,
 	}
 
-	err = s.fileMetaStorage.Add(ctx, meta)
-	if err == nil {
+	err = s.txManger.Execute(func(tx *sql.Tx) error {
+		fileMetaStorage := s.fileMetaStorage.WithTx(tx)
+		artistStorage := s.artistStorage.WithTx(tx)
+		songsStorage := s.songsStorage.WithTx(tx)
+
+		err = fileMetaStorage.Add(ctx, meta)
+		if err != nil {
+			switch {
+			case rerrors.Is(err, storage.ErrAlreadyExists):
+				out.Code = domain.SaveFileCodeAlreadyExists
+				return nil
+			default:
+				return rerrors.Wrap(err, "error saving meta to zpotify's storage")
+			}
+		}
+
+		var artists []domain.ArtistsBase
+		artists, err = artistStorage.Return(ctx, strings.Split(req.Author, ","))
+		if err != nil {
+			return rerrors.Wrap(err, "error getting artists from storage")
+		}
+
+		song := domain.SongBase{
+			UniqueFileId: meta.UniqueFileId,
+			Title:        req.Title,
+			Artists:      artists,
+			Duration:     req.Duration,
+		}
+
+		err = songsStorage.Save(ctx, song)
+		if err != nil {
+			return rerrors.Wrap(err, "error saving song")
+		}
+
 		out.Code = domain.SaveFileCodeOk
-		return out, nil
+
+		return nil
+	})
+	if err != nil {
+		return out, rerrors.Wrap(err)
 	}
 
-	switch {
-	case rerrors.Is(err, storage.ErrAlreadyExists):
-		out.Code = domain.SaveFileCodeAlreadyExists
-		return out, nil
-	default:
-		return out, rerrors.Wrap(err, "error saving meta to zpotify's storage")
-	}
+	return out, nil
 }
 
 func (s *AudioService) Stream(ctx context.Context, uniqueFileId string) (io.Reader, error) {
@@ -84,13 +124,21 @@ func (s *AudioService) Stream(ctx context.Context, uniqueFileId string) (io.Read
 	return f, nil
 }
 
-func (s *AudioService) GetInfo(ctx context.Context, uniqueFileId string) (domain.FileMeta, error) {
+func (s *AudioService) GetInfo(ctx context.Context, uniqueFileId string) (domain.Song, error) {
 	fileMeta, err := s.fileMetaStorage.Get(ctx, uniqueFileId)
 	if err != nil {
-		return domain.FileMeta{}, rerrors.Wrap(err, "error getting file from storage")
+		return domain.Song{}, rerrors.Wrap(err, "error getting file from storage")
 	}
 
-	return fileMeta, nil
+	songBase, err := s.songsStorage.Get(ctx, uniqueFileId)
+	if err != nil {
+		return domain.Song{}, rerrors.Wrap(err, "error getting songBase from storage")
+	}
+
+	return domain.Song{
+		SongBase: songBase,
+		FileMeta: fileMeta,
+	}, nil
 }
 
 func (s *AudioService) List(ctx context.Context, req domain.ListSongs) (domain.SongsList, error) {
@@ -98,12 +146,12 @@ func (s *AudioService) List(ctx context.Context, req domain.ListSongs) (domain.S
 		req.Limit = 10
 	}
 
-	list, err := s.songStorage.List(ctx, req)
+	list, err := s.songsStorage.List(ctx, req)
 	if err != nil {
 		return domain.SongsList{}, rerrors.Wrap(err, "error listing songs")
 	}
 
-	total, err := s.songStorage.Count(ctx, req)
+	total, err := s.songsStorage.Count(ctx, req)
 	if err != nil {
 		return domain.SongsList{}, rerrors.Wrap(err, "error counting songs")
 	}

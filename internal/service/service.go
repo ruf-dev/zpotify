@@ -43,7 +43,7 @@ func (s *service) AuthService() AuthService {
 }
 
 type AudioService interface {
-	GetInfo(ctx context.Context, uniqueFileId string) (domain.FileMeta, error)
+	GetInfo(ctx context.Context, uniqueFileId string) (domain.Song, error)
 	Save(ctx context.Context, req domain.AddAudio) (domain.SaveFileMetaResp, error)
 
 	List(ctx context.Context, req domain.ListSongs) (domain.SongsList, error)

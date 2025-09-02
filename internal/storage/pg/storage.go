@@ -16,6 +16,7 @@ type dataStorage struct {
 	fileMetaStorage *FileMetaStorage
 	sessionStorage  *SessionStorage
 	songStorage     *SongsStorage
+	artistsStorage  *ArtistsStorage
 
 	conn *sql.DB
 }
@@ -26,13 +27,17 @@ func NewStorage(conn *sql.DB) storage.Storage {
 		fileMetaStorage: NewFileMetaStorage(conn),
 		sessionStorage:  NewSessionStorage(conn),
 		songStorage:     NewSongStorage(conn),
-
-		conn: conn,
+		artistsStorage:  NewArtistsStorage(conn),
+		conn:            conn,
 	}
 }
 
 func (d *dataStorage) FileMeta() storage.FileMetaStorage {
 	return d.fileMetaStorage
+}
+
+func (d *dataStorage) ArtistStorage() storage.ArtistStorage {
+	return d.artistsStorage
 }
 
 func (d *dataStorage) User() storage.UserStorage {

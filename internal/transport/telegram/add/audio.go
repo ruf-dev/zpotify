@@ -1,6 +1,8 @@
 package add
 
 import (
+	"time"
+
 	tgapi "github.com/Red-Sock/go_tg/interfaces"
 	"github.com/Red-Sock/go_tg/model"
 	"github.com/Red-Sock/go_tg/model/response"
@@ -43,6 +45,7 @@ func (h *Handler) Handle(in *model.MessageIn, out tgapi.Chat) error {
 		AddedByTgId:  in.From.ID,
 		Title:        audio.Title,
 		Author:       audio.Performer,
+		Duration:     time.Second * time.Duration(audio.Duration),
 	}
 
 	resp, err := h.audioService.Save(in.Ctx, req)

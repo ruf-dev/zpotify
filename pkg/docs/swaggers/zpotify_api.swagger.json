@@ -307,7 +307,7 @@
         "uniqueId": {
           "type": "string"
         },
-        "tittle": {
+        "title": {
           "type": "string"
         },
         "artists": {

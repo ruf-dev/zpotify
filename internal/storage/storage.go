@@ -13,6 +13,7 @@ type Storage interface {
 	FileMeta() FileMetaStorage
 	SessionStorage() SessionStorage
 	SongStorage() SongStorage
+	ArtistStorage() ArtistStorage
 
 	TxManager() *tx_manager.TxManager
 }
@@ -31,6 +32,8 @@ type FileMetaStorage interface {
 	Add(ctx context.Context, user domain.FileMeta) error
 	// Get - gets file
 	Get(ctx context.Context, uniqueFileId string) (domain.FileMeta, error)
+
+	WithTx(tx *sql.Tx) FileMetaStorage
 }
 
 type SessionStorage interface {
@@ -50,4 +53,13 @@ type SongStorage interface {
 	Save(ctx context.Context, song domain.SongBase) error
 	List(ctx context.Context, r domain.ListSongs) ([]domain.SongBase, error)
 	Count(ctx context.Context, r domain.ListSongs) (uint64, error)
+	Get(ctx context.Context, uniqueId string) (domain.SongBase, error)
+
+	WithTx(tx *sql.Tx) SongStorage
+}
+
+type ArtistStorage interface {
+	Return(ctx context.Context, artists []string) ([]domain.ArtistsBase, error)
+
+	WithTx(tx *sql.Tx) ArtistStorage
 }

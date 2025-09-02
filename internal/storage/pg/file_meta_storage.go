@@ -2,11 +2,13 @@ package pg
 
 import (
 	"context"
+	"database/sql"
 
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/storage"
 )
 
 type FileMetaStorage struct {
@@ -22,9 +24,9 @@ func NewFileMetaStorage(db sqldb.DB) *FileMetaStorage {
 func (s *FileMetaStorage) Add(ctx context.Context, req domain.FileMeta) error {
 	_, err := s.db.ExecContext(ctx, `
 		INSERT INTO files_meta 
-			   (tg_unique_id, tg_file_id, tg_file_path, added_by_tg_id, title, author)
-		VALUES (          $1,         $2,           $3,             $4,    $5,     $6)
-`, req.UniqueFileId, req.FileId, req.FilePath, req.AddedByTgId, req.Title, req.Author)
+			   (tg_unique_id, tg_file_id, tg_file_path, added_by_tg_id)
+		VALUES (          $1,         $2,           $3,             $4)
+`, req.UniqueFileId, req.FileId, req.FilePath, req.AddedByTgId)
 	if err != nil {
 		return rerrors.Wrap(wrapPgErr(err), "error saving file meta")
 	}
@@ -38,9 +40,7 @@ func (s *FileMetaStorage) Get(ctx context.Context, uniqueFileId string) (file do
 		    tg_unique_id,
 			tg_file_id,
 			tg_file_path,
-			added_by_tg_id,
-			title,
-			author
+			added_by_tg_id
 		FROM files_meta
 		WHERE tg_unique_id = $1`, uniqueFileId).
 		Scan(
@@ -48,12 +48,14 @@ func (s *FileMetaStorage) Get(ctx context.Context, uniqueFileId string) (file do
 			&file.FileId,
 			&file.FilePath,
 			&file.AddedByTgId,
-			&file.Title,
-			&file.Author,
 		)
 	if err != nil {
 		return domain.FileMeta{}, wrapPgErr(rerrors.Wrap(err, "error getting file from storage"))
 	}
 
 	return file, nil
+}
+
+func (s *FileMetaStorage) WithTx(tx *sql.Tx) storage.FileMetaStorage {
+	return NewFileMetaStorage(tx)
 }

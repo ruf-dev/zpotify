@@ -10,13 +10,12 @@ type AddAudio struct {
 	AddedByTgId  int64
 	Title        string
 	Author       string
+	Duration     time.Duration
 }
 
 type FileMeta struct {
 	TgFile
 	AddedByTgId int64
-	Title       string
-	Author      string
 }
 
 type SaveFileCode int64
@@ -39,15 +38,21 @@ type TgFile struct {
 }
 
 type ListSongs struct {
-	Limit  uint64
-	Offset uint64
+	UniqueIds []string
+	Limit     uint64
+	Offset    uint64
 }
 
 type SongBase struct {
 	UniqueFileId string
-	Tittle       string
+	Title        string
 	Artists      []ArtistsBase
 	Duration     time.Duration
+}
+
+type Song struct {
+	SongBase
+	FileMeta
 }
 
 type ArtistsBase struct {
@@ -58,4 +63,8 @@ type ArtistsBase struct {
 type SongsList struct {
 	Songs []SongBase
 	Total uint64
+}
+
+type ListArtists struct {
+	Name []string
 }

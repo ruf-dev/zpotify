@@ -2,14 +2,18 @@ package pg
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"time"
 
 	sq "github.com/Masterminds/squirrel"
+	"github.com/lib/pq"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/storage"
+	"go.zpotify.ru/zpotify/internal/user_errors"
 )
 
 type SongsStorage struct {
@@ -23,13 +27,31 @@ func NewSongStorage(db sqldb.DB) *SongsStorage {
 }
 
 func (s *SongsStorage) Save(ctx context.Context, song domain.SongBase) error {
+	artistsUuids := make([]string, 0, len(song.Artists))
+	for _, artist := range song.Artists {
+		artistsUuids = append(artistsUuids, artist.Uuid)
+	}
+
+	_, err := s.db.ExecContext(ctx, `
+		INSERT INTO songs 
+				(file_id, artists, title, duration_sec)
+		VALUES 	(     $1,      $2,     $3,           $4)
+		ON CONFLICT (file_id) DO UPDATE SET
+			artists  	 = excluded.artists,
+			title 		 = excluded.title,
+			duration_sec = excluded.duration_sec
+`, song.UniqueFileId, pq.Array(artistsUuids), song.Title, song.Duration.Seconds())
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
 	return nil
 }
 
 func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.SongBase, error) {
 	builder := sq.Select(
 		"songs.file_id",
-		"songs.tittle",
+		"songs.title",
 		"songs.duration_sec",
 		`json_agg(
                json_build_object(
@@ -42,7 +64,7 @@ func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.S
 		Join(`artists ON artists.uuid = ANY (songs.artists)`).
 		Limit(r.Limit).
 		Offset(r.Offset).
-		GroupBy("songs.file_id", "songs.tittle", "songs.duration_sec").
+		GroupBy("songs.file_id", "songs.title", "songs.duration_sec").
 		PlaceholderFormat(sq.Dollar)
 
 	builder = s.applyListQueryFilters(builder, r)
@@ -64,7 +86,7 @@ func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.S
 		var artistsJson []byte
 		err = rows.Scan(
 			&song.UniqueFileId,
-			&song.Tittle,
+			&song.Title,
 			&song.Duration,
 			&artistsJson,
 		)
@@ -105,6 +127,35 @@ func (s *SongsStorage) Count(ctx context.Context, r domain.ListSongs) (uint64, e
 	return count, nil
 }
 
+func (s *SongsStorage) Get(ctx context.Context, uniqueId string) (domain.SongBase, error) {
+	listReq := domain.ListSongs{
+		UniqueIds: []string{uniqueId},
+		Limit:     1,
+		Offset:    0,
+	}
+
+	resp, err := s.List(ctx, listReq)
+	if err != nil {
+		return domain.SongBase{}, wrapPgErr(err)
+	}
+
+	if len(resp) == 0 {
+		return domain.SongBase{}, user_errors.ErrNotFound
+	}
+
+	return resp[0], nil
+}
+
 func (s *SongsStorage) applyListQueryFilters(builder sq.SelectBuilder, r domain.ListSongs) sq.SelectBuilder {
+	if len(r.UniqueIds) != 0 {
+		builder = builder.Where(sq.Eq{
+			"file_id": r.UniqueIds,
+		})
+	}
+
 	return builder
+}
+
+func (s *SongsStorage) WithTx(tx *sql.Tx) storage.SongStorage {
+	return NewSongStorage(tx)
 }
