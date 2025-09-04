@@ -6,8 +6,8 @@ import {
     RefreshResponse,
 } from "@zpotify/api";
 
-import {apiPrefix} from "@/processes/api.ts";
-import {AuthData, UserInfo} from "@/model/user.ts";
+import {apiPrefix} from "@/processes/Api.ts";
+import {AuthData, UserInfo} from "@/model/User.ts";
 
 export default class UserService {
     authData: AuthData;

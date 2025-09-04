@@ -1,0 +1,45 @@
+.SongItem {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+
+    border-radius: 1em;
+    border-bottom: 1px var(--disabled-bg-color) solid;
+
+    padding: 0.5em 0.25em 0.25em 0.5em;
+
+    transition: all 0.25s ease-in-out;
+}
+
+.SongItem:hover {
+    scale: 1.1;
+    cursor: pointer;
+}
+
+.Titles {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.Title {
+    font-weight: bolder;
+    font-size: large;
+    color: var(--main-fg-color);
+}
+
+.Artists {
+    font-weight: lighter;
+    font-size: small;
+    color: var(--secondary-fg-color);
+}
+
+.Duration {
+    font-weight: bolder;
+    color: var(--main-fg-color);
+}
+
+

@@ -56,6 +56,8 @@ func (c *Custom) Init(a *App) (err error) {
 			middleware.WithIgnoredPathAuthOption(
 				zpotify_api.UserAPI_Auth_FullMethodName,
 				zpotify_api.UserAPI_RefreshToken_FullMethodName,
+
+				zpotify_api.ZpotifyAPI_ListSongs_FullMethodName,
 			),
 			middleware.WithDebug(a.Cfg.Environment.DebugAuth),
 		),

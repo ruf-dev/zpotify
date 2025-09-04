@@ -1,4 +1,4 @@
-import {User as UserInfo} from "@/hooks/user/user.ts";
+import {User as UserInfo} from "@/hooks/user/User.ts";
 
 interface UserProps {
     user: UserInfo

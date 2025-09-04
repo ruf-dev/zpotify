@@ -1,6 +1,6 @@
 import cls from "@/parts/header/HeaderPart.module.css";
 
-import {User} from "@/hooks/user/user.ts";
+import {User} from "@/hooks/user/User.ts";
 import AnimatedZ from "@/assets/AnimatedZ.tsx";
 import {useNavigate} from "react-router-dom";
 import {Path} from "@/app/routing/Router.tsx";

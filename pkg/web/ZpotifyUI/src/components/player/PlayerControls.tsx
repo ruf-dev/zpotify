@@ -10,7 +10,7 @@ export interface PlayerProps {
     togglePlay: () => void
 }
 
-export default function PlayerControls({ isPlaying, togglePlay}: PlayerProps): JSX.Element {
+export default function PlayerControls({isPlaying, togglePlay}: PlayerProps): JSX.Element {
     return (
         <div className={cls.PlayerControlsWrapper}>
             <TrackRewindButton

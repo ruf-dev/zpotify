@@ -2,8 +2,8 @@ import cn from 'classnames';
 
 import cls from "@/components/auth/TelegramAuth.module.css"
 
-import {User} from "@/hooks/user/user.ts";
-import {AuthenticateViaTelegram, AuthResults} from "@/processes/auth.ts";
+import {User} from "@/hooks/user/User.ts";
+import {AuthenticateViaTelegram, AuthResults} from "@/processes/Auth.ts";
 
 import TelegramLogo from "@/assets/TelegramLogo.tsx";
 import {useState} from "react";

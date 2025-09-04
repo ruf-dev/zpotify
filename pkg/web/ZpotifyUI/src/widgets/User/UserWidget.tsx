@@ -3,7 +3,7 @@ import {useEffect, useRef, useState} from "react";
 
 import cls from "@/widgets/User/UserWidget.module.css";
 
-import {User} from "@/hooks/user/user.ts";
+import {User} from "@/hooks/user/User.ts";
 
 import GeneratedAvatar from "@/components/user/GeneratedAvatar.tsx";
 import Menu from "@/components/menu/Menu.tsx";

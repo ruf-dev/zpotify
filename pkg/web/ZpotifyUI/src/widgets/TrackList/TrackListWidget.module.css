@@ -1,0 +1,12 @@
+.SongListWidget {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Song {
+    width: 100%;
+    max-width: 60vh;
+    height: 4em;
+}

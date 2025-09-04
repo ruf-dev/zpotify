@@ -1,6 +1,6 @@
 import cls from "@/widgets/AuthMethods/AuthMethods.module.css";
 
-import {User} from "@/hooks/user/user.ts";
+import {User} from "@/hooks/user/User.ts";
 
 import TelegramAuth from "@/components/auth/TelegramAuth.tsx";
 

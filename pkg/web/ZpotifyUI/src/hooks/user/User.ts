@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import {AuthData, UserInfo} from "@/model/user.ts";
-import UserService from "@/processes/user.ts";
+import {AuthData, UserInfo} from "@/model/User.ts";
+import UserService from "@/processes/User.ts";
 import {ErrorCodes} from "@/processes/ErrorCodes.ts";
 
 export interface User {

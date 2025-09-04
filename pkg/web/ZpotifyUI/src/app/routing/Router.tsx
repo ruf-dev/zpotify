@@ -7,7 +7,7 @@ import ErrorPage from "@/pages/error/ErrorPage.tsx";
 
 import useAudioPlayer from "@/hooks/player/player.ts";
 import HomePage from "@/pages/home/HomePage.tsx";
-import useUser from "@/hooks/user/user.ts";
+import useUser from "@/hooks/user/User.ts";
 import Coloring from "@/admin-components/coloring/Coloring.tsx";
 
 export enum Path {

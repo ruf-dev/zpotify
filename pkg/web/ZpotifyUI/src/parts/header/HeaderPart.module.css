@@ -1,7 +1,7 @@
 .Header {
     width: 100%;
-    height: 6vh;
-    min-height: 5em;
+    height: 100%;
+
     background: var(--secondary-bg-color);
 
     display: flex;

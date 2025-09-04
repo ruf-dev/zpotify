@@ -2,7 +2,7 @@ import {Observable} from "rxjs";
 
 import {AuthRequest, AuthResponse, AuthAuthData, UserAPI} from "@zpotify/api";
 
-import {apiPrefix} from "@/processes/api.ts";
+import {apiPrefix} from "@/processes/Api.ts";
 
 export interface AuthResults {
     AuthUUID?: string

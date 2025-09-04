@@ -1,20 +1,22 @@
 import cls from "@/pages/home/HomePage.module.css"
 
-import { useEffect} from "react";
+import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 
 import {AudioPlayer} from "@/hooks/player/player.ts";
-import {User} from "@/hooks/user/user.ts";
+import {User} from "@/hooks/user/User.ts";
 
 import {Path} from "@/app/routing/Router.tsx";
 import HeaderPart from "@/parts/header/HeaderPart.tsx";
+import InfiniteSongsList from "@/parts/InfiniteSongList/InfiniteSongsList.tsx";
+import MusicPlayerWithLogo from "@/components/player/MusicPlayerWithLogo.tsx";
 
 interface HomePageProps {
     audioPlayer: AudioPlayer
     user: User
 }
 
-export default function HomePage({user}: HomePageProps) {
+export default function HomePage({user, audioPlayer}: HomePageProps) {
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,8 +27,22 @@ export default function HomePage({user}: HomePageProps) {
 
     return (
         <div className={cls.HomePage}>
-            <HeaderPart user={user}/>
+            <div className={cls.Header}>
+                <HeaderPart
+                    user={user}/>
+            </div>
 
+            <div className={cls.MainBody}>
+                <InfiniteSongsList
+                    audioPlayer={audioPlayer}
+                />
+            </div>
+
+            <div className={cls.Player}>
+                <MusicPlayerWithLogo
+                    audioPlayer={audioPlayer}
+                />
+            </div>
         </div>
     )
 }

@@ -1,9 +1,11 @@
 import {useState} from "react";
+import api from "@/app/api/api.ts";
 
 export interface AudioPlayer {
     isPlaying: boolean;
     togglePlay: () => boolean;
-    preload: (trackUrl: string) => void;
+    preload: (trackUniqueId: string) => void;
+    play: (trackUniqueId: string) => void;
 }
 
 export default function useAudioPlayer(): AudioPlayer {
@@ -30,15 +32,24 @@ export default function useAudioPlayer(): AudioPlayer {
         return isPlaying
     }
 
-    function preload(trackUrl: string): void {
-        audio.src = trackUrl
+    function preload(trackUniqueId: string): void {
+        audio.src = `${api()}/wapi/audio?fileId=${trackUniqueId}`
         audio.load()
+    }
+
+    function play(trackUniqueId: string): void {
+        audio.src = `${api()}/wapi/audio?fileId=${trackUniqueId}`
+        audio.load()
+
+        setIsPlaying(false);
+        togglePlay()
     }
 
 
     return {
         isPlaying,
         togglePlay,
-        preload
+        preload,
+        play,
     }
 }
