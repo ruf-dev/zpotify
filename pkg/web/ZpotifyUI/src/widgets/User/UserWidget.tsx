@@ -31,8 +31,15 @@ export default function UserWidget({user}: UserWidgetProps) {
     ]
 
     const dropdownRef = useRef(null);
+    const avatarRef = useRef(null);
+
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
+            // @ts-ignore
+            if (avatarRef.current && avatarRef.current.contains(event.target)) {
+                return
+            }
+
             // @ts-ignore
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setIsMenuOpen(false);
@@ -64,7 +71,9 @@ export default function UserWidget({user}: UserWidgetProps) {
                     {user.userData.username}
                 </div>
 
-                <div className={cls.AvatarContainer}>
+                <div
+                    ref={avatarRef}
+                    className={cls.AvatarContainer}>
                     <div className={cls.Avatar}
                          onClick={() => setIsMenuOpen(!isMenuOpen)}
                     >
