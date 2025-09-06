@@ -11,7 +11,11 @@ export default function VolumeControls({audioPlayer}: VolumeControlsProps) {
     const [isSliderOpened, setIsSliderOpened] = useState(false);
 
     return (
-        <div className={cls.VolumeControl}>
+        <div
+            className={cls.VolumeControl}
+            onMouseEnter={() => setIsSliderOpened(true)}
+            onMouseLeave={() => setIsSliderOpened(false)}
+        >
             <div
                 className={cls.Display}
                 onClick={() => setIsSliderOpened(!isSliderOpened)}
