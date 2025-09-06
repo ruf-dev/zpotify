@@ -17,8 +17,8 @@
 }
 
 .Player.open {
-    /*4 for logo, 1 for gap 8 for controls*/
-    width: 13em;
+    /*4 for logo, 1 for gap 8 for controls, 4 for volume*/
+    width: 15em;
 }
 
 .Logo {
@@ -64,7 +64,6 @@
 
 .PlayerControls {
     margin-right: 0.5em;
-    overflow: hidden;
     opacity: 0;
     display: none;
 
@@ -75,4 +74,11 @@
 .PlayerControls.open {
     opacity: 100%;
     display: flex;
+}
+
+
+.VolumeControl {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

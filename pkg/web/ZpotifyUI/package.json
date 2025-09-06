@@ -8,7 +8,8 @@
     "dev:public": "lt --port 5173 --subdomain aslzpotify",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "link": "npm link @zpotify/api"
   },
   "dependencies": {
     "@hookstate/core": "^4.0.2",
@@ -31,6 +32,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.2.0",
+    "sass": "^1.92.1",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^7.0.0"

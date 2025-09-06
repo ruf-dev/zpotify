@@ -1,0 +1,63 @@
+.VolumeControl {
+  width: 3em;
+  height: 3em;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+}
+
+.VolumeControl {
+  .Display {
+    width: 100%;
+    height: 100%;
+
+    top: 0;
+    position: absolute;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: background 0.5s ease;
+
+    .InnerRadius {
+      width: 70%;
+      height: 70%;
+      border-radius: 50%;
+
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+
+.VolumeControl {
+  .SliderWrapper {
+    position: absolute;
+    bottom: 80%;
+    height: 200%;
+    width: 50%;
+    background: gray;
+
+    .SoundLevel {
+      width: 100%;
+      background: green;
+      position: absolute;
+      bottom: 0;
+    }
+  }
+
+  .SliderWrapper:hover {
+    cursor: pointer;
+  }
+}
+
+

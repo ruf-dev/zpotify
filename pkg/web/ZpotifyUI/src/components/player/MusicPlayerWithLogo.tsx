@@ -7,6 +7,7 @@ import PlayerControls from "@/components/player/PlayerControls.tsx";
 import AnimatedZ from "@/assets/AnimatedZ.tsx";
 
 import {AudioPlayer} from "@/hooks/player/player.ts";
+import VolumeControls from "@/components/player/buttons/VolumeControls.tsx";
 
 interface MusicPlayerProps {
     audioPlayer: AudioPlayer
@@ -16,7 +17,6 @@ export default function MusicPlayerWithLogo({audioPlayer}: MusicPlayerProps) {
     const [isOpened, setIsOpened] = useState(false);
 
     useEffect(() => {
-        console.log(123)
         if (audioPlayer.isPlaying) {
             setIsOpened(true)
         }
@@ -34,6 +34,11 @@ export default function MusicPlayerWithLogo({audioPlayer}: MusicPlayerProps) {
                     isPlaying={audioPlayer.isPlaying}
                     togglePlay={() => audioPlayer.togglePlay()}
                 />
+
+                <div className={cls.VolumeControl}>
+                    <VolumeControls
+                        audioPlayer={audioPlayer}/>
+                </div>
             </div>
 
             <div

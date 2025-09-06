@@ -1,18 +1,27 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import api from "@/app/api/api.ts";
 
 export interface AudioPlayer {
     isPlaying: boolean;
+
     togglePlay: () => boolean;
     preload: (trackUniqueId: string) => void;
     play: (trackUniqueId: string) => void;
+
+    setVolume: (volume: number) => void;
+    volume: number;
 }
 
 export default function useAudioPlayer(): AudioPlayer {
     const [audio] = useState(() => new Audio());
 
+    const [volume, setVolume] = useState(36);
+
     const [isPlaying, setIsPlaying] = useState(false);
 
+    useEffect(() => {
+        audio.volume = volume / 100;
+    }, [volume]);
 
     function togglePlay(): boolean {
         if (!audio.src) {
@@ -45,11 +54,14 @@ export default function useAudioPlayer(): AudioPlayer {
         togglePlay()
     }
 
-
     return {
         isPlaying,
+
         togglePlay,
         preload,
         play,
+
+        volume,
+        setVolume,
     }
 }
