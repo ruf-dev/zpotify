@@ -10,18 +10,30 @@ export interface AudioPlayer {
 
     setVolume: (volume: number) => void;
     volume: number;
+    toggleMute: () => void;
+    isMuted: boolean;
+
+    songUniqueId: string | null;
 }
 
 export default function useAudioPlayer(): AudioPlayer {
     const [audio] = useState(() => new Audio());
 
     const [volume, setVolume] = useState(36);
+    const [isMuted, setIsMuted] = useState(false);
 
     const [isPlaying, setIsPlaying] = useState(false);
+
+    const [songUniqueId, setSongUniqueId] = useState<string | null>(null);
 
     useEffect(() => {
         audio.volume = volume / 100;
     }, [volume]);
+
+    function startPlay() {
+        audio.play()
+        setIsPlaying(true);
+    }
 
     function togglePlay(): boolean {
         if (!audio.src) {
@@ -32,26 +44,30 @@ export default function useAudioPlayer(): AudioPlayer {
             audio.pause();
             setIsPlaying(false);
         } else {
-            setIsPlaying(true);
-            audio.play().catch((err) => {
-                console.log(err)
-            });
+            startPlay()
         }
 
         return isPlaying
     }
 
+    function toggleMute() {
+        audio.muted = !isMuted
+        setIsMuted(!isMuted)
+    }
+
     function preload(trackUniqueId: string): void {
         audio.src = `${api()}/wapi/audio?fileId=${trackUniqueId}`
         audio.load()
+        setSongUniqueId(trackUniqueId)
     }
 
     function play(trackUniqueId: string): void {
         audio.src = `${api()}/wapi/audio?fileId=${trackUniqueId}`
         audio.load()
 
-        setIsPlaying(false);
-        togglePlay()
+        // setIsPlaying(false);
+        startPlay()
+        setSongUniqueId(trackUniqueId)
     }
 
     return {
@@ -63,5 +79,9 @@ export default function useAudioPlayer(): AudioPlayer {
 
         volume,
         setVolume,
+        toggleMute,
+        isMuted,
+
+        songUniqueId
     }
 }

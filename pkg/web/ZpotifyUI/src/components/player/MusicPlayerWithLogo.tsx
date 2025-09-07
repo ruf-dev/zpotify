@@ -35,7 +35,7 @@ export default function MusicPlayerWithLogo({audioPlayer}: MusicPlayerProps) {
                     togglePlay={() => audioPlayer.togglePlay()}
                 />
 
-                <div className={cls.VolumeControl}>
+                <div className={cls.VolumeControlWrapper}>
                     <VolumeControls
                         audioPlayer={audioPlayer}/>
                 </div>

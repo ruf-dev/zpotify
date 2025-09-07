@@ -22,7 +22,10 @@ root, body {
   --main-fg-color: #d9007f;
   --secondary-fg-color: #d9007f;
 
-  --disabled-bg-color: #9f8d98;
+  --disabled-fg-color: #9f8d98;
+
+  --accent-fg-color: #f1a0d2;
+  --accent-bg-color: #600052;
 }
 
 /*TODO: DO FOR different screen sizes*/

@@ -20,7 +20,10 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
                         onClick={() => audioPlayer.play(s.uniqueId)}
                     >
                         <SongListItem
-                            song={s}/>
+                            song={s}
+                            isPlaying={audioPlayer.isPlaying}
+                            isSelected={audioPlayer.songUniqueId == s.uniqueId}
+                        />
                     </div>))
         } </div>
     );

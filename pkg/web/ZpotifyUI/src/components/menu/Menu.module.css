@@ -27,7 +27,7 @@
 }
 
 .Option.Disabled {
-    background: var(--disabled-bg-color);
+    background: var(--disabled-fg-color);
 }
 
 .Separator {

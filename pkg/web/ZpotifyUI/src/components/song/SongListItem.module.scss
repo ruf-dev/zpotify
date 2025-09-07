@@ -6,11 +6,19 @@
     align-items: center;
 
     border-radius: 1em;
-    border-bottom: 1px var(--disabled-bg-color) solid;
+    border-bottom: 1px var(--disabled-fg-color) solid;
 
     padding: 0.5em 0.25em 0.25em 0.5em;
 
-    transition: all 0.25s ease-in-out;
+    transition: all 0.125s ease-in-out;
+}
+
+.SongItem.isPlaying {
+    border-bottom-color: var(--accent-fg-color);
+}
+
+.SongItem.isSelected {
+    background: var(--accent-bg-color);
 }
 
 .SongItem:hover {
@@ -29,6 +37,10 @@
     font-weight: bolder;
     font-size: large;
     color: var(--main-fg-color);
+}
+
+.Tittle.isSelected {
+    color: var(--accent-fg-color);
 }
 
 .Artists {

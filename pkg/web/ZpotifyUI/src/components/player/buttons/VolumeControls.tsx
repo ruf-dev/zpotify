@@ -1,5 +1,6 @@
-import cls from '@/components/player/buttons/VolumeControls.module.scss';
+import cn from "classnames";
 
+import cls from '@/components/player/buttons/VolumeControls.module.scss';
 import {AudioPlayer} from "@/hooks/player/player.ts";
 import {useState} from "react";
 
@@ -11,21 +12,20 @@ export default function VolumeControls({audioPlayer}: VolumeControlsProps) {
     const [isSliderOpened, setIsSliderOpened] = useState(false);
 
     return (
-        <div
-            className={cls.VolumeControl}
-            onMouseEnter={() => setIsSliderOpened(true)}
-            onMouseLeave={() => setIsSliderOpened(false)}
+        <div className={cls.VolumeControlContainer}
+             onMouseEnter={() => setIsSliderOpened(true)}
+             onMouseLeave={() => setIsSliderOpened(false)}
         >
-            <div
-                className={cls.Display}
-                onClick={() => setIsSliderOpened(!isSliderOpened)}
-            >
-                <VolumeDisplay
-                    audioPlayer={audioPlayer}
-                />
-            </div>
-            {isSliderOpened ? (<VolumeBar audioPlayer={audioPlayer}/>) : null}
+            <div className={cls.VolumeControl}>
+                <div className={cls.Display}>
+                    <VolumeDisplay
+                        audioPlayer={audioPlayer}
+                    />
+                </div>
 
+                {isSliderOpened && (<VolumeBar audioPlayer={audioPlayer}/>)}
+
+            </div>
         </div>
     );
 }
@@ -47,49 +47,46 @@ function VolumeBar({audioPlayer}: { audioPlayer: AudioPlayer }) {
         audioPlayer.setVolume(newVolume)
     }
 
-    return (<div
-        className={cls.SliderWrapper}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => {
-            setHover(false);
-            setLineY(null);
-            setDragging(false);
-        }}
-        onMouseDown={(e) => {
-            setDragging(true);
-            handleVolumeChange(e); // set immediately on click
-        }}
-        onMouseUp={() => setDragging(false)}
-        onMouseMove={(e) => {
-            const rect = e.currentTarget.getBoundingClientRect();
-            const y = e.clientY - rect.top;
-            setLineY(y);
-            if (dragging) {
-                handleVolumeChange(e);
-            }
-        }}
-    >
+    return (
         <div
-            className={cls.SoundLevel}
-            style={{
-                height: `${audioPlayer.volume}%`
+            className={cls.SliderWrapper}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => {
+                setHover(false);
+                setLineY(null);
+                setDragging(false);
             }}
-        />
-
-        {hover && lineY !== null && (
+            onMouseDown={(e) => {
+                setDragging(true);
+                handleVolumeChange(e); // set immediately on click
+            }}
+            onMouseUp={() => setDragging(false)}
+            onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const y = e.clientY - rect.top;
+                setLineY(y);
+                if (dragging) {
+                    handleVolumeChange(e);
+                }
+            }}
+        >
             <div
+                className={cn(cls.SoundLevel, {
+                    [cls.isMuted]: audioPlayer.isMuted,
+                })}
                 style={{
-                    position: "absolute",
-                    top: `${lineY}px`,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    height: "1px",
-                    background: "red",
-                    pointerEvents: "none",
+                    height: `${audioPlayer.volume}%`
                 }}
-            />)}
-    </div>);
+            />
+
+            {hover && lineY !== null && (
+                <div
+                    className={cls.SoundLine}
+                    style={{
+                        top: `${lineY}px`,
+                    }}
+                />)}
+        </div>);
 }
 
 function VolumeDisplay({audioPlayer}: { audioPlayer: AudioPlayer }) {
@@ -97,8 +94,11 @@ function VolumeDisplay({audioPlayer}: { audioPlayer: AudioPlayer }) {
         <div
             className={cls.Display}
             style={{
-                background: `conic-gradient(#4caf50 ${audioPlayer.volume}%, #ddd ${audioPlayer.volume}% 100%)`,
+                background: `
+                    conic-gradient(${audioPlayer.isMuted ? "" : "var(--accent-fg-color) " + audioPlayer.volume + "%,"}
+                     var(--disabled-fg-color) ${audioPlayer.volume}% 100%)`,
             }}
+            onClick={audioPlayer.toggleMute}
         >
             <div className={cls.InnerRadius}>
                 <div
@@ -108,7 +108,7 @@ function VolumeDisplay({audioPlayer}: { audioPlayer: AudioPlayer }) {
                         transition: "all 0.5s ease",
                     }}
                 >
-                    {Math.round(audioPlayer.volume)}%
+                    {audioPlayer.isMuted ? "M" : Math.round(audioPlayer.volume) + "%"}
                 </div>
             </div>
         </div>)
