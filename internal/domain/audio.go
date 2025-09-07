@@ -41,7 +41,16 @@ type ListSongs struct {
 	UniqueIds []string
 	Limit     uint64
 	Offset    uint64
+
+	OrderBy SongsOrderBy
+	Desc    bool
 }
+
+type SongsOrderBy int
+
+const (
+	SongsOrderByCreatedAt SongsOrderBy = iota
+)
 
 type SongBase struct {
 	UniqueFileId string

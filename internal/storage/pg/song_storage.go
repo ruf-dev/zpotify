@@ -68,6 +68,7 @@ func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.S
 		PlaceholderFormat(sq.Dollar)
 
 	builder = s.applyListQueryFilters(builder, r)
+	builder = s.applyListQueryOrder(builder, r)
 
 	querySql, args, err := builder.ToSql()
 	if err != nil {
@@ -154,6 +155,25 @@ func (s *SongsStorage) applyListQueryFilters(builder sq.SelectBuilder, r domain.
 	}
 
 	return builder
+}
+
+func (s *SongsStorage) applyListQueryOrder(builder sq.SelectBuilder, r domain.ListSongs) sq.SelectBuilder {
+	field := "created_at"
+
+	switch r.OrderBy {
+	default:
+	}
+
+	direction := ""
+	if r.Desc {
+		direction = " desc"
+	} else {
+		if field == "created_at" {
+			direction = " desc"
+		}
+	}
+
+	return builder.OrderBy(field + direction)
 }
 
 func (s *SongsStorage) WithTx(tx *sql.Tx) storage.SongStorage {
