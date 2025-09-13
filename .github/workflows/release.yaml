@@ -24,9 +24,8 @@ jobs:
           DRYRUN: true
           REGISTRY_USER: oauth
           REGISTRY_PWD: ${{ secrets.REGISTRY_PWD }}
-          REGISTRY_URL: registry.yandexcloud.net/cn1hmnaomv9eirtonaod
-          IMAGE_NAME: registry.yandexcloud.net/cn1hmnaomv9eirtonaod/ruf/zpotify
-          PLATFORMS: linux/amd64
+          REGISTRY_URL: cr.yandex/crpt47vors5dtnak2rse
+          IMAGE_NAME: cr.yandex/crpt47vors5dtnak2rse/ruf/zpotify
 
       - name: Move new cache
         run: |
@@ -77,9 +76,8 @@ jobs:
           REGISTRY_USER: oauth
           REGISTRY_PWD:  ${{ secrets.REGISTRY_PWD }}
           DISABLE_CHECKOUT: true
-          REGISTRY_URL: registry.yandexcloud.net/cn1hmnaomv9eirtonaod
-          IMAGE_NAME: registry.yandexcloud.net/cn1hmnaomv9eirtonaod/ruf/zpotify
-          PLATFORMS: linux/amd64
+          REGISTRY_URL: cr.yandex/crpt47vors5dtnak2rse
+          IMAGE_NAME: cr.yandex/crpt47vors5dtnak2rse/ruf/zpotify
 
   ui-release:
     if: ${{ needs.tag-release.outputs.tag != '' }}
