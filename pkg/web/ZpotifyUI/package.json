@@ -7,7 +7,7 @@
     "dev": "vite",
     "dev:public": "lt --port 5173 --subdomain aslzpotify",
 
-    "build:api": "cd ./../@zpotify/api/ && npm install typescript && npm run build",
+    "build:api": "cd ./../@zpotify/api/ && npm install typescript && npm run build && npm link",
     "link": "npm link @zpotify/api",
 
     "build:ui": "tsc -b && vite build",
