@@ -6,10 +6,16 @@
   "scripts": {
     "dev": "vite",
     "dev:public": "lt --port 5173 --subdomain aslzpotify",
-    "build": "tsc -b && vite build",
+
+    "build:api": "cd ./../@zpotify/api/ && npm install typescript && npm run build",
+    "link": "npm link @zpotify/api",
+
+    "build:ui": "tsc -b && vite build",
+    "build": "npm run build:api && npm run link && npm run build:ui",
+
     "lint": "eslint .",
-    "preview": "vite preview",
-    "link": "npm link @zpotify/api"
+    "preview": "vite preview"
+
   },
   "dependencies": {
     "@hookstate/core": "^4.0.2",

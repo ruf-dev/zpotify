@@ -15,7 +15,7 @@ import react from '@vitejs/plugin-react';
 export default (function (_a) {
     var mode = _a.mode;
     process.env = __assign(__assign({}, process.env), loadEnv(mode, process.cwd()));
-    return defineConfig({
+    var uc = defineConfig({
         base: '/',
         plugins: [react()],
         resolve: {
@@ -24,4 +24,9 @@ export default (function (_a) {
             },
         },
     });
+    uc.server = {
+        host: true, // allows access from network IPs
+        allowedHosts: ['.loca.lt', 'localhost', '127.0.0.1']
+    };
+    return uc;
 });
