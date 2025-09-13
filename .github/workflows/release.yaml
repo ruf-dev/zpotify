@@ -26,6 +26,7 @@ jobs:
           REGISTRY_PWD: ${{ secrets.REGISTRY_PWD }}
           REGISTRY_URL: registry.yandexcloud.net/cn1hmnaomv9eirtonaod
           IMAGE_NAME: registry.yandexcloud.net/cn1hmnaomv9eirtonaod/ruf/zpotify
+          PLATFORMS: linux/amd64
 
       - name: Move new cache
         run: |
@@ -78,6 +79,7 @@ jobs:
           DISABLE_CHECKOUT: true
           REGISTRY_URL: registry.yandexcloud.net/cn1hmnaomv9eirtonaod
           IMAGE_NAME: registry.yandexcloud.net/cn1hmnaomv9eirtonaod/ruf/zpotify
+          PLATFORMS: linux/amd64
 
   ui-release:
     if: ${{ needs.tag-release.outputs.tag != '' }}
