@@ -21,6 +21,8 @@ type UserSettings struct {
 
 type UserPermissions struct {
 	CanUpload bool
+
+	EarlyAccess bool
 }
 
 type UserSession struct {

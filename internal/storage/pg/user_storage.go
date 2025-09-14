@@ -64,7 +64,8 @@ func (s *UserStorage) GetUser(ctx context.Context, tgUserId int64) (u domain.Use
 		SELECT 
 			u.tg_username,
 			settings.locale,
-			COALESCE(permissions.can_upload, '0') 
+			COALESCE(permissions.can_upload, '0'),
+			COALESCE(permissions.early_access, '0')
 		FROM users u
 		LEFT JOIN user_settings    AS settings 
 		ON        u.tg_id           = settings.user_tg_id
@@ -78,6 +79,7 @@ func (s *UserStorage) GetUser(ctx context.Context, tgUserId int64) (u domain.Use
 			&u.Locale,
 
 			&u.Permissions.CanUpload,
+			&u.Permissions.EarlyAccess,
 		)
 	if err != nil {
 		return u, rerrors.Wrap(wrapPgErr(err), "error getting user from db")
@@ -95,7 +97,8 @@ func (s *UserStorage) GetUserByUsername(ctx context.Context, username string) (u
 		SELECT 
 			u.tg_id,
 			settings.locale,
-			COALESCE(permissions.can_upload, '0') 
+			COALESCE(permissions.can_upload, '0'),
+			COALESCE(permissions.early_access, '0')
 		FROM users u
 		LEFT JOIN user_settings    AS settings 
 		ON        u.tg_id           = settings.user_tg_id
@@ -108,6 +111,7 @@ func (s *UserStorage) GetUserByUsername(ctx context.Context, username string) (u
 			&u.Locale,
 
 			&u.Permissions.CanUpload,
+			&u.Permissions.EarlyAccess,
 		)
 	if err != nil {
 		return u, wrapPgErr(err)

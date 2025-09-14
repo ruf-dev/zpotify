@@ -19,6 +19,11 @@ export async function ListGlobalSongs(limit: number, offset: number): Promise<So
                 total: resp.total || 0
             } as SongList
         })
+        .catch((err) => {
+            // TODO remove onto normal alerting
+            alert(err.message)
+            throw err
+        })
 }
 
 function mapSongs(s: SongBase): Song {

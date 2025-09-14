@@ -69,9 +69,9 @@ func WithInterceptWithAuth(srv service.Service, opts ...authOption) grpc.ServerO
 			return nil, status.Error(codes.FailedPrecondition, "error unmarshalling metadata from context")
 		}
 
-		ctx, err = ac.authWithSession(ctx, md)
+		ctxWithUser, err := ac.authWithSession(ctx, md)
 		if err == nil {
-			return handler(ctx, req)
+			return handler(ctxWithUser, req)
 		}
 
 		if ac.isDebugEnabled {
@@ -102,6 +102,16 @@ func (ac *authMiddleware) authWithSession(ctx context.Context, md metadata.MD) (
 
 	uc := UserContext{
 		TgUserId: tgId,
+	}
+
+	user, err := ac.userService.Get(ctx, uc.TgUserId)
+	if err != nil {
+		return nil, rerrors.Wrap(err)
+	}
+
+	if !user.Permissions.EarlyAccess {
+		return nil, status.Error(codes.PermissionDenied,
+			"Service in early access. Ask administrator for Early access")
 	}
 
 	return WithUserContext(ctx, uc), nil
