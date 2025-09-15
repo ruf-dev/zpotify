@@ -16,7 +16,7 @@ func (h *Handler) authenticate(in *model.MessageIn, authUuid string, out tgapi.C
 	}
 
 	msgOut := &response.MessageOut{
-		Text:           h.rm.SuccessfullyAuthenticated(in.Ctx),
+		Text:           h.responseBuilder.SuccessfullyAuthenticated(in.Ctx),
 		ReplyMessageId: int64(in.MessageID),
 	}
 

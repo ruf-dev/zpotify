@@ -31,6 +31,6 @@ func (h *Handler) Handle(in *model.MessageIn, out tgapi.Chat) error {
 	}
 
 	return out.SendMessage(&response.MessageOut{
-		Text: "Welcome to Zpotify!",
+		Text: h.responseBuilder.Hello(in.Ctx),
 	})
 }

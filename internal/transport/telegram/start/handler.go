@@ -14,21 +14,21 @@ import (
 const Command = "/start"
 
 type Handler struct {
-	rm *localization.ResponseBuilder
+	responseBuilder *localization.ResponseBuilder
 
 	authService service.AuthService
 }
 
-func New(rm *localization.ResponseBuilder, authService service.AuthService) *Handler {
+func New(responseBuilder *localization.ResponseBuilder, authService service.AuthService) *Handler {
 	return &Handler{
-		rm:          rm,
-		authService: authService,
+		responseBuilder: responseBuilder,
+		authService:     authService,
 	}
 }
 
 func (h *Handler) Handle(in *model.MessageIn, out tgapi.Chat) error {
 	if len(in.Args) == 0 {
-		msg := response.NewMessage(h.rm.Hello(in.Ctx))
+		msg := response.NewMessage(h.responseBuilder.Hello(in.Ctx))
 		return out.SendMessage(msg)
 	}
 
