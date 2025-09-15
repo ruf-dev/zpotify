@@ -10,7 +10,7 @@ interface InfiniteSongsListProps {
     audioPlayer: AudioPlayer
 }
 
-const songsPerPage = 20;
+const songsPerPage = 10;
 
 export default function InfiniteSongsList({audioPlayer}: InfiniteSongsListProps) {
     const [offset, setOffset] = useState(0)
@@ -26,11 +26,9 @@ export default function InfiniteSongsList({audioPlayer}: InfiniteSongsListProps)
     }, []);
 
     return (
-        <div>
-            <SongListWidget
-                songs={songs}
-                audioPlayer={audioPlayer}
-            />
-        </div>
+        <SongListWidget
+            songs={songs}
+            audioPlayer={audioPlayer}
+        />
     )
 }

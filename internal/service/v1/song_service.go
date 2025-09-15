@@ -81,15 +81,17 @@ func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domai
 			}
 		}
 
+		artistsNames := separateArtists(req.Author)
+
 		var artists []domain.ArtistsBase
-		artists, err = artistStorage.Return(ctx, strings.Split(req.Author, ","))
+		artists, err = artistStorage.Return(ctx, artistsNames)
 		if err != nil {
 			return rerrors.Wrap(err, "error getting artists from storage")
 		}
 
 		song := domain.SongBase{
 			UniqueFileId: meta.UniqueFileId,
-			Title:        req.Title,
+			Title:        sanitizeTitle(req.Title),
 			Artists:      artists,
 			Duration:     req.Duration,
 		}
@@ -160,4 +162,23 @@ func (s *AudioService) List(ctx context.Context, req domain.ListSongs) (domain.S
 		Songs: list,
 		Total: total,
 	}, nil
+}
+
+func separateArtists(artists string) []string {
+	comaSeparated := strings.Split(artists, ",")
+
+	for idx := range comaSeparated {
+		comaSeparated[idx] = strings.TrimSpace(comaSeparated[idx])
+		comaSeparated[idx] = sanitizeTitle(comaSeparated[idx])
+	}
+
+	return comaSeparated
+}
+
+var replacer = strings.NewReplacer(
+	"&#39;", "'",
+)
+
+func sanitizeTitle(title string) string {
+	return replacer.Replace(title)
 }

@@ -13,6 +13,8 @@ root, body {
   margin: 0;
   background: var(--main-bg-color);
   overflow-x: hidden;
+
+  color: var(--main-fg-color);
 }
 
 :root {

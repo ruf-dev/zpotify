@@ -7,6 +7,6 @@
     "user_now_allowed_to_add": "Вы не можете добавлять файлы"
   },
   "auth": {
-    "successfully_authenticated": "Успешная авторизация"
+    "successfully_authenticated": "Успешная авторизация! Можете вернутся на страницу с музыкой"
   }
 }

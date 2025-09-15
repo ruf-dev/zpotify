@@ -7,6 +7,6 @@
     "user_now_allowed_to_add": "You can't add files"
   },
   "auth": {
-    "successfully_authenticated": "Successfully authenticated "
+    "successfully_authenticated": "Successfully authenticated. Now return to web page "
   }
 }

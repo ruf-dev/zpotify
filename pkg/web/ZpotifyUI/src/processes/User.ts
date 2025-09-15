@@ -34,11 +34,6 @@ export default class UserService {
                     username: r.userData.username
                 } as UserInfo
             })
-            .catch((err) => {
-                // TODO remove onto normal alerting
-                alert(err.message)
-                throw err
-            })
     }
 
     private async getMetadata() {
