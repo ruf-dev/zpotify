@@ -25,7 +25,7 @@ func (impl *Impl) ListSongs(ctx context.Context, req *zpotify_api.ListSongs_Requ
 
 	return &zpotify_api.ListSongs_Response{
 		Songs: toSongs(list.Songs),
-		Total: 60,
+		Total: list.Total,
 	}, nil
 }
 

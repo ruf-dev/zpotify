@@ -1,9 +1,12 @@
-.SongListWidget {
+.SongListWidgetContainer {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     gap: 1em;
+
+    box-sizing: border-box;
 }
 
 .Song {

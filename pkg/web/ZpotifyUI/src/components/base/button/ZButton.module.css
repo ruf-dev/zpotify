@@ -1,0 +1,14 @@
+.ZButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    padding: 1em;
+    border: var(--accent-bg-color) 3px solid;
+    border-radius: 4em;
+}
+
+.ZButton:hover {
+    cursor: pointer;
+}

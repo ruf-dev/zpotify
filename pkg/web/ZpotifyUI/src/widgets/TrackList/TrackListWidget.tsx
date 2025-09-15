@@ -11,7 +11,7 @@ type SongListWidgetProps = {
 
 export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps) {
     return (
-        <div className={cls.SongListWidget}> {
+        <div className={cls.SongListWidgetContainer}> {
             songs.map((s: Song) =>
                 (
                     <div
