@@ -35,8 +35,7 @@ export default function SongListWidget({songs, audioPlayer, currentlyPlayingIdx}
                         key={s.uniqueId}
                         className={cls.Song}
                         onClick={() => {
-                            audioPlayer.preload(s.uniqueId)
-                            audioPlayer.togglePlay()
+                            audioPlayer.play(s.uniqueId)
                             audioPlayer.onEnd(getNext)
                         }}
                     >

@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import api from "@/app/api/api.ts";
 
 export interface AudioPlayer {
@@ -17,8 +17,8 @@ export interface AudioPlayer {
 
     onEnd: (callback: () => string | undefined) => void;
 
-    progress: number;
-    setProgress: (progress: number) => void;
+    progress: number; // always percentage 0–100
+    setProgress: (progressPercent: number) => void;
 }
 
 export default function useAudioPlayer(): AudioPlayer {
@@ -26,81 +26,80 @@ export default function useAudioPlayer(): AudioPlayer {
 
     const [volume, setVolume] = useState(36);
     const [isMuted, setIsMuted] = useState(false);
-
     const [isPlaying, setIsPlaying] = useState(false);
-
     const [songUniqueId, setSongUniqueId] = useState<string | null>(null);
-
-    const [progress, setProgress] = useState(0);
+    const [progress, setProgress] = useState(0); // 0–100 percentage
 
     useEffect(() => {
         audio.volume = volume / 100;
-    }, [volume]);
+    }, [volume, audio]);
 
-    function updateProgress(progress: number) {
-        if (audio.src == "" || !audio.duration) {
-            return
-        }
+    function updateProgress(progressPercent: number) {
+        if (!audio.src || !audio.duration) return;
 
-        audio.currentTime = audio.duration * (progress / 100);
+        const newTime = audio.duration * (progressPercent / 100);
+        audio.currentTime = newTime;
+        setProgress(progressPercent); // keep state as percentage
     }
 
     function startPlay() {
-        audio.play()
+        audio.play();
         setIsPlaying(true);
     }
 
     function togglePlay(): boolean {
-        if (!audio.src) {
-            return false
-        }
+        if (!audio.src) return false;
 
         if (isPlaying) {
             audio.pause();
             setIsPlaying(false);
         } else {
-            startPlay()
+            startPlay();
         }
 
-        return isPlaying
+        return isPlaying;
     }
 
     function toggleMute() {
-        audio.muted = !isMuted
-        setIsMuted(!isMuted)
+        audio.muted = !isMuted;
+        setIsMuted(!isMuted);
     }
 
     function preload(trackUniqueId: string): void {
         const src = `${api()}/wapi/audio?fileId=${trackUniqueId}`;
-        if (audio.src == src) {
-            return
-        }
+        if (audio.src === src) return;
 
-        audio.src = `${api()}/wapi/audio?fileId=${trackUniqueId}`
-        audio.load()
-        setSongUniqueId(trackUniqueId)
+        audio.src = src;
+        audio.load();
+        setSongUniqueId(trackUniqueId);
     }
 
     function play(trackUniqueId: string): void {
-        preload(trackUniqueId)
-        startPlay()
-        setSongUniqueId(trackUniqueId)
+        preload(trackUniqueId);
+        startPlay();
+        setSongUniqueId(trackUniqueId);
     }
 
     function onEnd(getNext: () => string | undefined): void {
         audio.onended = () => {
             const nextUniqueId = getNext();
-            if (!nextUniqueId) {
-                return
-            }
-
-            preload(nextUniqueId)
-        }
+            if (!nextUniqueId) return;
+            preload(nextUniqueId);
+        };
     }
 
-    audio.addEventListener('timeupdate', () => {
-        setProgress((audio.currentTime / audio.duration) * 100)
-    });
+    // sync progress from audio
+    useEffect(() => {
+        const handleTimeUpdate = () => {
+            if (!audio.duration) return;
+            setProgress((audio.currentTime / audio.duration) * 100);
+        };
+
+        audio.addEventListener("timeupdate", handleTimeUpdate);
+        return () => {
+            audio.removeEventListener("timeupdate", handleTimeUpdate);
+        };
+    }, [audio]);
 
     return {
         isPlaying,
@@ -120,5 +119,5 @@ export default function useAudioPlayer(): AudioPlayer {
 
         progress,
         setProgress: updateProgress
-    }
+    };
 }

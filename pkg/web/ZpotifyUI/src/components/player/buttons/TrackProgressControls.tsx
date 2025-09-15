@@ -1,74 +1,76 @@
 import cls from "@/components/player/buttons/TrackProgressControls.module.scss"
 
-import {AudioPlayer} from "@/hooks/player/player.ts";
-import {useCallback, useEffect, useRef, useState} from "react";
+import { AudioPlayer } from "@/hooks/player/player.ts";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface TrackProgressControlsProps {
     audioPlayer: AudioPlayer
 }
 
-export default function TrackProgressControls({audioPlayer}: TrackProgressControlsProps) {
-    const trackLineRef = useRef<HTMLDivElement>(null)
-    const [isDragging, setIsDragging] = useState(false)
+export default function TrackProgressControls({ audioPlayer }: TrackProgressControlsProps) {
+    const trackLineRef = useRef<HTMLDivElement>(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const [progress, setProgress] = useState(audioPlayer.progress);
 
-    const [progress, setProgress] = useState(audioPlayer.progress)
-
+    // Sync with audio progress when not dragging
     useEffect(() => {
         if (!isDragging) {
-            setProgress(audioPlayer.progress)
+            setProgress(audioPlayer.progress);
         }
-    }, [audioPlayer.progress]);
+    }, [audioPlayer.progress, isDragging]);
 
     const calculateProgress = useCallback((clientX: number) => {
-        if (!trackLineRef.current) return 0
-
-        const rect = trackLineRef.current.getBoundingClientRect()
-        const position = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
-        return Math.round(position * 100)
-    }, [])
+        if (!trackLineRef.current) return 0;
+        const rect = trackLineRef.current.getBoundingClientRect();
+        const position = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        return Math.round(position * 100);
+    }, []);
 
     const handleMouseDown = useCallback((e: React.MouseEvent) => {
-        setIsDragging(true)
-        const progress = calculateProgress(e.clientX)
-        audioPlayer.setProgress(progress)
-    }, [audioPlayer, calculateProgress])
+        e.preventDefault();
+        setIsDragging(true);
+        const newProgress = calculateProgress(e.clientX);
+        setProgress(newProgress);
+    }, [calculateProgress]);
 
     const handleMouseMove = useCallback((e: MouseEvent) => {
-        if (!isDragging) return
-        const progress = calculateProgress(e.clientX)
-        audioPlayer.setProgress(progress)
-    }, [isDragging, audioPlayer, calculateProgress])
+        if (!isDragging) return;
+        const newProgress = calculateProgress(e.clientX);
+        setProgress(newProgress);
+    }, [isDragging, calculateProgress]);
 
     const handleMouseUp = useCallback(() => {
-        setIsDragging(false)
-    }, [])
-
-    useEffect(() => {
-        const handleGlobalMouseMove = (e: MouseEvent) => handleMouseMove(e)
-        const handleGlobalMouseUp = () => handleMouseUp()
-
         if (isDragging) {
-            document.addEventListener('mousemove', handleGlobalMouseMove)
-            document.addEventListener('mouseup', handleGlobalMouseUp)
+            setIsDragging(false);
+            audioPlayer.setProgress(progress); // commit only once
         }
+    }, [isDragging, progress, audioPlayer]);
 
-        return () => {
-            document.removeEventListener('mousemove', handleGlobalMouseMove)
-            document.removeEventListener('mouseup', handleGlobalMouseUp)
+    // Global listeners for dragging
+    useEffect(() => {
+        if (isDragging) {
+            document.addEventListener("mousemove", handleMouseMove);
+            document.addEventListener("mouseup", handleMouseUp);
         }
-    }, [isDragging, handleMouseMove, handleMouseUp])
+        return () => {
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
+        };
+    }, [isDragging, handleMouseMove, handleMouseUp]);
 
     return (
         <div className={cls.TrackProgressControlsContainer}>
             <div
                 ref={trackLineRef}
                 className={cls.TrackLine}
-                onMouseDown={handleMouseDown}>
-                <div className={cls.TrackBall}
-                     style={{ left:  `${progress}%` }}
-                     onMouseDown={handleMouseDown}
+                onMouseDown={handleMouseDown}
+            >
+                <div
+                    className={cls.TrackBall}
+                    style={{ left: `${progress}%` }}
+                    onMouseDown={handleMouseDown}
                 />
             </div>
         </div>
-    )
+    );
 }
