@@ -14,6 +14,8 @@ export interface AudioPlayer {
     isMuted: boolean;
 
     songUniqueId: string | null;
+
+    onEnd: (callback: () => string | undefined) => void;
 }
 
 export default function useAudioPlayer(): AudioPlayer {
@@ -56,18 +58,31 @@ export default function useAudioPlayer(): AudioPlayer {
     }
 
     function preload(trackUniqueId: string): void {
+        const src = `${api()}/wapi/audio?fileId=${trackUniqueId}`;
+        if (audio.src == src) {
+            return
+        }
+
         audio.src = `${api()}/wapi/audio?fileId=${trackUniqueId}`
         audio.load()
         setSongUniqueId(trackUniqueId)
     }
 
     function play(trackUniqueId: string): void {
-        audio.src = `${api()}/wapi/audio?fileId=${trackUniqueId}`
-        audio.load()
-
-        // setIsPlaying(false);
+        preload(trackUniqueId)
         startPlay()
         setSongUniqueId(trackUniqueId)
+    }
+
+    function onEnd(getNext: () => string | undefined): void {
+        audio.onended = () => {
+            const nextUniqueId =  getNext();
+            if (!nextUniqueId ) {
+                return
+            }
+
+            preload(nextUniqueId)
+        }
     }
 
     return {
@@ -82,6 +97,8 @@ export default function useAudioPlayer(): AudioPlayer {
         toggleMute,
         isMuted,
 
-        songUniqueId
+        songUniqueId,
+
+        onEnd
     }
 }
