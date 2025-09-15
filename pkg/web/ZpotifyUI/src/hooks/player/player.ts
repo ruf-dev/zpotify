@@ -16,6 +16,9 @@ export interface AudioPlayer {
     songUniqueId: string | null;
 
     onEnd: (callback: () => string | undefined) => void;
+
+    progress: number;
+    setProgress: (progress: number) => void;
 }
 
 export default function useAudioPlayer(): AudioPlayer {
@@ -28,9 +31,19 @@ export default function useAudioPlayer(): AudioPlayer {
 
     const [songUniqueId, setSongUniqueId] = useState<string | null>(null);
 
+    const [progress, setProgress] = useState(0);
+
     useEffect(() => {
         audio.volume = volume / 100;
     }, [volume]);
+
+    function updateProgress(progress: number) {
+        if (audio.src == "" || !audio.duration) {
+            return
+        }
+
+        audio.currentTime = audio.duration * (progress / 100);
+    }
 
     function startPlay() {
         audio.play()
@@ -76,14 +89,18 @@ export default function useAudioPlayer(): AudioPlayer {
 
     function onEnd(getNext: () => string | undefined): void {
         audio.onended = () => {
-            const nextUniqueId =  getNext();
-            if (!nextUniqueId ) {
+            const nextUniqueId = getNext();
+            if (!nextUniqueId) {
                 return
             }
 
             preload(nextUniqueId)
         }
     }
+
+    audio.addEventListener('timeupdate', () => {
+        setProgress((audio.currentTime / audio.duration) * 100)
+    });
 
     return {
         isPlaying,
@@ -99,6 +116,9 @@ export default function useAudioPlayer(): AudioPlayer {
 
         songUniqueId,
 
-        onEnd
+        onEnd,
+
+        progress,
+        setProgress: updateProgress
     }
 }

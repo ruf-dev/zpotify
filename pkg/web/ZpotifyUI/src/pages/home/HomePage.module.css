@@ -25,7 +25,7 @@
 
 .Player {
     position: fixed;
-    bottom: 5vh;
+    bottom: 7vh;
     width: 100vw;
 
     display: flex;

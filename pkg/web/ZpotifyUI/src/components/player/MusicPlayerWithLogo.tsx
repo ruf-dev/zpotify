@@ -8,6 +8,7 @@ import AnimatedZ from "@/assets/AnimatedZ.tsx";
 
 import {AudioPlayer} from "@/hooks/player/player.ts";
 import VolumeControls from "@/components/player/buttons/VolumeControls.tsx";
+import TrackProgressControls from "@/components/player/buttons/TrackProgressControls.tsx";
 
 interface MusicPlayerProps {
     audioPlayer: AudioPlayer
@@ -26,6 +27,15 @@ export default function MusicPlayerWithLogo({audioPlayer}: MusicPlayerProps) {
         <div className={cn(cls.Player, {
             [cls.open]: isOpened,
         })}>
+
+            <div className={cn(cls.TrackProgressControlsWrapper, {
+                [cls.open]: isOpened,
+            })}>
+                <TrackProgressControls
+                    audioPlayer={audioPlayer}
+                />
+            </div>
+
             <div className={
                 cn(cls.PlayerControls, {
                     [cls.open]: isOpened,
