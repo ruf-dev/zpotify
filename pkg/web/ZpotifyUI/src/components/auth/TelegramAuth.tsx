@@ -7,6 +7,7 @@ import {AuthenticateViaTelegram, AuthResults} from "@/processes/Auth.ts";
 
 import TelegramLogo from "@/assets/TelegramLogo.tsx";
 import {useState} from "react";
+import {TgDeeplink} from "@/common/Link.ts";
 
 interface TelegramAuthProps {
     UserState: User
@@ -23,7 +24,7 @@ export default function TelegramAuth({UserState}: TelegramAuthProps) {
             .subscribe((res: AuthResults) => {
                     if (res.AuthUUID) {
                         window.open(
-                            `tg://resolve?domain=${import.meta.env.VITE_TG_BOT_NAME}&start=auth_${res.AuthUUID}`,
+                            TgDeeplink(`resolve?domain=${import.meta.env.VITE_TG_BOT_NAME}&start=auth_${res.AuthUUID}`),
                             "_blank")
                     }
 

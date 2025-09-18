@@ -42,7 +42,6 @@ export default function TrackProgressControls({ audioPlayer }: TrackProgressCont
     const handleMouseUp = useCallback(() => {
         if (isDragging) {
             setIsDragging(false);
-            audioPlayer.setProgress(progress); // commit only once
         }
     }, [isDragging, progress, audioPlayer]);
 

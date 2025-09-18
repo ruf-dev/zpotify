@@ -17,8 +17,7 @@ export interface AudioPlayer {
 
     onEnd: (callback: () => string | undefined) => void;
 
-    progress: number; // always percentage 0–100
-    setProgress: (progressPercent: number) => void;
+    progress: number;
 }
 
 export default function useAudioPlayer(): AudioPlayer {
@@ -33,14 +32,6 @@ export default function useAudioPlayer(): AudioPlayer {
     useEffect(() => {
         audio.volume = volume / 100;
     }, [volume, audio]);
-
-    function updateProgress(progressPercent: number) {
-        if (!audio.src || !audio.duration) return;
-
-        const newTime = audio.duration * (progressPercent / 100);
-        audio.currentTime = newTime;
-        setProgress(progressPercent); // keep state as percentage
-    }
 
     function startPlay() {
         audio.play();
@@ -118,6 +109,5 @@ export default function useAudioPlayer(): AudioPlayer {
         onEnd,
 
         progress,
-        setProgress: updateProgress
     };
 }
