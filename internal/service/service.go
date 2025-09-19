@@ -8,6 +8,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/domain"
 	v1 "go.zpotify.ru/zpotify/internal/service/v1"
 	"go.zpotify.ru/zpotify/internal/storage"
+	"go.zpotify.ru/zpotify/internal/storage/files_cache"
 )
 
 type Service interface {
@@ -22,9 +23,9 @@ type service struct {
 	authService  AuthService
 }
 
-func New(tgApiClient telegram.TgApiClient, dataStorage storage.Storage) Service {
+func New(tgApiClient telegram.TgApiClient, dataStorage storage.Storage, cache files_cache.FilesCache) Service {
 	return &service{
-		audioService: v1.NewAudioService(tgApiClient, dataStorage),
+		audioService: v1.NewAudioService(tgApiClient, dataStorage, cache),
 		userService:  v1.NewUserService(dataStorage),
 		authService:  v1.NewAuthService(dataStorage),
 	}
@@ -48,7 +49,7 @@ type AudioService interface {
 
 	List(ctx context.Context, req domain.ListSongs) (domain.SongsList, error)
 
-	Stream(ctx context.Context, uniqueFileId string) (io.Reader, error)
+	Get(ctx context.Context, uniqueFileId string, offset, limit int64) (io.Reader, error)
 }
 
 type UserService interface {

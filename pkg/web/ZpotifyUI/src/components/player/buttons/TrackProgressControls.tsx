@@ -16,6 +16,7 @@ export default function TrackProgressControls({ audioPlayer }: TrackProgressCont
     useEffect(() => {
         if (!isDragging) {
             setProgress(audioPlayer.progress);
+
         }
     }, [audioPlayer.progress, isDragging]);
 
@@ -42,6 +43,7 @@ export default function TrackProgressControls({ audioPlayer }: TrackProgressCont
     const handleMouseUp = useCallback(() => {
         if (isDragging) {
             setIsDragging(false);
+            audioPlayer.setProgress(progress)
         }
     }, [isDragging, progress, audioPlayer]);
 

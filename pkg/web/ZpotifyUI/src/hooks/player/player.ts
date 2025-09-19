@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import api from "@/app/api/api.ts";
 
 export interface AudioPlayer {
@@ -18,6 +18,7 @@ export interface AudioPlayer {
     onEnd: (callback: () => string | undefined) => void;
 
     progress: number;
+    setProgress: (percent: number) => void
 }
 
 export default function useAudioPlayer(): AudioPlayer {
@@ -79,6 +80,10 @@ export default function useAudioPlayer(): AudioPlayer {
         };
     }
 
+    function setTrackProgress(progress: number): void {
+        audio.currentTime = audio.duration * (progress / 100);
+    }
+
     // sync progress from audio
     useEffect(() => {
         const handleTimeUpdate = () => {
@@ -109,5 +114,6 @@ export default function useAudioPlayer(): AudioPlayer {
         onEnd,
 
         progress,
+        setProgress: setTrackProgress
     };
 }

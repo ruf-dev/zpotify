@@ -10,11 +10,13 @@ import (
 	"golang.org/x/sync/errgroup"
 
 	"go.zpotify.ru/zpotify/internal/background"
+	"go.zpotify.ru/zpotify/internal/background/integrity_checker"
 	"go.zpotify.ru/zpotify/internal/background/sessions_gc"
 	tgApi "go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/middleware"
 	"go.zpotify.ru/zpotify/internal/service"
 	"go.zpotify.ru/zpotify/internal/storage"
+	"go.zpotify.ru/zpotify/internal/storage/files_cache"
 	"go.zpotify.ru/zpotify/internal/storage/pg"
 	"go.zpotify.ru/zpotify/internal/transport/telegram"
 	"go.zpotify.ru/zpotify/internal/transport/wapi"
@@ -39,9 +41,17 @@ func (c *Custom) Init(a *App) (err error) {
 
 	c.tgApiClient = tgApi.NewTgApiClient(a.Telegram.Bot.Token)
 
-	c.service = service.New(c.tgApiClient, c.storage)
+	fc, err := files_cache.New()
+	if err != nil {
+		return rerrors.Wrap(err, "error creating files cache")
+	}
 
-	c.backgroundWorker = background.New(sessions_gc.New(c.storage))
+	c.service = service.New(c.tgApiClient, c.storage, fc)
+
+	c.backgroundWorker = background.New(
+		sessions_gc.New(c.storage),
+		integrity_checker.New(c.tgApiClient, c.storage),
+	)
 
 	c.telegram, err = telegram.NewServer(a.Telegram, c.service)
 	if err != nil {

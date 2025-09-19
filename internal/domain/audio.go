@@ -35,6 +35,7 @@ type TgFile struct {
 	UniqueFileId string
 	FileId       string
 	FilePath     string
+	SizeBytes    int64
 }
 
 type ListSongs struct {
@@ -44,6 +45,13 @@ type ListSongs struct {
 
 	OrderBy SongsOrderBy
 	Desc    bool
+}
+
+type ListFileMeta struct {
+	NoSizeBytesFilter bool
+
+	Offset uint64
+	Limit  uint64
 }
 
 type SongsOrderBy int
@@ -76,4 +84,10 @@ type SongsList struct {
 
 type ListArtists struct {
 	Name []string
+}
+
+type SeekFile struct {
+	UniqueId string
+	Offset   int64
+	Limit    int64
 }

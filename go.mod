@@ -6,6 +6,7 @@ require (
 	github.com/Masterminds/squirrel v1.5.4
 	github.com/Red-Sock/go-swagger-ui v0.0.2
 	github.com/Red-Sock/go_tg v0.0.26
+	github.com/dgraph-io/ristretto/v2 v2.3.0
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.1
@@ -26,8 +27,10 @@ require (
 )
 
 require (
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dprotaso/go-yit v0.0.0-20220510233725-9ba8df137936 // indirect
+	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/getkin/kin-openapi v0.127.0 // indirect
 	github.com/go-openapi/jsonpointer v0.21.0 // indirect
@@ -52,7 +55,7 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/mod v0.25.0 // indirect
 	golang.org/x/net v0.41.0 // indirect
-	golang.org/x/sys v0.33.0 // indirect
+	golang.org/x/sys v0.35.0 // indirect
 	golang.org/x/text v0.26.0 // indirect
 	golang.org/x/tools v0.33.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250603155806-513f23925822 // indirect

@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"bytes"
 	"context"
 	"database/sql"
 	"io"
@@ -11,11 +12,14 @@ import (
 	"go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
+	"go.zpotify.ru/zpotify/internal/storage/files_cache"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 )
 
 type AudioService struct {
 	tgApi telegram.TgApiClient
+
+	filesCache files_cache.FilesCache
 
 	txManger *tx_manager.TxManager
 
@@ -28,6 +32,8 @@ type AudioService struct {
 func NewAudioService(
 	tgApi telegram.TgApiClient,
 	dataStorage storage.Storage,
+
+	filesCache files_cache.FilesCache,
 ) *AudioService {
 	return &AudioService{
 		tgApi:    tgApi,
@@ -37,6 +43,8 @@ func NewAudioService(
 		songsStorage:    dataStorage.SongStorage(),
 		usersStorage:    dataStorage.User(),
 		artistStorage:   dataStorage.ArtistStorage(),
+
+		filesCache: filesCache,
 	}
 }
 
@@ -61,6 +69,7 @@ func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domai
 			UniqueFileId: tgFile.FileUniqueID,
 			FileId:       tgFile.FileID,
 			FilePath:     tgFile.FilePath,
+			SizeBytes:    int64(tgFile.FileSize),
 		},
 		AddedByTgId: req.AddedByTgId,
 	}
@@ -112,18 +121,57 @@ func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domai
 	return out, nil
 }
 
+// TODO implement thread safe saving process and separated method to get new song into cache
+func (s *AudioService) Get(ctx context.Context, uniqueFileId string, offset, limit int64) (io.Reader, error) {
+	file, err := s.fileMetaStorage.Get(ctx, uniqueFileId)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error getting file from storage")
+	}
+
+	fileBytes := s.filesCache.Get(uniqueFileId, offset, limit)
+	if len(fileBytes) != 0 {
+		return bytes.NewReader(fileBytes), nil
+	}
+
+	bytesStream, err := s.tgApi.OpenFile(ctx, file.TgFile)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error opening file from Telegram to stream")
+	}
+
+	fileBytes, err = io.ReadAll(bytesStream)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error opening file from Telegram to stream")
+	}
+
+	s.filesCache.Set(uniqueFileId, fileBytes)
+
+	return bytes.NewBuffer(s.filesCache.Get(uniqueFileId, offset, limit)), nil
+}
+
 func (s *AudioService) Stream(ctx context.Context, uniqueFileId string) (io.Reader, error) {
 	file, err := s.fileMetaStorage.Get(ctx, uniqueFileId)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error getting file from storage")
 	}
 
-	f, err := s.tgApi.OpenFile(ctx, file.TgFile)
+	fileBytes := s.filesCache.Get(uniqueFileId, 0, 0)
+	if len(fileBytes) != 0 {
+		return bytes.NewReader(fileBytes), nil
+	}
+
+	bytesStream, err := s.tgApi.OpenFile(ctx, file.TgFile)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error opening file from Telegram to stream")
 	}
 
-	return f, nil
+	fileBytes, err = io.ReadAll(bytesStream)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error opening file from Telegram to stream")
+	}
+
+	s.filesCache.Set(uniqueFileId, fileBytes)
+
+	return bytes.NewBuffer(fileBytes), nil
 }
 
 func (s *AudioService) GetInfo(ctx context.Context, uniqueFileId string) (domain.Song, error) {

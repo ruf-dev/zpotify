@@ -96,8 +96,9 @@ func (t *tgApi) OpenFile(ctx context.Context, file domain.TgFile) (io.ReadCloser
 
 		// TODO if not found then need to refetch
 		newF := domain.TgFile{
-			FileId:   f.FileID,
-			FilePath: f.FilePath,
+			FileId:    f.FileID,
+			FilePath:  f.FilePath,
+			SizeBytes: int64(f.FileSize),
 		}
 		return t.OpenFile(ctx, newF)
 
