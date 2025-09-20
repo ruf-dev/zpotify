@@ -49,7 +49,7 @@ type AudioService interface {
 
 	List(ctx context.Context, req domain.ListSongs) (domain.SongsList, error)
 
-	Get(ctx context.Context, uniqueFileId string, offset, limit int64) (io.Reader, error)
+	Get(ctx context.Context, uniqueFileId string, start, end int64) (io.ReadCloser, error)
 }
 
 type UserService interface {

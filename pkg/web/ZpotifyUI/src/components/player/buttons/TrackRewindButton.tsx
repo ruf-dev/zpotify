@@ -4,11 +4,16 @@ import cls from "@/components/player/buttons/TrackRewindButton.module.css";
 export interface TrackRewindButton {
     next?: boolean
     previous?: boolean
+
+    onClick: () => void
 }
 
-export default function TrackRewindButton({previous}: TrackRewindButton) {
+export default function TrackRewindButton({previous, onClick}: TrackRewindButton) {
     return (
-        <div className={cls.TrackRewindWrapper}>
+        <div
+            className={cls.TrackRewindWrapper}
+            onClick={onClick}
+        >
             <svg
                 style={{
                     transform: previous ? 'scaleX(-1)' : 'none',

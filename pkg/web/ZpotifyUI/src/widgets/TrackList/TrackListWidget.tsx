@@ -1,50 +1,93 @@
+import {useEffect, useState} from "react";
+
 import cls from "@/widgets/TrackList/TrackListWidget.module.css"
 
-import {Song} from "@/model/Song.ts";
 import SongListItem from "@/components/song/SongListItem.tsx";
+
+import {Song} from "@/model/Song.ts";
 import {AudioPlayer} from "@/hooks/player/player.ts";
-import {useState} from "react";
 
 type SongListWidgetProps = {
     songs: Song[]
     audioPlayer: AudioPlayer
-    currentlyPlayingIdx?: number;
 }
 
-export default function SongListWidget({songs, audioPlayer, currentlyPlayingIdx}: SongListWidgetProps) {
-    const [currentSongIdx, setCurrentSongIdx]
-        = useState<number>(currentlyPlayingIdx || 0);
+export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps) {
+    const [currentSongIdx, setCurrentSongIdx] =
+        useState<number>(-1);
 
-    function getNext(): string | undefined {
-        if (songs.length == currentSongIdx) {
-            return undefined
+    useEffect(() => {
+        if (!songs) return
+
+        const uId = songs.findIndex((s) => s.uniqueId == audioPlayer.songUniqueId)
+        if (uId == -1) return;
+
+        setCurrentSongIdx(uId);
+    }, [audioPlayer.songUniqueId, songs]);
+
+    function getNext(currentIdx: number): string | undefined {
+        if (songs.length == 0 || currentIdx == -1) {
+            return
         }
 
-        const uniqueId =  songs[currentSongIdx+1].uniqueId;
+        if (currentIdx < 0 || currentIdx + 1 >= songs.length) {
+            return songs[0].uniqueId;
+        }
 
-        setCurrentSongIdx(currentSongIdx+1)
+        return songs[currentIdx + 1].uniqueId;
+    }
 
-        return uniqueId
+    function getPrev(currentIdx: number): string | undefined {
+        if (songs.length == 0 || currentIdx == -1) {
+            return
+        }
+
+        if (currentIdx === 0 ) {
+            return songs[songs.length-1].uniqueId;
+        }
+
+        return songs[currentIdx - 1].uniqueId;
+    }
+
+    useEffect(() => {
+        audioPlayer.setNext(getNext(currentSongIdx))
+        audioPlayer.setPrev(getPrev(currentSongIdx))
+    }, [currentSongIdx, audioPlayer, songs]);
+
+    function playSongAtIndex(idx: number) {
+        const song = songs[idx];
+        if (!song) return;
+
+        audioPlayer.play(song.uniqueId);
+
+        setCurrentSongIdx(idx);
+
+        audioPlayer.onEnd(() => {
+            const nextSongId = getNext(idx);
+            if (nextSongId) {
+                const nextIdx = songs.findIndex(s => s.uniqueId === nextSongId);
+                playSongAtIndex(nextIdx);
+            }
+
+            return nextSongId
+        });
     }
 
     return (
-        <div className={cls.SongListWidgetContainer}> {
-            songs.map((s: Song) =>
-                (
-                    <div
-                        key={s.uniqueId}
-                        className={cls.Song}
-                        onClick={() => {
-                            audioPlayer.play(s.uniqueId)
-                            audioPlayer.onEnd(getNext)
-                        }}
-                    >
-                        <SongListItem
-                            song={s}
-                            isPlaying={audioPlayer.isPlaying}
-                            isSelected={audioPlayer.songUniqueId == s.uniqueId}
-                        />
-                    </div>))
-        } </div>
+        <div className={cls.SongListWidgetContainer}>
+            {songs.map((s: Song, idx: number) => (
+                <div
+                    key={s.uniqueId}
+                    className={cls.Song}
+                    onClick={() => playSongAtIndex(idx)}
+                >
+                    <SongListItem
+                        song={s}
+                        isPlaying={audioPlayer.isPlaying && audioPlayer.songUniqueId === s.uniqueId}
+                        isSelected={currentSongIdx === idx}
+                    />
+                </div>
+            ))}
+        </div>
     );
 }

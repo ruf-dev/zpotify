@@ -41,8 +41,7 @@ export default function MusicPlayerWithLogo({audioPlayer}: MusicPlayerProps) {
                     [cls.open]: isOpened,
                 })}>
                 <PlayerControls
-                    isPlaying={audioPlayer.isPlaying}
-                    togglePlay={() => audioPlayer.togglePlay()}
+                    audioPlayer={audioPlayer}
                 />
 
                 <div className={cls.VolumeControlWrapper}>

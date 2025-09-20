@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"syscall"
 
 	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
@@ -24,22 +25,22 @@ func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	offset, limit, err := extractOffsetLimit(r, track.SizeBytes)
+	start, end, err := extractStartEnd(r, track.SizeBytes)
 	if err != nil {
 		unwrapError(w, err)
 		return
 	}
 
-	stream, err := s.audioService.Get(ctx, fileId, offset, limit)
+	stream, err := s.audioService.Get(ctx, fileId, start, end)
 	if err != nil {
 		unwrapError(w, err)
 		return
 	}
 
-	if track.SizeBytes != 0 {
-		w.Header().Set("Content-Range",
-			fmt.Sprintf("bytes %d-%d/%d", offset, offset+limit, track.SizeBytes))
-	}
+	defer stream.Close()
+
+	w.Header().Set("Content-Range",
+		fmt.Sprintf("bytes %d-%d/%d", start, end, track.SizeBytes))
 
 	w.Header().
 		Set("Content-Type", "audio/ogg")
@@ -48,9 +49,7 @@ func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
 		Set("Content-Disposition",
 			fmt.Sprintf("inline; filename=\"%s - %s.ogg\"", track.Artists, track.Title))
 	w.Header().
-		Set("Transfer-Encoding", "chunked")
-	w.Header().
-		Set("Content-Length", strconv.FormatInt(track.SizeBytes, 10))
+		Set("Content-Length", strconv.FormatInt(end-start+1, 10))
 	w.Header().
 		Set("Accept-Ranges", "bytes")
 
@@ -58,28 +57,31 @@ func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
 
 	_, err = io.Copy(w, stream)
 	if err != nil {
-		log.Err(err).Msg("error streaming audio")
-		w.WriteHeader(http.StatusInternalServerError)
+		if !rerrors.Is(err, syscall.EPIPE) {
+			log.Err(err).
+				Msg("error streaming audio")
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+
 		return
 	}
 
 }
 
-func extractOffsetLimit(r *http.Request, total int64) (offset, limit int64, err error) {
+func extractStartEnd(r *http.Request, total int64) (start, end int64, err error) {
 	rangeHeader := r.Header.Get("Range")
 	if rangeHeader == "" {
-		return 0, 0, nil
+		return 0, total - 1, nil
 	}
 
 	// parse "bytes=start-end"
-	var start, end int64
 	if _, err := fmt.Sscanf(rangeHeader, "bytes=%d-%d", &start, &end); err != nil {
 		if _, err := fmt.Sscanf(rangeHeader, "bytes=%d-", &start); err != nil {
 			return 0, 0, rerrors.New("invalid range", http.StatusRequestedRangeNotSatisfiable)
 		}
-
 		end = total - 1
 	}
+
 	if end >= total {
 		end = total - 1
 	}
@@ -87,5 +89,5 @@ func extractOffsetLimit(r *http.Request, total int64) (offset, limit int64, err 
 		return 0, 0, rerrors.New("invalid range", http.StatusRequestedRangeNotSatisfiable)
 	}
 
-	return start, end - start, nil
+	return start, end, nil
 }

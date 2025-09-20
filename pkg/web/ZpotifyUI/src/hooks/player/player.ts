@@ -15,10 +15,16 @@ export interface AudioPlayer {
 
     songUniqueId: string | null;
 
-    onEnd: (callback: () => string | undefined) => void;
+    onEnd: (callback: () => void) => void;
 
     progress: number;
     setProgress: (percent: number) => void
+
+    playNext: () => void
+    playPrev: () => void
+
+    setNext: (val: string | undefined) => void
+    setPrev: (val: string | undefined) => void
 }
 
 export default function useAudioPlayer(): AudioPlayer {
@@ -29,6 +35,7 @@ export default function useAudioPlayer(): AudioPlayer {
     const [isPlaying, setIsPlaying] = useState(false);
     const [songUniqueId, setSongUniqueId] = useState<string | null>(null);
     const [progress, setProgress] = useState(0); // 0–100 percentage
+
 
     useEffect(() => {
         audio.volume = volume / 100;
@@ -69,15 +76,10 @@ export default function useAudioPlayer(): AudioPlayer {
     function play(trackUniqueId: string): void {
         preload(trackUniqueId);
         startPlay();
-        setSongUniqueId(trackUniqueId);
     }
 
-    function onEnd(getNext: () => string | undefined): void {
-        audio.onended = () => {
-            const nextUniqueId = getNext();
-            if (!nextUniqueId) return;
-            preload(nextUniqueId);
-        };
+    function onEnd(onended: () => void): void {
+        audio.onended = onended;
     }
 
     function setTrackProgress(progress: number): void {
@@ -97,6 +99,23 @@ export default function useAudioPlayer(): AudioPlayer {
         };
     }, [audio]);
 
+
+    const [nextUniqueId, setNextUniqueId] = useState<string | undefined>();
+
+    const [prevUniqueId, setPrevUniqueId] = useState<string | undefined>();
+
+    function playNext() {
+        if (nextUniqueId) {
+            play(nextUniqueId)
+        }
+    }
+
+    function playPrev() {
+        if (prevUniqueId) {
+            play(prevUniqueId)
+        }
+    }
+
     return {
         isPlaying,
 
@@ -114,6 +133,12 @@ export default function useAudioPlayer(): AudioPlayer {
         onEnd,
 
         progress,
-        setProgress: setTrackProgress
+        setProgress: setTrackProgress,
+
+        playNext,
+        playPrev,
+
+        setNext: setNextUniqueId,
+        setPrev: setPrevUniqueId,
     };
 }

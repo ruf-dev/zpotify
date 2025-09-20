@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"bytes"
 	"context"
 	"database/sql"
 	"io"
@@ -122,56 +121,74 @@ func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domai
 }
 
 // TODO implement thread safe saving process and separated method to get new song into cache
-func (s *AudioService) Get(ctx context.Context, uniqueFileId string, offset, limit int64) (io.Reader, error) {
+func (s *AudioService) Get(ctx context.Context, uniqueFileId string, start, end int64) (io.ReadCloser, error) {
 	file, err := s.fileMetaStorage.Get(ctx, uniqueFileId)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error getting file from storage")
 	}
 
-	fileBytes := s.filesCache.Get(uniqueFileId, offset, limit)
-	if len(fileBytes) != 0 {
-		return bytes.NewReader(fileBytes), nil
+	cachedFile := s.filesCache.Get(uniqueFileId)
+	if cachedFile != nil {
+		return cachedFile.Get(start, end), nil
 	}
 
-	bytesStream, err := s.tgApi.OpenFile(ctx, file.TgFile)
+	telegramBytesStream, err := s.tgApi.OpenFile(ctx, file.TgFile)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error opening file from Telegram to stream")
 	}
 
-	fileBytes, err = io.ReadAll(bytesStream)
-	if err != nil {
-		return nil, rerrors.Wrap(err, "error opening file from Telegram to stream")
-	}
+	f := files_cache.NewFile(telegramBytesStream, file.SizeBytes)
+	s.filesCache.Set(uniqueFileId, f)
 
-	s.filesCache.Set(uniqueFileId, fileBytes)
+	return f.Get(start, end), nil
+	//
+	//pipeReader, pipeWriter := io.Pipe()
+	//var cacheStream bytes.Buffer
+	//
+	//go func() {
+	//	// TODO	Handle thread safe caching and waiting for cache b cuz of using seek on this method
+	//	//	let's say there is two users accessing same file. First user is putting it to cache.
+	//	//	Second user either waits for cache or stream file from tg api
+	//
+	//	// io.MultiWriter duplicates writes to multiple destinations
+	//	//_, err := io.Copy(io.MultiWriter(pipeWriter, &cacheStream), telegramBytesStream)
+	//	//if err != nil {
+	//	//	_ = pipeWriter.CloseWithError(err)
+	//	//	return
+	//	//}
+	//
+	//	// Manual fan-out: read chunks from cold storage, write separately
+	//	buf := make([]byte, 32*1024) // 32KB buffer
+	//	for {
+	//		n, err := telegramBytesStream.Read(buf)
+	//		if n > 0 {
+	//			chunk := buf[:n]
+	//
+	//			// write to cache (always)
+	//			if _, err := cacheStream.Write(chunk); err != nil {
+	//				break
+	//			}
+	//
+	//			// write to user (may fail if user disconnects)
+	//			if _, err := pipeWriter.Write(chunk); err != nil {
+	//				// if client is gone, stop writing to pw, but continue cache
+	//				pipeWriter.CloseWithError(err)
+	//				break
+	//			}
+	//		}
+	//		if err == io.EOF {
+	//			break
+	//		}
+	//		if err != nil {
+	//			break
+	//		}
+	//	}
+	//	pipeWriter.Close()
+	//
+	//	s.filesCache.Set(uniqueFileId, cacheStream.Bytes())
+	//}()
 
-	return bytes.NewBuffer(s.filesCache.Get(uniqueFileId, offset, limit)), nil
-}
-
-func (s *AudioService) Stream(ctx context.Context, uniqueFileId string) (io.Reader, error) {
-	file, err := s.fileMetaStorage.Get(ctx, uniqueFileId)
-	if err != nil {
-		return nil, rerrors.Wrap(err, "error getting file from storage")
-	}
-
-	fileBytes := s.filesCache.Get(uniqueFileId, 0, 0)
-	if len(fileBytes) != 0 {
-		return bytes.NewReader(fileBytes), nil
-	}
-
-	bytesStream, err := s.tgApi.OpenFile(ctx, file.TgFile)
-	if err != nil {
-		return nil, rerrors.Wrap(err, "error opening file from Telegram to stream")
-	}
-
-	fileBytes, err = io.ReadAll(bytesStream)
-	if err != nil {
-		return nil, rerrors.Wrap(err, "error opening file from Telegram to stream")
-	}
-
-	s.filesCache.Set(uniqueFileId, fileBytes)
-
-	return bytes.NewBuffer(fileBytes), nil
+	//return pipeReader, nil
 }
 
 func (s *AudioService) GetInfo(ctx context.Context, uniqueFileId string) (domain.Song, error) {
