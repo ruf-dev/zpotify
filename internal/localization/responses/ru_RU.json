@@ -3,8 +3,10 @@
   "file": {
     "not_provided": "Для добавления нужно приложить файл",
     "success_adding": "Файл успешно сохранён",
-    "already_exists":  "Файл уже добавлен",
-    "user_now_allowed_to_add": "Вы не можете добавлять файлы"
+    "already_exists": "Файл уже добавлен",
+    "user_now_allowed_to_add": "Вы не можете добавлять файлы",
+    "must_have_title": "У трека должно быть название",
+    "must_have_performer": "У трека должен быть исполнитель"
   },
   "auth": {
     "successfully_authenticated": "Успешная авторизация! Можете вернутся на страницу с музыкой"

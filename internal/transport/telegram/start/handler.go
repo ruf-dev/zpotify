@@ -28,7 +28,7 @@ func New(responseBuilder *localization.ResponseBuilder, authService service.Auth
 
 func (h *Handler) Handle(in *model.MessageIn, out tgapi.Chat) error {
 	if len(in.Args) == 0 {
-		msg := response.NewMessage(h.responseBuilder.Hello(in.Ctx))
+		msg := response.NewMessage(h.responseBuilder.GetResponses(in.Ctx).Hello())
 		return out.SendMessage(msg)
 	}
 

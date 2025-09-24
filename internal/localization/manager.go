@@ -25,6 +25,12 @@ type ResponseBuilder struct {
 	responses map[Locale]responses
 }
 
+type Responses interface {
+	Hello() string
+	Auth() Auth
+	File() File
+}
+
 func New() *ResponseBuilder {
 	rm := &ResponseBuilder{
 		responses: make(map[Locale]responses),
@@ -37,34 +43,9 @@ func New() *ResponseBuilder {
 	return rm
 }
 
-func (m *ResponseBuilder) Hello(ctx context.Context) string {
+func (m *ResponseBuilder) GetResponses(ctx context.Context) Responses {
 	r := m.getResponses(LangFromCtx(ctx))
-	return r.Hello
-}
-
-func (m *ResponseBuilder) NoFileProvided(ctx context.Context) string {
-	r := m.getResponses(LangFromCtx(ctx))
-	return r.File.NotProvided
-}
-
-func (m *ResponseBuilder) SuccessSavingFile(ctx context.Context) string {
-	r := m.getResponses(LangFromCtx(ctx))
-	return r.File.SuccessAdding
-}
-
-func (m *ResponseBuilder) FileAlreadyExists(ctx context.Context) string {
-	r := m.getResponses(LangFromCtx(ctx))
-	return r.File.AlreadyExists
-}
-
-func (m *ResponseBuilder) UserNowAllowedToAddFile(ctx context.Context) string {
-	r := m.getResponses(LangFromCtx(ctx))
-	return r.File.UserNowAllowedToAdd
-}
-
-func (m *ResponseBuilder) SuccessfullyAuthenticated(ctx context.Context) string {
-	r := m.getResponses(LangFromCtx(ctx))
-	return r.Auth.SuccessfullyAuthenticated
+	return r
 }
 
 func (m *ResponseBuilder) getResponses(local Locale) responses {

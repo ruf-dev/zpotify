@@ -3,8 +3,10 @@
   "file": {
     "not_provided": "Provide a file to save",
     "success_adding": "Successfully saved file",
-    "already_exists":  "File already added",
-    "user_now_allowed_to_add": "You can't add files"
+    "already_exists": "File already added",
+    "user_now_allowed_to_add": "You can't add files",
+    "must_have_title": "Track must have title",
+    "must_have_performer": "Track must have performer"
   },
   "auth": {
     "successfully_authenticated": "Successfully authenticated. Now return to web page "

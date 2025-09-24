@@ -30,10 +30,28 @@ func New(s service.AudioService, rb *localization.ResponseBuilder) *Handler {
 }
 
 func (h *Handler) Handle(in *model.MessageIn, out tgapi.Chat) error {
+	responses := h.responseBuilder.GetResponses(in.Ctx)
+
 	audio := findAudio(in)
 	if audio == nil {
 		mo := &response.MessageOut{
-			Text:           h.responseBuilder.NoFileProvided(in.Ctx),
+			Text:           responses.File().NotProvided(),
+			ReplyMessageId: int64(in.MessageID),
+		}
+		return out.SendMessage(mo)
+	}
+
+	if audio.Title == "" {
+		mo := &response.MessageOut{
+			Text:           responses.File().MustHaveTitle(),
+			ReplyMessageId: int64(in.MessageID),
+		}
+		return out.SendMessage(mo)
+	}
+
+	if audio.Performer == "" {
+		mo := &response.MessageOut{
+			Text:           responses.File().MustHavePerformer(),
 			ReplyMessageId: int64(in.MessageID),
 		}
 		return out.SendMessage(mo)
@@ -59,11 +77,11 @@ func (h *Handler) Handle(in *model.MessageIn, out tgapi.Chat) error {
 
 	switch resp.Code {
 	case domain.SaveFileCodeOk:
-		msg.Text = h.responseBuilder.SuccessSavingFile(in.Ctx)
+		msg.Text = responses.File().SuccessAdding()
 	case domain.SaveFileCodeAlreadyExists:
-		msg.Text = h.responseBuilder.FileAlreadyExists(in.Ctx)
+		msg.Text = responses.File().AlreadyExists()
 	case domain.SaveFileCodeUserNotAllowed:
-		msg.Text = h.responseBuilder.UserNowAllowedToAddFile(in.Ctx)
+		msg.Text = responses.File().UserNowAllowedToAdd()
 	default:
 		msg.Text = "Error building response. We already working on it"
 	}

@@ -14,11 +14,6 @@
     position: relative;
 }
 
-.Player.open {
-    /*4 for logo, 1 for gap 8 for controls, 4.25 for volume*/
-    width: 15.5em;
-}
-
 .Logo {
     width: 4em;
     height: 4em;
@@ -78,6 +73,19 @@
     opacity: 100%;
     display: flex;
     align-items: center;
+}
+
+.ShuffleWrapper {
+    width: 2em;
+    height: 3em;
+
+    padding: 0.25em;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    box-sizing: border-box;
 }
 
 .VolumeControlWrapper {
