@@ -82,6 +82,7 @@ export type Refresh = Record<string, never>;
 
 export type ListSongsRequest = {
   paging?: ZpotifyApiZpotifyCommon.Paging;
+  randomHash?: string;
 };
 
 export type ListSongsResponse = {

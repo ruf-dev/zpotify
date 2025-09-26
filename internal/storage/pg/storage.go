@@ -18,6 +18,8 @@ type dataStorage struct {
 	songStorage     *SongsStorage
 	artistsStorage  *ArtistsStorage
 
+	playlistStorage *PlaylistStorage
+
 	conn *sql.DB
 }
 
@@ -28,7 +30,9 @@ func NewStorage(conn *sql.DB) storage.Storage {
 		sessionStorage:  NewSessionStorage(conn),
 		songStorage:     NewSongStorage(conn),
 		artistsStorage:  NewArtistsStorage(conn),
-		conn:            conn,
+		playlistStorage: NewPlaylistStorage(conn),
+
+		conn: conn,
 	}
 }
 

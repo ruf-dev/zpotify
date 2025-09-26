@@ -12,17 +12,20 @@ export interface PlayerProps {
 
 export default function PlayerControls({audioPlayer}: PlayerProps): JSX.Element {
     return (
-        <div className={cls.PlayerControlsWrapper}>
+        <div className={cls.PlayerControlsContainer}>
             <TrackRewindButton
                 onClick={() => audioPlayer.playPrev()}
+                isDisabled={audioPlayer.songUniqueId == null}
                 previous
             />
             <PlayPauseButton
                 isPlaying={audioPlayer.isPlaying}
+                isDisabled={audioPlayer.songUniqueId == null}
                 onClick={() => audioPlayer.togglePlay()}
             />
             <TrackRewindButton
                 onClick={() => audioPlayer.playNext()}
+                isDisabled={audioPlayer.songUniqueId == null}
                 next
             />
         </div>

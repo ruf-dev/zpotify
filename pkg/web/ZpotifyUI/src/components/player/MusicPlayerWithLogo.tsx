@@ -1,7 +1,7 @@
 import cn from "classnames";
 import {useEffect, useState} from "react";
 
-import cls from "@/components/player/MusicPlayerWithLogo.module.css";
+import cls from "@/components/player/MusicPlayerWithLogo.module.scss";
 
 import PlayerControls from "@/components/player/PlayerControls.tsx";
 import AnimatedZ from "@/assets/AnimatedZ.tsx";
@@ -31,29 +31,34 @@ export default function MusicPlayerWithLogo({audioPlayer}: MusicPlayerProps) {
 
     return (
         <div
-            className={cls.Player}
+            className={cn(cls.Player, {
+                [cls.open]: isOpened,
+            })}
             style={{
-                "width": `${isOpened ? `${logoSizeEm + controlsSizeEm + shuffleSizeEm + volumeSizeEm}` : '4'}em`
+                width: `${isOpened ? `${logoSizeEm + controlsSizeEm + shuffleSizeEm + volumeSizeEm}` : '4'}em`,
             }}
         >
 
             <div className={cn(cls.TrackProgressControlsWrapper,
-                {[cls.open]: isOpened})}>
+                {
+                    [cls.open]: isOpened && audioPlayer.songUniqueId != null
+                })}>
                 <TrackProgressControls audioPlayer={audioPlayer}/>
             </div>
 
-            <div className={cn(cls.PlayerControls,
-                {[cls.open]: isOpened,})}>
+            <div className={cn(cls.PlayerControlsWrapper, cls.hidden,
+                {
+                    [cls.open]: isOpened,
+                })}>
 
                 <PlayerControls audioPlayer={audioPlayer}/>
 
                 <div className={cls.ShuffleWrapper}>
                     <ShuffleTracksButton
-                        onClick={() => {
-                        }}/>
+                        audioPlayer={audioPlayer}/>
                 </div>
 
-                <div className={cls.VolumeControlWrapper}>
+                <div className={cn(cls.VolumeControlWrapper, cls.NotOverflown)}>
                     <VolumeControls audioPlayer={audioPlayer}/>
                 </div>
             </div>

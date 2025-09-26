@@ -245,6 +245,10 @@
       "properties": {
         "paging": {
           "$ref": "#/definitions/zpotify_apiPaging"
+        },
+        "randomHash": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },

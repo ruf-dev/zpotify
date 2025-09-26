@@ -6,6 +6,7 @@ export interface AudioPlayer {
 
     togglePlay: () => boolean;
     preload: (trackUniqueId: string) => void;
+    unload: () => void;
     play: (trackUniqueId: string) => void;
 
     setVolume: (volume: number) => void;
@@ -25,6 +26,9 @@ export interface AudioPlayer {
 
     setNext: (val: string | undefined) => void
     setPrev: (val: string | undefined) => void
+
+    shuffleHash: number | null
+    setShuffleHash: (hash: number | null) => void
 }
 
 export default function useAudioPlayer(): AudioPlayer {
@@ -34,6 +38,7 @@ export default function useAudioPlayer(): AudioPlayer {
     const [isMuted, setIsMuted] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [songUniqueId, setSongUniqueId] = useState<string | null>(null);
+
     const [progress, setProgress] = useState(0); // 0–100 percentage
 
 
@@ -47,7 +52,7 @@ export default function useAudioPlayer(): AudioPlayer {
     }
 
     function togglePlay(): boolean {
-        if (!audio.src) return false;
+        if (songUniqueId == null) return false;
 
         if (isPlaying) {
             audio.pause();
@@ -101,7 +106,6 @@ export default function useAudioPlayer(): AudioPlayer {
 
 
     const [nextUniqueId, setNextUniqueId] = useState<string | undefined>();
-
     const [prevUniqueId, setPrevUniqueId] = useState<string | undefined>();
 
     function playNext() {
@@ -116,12 +120,18 @@ export default function useAudioPlayer(): AudioPlayer {
         }
     }
 
+    const [shuffleHash, setShuffleHash] = useState<number | null>(null);
+
     return {
         isPlaying,
 
-        togglePlay,
         preload,
+        unload: () => {
+            audio.src = '';
+            setSongUniqueId(null)
+        },
         play,
+        togglePlay,
 
         volume,
         setVolume,
@@ -140,5 +150,8 @@ export default function useAudioPlayer(): AudioPlayer {
 
         setNext: setNextUniqueId,
         setPrev: setPrevUniqueId,
+
+        shuffleHash,
+        setShuffleHash,
     };
 }

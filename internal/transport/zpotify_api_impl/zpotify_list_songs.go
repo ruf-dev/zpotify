@@ -14,8 +14,9 @@ import (
 func (impl *Impl) ListSongs(ctx context.Context, req *zpotify_api.ListSongs_Request) (
 	*zpotify_api.ListSongs_Response, error) {
 	listReq := domain.ListSongs{
-		Limit:  req.GetPaging().GetLimit(),
-		Offset: req.GetPaging().GetOffset(),
+		Limit:      req.GetPaging().GetLimit(),
+		Offset:     req.GetPaging().GetOffset(),
+		RandomHash: req.RandomHash,
 	}
 
 	list, err := impl.audioService.List(ctx, listReq)

@@ -3,12 +3,13 @@ import {apiPrefix} from "@/processes/Api.ts";
 import {ArtistBase, ListSongsRequest, ListSongsResponse, SongBase, ZpotifyAPI} from "@zpotify/api";
 import {formatDuration} from "@/utils/time.ts";
 
-export async function ListGlobalSongs(limit: number, offset: number): Promise<SongList> {
+export async function ListGlobalSongs(limit: number, offset: number, randomHash: number | null): Promise<SongList> {
     const req: ListSongsRequest = {
         paging: {
             limit: limit.toString(),
             offset: offset.toString(),
-        }
+        },
+        randomHash: randomHash ? randomHash : undefined,
     } as ListSongsRequest
 
 

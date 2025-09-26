@@ -1,4 +1,4 @@
-.PlayerControlsWrapper {
+.PlayerControlsContainer {
     width: 8em;
     height: 3em;
 
@@ -7,6 +7,6 @@
     align-items: center;
 }
 
-.PlayerControlsWrapper > * {
+.PlayerControlsContainer > * {
     flex: 1;
 }

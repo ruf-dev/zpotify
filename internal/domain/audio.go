@@ -39,12 +39,15 @@ type TgFile struct {
 }
 
 type ListSongs struct {
-	UniqueIds []string
-	Limit     uint64
-	Offset    uint64
+	PlaylistUuid *string
+	UniqueIds    []string
 
-	OrderBy SongsOrderBy
-	Desc    bool
+	Limit  uint64
+	Offset uint64
+
+	OrderBy    SongsOrderBy
+	Desc       bool
+	RandomHash *uint64
 }
 
 type ListFileMeta struct {

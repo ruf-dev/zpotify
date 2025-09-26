@@ -17,21 +17,43 @@ const songsPerPage = 10;
 
 export default function InfiniteSongsList({audioPlayer}: InfiniteSongsListProps) {
     const [offset, setOffset] = useState(0)
+    const [shuffleHash, setShuffleHash] = useState<number | null>(null);
 
     const [songs, setSongs] = useState<Song[]>([])
-
     const [isListEnded, setIsListEnded] = useState(false)
 
-    useEffect(() => {
-        ListGlobalSongs(songsPerPage, offset)
+    function loadTracksPage() {
+        ListGlobalSongs(songsPerPage, offset, shuffleHash)
             .then((resp) => {
-                setSongs(prev => [...prev, ...resp.songs])
 
-                setIsListEnded(resp.total == (songs.length+resp.songs.length))
+                setSongs(prev => [...prev, ...resp.songs.filter((newSong) => {
+                    return !prev.some(old => old.uniqueId == newSong.uniqueId)
+                })])
+
+                setIsListEnded(resp.total == (songs.length + resp.songs.length))
             })
+    }
 
+    function loadTracksShuffled() {
+        ListGlobalSongs(songs.length, 0, shuffleHash)
+            .then((resp) => {
+                setSongs(resp.songs)
+                setIsListEnded(resp.total == resp.songs.length)
+            })
+    }
+
+
+    useEffect(() => {
+        loadTracksPage()
     }, [offset]);
 
+    useEffect(() => {
+        loadTracksShuffled()
+    }, [shuffleHash]);
+
+    useEffect(() => {
+        setShuffleHash(audioPlayer.shuffleHash)
+    }, [audioPlayer.shuffleHash]);
 
     function loadMore() {
         setOffset(offset + songsPerPage)

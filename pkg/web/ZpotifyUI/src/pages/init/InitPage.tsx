@@ -24,6 +24,7 @@ export default function InitPage({AudioPlayer, UserState}: InitPageProps) {
     useEffect(() => {
         if (UserState.userData) {
             navigate(Path.HomePage)
+            AudioPlayer.unload()
         }
     }, [UserState.userData]);
 

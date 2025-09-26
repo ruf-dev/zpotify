@@ -9,12 +9,15 @@ import (
 	sq "github.com/Masterminds/squirrel"
 	"github.com/lib/pq"
 	"go.redsock.ru/rerrors"
+	"go.redsock.ru/toolbox"
 
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/user_errors"
 )
+
+const globalPlaylistUuid = "3a608e96-38ae-470c-83f2-842fc4a70ed2"
 
 type SongsStorage struct {
 	db sqldb.DB
@@ -50,21 +53,14 @@ func (s *SongsStorage) Save(ctx context.Context, song domain.SongBase) error {
 
 func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.SongBase, error) {
 	builder := sq.Select(
-		"songs.file_id",
-		"songs.title",
-		"songs.duration_sec",
-		`json_agg(
-               json_build_object(
-                       'uuid', artists.uuid,
-                       'name', artists.name
-               )
-       )`,
+		"file_id",
+		"title",
+		"artists",
+		"duration_sec",
 	).
-		From("songs").
-		Join(`artists ON artists.uuid = ANY (songs.artists)`).
+		From("playlists_view").
 		Limit(r.Limit).
 		Offset(r.Offset).
-		GroupBy("songs.file_id", "songs.title", "songs.duration_sec").
 		PlaceholderFormat(sq.Dollar)
 
 	builder = s.applyListQueryFilters(builder, r)
@@ -88,8 +84,8 @@ func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.S
 		err = rows.Scan(
 			&song.UniqueFileId,
 			&song.Title,
-			&song.Duration,
 			&artistsJson,
+			&song.Duration,
 		)
 		if err != nil {
 			return nil, wrapPgErr(err)
@@ -110,7 +106,8 @@ func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.S
 
 func (s *SongsStorage) Count(ctx context.Context, r domain.ListSongs) (uint64, error) {
 	builder := sq.Select("count(*)").
-		From("songs")
+		From("playlists_view").
+		PlaceholderFormat(sq.Dollar)
 
 	builder = s.applyListQueryFilters(builder, r)
 
@@ -152,25 +149,30 @@ func (s *SongsStorage) applyListQueryFilters(builder sq.SelectBuilder, r domain.
 		builder = builder.Where(sq.Eq{
 			"file_id": r.UniqueIds,
 		})
+	} else {
+		playlistId := toolbox.Coalesce(r.PlaylistUuid, toolbox.ToPtr(globalPlaylistUuid))
+		builder = builder.Where(sq.Eq{
+			"playlist_id": playlistId,
+		})
 	}
 
 	return builder
 }
 
 func (s *SongsStorage) applyListQueryOrder(builder sq.SelectBuilder, r domain.ListSongs) sq.SelectBuilder {
-	field := "created_at"
+	field := "order_number"
 
-	switch r.OrderBy {
-	default:
+	switch {
+	case r.RandomHash != nil:
+		builder = builder.
+			Prefix(`WITH shuffle AS (SELECT setseed(?))`, 1_000_000_000_000*(1/float64(*r.RandomHash))).
+			Join("shuffle ON true")
+		field = "random()"
 	}
 
 	direction := ""
 	if r.Desc {
 		direction = " desc"
-	} else {
-		if field == "created_at" {
-			direction = " desc"
-		}
 	}
 
 	return builder.OrderBy(field + direction)

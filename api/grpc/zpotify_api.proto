@@ -111,6 +111,9 @@ message Refresh {
 message ListSongs {
   message Request {
     Paging paging = 1;
+
+    optional uint64 random_hash = 2;
+    optional string playlist_id = 3;
   }
 
   message Response {
