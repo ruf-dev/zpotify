@@ -34,11 +34,13 @@ export default function InfiniteSongsList({audioPlayer}: InfiniteSongsListProps)
             })
     }
 
-    function loadTracksShuffled() {
-        ListGlobalSongs(songs.length, 0, shuffleHash)
+    async function loadTracksShuffled(hash: number): Promise<string> {
+        return ListGlobalSongs(songs.length, 0, hash)
             .then((resp) => {
                 setSongs(resp.songs)
                 setIsListEnded(resp.total == resp.songs.length)
+
+                return resp.songs[0].uniqueId
             })
     }
 
@@ -48,7 +50,12 @@ export default function InfiniteSongsList({audioPlayer}: InfiniteSongsListProps)
     }, [offset]);
 
     useEffect(() => {
-        loadTracksShuffled()
+        if (!shuffleHash) return
+
+        loadTracksShuffled(shuffleHash)
+            .then((firstSongId) => {
+                audioPlayer.play(firstSongId)
+            })
     }, [shuffleHash]);
 
     useEffect(() => {

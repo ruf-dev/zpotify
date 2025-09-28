@@ -150,9 +150,9 @@ func (s *SongsStorage) applyListQueryFilters(builder sq.SelectBuilder, r domain.
 			"file_id": r.UniqueIds,
 		})
 	} else {
-		playlistId := toolbox.Coalesce(r.PlaylistUuid, toolbox.ToPtr(globalPlaylistUuid))
+		playlistUuid := toolbox.Coalesce(r.PlaylistUuid, toolbox.ToPtr(globalPlaylistUuid))
 		builder = builder.Where(sq.Eq{
-			"playlist_id": playlistId,
+			"playlist_uuid": playlistUuid,
 		})
 	}
 

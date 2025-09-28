@@ -52,7 +52,7 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
     useEffect(() => {
         audioPlayer.setNext(getNext(currentSongIdx))
         audioPlayer.setPrev(getPrev(currentSongIdx))
-    }, [currentSongIdx, audioPlayer, songs]);
+    }, [audioPlayer.songUniqueId]);
 
     function playSongAtIndex(idx: number) {
         const song = songs[idx];
