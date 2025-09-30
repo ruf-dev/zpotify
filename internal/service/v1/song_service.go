@@ -6,10 +6,12 @@ import (
 	"io"
 	"strings"
 
+	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
@@ -18,14 +20,14 @@ import (
 type AudioService struct {
 	tgApi telegram.TgApiClient
 
-	filesCache files_cache.FilesCache
-
-	txManger *tx_manager.TxManager
+	txManager *tx_manager.TxManager
 
 	fileMetaStorage storage.FileMetaStorage
 	songsStorage    storage.SongStorage
 	usersStorage    storage.UserStorage
 	artistStorage   storage.ArtistStorage
+
+	filesCache files_cache.FilesCache
 }
 
 func NewAudioService(
@@ -35,8 +37,8 @@ func NewAudioService(
 	filesCache files_cache.FilesCache,
 ) *AudioService {
 	return &AudioService{
-		tgApi:    tgApi,
-		txManger: dataStorage.TxManager(),
+		tgApi:     tgApi,
+		txManager: dataStorage.TxManager(),
 
 		fileMetaStorage: dataStorage.FileMeta(),
 		songsStorage:    dataStorage.SongStorage(),
@@ -73,7 +75,7 @@ func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domai
 		AddedByTgId: req.AddedByTgId,
 	}
 
-	err = s.txManger.Execute(func(tx *sql.Tx) error {
+	err = s.txManager.Execute(func(tx *sql.Tx) error {
 		fileMetaStorage := s.fileMetaStorage.WithTx(tx)
 		artistStorage := s.artistStorage.WithTx(tx)
 		songsStorage := s.songsStorage.WithTx(tx)
@@ -120,75 +122,40 @@ func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domai
 	return out, nil
 }
 
-// TODO implement thread safe saving process and separated method to get new song into cache
 func (s *AudioService) Get(ctx context.Context, uniqueFileId string, start, end int64) (io.ReadCloser, error) {
-	file, err := s.fileMetaStorage.Get(ctx, uniqueFileId)
+	fileMeta, err := s.fileMetaStorage.Get(ctx, uniqueFileId)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error getting file meta from storage")
+	}
+
+	f := s.filesCache.GetOrCreateDummy(uniqueFileId)
+	if f.IsInitializedSwap() {
+		// On first call initializes self and continue to downloading file
+		// every call after will fall into this case and wait for stream to start
+		return f.Get(start, end), nil
+	}
+
+	telegramBytesStream, err := s.openFileWithFallback(ctx, fileMeta)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error getting file from storage")
 	}
 
-	cachedFile := s.filesCache.Get(uniqueFileId)
-	if cachedFile != nil {
-		return cachedFile.Get(start, end), nil
-	}
-
-	telegramBytesStream, err := s.tgApi.OpenFile(ctx, file.TgFile)
-	if err != nil {
-		return nil, rerrors.Wrap(err, "error opening file from Telegram to stream")
-	}
-
-	f := files_cache.NewFile(telegramBytesStream, file.SizeBytes)
 	s.filesCache.Set(uniqueFileId, f)
 
-	return f.Get(start, end), nil
-	//
-	//pipeReader, pipeWriter := io.Pipe()
-	//var cacheStream bytes.Buffer
-	//
-	//go func() {
-	//	// TODO	Handle thread safe caching and waiting for cache b cuz of using seek on this method
-	//	//	let's say there is two users accessing same file. First user is putting it to cache.
-	//	//	Second user either waits for cache or stream file from tg api
-	//
-	//	// io.MultiWriter duplicates writes to multiple destinations
-	//	//_, err := io.Copy(io.MultiWriter(pipeWriter, &cacheStream), telegramBytesStream)
-	//	//if err != nil {
-	//	//	_ = pipeWriter.CloseWithError(err)
-	//	//	return
-	//	//}
-	//
-	//	// Manual fan-out: read chunks from cold storage, write separately
-	//	buf := make([]byte, 32*1024) // 32KB buffer
-	//	for {
-	//		n, err := telegramBytesStream.Read(buf)
-	//		if n > 0 {
-	//			chunk := buf[:n]
-	//
-	//			// write to cache (always)
-	//			if _, err := cacheStream.Write(chunk); err != nil {
-	//				break
-	//			}
-	//
-	//			// write to user (may fail if user disconnects)
-	//			if _, err := pipeWriter.Write(chunk); err != nil {
-	//				// if client is gone, stop writing to pw, but continue cache
-	//				pipeWriter.CloseWithError(err)
-	//				break
-	//			}
-	//		}
-	//		if err == io.EOF {
-	//			break
-	//		}
-	//		if err != nil {
-	//			break
-	//		}
-	//	}
-	//	pipeWriter.Close()
-	//
-	//	s.filesCache.Set(uniqueFileId, cacheStream.Bytes())
-	//}()
+	go func() {
+		f.Upload(telegramBytesStream, fileMeta.SizeBytes)
 
-	//return pipeReader, nil
+		if f.Size() != fileMeta.SizeBytes {
+			fileMeta.SizeBytes = f.Size()
+			err := s.fileMetaStorage.Upsert(ctx, fileMeta)
+			if err != nil {
+				log.Err(err).
+					Msg("error updating file meta for miss matched file size")
+			}
+		}
+	}()
+
+	return f.Get(start, end), nil
 }
 
 func (s *AudioService) GetInfo(ctx context.Context, uniqueFileId string) (domain.Song, error) {
@@ -227,6 +194,40 @@ func (s *AudioService) List(ctx context.Context, req domain.ListSongs) (domain.S
 		Songs: list,
 		Total: total,
 	}, nil
+}
+
+func (s *AudioService) openFileWithFallback(ctx context.Context, file domain.FileMeta) (io.ReadCloser, error) {
+	telegramBytesStream, err := s.tgApi.OpenFile(ctx, file.TgFile)
+	if err == nil {
+		return telegramBytesStream, nil
+	}
+
+	if !rerrors.Is(err, service_errors.ErrNotFound) {
+		return nil, rerrors.Wrap(err, "error opening file from Telegram to stream")
+	}
+
+	// Fallback on not found
+	f, err := s.tgApi.GetFile(ctx, file.FileId)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error getting file from telegram")
+	}
+
+	file.FileId = f.FileID
+	file.FilePath = f.FilePath
+	file.SizeBytes = int64(f.FileSize)
+
+	err = s.fileMetaStorage.Upsert(ctx, file)
+	if err != nil {
+		return nil, rerrors.Wrap(err,
+			"error upserting file to storage after failing to finding it in telegram cache")
+	}
+
+	telegramBytesStream, err = s.tgApi.OpenFile(ctx, file.TgFile)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error opening file from Telegram to stream")
+	}
+
+	return telegramBytesStream, nil
 }
 
 func separateArtists(artists string) []string {

@@ -1,17 +1,22 @@
 package files_cache
 
 import (
+	"sync"
+
 	"github.com/dgraph-io/ristretto/v2"
 	"go.redsock.ru/rerrors"
 )
 
 type FilesCache interface {
-	Get(uniqueId string) *File
 	Set(uniqueId string, value *File)
+
+	GetOrCreateDummy(uniqueId string) *File
 }
 
 type filesCache struct {
 	cache *ristretto.Cache[string, *File]
+
+	createMutex sync.Mutex
 }
 
 func New() (FilesCache, error) {
@@ -33,8 +38,21 @@ func New() (FilesCache, error) {
 	return fc, nil
 }
 
-func (s *filesCache) Get(uniqueId string) *File {
+func (s *filesCache) GetOrCreateDummy(uniqueId string) *File {
 	res, _ := s.cache.Get(uniqueId)
+	if res != nil {
+		return res
+	}
+
+	s.createMutex.Lock()
+
+	res, _ = s.cache.Get(uniqueId)
+	if res == nil {
+		res = NewFile()
+		s.cache.Set(uniqueId, res, 1)
+	}
+	s.createMutex.Unlock()
+
 	return res
 }
 

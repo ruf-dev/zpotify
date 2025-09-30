@@ -10,6 +10,7 @@ import (
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/user_errors"
 )
 
@@ -89,18 +90,7 @@ func (t *tgApi) OpenFile(ctx context.Context, file domain.TgFile) (io.ReadCloser
 
 	switch resp.StatusCode {
 	case http.StatusNotFound:
-		f, err := t.GetFile(ctx, file.FileId)
-		if err != nil {
-			return nil, rerrors.Wrap(err, "error getting file from telegram")
-		}
-
-		// TODO if not found then need to refetch
-		newF := domain.TgFile{
-			FileId:    f.FileID,
-			FilePath:  f.FilePath,
-			SizeBytes: int64(f.FileSize),
-		}
-		return t.OpenFile(ctx, newF)
+		return nil, service_errors.ErrNotFound
 
 	default:
 		return nil, rerrors.Wrap(user_errors.ErrUnexpected)

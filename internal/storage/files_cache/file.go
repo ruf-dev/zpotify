@@ -3,6 +3,7 @@ package files_cache
 import (
 	"io"
 	"sync"
+	"sync/atomic"
 )
 
 type File struct {
@@ -14,42 +15,15 @@ type File struct {
 	cond    *sync.Cond
 	closed  bool
 	err     error
+
+	isUploading   atomic.Bool
+	isInitialized atomic.Bool
 }
 
-// NewFile allocates a buffer of known size and starts reading src into it.
-func NewFile(src io.ReadCloser, size int64) *File {
-	f := &File{
-		size:   size,
-		buffer: make([]byte, size),
-	}
-	f.cond = sync.NewCond(&f.mu)
-	go func() {
-		defer func() {
-			f.mu.Lock()
-			f.closed = true
-			f.mu.Unlock()
-			f.cond.Broadcast()
-			src.Close()
-		}()
+func NewFile() *File {
+	f := &File{}
 
-		buf := make([]byte, 32*1024)
-		for {
-			n, err := src.Read(buf)
-			if n > 0 {
-				f.mu.Lock()
-				copy(f.buffer[f.written:], buf[:n])
-				f.written += int64(n)
-				f.mu.Unlock()
-				f.cond.Broadcast()
-			}
-			if err != nil {
-				if err != io.EOF {
-					f.err = err
-				}
-				return
-			}
-		}
-	}()
+	f.cond = sync.NewCond(&f.mu)
 
 	return f
 }
@@ -104,4 +78,95 @@ func (f *File) Get(start, end int64) io.ReadCloser {
 	}()
 
 	return pr
+}
+
+func (f *File) Upload(src io.ReadCloser, size int64) {
+	defer func() {
+		f.mu.Lock()
+		f.closed = true
+		f.mu.Unlock()
+		f.cond.Broadcast()
+		src.Close()
+	}()
+
+	if !f.isUploading.CompareAndSwap(false, true) {
+		return
+	}
+
+	f.size = size
+	f.buffer = make([]byte, size)
+
+	buf := make([]byte, 32*1024)
+	// Main loop: expect declared size to match
+	for f.written < size {
+		n, err := src.Read(buf)
+		if n > 0 {
+			f.mu.Lock()
+			copy(f.buffer[f.written:], buf[:n])
+			f.written += int64(n)
+			f.mu.Unlock()
+			f.cond.Broadcast()
+		}
+		if err != nil {
+			if err != io.EOF {
+				f.err = err
+			}
+			break
+		}
+	}
+
+	// Case 1: fewer bytes than declared
+	if f.written < size {
+		f.mu.Lock()
+		f.buffer = f.buffer[:f.written]
+		f.size = f.written
+		f.mu.Unlock()
+		return
+	}
+
+	// Case 2: more bytes than declared
+	// keep reading until EOF, growing buffer if needed
+	for {
+		n, err := src.Read(buf)
+		if n > 0 {
+			f.mu.Lock()
+			if f.written+int64(n) > int64(len(f.buffer)) {
+				newCap := int64(len(f.buffer)) * 2
+				if newCap < f.written+int64(n) {
+					newCap = f.written + int64(n)
+				}
+				newBuf := make([]byte, newCap)
+				copy(newBuf, f.buffer)
+				f.buffer = newBuf
+			}
+
+			copy(f.buffer[f.written:], buf[:n])
+			f.written += int64(n)
+			f.mu.Unlock()
+			f.cond.Broadcast()
+		}
+
+		if err != nil {
+			f.mu.Lock()
+			f.size = f.written
+			f.mu.Unlock()
+
+			if err != io.EOF {
+				f.err = err
+			}
+			return
+		}
+	}
+}
+
+func (f *File) Size() int64 {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	return f.size
+}
+
+// IsInitializedSwap - if file is initialized - return true
+// is not - sets flag to "initialized" and return false
+func (f *File) IsInitializedSwap() bool {
+	return !f.isInitialized.CompareAndSwap(false, true)
 }
