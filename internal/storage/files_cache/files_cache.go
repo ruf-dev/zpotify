@@ -59,5 +59,5 @@ func (s *filesCache) GetOrCreate(uniqueId string) (res *File, isNew bool) {
 }
 
 func (s *filesCache) Set(uniqueId string, value *File) {
-	s.cache.Set(uniqueId, value, value.size)
+	s.cache.Set(uniqueId, value, value.size.Load())
 }

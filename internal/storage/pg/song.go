@@ -144,6 +144,17 @@ func (s *SongsStorage) Get(ctx context.Context, uniqueId string) (domain.SongBas
 	return resp[0], nil
 }
 
+func (s *SongsStorage) Delete(ctx context.Context, fileUniqueId string) error {
+	_, err := s.db.ExecContext(ctx, `
+			DELETE FROM files_meta
+			WHERE tg_unique_id = $1`, fileUniqueId)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
 func (s *SongsStorage) applyListQueryFilters(builder sq.SelectBuilder, r domain.ListSongs) sq.SelectBuilder {
 	if len(r.UniqueIds) != 0 {
 		builder = builder.Where(sq.Eq{

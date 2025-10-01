@@ -11,6 +11,7 @@ import (
 	"google.golang.org/grpc/codes"
 
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 	"go.zpotify.ru/zpotify/internal/user_errors"
@@ -25,12 +26,32 @@ type AuthService struct {
 	m sync.Map
 
 	sessionStorage storage.SessionStorage
+	userStorage    storage.UserStorage
 
 	txManager *tx_manager.TxManager
 
 	accessTokenTTL     time.Duration
 	refreshTokenTTL    time.Duration
 	maxSessionsPerUser int
+}
+
+func (a *AuthService) GetUserContext(ctx context.Context, id int64) (user_context.UserContext, error) {
+	filter := domain.GetUserFilter{
+		TgUserId: []int64{id},
+	}
+	users, err := a.userStorage.ListUsers(ctx, filter)
+	if err != nil {
+		return user_context.UserContext{}, rerrors.Wrap(err, "error getting user")
+	}
+
+	if len(users) == 0 {
+		return user_context.UserContext{}, rerrors.Wrap(user_errors.ErrNotFound, "no users found")
+	}
+
+	return user_context.UserContext{
+		TgUserId:    users[0].TgId,
+		Permissions: users[0].Permissions,
+	}, nil
 }
 
 func NewAuthService(data storage.Storage) *AuthService {

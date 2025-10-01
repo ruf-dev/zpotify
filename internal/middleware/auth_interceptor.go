@@ -10,6 +10,8 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
+	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/service"
 )
 
@@ -50,7 +52,7 @@ func WithDebug(b bool) authOption {
 	}
 }
 
-func WithInterceptWithAuth(srv service.Service, opts ...authOption) grpc.ServerOption {
+func GrpcAuthInterceptor(srv service.Service, opts ...authOption) grpc.ServerOption {
 	ac := &authMiddleware{
 		authService: srv.AuthService(),
 		userService: srv.UserService(),
@@ -81,7 +83,7 @@ func WithInterceptWithAuth(srv service.Service, opts ...authOption) grpc.ServerO
 			}
 
 			if userCtx != nil {
-				return handler(WithUserContext(ctx, *userCtx), req)
+				return handler(user_context.WithUserContext(ctx, *userCtx), req)
 			}
 		}
 
@@ -100,24 +102,30 @@ func (ac *authMiddleware) authWithSession(ctx context.Context, md metadata.MD) (
 		return nil, rerrors.Wrap(err)
 	}
 
-	uc := UserContext{
+	uc := user_context.UserContext{
 		TgUserId: tgId,
+		Permissions: domain.UserPermissions{
+			CanUpload:   false,
+			EarlyAccess: false,
+		},
 	}
 
-	user, err := ac.userService.Get(ctx, uc.TgUserId)
+	ctx = user_context.WithUserContext(ctx, uc)
+
+	user, err := ac.userService.GetMe(ctx)
 	if err != nil {
 		return nil, rerrors.Wrap(err)
 	}
 
 	if !user.Permissions.EarlyAccess {
-		return nil, status.Error(codes.PermissionDenied,
+		return nil, status.Error(codes.Unauthenticated,
 			"Service in early access. Ask administrator for Early access")
 	}
 
-	return WithUserContext(ctx, uc), nil
+	return ctx, nil
 }
 
-func (ac *authMiddleware) authWithDebugHeaders(ctx context.Context, md metadata.MD) (*UserContext, error) {
+func (ac *authMiddleware) authWithDebugHeaders(ctx context.Context, md metadata.MD) (*user_context.UserContext, error) {
 	tgIdStr := md.Get(tgIdDebugHeader)
 	if len(tgIdStr) != 0 {
 		tgId, err := strconv.ParseInt(tgIdStr[0], 10, 64)
@@ -125,8 +133,12 @@ func (ac *authMiddleware) authWithDebugHeaders(ctx context.Context, md metadata.
 			return nil, rerrors.Wrap(err, "expected telegram id to be an integer", codes.FailedPrecondition)
 		}
 
-		return &UserContext{
+		return &user_context.UserContext{
 			TgUserId: tgId,
+			Permissions: domain.UserPermissions{
+				CanUpload:   true,
+				EarlyAccess: true,
+			},
 		}, nil
 	}
 
@@ -137,8 +149,8 @@ func (ac *authMiddleware) authWithDebugHeaders(ctx context.Context, md metadata.
 			return nil, rerrors.Wrap(err)
 		}
 
-		return &UserContext{TgUserId: user.TgId}, nil
+		return &user_context.UserContext{TgUserId: user.TgId}, nil
 	}
 
-	return nil, rerrors.Wrap(rerrors.New("no debug header or auth token passed"), codes.FailedPrecondition)
+	return nil, rerrors.New("no debug header or auth token passed", codes.Unauthenticated)
 }

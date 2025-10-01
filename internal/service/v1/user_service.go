@@ -5,11 +5,15 @@ import (
 	"database/sql"
 
 	"go.redsock.ru/rerrors"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/localization"
+	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
+	"go.zpotify.ru/zpotify/internal/user_errors"
 )
 
 type UserService struct {
@@ -41,6 +45,11 @@ func (u *UserService) Init(ctx context.Context, user domain.User) error {
 				return rerrors.Wrap(err, "error saving user's settings")
 			}
 
+			err = userStorage.SavePermissions(ctx, user.TgId, user.Permissions)
+			if err != nil {
+				return rerrors.Wrap(err, "error saving user's permissions")
+			}
+
 			return nil
 		})
 	if err != nil {
@@ -49,20 +58,58 @@ func (u *UserService) Init(ctx context.Context, user domain.User) error {
 	return nil
 }
 
-func (u *UserService) Get(ctx context.Context, tgId int64) (domain.User, error) {
-	user, err := u.userStorage.GetUser(ctx, tgId)
-	if err != nil {
-		return user, rerrors.Wrap(err, "error getting user from storage")
+func (u *UserService) GetMe(ctx context.Context) (domain.User, error) {
+	uc, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return domain.User{}, status.Error(codes.Unauthenticated, "no user id in context")
 	}
 
-	return user, nil
+	filter := domain.GetUserFilter{
+		TgUserId: []int64{uc.TgUserId},
+	}
+
+	users, err := u.userStorage.ListUsers(ctx, filter)
+	if err != nil {
+		return domain.User{}, rerrors.Wrap(err, "error getting user from storage")
+	}
+
+	if len(users) == 0 {
+		return domain.User{}, rerrors.Wrap(user_errors.ErrNotFound, "user not found")
+	}
+
+	return users[0], nil
+}
+
+func (u *UserService) Get(ctx context.Context, tgId int64) (domain.User, error) {
+	filter := domain.GetUserFilter{
+		TgUserId: []int64{tgId},
+	}
+
+	users, err := u.userStorage.ListUsers(ctx, filter)
+	if err != nil {
+		return domain.User{}, rerrors.Wrap(err, "error getting user from storage")
+	}
+
+	if len(users) == 0 {
+		return domain.User{}, rerrors.Wrap(user_errors.ErrNotFound, "user not found")
+	}
+
+	return users[0], nil
 }
 
 func (u *UserService) GetByUsername(ctx context.Context, tgUsername string) (domain.User, error) {
-	user, err := u.userStorage.GetUserByUsername(ctx, tgUsername)
-	if err != nil {
-		return user, rerrors.Wrap(err, "error getting user from storage")
+	filter := domain.GetUserFilter{
+		Username: []string{tgUsername},
 	}
 
-	return user, nil
+	users, err := u.userStorage.ListUsers(ctx, filter)
+	if err != nil {
+		return domain.User{}, rerrors.Wrap(err, "error getting user from storage")
+	}
+
+	if len(users) == 0 {
+		return domain.User{}, rerrors.Wrap(user_errors.ErrNotFound, "user not found")
+	}
+
+	return users[0], nil
 }

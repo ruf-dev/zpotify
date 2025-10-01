@@ -24,6 +24,12 @@ service ZpotifyAPI {
       body: "*"
     };
   }
+
+  rpc DeleteSong(DeleteSong.Request) returns (DeleteSong.Response) {
+    option (google.api.http) = {
+      delete: "/api/songs/{unique_id}",
+    };
+  }
 }
 
 service UserAPI {
@@ -120,4 +126,12 @@ message ListSongs {
     repeated SongBase songs = 1;
     uint64 total = 2;
   }
+}
+
+message DeleteSong {
+  message Request {
+    string unique_id = 1;
+  }
+
+  message Response {}
 }

@@ -6,15 +6,16 @@ import (
 	"io"
 	"strings"
 
-	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
+	"go.zpotify.ru/zpotify/internal/user_errors"
 )
 
 type AudioService struct {
@@ -50,12 +51,21 @@ func NewAudioService(
 }
 
 func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domain.SaveFileMetaResp, err error) {
-	user, err := s.usersStorage.GetUser(ctx, req.AddedByTgId)
+	filter := domain.GetUserFilter{
+		TgUserId: []int64{req.AddedByTgId},
+	}
+
+	users, err := s.usersStorage.ListUsers(ctx, filter)
 	if err != nil {
 		return out, rerrors.Wrap(err, "error getting user from storage")
 	}
 
-	if !user.Permissions.CanUpload {
+	if len(users) == 0 {
+		return domain.SaveFileMetaResp{}, rerrors.Wrap(user_errors.ErrNotFound, "user not found")
+	}
+
+	// TODO get user from context
+	if !users[0].Permissions.CanUpload {
 		out.Code = domain.SaveFileCodeUserNotAllowed
 		return out, nil
 	}
@@ -122,7 +132,7 @@ func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domai
 	return out, nil
 }
 
-func (s *AudioService) Get(ctx context.Context, uniqueFileId string, start, end int64) (domain.Song, io.ReadCloser, error) {
+func (s *AudioService) Get(uniqueFileId string, start, end int64) (domain.Song, io.ReadCloser, error) {
 	f, isNew := s.filesCache.GetOrCreate(uniqueFileId)
 	if !isNew {
 		// On first call initializes self and continue to downloading file
@@ -130,24 +140,12 @@ func (s *AudioService) Get(ctx context.Context, uniqueFileId string, start, end 
 		return f.SongInfo, f.Get(start, end), nil
 	}
 
+	ctx := context.Background()
+
 	// Before uploading file to cache - validate it's size
 	fileMeta, err := s.fileMetaStorage.Get(ctx, uniqueFileId)
 	if err != nil {
 		return f.SongInfo, nil, rerrors.Wrap(err, "error getting file meta from storage")
-	}
-
-	tgFile, err := s.tgApi.GetFile(ctx, fileMeta.FileId)
-	if err != nil {
-		return f.SongInfo, nil, rerrors.Wrap(err, "error getting file from Telegram")
-	}
-
-	if int64(tgFile.FileSize) != fileMeta.SizeBytes {
-		fileMeta.SizeBytes = int64(tgFile.FileSize)
-		upsertErr := s.fileMetaStorage.Upsert(ctx, fileMeta)
-		if upsertErr != nil {
-			log.Err(upsertErr).
-				Msg("error updating file meta for miss matched file size before uploading")
-		}
 	}
 
 	song, err := s.songsStorage.Get(ctx, uniqueFileId)
@@ -208,6 +206,39 @@ func (s *AudioService) List(ctx context.Context, req domain.ListSongs) (domain.S
 		Songs: list,
 		Total: total,
 	}, nil
+}
+
+func (s *AudioService) Delete(ctx context.Context, uniqueId string) error {
+	user, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return rerrors.Wrap(user_errors.ErrUnauthenticated)
+	}
+
+	if !user.Permissions.CanDelete {
+		return rerrors.Wrap(user_errors.ErrPermissionDenied)
+	}
+
+	err := s.txManager.Execute(func(tx *sql.Tx) error {
+		songsStorage := s.songsStorage.WithTx(tx)
+		fileMetaStorage := s.fileMetaStorage.WithTx(tx)
+
+		err := songsStorage.Delete(ctx, uniqueId)
+		if err != nil {
+			return rerrors.Wrap(err, "error during deletion from storage")
+		}
+
+		err = fileMetaStorage.Delete(ctx, uniqueId)
+		if err != nil {
+			return rerrors.Wrap(err, "error during deletion from storage")
+		}
+
+		return nil
+	})
+	if err != nil {
+		return rerrors.Wrap(err)
+	}
+
+	return nil
 }
 
 func (s *AudioService) openFileWithFallback(ctx context.Context, file domain.FileMeta) (io.ReadCloser, error) {

@@ -83,6 +83,7 @@ export type Refresh = Record<string, never>;
 export type ListSongsRequest = {
   paging?: ZpotifyApiZpotifyCommon.Paging;
   randomHash?: string;
+  playlistId?: string;
 };
 
 export type ListSongsResponse = {
@@ -92,12 +93,23 @@ export type ListSongsResponse = {
 
 export type ListSongs = Record<string, never>;
 
+export type DeleteSongRequest = {
+  uniqueId?: string;
+};
+
+export type DeleteSongResponse = Record<string, never>;
+
+export type DeleteSong = Record<string, never>;
+
 export class ZpotifyAPI {
   static Version(this:void, req: VersionRequest, initReq?: fm.InitReq): Promise<VersionResponse> {
     return fm.fetchRequest<VersionResponse>(`/api/version?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});
   }
   static ListSongs(this:void, req: ListSongsRequest, initReq?: fm.InitReq): Promise<ListSongsResponse> {
     return fm.fetchRequest<ListSongsResponse>(`/api/songs`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static DeleteSong(this:void, req: DeleteSongRequest, initReq?: fm.InitReq): Promise<DeleteSongResponse> {
+    return fm.fetchRequest<DeleteSongResponse>(`/api/songs/${req.uniqueId}?${fm.renderURLSearchParams(req, ["uniqueId"])}`, {...initReq, method: "DELETE"});
   }
 }
 

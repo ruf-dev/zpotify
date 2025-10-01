@@ -129,6 +129,18 @@ func (s *FileMetaStorage) List(ctx context.Context, listReq domain.ListFileMeta)
 
 }
 
+func (s *FileMetaStorage) Delete(ctx context.Context, uniqueFileId string) error {
+	_, err := s.db.ExecContext(ctx, `
+			DELETE FROM files_meta
+			WHERE tg_unique_id = $1`, uniqueFileId)
+
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
 func (s *FileMetaStorage) scan(rs scanner) (file domain.FileMeta, err error) {
 	return file, rs.Scan(
 		&file.UniqueFileId,

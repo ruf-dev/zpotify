@@ -5,21 +5,23 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/rs/zerolog/log"
+
 	"go.zpotify.ru/zpotify/internal/domain"
 )
 
 type File struct {
 	buffer []byte // pre-allocated to full size
-	size   int64  // known total size
+	size   atomic.Int64
 
-	written int64 // number of bytes buffered so far
-	mu      sync.Mutex
-	cond    *sync.Cond
-	closed  bool
-	err     error
+	written  int64 // number of bytes buffered so far
+	mu       sync.Mutex
+	cond     *sync.Cond
+	finished bool
+	err      error
 
-	isUploading   atomic.Bool
-	isInitialized atomic.Bool
+	isInitialized   atomic.Bool
+	readyToDownload sync.WaitGroup
 
 	SongInfo domain.Song
 }
@@ -29,35 +31,46 @@ func NewFile() *File {
 
 	f.cond = sync.NewCond(&f.mu)
 
+	f.readyToDownload.Add(1)
+
 	return f
 }
 
 // Stream returns a reader that starts from the beginning.
 func (f *File) Stream() io.ReadCloser {
-	return f.Get(0, f.size)
+	return f.Get(0, f.size.Load())
 }
 
 func (f *File) Get(start, end int64) io.ReadCloser {
+	f.readyToDownload.Wait()
+
 	pr, pw := io.Pipe()
 
 	go func() {
-		defer pw.Close()
+		defer func() {
+			err := pw.Close()
+			if err != nil {
+				log.Err(err).Msg("error closing pipe writer")
+			}
+		}()
+
+		size := f.size.Load()
 
 		// Clamp end to file size
-		if end >= f.size || end == -1 {
-			end = f.size - 1
+		if end >= size || end == -1 {
+			end = size - 1
 		}
 		pos := start
 
 		for pos <= end {
 			f.mu.Lock()
-			// Wait until enough bytes are buffered or source is closed
-			for pos >= f.written && !f.closed {
+			// Wait until enough bytes are buffered or source is finished
+			for pos >= f.written && !f.finished {
 				f.cond.Wait()
 			}
 
-			// If we've buffered all data and source closed -> done
-			if pos >= f.written && f.closed {
+			// If we've buffered all data and source finished -> done
+			if pos >= f.written && f.finished {
 				f.mu.Unlock()
 				return
 			}
@@ -87,18 +100,25 @@ func (f *File) Get(start, end int64) io.ReadCloser {
 func (f *File) Upload(src io.ReadCloser, size int64) {
 	defer func() {
 		f.mu.Lock()
-		f.closed = true
+		f.finished = true
 		f.mu.Unlock()
 		f.cond.Broadcast()
-		src.Close()
+
+		err := src.Close()
+		if err != nil {
+			log.Err(err).Msg("failed to close file when uploading to cache")
+		}
+
+		if f.err != nil {
+			log.Err(f.err).Msg("failure during Upload to cache happened")
+		}
 	}()
 
-	if !f.isUploading.CompareAndSwap(false, true) {
-		return
-	}
+	f.size.Swap(size)
 
-	f.size = size
 	f.buffer = make([]byte, size)
+
+	f.readyToDownload.Done()
 
 	buf := make([]byte, 32*1024)
 	// Main loop: expect declared size to match
@@ -118,55 +138,10 @@ func (f *File) Upload(src io.ReadCloser, size int64) {
 			break
 		}
 	}
-
-	// Case 1: fewer bytes than declared
-	if f.written < size {
-		f.mu.Lock()
-		f.buffer = f.buffer[:f.written]
-		f.size = f.written
-		f.mu.Unlock()
-		return
-	}
-
-	// Case 2: more bytes than declared
-	// keep reading until EOF, growing buffer if needed
-	for {
-		n, err := src.Read(buf)
-		if n > 0 {
-			f.mu.Lock()
-			if f.written+int64(n) > int64(len(f.buffer)) {
-				newCap := int64(len(f.buffer)) * 2
-				if newCap < f.written+int64(n) {
-					newCap = f.written + int64(n)
-				}
-				newBuf := make([]byte, newCap)
-				copy(newBuf, f.buffer)
-				f.buffer = newBuf
-			}
-
-			copy(f.buffer[f.written:], buf[:n])
-			f.written += int64(n)
-			f.mu.Unlock()
-			f.cond.Broadcast()
-		}
-
-		if err != nil {
-			f.mu.Lock()
-			f.size = f.written
-			f.mu.Unlock()
-
-			if err != io.EOF {
-				f.err = err
-			}
-			return
-		}
-	}
 }
 
 func (f *File) Size() int64 {
-	f.mu.Lock()
-	defer f.mu.Unlock()
-	return f.size
+	return f.size.Load()
 }
 
 // IsInitializedSwap - if file is initialized - return true

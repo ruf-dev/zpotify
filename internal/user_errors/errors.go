@@ -9,8 +9,10 @@ import (
 )
 
 var (
-	ErrUnexpected = rerrors.New("unexpected error")
-	ErrNotFound   = rerrors.New("not found", codes.NotFound)
+	ErrUnexpected       = rerrors.New("unexpected error")
+	ErrNotFound         = rerrors.New("not found", codes.NotFound)
+	ErrUnauthenticated  = rerrors.New("unauthenticated", codes.Unauthenticated)
+	ErrPermissionDenied = rerrors.New("permission denied", codes.PermissionDenied)
 )
 
 func NotFound(resName string) UserError {

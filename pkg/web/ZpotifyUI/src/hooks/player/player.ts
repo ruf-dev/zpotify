@@ -41,14 +41,11 @@ export default function useAudioPlayer(): AudioPlayer {
 
     const [progress, setProgress] = useState(0); // 0–100 percentage
 
-
     useEffect(() => {
         audio.volume = volume / 100;
     }, [volume, audio]);
 
     function startPlay() {
-        fetch(audio.src).then(r=>console.log(r))
-
         audio
             .play().then()
             .catch(r => console.error(`Error during playing!!!!!!`, r));

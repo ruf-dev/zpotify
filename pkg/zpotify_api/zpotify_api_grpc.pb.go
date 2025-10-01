@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ZpotifyAPI_Version_FullMethodName   = "/zpotify_api.ZpotifyAPI/Version"
-	ZpotifyAPI_ListSongs_FullMethodName = "/zpotify_api.ZpotifyAPI/ListSongs"
+	ZpotifyAPI_Version_FullMethodName    = "/zpotify_api.ZpotifyAPI/Version"
+	ZpotifyAPI_ListSongs_FullMethodName  = "/zpotify_api.ZpotifyAPI/ListSongs"
+	ZpotifyAPI_DeleteSong_FullMethodName = "/zpotify_api.ZpotifyAPI/DeleteSong"
 )
 
 // ZpotifyAPIClient is the client API for ZpotifyAPI service.
@@ -29,6 +30,7 @@ const (
 type ZpotifyAPIClient interface {
 	Version(ctx context.Context, in *Version_Request, opts ...grpc.CallOption) (*Version_Response, error)
 	ListSongs(ctx context.Context, in *ListSongs_Request, opts ...grpc.CallOption) (*ListSongs_Response, error)
+	DeleteSong(ctx context.Context, in *DeleteSong_Request, opts ...grpc.CallOption) (*DeleteSong_Response, error)
 }
 
 type zpotifyAPIClient struct {
@@ -59,12 +61,23 @@ func (c *zpotifyAPIClient) ListSongs(ctx context.Context, in *ListSongs_Request,
 	return out, nil
 }
 
+func (c *zpotifyAPIClient) DeleteSong(ctx context.Context, in *DeleteSong_Request, opts ...grpc.CallOption) (*DeleteSong_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteSong_Response)
+	err := c.cc.Invoke(ctx, ZpotifyAPI_DeleteSong_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ZpotifyAPIServer is the server API for ZpotifyAPI service.
 // All implementations must embed UnimplementedZpotifyAPIServer
 // for forward compatibility.
 type ZpotifyAPIServer interface {
 	Version(context.Context, *Version_Request) (*Version_Response, error)
 	ListSongs(context.Context, *ListSongs_Request) (*ListSongs_Response, error)
+	DeleteSong(context.Context, *DeleteSong_Request) (*DeleteSong_Response, error)
 	mustEmbedUnimplementedZpotifyAPIServer()
 }
 
@@ -80,6 +93,9 @@ func (UnimplementedZpotifyAPIServer) Version(context.Context, *Version_Request) 
 }
 func (UnimplementedZpotifyAPIServer) ListSongs(context.Context, *ListSongs_Request) (*ListSongs_Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSongs not implemented")
+}
+func (UnimplementedZpotifyAPIServer) DeleteSong(context.Context, *DeleteSong_Request) (*DeleteSong_Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteSong not implemented")
 }
 func (UnimplementedZpotifyAPIServer) mustEmbedUnimplementedZpotifyAPIServer() {}
 func (UnimplementedZpotifyAPIServer) testEmbeddedByValue()                    {}
@@ -138,6 +154,24 @@ func _ZpotifyAPI_ListSongs_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ZpotifyAPI_DeleteSong_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteSong_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ZpotifyAPIServer).DeleteSong(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ZpotifyAPI_DeleteSong_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ZpotifyAPIServer).DeleteSong(ctx, req.(*DeleteSong_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ZpotifyAPI_ServiceDesc is the grpc.ServiceDesc for ZpotifyAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +186,10 @@ var ZpotifyAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSongs",
 			Handler:    _ZpotifyAPI_ListSongs_Handler,
+		},
+		{
+			MethodName: "DeleteSong",
+			Handler:    _ZpotifyAPI_DeleteSong_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

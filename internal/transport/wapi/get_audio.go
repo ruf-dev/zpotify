@@ -16,7 +16,6 @@ type GetAudioReq struct {
 }
 
 func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
 	fileId := r.URL.Query().Get("fileId")
 
 	start, end, err := extractStartEnd(r)
@@ -25,13 +24,16 @@ func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	track, stream, err := s.audioService.Get(ctx, fileId, start, end)
+	track, stream, err := s.audioService.Get(fileId, start, end)
 	if err != nil {
 		unwrapError(w, err)
 		return
 	}
 
 	defer stream.Close()
+	if end == -1 {
+		end = track.SizeBytes - 1
+	}
 
 	w.Header().Set("Content-Range",
 		fmt.Sprintf("bytes %d-%d/%d", start, end, track.SizeBytes))

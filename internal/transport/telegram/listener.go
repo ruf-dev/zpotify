@@ -9,6 +9,7 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/localization"
+	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/service"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/add"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/default_handler"
@@ -26,7 +27,6 @@ func NewServer(bot *client.Bot, service service.Service) (s *Server, err error) 
 
 	responsesBuilder := localization.New()
 	s.bot.ExternalContext = func(in *model.MessageIn) context.Context {
-
 		// TODO Replace onto in-memory cache
 		// it works fine on MVP stage but will struggle
 		// when real load starts
@@ -43,12 +43,17 @@ func NewServer(bot *client.Bot, service service.Service) (s *Server, err error) 
 
 		u, err := service.UserService().Get(ctx, in.From.ID)
 		if err == nil {
-			ctx = localization.LangToCtx(ctx, localization.GetLocaleOrDefault(u.Locale))
+			ctx = localization.LangToCtx(ctx,
+				localization.GetLocaleOrDefault(u.Locale))
+			ctx = user_context.WithUserContext(ctx,
+				user_context.UserContext{
+					TgUserId:    u.TgId,
+					Permissions: u.Permissions,
+				})
 			return ctx
 		}
 
 		locale := localization.ParseLangFromChatMessage(in)
-
 		ctx = localization.LangToCtx(ctx, locale)
 
 		user := domain.User{
@@ -65,6 +70,12 @@ func NewServer(bot *client.Bot, service service.Service) (s *Server, err error) 
 		if err != nil {
 			log.Error().Err(err).Msg("error during user initialization")
 		}
+
+		ctx = user_context.WithUserContext(ctx,
+			user_context.UserContext{
+				TgUserId:    u.TgId,
+				Permissions: u.Permissions,
+			})
 
 		return ctx
 	}

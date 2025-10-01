@@ -27,8 +27,11 @@ func (s *SessionStorage) GetByAccessToken(ctx context.Context, accessToken strin
 			access_token,
 			refresh_token,
 			access_expire_at,
-			refresh_expire_at
+			refresh_expire_at,
+			COALESCE(user_permissions.can_upload, '0'),
+			COALESCE(user_permissions.early_access, '0')
 		FROM user_sessions
+		LEFT JOIN user_permissions ON user_sessions.user_id = user_permissions.user_tg_id
 		WHERE access_token = $1
 `, accessToken)
 
@@ -48,8 +51,11 @@ func (s *SessionStorage) GetByRefreshToken(ctx context.Context, refreshToken str
 			access_token,
 			refresh_token,
 			access_expire_at,
-			refresh_expire_at
+			refresh_expire_at,
+			COALESCE(user_permissions.can_upload, '0'),
+			COALESCE(user_permissions.early_access, '0')
 		FROM user_sessions
+		LEFT JOIN user_permissions ON user_sessions.user_id = user_permissions.user_tg_id
 		WHERE refresh_token = $1
 `, refreshToken)
 
@@ -94,8 +100,11 @@ func (s *SessionStorage) ListByUserId(ctx context.Context, tgId int64) ([]domain
 			access_token,
 			refresh_token,
 			access_expire_at,
-			refresh_expire_at
+			refresh_expire_at,
+			COALESCE(user_permissions.can_upload, '0'),
+			COALESCE(user_permissions.early_access, '0')
 		FROM user_sessions
+		LEFT JOIN user_permissions ON user_sessions.user_id = user_permissions.user_tg_id
 		WHERE user_id = $1
 		ORDER BY refresh_expire_at DESC
 `, tgId)
@@ -142,6 +151,9 @@ func (s *SessionStorage) scanSession(row scanner, session *domain.UserSession) e
 		&session.RefreshToken,
 		&session.AccessExpiresAt,
 		&session.RefreshExpiresAt,
+
+		&session.Permissions.CanUpload,
+		&session.Permissions.EarlyAccess,
 	)
 }
 

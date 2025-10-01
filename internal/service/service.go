@@ -6,6 +6,7 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	v1 "go.zpotify.ru/zpotify/internal/service/v1"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
@@ -49,12 +50,17 @@ type AudioService interface {
 
 	List(ctx context.Context, req domain.ListSongs) (domain.SongsList, error)
 
-	Get(ctx context.Context, uniqueFileId string, start, end int64) (domain.Song, io.ReadCloser, error)
+	// Get - returns song info and file readCloser
+	// no context is passed is on purpose
+	Get(uniqueFileId string, start, end int64) (domain.Song, io.ReadCloser, error)
+
+	Delete(ctx context.Context, id string) error
 }
 
 type UserService interface {
 	Init(ctx context.Context, user domain.User) error
 	Get(ctx context.Context, tgId int64) (domain.User, error)
+	GetMe(ctx context.Context) (domain.User, error)
 	GetByUsername(ctx context.Context, tgUsername string) (domain.User, error)
 }
 
@@ -63,4 +69,5 @@ type AuthService interface {
 	AckAuth(ctx context.Context, authUuid string, tgId int64) error
 	AuthWithToken(ctx context.Context, s string) (tgId int64, err error)
 	Refresh(ctx context.Context, refreshToken string) (domain.UserSession, error)
+	GetUserContext(ctx context.Context, tgUserId int64) (user_context.UserContext, error)
 }

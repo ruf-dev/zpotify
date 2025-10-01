@@ -1,13 +1,16 @@
-package middleware
+package user_context
 
 import (
 	"context"
+
+	"go.zpotify.ru/zpotify/internal/domain"
 )
 
 type tgUserId struct{}
 
 type UserContext struct {
-	TgUserId int64
+	TgUserId    int64
+	Permissions domain.UserPermissions
 }
 
 func WithUserContext(ctx context.Context, uc UserContext) context.Context {

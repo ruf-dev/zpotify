@@ -10,6 +10,13 @@ type User struct {
 	Permissions UserPermissions
 }
 
+type GetUserFilter struct {
+	TgUserId []int64
+	Username []string
+
+	Offset uint64
+	Limit  uint64
+}
 type UserInfo struct {
 	TgId       int64
 	TgUserName string
@@ -21,6 +28,7 @@ type UserSettings struct {
 
 type UserPermissions struct {
 	CanUpload bool
+	CanDelete bool
 
 	EarlyAccess bool
 }
@@ -33,4 +41,6 @@ type UserSession struct {
 
 	RefreshToken     string
 	RefreshExpiresAt time.Time
+
+	Permissions UserPermissions
 }

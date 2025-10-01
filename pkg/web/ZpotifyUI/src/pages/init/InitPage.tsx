@@ -25,13 +25,10 @@ export default function InitPage({AudioPlayer, UserState}: InitPageProps) {
         if (UserState.userData) {
             navigate(Path.HomePage)
             AudioPlayer.unload()
+        } else {
+            AudioPlayer.preload(trackId)
         }
     }, [UserState.userData]);
-
-    useEffect(() => {
-        AudioPlayer.preload(trackId)
-    }, []);
-
 
     return (
         <div className={cls.InitPage}>
