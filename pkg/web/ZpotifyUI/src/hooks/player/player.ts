@@ -47,7 +47,12 @@ export default function useAudioPlayer(): AudioPlayer {
     }, [volume, audio]);
 
     function startPlay() {
-        audio.play();
+        fetch(audio.src).then(r=>console.log(r))
+
+        audio
+            .play().then()
+            .catch(r => console.error(`Error during playing!!!!!!`, r));
+
         setIsPlaying(true);
     }
 

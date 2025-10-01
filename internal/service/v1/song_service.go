@@ -122,40 +122,54 @@ func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domai
 	return out, nil
 }
 
-func (s *AudioService) Get(ctx context.Context, uniqueFileId string, start, end int64) (io.ReadCloser, error) {
-	fileMeta, err := s.fileMetaStorage.Get(ctx, uniqueFileId)
-	if err != nil {
-		return nil, rerrors.Wrap(err, "error getting file meta from storage")
-	}
-
-	f := s.filesCache.GetOrCreateDummy(uniqueFileId)
-	if f.IsInitializedSwap() {
+func (s *AudioService) Get(ctx context.Context, uniqueFileId string, start, end int64) (domain.Song, io.ReadCloser, error) {
+	f, isNew := s.filesCache.GetOrCreate(uniqueFileId)
+	if !isNew {
 		// On first call initializes self and continue to downloading file
 		// every call after will fall into this case and wait for stream to start
-		return f.Get(start, end), nil
+		return f.SongInfo, f.Get(start, end), nil
 	}
+
+	// Before uploading file to cache - validate it's size
+	fileMeta, err := s.fileMetaStorage.Get(ctx, uniqueFileId)
+	if err != nil {
+		return f.SongInfo, nil, rerrors.Wrap(err, "error getting file meta from storage")
+	}
+
+	tgFile, err := s.tgApi.GetFile(ctx, fileMeta.FileId)
+	if err != nil {
+		return f.SongInfo, nil, rerrors.Wrap(err, "error getting file from Telegram")
+	}
+
+	if int64(tgFile.FileSize) != fileMeta.SizeBytes {
+		fileMeta.SizeBytes = int64(tgFile.FileSize)
+		upsertErr := s.fileMetaStorage.Upsert(ctx, fileMeta)
+		if upsertErr != nil {
+			log.Err(upsertErr).
+				Msg("error updating file meta for miss matched file size before uploading")
+		}
+	}
+
+	song, err := s.songsStorage.Get(ctx, uniqueFileId)
+	if err != nil {
+		return f.SongInfo, nil, rerrors.Wrap(err, "error getting song from storage")
+	}
+
+	f.SongInfo.SongBase = song
+	f.SongInfo.FileMeta = fileMeta
 
 	telegramBytesStream, err := s.openFileWithFallback(ctx, fileMeta)
 	if err != nil {
-		return nil, rerrors.Wrap(err, "error getting file from storage")
+		return f.SongInfo, nil, rerrors.Wrap(err, "error getting file from storage")
 	}
 
 	s.filesCache.Set(uniqueFileId, f)
 
 	go func() {
 		f.Upload(telegramBytesStream, fileMeta.SizeBytes)
-
-		if f.Size() != fileMeta.SizeBytes {
-			fileMeta.SizeBytes = f.Size()
-			err := s.fileMetaStorage.Upsert(ctx, fileMeta)
-			if err != nil {
-				log.Err(err).
-					Msg("error updating file meta for miss matched file size")
-			}
-		}
 	}()
 
-	return f.Get(start, end), nil
+	return f.SongInfo, f.Get(start, end), nil
 }
 
 func (s *AudioService) GetInfo(ctx context.Context, uniqueFileId string) (domain.Song, error) {

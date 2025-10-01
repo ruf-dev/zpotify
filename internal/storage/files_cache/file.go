@@ -4,6 +4,8 @@ import (
 	"io"
 	"sync"
 	"sync/atomic"
+
+	"go.zpotify.ru/zpotify/internal/domain"
 )
 
 type File struct {
@@ -18,6 +20,8 @@ type File struct {
 
 	isUploading   atomic.Bool
 	isInitialized atomic.Bool
+
+	SongInfo domain.Song
 }
 
 func NewFile() *File {
@@ -40,7 +44,7 @@ func (f *File) Get(start, end int64) io.ReadCloser {
 		defer pw.Close()
 
 		// Clamp end to file size
-		if end >= f.size {
+		if end >= f.size || end == -1 {
 			end = f.size - 1
 		}
 		pos := start
@@ -66,7 +70,7 @@ func (f *File) Get(start, end int64) io.ReadCloser {
 				toWrite = remaining
 			}
 
-			chunk := f.buffer[pos : pos+toWrite]
+			chunk := f.buffer[pos:min(pos+toWrite, int64(len(f.buffer)))]
 			pos += toWrite
 			f.mu.Unlock()
 

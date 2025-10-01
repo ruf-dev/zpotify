@@ -1,6 +1,7 @@
 package wapi
 
 import (
+	"context"
 	stderrs "errors"
 	"net/http"
 
@@ -14,6 +15,10 @@ func unwrapError(w http.ResponseWriter, err error) {
 	if err == nil {
 		log.Err(rerrors.New("wrapped nil error")).
 			Msg("nil error passed to unwrapError function")
+		return
+	}
+
+	if rerrors.Is(err, context.Canceled) {
 		return
 	}
 

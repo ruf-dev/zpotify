@@ -10,7 +10,7 @@ import (
 type FilesCache interface {
 	Set(uniqueId string, value *File)
 
-	GetOrCreateDummy(uniqueId string) *File
+	GetOrCreate(uniqueId string) (f *File, isNew bool)
 }
 
 type filesCache struct {
@@ -38,10 +38,10 @@ func New() (FilesCache, error) {
 	return fc, nil
 }
 
-func (s *filesCache) GetOrCreateDummy(uniqueId string) *File {
-	res, _ := s.cache.Get(uniqueId)
+func (s *filesCache) GetOrCreate(uniqueId string) (res *File, isNew bool) {
+	res, _ = s.cache.Get(uniqueId)
 	if res != nil {
-		return res
+		return res, false
 	}
 
 	s.createMutex.Lock()
@@ -50,10 +50,12 @@ func (s *filesCache) GetOrCreateDummy(uniqueId string) *File {
 	if res == nil {
 		res = NewFile()
 		s.cache.Set(uniqueId, res, 1)
+		isNew = true
 	}
+
 	s.createMutex.Unlock()
 
-	return res
+	return res, isNew
 }
 
 func (s *filesCache) Set(uniqueId string, value *File) {

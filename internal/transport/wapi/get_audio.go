@@ -19,19 +19,13 @@ func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	fileId := r.URL.Query().Get("fileId")
 
-	track, err := s.audioService.GetInfo(ctx, fileId)
+	start, end, err := extractStartEnd(r)
 	if err != nil {
 		unwrapError(w, err)
 		return
 	}
 
-	start, end, err := extractStartEnd(r, track.SizeBytes)
-	if err != nil {
-		unwrapError(w, err)
-		return
-	}
-
-	stream, err := s.audioService.Get(ctx, fileId, start, end)
+	track, stream, err := s.audioService.Get(ctx, fileId, start, end)
 	if err != nil {
 		unwrapError(w, err)
 		return
@@ -68,10 +62,10 @@ func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func extractStartEnd(r *http.Request, total int64) (start, end int64, err error) {
+func extractStartEnd(r *http.Request) (start, end int64, err error) {
 	rangeHeader := r.Header.Get("Range")
 	if rangeHeader == "" {
-		return 0, total - 1, nil
+		return 0, -1, nil
 	}
 
 	// parse "bytes=start-end"
@@ -79,13 +73,10 @@ func extractStartEnd(r *http.Request, total int64) (start, end int64, err error)
 		if _, err := fmt.Sscanf(rangeHeader, "bytes=%d-", &start); err != nil {
 			return 0, 0, rerrors.New("invalid range", http.StatusRequestedRangeNotSatisfiable)
 		}
-		end = total - 1
+		end = -1
 	}
 
-	if end >= total {
-		end = total - 1
-	}
-	if start > end {
+	if start > end && end != -1 {
 		return 0, 0, rerrors.New("invalid range", http.StatusRequestedRangeNotSatisfiable)
 	}
 
