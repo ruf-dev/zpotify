@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package zpotify_api;
+
+import "npm.proto";
+
+option go_package = "go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_api";
+option (npm_package) = "@zpotify/api";
+
+message Permissions {
+  bool can_upload = 1;
+  bool early_access = 2;
+  bool can_delete = 3;
+}

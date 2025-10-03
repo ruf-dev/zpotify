@@ -59,7 +59,9 @@ export default function UserWidget({user}: UserWidgetProps) {
         <div className={cls.UserWidget}>
             <div
                 ref={dropdownRef}
-                className={cls.SubMenuContainer}
+                className={cn(cls.SubMenuContainer, {
+                    [cls.open]: isMenuOpen,
+                })}
             >
                 <div className={cn(cls.SubMenu,
                     {[cls.open]: isMenuOpen})}>

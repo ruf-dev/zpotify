@@ -1,5 +1,6 @@
 export type UserInfo = {
     username: string
+    permissions: Permissions
 }
 
 export type AuthData = {
@@ -11,4 +12,9 @@ export type Session = {
     refreshToken: string
     accessExpirationDate: Date
     refreshExpirationDate: Date
+}
+
+
+export type Permissions = {
+    canDelete: boolean
 }

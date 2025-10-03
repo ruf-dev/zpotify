@@ -309,6 +309,9 @@
       "properties": {
         "userData": {
           "$ref": "#/definitions/zpotify_apiUserData"
+        },
+        "permissions": {
+          "$ref": "#/definitions/zpotify_apiPermissions"
         }
       }
     },
@@ -322,6 +325,20 @@
         "offset": {
           "type": "string",
           "format": "uint64"
+        }
+      }
+    },
+    "zpotify_apiPermissions": {
+      "type": "object",
+      "properties": {
+        "canUpload": {
+          "type": "boolean"
+        },
+        "earlyAccess": {
+          "type": "boolean"
+        },
+        "canDelete": {
+          "type": "boolean"
         }
       }
     },

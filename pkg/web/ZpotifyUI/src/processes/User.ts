@@ -1,6 +1,5 @@
 import {
     MeRequest, MeResponse,
-    AuthRequest, AuthResponse,
     UserAPI,
     RefreshRequest,
     RefreshResponse,
@@ -16,10 +15,6 @@ export default class UserService {
         this.authData = authData;
     }
 
-    public async Auth(req: AuthRequest, entityNotifier?: (resp: AuthResponse) => void): Promise<void> {
-        return UserAPI.Auth(req, entityNotifier, apiPrefix())
-    }
-
     public async GetMe(): Promise<UserInfo> {
         const req: MeRequest = {};
 
@@ -31,7 +26,10 @@ export default class UserService {
                 }
 
                 return {
-                    username: r.userData.username
+                    username: r.userData.username,
+                    permissions: {
+                        canDelete: r.permissions?.canDelete || false
+                    },
                 } as UserInfo
             })
     }

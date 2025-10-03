@@ -7,6 +7,7 @@ import "google/api/annotations.proto";
 import "npm.proto";
 
 import "zpotify_common.proto";
+import "zpotify_user.proto";
 
 option go_package = "go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_api";
 option (npm_package) = "@zpotify/api";
@@ -101,6 +102,7 @@ message Me {
 
   message Response {
     UserData user_data = 1;
+    Permissions permissions = 2;
   }
 }
 

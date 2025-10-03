@@ -8,6 +8,7 @@
 import * as fm from "./fetch.pb";
 import * as GoogleProtobufTimestamp from "./google/protobuf/timestamp.pb";
 import * as ZpotifyApiZpotifyCommon from "./zpotify_common.pb";
+import * as ZpotifyApiZpotifyUser from "./zpotify_user.pb";
 
 type Absent<T, K extends keyof T> = { [k in Exclude<keyof T, K>]?: undefined };
 
@@ -66,6 +67,7 @@ export type MeRequest = Record<string, never>;
 
 export type MeResponse = {
   userData?: UserData;
+  permissions?: ZpotifyApiZpotifyUser.Permissions;
 };
 
 export type Me = Record<string, never>;

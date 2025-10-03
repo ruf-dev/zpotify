@@ -13,4 +13,8 @@
     width: 100%;
     max-width: 60vh;
     height: 4em;
+
+    display: flex;
+    flex-direction: row;
 }
+
