@@ -33,6 +33,7 @@
 
 .SubMenu.open {
     transform: translateY(0%);
+    padding: 0.5em;
 }
 
 

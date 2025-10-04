@@ -16,6 +16,8 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
     const [currentSongIdx, setCurrentSongIdx] =
         useState<number>(-1);
 
+    const [menuOpenedSongId, setMenuOpenedSongId] = useState<string | null>(null)
+
     useEffect(() => {
         if (!songs) return
 
@@ -42,8 +44,8 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
             return
         }
 
-        if (currentIdx === 0 ) {
-            return songs[songs.length-1].uniqueId;
+        if (currentIdx === 0) {
+            return songs[songs.length - 1].uniqueId;
         }
 
         return songs[currentIdx - 1].uniqueId;
@@ -87,6 +89,9 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
                         song={s}
                         isPlaying={audioPlayer.isPlaying && audioPlayer.songUniqueId === s.uniqueId}
                         isSelected={currentSongIdx === idx}
+                        onMenuOpened={setMenuOpenedSongId}
+                        onMenuClosed={() => setMenuOpenedSongId(null)}
+                        isInteractionDisabled={menuOpenedSongId ? menuOpenedSongId !== s.uniqueId : false}
                     />
                 </div>
             ))}

@@ -15,15 +15,17 @@
   padding: 0.5em 0.25em 0.25em 0.5em;
 
   transition: all 0.125s ease-in-out;
-}
-
-.SongItem.isPlaying {
-  border-bottom-color: var(--main-fg-color);
-}
-
-.SongItem:hover {
   cursor: pointer;
+
+  &.isPlaying {
+    border-bottom-color: var(--main-fg-color);
+  }
+
+  &.hovered {
+    background: rgba(119, 137, 145, 0.2);
+  }
 }
+
 
 .Titles {
   display: flex;
@@ -49,7 +51,7 @@
 
     @keyframes pulsing {
       0% {
-        text-shadow: 0 0 2pxvar(--main-fg-color) ;
+        text-shadow: 0 0 2px var(--main-fg-color) ;
       }
 
       50% {
@@ -72,6 +74,10 @@
 .Duration {
   flex: 1;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   font-weight: bolder;
   color: var(--main-fg-color);
 }
@@ -82,11 +88,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0;
 
   transition: all 0.125s ease-in-out;
-
-  &.visible {
-    opacity: 1;
-  }
 }
