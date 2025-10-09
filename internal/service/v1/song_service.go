@@ -14,6 +14,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
+	"go.zpotify.ru/zpotify/internal/storage/pg"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 	"go.zpotify.ru/zpotify/internal/user_errors"
 )
@@ -95,7 +96,7 @@ func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domai
 			switch {
 			case rerrors.Is(err, storage.ErrAlreadyExists):
 				out.Code = domain.SaveFileCodeAlreadyExists
-				return nil
+				return err
 			default:
 				return rerrors.Wrap(err, "error saving meta to zpotify's storage")
 			}
@@ -121,12 +122,27 @@ func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domai
 			return rerrors.Wrap(err, "error saving song")
 		}
 
+		err = songsStorage.SaveSongsArtists(ctx, song)
+		if err != nil {
+			return rerrors.Wrap(err, "error saving songs artists")
+		}
+
+		err = songsStorage.AddSongsToPlaylist(ctx, pg.GlobalPlaylistUuid, song.UniqueFileId)
+		if err != nil {
+			return rerrors.Wrap(err, "error saving songs artists")
+		}
+
 		out.Code = domain.SaveFileCodeOk
 
 		return nil
 	})
 	if err != nil {
-		return out, rerrors.Wrap(err)
+		switch out.Code {
+		case domain.SaveFileCodeAlreadyExists:
+			return out, nil
+		default:
+			return out, rerrors.Wrap(err)
+		}
 	}
 
 	return out, nil

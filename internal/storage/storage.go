@@ -61,6 +61,10 @@ type SongStorage interface {
 	WithTx(tx *sql.Tx) SongStorage
 
 	Save(ctx context.Context, song domain.SongBase) error
+	SaveSongsArtists(ctx context.Context, song domain.SongBase) error
+
+	AddSongsToPlaylist(ctx context.Context, playlistUuid string, songIds ...string) error
+
 	List(ctx context.Context, r domain.ListSongs) ([]domain.SongBase, error)
 	Count(ctx context.Context, r domain.ListSongs) (uint64, error)
 	Get(ctx context.Context, uniqueId string) (domain.SongBase, error)

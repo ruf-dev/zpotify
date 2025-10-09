@@ -17,6 +17,10 @@ func (impl *Impl) ListSongs(ctx context.Context, req *zpotify_api.ListSongs_Requ
 		Limit:      req.GetPaging().GetLimit(),
 		Offset:     req.GetPaging().GetOffset(),
 		RandomHash: req.RandomHash,
+
+		//TODO
+		OrderBy: domain.SongsOrderByOrderNumber,
+		Desc:    true,
 	}
 
 	list, err := impl.audioService.List(ctx, listReq)

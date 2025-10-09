@@ -17,7 +17,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/user_errors"
 )
 
-const globalPlaylistUuid = "3a608e96-38ae-470c-83f2-842fc4a70ed2"
+const GlobalPlaylistUuid = "3a608e96-38ae-470c-83f2-842fc4a70ed2"
 
 type SongsStorage struct {
 	db sqldb.DB
@@ -30,20 +30,14 @@ func NewSongStorage(db sqldb.DB) *SongsStorage {
 }
 
 func (s *SongsStorage) Save(ctx context.Context, song domain.SongBase) error {
-	artistsUuids := make([]string, 0, len(song.Artists))
-	for _, artist := range song.Artists {
-		artistsUuids = append(artistsUuids, artist.Uuid)
-	}
-
 	_, err := s.db.ExecContext(ctx, `
 		INSERT INTO songs 
-				(file_id, artists, title, duration_sec)
-		VALUES 	(     $1,      $2,     $3,           $4)
+				(file_id,  title, duration_sec)
+		VALUES 	(     $1,     $2,           $3)
 		ON CONFLICT (file_id) DO UPDATE SET
-			artists  	 = excluded.artists,
 			title 		 = excluded.title,
-			duration_sec = excluded.duration_sec
-`, song.UniqueFileId, pq.Array(artistsUuids), song.Title, song.Duration.Seconds())
+			duration_sec = excluded.duration_sec;
+`, song.UniqueFileId, song.Title, song.Duration.Seconds())
 	if err != nil {
 		return wrapPgErr(err)
 	}
@@ -51,6 +45,48 @@ func (s *SongsStorage) Save(ctx context.Context, song domain.SongBase) error {
 	return nil
 }
 
+func (s *SongsStorage) SaveSongsArtists(ctx context.Context, song domain.SongBase) error {
+	artistsUuids := make([]string, 0, len(song.Artists))
+	for _, artist := range song.Artists {
+		artistsUuids = append(artistsUuids, artist.Uuid)
+	}
+
+	_, err := s.db.ExecContext(ctx, `
+		WITH input AS (
+			SELECT $1::text AS song_id,
+			       unnest($2::uuid[]) AS artist_uuid,
+			       generate_subscripts($2::uuid[], 1) AS order_id
+		)
+		INSERT INTO songs_artists(song_id, artist_uuid, order_id)
+		SELECT song_id, artist_uuid, order_id FROM input
+		ON CONFLICT (song_id, artist_uuid) 
+		DO UPDATE SET order_id = EXCLUDED.order_id;
+	`, song.UniqueFileId, pq.Array(artistsUuids))
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
+func (s *SongsStorage) AddSongsToPlaylist(ctx context.Context, playlistUuid string, songIds ...string) error {
+	_, err := s.db.ExecContext(ctx, `
+		 INSERT INTO playlist_songs (playlist_uuid, file_id, order_number)
+        	SELECT 
+        	    $1,
+        	    unnest($2::text[]), 
+               (
+               	SELECT 
+                    COALESCE(MAX(order_number), 0) + 1
+                FROM playlist_songs 
+                WHERE playlist_uuid = $1) + generate_series(0, array_length($2::text[], 1) - 1)
+`, playlistUuid, pq.StringArray(songIds))
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
 func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.SongBase, error) {
 	builder := sq.Select(
 		"file_id",
@@ -161,7 +197,7 @@ func (s *SongsStorage) applyListQueryFilters(builder sq.SelectBuilder, r domain.
 			"file_id": r.UniqueIds,
 		})
 	} else {
-		playlistUuid := toolbox.Coalesce(r.PlaylistUuid, toolbox.ToPtr(globalPlaylistUuid))
+		playlistUuid := toolbox.Coalesce(r.PlaylistUuid, toolbox.ToPtr(GlobalPlaylistUuid))
 		builder = builder.Where(sq.Eq{
 			"playlist_uuid": playlistUuid,
 		})

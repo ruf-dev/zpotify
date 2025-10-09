@@ -60,7 +60,8 @@ type ListFileMeta struct {
 type SongsOrderBy int
 
 const (
-	SongsOrderByCreatedAt SongsOrderBy = iota
+	SongsOrderByOrderNumber SongsOrderBy = iota
+	SongsOrderByCreatedAt
 )
 
 type SongBase struct {
