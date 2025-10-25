@@ -5,17 +5,19 @@ import {useEffect, useState} from "react";
 import SongListWidget from "@/widgets/TrackList/TrackListWidget.tsx";
 
 import {Song} from "@/model/Song.ts";
-import {ListGlobalSongs} from "@/processes/Songs.ts";
+import {ListSongs} from "@/processes/Songs.ts";
 import {AudioPlayer} from "@/hooks/player/player.ts";
 import ZButton from "@/components/base/button/ZButton.tsx";
 
 interface InfiniteSongsListProps {
     audioPlayer: AudioPlayer
+
+    playlistId?: string
 }
 
 const songsPerPage = 10;
 
-export default function InfiniteSongsList({audioPlayer}: InfiniteSongsListProps) {
+export default function InfiniteSongsList({audioPlayer, playlistId}: InfiniteSongsListProps) {
     const [offset, setOffset] = useState(0)
     const [shuffleHash, setShuffleHash] = useState<number | null>(null);
 
@@ -23,7 +25,7 @@ export default function InfiniteSongsList({audioPlayer}: InfiniteSongsListProps)
     const [isListEnded, setIsListEnded] = useState(false)
 
     function loadTracksPage() {
-        ListGlobalSongs(songsPerPage, offset, shuffleHash)
+        ListSongs(songsPerPage, offset, shuffleHash, playlistId)
             .then((resp) => {
 
                 setSongs(prev => [...prev, ...resp.songs.filter((newSong) => {
@@ -35,7 +37,7 @@ export default function InfiniteSongsList({audioPlayer}: InfiniteSongsListProps)
     }
 
     async function loadTracksShuffled(hash: number): Promise<string> {
-        return ListGlobalSongs(songs.length, 0, hash)
+        return ListSongs(songs.length, 0, hash, playlistId)
             .then((resp) => {
                 setSongs(resp.songs)
                 setIsListEnded(resp.total == resp.songs.length)

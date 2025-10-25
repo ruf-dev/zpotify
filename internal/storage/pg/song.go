@@ -17,8 +17,6 @@ import (
 	"go.zpotify.ru/zpotify/internal/user_errors"
 )
 
-const GlobalPlaylistUuid = "3a608e96-38ae-470c-83f2-842fc4a70ed2"
-
 type SongsStorage struct {
 	db sqldb.DB
 }
@@ -88,6 +86,10 @@ func (s *SongsStorage) AddSongsToPlaylist(ctx context.Context, playlistUuid stri
 	return nil
 }
 func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.SongBase, error) {
+	if r.PlaylistUuid == nil {
+		return nil, rerrors.New("no playlist uuid is passed")
+	}
+
 	builder := sq.Select(
 		"file_id",
 		"title",
@@ -141,6 +143,10 @@ func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.S
 }
 
 func (s *SongsStorage) Count(ctx context.Context, r domain.ListSongs) (uint64, error) {
+	if r.PlaylistUuid == nil {
+		return 0, rerrors.New("no playlist uuid is passed")
+	}
+
 	builder := sq.Select("count(*)").
 		From("playlists_view").
 		PlaceholderFormat(sq.Dollar)
@@ -197,7 +203,7 @@ func (s *SongsStorage) applyListQueryFilters(builder sq.SelectBuilder, r domain.
 			"file_id": r.UniqueIds,
 		})
 	} else {
-		playlistUuid := toolbox.Coalesce(r.PlaylistUuid, toolbox.ToPtr(GlobalPlaylistUuid))
+		playlistUuid := toolbox.FromPtr(r.PlaylistUuid)
 		builder = builder.Where(sq.Eq{
 			"playlist_uuid": playlistUuid,
 		})

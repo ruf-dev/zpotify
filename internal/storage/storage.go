@@ -27,6 +27,7 @@ type UserStorage interface {
 
 	SaveSettings(ctx context.Context, id int64, settings domain.UserSettings) error
 	SavePermissions(ctx context.Context, id int64, permissions domain.UserPermissions) error
+	GetPermissionsOnPlaylist(ctx context.Context, userTgId int64, playlistUuid string) (domain.PlaylistPermissions, error)
 }
 
 type FileMetaStorage interface {

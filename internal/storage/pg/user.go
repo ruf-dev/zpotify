@@ -5,21 +5,26 @@ import (
 	"database/sql"
 
 	sq "github.com/Masterminds/squirrel"
+	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
 	"go.redsock.ru/toolbox"
 
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
+	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 )
 
 type UserStorage struct {
 	db sqldb.DB
+
+	querier querier.Querier
 }
 
 func NewUserStorage(db sqldb.DB) *UserStorage {
 	return &UserStorage{
-		db: db,
+		db:      db,
+		querier: querier.New(db),
 	}
 }
 
@@ -135,6 +140,27 @@ func (s *UserStorage) SavePermissions(ctx context.Context, userTgId int64, permi
 	}
 
 	return nil
+}
+
+func (s *UserStorage) GetPermissionsOnPlaylist(ctx context.Context, userTgId int64, playlistUuid string) (domain.PlaylistPermissions, error) {
+	playlistId, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return domain.PlaylistPermissions{}, rerrors.Wrap(err, "parse playlistUuid from string to uuid")
+	}
+
+	params := querier.GetUserPermissionsOnPlaylistParams{
+		UserTgID:   userTgId,
+		PlaylistID: playlistId,
+	}
+	res, err := s.querier.GetUserPermissionsOnPlaylist(ctx, params)
+	if err != nil {
+		return domain.PlaylistPermissions{}, rerrors.Wrap(err, "executing GetUserPermissionsOnPlaylist custom query")
+	}
+
+	return domain.PlaylistPermissions{
+		CanDeleteSongs: res.CanDeleteSongs,
+		CanAddSongs:    res.CanAddSongs,
+	}, nil
 }
 
 func (s *UserStorage) WithTx(tx *sql.Tx) storage.UserStorage {

@@ -8,4 +8,5 @@ export type Song = {
 export type SongList = {
     songs: Song[]
     total: number
+    canDeleteSongs: boolean
 }

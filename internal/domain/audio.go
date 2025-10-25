@@ -82,8 +82,9 @@ type ArtistsBase struct {
 }
 
 type SongsList struct {
-	Songs []SongBase
-	Total uint64
+	Songs                  []SongBase
+	Total                  uint64
+	UserPlaylistPermission PlaylistPermissions
 }
 
 type ListArtists struct {

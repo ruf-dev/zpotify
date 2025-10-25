@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"go.redsock.ru/rerrors"
+	"go.redsock.ru/toolbox"
 
 	"go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/domain"
@@ -14,10 +15,11 @@ import (
 	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
-	"go.zpotify.ru/zpotify/internal/storage/pg"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 	"go.zpotify.ru/zpotify/internal/user_errors"
 )
+
+const GlobalPlaylistUuid = "3a608e96-38ae-470c-83f2-842fc4a70ed2"
 
 type AudioService struct {
 	tgApi telegram.TgApiClient
@@ -127,7 +129,7 @@ func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domai
 			return rerrors.Wrap(err, "error saving songs artists")
 		}
 
-		err = songsStorage.AddSongsToPlaylist(ctx, pg.GlobalPlaylistUuid, song.UniqueFileId)
+		err = songsStorage.AddSongsToPlaylist(ctx, GlobalPlaylistUuid, song.UniqueFileId)
 		if err != nil {
 			return rerrors.Wrap(err, "error saving songs artists")
 		}
@@ -204,8 +206,17 @@ func (s *AudioService) GetInfo(ctx context.Context, uniqueFileId string) (domain
 }
 
 func (s *AudioService) List(ctx context.Context, req domain.ListSongs) (domain.SongsList, error) {
+	usr, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return domain.SongsList{}, service_errors.ErrUnauthenticated
+	}
+
 	if req.Limit == 0 {
 		req.Limit = 10
+	}
+
+	if req.PlaylistUuid == nil {
+		req.PlaylistUuid = toolbox.ToPtr(GlobalPlaylistUuid)
 	}
 
 	list, err := s.songsStorage.List(ctx, req)
@@ -218,9 +229,15 @@ func (s *AudioService) List(ctx context.Context, req domain.ListSongs) (domain.S
 		return domain.SongsList{}, rerrors.Wrap(err, "error counting songs")
 	}
 
+	perms, err := s.usersStorage.GetPermissionsOnPlaylist(ctx, usr.TgUserId, *req.PlaylistUuid)
+	if err != nil {
+		return domain.SongsList{}, rerrors.Wrap(err, "error getting user's permissions on playlist")
+	}
+
 	return domain.SongsList{
-		Songs: list,
-		Total: total,
+		Songs:                  list,
+		Total:                  total,
+		UserPlaylistPermission: perms,
 	}, nil
 }
 

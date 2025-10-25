@@ -301,6 +301,9 @@
         "total": {
           "type": "string",
           "format": "uint64"
+        },
+        "userCanDelete": {
+          "type": "boolean"
         }
       }
     },

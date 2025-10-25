@@ -91,6 +91,7 @@ export type ListSongsRequest = {
 export type ListSongsResponse = {
   songs?: ZpotifyApiZpotifyCommon.SongBase[];
   total?: string;
+  userCanDelete?: boolean;
 };
 
 export type ListSongs = Record<string, never>;

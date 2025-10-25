@@ -127,6 +127,7 @@ message ListSongs {
   message Response {
     repeated SongBase songs = 1;
     uint64 total = 2;
+    bool user_can_delete = 3;
   }
 }
 
