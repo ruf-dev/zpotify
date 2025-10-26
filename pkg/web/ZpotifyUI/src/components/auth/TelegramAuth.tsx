@@ -10,10 +10,10 @@ import {useState} from "react";
 import {TgDeeplink} from "@/common/Link.ts";
 
 interface TelegramAuthProps {
-    UserState: User
+    userState: User
 }
 
-export default function TelegramAuth({UserState}: TelegramAuthProps) {
+export default function TelegramAuth({userState}: TelegramAuthProps) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     async function doAuth() {
@@ -29,14 +29,13 @@ export default function TelegramAuth({UserState}: TelegramAuthProps) {
                     }
 
                     if (res.AuthData) {
-                        UserState.authenticate({
-                            session: {
+                        userState.authenticate({
                                 token: res.AuthData.accessToken || "",
                                 refreshToken: res.AuthData.refreshToken || "",
                                 accessExpirationDate: new Date(res.AuthData.accessExpiresAt),
                                 refreshExpirationDate: new Date(res.AuthData.refreshExpiresAt),
                             },
-                        });
+                        );
                     }
 
                     setIsLoading(false)

@@ -6,16 +6,12 @@
   "scripts": {
     "dev": "vite",
     "dev:public": "lt --port 5173 --subdomain aslzpotify",
-
     "build:api": "cd ./../@zpotify/api/ && npm install typescript && npm run build && npm link",
     "link": "npm link @zpotify/api",
-
     "build:ui": "tsc -b && vite build",
     "build": "npm run build:api && npm run link && npm run build:ui",
-
     "lint": "eslint .",
     "preview": "vite preview"
-
   },
   "dependencies": {
     "@hookstate/core": "^4.0.2",
@@ -27,7 +23,8 @@
     "react-router-dom": "^7.6.3",
     "react-telegram-login": "^1.1.2",
     "rxjs": "^7.8.2",
-    "styled-components": "^6.1.19"
+    "styled-components": "^6.1.19",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",

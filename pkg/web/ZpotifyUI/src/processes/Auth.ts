@@ -1,8 +1,9 @@
 import {Observable} from "rxjs";
 
-import {AuthRequest, AuthResponse, AuthAuthData, UserAPI} from "@zpotify/api";
+import {AuthRequest, AuthResponse, AuthAuthData, UserAPI, RefreshRequest, RefreshResponse} from "@zpotify/api";
 
-import {apiPrefix} from "@/processes/Api.ts";
+import {apiPrefix, InitReq} from "@/processes/Api.ts";
+import {Session} from "@/model/User.ts";
 
 export interface AuthResults {
     AuthUUID?: string
@@ -23,4 +24,61 @@ export function AuthenticateViaTelegram(): Observable<AuthResults> {
 }
 
 
+export class AuthMiddleware {
+    session?: Session;
 
+    constructor(session?: Session) {
+        this.session = session;
+    }
+
+    RefreshToken() {
+        return this.refreshToken()
+    }
+
+    async GetMetadata(): Promise<InitReq> {
+        return apiPrefix(
+            {
+                accessToken: await this.getAccessToken()
+            }
+        )
+    }
+
+    private async getAccessToken(): Promise<string> {
+        if (!this.session) {
+            throw new Error("User is not authenticated")
+        }
+
+        if (this.session.accessExpirationDate < new Date()) {
+            await this.refreshToken()
+        }
+
+        return this.session.token
+    }
+
+    private async refreshToken() {
+        if (!this.session) {
+            throw new Error("User is not authenticated")
+        }
+
+        if (this.session.refreshExpirationDate < new Date()) {
+            throw new Error("Refresh token expired")
+        }
+
+        const req: RefreshRequest = {
+            refreshToken: this.session.refreshToken
+        }
+
+        return UserAPI.RefreshToken(req, apiPrefix())
+            .then(fromAuthData)
+    }
+}
+
+
+function fromAuthData(r: RefreshResponse): Session {
+    return {
+        token: r.authData?.accessToken,
+        refreshToken: r.authData?.refreshToken,
+        accessExpirationDate: r.authData?.accessExpiresAt,
+        refreshExpirationDate: r.authData?.refreshExpiresAt,
+    } as Session
+}

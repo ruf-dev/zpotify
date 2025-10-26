@@ -17,3 +17,10 @@ export enum ErrorCodes {
     DATA_LOSS = 15,
     UNAUTHENTICATED = 16
 }
+
+
+export function handleError(err: any)  {
+    // TODO remove onto normal alerting
+    alert(err.message)
+    throw err
+}

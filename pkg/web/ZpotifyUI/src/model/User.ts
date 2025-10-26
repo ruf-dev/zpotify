@@ -3,10 +3,6 @@ export type UserInfo = {
     permissions: Permissions
 }
 
-export type AuthData = {
-    session: Session
-}
-
 export type Session = {
     token: string
     refreshToken: string

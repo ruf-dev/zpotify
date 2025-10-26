@@ -1,25 +1,29 @@
+import {RefObject} from "react";
+
 import {
     MeRequest, MeResponse,
     UserAPI,
-    RefreshRequest,
-    RefreshResponse,
 } from "@zpotify/api";
 
-import {apiPrefix} from "@/processes/Api.ts";
-import {AuthData, UserInfo} from "@/model/User.ts";
+import {UserInfo} from "@/model/User.ts";
 
-export default class UserService {
-    authData: AuthData;
+import {AuthMiddleware} from "@/processes/Auth.ts";
+import {BaseService} from "@/processes/BaseService.ts";
+import {InitReq} from "@/processes/Api.ts";
 
-    constructor(authData: AuthData) {
-        this.authData = authData;
+export default class UserService extends BaseService {
+
+    constructor(auth: RefObject<AuthMiddleware>) {
+        super(auth)
     }
 
     public async GetMe(): Promise<UserInfo> {
         const req: MeRequest = {};
 
-        return UserAPI
-            .Me(req, await this.getMetadata())
+        return this.executeAuthApiCall(
+            (initReq: InitReq) => {
+                return UserAPI.Me(req, initReq)
+            })
             .then((r: MeResponse) => {
                 if (!r.userData) {
                     throw new Error("empty user data in GetMe response")
@@ -31,57 +35,6 @@ export default class UserService {
                         canDelete: r.permissions?.canDelete || false
                     },
                 } as UserInfo
-            })
-    }
-
-    private async getMetadata() {
-        return apiPrefix(
-            {
-                accessToken: await this.getAccessToken()
-            }
-        )
-    }
-
-    private async getAccessToken(): Promise<string> {
-        if (!this.authData) {
-            throw new Error("User is not authenticated")
-        }
-
-        if (this.authData.session.accessExpirationDate < new Date()) {
-            await this.refreshToken()
-        }
-
-
-        return this.authData.session.token
-    }
-
-    RefreshToken() {
-        return this.refreshToken()
-    }
-
-    private async refreshToken() {
-        if (!this.authData) {
-            throw new Error("User is not authenticated")
-        }
-
-        if (this.authData.session.refreshExpirationDate < new Date()) {
-            throw new Error("Refresh token expired")
-        }
-
-        const req: RefreshRequest = {
-            refreshToken: this.authData.session.refreshToken
-        }
-
-        return UserAPI.RefreshToken(req, apiPrefix())
-            .then((r: RefreshResponse) => {
-                return {
-                    session: {
-                        token: r.authData?.accessToken,
-                        refreshToken: r.authData?.refreshToken,
-                        accessExpirationDate: r.authData?.accessExpiresAt,
-                        refreshExpirationDate: r.authData?.refreshExpiresAt,
-                    }
-                } as AuthData
             })
     }
 }

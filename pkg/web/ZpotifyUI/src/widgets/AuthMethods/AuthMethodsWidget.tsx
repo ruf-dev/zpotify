@@ -13,7 +13,7 @@ export default function AuthMethodsWidget({UserState}: AuthMethodsWidgetProps) {
         <div className={cls.AuthMethods}>
             <div className={cls.AuthMethod}>
                 <TelegramAuth
-                    UserState={UserState}
+                    userState={UserState}
                 />
             </div>
         </div>

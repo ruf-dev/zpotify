@@ -1,85 +1,90 @@
-import {useEffect, useState} from "react";
-import {AuthData, UserInfo} from "@/model/User.ts";
+import {useEffect, useRef, useState} from "react";
+
+import {Session, UserInfo} from "@/model/User.ts";
+
 import UserService from "@/processes/User.ts";
-import {ErrorCodes} from "@/processes/ErrorCodes.ts";
+import {ISongsService, SongsService} from "@/processes/Songs.ts";
+import {AuthMiddleware} from "@/processes/Auth.ts";
 
 export interface User {
     userData?: UserInfo
     setUserData: (user: UserInfo) => void;
 
-    authData?: AuthData
-    authenticate: (authData: AuthData) => void;
+    session?: Session
+    authenticate: (newSession: Session) => void;
+
+    Services(): Services
+
     logout: () => void
+}
+
+export interface Services {
+    Songs(): ISongsService
 }
 
 export default function useUser(): User {
     const [userData, setUserData] = useState<UserInfo>();
+    const [session, setSession] = useState<Session>();
 
-    const [authData, setAuthData] =
-        useState<AuthData>();
+    const authMiddleware = useRef(new AuthMiddleware());
+    const songService = useRef(new SongsService(authMiddleware));
+    const userService = useRef(new UserService(authMiddleware))
 
     useEffect(() => {
-        const authD = fromLocalStorage()
-        setAuthData(authD)
+        const sessionFromLocal = fromLocalStorage()
+        setSession(sessionFromLocal)
 
-        if (authD) {
-            fetchUserData(authD)
+        if (sessionFromLocal) {
+            authMiddleware.current.session = sessionFromLocal
+            fetchUserData()
         }
     }, []);
 
+    function authenticate(newSession: Session) {
+        setSession(newSession);
+        saveToLocalStorage(newSession);
+        authMiddleware.current.session = newSession
 
-    function authenticate(authData: AuthData) {
-        setAuthData(authData);
-        toLocalStorage(authData);
-
-        fetchUserData(authData)
+        fetchUserData()
     }
 
     function logout() {
-        setAuthData(undefined)
+        setSession(undefined)
         setUserData(undefined)
         clearLocalStorage()
     }
 
-    function fetchUserData(authData: AuthData) {
-        const s = new UserService(authData)
-        s.GetMe()
-            .then((userInf) => {
-                setUserData(userInf)
-            })
-            .catch(async (err) => {
-                if (err instanceof TypeError && err.message === "Failed to fetch") {
-                    return
-                }
-
-                if (err.code == ErrorCodes.UNAUTHENTICATED) {
-                    s.RefreshToken().then((ad) => {
-                        authenticate(ad);
-                    }).catch((err) => {
-                        if (err.code == ErrorCodes.UNAUTHENTICATED) {
-                            logout()
-                        }
-                    })
-                }
-            })
+    function fetchUserData() {
+        userService.current
+            .GetMe()
+            .then(setUserData)
     }
 
     return {
         userData,
         setUserData,
 
-        authData,
+        session,
         authenticate,
+
+        Services: () => {
+            return {
+                Songs(): ISongsService {
+                    return songService.current
+                },
+            }
+        },
+
         logout,
     }
 }
 
 
-function toLocalStorage(authData: AuthData) {
-    localStorage.setItem(getLocalStorageAuthInfoKey(), JSON.stringify(authData))
+function saveToLocalStorage(session: Session) {
+    localStorage.setItem(getLocalStorageAuthInfoKey(), JSON.stringify(session))
 }
 
-function fromLocalStorage(): AuthData | undefined {
+function fromLocalStorage(): Session | undefined {
     const authInfoFromLocalStorage = localStorage.getItem(getLocalStorageAuthInfoKey())
     if (!authInfoFromLocalStorage) {
         return
@@ -92,7 +97,6 @@ function clearLocalStorage() {
     localStorage.removeItem(getLocalStorageAuthInfoKey())
 }
 
-
 function getLocalStorageAuthInfoKey(): string {
-    return "user_auth_info"
+    return "user_session"
 }

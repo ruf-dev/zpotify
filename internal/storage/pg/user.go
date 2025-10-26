@@ -3,6 +3,7 @@ package pg
 import (
 	"context"
 	"database/sql"
+	"errors"
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
@@ -154,6 +155,10 @@ func (s *UserStorage) GetPermissionsOnPlaylist(ctx context.Context, userTgId int
 	}
 	res, err := s.querier.GetUserPermissionsOnPlaylist(ctx, params)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return domain.PlaylistPermissions{}, nil
+		}
+
 		return domain.PlaylistPermissions{}, rerrors.Wrap(err, "executing GetUserPermissionsOnPlaylist custom query")
 	}
 

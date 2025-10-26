@@ -36,6 +36,7 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
                 <div className={cls.Tittle}>Global queue</div>
                 <InfiniteSongsList
                     audioPlayer={audioPlayer}
+                    user={user}
                 />
             </div>
 
