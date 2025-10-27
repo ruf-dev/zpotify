@@ -10,6 +10,9 @@ import (
 
 type Querier interface {
 	GetUserPermissionsOnPlaylist(ctx context.Context, arg GetUserPermissionsOnPlaylistParams) (GetUserPermissionsOnPlaylistRow, error)
+	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error
+	SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error
+	UpsertUser(ctx context.Context, arg UpsertUserParams) error
 }
 
 var _ Querier = (*Queries)(nil)

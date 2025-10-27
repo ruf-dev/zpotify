@@ -69,10 +69,10 @@ type User struct {
 }
 
 type UserPermission struct {
-	UserTgID    sql.NullInt64
-	CanUpload   interface{}
-	EarlyAccess interface{}
-	CanDelete   interface{}
+	UserTgID    int64
+	CanUpload   bool
+	EarlyAccess bool
+	CanDelete   bool
 }
 
 type UserPlaylist struct {
@@ -92,6 +92,6 @@ type UserSession struct {
 }
 
 type UserSetting struct {
-	UserTgID sql.NullInt64
+	UserTgID int64
 	Locale   string
 }
