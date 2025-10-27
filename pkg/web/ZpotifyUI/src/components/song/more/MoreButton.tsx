@@ -3,22 +3,20 @@ import cls from "@/components/song/more/MoreButton.module.scss"
 import MoreDots from "@/assets/MoreDots.tsx";
 import {useEffect, useRef, useState} from "react";
 import cn from "classnames";
-import Menu from "@/components/menu/Menu.tsx";
+import Menu, {MenuOption} from "@/components/menu/Menu.tsx";
 
 interface MoreButtonProps {
+    ops: MenuOption[];
+
     onOpen?: () => void;
     onClose?: () => void;
 }
 
-export default function MoreButton({onOpen, onClose}: MoreButtonProps) {
+export default function MoreButton({onOpen, onClose, ops}: MoreButtonProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const dropdownRef = useRef(null);
     const buttonRef = useRef(null);
-    const menuOptions = [
-        {label: 'Delete'},
-        {label: 'Add'},
-    ]
 
     useEffect(() => {
         if (isMenuOpen && onOpen) {
@@ -66,7 +64,7 @@ export default function MoreButton({onOpen, onClose}: MoreButtonProps) {
                     [cls.open]: isMenuOpen,
                 })}
             >
-                <Menu options={menuOptions}/>
+                <Menu options={ops}/>
             </div>
 
             <div ref={buttonRef}>

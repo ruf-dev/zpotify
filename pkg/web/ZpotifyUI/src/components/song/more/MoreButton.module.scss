@@ -15,10 +15,10 @@
 
   &.open {
     width: 200%;
-    background: var(--disabled-fg-color);
+    background: var(--main-fg-color);
 
     border-radius: 0.25em;
 
-    box-shadow: 0 4px 0 15px var(--disabled-fg-color);
+    padding: 0.25em;
   }
 }

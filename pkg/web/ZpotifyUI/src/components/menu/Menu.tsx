@@ -7,7 +7,7 @@ interface MenuProps {
     options: MenuOption[]
 }
 
-interface MenuOption {
+export interface MenuOption {
     label?: string
     onClick?: () => void
     disabled?: boolean
@@ -16,8 +16,7 @@ interface MenuOption {
 export default function Menu({options}: MenuProps) {
     return (
         <div className={cls.MenuContainer}>
-            {
-                options.map((op, index) => {
+            {options.map((op, index) => {
                     return (
                         <div key={index}>
                             {op.label ?

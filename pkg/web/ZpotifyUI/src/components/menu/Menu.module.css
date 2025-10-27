@@ -27,6 +27,7 @@
 
 .Option.Disabled {
     background: var(--disabled-fg-color);
+    cursor: not-allowed;
 }
 
 .Separator {

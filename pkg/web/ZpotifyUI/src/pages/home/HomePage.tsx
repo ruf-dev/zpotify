@@ -8,7 +8,7 @@ import {User} from "@/hooks/user/User.ts";
 
 import {Path} from "@/app/routing/Router.tsx";
 import HeaderPart from "@/parts/header/HeaderPart.tsx";
-import InfiniteSongsList from "@/parts/InfiniteSongList/InfiniteSongsList.tsx";
+import LazyLoadSongsList from "@/parts/InfiniteSongList/LazyLoadSongsList.tsx";
 import MusicPlayerWithLogo from "@/components/player/MusicPlayerWithLogo.tsx";
 
 interface HomePageProps {
@@ -34,7 +34,7 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
 
             <div className={cls.MainBody}>
                 <div className={cls.Tittle}>Global queue</div>
-                <InfiniteSongsList
+                <LazyLoadSongsList
                     audioPlayer={audioPlayer}
                     user={user}
                 />

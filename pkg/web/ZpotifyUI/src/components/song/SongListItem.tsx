@@ -6,6 +6,7 @@ import {Song} from "@/model/Song.ts";
 
 import MoreButton from "@/components/song/more/MoreButton.tsx";
 import {useEffect, useState} from "react";
+import {SongListPermissions} from "@/model/User.ts";
 
 type SongItemProp = {
     song: Song
@@ -16,6 +17,8 @@ type SongItemProp = {
 
     onMenuOpened?: (songUniqueId: string) => void
     onMenuClosed?: () => void
+
+    permissions: SongListPermissions
 }
 
 export default function SongItem({
@@ -23,6 +26,7 @@ export default function SongItem({
                                      isPlaying, isSelected,
                                      onMenuOpened, onMenuClosed,
                                      isInteractionDisabled,
+                                     permissions,
                                  }: SongItemProp) {
     const [isHovered, setIsHovered] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,6 +36,18 @@ export default function SongItem({
 
         if (!isMenuOpen && onMenuClosed) onMenuClosed()
     }, [isMenuOpen]);
+
+    const menuOps = [
+        {
+            label: "Delete",
+            onClick: () => console.log("Delete"),
+            disabled: !permissions.canDelete,
+        },
+    ]
+
+    function isItemSelected(): boolean {
+        return (isHovered || isSelected || isMenuOpen) && !isInteractionDisabled
+    }
 
     return (
         <div
@@ -44,7 +60,7 @@ export default function SongItem({
         >
             <div className={cls.Titles}>
                 <div className={cn(cls.Title, {
-                    [cls.isSelected]: (isHovered || isSelected || isMenuOpen) && !isInteractionDisabled,
+                    [cls.isSelected]: isItemSelected(),
                 })}>
                     {song.title}
                 </div>
@@ -56,6 +72,7 @@ export default function SongItem({
             {(isHovered || isMenuOpen) && !isInteractionDisabled ? (
                 <div className={cls.MoreDotsWrapper}>
                     <MoreButton
+                        ops={menuOps}
                         onOpen={() => setIsMenuOpen(true)}
                         onClose={() => setIsMenuOpen(false)}
                     />

@@ -9,6 +9,7 @@ import {Song} from "@/model/Song.ts";
 import {AudioPlayer} from "@/hooks/player/player.ts";
 import ZButton from "@/components/base/button/ZButton.tsx";
 import {User} from "@/hooks/user/User.ts";
+import {SongListPermissions} from "@/model/User.ts";
 
 interface InfiniteSongsListProps {
     audioPlayer: AudioPlayer
@@ -19,7 +20,7 @@ interface InfiniteSongsListProps {
 
 const songsPerPage = 10;
 
-export default function InfiniteSongsList({audioPlayer, playlistId, user}: InfiniteSongsListProps) {
+export default function LazyLoadSongsList({audioPlayer, playlistId, user}: InfiniteSongsListProps) {
     const [offset, setOffset] = useState(0)
     const [shuffleHash, setShuffleHash] = useState<number | null>(null);
 
@@ -27,9 +28,13 @@ export default function InfiniteSongsList({audioPlayer, playlistId, user}: Infin
     const [isListEnded, setIsListEnded] = useState(false)
 
     const songsService = user.Services().Songs()
+    const [permissions, setPermissions] = useState<SongListPermissions>({
+        canDelete: false
+    } as SongListPermissions);
+
 
     function loadTracksPage() {
-       songsService.ListSongs(songsPerPage, offset, shuffleHash, playlistId)
+        songsService.ListSongs(songsPerPage, offset, shuffleHash, playlistId)
             .then((resp) => {
 
                 setSongs(prev => [...prev, ...resp.songs.filter((newSong) => {
@@ -37,6 +42,12 @@ export default function InfiniteSongsList({audioPlayer, playlistId, user}: Infin
                 })])
 
                 setIsListEnded(resp.total == (songs.length + resp.songs.length))
+
+                const perms = {
+                    canDelete: resp.canDeleteSongs
+                } as SongListPermissions
+
+                setPermissions(perms)
             })
     }
 
@@ -76,6 +87,7 @@ export default function InfiniteSongsList({audioPlayer, playlistId, user}: Infin
         <div className={cls.InfiniteSongsListContainer}>
             <SongListWidget
                 songs={songs}
+                permissions={permissions}
                 audioPlayer={audioPlayer}
             />
 

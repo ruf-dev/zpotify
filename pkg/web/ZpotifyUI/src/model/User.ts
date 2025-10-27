@@ -1,6 +1,6 @@
 export type UserInfo = {
     username: string
-    permissions: Permissions
+    permissions: SongListPermissions
 }
 
 export type Session = {
@@ -11,6 +11,6 @@ export type Session = {
 }
 
 
-export type Permissions = {
+export type SongListPermissions = {
     canDelete: boolean
 }

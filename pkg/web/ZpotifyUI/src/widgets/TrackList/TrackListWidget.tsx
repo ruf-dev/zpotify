@@ -6,13 +6,15 @@ import SongListItem from "@/components/song/SongListItem.tsx";
 
 import {Song} from "@/model/Song.ts";
 import {AudioPlayer} from "@/hooks/player/player.ts";
+import {SongListPermissions} from "@/model/User.ts";
 
 type SongListWidgetProps = {
     songs: Song[]
+    permissions: SongListPermissions
     audioPlayer: AudioPlayer
 }
 
-export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps) {
+export default function SongListWidget({songs, permissions, audioPlayer}: SongListWidgetProps) {
     const [currentSongIdx, setCurrentSongIdx] =
         useState<number>(-1);
 
@@ -87,8 +89,11 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
                 >
                     <SongListItem
                         song={s}
+                        permissions={permissions}
+
                         isPlaying={audioPlayer.isPlaying && audioPlayer.songUniqueId === s.uniqueId}
                         isSelected={currentSongIdx === idx}
+
                         onMenuOpened={setMenuOpenedSongId}
                         onMenuClosed={() => setMenuOpenedSongId(null)}
                         isInteractionDisabled={menuOpenedSongId ? menuOpenedSongId !== s.uniqueId : false}
