@@ -16,19 +16,22 @@ type Service interface {
 	AudioService() AudioService
 	UserService() UserService
 	AuthService() AuthService
+	PlaylistService() PlaylistService
 }
 
 type service struct {
-	audioService AudioService
-	userService  UserService
-	authService  AuthService
+	audioService    AudioService
+	userService     UserService
+	authService     AuthService
+	playlistService PlaylistService
 }
 
 func New(tgApiClient telegram.TgApiClient, dataStorage storage.Storage, cache files_cache.FilesCache) Service {
 	return &service{
-		audioService: v1.NewAudioService(tgApiClient, dataStorage, cache),
-		userService:  v1.NewUserService(dataStorage),
-		authService:  v1.NewAuthService(dataStorage),
+		audioService:    v1.NewAudioService(tgApiClient, dataStorage, cache),
+		userService:     v1.NewUserService(dataStorage),
+		authService:     v1.NewAuthService(dataStorage),
+		playlistService: v1.NewPlaylistService(dataStorage),
 	}
 }
 
@@ -42,6 +45,10 @@ func (s *service) UserService() UserService {
 
 func (s *service) AuthService() AuthService {
 	return s.authService
+}
+
+func (s *service) PlaylistService() PlaylistService {
+	return s.playlistService
 }
 
 type AudioService interface {
@@ -70,4 +77,8 @@ type AuthService interface {
 	AuthWithToken(ctx context.Context, s string) (tgId int64, err error)
 	Refresh(ctx context.Context, refreshToken string) (domain.UserSession, error)
 	GetUserContext(ctx context.Context, tgUserId int64) (user_context.UserContext, error)
+}
+
+type PlaylistService interface {
+	Create(context.Context, domain.CreatePlaylistReq) (domain.Playlist, error)
 }

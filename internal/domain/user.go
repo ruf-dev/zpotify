@@ -31,6 +31,8 @@ type UserPermissions struct {
 	CanDelete bool
 
 	EarlyAccess bool
+
+	CanCreatePlaylist bool
 }
 
 type UserSession struct {

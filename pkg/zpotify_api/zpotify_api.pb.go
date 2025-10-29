@@ -320,6 +320,42 @@ func (*DeleteSong) Descriptor() ([]byte, []int) {
 	return file_zpotify_api_proto_rawDescGZIP(), []int{7}
 }
 
+type CreatePlaylist struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreatePlaylist) Reset() {
+	*x = CreatePlaylist{}
+	mi := &file_zpotify_api_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreatePlaylist) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreatePlaylist) ProtoMessage() {}
+
+func (x *CreatePlaylist) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_api_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreatePlaylist.ProtoReflect.Descriptor instead.
+func (*CreatePlaylist) Descriptor() ([]byte, []int) {
+	return file_zpotify_api_proto_rawDescGZIP(), []int{8}
+}
+
 type Version_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -328,7 +364,7 @@ type Version_Request struct {
 
 func (x *Version_Request) Reset() {
 	*x = Version_Request{}
-	mi := &file_zpotify_api_proto_msgTypes[8]
+	mi := &file_zpotify_api_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -340,7 +376,7 @@ func (x *Version_Request) String() string {
 func (*Version_Request) ProtoMessage() {}
 
 func (x *Version_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[8]
+	mi := &file_zpotify_api_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -366,7 +402,7 @@ type Version_Response struct {
 
 func (x *Version_Response) Reset() {
 	*x = Version_Response{}
-	mi := &file_zpotify_api_proto_msgTypes[9]
+	mi := &file_zpotify_api_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -378,7 +414,7 @@ func (x *Version_Response) String() string {
 func (*Version_Response) ProtoMessage() {}
 
 func (x *Version_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[9]
+	mi := &file_zpotify_api_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -417,7 +453,7 @@ type GetLink_Request struct {
 
 func (x *GetLink_Request) Reset() {
 	*x = GetLink_Request{}
-	mi := &file_zpotify_api_proto_msgTypes[10]
+	mi := &file_zpotify_api_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -429,7 +465,7 @@ func (x *GetLink_Request) String() string {
 func (*GetLink_Request) ProtoMessage() {}
 
 func (x *GetLink_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[10]
+	mi := &file_zpotify_api_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -461,7 +497,7 @@ type GetLink_Response struct {
 
 func (x *GetLink_Response) Reset() {
 	*x = GetLink_Response{}
-	mi := &file_zpotify_api_proto_msgTypes[11]
+	mi := &file_zpotify_api_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -473,7 +509,7 @@ func (x *GetLink_Response) String() string {
 func (*GetLink_Response) ProtoMessage() {}
 
 func (x *GetLink_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[11]
+	mi := &file_zpotify_api_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -504,7 +540,7 @@ type Auth_Request struct {
 
 func (x *Auth_Request) Reset() {
 	*x = Auth_Request{}
-	mi := &file_zpotify_api_proto_msgTypes[12]
+	mi := &file_zpotify_api_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -516,7 +552,7 @@ func (x *Auth_Request) String() string {
 func (*Auth_Request) ProtoMessage() {}
 
 func (x *Auth_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[12]
+	mi := &file_zpotify_api_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -545,7 +581,7 @@ type Auth_Response struct {
 
 func (x *Auth_Response) Reset() {
 	*x = Auth_Response{}
-	mi := &file_zpotify_api_proto_msgTypes[13]
+	mi := &file_zpotify_api_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -557,7 +593,7 @@ func (x *Auth_Response) String() string {
 func (*Auth_Response) ProtoMessage() {}
 
 func (x *Auth_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[13]
+	mi := &file_zpotify_api_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -626,7 +662,7 @@ type Auth_AuthData struct {
 
 func (x *Auth_AuthData) Reset() {
 	*x = Auth_AuthData{}
-	mi := &file_zpotify_api_proto_msgTypes[14]
+	mi := &file_zpotify_api_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -638,7 +674,7 @@ func (x *Auth_AuthData) String() string {
 func (*Auth_AuthData) ProtoMessage() {}
 
 func (x *Auth_AuthData) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[14]
+	mi := &file_zpotify_api_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -690,7 +726,7 @@ type Me_Request struct {
 
 func (x *Me_Request) Reset() {
 	*x = Me_Request{}
-	mi := &file_zpotify_api_proto_msgTypes[15]
+	mi := &file_zpotify_api_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -702,7 +738,7 @@ func (x *Me_Request) String() string {
 func (*Me_Request) ProtoMessage() {}
 
 func (x *Me_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[15]
+	mi := &file_zpotify_api_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -728,7 +764,7 @@ type Me_Response struct {
 
 func (x *Me_Response) Reset() {
 	*x = Me_Response{}
-	mi := &file_zpotify_api_proto_msgTypes[16]
+	mi := &file_zpotify_api_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -740,7 +776,7 @@ func (x *Me_Response) String() string {
 func (*Me_Response) ProtoMessage() {}
 
 func (x *Me_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[16]
+	mi := &file_zpotify_api_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -779,7 +815,7 @@ type Refresh_Request struct {
 
 func (x *Refresh_Request) Reset() {
 	*x = Refresh_Request{}
-	mi := &file_zpotify_api_proto_msgTypes[17]
+	mi := &file_zpotify_api_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -791,7 +827,7 @@ func (x *Refresh_Request) String() string {
 func (*Refresh_Request) ProtoMessage() {}
 
 func (x *Refresh_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[17]
+	mi := &file_zpotify_api_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -823,7 +859,7 @@ type Refresh_Response struct {
 
 func (x *Refresh_Response) Reset() {
 	*x = Refresh_Response{}
-	mi := &file_zpotify_api_proto_msgTypes[18]
+	mi := &file_zpotify_api_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -835,7 +871,7 @@ func (x *Refresh_Response) String() string {
 func (*Refresh_Response) ProtoMessage() {}
 
 func (x *Refresh_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[18]
+	mi := &file_zpotify_api_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -859,17 +895,18 @@ func (x *Refresh_Response) GetAuthData() *Auth_AuthData {
 }
 
 type ListSongs_Request struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Paging        *Paging                `protobuf:"bytes,1,opt,name=paging,proto3" json:"paging,omitempty"`
-	RandomHash    *uint64                `protobuf:"varint,2,opt,name=random_hash,json=randomHash,proto3,oneof" json:"random_hash,omitempty"`
-	PlaylistId    *string                `protobuf:"bytes,3,opt,name=playlist_id,json=playlistId,proto3,oneof" json:"playlist_id,omitempty"`
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	Paging     *Paging                `protobuf:"bytes,1,opt,name=paging,proto3" json:"paging,omitempty"`
+	RandomHash *uint64                `protobuf:"varint,2,opt,name=random_hash,json=randomHash,proto3,oneof" json:"random_hash,omitempty"`
+	// by default returns songs from global queue (last added tracks)
+	PlaylistId    *string `protobuf:"bytes,3,opt,name=playlist_id,json=playlistId,proto3,oneof" json:"playlist_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListSongs_Request) Reset() {
 	*x = ListSongs_Request{}
-	mi := &file_zpotify_api_proto_msgTypes[19]
+	mi := &file_zpotify_api_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -881,7 +918,7 @@ func (x *ListSongs_Request) String() string {
 func (*ListSongs_Request) ProtoMessage() {}
 
 func (x *ListSongs_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[19]
+	mi := &file_zpotify_api_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -929,7 +966,7 @@ type ListSongs_Response struct {
 
 func (x *ListSongs_Response) Reset() {
 	*x = ListSongs_Response{}
-	mi := &file_zpotify_api_proto_msgTypes[20]
+	mi := &file_zpotify_api_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -941,7 +978,7 @@ func (x *ListSongs_Response) String() string {
 func (*ListSongs_Response) ProtoMessage() {}
 
 func (x *ListSongs_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[20]
+	mi := &file_zpotify_api_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -987,7 +1024,7 @@ type DeleteSong_Request struct {
 
 func (x *DeleteSong_Request) Reset() {
 	*x = DeleteSong_Request{}
-	mi := &file_zpotify_api_proto_msgTypes[21]
+	mi := &file_zpotify_api_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -999,7 +1036,7 @@ func (x *DeleteSong_Request) String() string {
 func (*DeleteSong_Request) ProtoMessage() {}
 
 func (x *DeleteSong_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[21]
+	mi := &file_zpotify_api_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1030,7 +1067,7 @@ type DeleteSong_Response struct {
 
 func (x *DeleteSong_Response) Reset() {
 	*x = DeleteSong_Response{}
-	mi := &file_zpotify_api_proto_msgTypes[22]
+	mi := &file_zpotify_api_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1042,7 +1079,7 @@ func (x *DeleteSong_Response) String() string {
 func (*DeleteSong_Response) ProtoMessage() {}
 
 func (x *DeleteSong_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_api_proto_msgTypes[22]
+	mi := &file_zpotify_api_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1056,6 +1093,86 @@ func (x *DeleteSong_Response) ProtoReflect() protoreflect.Message {
 // Deprecated: Use DeleteSong_Response.ProtoReflect.Descriptor instead.
 func (*DeleteSong_Response) Descriptor() ([]byte, []int) {
 	return file_zpotify_api_proto_rawDescGZIP(), []int{7, 1}
+}
+
+type CreatePlaylist_Request struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreatePlaylist_Request) Reset() {
+	*x = CreatePlaylist_Request{}
+	mi := &file_zpotify_api_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreatePlaylist_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreatePlaylist_Request) ProtoMessage() {}
+
+func (x *CreatePlaylist_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_api_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreatePlaylist_Request.ProtoReflect.Descriptor instead.
+func (*CreatePlaylist_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_api_proto_rawDescGZIP(), []int{8, 0}
+}
+
+type CreatePlaylist_Response struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreatePlaylist_Response) Reset() {
+	*x = CreatePlaylist_Response{}
+	mi := &file_zpotify_api_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreatePlaylist_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreatePlaylist_Response) ProtoMessage() {}
+
+func (x *CreatePlaylist_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_api_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreatePlaylist_Response.ProtoReflect.Descriptor instead.
+func (*CreatePlaylist_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_api_proto_rawDescGZIP(), []int{8, 1}
+}
+
+func (x *CreatePlaylist_Response) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
 }
 
 var File_zpotify_api_proto protoreflect.FileDescriptor
@@ -1114,12 +1231,17 @@ const file_zpotify_api_proto_rawDesc = "" +
 	"\aRequest\x12\x1b\n" +
 	"\tunique_id\x18\x01 \x01(\tR\buniqueId\x1a\n" +
 	"\n" +
-	"\bResponse2\xc0\x02\n" +
+	"\bResponse\";\n" +
+	"\x0eCreatePlaylist\x1a\t\n" +
+	"\aRequest\x1a\x1e\n" +
+	"\bResponse\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid2\xb7\x03\n" +
 	"\n" +
 	"ZpotifyAPI\x12\\\n" +
 	"\aVersion\x12\x1c.zpotify_api.Version.Request\x1a\x1d.zpotify_api.Version.Response\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/api/version\x12c\n" +
 	"\tListSongs\x12\x1e.zpotify_api.ListSongs.Request\x1a\x1f.zpotify_api.ListSongs.Response\"\x15\x82\xd3\xe4\x93\x02\x0f:\x01*\"\n" +
-	"/api/songs\x12o\n" +
+	"/api/songs\x12u\n" +
+	"\x0eCreatePlaylist\x12#.zpotify_api.CreatePlaylist.Request\x1a$.zpotify_api.CreatePlaylist.Response\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/playlist\x12o\n" +
 	"\n" +
 	"DeleteSong\x12\x1f.zpotify_api.DeleteSong.Request\x1a .zpotify_api.DeleteSong.Response\"\x1e\x82\xd3\xe4\x93\x02\x18*\x16/api/songs/{unique_id}2\xa2\x02\n" +
 	"\aUserAPI\x12Z\n" +
@@ -1139,60 +1261,65 @@ func file_zpotify_api_proto_rawDescGZIP() []byte {
 	return file_zpotify_api_proto_rawDescData
 }
 
-var file_zpotify_api_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
+var file_zpotify_api_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
 var file_zpotify_api_proto_goTypes = []any{
-	(*Version)(nil),               // 0: zpotify_api.Version
-	(*GetLink)(nil),               // 1: zpotify_api.GetLink
-	(*Auth)(nil),                  // 2: zpotify_api.Auth
-	(*UserData)(nil),              // 3: zpotify_api.UserData
-	(*Me)(nil),                    // 4: zpotify_api.Me
-	(*Refresh)(nil),               // 5: zpotify_api.Refresh
-	(*ListSongs)(nil),             // 6: zpotify_api.ListSongs
-	(*DeleteSong)(nil),            // 7: zpotify_api.DeleteSong
-	(*Version_Request)(nil),       // 8: zpotify_api.Version.Request
-	(*Version_Response)(nil),      // 9: zpotify_api.Version.Response
-	(*GetLink_Request)(nil),       // 10: zpotify_api.GetLink.Request
-	(*GetLink_Response)(nil),      // 11: zpotify_api.GetLink.Response
-	(*Auth_Request)(nil),          // 12: zpotify_api.Auth.Request
-	(*Auth_Response)(nil),         // 13: zpotify_api.Auth.Response
-	(*Auth_AuthData)(nil),         // 14: zpotify_api.Auth.AuthData
-	(*Me_Request)(nil),            // 15: zpotify_api.Me.Request
-	(*Me_Response)(nil),           // 16: zpotify_api.Me.Response
-	(*Refresh_Request)(nil),       // 17: zpotify_api.Refresh.Request
-	(*Refresh_Response)(nil),      // 18: zpotify_api.Refresh.Response
-	(*ListSongs_Request)(nil),     // 19: zpotify_api.ListSongs.Request
-	(*ListSongs_Response)(nil),    // 20: zpotify_api.ListSongs.Response
-	(*DeleteSong_Request)(nil),    // 21: zpotify_api.DeleteSong.Request
-	(*DeleteSong_Response)(nil),   // 22: zpotify_api.DeleteSong.Response
-	(*timestamppb.Timestamp)(nil), // 23: google.protobuf.Timestamp
-	(*Permissions)(nil),           // 24: zpotify_api.Permissions
-	(*Paging)(nil),                // 25: zpotify_api.Paging
-	(*SongBase)(nil),              // 26: zpotify_api.SongBase
+	(*Version)(nil),                 // 0: zpotify_api.Version
+	(*GetLink)(nil),                 // 1: zpotify_api.GetLink
+	(*Auth)(nil),                    // 2: zpotify_api.Auth
+	(*UserData)(nil),                // 3: zpotify_api.UserData
+	(*Me)(nil),                      // 4: zpotify_api.Me
+	(*Refresh)(nil),                 // 5: zpotify_api.Refresh
+	(*ListSongs)(nil),               // 6: zpotify_api.ListSongs
+	(*DeleteSong)(nil),              // 7: zpotify_api.DeleteSong
+	(*CreatePlaylist)(nil),          // 8: zpotify_api.CreatePlaylist
+	(*Version_Request)(nil),         // 9: zpotify_api.Version.Request
+	(*Version_Response)(nil),        // 10: zpotify_api.Version.Response
+	(*GetLink_Request)(nil),         // 11: zpotify_api.GetLink.Request
+	(*GetLink_Response)(nil),        // 12: zpotify_api.GetLink.Response
+	(*Auth_Request)(nil),            // 13: zpotify_api.Auth.Request
+	(*Auth_Response)(nil),           // 14: zpotify_api.Auth.Response
+	(*Auth_AuthData)(nil),           // 15: zpotify_api.Auth.AuthData
+	(*Me_Request)(nil),              // 16: zpotify_api.Me.Request
+	(*Me_Response)(nil),             // 17: zpotify_api.Me.Response
+	(*Refresh_Request)(nil),         // 18: zpotify_api.Refresh.Request
+	(*Refresh_Response)(nil),        // 19: zpotify_api.Refresh.Response
+	(*ListSongs_Request)(nil),       // 20: zpotify_api.ListSongs.Request
+	(*ListSongs_Response)(nil),      // 21: zpotify_api.ListSongs.Response
+	(*DeleteSong_Request)(nil),      // 22: zpotify_api.DeleteSong.Request
+	(*DeleteSong_Response)(nil),     // 23: zpotify_api.DeleteSong.Response
+	(*CreatePlaylist_Request)(nil),  // 24: zpotify_api.CreatePlaylist.Request
+	(*CreatePlaylist_Response)(nil), // 25: zpotify_api.CreatePlaylist.Response
+	(*timestamppb.Timestamp)(nil),   // 26: google.protobuf.Timestamp
+	(*Permissions)(nil),             // 27: zpotify_api.Permissions
+	(*Paging)(nil),                  // 28: zpotify_api.Paging
+	(*SongBase)(nil),                // 29: zpotify_api.SongBase
 }
 var file_zpotify_api_proto_depIdxs = []int32{
-	23, // 0: zpotify_api.Version.Response.client_timestamp:type_name -> google.protobuf.Timestamp
-	14, // 1: zpotify_api.Auth.Response.auth_data:type_name -> zpotify_api.Auth.AuthData
-	23, // 2: zpotify_api.Auth.AuthData.access_expires_at:type_name -> google.protobuf.Timestamp
-	23, // 3: zpotify_api.Auth.AuthData.refresh_expires_at:type_name -> google.protobuf.Timestamp
+	26, // 0: zpotify_api.Version.Response.client_timestamp:type_name -> google.protobuf.Timestamp
+	15, // 1: zpotify_api.Auth.Response.auth_data:type_name -> zpotify_api.Auth.AuthData
+	26, // 2: zpotify_api.Auth.AuthData.access_expires_at:type_name -> google.protobuf.Timestamp
+	26, // 3: zpotify_api.Auth.AuthData.refresh_expires_at:type_name -> google.protobuf.Timestamp
 	3,  // 4: zpotify_api.Me.Response.user_data:type_name -> zpotify_api.UserData
-	24, // 5: zpotify_api.Me.Response.permissions:type_name -> zpotify_api.Permissions
-	14, // 6: zpotify_api.Refresh.Response.auth_data:type_name -> zpotify_api.Auth.AuthData
-	25, // 7: zpotify_api.ListSongs.Request.paging:type_name -> zpotify_api.Paging
-	26, // 8: zpotify_api.ListSongs.Response.songs:type_name -> zpotify_api.SongBase
-	8,  // 9: zpotify_api.ZpotifyAPI.Version:input_type -> zpotify_api.Version.Request
-	19, // 10: zpotify_api.ZpotifyAPI.ListSongs:input_type -> zpotify_api.ListSongs.Request
-	21, // 11: zpotify_api.ZpotifyAPI.DeleteSong:input_type -> zpotify_api.DeleteSong.Request
-	12, // 12: zpotify_api.UserAPI.Auth:input_type -> zpotify_api.Auth.Request
-	17, // 13: zpotify_api.UserAPI.RefreshToken:input_type -> zpotify_api.Refresh.Request
-	15, // 14: zpotify_api.UserAPI.Me:input_type -> zpotify_api.Me.Request
-	9,  // 15: zpotify_api.ZpotifyAPI.Version:output_type -> zpotify_api.Version.Response
-	20, // 16: zpotify_api.ZpotifyAPI.ListSongs:output_type -> zpotify_api.ListSongs.Response
-	22, // 17: zpotify_api.ZpotifyAPI.DeleteSong:output_type -> zpotify_api.DeleteSong.Response
-	13, // 18: zpotify_api.UserAPI.Auth:output_type -> zpotify_api.Auth.Response
-	18, // 19: zpotify_api.UserAPI.RefreshToken:output_type -> zpotify_api.Refresh.Response
-	16, // 20: zpotify_api.UserAPI.Me:output_type -> zpotify_api.Me.Response
-	15, // [15:21] is the sub-list for method output_type
-	9,  // [9:15] is the sub-list for method input_type
+	27, // 5: zpotify_api.Me.Response.permissions:type_name -> zpotify_api.Permissions
+	15, // 6: zpotify_api.Refresh.Response.auth_data:type_name -> zpotify_api.Auth.AuthData
+	28, // 7: zpotify_api.ListSongs.Request.paging:type_name -> zpotify_api.Paging
+	29, // 8: zpotify_api.ListSongs.Response.songs:type_name -> zpotify_api.SongBase
+	9,  // 9: zpotify_api.ZpotifyAPI.Version:input_type -> zpotify_api.Version.Request
+	20, // 10: zpotify_api.ZpotifyAPI.ListSongs:input_type -> zpotify_api.ListSongs.Request
+	24, // 11: zpotify_api.ZpotifyAPI.CreatePlaylist:input_type -> zpotify_api.CreatePlaylist.Request
+	22, // 12: zpotify_api.ZpotifyAPI.DeleteSong:input_type -> zpotify_api.DeleteSong.Request
+	13, // 13: zpotify_api.UserAPI.Auth:input_type -> zpotify_api.Auth.Request
+	18, // 14: zpotify_api.UserAPI.RefreshToken:input_type -> zpotify_api.Refresh.Request
+	16, // 15: zpotify_api.UserAPI.Me:input_type -> zpotify_api.Me.Request
+	10, // 16: zpotify_api.ZpotifyAPI.Version:output_type -> zpotify_api.Version.Response
+	21, // 17: zpotify_api.ZpotifyAPI.ListSongs:output_type -> zpotify_api.ListSongs.Response
+	25, // 18: zpotify_api.ZpotifyAPI.CreatePlaylist:output_type -> zpotify_api.CreatePlaylist.Response
+	23, // 19: zpotify_api.ZpotifyAPI.DeleteSong:output_type -> zpotify_api.DeleteSong.Response
+	14, // 20: zpotify_api.UserAPI.Auth:output_type -> zpotify_api.Auth.Response
+	19, // 21: zpotify_api.UserAPI.RefreshToken:output_type -> zpotify_api.Refresh.Response
+	17, // 22: zpotify_api.UserAPI.Me:output_type -> zpotify_api.Me.Response
+	16, // [16:23] is the sub-list for method output_type
+	9,  // [9:16] is the sub-list for method input_type
 	9,  // [9:9] is the sub-list for extension type_name
 	9,  // [9:9] is the sub-list for extension extendee
 	0,  // [0:9] is the sub-list for field type_name
@@ -1205,18 +1332,18 @@ func file_zpotify_api_proto_init() {
 	}
 	file_zpotify_common_proto_init()
 	file_zpotify_user_proto_init()
-	file_zpotify_api_proto_msgTypes[13].OneofWrappers = []any{
+	file_zpotify_api_proto_msgTypes[14].OneofWrappers = []any{
 		(*Auth_Response_AuthUuid)(nil),
 		(*Auth_Response_AuthData)(nil),
 	}
-	file_zpotify_api_proto_msgTypes[19].OneofWrappers = []any{}
+	file_zpotify_api_proto_msgTypes[20].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_api_proto_rawDesc), len(file_zpotify_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   23,
+			NumMessages:   26,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

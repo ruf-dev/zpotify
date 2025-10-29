@@ -35,25 +35,6 @@ type AuthService struct {
 	maxSessionsPerUser int
 }
 
-func (a *AuthService) GetUserContext(ctx context.Context, id int64) (user_context.UserContext, error) {
-	filter := domain.GetUserFilter{
-		TgUserId: []int64{id},
-	}
-	users, err := a.userStorage.ListUsers(ctx, filter)
-	if err != nil {
-		return user_context.UserContext{}, rerrors.Wrap(err, "error getting user")
-	}
-
-	if len(users) == 0 {
-		return user_context.UserContext{}, rerrors.Wrap(user_errors.ErrNotFound, "no users found")
-	}
-
-	return user_context.UserContext{
-		TgUserId:    users[0].TgId,
-		Permissions: users[0].Permissions,
-	}, nil
-}
-
 func NewAuthService(data storage.Storage) *AuthService {
 	return &AuthService{
 		sessionStorage: data.SessionStorage(),
@@ -63,6 +44,18 @@ func NewAuthService(data storage.Storage) *AuthService {
 		refreshTokenTTL:    time.Hour * 24 * 7,
 		maxSessionsPerUser: 3,
 	}
+}
+
+func (a *AuthService) GetUserContext(ctx context.Context, id int64) (user_context.UserContext, error) {
+	user, err := a.userStorage.GetUserByTgId(ctx, id)
+	if err != nil {
+		return user_context.UserContext{}, rerrors.Wrap(err, "error getting user")
+	}
+
+	return user_context.UserContext{
+		TgUserId:    user.TgId,
+		Permissions: user.Permissions,
+	}, nil
 }
 
 func (a *AuthService) InitAuth() (authUuid string, doneC chan domain.UserSession) {

@@ -6,13 +6,18 @@ package querier
 
 import (
 	"context"
+
+	"github.com/google/uuid"
 )
 
 type Querier interface {
+	CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error)
+	GetUserByTgId(ctx context.Context, tgID int64) (UsersFull, error)
 	GetUserPermissionsOnPlaylist(ctx context.Context, arg GetUserPermissionsOnPlaylistParams) (GetUserPermissionsOnPlaylistRow, error)
 	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error
 	SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error
 	UpsertUser(ctx context.Context, arg UpsertUserParams) error
+	UpsertUserPlaylist(ctx context.Context, arg UpsertUserPlaylistParams) error
 }
 
 var _ Querier = (*Queries)(nil)

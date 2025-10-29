@@ -9,10 +9,37 @@ import (
 	"context"
 )
 
+const getUserByTgId = `-- name: GetUserByTgId :one
+SELECT tg_id,
+       tg_username,
+       locale,
+       can_upload,
+       early_access,
+       can_delete,
+       can_create_playlist
+FROM users_full
+WHERE tg_id = $1
+`
+
+func (q *Queries) GetUserByTgId(ctx context.Context, tgID int64) (UsersFull, error) {
+	row := q.db.QueryRowContext(ctx, getUserByTgId, tgID)
+	var i UsersFull
+	err := row.Scan(
+		&i.TgID,
+		&i.TgUsername,
+		&i.Locale,
+		&i.CanUpload,
+		&i.EarlyAccess,
+		&i.CanDelete,
+		&i.CanCreatePlaylist,
+	)
+	return i, err
+}
+
 const saveUserPermissions = `-- name: SaveUserPermissions :exec
 INSERT INTO user_permissions
-       (  user_tg_id,  can_upload,   early_access,    can_delete)
-VALUES ($1,$2, $3, $4)
+    (user_tg_id, can_upload, early_access, can_delete)
+VALUES ($1, $2, $3, $4)
 `
 
 type SaveUserPermissionsParams struct {
@@ -34,11 +61,10 @@ func (q *Queries) SaveUserPermissions(ctx context.Context, arg SaveUserPermissio
 
 const saveUserSettings = `-- name: SaveUserSettings :exec
 INSERT INTO user_settings
-        ( user_tg_id,    locale)
-VALUES  ($1, $2)
+    (user_tg_id, locale)
+VALUES ($1, $2)
 ON CONFLICT (user_tg_id)
-    DO UPDATE SET
-    locale = EXCLUDED.locale
+    DO UPDATE SET locale = EXCLUDED.locale
 `
 
 type SaveUserSettingsParams struct {
@@ -53,7 +79,7 @@ func (q *Queries) SaveUserSettings(ctx context.Context, arg SaveUserSettingsPara
 
 const upsertUser = `-- name: UpsertUser :exec
 INSERT INTO users
-       (   tg_id,    tg_username)
+    (tg_id, tg_username)
 VALUES ($1, $2)
 ON CONFLICT (tg_id)
     DO UPDATE SET tg_username = EXCLUDED.tg_username

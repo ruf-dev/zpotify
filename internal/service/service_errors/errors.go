@@ -8,4 +8,5 @@ import (
 var (
 	ErrNotFound        = rerrors.New("not found")
 	ErrUnauthenticated = rerrors.New("unauthenticated", codes.Unauthenticated)
+	ErrUnauthorized    = rerrors.New("unauthorized", codes.PermissionDenied)
 )

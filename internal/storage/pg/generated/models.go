@@ -31,7 +31,7 @@ type Locale struct {
 type Playlist struct {
 	Uuid        uuid.UUID
 	Name        string
-	Description sql.NullString
+	Description string
 }
 
 type PlaylistSong struct {
@@ -69,10 +69,11 @@ type User struct {
 }
 
 type UserPermission struct {
-	UserTgID    int64
-	CanUpload   bool
-	EarlyAccess bool
-	CanDelete   bool
+	UserTgID          int64
+	CanUpload         bool
+	EarlyAccess       bool
+	CanDelete         bool
+	CanCreatePlaylist bool
 }
 
 type UserPlaylist struct {
@@ -94,4 +95,14 @@ type UserSession struct {
 type UserSetting struct {
 	UserTgID int64
 	Locale   string
+}
+
+type UsersFull struct {
+	TgID              int64
+	TgUsername        string
+	Locale            string
+	CanUpload         bool
+	EarlyAccess       bool
+	CanDelete         bool
+	CanCreatePlaylist bool
 }

@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ZpotifyAPI_Version_FullMethodName    = "/zpotify_api.ZpotifyAPI/Version"
-	ZpotifyAPI_ListSongs_FullMethodName  = "/zpotify_api.ZpotifyAPI/ListSongs"
-	ZpotifyAPI_DeleteSong_FullMethodName = "/zpotify_api.ZpotifyAPI/DeleteSong"
+	ZpotifyAPI_Version_FullMethodName        = "/zpotify_api.ZpotifyAPI/Version"
+	ZpotifyAPI_ListSongs_FullMethodName      = "/zpotify_api.ZpotifyAPI/ListSongs"
+	ZpotifyAPI_CreatePlaylist_FullMethodName = "/zpotify_api.ZpotifyAPI/CreatePlaylist"
+	ZpotifyAPI_DeleteSong_FullMethodName     = "/zpotify_api.ZpotifyAPI/DeleteSong"
 )
 
 // ZpotifyAPIClient is the client API for ZpotifyAPI service.
@@ -29,7 +30,10 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ZpotifyAPIClient interface {
 	Version(ctx context.Context, in *Version_Request, opts ...grpc.CallOption) (*Version_Response, error)
+	// List Songs of playlist
 	ListSongs(ctx context.Context, in *ListSongs_Request, opts ...grpc.CallOption) (*ListSongs_Response, error)
+	CreatePlaylist(ctx context.Context, in *CreatePlaylist_Request, opts ...grpc.CallOption) (*CreatePlaylist_Response, error)
+	// Delete song from playlist TODO
 	DeleteSong(ctx context.Context, in *DeleteSong_Request, opts ...grpc.CallOption) (*DeleteSong_Response, error)
 }
 
@@ -61,6 +65,16 @@ func (c *zpotifyAPIClient) ListSongs(ctx context.Context, in *ListSongs_Request,
 	return out, nil
 }
 
+func (c *zpotifyAPIClient) CreatePlaylist(ctx context.Context, in *CreatePlaylist_Request, opts ...grpc.CallOption) (*CreatePlaylist_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreatePlaylist_Response)
+	err := c.cc.Invoke(ctx, ZpotifyAPI_CreatePlaylist_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *zpotifyAPIClient) DeleteSong(ctx context.Context, in *DeleteSong_Request, opts ...grpc.CallOption) (*DeleteSong_Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(DeleteSong_Response)
@@ -76,7 +90,10 @@ func (c *zpotifyAPIClient) DeleteSong(ctx context.Context, in *DeleteSong_Reques
 // for forward compatibility.
 type ZpotifyAPIServer interface {
 	Version(context.Context, *Version_Request) (*Version_Response, error)
+	// List Songs of playlist
 	ListSongs(context.Context, *ListSongs_Request) (*ListSongs_Response, error)
+	CreatePlaylist(context.Context, *CreatePlaylist_Request) (*CreatePlaylist_Response, error)
+	// Delete song from playlist TODO
 	DeleteSong(context.Context, *DeleteSong_Request) (*DeleteSong_Response, error)
 	mustEmbedUnimplementedZpotifyAPIServer()
 }
@@ -93,6 +110,9 @@ func (UnimplementedZpotifyAPIServer) Version(context.Context, *Version_Request) 
 }
 func (UnimplementedZpotifyAPIServer) ListSongs(context.Context, *ListSongs_Request) (*ListSongs_Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListSongs not implemented")
+}
+func (UnimplementedZpotifyAPIServer) CreatePlaylist(context.Context, *CreatePlaylist_Request) (*CreatePlaylist_Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePlaylist not implemented")
 }
 func (UnimplementedZpotifyAPIServer) DeleteSong(context.Context, *DeleteSong_Request) (*DeleteSong_Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteSong not implemented")
@@ -154,6 +174,24 @@ func _ZpotifyAPI_ListSongs_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ZpotifyAPI_CreatePlaylist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePlaylist_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ZpotifyAPIServer).CreatePlaylist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ZpotifyAPI_CreatePlaylist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ZpotifyAPIServer).CreatePlaylist(ctx, req.(*CreatePlaylist_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ZpotifyAPI_DeleteSong_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteSong_Request)
 	if err := dec(in); err != nil {
@@ -186,6 +224,10 @@ var ZpotifyAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSongs",
 			Handler:    _ZpotifyAPI_ListSongs_Handler,
+		},
+		{
+			MethodName: "CreatePlaylist",
+			Handler:    _ZpotifyAPI_CreatePlaylist_Handler,
 		},
 		{
 			MethodName: "DeleteSong",

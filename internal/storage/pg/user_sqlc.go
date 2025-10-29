@@ -24,6 +24,15 @@ func (s *UserStorage) Upsert(ctx context.Context, user domain.UserInfo) error {
 	return nil
 }
 
+func (s *UserStorage) GetUserByTgId(ctx context.Context, tgUserId int64) (domain.User, error) {
+	user, err := s.querier.GetUserByTgId(ctx, tgUserId)
+	if err != nil {
+		return domain.User{}, wrapPgErr(err)
+	}
+
+	return userToDomain(user), nil
+}
+
 func (s *UserStorage) SaveSettings(ctx context.Context, userTgId int64, settings domain.UserSettings) error {
 	userSettingsParams := querier.SaveUserSettingsParams{
 		UserTgID: userTgId,

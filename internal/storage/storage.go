@@ -10,10 +10,14 @@ import (
 
 type Storage interface {
 	User() UserStorage
-	FileMeta() FileMetaStorage
 	SessionStorage() SessionStorage
+
+	FileMeta() FileMetaStorage
+
 	SongStorage() SongStorage
 	ArtistStorage() ArtistStorage
+
+	PlaylistStorage() PlaylistStorage
 
 	TxManager() *tx_manager.TxManager
 }
@@ -22,6 +26,7 @@ type UserStorage interface {
 	WithTx(tx *sql.Tx) UserStorage
 
 	ListUsers(ctx context.Context, filter domain.GetUserFilter) ([]domain.User, error)
+	GetUserByTgId(ctx context.Context, tgUserId int64) (domain.User, error)
 
 	Upsert(ctx context.Context, user domain.UserInfo) error
 
@@ -76,4 +81,8 @@ type ArtistStorage interface {
 	WithTx(tx *sql.Tx) ArtistStorage
 
 	Return(ctx context.Context, artists []string) ([]domain.ArtistsBase, error)
+}
+
+type PlaylistStorage interface {
+	Create(ctx context.Context, req domain.CreatePlaylistReq) (domain.Playlist, error)
 }

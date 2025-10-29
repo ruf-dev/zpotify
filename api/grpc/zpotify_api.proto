@@ -19,6 +19,7 @@ service ZpotifyAPI {
     };
   };
 
+  // List Songs of playlist
   rpc ListSongs(ListSongs.Request) returns (ListSongs.Response) {
     option (google.api.http) = {
       post: "/api/songs",
@@ -26,6 +27,14 @@ service ZpotifyAPI {
     };
   }
 
+  rpc CreatePlaylist(CreatePlaylist.Request) returns (CreatePlaylist.Response) {
+    option (google.api.http) = {
+      post: "/api/playlist",
+      body: "*"
+    };
+  };
+
+  // Delete song from playlist TODO
   rpc DeleteSong(DeleteSong.Request) returns (DeleteSong.Response) {
     option (google.api.http) = {
       delete: "/api/songs/{unique_id}",
@@ -121,6 +130,7 @@ message ListSongs {
     Paging paging = 1;
 
     optional uint64 random_hash = 2;
+    // by default returns songs from global queue (last added tracks)
     optional string playlist_id = 3;
   }
 
@@ -137,4 +147,15 @@ message DeleteSong {
   }
 
   message Response {}
+}
+
+message CreatePlaylist {
+  message Request {
+    string name = 1;
+    optional string description = 2;
+  }
+
+  message Response {
+    string uuid = 1;
+  }
 }

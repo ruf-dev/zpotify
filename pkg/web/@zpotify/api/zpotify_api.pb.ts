@@ -104,12 +104,23 @@ export type DeleteSongResponse = Record<string, never>;
 
 export type DeleteSong = Record<string, never>;
 
+export type CreatePlaylistRequest = Record<string, never>;
+
+export type CreatePlaylistResponse = {
+  uuid?: string;
+};
+
+export type CreatePlaylist = Record<string, never>;
+
 export class ZpotifyAPI {
   static Version(this:void, req: VersionRequest, initReq?: fm.InitReq): Promise<VersionResponse> {
     return fm.fetchRequest<VersionResponse>(`/api/version?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});
   }
   static ListSongs(this:void, req: ListSongsRequest, initReq?: fm.InitReq): Promise<ListSongsResponse> {
     return fm.fetchRequest<ListSongsResponse>(`/api/songs`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static CreatePlaylist(this:void, req: CreatePlaylistRequest, initReq?: fm.InitReq): Promise<CreatePlaylistResponse> {
+    return fm.fetchRequest<CreatePlaylistResponse>(`/api/playlist`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
   static DeleteSong(this:void, req: DeleteSongRequest, initReq?: fm.InitReq): Promise<DeleteSongResponse> {
     return fm.fetchRequest<DeleteSongResponse>(`/api/songs/${req.uniqueId}?${fm.renderURLSearchParams(req, ["uniqueId"])}`, {...initReq, method: "DELETE"});

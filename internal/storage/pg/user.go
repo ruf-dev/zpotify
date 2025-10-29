@@ -31,18 +31,15 @@ func (s *UserStorage) ListUsers(ctx context.Context, filter domain.GetUserFilter
 	filter.Limit = toolbox.Coalesce(filter.Limit, 1)
 
 	builder := sq.Select(
-		"u.tg_id",
-		"u.tg_username",
-		"settings.locale",
-		"COALESCE(permissions.can_upload, '0')",
-		"COALESCE(permissions.early_access, '0')",
-		"COALESCE(permissions.can_delete, '0')",
+		"tg_id",
+		"tg_username",
+		"locale",
+		"can_upload",
+		"early_access",
+		"can_delete",
+		"can_create_playlist",
 	).
-		From("users u").
-		Join(`user_settings    AS settings 
-		ON        u.tg_id           = settings.user_tg_id`).
-		Join(`user_permissions AS permissions 
-		ON        u.tg_id           = permissions.user_tg_id`).
+		From("users_full").
 		Offset(filter.Offset).
 		Limit(filter.Limit).
 		PlaceholderFormat(sq.Dollar)
@@ -81,6 +78,7 @@ func (s *UserStorage) ListUsers(ctx context.Context, filter domain.GetUserFilter
 			&u.Permissions.CanUpload,
 			&u.Permissions.EarlyAccess,
 			&u.Permissions.CanDelete,
+			&u.Permissions.CanCreatePlaylist,
 		)
 
 		users = append(users, u)
@@ -91,4 +89,22 @@ func (s *UserStorage) ListUsers(ctx context.Context, filter domain.GetUserFilter
 
 func (s *UserStorage) WithTx(tx *sql.Tx) storage.UserStorage {
 	return NewUserStorage(tx)
+}
+
+func userToDomain(u querier.UsersFull) domain.User {
+	return domain.User{
+		UserInfo: domain.UserInfo{
+			TgId:       u.TgID,
+			TgUserName: u.TgUsername,
+		},
+		UserSettings: domain.UserSettings{
+			Locale: u.Locale,
+		},
+		Permissions: domain.UserPermissions{
+			CanUpload:         u.CanUpload,
+			CanDelete:         u.CanDelete,
+			EarlyAccess:       u.EarlyAccess,
+			CanCreatePlaylist: u.CanCreatePlaylist,
+		},
+	}
 }
