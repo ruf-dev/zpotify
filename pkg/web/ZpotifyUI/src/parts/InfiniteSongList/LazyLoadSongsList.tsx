@@ -28,9 +28,7 @@ export default function LazyLoadSongsList({audioPlayer, playlistId, user}: Infin
     const [isListEnded, setIsListEnded] = useState(false)
 
     const songsService = user.Services().Songs()
-    const [permissions, setPermissions] = useState<SongListPermissions>({
-        canDelete: false
-    } as SongListPermissions);
+    const [permissions, setPermissions] = useState<SongListPermissions>({} as SongListPermissions);
 
 
     function loadTracksPage() {

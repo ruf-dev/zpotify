@@ -305,7 +305,15 @@
       }
     },
     "zpotify_apiCreatePlaylistRequest": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
     },
     "zpotify_apiCreatePlaylistResponse": {
       "type": "object",
@@ -381,13 +389,20 @@
       "type": "object",
       "properties": {
         "canUpload": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "User can upload tracks via telegram"
         },
         "earlyAccess": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "User can interact at all (basically a feature flag)"
         },
         "canDelete": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "User can delete songs"
+        },
+        "canCreatePlaylist": {
+          "type": "boolean",
+          "title": "User can create playlists"
         }
       }
     },

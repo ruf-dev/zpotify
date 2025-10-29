@@ -8,7 +8,12 @@ option go_package = "go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_api";
 option (npm_package) = "@zpotify/api";
 
 message Permissions {
+  //  User can upload tracks via telegram
   bool can_upload = 1;
+  // User can interact at all (basically a feature flag)
   bool early_access = 2;
+  // User can delete songs
   bool can_delete = 3;
+  // User can create playlists
+  bool can_create_playlist = 4;
 }

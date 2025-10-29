@@ -104,7 +104,10 @@ export type DeleteSongResponse = Record<string, never>;
 
 export type DeleteSong = Record<string, never>;
 
-export type CreatePlaylistRequest = Record<string, never>;
+export type CreatePlaylistRequest = {
+  name?: string;
+  description?: string;
+};
 
 export type CreatePlaylistResponse = {
   uuid?: string;

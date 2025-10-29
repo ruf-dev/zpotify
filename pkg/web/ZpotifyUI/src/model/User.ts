@@ -1,6 +1,8 @@
+import {Permissions} from "@zpotify/api";
+
 export type UserInfo = {
     username: string
-    permissions: SongListPermissions
+    permissions: UserPermissions
 }
 
 export type Session = {
@@ -9,6 +11,8 @@ export type Session = {
     accessExpirationDate: Date
     refreshExpirationDate: Date
 }
+
+export type UserPermissions = Permissions
 
 
 export type SongListPermissions = {

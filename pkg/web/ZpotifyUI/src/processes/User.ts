@@ -31,9 +31,7 @@ export default class UserService extends BaseService {
 
                 return {
                     username: r.userData.username,
-                    permissions: {
-                        canDelete: r.permissions?.canDelete || false
-                    },
+                    permissions: r.permissions,
                 } as UserInfo
             })
     }

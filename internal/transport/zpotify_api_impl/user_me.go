@@ -26,8 +26,9 @@ func (impl *Impl) Me(ctx context.Context, _ *zpotify_api.Me_Request) (*zpotify_a
 
 func toPbPermissions(permissions domain.UserPermissions) *zpotify_api.Permissions {
 	return &zpotify_api.Permissions{
-		CanUpload:   permissions.CanUpload,
-		EarlyAccess: permissions.EarlyAccess,
-		CanDelete:   permissions.CanDelete,
+		CanUpload:         permissions.CanUpload,
+		EarlyAccess:       permissions.EarlyAccess,
+		CanDelete:         permissions.CanDelete,
+		CanCreatePlaylist: permissions.CanCreatePlaylist,
 	}
 }

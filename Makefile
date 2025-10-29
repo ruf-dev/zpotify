@@ -23,7 +23,7 @@ warmup:
 # generates code on warm project
 codegen:
 	PROTOPACKPATH=proto_deps protopack generate
-	cd pkg/web/@zpotify/api && npm install && npm run build
+	cd pkg/web/ZpotifyUI && npm run prebuild
 
 lint:
 	golangci-lint run ./...

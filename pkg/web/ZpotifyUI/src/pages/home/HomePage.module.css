@@ -12,15 +12,33 @@
 .MainBody {
     margin: 8vh 0 16vh 0;
     display: flex;
-    flex-direction: column;
-    justify-content: stretch;
-    align-items: stretch;
+    flex-direction: row;
+    justify-content: center;
+    gap: 3em;
 
-    .Tittle {
+
+    .Section {
+        padding: 1em;
+        box-sizing: border-box;
+
         display: flex;
-        justify-content: center;
-        align-items: center;
+        flex-direction: column;
+
+        min-width: 45vw;
+        min-height: 100vh;
+
+        border: var(--accent-bg-color)  solid 1px;
+        border-radius: 1em;
+
+        transform: translateX(50%);
+
+        .Tittle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
+
 }
 
 .Player {

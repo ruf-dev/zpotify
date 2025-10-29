@@ -23,12 +23,17 @@ const (
 )
 
 type Permissions struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CanUpload     bool                   `protobuf:"varint,1,opt,name=can_upload,json=canUpload,proto3" json:"can_upload,omitempty"`
-	EarlyAccess   bool                   `protobuf:"varint,2,opt,name=early_access,json=earlyAccess,proto3" json:"early_access,omitempty"`
-	CanDelete     bool                   `protobuf:"varint,3,opt,name=can_delete,json=canDelete,proto3" json:"can_delete,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// User can upload tracks via telegram
+	CanUpload bool `protobuf:"varint,1,opt,name=can_upload,json=canUpload,proto3" json:"can_upload,omitempty"`
+	// User can interact at all (basically a feature flag)
+	EarlyAccess bool `protobuf:"varint,2,opt,name=early_access,json=earlyAccess,proto3" json:"early_access,omitempty"`
+	// User can delete songs
+	CanDelete bool `protobuf:"varint,3,opt,name=can_delete,json=canDelete,proto3" json:"can_delete,omitempty"`
+	// User can create playlists
+	CanCreatePlaylist bool `protobuf:"varint,4,opt,name=can_create_playlist,json=canCreatePlaylist,proto3" json:"can_create_playlist,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *Permissions) Reset() {
@@ -82,17 +87,25 @@ func (x *Permissions) GetCanDelete() bool {
 	return false
 }
 
+func (x *Permissions) GetCanCreatePlaylist() bool {
+	if x != nil {
+		return x.CanCreatePlaylist
+	}
+	return false
+}
+
 var File_zpotify_user_proto protoreflect.FileDescriptor
 
 const file_zpotify_user_proto_rawDesc = "" +
 	"\n" +
-	"\x12zpotify_user.proto\x12\vzpotify_api\x1a\tnpm.proto\"n\n" +
+	"\x12zpotify_user.proto\x12\vzpotify_api\x1a\tnpm.proto\"\x9e\x01\n" +
 	"\vPermissions\x12\x1d\n" +
 	"\n" +
 	"can_upload\x18\x01 \x01(\bR\tcanUpload\x12!\n" +
 	"\fearly_access\x18\x02 \x01(\bR\vearlyAccess\x12\x1d\n" +
 	"\n" +
-	"can_delete\x18\x03 \x01(\bR\tcanDeleteBC\x92\x82\x19\f@zpotify/apiZ1go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_apib\x06proto3"
+	"can_delete\x18\x03 \x01(\bR\tcanDelete\x12.\n" +
+	"\x13can_create_playlist\x18\x04 \x01(\bR\x11canCreatePlaylistBC\x92\x82\x19\f@zpotify/apiZ1go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_user_proto_rawDescOnce sync.Once

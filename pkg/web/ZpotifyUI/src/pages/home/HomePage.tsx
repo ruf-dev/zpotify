@@ -33,12 +33,21 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
             </div>
 
             <div className={cls.MainBody}>
-                <div className={cls.Tittle}>Global queue</div>
-                <LazyLoadSongsList
-                    audioPlayer={audioPlayer}
-                    user={user}
-                />
+                <div className={cls.Section}>
+                    <div className={cls.Tittle}>Global queue</div>
+                    <LazyLoadSongsList
+                        audioPlayer={audioPlayer}
+                        user={user}
+                    />
+                </div>
+
+                {user.userData?.permissions.canCreatePlaylist && (
+                    <div className={cls.Section}>
+                        <div className={cls.Tittle}>Create playlist</div>
+                    </div>
+                )}
             </div>
+
 
             <div className={cls.Player}>
                 <MusicPlayerWithLogo

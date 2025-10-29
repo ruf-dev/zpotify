@@ -31,8 +31,6 @@ export class SongsService extends BaseService implements ISongsService {
         } as ListSongsRequest
 
         return this.executeAuthApiCall((initReq: InitReq) => {
-                console.log(initReq)
-
                 return ZpotifyAPI
                     .ListSongs(req, initReq)
                     .then(mapSongsList)

@@ -10,4 +10,5 @@ export type Permissions = {
   canUpload?: boolean;
   earlyAccess?: boolean;
   canDelete?: boolean;
+  canCreatePlaylist?: boolean;
 };

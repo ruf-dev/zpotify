@@ -1097,6 +1097,8 @@ func (*DeleteSong_Response) Descriptor() ([]byte, []int) {
 
 type CreatePlaylist_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Description   *string                `protobuf:"bytes,2,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1129,6 +1131,20 @@ func (x *CreatePlaylist_Request) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreatePlaylist_Request.ProtoReflect.Descriptor instead.
 func (*CreatePlaylist_Request) Descriptor() ([]byte, []int) {
 	return file_zpotify_api_proto_rawDescGZIP(), []int{8, 0}
+}
+
+func (x *CreatePlaylist_Request) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CreatePlaylist_Request) GetDescription() string {
+	if x != nil && x.Description != nil {
+		return *x.Description
+	}
+	return ""
 }
 
 type CreatePlaylist_Response struct {
@@ -1231,9 +1247,12 @@ const file_zpotify_api_proto_rawDesc = "" +
 	"\aRequest\x12\x1b\n" +
 	"\tunique_id\x18\x01 \x01(\tR\buniqueId\x1a\n" +
 	"\n" +
-	"\bResponse\";\n" +
-	"\x0eCreatePlaylist\x1a\t\n" +
-	"\aRequest\x1a\x1e\n" +
+	"\bResponse\"\x86\x01\n" +
+	"\x0eCreatePlaylist\x1aT\n" +
+	"\aRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12%\n" +
+	"\vdescription\x18\x02 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
+	"\f_description\x1a\x1e\n" +
 	"\bResponse\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid2\xb7\x03\n" +
 	"\n" +
@@ -1337,6 +1356,7 @@ func file_zpotify_api_proto_init() {
 		(*Auth_Response_AuthData)(nil),
 	}
 	file_zpotify_api_proto_msgTypes[20].OneofWrappers = []any{}
+	file_zpotify_api_proto_msgTypes[24].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
