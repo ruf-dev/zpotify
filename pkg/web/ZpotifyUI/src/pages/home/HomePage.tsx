@@ -10,6 +10,7 @@ import {Path} from "@/app/routing/Router.tsx";
 import HeaderPart from "@/parts/header/HeaderPart.tsx";
 import LazyLoadSongsList from "@/parts/InfiniteSongList/LazyLoadSongsList.tsx";
 import MusicPlayerWithLogo from "@/components/player/MusicPlayerWithLogo.tsx";
+import cn from "classnames";
 
 interface HomePageProps {
     audioPlayer: AudioPlayer
@@ -28,9 +29,8 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
     return (
         <div className={cls.HomePage}>
 
-
             <div className={cls.MainBody}>
-                <div className={cls.Section}>
+                <div className={cn(cls.Section, cls.center)}>
                     <div className={cls.Tittle}>Global queue</div>
                     <LazyLoadSongsList
                         audioPlayer={audioPlayer}
@@ -39,7 +39,7 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
                 </div>
 
                 {user.userData?.permissions.canCreatePlaylist && (
-                    <div className={cls.Section}>
+                    <div className={cn(cls.Section, cls.right)}>
                         <div className={cls.Tittle}>Create playlist</div>
                     </div>
                 )}
