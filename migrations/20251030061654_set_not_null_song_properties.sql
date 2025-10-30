@@ -24,10 +24,6 @@ FROM playlist_songs
          JOIN artists_agg ON artists_agg.file_id = playlist_songs.file_id
 ORDER BY playlist_songs.order_number;
 
-alter table public.playlists_view
-    owner to zpotify;
-
-
 -- +goose StatementEnd
 
 -- +goose Down
