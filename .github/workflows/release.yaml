@@ -36,10 +36,46 @@ jobs:
             echo "No new buildx cache generated."
           fi
 
+  ui-build:
+    runs-on: ${{ vars.UBUNTU_IMAGE }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Restore UI cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            pkg/web/ZpotifyUI/node_modules
+            pkg/web/ZpotifyUI/dist
+          key: ${{ runner.os }}-uibuild-${{ github.ref_name }}-${{ hashFiles('pkg/web/ZpotifyUI/yarn.lock', 'pkg/web/ZpotifyUI/**.[jt]s', 'pkg/web/ZpotifyUI/**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-uibuild-${{ github.ref_name }}-
+            ${{ runner.os }}-uibuild-
+
+      - name: Install and build UI
+        working-directory: pkg/web/ZpotifyUI
+        run: |
+          yarn install --frozen-lockfile
+          yarn build
+
+      - name: Cache built UI
+        if: success()
+        uses: actions/cache@v4
+        with:
+          path: pkg/web/ZpotifyUI/dist
+          key: ${{ runner.os }}-uibuild-${{ github.ref_name }}-${{ hashFiles('pkg/web/ZpotifyUI/yarn.lock', 'pkg/web/ZpotifyUI/**.[jt]s', 'pkg/web/ZpotifyUI/**.[jt]sx') }}
+
   tag-release:
     runs-on: ${{ vars.UBUNTU_IMAGE }}
     needs:
       - image-build
+      - ui-build
     steps:
       - name: Release tag
         id: release
@@ -88,15 +124,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup node
-        uses: actions/setup-node@v3
+      - name: Restore UI cache
+        uses: actions/cache@v4
         with:
-          node-version: 22
-      - name: Build
-        run: |
-          cd pkg/web/ZpotifyUI && \
-          yarn install && \
-          yarn build
+          path: pkg/web/ZpotifyUI/dist
+          key: ${{ runner.os }}-uibuild-${{ github.ref_name }}-${{ hashFiles('pkg/web/ZpotifyUI/yarn.lock', 'pkg/web/ZpotifyUI/**.[jt]s', 'pkg/web/ZpotifyUI/**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-uibuild-${{ github.ref_name }}-
+            ${{ runner.os }}-uibuild-
 
       - name: Minio Deploy
         uses: marverlous811/minio-upload@v1.2.0
