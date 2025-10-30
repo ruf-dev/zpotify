@@ -8,6 +8,7 @@ import {AuthenticateViaTelegram, AuthResults} from "@/processes/Auth.ts";
 import TelegramLogo from "@/assets/TelegramLogo.tsx";
 import {useState} from "react";
 import {TgDeeplink} from "@/common/Link.ts";
+import {Session} from "@/model/User.ts";
 
 interface TelegramAuthProps {
     userState: User
@@ -34,7 +35,7 @@ export default function TelegramAuth({userState}: TelegramAuthProps) {
                                 refreshToken: res.AuthData.refreshToken || "",
                                 accessExpirationDate: new Date(res.AuthData.accessExpiresAt),
                                 refreshExpirationDate: new Date(res.AuthData.refreshExpiresAt),
-                            },
+                            } as Session,
                         );
                     }
 

@@ -35,6 +35,7 @@ export default function useUser(): User {
         setSession(sessionFromLocal)
 
         if (sessionFromLocal) {
+            console.log(sessionFromLocal)
             authMiddleware.current.session = sessionFromLocal
             fetchUserData()
         }
@@ -52,6 +53,7 @@ export default function useUser(): User {
         setSession(undefined)
         setUserData(undefined)
         clearLocalStorage()
+        authMiddleware.current.session = undefined
     }
 
     function fetchUserData() {

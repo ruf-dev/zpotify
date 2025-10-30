@@ -68,8 +68,10 @@ export class AuthMiddleware {
             refreshToken: this.session.refreshToken
         }
 
-        return UserAPI.RefreshToken(req, apiPrefix())
+        this.session = await UserAPI.RefreshToken(req, apiPrefix())
             .then(fromAuthData)
+
+        return this.session
     }
 }
 
