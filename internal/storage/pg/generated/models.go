@@ -42,9 +42,9 @@ type PlaylistSong struct {
 
 type PlaylistsView struct {
 	FileID       string
-	Title        sql.NullString
+	Title        string
 	Artists      json.RawMessage
-	DurationSec  sql.NullInt32
+	DurationSec  int32
 	PlaylistUuid uuid.UUID
 	OrderNumber  int16
 }
@@ -52,8 +52,8 @@ type PlaylistsView struct {
 type Song struct {
 	FileID      string
 	Artists     []uuid.UUID
-	Title       sql.NullString
-	DurationSec sql.NullInt32
+	Title       string
+	DurationSec int32
 	CreatedAt   sql.NullTime
 }
 

@@ -14,16 +14,18 @@ import (
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
-	"go.zpotify.ru/zpotify/internal/user_errors"
+	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 )
 
 type SongsStorage struct {
-	db sqldb.DB
+	db      sqldb.DB
+	querier querier.Querier
 }
 
 func NewSongStorage(db sqldb.DB) *SongsStorage {
 	return &SongsStorage{
-		db: db,
+		db:      db,
+		querier: querier.New(db),
 	}
 }
 
@@ -87,7 +89,7 @@ func (s *SongsStorage) AddSongsToPlaylist(ctx context.Context, playlistUuid stri
 }
 func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.SongBase, error) {
 	if r.PlaylistUuid == nil {
-		return nil, rerrors.New("no playlist uuid is passed")
+		return nil, rerrors.New("no playlist uuid is passed to list songs")
 	}
 
 	builder := sq.Select(
@@ -144,7 +146,7 @@ func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.S
 
 func (s *SongsStorage) Count(ctx context.Context, r domain.ListSongs) (uint64, error) {
 	if r.PlaylistUuid == nil {
-		return 0, rerrors.New("no playlist uuid is passed")
+		return 0, rerrors.New("no playlist uuid is passed to count")
 	}
 
 	builder := sq.Select("count(*)").
@@ -168,22 +170,23 @@ func (s *SongsStorage) Count(ctx context.Context, r domain.ListSongs) (uint64, e
 }
 
 func (s *SongsStorage) Get(ctx context.Context, uniqueId string) (domain.SongBase, error) {
-	listReq := domain.ListSongs{
-		UniqueIds: []string{uniqueId},
-		Limit:     1,
-		Offset:    0,
-	}
-
-	resp, err := s.List(ctx, listReq)
+	songRow, err := s.querier.GetSongByUniqueId(ctx, uniqueId)
 	if err != nil {
 		return domain.SongBase{}, wrapPgErr(err)
 	}
 
-	if len(resp) == 0 {
-		return domain.SongBase{}, user_errors.ErrNotFound
+	song := domain.SongBase{
+		UniqueFileId: songRow.FileID,
+		Title:        songRow.Title,
+		Duration:     time.Duration(songRow.DurationSec) * time.Second,
 	}
 
-	return resp[0], nil
+	err = json.Unmarshal(songRow.Artists, &song.Artists)
+	if err != nil {
+		return song, rerrors.Wrap(err, "error unmarshalling artists from storage to model")
+	}
+
+	return song, nil
 }
 
 func (s *SongsStorage) Delete(ctx context.Context, fileUniqueId string) error {

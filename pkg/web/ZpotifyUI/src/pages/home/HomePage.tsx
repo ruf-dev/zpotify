@@ -27,10 +27,7 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
 
     return (
         <div className={cls.HomePage}>
-            <div className={cls.Header}>
-                <HeaderPart
-                    user={user}/>
-            </div>
+
 
             <div className={cls.MainBody}>
                 <div className={cls.Section}>
@@ -48,6 +45,10 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
                 )}
             </div>
 
+            <div className={cls.Header}>
+                <HeaderPart
+                    user={user}/>
+            </div>
 
             <div className={cls.Player}>
                 <MusicPlayerWithLogo

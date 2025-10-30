@@ -12,6 +12,7 @@ import (
 
 type Querier interface {
 	CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error)
+	GetSongByUniqueId(ctx context.Context, fileID string) (GetSongByUniqueIdRow, error)
 	GetUserByTgId(ctx context.Context, tgID int64) (UsersFull, error)
 	GetUserPermissionsOnPlaylist(ctx context.Context, arg GetUserPermissionsOnPlaylistParams) (GetUserPermissionsOnPlaylistRow, error)
 	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error
