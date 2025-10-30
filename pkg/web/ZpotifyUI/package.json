@@ -9,7 +9,7 @@
     "build:api": "cd ./../@zpotify/api/ && npm install typescript && npm run build && npm link",
     "link": "npm link @zpotify/api",
     "build:ui": "tsc -b && vite build",
-    "prebuild": "npm run build:api && npm run link && npm run build:ui",
+    "build": "npm run build:api && npm run link && npm run build:ui",
     "lint": "eslint .",
     "preview": "vite preview"
   },
