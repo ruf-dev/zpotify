@@ -28,7 +28,6 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
 
     return (
         <div className={cls.HomePage}>
-
             <div className={cls.MainBody}>
                 <div className={cn(cls.Section, cls.center)}>
                     <div className={cls.Tittle}>Global queue</div>

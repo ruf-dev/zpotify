@@ -22,10 +22,9 @@ func unwrapError(w http.ResponseWriter, err error) {
 		return
 	}
 
-	var errNotFound user_errors.UserError
-	if stderrs.As(err, &errNotFound) {
+	if stderrs.Is(err, user_errors.ErrNotFound) {
 		w.WriteHeader(http.StatusNotFound)
-		_, _ = w.Write([]byte(errNotFound.Error()))
+		_, _ = w.Write([]byte(err.Error()))
 		return
 	}
 

@@ -9,6 +9,7 @@ import useAudioPlayer from "@/hooks/player/player.ts";
 import HomePage from "@/pages/home/HomePage.tsx";
 import useUser from "@/hooks/user/User.ts";
 import Coloring from "@/admin-components/coloring/Coloring.tsx";
+import Toaster from "@/components/notifications/Toaster.tsx";
 
 export enum Path {
     HomePage = "/",
@@ -46,7 +47,10 @@ export default function Router() {
                     />
 
                 </Routes>
+
+                <Toaster/>
             </div>
+
             <div className={cls.Admins}>
                 <Coloring/>
             </div>

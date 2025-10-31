@@ -1,9 +1,10 @@
 import {Observable} from "rxjs";
 
-import {AuthRequest, AuthResponse, AuthAuthData, UserAPI, RefreshRequest, RefreshResponse} from "@zpotify/api";
+import {AuthAuthData, AuthRequest, AuthResponse, RefreshRequest, RefreshResponse, UserAPI} from "@zpotify/api";
 
 import {apiPrefix, InitReq} from "@/processes/Api.ts";
 import {Session} from "@/model/User.ts";
+import {ErrorReason, GrpcError, ServiceError, WithIsNonRetryable, WithReason, WithTitle} from "@/processes/Errors.ts";
 
 export interface AuthResults {
     AuthUUID?: string
@@ -28,6 +29,10 @@ export class AuthMiddleware {
     session?: Session;
 
     constructor(session?: Session) {
+        if (!session) {
+            session = fromLocalStorage()
+        }
+
         this.session = session;
     }
 
@@ -57,11 +62,17 @@ export class AuthMiddleware {
 
     private async refreshToken() {
         if (!this.session) {
-            throw new Error("User is not authenticated")
+            throw new ServiceError(
+                WithTitle("User is not authenticated"),
+                WithIsNonRetryable(true)
+            )
         }
 
         if (this.session.refreshExpirationDate < new Date()) {
-            throw new Error("Refresh token expired")
+            throw new ServiceError(
+                WithTitle("Refresh token expired"),
+                WithIsNonRetryable(true)
+            )
         }
 
         const req: RefreshRequest = {
@@ -70,8 +81,29 @@ export class AuthMiddleware {
 
         this.session = await UserAPI.RefreshToken(req, apiPrefix())
             .then(fromAuthData)
+            .catch((e: GrpcError) => {
+
+                if (e.details.find(d => d.reason == ErrorReason.REFRESH_TOKEN_NOT_FOUND)) {
+                    // this.logout()
+                }
+
+                throw new ServiceError(
+                    WithTitle(e.message),
+                    WithIsNonRetryable(true),
+                    WithReason(e.details.find((d => d.reason != undefined))?.reason)
+                )
+            })
 
         return this.session
+    }
+
+    login(s: Session) {
+        this.session = s;
+        saveToLocalStorage(s)
+    }
+
+    logout() {
+        clearLocalStorage()
     }
 }
 
@@ -83,4 +115,26 @@ function fromAuthData(r: RefreshResponse): Session {
         accessExpirationDate: r.authData?.accessExpiresAt,
         refreshExpirationDate: r.authData?.refreshExpiresAt,
     } as Session
+}
+
+
+function saveToLocalStorage(session: Session) {
+    localStorage.setItem(getLocalStorageAuthInfoKey(), JSON.stringify(session))
+}
+
+function fromLocalStorage(): Session | undefined {
+    const authInfoFromLocalStorage = localStorage.getItem(getLocalStorageAuthInfoKey())
+    if (!authInfoFromLocalStorage) {
+        return
+    }
+
+    return JSON.parse(authInfoFromLocalStorage)
+}
+
+function clearLocalStorage() {
+    localStorage.removeItem(getLocalStorageAuthInfoKey())
+}
+
+function getLocalStorageAuthInfoKey(): string {
+    return "user_session"
 }

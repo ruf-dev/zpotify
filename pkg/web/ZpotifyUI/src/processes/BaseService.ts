@@ -1,5 +1,5 @@
 import {AuthMiddleware} from "@/processes/Auth.ts";
-import {ErrorCodes} from "@/processes/ErrorCodes.ts";
+import {Errors} from "@/processes/Errors.ts";
 import {InitReq} from "@/processes/Api.ts";
 import {RefObject} from "react";
 
@@ -14,31 +14,38 @@ export class BaseService {
         callback: (initReq: InitReq) => Promise<T>,
     ): Promise<T> {
 
-        return withRetries<T>(async (): Promise<T> => {
-            try {
-                return await callback(await this.auth.current.GetMetadata());
-            } catch (err: any) {
-                if (err instanceof TypeError && err.message === "Failed to fetch") {
-                    throw err;
-                }
+        return withRetries<T>(
+            async (): Promise<T> =>
+                callback(await this.auth.current.GetMetadata())
+                    .catch(async (err: any) => {
+                        if (err instanceof TypeError && err.message === "Failed to fetch") {
+                            throw err;
+                        }
 
-                if (err.code === ErrorCodes.UNAUTHENTICATED) {
-                    await this.auth.current.RefreshToken();
-                }
+                        if (err.code !== Errors.UNAUTHENTICATED) {
+                            throw err;
+                        }
 
-                throw err;
-            }
-        }, 3)
+                        return this.auth.current.RefreshToken()
+                    })
+                    .then()
+            , 3)
     }
 }
 
 
 function withRetries<T>(callback: () => Promise<T>, retries: number): Promise<T> {
-    return callback().catch(err => {
-        if (retries > 0) {
-            return withRetries(callback, retries - 1);
-        }
-        throw err;
-    });
+    return callback()
+        .catch((err) => {
+            if (err.isNonRetryable) {
+                throw err
+            }
+
+            if (retries > 0) {
+                return withRetries(callback, retries - 1);
+            }
+
+            throw err;
+        });
 }
 

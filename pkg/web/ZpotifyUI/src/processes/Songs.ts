@@ -1,14 +1,15 @@
+import {RefObject} from "react";
+
 import {ArtistBase, ListSongsRequest, ListSongsResponse, SongBase, ZpotifyAPI} from "@zpotify/api";
 
 import {Song, SongList} from "@/model/Song";
 
 import {InitReq} from "@/processes/Api.ts";
 import {AuthMiddleware} from "@/processes/Auth.ts";
-import {handleError} from "@/processes/ErrorCodes.ts";
+
 import {BaseService} from "@/processes/BaseService.ts";
 
 import {formatDuration} from "@/utils/time.ts";
-import {RefObject} from "react";
 
 
 export interface ISongsService {
@@ -34,8 +35,6 @@ export class SongsService extends BaseService implements ISongsService {
                 return ZpotifyAPI
                     .ListSongs(req, initReq)
                     .then(mapSongsList)
-                    .catch(handleError)
-                    .then()
             }
         )
     }

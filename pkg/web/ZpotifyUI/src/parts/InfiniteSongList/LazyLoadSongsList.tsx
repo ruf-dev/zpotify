@@ -10,6 +10,7 @@ import {AudioPlayer} from "@/hooks/player/player.ts";
 import ZButton from "@/components/base/button/ZButton.tsx";
 import {User} from "@/hooks/user/User.ts";
 import {SongListPermissions} from "@/model/User.ts";
+import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 
 interface InfiniteSongsListProps {
     audioPlayer: AudioPlayer
@@ -30,6 +31,7 @@ export default function LazyLoadSongsList({audioPlayer, playlistId, user}: Infin
     const songsService = user.Services().Songs()
     const [permissions, setPermissions] = useState<SongListPermissions>({} as SongListPermissions);
 
+    const toaster = useToaster();
 
     function loadTracksPage() {
         songsService.ListSongs(songsPerPage, offset, shuffleHash, playlistId)
@@ -47,6 +49,7 @@ export default function LazyLoadSongsList({audioPlayer, playlistId, user}: Infin
 
                 setPermissions(perms)
             })
+            .catch(toaster.catch)
     }
 
     async function loadTracksShuffled(hash: number): Promise<string> {
@@ -57,6 +60,8 @@ export default function LazyLoadSongsList({audioPlayer, playlistId, user}: Infin
 
                 return resp.songs[0].uniqueId
             })
+            .catch(toaster.catch)
+            .then()
     }
 
 
