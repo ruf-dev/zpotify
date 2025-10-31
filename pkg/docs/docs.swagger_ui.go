@@ -38,10 +38,6 @@ func Swagger() (p string, handler http.HandlerFunc) {
 					Name: "ZpotifyApi",
 					URL:  path.Join(swaggerPath, "zpotify_api.swagger.json"),
 				},
-				{
-					Name: "ZpotifyErrors",
-					URL:  path.Join(swaggerPath, "zpotify_errors.swagger.json"),
-				},
 			}),
 		swaggerui.WithShowExtensions(true),
 	))
