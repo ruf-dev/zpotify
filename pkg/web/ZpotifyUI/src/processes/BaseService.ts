@@ -1,5 +1,5 @@
 import {AuthMiddleware} from "@/processes/Auth.ts";
-import {Errors} from "@/processes/Errors.ts";
+import {Errors, ServiceError, WithTitle} from "@/processes/Errors.ts";
 import {InitReq} from "@/processes/Api.ts";
 import {RefObject} from "react";
 
@@ -19,11 +19,11 @@ export class BaseService {
                 callback(await this.auth.current.GetMetadata())
                     .catch(async (err: any) => {
                         if (err instanceof TypeError && err.message === "Failed to fetch") {
-                            throw err;
+                            throw new ServiceError(WithTitle("Server is not available. Try again later"));
                         }
 
                         if (err.code !== Errors.UNAUTHENTICATED) {
-                            throw err;
+                            throw new ServiceError(WithTitle(err.message));
                         }
 
                         return this.auth.current.RefreshToken()

@@ -6,12 +6,15 @@ export interface Toast {
     description: string
 
     level?: 'Error' | 'Warn' | 'Info'
+
+    isDismissable?: boolean;
 }
 
 export interface Toaster {
     toasts: Toast[];
 
     bake: (t: Toast) => void;
+    dismiss: (title: string) => void;
 
     catch: (e: ServiceError) => void
 }
@@ -19,6 +22,7 @@ export interface Toaster {
 export const useToaster = create<Toaster>(
     (set, get) => ({
         toasts: [],
+
         bake: (newToast: Toast) => {
 
             const oldToast = get().toasts.find((t: Toast) => t.title === newToast.title)
@@ -29,10 +33,14 @@ export const useToaster = create<Toaster>(
             set((state: Toaster) => ({toasts: [...state.toasts, newToast]}));
 
             setTimeout(() => {
-                set((state) => ({
-                    toasts: state.toasts.filter((t: Toast) => t.title !== newToast.title),
-                }));
+                get().dismiss(newToast.title);
             }, 5000);
+        },
+
+        dismiss: (title: string) => {
+            set((state) => ({
+                toasts: state.toasts.filter((t: Toast) => t.title !== title),
+            }));
         },
 
         catch: (e: ServiceError) => {
@@ -44,6 +52,7 @@ export const useToaster = create<Toaster>(
                 title: e.title,
                 description: e.details,
                 level: 'Error',
+                isDismissable: true,
             } as Toast)
         }
     }));
