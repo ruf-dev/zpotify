@@ -118,7 +118,7 @@ func (ac *authMiddleware) authWithSession(ctx context.Context, md metadata.MD) (
 	}
 
 	if !user.Permissions.EarlyAccess {
-		return nil, status.Error(codes.Unauthenticated,
+		return nil, status.Error(codes.Unavailable,
 			"Service in early access. Ask administrator for Early access")
 	}
 

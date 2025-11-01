@@ -1,5 +1,13 @@
 import {AuthMiddleware} from "@/processes/Auth.ts";
-import {Errors, ServiceError, WithTitle} from "@/processes/Errors.ts";
+import {
+    ErrorReason,
+    Errors,
+    GrpcError,
+    isReason,
+    ServiceError,
+    WithIsNonRetryable,
+    WithTitle
+} from "@/processes/Errors.ts";
 import {InitReq} from "@/processes/Api.ts";
 import {RefObject} from "react";
 
@@ -17,16 +25,28 @@ export class BaseService {
         return withRetries<T>(
             async (): Promise<T> =>
                 callback(await this.auth.current.GetMetadata())
-                    .catch(async (err: any) => {
-                        if (err instanceof TypeError && err.message === "Failed to fetch") {
+                    .catch(async (err: GrpcError) => {
+                        if (err.message === "Failed to fetch") {
                             throw new ServiceError(WithTitle("Server is not available. Try again later"));
                         }
 
-                        if (err.code !== Errors.UNAUTHENTICATED) {
-                            throw new ServiceError(WithTitle(err.message));
-                        }
+                        if (err.code == Errors.UNAUTHENTICATED) {
+                            if (isReason(err.details, ErrorReason.ACCESS_TOKEN_NOT_FOUND)) {
+                                throw new ServiceError(
+                                    WithTitle('Session expired. Login again'),
+                                    WithIsNonRetryable(true));
+                            }
 
-                        return this.auth.current.RefreshToken()
+                            if (isReason(err.details, ErrorReason.ACCESS_TOKEN_EXPIRED)) {
+                                await this.auth.current.RefreshToken()
+                                console.debug('token refreshed')
+                                throw new ServiceError(
+                                    WithTitle('Session expired. Refreshing'),
+                                    WithIsNonRetryable(false),
+                                );
+                            }
+                        }
+                        throw new ServiceError(WithTitle(err.message));
                     })
                     .then()
             , 3)

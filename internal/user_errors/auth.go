@@ -9,6 +9,7 @@ import (
 var (
 	ErrRefreshTokenNotFound = errRefreshTokenNotFound()
 	ErrAccessTokenNotFound  = errAccessTokenNotFound()
+	ErrAccessTokenExpired   = errAccessTokenExpired()
 )
 
 func errRefreshTokenNotFound() error {
@@ -30,6 +31,20 @@ func errAccessTokenNotFound() error {
 
 	detail := &errdetails.ErrorInfo{
 		Reason:   "ACCESS_TOKEN_NOT_FOUND",
+		Domain:   "auth",
+		Metadata: make(map[string]string),
+	}
+
+	detailedSt, _ := st.WithDetails(detail)
+
+	return detailedSt.Err()
+}
+
+func errAccessTokenExpired() error {
+	st := status.New(codes.Unauthenticated, "access token expired")
+
+	detail := &errdetails.ErrorInfo{
+		Reason:   "ACCESS_TOKEN_EXPIRED",
 		Domain:   "auth",
 		Metadata: make(map[string]string),
 	}

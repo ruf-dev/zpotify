@@ -21,6 +21,11 @@ export enum Errors {
 export enum ErrorReason {
     REFRESH_TOKEN_NOT_FOUND = 'REFRESH_TOKEN_NOT_FOUND',
     ACCESS_TOKEN_NOT_FOUND = 'ACCESS_TOKEN_NOT_FOUND',
+    ACCESS_TOKEN_EXPIRED = 'ACCESS_TOKEN_EXPIRED'
+}
+
+export function isReason(det: GrpcErrorDetails[], ...res: ErrorReason[]) : boolean{
+    return det.find(d=> res.includes(d.reason)) !== undefined
 }
 
 export type GrpcError = {

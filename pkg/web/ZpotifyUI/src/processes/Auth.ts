@@ -79,11 +79,12 @@ export class AuthMiddleware {
             refreshToken: this.session.refreshToken
         }
 
-        this.session = await UserAPI.RefreshToken(req, apiPrefix())
+        const newSession = await UserAPI.RefreshToken(req, apiPrefix())
             .then(fromAuthData)
             .catch((e: GrpcError) => {
 
                 if (e.details.find(d => d.reason == ErrorReason.REFRESH_TOKEN_NOT_FOUND)) {
+                    // TODO
                     // this.logout()
                 }
 
@@ -93,6 +94,8 @@ export class AuthMiddleware {
                     WithReason(e.details.find((d => d.reason != undefined))?.reason)
                 )
             })
+
+        this.login(newSession)
 
         return this.session
     }

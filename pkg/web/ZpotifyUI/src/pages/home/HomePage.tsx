@@ -11,6 +11,7 @@ import HeaderPart from "@/parts/header/HeaderPart.tsx";
 import LazyLoadSongsList from "@/parts/InfiniteSongList/LazyLoadSongsList.tsx";
 import MusicPlayerWithLogo from "@/components/player/MusicPlayerWithLogo.tsx";
 import cn from "classnames";
+import Carousel from "@/components/carousel/Carousel.tsx";
 
 interface HomePageProps {
     audioPlayer: AudioPlayer
@@ -26,22 +27,38 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
         }
     }, [user.userData]);
 
+    if (!user.userData) {
+        return (<div>loading</div>)
+    }
+
     return (
         <div className={cls.HomePage}>
             <div className={cls.MainBody}>
-                <div className={cn(cls.Section, cls.center)}>
-                    <div className={cls.Tittle}>Global queue</div>
-                    <LazyLoadSongsList
-                        audioPlayer={audioPlayer}
-                        user={user}
-                    />
-                </div>
-
-                {user.userData?.permissions.canCreatePlaylist && (
-                    <div className={cn(cls.Section, cls.right)}>
-                        <div className={cls.Tittle}>Create playlist</div>
+                <Carousel>
+                    <div className={cn(cls.Section, cls.center)}>
+                        <div className={cls.Tittle}>Global queue</div>
+                        <LazyLoadSongsList
+                            audioPlayer={audioPlayer}
+                            user={user}
+                        />
                     </div>
-                )}
+
+                    <div className={cn(cls.Section, cls.center)}>
+                        <div className={cls.Tittle}>Global queue</div>
+                        <LazyLoadSongsList
+                            audioPlayer={audioPlayer}
+                            user={user}
+                        />
+                    </div>
+
+                    <div className={cn(cls.Section, cls.center)}>
+                        <div className={cls.Tittle}>Global queue</div>
+                        <LazyLoadSongsList
+                            audioPlayer={audioPlayer}
+                            user={user}
+                        />
+                    </div>
+                </Carousel>
             </div>
 
             <div className={cls.Header}>

@@ -8,7 +8,6 @@ import (
 
 	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
-	"google.golang.org/grpc/codes"
 
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
@@ -131,7 +130,7 @@ func (a *AuthService) AuthWithToken(ctx context.Context, token string) (tgId int
 	}
 
 	if accessToken.AccessExpiresAt.UTC().Before(time.Now().UTC()) {
-		return 0, rerrors.New("access token expired", codes.Unauthenticated)
+		return 0, rerrors.Wrap(user_errors.ErrAccessTokenExpired)
 	}
 
 	return accessToken.UserTgId, nil
