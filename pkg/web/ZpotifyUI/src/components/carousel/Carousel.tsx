@@ -1,18 +1,23 @@
-import React, {useRef, useState, useEffect, ReactNode} from "react";
-import {motion} from "framer-motion";
+import React, { useRef, useState, useEffect, ReactNode } from "react";
+import { motion } from "framer-motion";
 import cls from "@/components/carousel/Carousel.module.css";
 import cn from "classnames";
-import {flushSync} from "react-dom";
+import { flushSync } from "react-dom";
 
 interface CarouselProps {
     children: ReactNode[];
 }
 
-const Carousel: React.FC<CarouselProps> = ({children}) => {
+const Carousel: React.FC<CarouselProps> = ({ children }) => {
     const scrollRef = useRef<HTMLDivElement>(null);
     const itemRefs = useRef<HTMLDivElement[]>([]);
     const [centerIndex, setCenterIndex] = useState(0);
 
+    const [isScrollingProgrammatically, setIsScrollingProgrammatically] = useState(false);
+
+    let scrollTimeout: number | undefined;
+
+    // Click handler: center item smoothly
     function onChildClick(index: number) {
         const container = scrollRef.current;
         const item = itemRefs.current[index];
@@ -21,11 +26,11 @@ const Carousel: React.FC<CarouselProps> = ({children}) => {
         const containerRect = container.getBoundingClientRect();
         const itemRect = item.getBoundingClientRect();
         const itemCenter = item.offsetLeft + itemRect.width / 2;
-
         const targetScrollLeft = itemCenter - containerRect.width / 2;
 
         flushSync(() => {
             setCenterIndex(index);
+            setIsScrollingProgrammatically(true);
         });
 
         container.scrollTo({
@@ -34,10 +39,25 @@ const Carousel: React.FC<CarouselProps> = ({children}) => {
         });
     }
 
-    // observe which item is centered
+    // Scroll handler: detect end of programmatic scroll
+    const handleScroll = () => {
+        if (isScrollingProgrammatically) {
+            if (scrollTimeout) window.clearTimeout(scrollTimeout);
+            scrollTimeout = window.setTimeout(() => {
+                setIsScrollingProgrammatically(false);
+            }, 100);
+        }
+    };
+
+    // IntersectionObserver: detect centered item on manual scroll
     useEffect(() => {
+        const container = scrollRef.current;
+        if (!container) return;
+
         const observer = new IntersectionObserver(
             (entries) => {
+                if (isScrollingProgrammatically) return; // ignore auto scroll
+
                 let maxRatio = 0;
                 let newIndex = centerIndex;
 
@@ -53,39 +73,44 @@ const Carousel: React.FC<CarouselProps> = ({children}) => {
                 }
             },
             {
-                root: scrollRef.current,
+                root: container,
                 threshold: buildThresholdList(20),
             }
         );
 
         itemRefs.current.forEach((item) => item && observer.observe(item));
         return () => observer.disconnect();
-    }, [centerIndex]);
+    }, [centerIndex, isScrollingProgrammatically]);
 
-    // helper: fine-grained thresholds for smooth detection
+    // Helper: fine-grained thresholds
     function buildThresholdList(steps: number) {
-        const thresholds = [];
+        const thresholds: number[] = [];
         for (let i = 0; i <= steps; i++) thresholds.push(i / steps);
         return thresholds;
     }
 
     return (
-        <div className={cls.CarouselContainer} ref={scrollRef}>
+        <div className={cls.CarouselContainer} ref={scrollRef} onScroll={handleScroll}>
             <div className={cls.CarouselTrack}>
                 {React.Children.map(children, (child, i) => (
                     <motion.div
                         key={i}
+                        className={cls.CarouselItem}
                         ref={(el) => (itemRefs.current[i] = el!)}
-                        className={cn(cls.CarouselItem, {
-                            [cls.centered]: i === centerIndex,
-                        })}
                         onClick={() => onChildClick(i)}
-                        animate={{
-                            opacity: i === centerIndex ? 1 : 0.6,
-                        }}
-                        transition={{duration: 0.25, ease: "easeOut"}}
                     >
-                        {child}
+                        <motion.div
+                            className={cn(cls.CarouselItemContent, {
+                                [cls.centered]: i === centerIndex,
+                            })}
+                            animate={{
+                                scale: i === centerIndex ? 1 : 0.9,
+                                opacity: i === centerIndex ? 1 : 0.6,
+                            }}
+                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        >
+                            {child}
+                        </motion.div>
                     </motion.div>
                 ))}
             </div>

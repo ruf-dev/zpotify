@@ -3,7 +3,6 @@
     overflow-x: auto;
     overflow-y: hidden;
     display: block;
-
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     scroll-padding-inline: 25%;
@@ -25,8 +24,9 @@
 .CarouselTrack::before,
 .CarouselTrack::after {
     content: "";
-    flex: 0 0 50%;
+    flex: 0 0 25%; /* match scroll-padding-inline */
 }
+
 .CarouselItem {
     flex: 0 0 auto;
     display: inline-flex;
@@ -34,20 +34,24 @@
     align-items: center;
     scroll-snap-align: center;
     scroll-snap-stop: always;
-
-    cursor: pointer;
-
-    transition: transform 0.1s ease;
 }
 
-.CarouselItem * {
+.CarouselItemContent {
+    display: inline-flex; /* scale only this */
+    justify-content: center;
+    align-items: center;
+    transform-origin: center center;
+    cursor: pointer;
+}
+
+.CarouselItemContent * {
     pointer-events: none;
 }
 
-.CarouselItem.centered * {
+.CarouselItemContent.centered * {
     pointer-events: auto;
 }
 
-.CarouselItem:not(.centered) {
+.CarouselItemContent:not(.centered) {
     cursor: pointer;
 }
