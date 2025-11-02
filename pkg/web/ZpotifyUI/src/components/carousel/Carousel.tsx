@@ -1,22 +1,22 @@
-import React, { useRef, useState, useEffect, ReactNode } from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import React, {useRef, useState, useEffect, ReactNode} from "react";
+import {motion} from "framer-motion";
 import cls from "@/components/carousel/Carousel.module.css";
 import cn from "classnames";
-import { flushSync } from "react-dom";
+import {flushSync} from "react-dom";
 
 interface CarouselProps {
     children: ReactNode[];
     visibleItems?: number; // number of items considered for center frame
 }
 
-const Carousel: React.FC<CarouselProps> = ({ children, visibleItems = 3 }) => {
+const Carousel: React.FC<CarouselProps> = ({children, visibleItems = 3}) => {
     const scrollRef = useRef<HTMLDivElement>(null);
     const itemRefs = useRef<HTMLDivElement[]>([]);
     const [centerIndex, setCenterIndex] = useState(0);
     const [containerWidth, setContainerWidth] = useState(0);
 
     const [isScrollingProgrammatically, setIsScrollingProgrammatically] = useState(false);
-    const [isUserScrolling, setIsUserScrolling] = useState(false);
+    const [_, setIsUserScrolling] = useState(false);
 
     let scrollTimeout: number | undefined;
 
@@ -117,16 +117,18 @@ const Carousel: React.FC<CarouselProps> = ({ children, visibleItems = 3 }) => {
                     <motion.div
                         key={i}
                         className={cls.CarouselItem}
-                        ref={(el) => (itemRefs.current[i] = el!)}
+                        ref={(el: HTMLDivElement | null): void => {
+                            itemRefs.current[i] = el!;
+                        }}
                         onClick={() => onChildClick(i)}
                     >
                         <motion.div
-                            className={cn(cls.CarouselItemContent, { [cls.centered]: i === centerIndex })}
+                            className={cn(cls.CarouselItemContent, {[cls.centered]: i === centerIndex})}
                             animate={{
                                 scale: calculateScale(i),
                                 opacity: calculateScale(i), // optional: scale opacity proportionally
                             }}
-                            transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                            transition={{type: "spring", stiffness: 500, damping: 35}}
                         >
                             {child}
                         </motion.div>
