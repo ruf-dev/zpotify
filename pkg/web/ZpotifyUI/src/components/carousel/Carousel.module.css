@@ -2,8 +2,8 @@
     width: 100vw;
     overflow-x: auto;
     overflow-y: hidden;
-    display: flex;
-    align-items: center;
+    display: block;
+
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     scroll-padding-inline: 25%;
@@ -29,11 +29,25 @@
 }
 .CarouselItem {
     flex: 0 0 auto;
-    scroll-snap-align: center;
-    scroll-snap-stop: always;
-    cursor: pointer;
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
-    transition: transform 0.3s ease;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+
+    cursor: pointer;
+
+    transition: transform 0.1s ease;
+}
+
+.CarouselItem * {
+    pointer-events: none;
+}
+
+.CarouselItem.centered * {
+    pointer-events: auto;
+}
+
+.CarouselItem:not(.centered) {
+    cursor: pointer;
 }
