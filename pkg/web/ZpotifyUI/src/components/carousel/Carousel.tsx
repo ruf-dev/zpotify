@@ -7,9 +7,10 @@ import {flushSync} from "react-dom";
 interface CarouselProps {
     children: ReactNode[];
     visibleItems?: number; // number of items considered for center frame
+    width?: string;
 }
 
-const Carousel: React.FC<CarouselProps> = ({children, visibleItems = 3}) => {
+const Carousel: React.FC<CarouselProps> = ({children, visibleItems = 3, width = '100vw'}) => {
     const scrollRef = useRef<HTMLDivElement>(null);
     const itemRefs = useRef<HTMLDivElement[]>([]);
     const [centerIndex, setCenterIndex] = useState(0);
@@ -111,7 +112,14 @@ const Carousel: React.FC<CarouselProps> = ({children, visibleItems = 3}) => {
     };
 
     return (
-        <div className={cls.CarouselContainer} ref={scrollRef} onScroll={handleScroll}>
+        <div
+            className={cls.CarouselContainer}
+            ref={scrollRef}
+            onScroll={handleScroll}
+            style={{
+                width: width,
+            }}
+        >
             <div className={cls.CarouselTrack}>
                 {React.Children.map(children, (child, i) => (
                     <motion.div

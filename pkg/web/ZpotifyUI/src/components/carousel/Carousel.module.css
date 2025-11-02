@@ -1,5 +1,4 @@
 .CarouselContainer {
-    width: 100vw;
     overflow-x: auto;
     overflow-y: hidden;
     display: block;
