@@ -1,0 +1,41 @@
+.CarouselContainer {
+    width: 100vw;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 50%; /* centers items, tweak as needed */
+}
+
+.CarouselContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.CarouselTrack {
+    display: flex;
+    flex-wrap: nowrap;
+
+    align-items: center;
+    gap: 24px;
+    padding: 16px 50% 16px 50%;
+}
+
+.CarouselItem {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+
+    cursor: pointer;
+    flex-shrink: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease;
+}

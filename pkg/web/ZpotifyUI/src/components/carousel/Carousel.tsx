@@ -1,131 +1,112 @@
-import { useState, useEffect, Children } from 'react';
-import './Carousel.css';
+import React, {
+    useRef,
+    useState,
+    useEffect,
+    useLayoutEffect,
+    ReactNode,
+    UIEvent,
+} from "react";
+import {motion, useAnimation} from "framer-motion";
+import cls from "@/components/carousel/Carousel.module.css";
 
-const Carousel = ({ children, visibleCount = 3, autoPlay = false, interval = 3000 }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [isTransitioning, setIsTransitioning] = useState(false);
-    const items = Children.toArray(children);
-    const totalItems = items.length;
+interface CarouselProps {
+    children: ReactNode[];
+    onSelect?: (index: number) => void;
+}
 
-    // Calculate how many items to actually show (can't exceed total items)
-    const actualVisibleCount = Math.min(visibleCount, totalItems);
+const Carousel: React.FC<CarouselProps> = ({children, onSelect}) => {
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const itemRefs = useRef<HTMLDivElement[]>([]);
+    const controls = useAnimation();
 
-    // Calculate the range of visible items
-    const getVisibleItems = () => {
-        const visibleItems = [];
+    const [centerIndex, setCenterIndex] = useState(0);
+    const [isUserScrolling, setIsUserScrolling] = useState(false);
+    const [scrollTimeout, setScrollTimeout] = useState<number | null>(null);
 
-        for (let i = 0; i < actualVisibleCount; i++) {
-            let index = currentIndex + i;
+    // --- measure and center selected item
+    const centerItem = (index: number, smooth = true) => {
+        const container = scrollRef.current;
+        const item = itemRefs.current[index];
+        if (!container || !item) return;
 
-            // Handle wrap-around for circular carousel
-            if (index >= totalItems) {
-                index = index % totalItems;
+        const containerRect = container.getBoundingClientRect();
+        const itemRect = item.getBoundingClientRect();
+        const containerCenter = containerRect.width / 2;
+        const itemCenter = item.offsetLeft + itemRect.width / 2;
+
+        const targetScroll = itemCenter - containerCenter;
+        container.scrollTo({
+            left: targetScroll,
+            behavior: smooth ? "smooth" : "auto",
+        });
+    };
+
+    const handleClick = (index: number) => {
+        setCenterIndex(index);
+        centerItem(index);
+    };
+
+    // --- update selection when user scrolls and stops
+    const handleScroll = (e: UIEvent<HTMLDivElement>) => {
+        setIsUserScrolling(true);
+        if (scrollTimeout) window.clearTimeout(scrollTimeout);
+        const timeout = window.setTimeout(() => {
+            setIsUserScrolling(false);
+            snapToClosest();
+        }, 120);
+        setScrollTimeout(timeout);
+    };
+
+    const snapToClosest = () => {
+        const container = scrollRef.current;
+        if (!container) return;
+        const containerRect = container.getBoundingClientRect();
+        const containerCenter = container.scrollLeft + containerRect.width / 2;
+
+        let closestIndex = 0;
+        let closestDistance = Infinity;
+
+        itemRefs.current.forEach((item, i) => {
+            if (!item) return;
+            const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+            const distance = Math.abs(containerCenter - itemCenter);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestIndex = i;
             }
+        });
 
-            visibleItems.push({
-                item: items[index],
-                index: index,
-                position: i
-            });
-        }
-
-        return visibleItems;
+        setCenterIndex(closestIndex);
+        centerItem(closestIndex);
+        onSelect?.(closestIndex);
     };
 
-    const nextSlide = () => {
-        if (isTransitioning) return;
+    // --- initial centering on mount
+    useLayoutEffect(() => {
+        centerItem(centerIndex, false);
+    }, []);
 
-        setIsTransitioning(true);
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % totalItems);
-
-        setTimeout(() => setIsTransitioning(false), 300);
-    };
-
-    const prevSlide = () => {
-        if (isTransitioning) return;
-
-        setIsTransitioning(true);
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + totalItems) % totalItems);
-
-        setTimeout(() => setIsTransitioning(false), 300);
-    };
-
-    const goToSlide = (index) => {
-        if (isTransitioning) return;
-
-        setIsTransitioning(true);
-        setCurrentIndex(index);
-
-        setTimeout(() => setIsTransitioning(false), 300);
-    };
-
-    // Auto-play functionality
+    // --- re-center when index changes via click
     useEffect(() => {
-        if (!autoPlay || totalItems <= actualVisibleCount) return;
-
-        const timer = setInterval(nextSlide, interval);
-        return () => clearInterval(timer);
-    }, [currentIndex, autoPlay, interval, totalItems, actualVisibleCount]);
-
-    // Reset to first slide if visibleCount changes
-    useEffect(() => {
-        setCurrentIndex(0);
-    }, [visibleCount]);
-
-    if (totalItems === 0) {
-        return <div className="carousel-empty">No items to display</div>;
-    }
+        if (!isUserScrolling) centerItem(centerIndex);
+    }, [centerIndex]);
 
     return (
-        <div className="carousel">
-            <div className="carousel-container">
-                <button
-                    className="carousel-control carousel-control-prev"
-                    onClick={prevSlide}
-                    disabled={isTransitioning || totalItems <= actualVisibleCount}
-                    aria-label="Previous slide"
-                >
-                    ‹
-                </button>
-
-                <div className="carousel-track">
-                    {getVisibleItems().map(({ item, index, position }) => (
-                        <div
-                            key={index}
-                            className={`carousel-item ${
-                                position === 0 ? 'prev' :
-                                    position === 1 && actualVisibleCount > 1 ? 'current' :
-                                        position === 2 && actualVisibleCount > 2 ? 'next' : 'additional'
-                            } ${isTransitioning ? 'transitioning' : ''}`}
-                        >
-                            {item}
-                        </div>
-                    ))}
-                </div>
-
-                <button
-                    className="carousel-control carousel-control-next"
-                    onClick={nextSlide}
-                    disabled={isTransitioning || totalItems <= actualVisibleCount}
-                    aria-label="Next slide"
-                >
-                    ›
-                </button>
-            </div>
-
-            {/* Indicators */}
-            <div className="carousel-indicators">
-                {items.map((_, index) => (
-                    <button
-                        key={index}
-                        className={`carousel-indicator ${
-                            index === currentIndex ? 'active' : ''
-                        }`}
-                        onClick={() => goToSlide(index)}
-                        aria-label={`Go to slide ${index + 1}`}
-                    />
+        <div className={cls.CarouselContainer} ref={scrollRef} onScroll={handleScroll}>
+            <motion.div className={cls.CarouselTrack} animate={controls}>
+                {React.Children.map(children, (child, i) => (
+                    <motion.div
+                        key={i}
+                        ref={(el) => (itemRefs.current[i] = el!)}
+                        className={cls.CarouselItem}
+                        onClick={() => handleClick(i)}
+                        animate={{scale: i === centerIndex ? 1 : 0.9}}
+                        transition={{type: "spring", stiffness: 250, damping: 25}}
+                    >
+                        {child}
+                    </motion.div>
                 ))}
-            </div>
+            </motion.div>
         </div>
     );
 };

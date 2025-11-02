@@ -1,0 +1,21 @@
+.Main {
+    width: 100vw;
+    overflow: scroll;
+
+    display: flex;
+    flex-direction: row;
+
+    gap: 1em;
+
+    box-sizing: border-box;
+
+}
+
+.Part {
+    min-width: 33vw;
+    height: 33vw;
+    border: 1px solid red;
+    box-sizing: border-box;
+}
+
+

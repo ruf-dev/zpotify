@@ -11,17 +11,21 @@ import ZButton from "@/components/base/button/ZButton.tsx";
 import {User} from "@/hooks/user/User.ts";
 import {SongListPermissions} from "@/model/User.ts";
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
+import cn from "classnames";
 
 interface InfiniteSongsListProps {
     audioPlayer: AudioPlayer
     user: User
 
     playlistId?: string
+
+    // if true - block becomes scrollable
+    fixedSize?: boolean
 }
 
 const songsPerPage = 10;
 
-export default function LazyLoadSongsList({audioPlayer, playlistId, user}: InfiniteSongsListProps) {
+export default function LazyLoadSongsList({audioPlayer, playlistId, user, fixedSize}: InfiniteSongsListProps) {
     const [offset, setOffset] = useState(0)
     const [shuffleHash, setShuffleHash] = useState<number | null>(null);
 
@@ -87,7 +91,9 @@ export default function LazyLoadSongsList({audioPlayer, playlistId, user}: Infin
     }
 
     return (
-        <div className={cls.InfiniteSongsListContainer}>
+        <div className={cn(cls.InfiniteSongsListContainer, {
+            [cls.scrollable]: fixedSize,
+        })}>
             <SongListWidget
                 songs={songs}
                 permissions={permissions}

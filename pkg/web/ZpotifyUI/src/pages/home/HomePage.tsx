@@ -34,31 +34,35 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
     return (
         <div className={cls.HomePage}>
             <div className={cls.MainBody}>
-                <Carousel>
-                    <div className={cn(cls.Section, cls.center)}>
-                        <div className={cls.Tittle}>Global queue</div>
-                        <LazyLoadSongsList
-                            audioPlayer={audioPlayer}
-                            user={user}
-                        />
-                    </div>
+                <div>
+                    <Carousel>
+                        <div className={cn(cls.Section)}>
+                            <div className={cls.Tittle}>Global queue</div>
+                            <LazyLoadSongsList
+                                audioPlayer={audioPlayer}
+                                user={user}
+                                fixedSize={true}
+                            />
+                        </div>
 
-                    <div className={cn(cls.Section, cls.center)}>
-                        <div className={cls.Tittle}>Global queue</div>
-                        <LazyLoadSongsList
-                            audioPlayer={audioPlayer}
-                            user={user}
-                        />
-                    </div>
+                        <div className={cn(cls.Section)}>
+                            <div className={cls.Tittle}>Global queue</div>
+                            <LazyLoadSongsList
+                                audioPlayer={audioPlayer}
+                                user={user}
+                            />
+                        </div>
 
-                    <div className={cn(cls.Section, cls.center)}>
-                        <div className={cls.Tittle}>Global queue</div>
-                        <LazyLoadSongsList
-                            audioPlayer={audioPlayer}
-                            user={user}
-                        />
-                    </div>
-                </Carousel>
+                        <div className={cn(cls.Section)}>
+                            <div className={cls.Tittle}>Global queue</div>
+                            <LazyLoadSongsList
+                                audioPlayer={audioPlayer}
+                                user={user}
+                                fixedSize={true}
+                            />
+                        </div>
+                    </Carousel>
+                </div>
             </div>
 
             <div className={cls.Header}>
