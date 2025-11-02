@@ -14,6 +14,7 @@ const Carousel: React.FC<CarouselProps> = ({ children }) => {
     const [centerIndex, setCenterIndex] = useState(0);
 
     const [isScrollingProgrammatically, setIsScrollingProgrammatically] = useState(false);
+    const [isUserScrolling, setIsUserScrolling] = useState(false);
 
     let scrollTimeout: number | undefined;
 
@@ -46,7 +47,14 @@ const Carousel: React.FC<CarouselProps> = ({ children }) => {
             scrollTimeout = window.setTimeout(() => {
                 setIsScrollingProgrammatically(false);
             }, 100);
+            return
         }
+
+        setIsUserScrolling(true)
+        if (scrollTimeout) window.clearTimeout(scrollTimeout);
+        scrollTimeout = window.setTimeout(() => {
+            setIsUserScrolling(false);
+        }, 5);
     };
 
     // IntersectionObserver: detect centered item on manual scroll
@@ -56,7 +64,7 @@ const Carousel: React.FC<CarouselProps> = ({ children }) => {
 
         const observer = new IntersectionObserver(
             (entries) => {
-                if (isScrollingProgrammatically) return; // ignore auto scroll
+                if (isScrollingProgrammatically || isUserScrolling) return; // ignore auto scroll
 
                 let maxRatio = 0;
                 let newIndex = centerIndex;
@@ -80,7 +88,7 @@ const Carousel: React.FC<CarouselProps> = ({ children }) => {
 
         itemRefs.current.forEach((item) => item && observer.observe(item));
         return () => observer.disconnect();
-    }, [centerIndex, isScrollingProgrammatically]);
+    }, [centerIndex, isScrollingProgrammatically, isUserScrolling]);
 
     // Helper: fine-grained thresholds
     function buildThresholdList(steps: number) {
@@ -107,7 +115,7 @@ const Carousel: React.FC<CarouselProps> = ({ children }) => {
                                 scale: i === centerIndex ? 1 : 0.9,
                                 opacity: i === centerIndex ? 1 : 0.6,
                             }}
-                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                            transition={{ type: "spring", stiffness: 500, damping: 35  }}
                         >
                             {child}
                         </motion.div>

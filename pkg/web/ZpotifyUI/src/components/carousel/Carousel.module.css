@@ -24,7 +24,7 @@
 .CarouselTrack::before,
 .CarouselTrack::after {
     content: "";
-    flex: 0 0 25%; /* match scroll-padding-inline */
+    flex: 0 0 50%; /* match scroll-padding-inline */
 }
 
 .CarouselItem {
