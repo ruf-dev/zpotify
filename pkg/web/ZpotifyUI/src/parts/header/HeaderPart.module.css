@@ -2,7 +2,7 @@
     width: 100%;
     height: 100%;
 
-    background: var(--secondary-bg-color);
+    background: var(--main-bg-color);
 
     display: flex;
     justify-content: space-between;

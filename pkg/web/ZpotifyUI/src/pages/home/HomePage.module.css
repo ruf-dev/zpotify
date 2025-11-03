@@ -6,7 +6,7 @@
     position: fixed;
     top: 0;
     width: 100vw;
-    height: 6vh;
+    height: var(--header-height);
 }
 
 .MainBody {
@@ -29,7 +29,7 @@
         min-width: 45vw;
         min-height: 100vh;
 
-        border: var(--accent-bg-color)  solid 1px;
+        border: var(--accent-bg-color) solid 1px;
         border-radius: 1em;
         background: var(--main-bg-color);
 
