@@ -69,6 +69,7 @@ type UserService interface {
 	Get(ctx context.Context, tgId int64) (domain.User, error)
 	GetMe(ctx context.Context) (domain.User, error)
 	GetByUsername(ctx context.Context, tgUsername string) (domain.User, error)
+	GetSettings(ctx context.Context) (domain.UserSettings, error)
 }
 
 type AuthService interface {
@@ -81,4 +82,5 @@ type AuthService interface {
 
 type PlaylistService interface {
 	Create(context.Context, domain.CreatePlaylistReq) (domain.Playlist, error)
+	Get(ctx context.Context, uuid string) (domain.Playlist, error)
 }

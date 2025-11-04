@@ -51,6 +51,36 @@
         ]
       }
     },
+    "/api/playlist/{uuid}": {
+      "get": {
+        "operationId": "ZpotifyAPI_GetPlaylist",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetPlaylistResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZpotifyAPI"
+        ]
+      }
+    },
     "/api/songs": {
       "post": {
         "summary": "List Songs of playlist",
@@ -211,6 +241,28 @@
         ]
       }
     },
+    "/api/user/settings": {
+      "get": {
+        "operationId": "UserAPI_GetUserSettings",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetUserSettingsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "UserAPI"
+        ]
+      }
+    },
     "/api/version": {
       "get": {
         "operationId": "ZpotifyAPI_Version",
@@ -251,6 +303,14 @@
         "refreshExpiresAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "HomePageSegmentPlaylistSegment": {
+      "type": "object",
+      "properties": {
+        "playlistId": {
+          "type": "string"
         }
       }
     },
@@ -325,6 +385,30 @@
     },
     "zpotify_apiDeleteSongResponse": {
       "type": "object"
+    },
+    "zpotify_apiGetPlaylistResponse": {
+      "type": "object",
+      "properties": {
+        "playlist": {
+          "$ref": "#/definitions/zpotify_apiPlaylist"
+        }
+      }
+    },
+    "zpotify_apiGetUserSettingsResponse": {
+      "type": "object",
+      "properties": {
+        "settings": {
+          "$ref": "#/definitions/zpotify_apiUserSettings"
+        }
+      }
+    },
+    "zpotify_apiHomePageSegment": {
+      "type": "object",
+      "properties": {
+        "playlistSegment": {
+          "$ref": "#/definitions/HomePageSegmentPlaylistSegment"
+        }
+      }
     },
     "zpotify_apiListSongsRequest": {
       "type": "object",
@@ -406,6 +490,23 @@
         }
       }
     },
+    "zpotify_apiPlaylist": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "isPublic": {
+          "type": "boolean"
+        }
+      }
+    },
     "zpotify_apiRefreshRequest": {
       "type": "object",
       "properties": {
@@ -444,11 +545,34 @@
         }
       }
     },
+    "zpotify_apiUiSettings": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "type": "string"
+        }
+      }
+    },
     "zpotify_apiUserData": {
       "type": "object",
       "properties": {
         "username": {
           "type": "string"
+        }
+      }
+    },
+    "zpotify_apiUserSettings": {
+      "type": "object",
+      "properties": {
+        "homeSegments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiHomePageSegment"
+          }
+        },
+        "ui": {
+          "$ref": "#/definitions/zpotify_apiUiSettings"
         }
       }
     },

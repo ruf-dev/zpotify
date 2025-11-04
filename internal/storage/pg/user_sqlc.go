@@ -33,7 +33,7 @@ func (s *UserStorage) GetUserByTgId(ctx context.Context, tgUserId int64) (domain
 	return userToDomain(user), nil
 }
 
-func (s *UserStorage) SaveSettings(ctx context.Context, userTgId int64, settings domain.UserSettings) error {
+func (s *UserStorage) SaveSettings(ctx context.Context, userTgId int64, settings domain.UserUiSettings) error {
 	userSettingsParams := querier.SaveUserSettingsParams{
 		UserTgID: userTgId,
 		Locale:   settings.Locale,

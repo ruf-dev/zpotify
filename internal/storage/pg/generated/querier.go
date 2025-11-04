@@ -12,7 +12,10 @@ import (
 
 type Querier interface {
 	CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error)
+	GetHomeSegments(ctx context.Context, userID int64) ([]UserHomeSegment, error)
+	GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (Playlist, error)
 	GetSongByUniqueId(ctx context.Context, fileID string) (GetSongByUniqueIdRow, error)
+	GetUiSettings(ctx context.Context, userTgID int64) (UserSetting, error)
 	GetUserByTgId(ctx context.Context, tgID int64) (UsersFull, error)
 	GetUserPermissionsOnPlaylist(ctx context.Context, arg GetUserPermissionsOnPlaylistParams) (GetUserPermissionsOnPlaylistRow, error)
 	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error

@@ -2,11 +2,13 @@ package domain
 
 import (
 	"time"
+
+	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 )
 
 type User struct {
 	UserInfo
-	UserSettings
+	UserUiSettings
 	Permissions UserPermissions
 }
 
@@ -22,8 +24,13 @@ type UserInfo struct {
 	TgUserName string
 }
 
-type UserSettings struct {
+type UserUiSettings struct {
 	Locale string
+}
+
+type UserSettings struct {
+	Ui           UserUiSettings
+	HomeSegments []UserHomeSegment
 }
 
 type UserPermissions struct {
@@ -46,3 +53,5 @@ type UserSession struct {
 
 	Permissions UserPermissions
 }
+
+type UserHomeSegment querier.UserHomeSegment

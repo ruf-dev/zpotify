@@ -21,3 +21,10 @@ export type SongBase = {
   artists?: ArtistBase[];
   durationSec?: number;
 };
+
+export type Playlist = {
+  uuid?: string;
+  name?: string;
+  description?: string;
+  isPublic?: boolean;
+};

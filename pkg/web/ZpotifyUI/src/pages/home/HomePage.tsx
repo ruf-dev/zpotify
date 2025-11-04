@@ -1,17 +1,17 @@
-import cls from "@/pages/home/HomePage.module.css"
-
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+
+import cls from "@/pages/home/HomePage.module.css"
 
 import {AudioPlayer} from "@/hooks/player/player.ts";
 import {User} from "@/hooks/user/User.ts";
-
 import {Path} from "@/app/routing/Router.tsx";
+
 import HeaderPart from "@/parts/header/HeaderPart.tsx";
-import LazyLoadSongsList from "@/parts/InfiniteSongList/LazyLoadSongsList.tsx";
 import MusicPlayerWithLogo from "@/components/player/MusicPlayerWithLogo.tsx";
-import cn from "classnames";
 import Carousel from "@/components/carousel/Carousel.tsx";
+import {HomeSegment, HomeSegmentProps} from "@/model/HomeSegments.tsx";
+import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 
 interface HomePageProps {
     audioPlayer: AudioPlayer
@@ -31,38 +31,36 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
         return (<div>loading</div>)
     }
 
+    const [segments, setSegments] = useState<HomeSegment[]>([]);
+
+    const toaster = useToaster();
+
+    useEffect(() => {
+        user
+            .Services()
+            .Settings()
+            .ListHomeSegments()
+            .then(setSegments)
+            .catch(toaster.catch)
+    }, [])
+
+    const homePageProps: HomeSegmentProps = {
+        audioPlayer: audioPlayer,
+        user: user,
+    } as HomeSegmentProps
+
     return (
         <div className={cls.HomePage}>
             <div className={cls.MainBody}>
-                <div>
-                    <Carousel>
-                        <div className={cn(cls.Section)}>
-                            <div className={cls.Tittle}>Global queue</div>
-                            <LazyLoadSongsList
-                                audioPlayer={audioPlayer}
-                                user={user}
-                                fixedSize={true}
-                            />
-                        </div>
-
-                        <div className={cn(cls.Section)}>
-                            <div className={cls.Tittle}>Global queue</div>
-                            <LazyLoadSongsList
-                                audioPlayer={audioPlayer}
-                                user={user}
-                            />
-                        </div>
-
-                        <div className={cn(cls.Section)}>
-                            <div className={cls.Tittle}>Global queue</div>
-                            <LazyLoadSongsList
-                                audioPlayer={audioPlayer}
-                                user={user}
-                                fixedSize={true}
-                            />
-                        </div>
-                    </Carousel>
-                </div>
+                <Carousel>
+                    {segments.map(s => {
+                        return (
+                            <div className={cls.Section}>
+                                {s.buildComponent(homePageProps)}
+                            </div>
+                        )
+                    })}
+                </Carousel>
             </div>
 
             <div className={cls.Header}>

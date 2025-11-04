@@ -9,6 +9,7 @@ import * as fm from "./fetch.pb";
 import * as GoogleProtobufTimestamp from "./google/protobuf/timestamp.pb";
 import * as ZpotifyApiZpotifyCommon from "./zpotify_common.pb";
 import * as ZpotifyApiZpotifyUser from "./zpotify_user.pb";
+import * as ZpotifyApiZpotifyUserSettings from "./zpotify_user_settings.pb";
 
 type Absent<T, K extends keyof T> = { [k in Exclude<keyof T, K>]?: undefined };
 
@@ -115,6 +116,24 @@ export type CreatePlaylistResponse = {
 
 export type CreatePlaylist = Record<string, never>;
 
+export type GetUserSettingsRequest = Record<string, never>;
+
+export type GetUserSettingsResponse = {
+  settings?: ZpotifyApiZpotifyUserSettings.UserSettings;
+};
+
+export type GetUserSettings = Record<string, never>;
+
+export type GetPlaylistRequest = {
+  uuid?: string;
+};
+
+export type GetPlaylistResponse = {
+  playlist?: ZpotifyApiZpotifyCommon.Playlist;
+};
+
+export type GetPlaylist = Record<string, never>;
+
 export class ZpotifyAPI {
   static Version(this:void, req: VersionRequest, initReq?: fm.InitReq): Promise<VersionResponse> {
     return fm.fetchRequest<VersionResponse>(`/api/version?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});
@@ -128,6 +147,9 @@ export class ZpotifyAPI {
   static DeleteSong(this:void, req: DeleteSongRequest, initReq?: fm.InitReq): Promise<DeleteSongResponse> {
     return fm.fetchRequest<DeleteSongResponse>(`/api/songs/${req.uniqueId}?${fm.renderURLSearchParams(req, ["uniqueId"])}`, {...initReq, method: "DELETE"});
   }
+  static GetPlaylist(this:void, req: GetPlaylistRequest, initReq?: fm.InitReq): Promise<GetPlaylistResponse> {
+    return fm.fetchRequest<GetPlaylistResponse>(`/api/playlist/${req.uuid}?${fm.renderURLSearchParams(req, ["uuid"])}`, {...initReq, method: "GET"});
+  }
 }
 
 
@@ -140,5 +162,8 @@ export class UserAPI {
   }
   static Me(this:void, req: MeRequest, initReq?: fm.InitReq): Promise<MeResponse> {
     return fm.fetchRequest<MeResponse>(`/api/user?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});
+  }
+  static GetUserSettings(this:void, req: GetUserSettingsRequest, initReq?: fm.InitReq): Promise<GetUserSettingsResponse> {
+    return fm.fetchRequest<GetUserSettingsResponse>(`/api/user/settings?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});
   }
 }

@@ -149,6 +149,45 @@ func local_request_ZpotifyAPI_DeleteSong_0(ctx context.Context, marshaler runtim
 	return msg, metadata, err
 }
 
+func request_ZpotifyAPI_GetPlaylist_0(ctx context.Context, marshaler runtime.Marshaler, client ZpotifyAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq GetPlaylist_Request
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["uuid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uuid")
+	}
+	protoReq.Uuid, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uuid", err)
+	}
+	msg, err := client.GetPlaylist(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_ZpotifyAPI_GetPlaylist_0(ctx context.Context, marshaler runtime.Marshaler, server ZpotifyAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq GetPlaylist_Request
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["uuid"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "uuid")
+	}
+	protoReq.Uuid, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "uuid", err)
+	}
+	msg, err := server.GetPlaylist(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 func request_UserAPI_Auth_0(ctx context.Context, marshaler runtime.Marshaler, client UserAPIClient, req *http.Request, pathParams map[string]string) (UserAPI_AuthClient, runtime.ServerMetadata, error) {
 	var (
 		protoReq Auth_Request
@@ -217,6 +256,27 @@ func local_request_UserAPI_Me_0(ctx context.Context, marshaler runtime.Marshaler
 		metadata runtime.ServerMetadata
 	)
 	msg, err := server.Me(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+func request_UserAPI_GetUserSettings_0(ctx context.Context, marshaler runtime.Marshaler, client UserAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq GetUserSettings_Request
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	msg, err := client.GetUserSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_UserAPI_GetUserSettings_0(ctx context.Context, marshaler runtime.Marshaler, server UserAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq GetUserSettings_Request
+		metadata runtime.ServerMetadata
+	)
+	msg, err := server.GetUserSettings(ctx, &protoReq)
 	return msg, metadata, err
 }
 
@@ -306,6 +366,26 @@ func RegisterZpotifyAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		}
 		forward_ZpotifyAPI_DeleteSong_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_ZpotifyAPI_GetPlaylist_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zpotify_api.ZpotifyAPI/GetPlaylist", runtime.WithHTTPPathPattern("/api/playlist/{uuid}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ZpotifyAPI_GetPlaylist_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ZpotifyAPI_GetPlaylist_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 
 	return nil
 }
@@ -361,6 +441,26 @@ func RegisterUserAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 			return
 		}
 		forward_UserAPI_Me_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_UserAPI_GetUserSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zpotify_api.UserAPI/GetUserSettings", runtime.WithHTTPPathPattern("/api/user/settings"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_UserAPI_GetUserSettings_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_UserAPI_GetUserSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -470,6 +570,23 @@ func RegisterZpotifyAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux,
 		}
 		forward_ZpotifyAPI_DeleteSong_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_ZpotifyAPI_GetPlaylist_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zpotify_api.ZpotifyAPI/GetPlaylist", runtime.WithHTTPPathPattern("/api/playlist/{uuid}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ZpotifyAPI_GetPlaylist_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ZpotifyAPI_GetPlaylist_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	return nil
 }
 
@@ -478,6 +595,7 @@ var (
 	pattern_ZpotifyAPI_ListSongs_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "songs"}, ""))
 	pattern_ZpotifyAPI_CreatePlaylist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "playlist"}, ""))
 	pattern_ZpotifyAPI_DeleteSong_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"api", "songs", "unique_id"}, ""))
+	pattern_ZpotifyAPI_GetPlaylist_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"api", "playlist", "uuid"}, ""))
 )
 
 var (
@@ -485,6 +603,7 @@ var (
 	forward_ZpotifyAPI_ListSongs_0      = runtime.ForwardResponseMessage
 	forward_ZpotifyAPI_CreatePlaylist_0 = runtime.ForwardResponseMessage
 	forward_ZpotifyAPI_DeleteSong_0     = runtime.ForwardResponseMessage
+	forward_ZpotifyAPI_GetPlaylist_0    = runtime.ForwardResponseMessage
 )
 
 // RegisterUserAPIHandlerFromEndpoint is same as RegisterUserAPIHandler but
@@ -574,17 +693,36 @@ func RegisterUserAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 		}
 		forward_UserAPI_Me_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_UserAPI_GetUserSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zpotify_api.UserAPI/GetUserSettings", runtime.WithHTTPPathPattern("/api/user/settings"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_UserAPI_GetUserSettings_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_UserAPI_GetUserSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	return nil
 }
 
 var (
-	pattern_UserAPI_Auth_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "user", "auth"}, ""))
-	pattern_UserAPI_RefreshToken_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "user", "refresh_token"}, ""))
-	pattern_UserAPI_Me_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "user"}, ""))
+	pattern_UserAPI_Auth_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "user", "auth"}, ""))
+	pattern_UserAPI_RefreshToken_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "user", "refresh_token"}, ""))
+	pattern_UserAPI_Me_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "user"}, ""))
+	pattern_UserAPI_GetUserSettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "user", "settings"}, ""))
 )
 
 var (
-	forward_UserAPI_Auth_0         = runtime.ForwardResponseStream
-	forward_UserAPI_RefreshToken_0 = runtime.ForwardResponseMessage
-	forward_UserAPI_Me_0           = runtime.ForwardResponseMessage
+	forward_UserAPI_Auth_0            = runtime.ForwardResponseStream
+	forward_UserAPI_RefreshToken_0    = runtime.ForwardResponseMessage
+	forward_UserAPI_Me_0              = runtime.ForwardResponseMessage
+	forward_UserAPI_GetUserSettings_0 = runtime.ForwardResponseMessage
 )

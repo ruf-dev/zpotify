@@ -9,6 +9,7 @@ type Playlist struct {
 	Uuid        string
 	Name        string
 	Description string
+	IsPublic    bool
 }
 
 type CreatePlaylistReq struct {

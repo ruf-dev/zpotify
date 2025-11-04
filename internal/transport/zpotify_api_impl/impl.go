@@ -16,16 +16,18 @@ type Impl struct {
 	zpotify_api.UnimplementedZpotifyAPIServer
 	zpotify_api.UnimplementedUserAPIServer
 
-	audioService service.AudioService
-	userService  service.UserService
-	authService  service.AuthService
+	audioService    service.AudioService
+	userService     service.UserService
+	authService     service.AuthService
+	playlistService service.PlaylistService
 }
 
 func New(srv service.Service) *Impl {
 	return &Impl{
-		audioService: srv.AudioService(),
-		userService:  srv.UserService(),
-		authService:  srv.AuthService(),
+		audioService:    srv.AudioService(),
+		userService:     srv.UserService(),
+		authService:     srv.AuthService(),
+		playlistService: srv.PlaylistService(),
 	}
 }
 

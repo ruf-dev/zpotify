@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package zpotify_api;
+
+import "npm.proto";
+
+option go_package = "go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_api";
+option (npm_package) = "@zpotify/api";
+
+message UserSettings  {
+  repeated HomePageSegment home_segments = 1;
+  UiSettings ui = 2;
+}
+
+message HomePageSegment {
+  oneof segment {
+    PlaylistSegment playlist_segment = 1;
+  }
+
+  message PlaylistSegment {
+    string playlist_id = 1;
+  }
+}
+
+message UiSettings {
+  string locale = 1;
+}

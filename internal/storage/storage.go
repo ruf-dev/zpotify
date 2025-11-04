@@ -5,11 +5,13 @@ import (
 	"database/sql"
 
 	"go.zpotify.ru/zpotify/internal/domain"
+	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 )
 
 type Storage interface {
 	User() UserStorage
+	UserSettings() UserSettingsStorage
 	SessionStorage() SessionStorage
 
 	FileMeta() FileMetaStorage
@@ -30,7 +32,7 @@ type UserStorage interface {
 
 	Upsert(ctx context.Context, user domain.UserInfo) error
 
-	SaveSettings(ctx context.Context, id int64, settings domain.UserSettings) error
+	SaveSettings(ctx context.Context, id int64, settings domain.UserUiSettings) error
 	SavePermissions(ctx context.Context, id int64, permissions domain.UserPermissions) error
 	GetPermissionsOnPlaylist(ctx context.Context, userTgId int64, playlistUuid string) (domain.PlaylistPermissions, error)
 }
@@ -85,4 +87,11 @@ type ArtistStorage interface {
 
 type PlaylistStorage interface {
 	Create(ctx context.Context, req domain.CreatePlaylistReq) (domain.Playlist, error)
+	// GetWithAuth Returns playlist based on weather user has access or playlist is public
+	GetWithAuth(ctx context.Context, uuid querier.GetPlaylistWithAuthParams) (domain.Playlist, error)
+}
+
+type UserSettingsStorage interface {
+	GetHomeSegments(ctx context.Context, userId int64) ([]domain.UserHomeSegment, error)
+	GetUiSettings(ctx context.Context, userId int64) (domain.UserUiSettings, error)
 }

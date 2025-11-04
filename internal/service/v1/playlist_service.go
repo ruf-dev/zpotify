@@ -3,12 +3,14 @@ package v1
 import (
 	"context"
 
+	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/storage"
+	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 )
 
 type PlaylistService struct {
@@ -37,4 +39,28 @@ func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistR
 	}
 
 	return playlist, err
+}
+
+func (p *PlaylistService) Get(ctx context.Context, playlistUuid string) (domain.Playlist, error) {
+	userCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return domain.Playlist{}, rerrors.Wrap(service_errors.ErrUnauthenticated)
+	}
+
+	uuidParsed, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return domain.Playlist{}, rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+
+	storaageParams := querier.GetPlaylistWithAuthParams{
+		UserTgID: userCtx.TgUserId,
+		Uuid:     uuidParsed,
+	}
+
+	playlist, err := p.playlistStorage.GetWithAuth(ctx, storaageParams)
+	if err != nil {
+		return playlist, rerrors.Wrap(err, "error reading playlist info")
+	}
+
+	return playlist, nil
 }

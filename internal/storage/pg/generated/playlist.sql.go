@@ -13,7 +13,8 @@ import (
 
 const createPlaylist = `-- name: CreatePlaylist :one
 INSERT INTO playlists (name, description)
-VALUES ($1, $2) RETURNING uuid
+VALUES ($1, $2)
+RETURNING uuid
 `
 
 type CreatePlaylistParams struct {
@@ -26,4 +27,37 @@ func (q *Queries) CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) 
 	var uuid uuid.UUID
 	err := row.Scan(&uuid)
 	return uuid, err
+}
+
+const getPlaylistWithAuth = `-- name: GetPlaylistWithAuth :one
+SELECT uuid,
+       name,
+       description,
+       is_public
+FROM playlists
+         LEFT JOIN user_playlists AS up
+                   ON up.playlist_id = playlists.uuid
+                       AND user_tg_id = $1
+WHERE playlists.uuid = $2
+  AND (
+    playlists.is_public
+        OR
+    up.user_tg_id IS NOT NULL)
+`
+
+type GetPlaylistWithAuthParams struct {
+	UserTgID int64
+	Uuid     uuid.UUID
+}
+
+func (q *Queries) GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (Playlist, error) {
+	row := q.db.QueryRowContext(ctx, getPlaylistWithAuth, arg.UserTgID, arg.Uuid)
+	var i Playlist
+	err := row.Scan(
+		&i.Uuid,
+		&i.Name,
+		&i.Description,
+		&i.IsPublic,
+	)
+	return i, err
 }

@@ -17,14 +17,18 @@ import (
 )
 
 type UserService struct {
-	userStorage storage.UserStorage
-	txManager   *tx_manager.TxManager
+	userStorage     storage.UserStorage
+	settingsStorage storage.UserSettingsStorage
+
+	txManager *tx_manager.TxManager
 }
 
 func NewUserService(dataStorage storage.Storage) *UserService {
 	return &UserService{
-		userStorage: dataStorage.User(),
-		txManager:   dataStorage.TxManager(),
+		userStorage:     dataStorage.User(),
+		settingsStorage: dataStorage.UserSettings(),
+
+		txManager: dataStorage.TxManager(),
 	}
 }
 
@@ -40,7 +44,7 @@ func (u *UserService) Init(ctx context.Context, user domain.User) error {
 				return rerrors.Wrap(err, "error upserting user's info")
 			}
 
-			err = userStorage.SaveSettings(ctx, user.TgId, user.UserSettings)
+			err = userStorage.SaveSettings(ctx, user.TgId, user.UserUiSettings)
 			if err != nil {
 				return rerrors.Wrap(err, "error saving user's settings")
 			}
@@ -112,4 +116,23 @@ func (u *UserService) GetByUsername(ctx context.Context, tgUsername string) (dom
 	}
 
 	return users[0], nil
+}
+
+func (u *UserService) GetSettings(ctx context.Context) (settings domain.UserSettings, err error) {
+	uc, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return domain.UserSettings{}, rerrors.Wrap(user_errors.ErrUnauthenticated)
+	}
+
+	settings.HomeSegments, err = u.settingsStorage.GetHomeSegments(ctx, uc.TgUserId)
+	if err != nil {
+		return settings, rerrors.Wrap(err, "error reading home segments from storage")
+	}
+
+	settings.Ui, err = u.settingsStorage.GetUiSettings(ctx, uc.TgUserId)
+	if err != nil {
+		return settings, rerrors.Wrap(err, "error reading ui settings from starage")
+	}
+
+	return settings, nil
 }

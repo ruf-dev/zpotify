@@ -8,6 +8,7 @@ import "npm.proto";
 
 import "zpotify_common.proto";
 import "zpotify_user.proto";
+import "zpotify_user_settings.proto";
 
 option go_package = "go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_api";
 option (npm_package) = "@zpotify/api";
@@ -40,6 +41,12 @@ service ZpotifyAPI {
       delete: "/api/songs/{unique_id}",
     };
   }
+
+  rpc GetPlaylist(GetPlaylist.Request) returns (GetPlaylist.Response) {
+    option (google.api.http) = {
+      get: "/api/playlist/{uuid}"
+    };
+  }
 }
 
 service UserAPI {
@@ -61,6 +68,12 @@ service UserAPI {
   rpc Me(Me.Request) returns (Me.Response) {
     option (google.api.http) = {
       get: "/api/user"
+    };
+  }
+
+  rpc GetUserSettings(GetUserSettings.Request) returns (GetUserSettings.Response) {
+    option (google.api.http) = {
+      get: "/api/user/settings"
     };
   }
 }
@@ -157,5 +170,23 @@ message CreatePlaylist {
 
   message Response {
     string uuid = 1;
+  }
+}
+
+message GetUserSettings {
+  message Request {}
+
+  message Response {
+    UserSettings settings = 1;
+  }
+}
+
+message GetPlaylist {
+  message Request {
+    string uuid = 1;
+  }
+
+  message Response {
+    Playlist playlist = 1;
   }
 }

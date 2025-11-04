@@ -61,7 +61,7 @@ func NewServer(bot *client.Bot, service service.Service) (s *Server, err error) 
 				TgId:       in.From.ID,
 				TgUserName: in.From.UserName,
 			},
-			UserSettings: domain.UserSettings{
+			UserUiSettings: domain.UserUiSettings{
 				Locale: string(locale),
 			},
 		}

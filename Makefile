@@ -1,5 +1,8 @@
 include rscli.mk
 
+sqlc:
+	sqlc generate
+
 # Installs golang dependencies for codegen
 install-go-deps:
 	go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest

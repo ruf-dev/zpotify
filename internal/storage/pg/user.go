@@ -97,7 +97,7 @@ func userToDomain(u querier.UsersFull) domain.User {
 			TgId:       u.TgID,
 			TgUserName: u.TgUsername,
 		},
-		UserSettings: domain.UserSettings{
+		UserUiSettings: domain.UserUiSettings{
 			Locale: u.Locale,
 		},
 		Permissions: domain.UserPermissions{

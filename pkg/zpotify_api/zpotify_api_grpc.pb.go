@@ -23,6 +23,7 @@ const (
 	ZpotifyAPI_ListSongs_FullMethodName      = "/zpotify_api.ZpotifyAPI/ListSongs"
 	ZpotifyAPI_CreatePlaylist_FullMethodName = "/zpotify_api.ZpotifyAPI/CreatePlaylist"
 	ZpotifyAPI_DeleteSong_FullMethodName     = "/zpotify_api.ZpotifyAPI/DeleteSong"
+	ZpotifyAPI_GetPlaylist_FullMethodName    = "/zpotify_api.ZpotifyAPI/GetPlaylist"
 )
 
 // ZpotifyAPIClient is the client API for ZpotifyAPI service.
@@ -35,6 +36,7 @@ type ZpotifyAPIClient interface {
 	CreatePlaylist(ctx context.Context, in *CreatePlaylist_Request, opts ...grpc.CallOption) (*CreatePlaylist_Response, error)
 	// Delete song from playlist TODO
 	DeleteSong(ctx context.Context, in *DeleteSong_Request, opts ...grpc.CallOption) (*DeleteSong_Response, error)
+	GetPlaylist(ctx context.Context, in *GetPlaylist_Request, opts ...grpc.CallOption) (*GetPlaylist_Response, error)
 }
 
 type zpotifyAPIClient struct {
@@ -85,6 +87,16 @@ func (c *zpotifyAPIClient) DeleteSong(ctx context.Context, in *DeleteSong_Reques
 	return out, nil
 }
 
+func (c *zpotifyAPIClient) GetPlaylist(ctx context.Context, in *GetPlaylist_Request, opts ...grpc.CallOption) (*GetPlaylist_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetPlaylist_Response)
+	err := c.cc.Invoke(ctx, ZpotifyAPI_GetPlaylist_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ZpotifyAPIServer is the server API for ZpotifyAPI service.
 // All implementations must embed UnimplementedZpotifyAPIServer
 // for forward compatibility.
@@ -95,6 +107,7 @@ type ZpotifyAPIServer interface {
 	CreatePlaylist(context.Context, *CreatePlaylist_Request) (*CreatePlaylist_Response, error)
 	// Delete song from playlist TODO
 	DeleteSong(context.Context, *DeleteSong_Request) (*DeleteSong_Response, error)
+	GetPlaylist(context.Context, *GetPlaylist_Request) (*GetPlaylist_Response, error)
 	mustEmbedUnimplementedZpotifyAPIServer()
 }
 
@@ -116,6 +129,9 @@ func (UnimplementedZpotifyAPIServer) CreatePlaylist(context.Context, *CreatePlay
 }
 func (UnimplementedZpotifyAPIServer) DeleteSong(context.Context, *DeleteSong_Request) (*DeleteSong_Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteSong not implemented")
+}
+func (UnimplementedZpotifyAPIServer) GetPlaylist(context.Context, *GetPlaylist_Request) (*GetPlaylist_Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPlaylist not implemented")
 }
 func (UnimplementedZpotifyAPIServer) mustEmbedUnimplementedZpotifyAPIServer() {}
 func (UnimplementedZpotifyAPIServer) testEmbeddedByValue()                    {}
@@ -210,6 +226,24 @@ func _ZpotifyAPI_DeleteSong_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ZpotifyAPI_GetPlaylist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPlaylist_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ZpotifyAPIServer).GetPlaylist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ZpotifyAPI_GetPlaylist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ZpotifyAPIServer).GetPlaylist(ctx, req.(*GetPlaylist_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ZpotifyAPI_ServiceDesc is the grpc.ServiceDesc for ZpotifyAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -233,15 +267,20 @@ var ZpotifyAPI_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "DeleteSong",
 			Handler:    _ZpotifyAPI_DeleteSong_Handler,
 		},
+		{
+			MethodName: "GetPlaylist",
+			Handler:    _ZpotifyAPI_GetPlaylist_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "zpotify_api.proto",
 }
 
 const (
-	UserAPI_Auth_FullMethodName         = "/zpotify_api.UserAPI/Auth"
-	UserAPI_RefreshToken_FullMethodName = "/zpotify_api.UserAPI/RefreshToken"
-	UserAPI_Me_FullMethodName           = "/zpotify_api.UserAPI/Me"
+	UserAPI_Auth_FullMethodName            = "/zpotify_api.UserAPI/Auth"
+	UserAPI_RefreshToken_FullMethodName    = "/zpotify_api.UserAPI/RefreshToken"
+	UserAPI_Me_FullMethodName              = "/zpotify_api.UserAPI/Me"
+	UserAPI_GetUserSettings_FullMethodName = "/zpotify_api.UserAPI/GetUserSettings"
 )
 
 // UserAPIClient is the client API for UserAPI service.
@@ -252,6 +291,7 @@ type UserAPIClient interface {
 	Auth(ctx context.Context, in *Auth_Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Auth_Response], error)
 	RefreshToken(ctx context.Context, in *Refresh_Request, opts ...grpc.CallOption) (*Refresh_Response, error)
 	Me(ctx context.Context, in *Me_Request, opts ...grpc.CallOption) (*Me_Response, error)
+	GetUserSettings(ctx context.Context, in *GetUserSettings_Request, opts ...grpc.CallOption) (*GetUserSettings_Response, error)
 }
 
 type userAPIClient struct {
@@ -301,6 +341,16 @@ func (c *userAPIClient) Me(ctx context.Context, in *Me_Request, opts ...grpc.Cal
 	return out, nil
 }
 
+func (c *userAPIClient) GetUserSettings(ctx context.Context, in *GetUserSettings_Request, opts ...grpc.CallOption) (*GetUserSettings_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserSettings_Response)
+	err := c.cc.Invoke(ctx, UserAPI_GetUserSettings_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserAPIServer is the server API for UserAPI service.
 // All implementations must embed UnimplementedUserAPIServer
 // for forward compatibility.
@@ -309,6 +359,7 @@ type UserAPIServer interface {
 	Auth(*Auth_Request, grpc.ServerStreamingServer[Auth_Response]) error
 	RefreshToken(context.Context, *Refresh_Request) (*Refresh_Response, error)
 	Me(context.Context, *Me_Request) (*Me_Response, error)
+	GetUserSettings(context.Context, *GetUserSettings_Request) (*GetUserSettings_Response, error)
 	mustEmbedUnimplementedUserAPIServer()
 }
 
@@ -327,6 +378,9 @@ func (UnimplementedUserAPIServer) RefreshToken(context.Context, *Refresh_Request
 }
 func (UnimplementedUserAPIServer) Me(context.Context, *Me_Request) (*Me_Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Me not implemented")
+}
+func (UnimplementedUserAPIServer) GetUserSettings(context.Context, *GetUserSettings_Request) (*GetUserSettings_Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserSettings not implemented")
 }
 func (UnimplementedUserAPIServer) mustEmbedUnimplementedUserAPIServer() {}
 func (UnimplementedUserAPIServer) testEmbeddedByValue()                 {}
@@ -396,6 +450,24 @@ func _UserAPI_Me_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserAPI_GetUserSettings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserSettings_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserAPIServer).GetUserSettings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserAPI_GetUserSettings_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserAPIServer).GetUserSettings(ctx, req.(*GetUserSettings_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserAPI_ServiceDesc is the grpc.ServiceDesc for UserAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -410,6 +482,10 @@ var UserAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Me",
 			Handler:    _UserAPI_Me_Handler,
+		},
+		{
+			MethodName: "GetUserSettings",
+			Handler:    _UserAPI_GetUserSettings_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

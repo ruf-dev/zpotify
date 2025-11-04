@@ -6,10 +6,53 @@ package querier
 
 import (
 	"database/sql"
+	"database/sql/driver"
 	"encoding/json"
+	"fmt"
 
 	"github.com/google/uuid"
 )
+
+type UserHomeSegmentType string
+
+const (
+	UserHomeSegmentTypePlaylist UserHomeSegmentType = "playlist"
+)
+
+func (e *UserHomeSegmentType) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = UserHomeSegmentType(s)
+	case string:
+		*e = UserHomeSegmentType(s)
+	default:
+		return fmt.Errorf("unsupported scan type for UserHomeSegmentType: %T", src)
+	}
+	return nil
+}
+
+type NullUserHomeSegmentType struct {
+	UserHomeSegmentType UserHomeSegmentType
+	Valid               bool // Valid is true if UserHomeSegmentType is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullUserHomeSegmentType) Scan(value interface{}) error {
+	if value == nil {
+		ns.UserHomeSegmentType, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.UserHomeSegmentType.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullUserHomeSegmentType) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.UserHomeSegmentType), nil
+}
 
 type Artist struct {
 	Uuid uuid.UUID
@@ -32,6 +75,7 @@ type Playlist struct {
 	Uuid        uuid.UUID
 	Name        string
 	Description string
+	IsPublic    bool
 }
 
 type PlaylistSong struct {
@@ -66,6 +110,13 @@ type SongsArtist struct {
 type User struct {
 	TgID       int64
 	TgUsername string
+}
+
+type UserHomeSegment struct {
+	UserID      int64
+	Segment     json.RawMessage
+	Type        UserHomeSegmentType
+	OrderNumber int32
 }
 
 type UserPermission struct {

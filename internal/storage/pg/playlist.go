@@ -41,3 +41,17 @@ func (p *PlaylistStorage) Create(ctx context.Context, req domain.CreatePlaylistR
 		Description: req.Description,
 	}, nil
 }
+
+func (p *PlaylistStorage) GetWithAuth(ctx context.Context, q querier.GetPlaylistWithAuthParams) (domain.Playlist, error) {
+	pl, err := p.querier.GetPlaylistWithAuth(ctx, q)
+	if err != nil {
+		return domain.Playlist{}, wrapPgErr(err)
+	}
+
+	return domain.Playlist{
+		Uuid:        pl.Uuid.String(),
+		Name:        pl.Name,
+		Description: pl.Description,
+		IsPublic:    pl.IsPublic,
+	}, nil
+}

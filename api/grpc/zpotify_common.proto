@@ -22,3 +22,10 @@ message SongBase {
   repeated ArtistBase artists = 3;
   int32 duration_sec = 4;
 }
+
+message Playlist {
+  string uuid = 1;
+  string name = 2;
+  optional string description = 3;
+  bool is_public = 4;
+}
