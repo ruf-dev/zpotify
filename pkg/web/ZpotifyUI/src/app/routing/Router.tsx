@@ -10,7 +10,6 @@ import HomePage from "@/pages/home/HomePage.tsx";
 import useUser from "@/hooks/user/User.ts";
 import Coloring from "@/admin-components/coloring/Coloring.tsx";
 import Toaster from "@/components/notifications/Toaster.tsx";
-import TestingPage from "@/pages/TestingPage/TestingPage.tsx";
 
 export enum Path {
     HomePage = "/",
@@ -31,14 +30,6 @@ export default function Router() {
                             UserState={user}
                             AudioPlayer={audioPlayer}/>}
                         errorElement={<ErrorPage/>}
-                    />
-
-                    <Route
-                        path={'test'}
-                        element={<TestingPage
-                            audioPlayer={audioPlayer}
-                            user={user}
-                        />}
                     />
 
                     <Route
