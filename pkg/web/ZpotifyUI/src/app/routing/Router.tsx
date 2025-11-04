@@ -6,10 +6,11 @@ import InitPage from "@/pages/init/InitPage.tsx";
 import ErrorPage from "@/pages/error/ErrorPage.tsx";
 
 import useAudioPlayer from "@/hooks/player/player.ts";
-import HomePage from "@/pages/home/HomePage.tsx";
 import useUser from "@/hooks/user/User.ts";
-import Coloring from "@/admin-components/coloring/Coloring.tsx";
 import Toaster from "@/components/notifications/Toaster.tsx";
+
+import HomePage from "@/pages/home/HomePage.tsx";
+import Coloring from "@/admin-components/coloring/Coloring.tsx";
 
 export enum Path {
     HomePage = "/",
