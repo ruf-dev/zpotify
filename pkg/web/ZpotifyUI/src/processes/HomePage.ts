@@ -1,4 +1,4 @@
-import {HomeSegment, PlaylistSegmentInfo} from "@/model/HomeSegments.tsx";
+import {HomeSegment, ManagementSegmentInfo, PlaylistSegmentInfo} from "@/model/HomeSegments.tsx";
 import {BaseService} from "@/processes/BaseService.ts";
 import {InitReq} from "@/processes/Api.ts";
 import {HomePageSegment, UserAPI} from "@zpotify/api";
@@ -28,6 +28,10 @@ function toHomeSegments(segs: HomePageSegment[]): HomeSegment[] {
 function parseHomePageSegment(seg: HomePageSegment): HomeSegment | undefined {
     if (seg.playlistSegment && seg.playlistSegment.playlistId) {
         return new PlaylistSegmentInfo(seg.playlistSegment.playlistId)
+    }
+
+    if (seg.managementSegment) {
+        return new ManagementSegmentInfo()
     }
 
     return

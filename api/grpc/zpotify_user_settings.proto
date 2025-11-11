@@ -15,10 +15,15 @@ message UserSettings  {
 message HomePageSegment {
   oneof segment {
     PlaylistSegment playlist_segment = 1;
+    Management management_segment = 2;
   }
 
   message PlaylistSegment {
     string playlist_id = 1;
+  }
+
+  message Management {
+
   }
 }
 

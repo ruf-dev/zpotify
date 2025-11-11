@@ -86,7 +86,7 @@ type ArtistStorage interface {
 }
 
 type PlaylistStorage interface {
-	Create(ctx context.Context, req domain.CreatePlaylistReq) (domain.Playlist, error)
+	Create(ctx context.Context, req querier.CreatePlaylistParams) (domain.Playlist, error)
 	// GetWithAuth Returns playlist based on weather user has access or playlist is public
 	GetWithAuth(ctx context.Context, uuid querier.GetPlaylistWithAuthParams) (domain.Playlist, error)
 }

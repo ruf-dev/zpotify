@@ -83,8 +83,14 @@ const Carousel: React.FC<CarouselProps> = ({children, visibleItems = 3, width = 
     // Dynamic scaling based on overlap with center frame
     // -------------------------
     const calculateScale = (index: number) => {
+
         const container = scrollRef.current;
         const item = itemRefs.current[index];
+
+        if (index == centerIndex) {
+            return 1;
+        }
+
         if (!container || !item || containerWidth === 0) return 0.9;
 
         const blockWidth = containerWidth / visibleItems;

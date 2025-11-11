@@ -53,9 +53,11 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
         <div className={cls.HomePage}>
             <div className={cls.MainBody}>
                 <Carousel>
-                    {segments.map(s => {
+                    {segments.map((s, idx) => {
                         return (
-                            <div className={cls.Section}>
+                            <div
+                                key={idx}
+                                className={cls.Section}>
                                 {s.buildComponent(homePageProps)}
                             </div>
                         )

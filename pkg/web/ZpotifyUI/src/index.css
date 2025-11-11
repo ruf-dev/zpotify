@@ -35,6 +35,7 @@ root, body {
     --info-color: #e5f4d5;
 
     --header-height: 6vh;
+    --border-radius: 1em;
 }
 
 /*TODO: DO FOR different screen sizes*/

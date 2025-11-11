@@ -1,7 +1,11 @@
 -- name: CreatePlaylist :one
-INSERT INTO playlists (name, description)
-VALUES ($1, $2)
-RETURNING uuid;
+WITH created_playlist AS (
+    INSERT INTO playlists (name, description, owner_id)
+    VALUES ($1, $2, $3)
+    RETURNING uuid)
+INSERT INTO user_playlists (user_tg_id, playlist_id)
+VALUES ($3, (SELECT uuid FROM created_playlist))
+RETURNING playlist_id;
 
 
 -- name: GetPlaylistWithAuth :one

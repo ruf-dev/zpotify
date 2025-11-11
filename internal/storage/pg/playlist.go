@@ -24,12 +24,7 @@ func NewPlaylistStorage(db sqldb.DB) *PlaylistStorage {
 	}
 }
 
-func (p *PlaylistStorage) Create(ctx context.Context, req domain.CreatePlaylistReq) (domain.Playlist, error) {
-	params := querier.CreatePlaylistParams{
-		Name:        req.Name,
-		Description: req.Description,
-	}
-
+func (p *PlaylistStorage) Create(ctx context.Context, params querier.CreatePlaylistParams) (domain.Playlist, error) {
 	playlistUuid, err := p.querier.CreatePlaylist(ctx, params)
 	if err != nil {
 		return domain.Playlist{}, rerrors.Wrap(err, "error saving playlist to storage")
@@ -37,8 +32,8 @@ func (p *PlaylistStorage) Create(ctx context.Context, req domain.CreatePlaylistR
 
 	return domain.Playlist{
 		Uuid:        playlistUuid.String(),
-		Name:        req.Name,
-		Description: req.Description,
+		Name:        params.Name,
+		Description: params.Description,
 	}, nil
 }
 

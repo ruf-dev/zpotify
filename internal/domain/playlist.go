@@ -12,7 +12,7 @@ type Playlist struct {
 	IsPublic    bool
 }
 
-type CreatePlaylistReq struct {
+type CreatePlaylistParams struct {
 	Name        string
 	Description string
 }

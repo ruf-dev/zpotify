@@ -1,0 +1,51 @@
+.ManagementHomeSegmentContainer {
+    height: 100%;
+
+    .KeysContainer {
+        --card-gap: 1em;
+
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: var(--card-gap);
+
+        .Row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: var(--card-gap);
+
+            .Card {
+                width: 8vw;
+                height: 8vw;
+
+                border: var(--accent-bg-color) solid 1px;
+                border-radius: var(--border-radius);
+
+                padding: 1em;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+
+                cursor: pointer;
+
+                transition: all 0.25s ease-in-out;
+
+                &:hover:not(.inactive) {
+                    scale: 1.1;
+                    background: radial-gradient(circle farthest-corner at 50% 50%, var(--secondary-bg-color));
+                }
+
+                &.inactive {
+                    border-color: var(--disabled-fg-color);
+                    color: var(--disabled-fg-color);
+                }
+            }
+        }
+    }
+}

@@ -12,21 +12,26 @@ import (
 )
 
 const createPlaylist = `-- name: CreatePlaylist :one
-INSERT INTO playlists (name, description)
-VALUES ($1, $2)
-RETURNING uuid
+WITH created_playlist AS (
+    INSERT INTO playlists (name, description, owner_id)
+    VALUES ($1, $2, $3)
+    RETURNING uuid)
+INSERT INTO user_playlists (user_tg_id, playlist_id)
+VALUES ($3, (SELECT uuid FROM created_playlist))
+RETURNING playlist_id
 `
 
 type CreatePlaylistParams struct {
 	Name        string
 	Description string
+	UserTgID    int64
 }
 
 func (q *Queries) CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error) {
-	row := q.db.QueryRowContext(ctx, createPlaylist, arg.Name, arg.Description)
-	var uuid uuid.UUID
-	err := row.Scan(&uuid)
-	return uuid, err
+	row := q.db.QueryRowContext(ctx, createPlaylist, arg.Name, arg.Description, arg.UserTgID)
+	var playlist_id uuid.UUID
+	err := row.Scan(&playlist_id)
+	return playlist_id, err
 }
 
 const getPlaylistWithAuth = `-- name: GetPlaylistWithAuth :one
@@ -50,9 +55,16 @@ type GetPlaylistWithAuthParams struct {
 	Uuid     uuid.UUID
 }
 
-func (q *Queries) GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (Playlist, error) {
+type GetPlaylistWithAuthRow struct {
+	Uuid        uuid.UUID
+	Name        string
+	Description string
+	IsPublic    bool
+}
+
+func (q *Queries) GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error) {
 	row := q.db.QueryRowContext(ctx, getPlaylistWithAuth, arg.UserTgID, arg.Uuid)
-	var i Playlist
+	var i GetPlaylistWithAuthRow
 	err := row.Scan(
 		&i.Uuid,
 		&i.Name,

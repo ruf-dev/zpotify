@@ -76,6 +76,7 @@ type Playlist struct {
 	Name        string
 	Description string
 	IsPublic    bool
+	OwnerID     sql.NullInt64
 }
 
 type PlaylistSong struct {

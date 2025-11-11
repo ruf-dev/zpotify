@@ -23,7 +23,7 @@ func NewPlaylistService(data storage.Storage) *PlaylistService {
 	}
 }
 
-func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistReq) (domain.Playlist, error) {
+func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistParams) (domain.Playlist, error) {
 	userCtx, ok := user_context.GetUserContext(ctx)
 	if !ok {
 		return domain.Playlist{}, rerrors.Wrap(service_errors.ErrUnauthenticated)
@@ -33,7 +33,13 @@ func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistR
 		return domain.Playlist{}, rerrors.Wrap(service_errors.ErrUnauthorized)
 	}
 
-	playlist, err := p.playlistStorage.Create(ctx, req)
+	createPlaylistParams := querier.CreatePlaylistParams{
+		Name:        req.Name,
+		Description: req.Description,
+		UserTgID:    userCtx.TgUserId,
+	}
+
+	playlist, err := p.playlistStorage.Create(ctx, createPlaylistParams)
 	if err != nil {
 		return domain.Playlist{}, rerrors.Wrap(err, "error creating playlist in storage")
 	}

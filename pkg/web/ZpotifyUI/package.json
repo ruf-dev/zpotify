@@ -23,6 +23,7 @@
     "react-dom": "^18.0.0",
     "react-router-dom": "^7.6.3",
     "react-telegram-login": "^1.1.2",
+    "react-tooltip": "^5.30.0",
     "rxjs": "^7.8.2",
     "styled-components": "^6.1.19",
     "zustand": "^5.0.8"

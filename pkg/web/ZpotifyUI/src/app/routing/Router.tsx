@@ -12,6 +12,8 @@ import Toaster from "@/components/notifications/Toaster.tsx";
 import HomePage from "@/pages/home/HomePage.tsx";
 import Coloring from "@/admin-components/coloring/Coloring.tsx";
 
+import {Tooltip} from "react-tooltip";
+
 export enum Path {
     HomePage = "/",
     IntiPage = "/init"
@@ -55,6 +57,11 @@ export default function Router() {
             <div className={cls.Admins}>
                 <Coloring/>
             </div>
+
+            <Tooltip
+                id="root-tooltip"
+                variant={"light"}
+            />
         </div>
     )
 }

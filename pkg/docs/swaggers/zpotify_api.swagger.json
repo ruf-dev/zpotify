@@ -306,6 +306,9 @@
         }
       }
     },
+    "HomePageSegmentManagement": {
+      "type": "object"
+    },
     "HomePageSegmentPlaylistSegment": {
       "type": "object",
       "properties": {
@@ -407,6 +410,9 @@
       "properties": {
         "playlistSegment": {
           "$ref": "#/definitions/HomePageSegmentPlaylistSegment"
+        },
+        "managementSegment": {
+          "$ref": "#/definitions/HomePageSegmentManagement"
         }
       }
     },

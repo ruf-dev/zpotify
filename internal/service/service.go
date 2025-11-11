@@ -81,6 +81,6 @@ type AuthService interface {
 }
 
 type PlaylistService interface {
-	Create(context.Context, domain.CreatePlaylistReq) (domain.Playlist, error)
+	Create(context.Context, domain.CreatePlaylistParams) (domain.Playlist, error)
 	Get(ctx context.Context, uuid string) (domain.Playlist, error)
 }

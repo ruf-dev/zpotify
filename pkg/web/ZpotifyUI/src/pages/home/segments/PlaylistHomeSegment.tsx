@@ -1,4 +1,4 @@
-import cls from "@/pages/home/segments/PlaylistSegment.module.css";
+import cls from "@/pages/home/segments/PlaylistHomeSegment.module.css";
 
 import LazyLoadSongsList from "@/parts/InfiniteSongList/LazyLoadSongsList.tsx";
 
@@ -15,7 +15,7 @@ interface DisplayPlaylistSegmentProps {
     playlistUuid: string
 }
 
-export default function DisplayPlaylistSegment({audioPlayer, user, playlistUuid}: DisplayPlaylistSegmentProps) {
+export default function PlaylistHomeSegment({audioPlayer, user, playlistUuid}: DisplayPlaylistSegmentProps) {
     const [playlist, setPlaylist] = useState<Playlist | undefined>()
 
     const toast = useToaster()

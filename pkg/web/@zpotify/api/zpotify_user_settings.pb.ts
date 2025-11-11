@@ -24,12 +24,15 @@ export type HomePageSegmentPlaylistSegment = {
   playlistId?: string;
 };
 
+export type HomePageSegmentManagement = Record<string, never>;
+
 type BaseHomePageSegment = {
 };
 
 export type HomePageSegment = BaseHomePageSegment &
   OneOf<{
     playlistSegment: HomePageSegmentPlaylistSegment;
+    managementSegment: HomePageSegmentManagement;
   }>;
 
 export type UiSettings = {

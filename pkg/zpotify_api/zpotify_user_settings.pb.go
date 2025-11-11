@@ -79,6 +79,7 @@ type HomePageSegment struct {
 	// Types that are valid to be assigned to Segment:
 	//
 	//	*HomePageSegment_PlaylistSegment_
+	//	*HomePageSegment_ManagementSegment
 	Segment       isHomePageSegment_Segment `protobuf_oneof:"segment"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -130,6 +131,15 @@ func (x *HomePageSegment) GetPlaylistSegment() *HomePageSegment_PlaylistSegment 
 	return nil
 }
 
+func (x *HomePageSegment) GetManagementSegment() *HomePageSegment_Management {
+	if x != nil {
+		if x, ok := x.Segment.(*HomePageSegment_ManagementSegment); ok {
+			return x.ManagementSegment
+		}
+	}
+	return nil
+}
+
 type isHomePageSegment_Segment interface {
 	isHomePageSegment_Segment()
 }
@@ -138,7 +148,13 @@ type HomePageSegment_PlaylistSegment_ struct {
 	PlaylistSegment *HomePageSegment_PlaylistSegment `protobuf:"bytes,1,opt,name=playlist_segment,json=playlistSegment,proto3,oneof"`
 }
 
+type HomePageSegment_ManagementSegment struct {
+	ManagementSegment *HomePageSegment_Management `protobuf:"bytes,2,opt,name=management_segment,json=managementSegment,proto3,oneof"`
+}
+
 func (*HomePageSegment_PlaylistSegment_) isHomePageSegment_Segment() {}
+
+func (*HomePageSegment_ManagementSegment) isHomePageSegment_Segment() {}
 
 type UiSettings struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -228,6 +244,42 @@ func (x *HomePageSegment_PlaylistSegment) GetPlaylistId() string {
 	return ""
 }
 
+type HomePageSegment_Management struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HomePageSegment_Management) Reset() {
+	*x = HomePageSegment_Management{}
+	mi := &file_zpotify_user_settings_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HomePageSegment_Management) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HomePageSegment_Management) ProtoMessage() {}
+
+func (x *HomePageSegment_Management) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_user_settings_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HomePageSegment_Management.ProtoReflect.Descriptor instead.
+func (*HomePageSegment_Management) Descriptor() ([]byte, []int) {
+	return file_zpotify_user_settings_proto_rawDescGZIP(), []int{1, 1}
+}
+
 var File_zpotify_user_settings_proto protoreflect.FileDescriptor
 
 const file_zpotify_user_settings_proto_rawDesc = "" +
@@ -235,12 +287,15 @@ const file_zpotify_user_settings_proto_rawDesc = "" +
 	"\x1bzpotify_user_settings.proto\x12\vzpotify_api\x1a\tnpm.proto\"z\n" +
 	"\fUserSettings\x12A\n" +
 	"\rhome_segments\x18\x01 \x03(\v2\x1c.zpotify_api.HomePageSegmentR\fhomeSegments\x12'\n" +
-	"\x02ui\x18\x02 \x01(\v2\x17.zpotify_api.UiSettingsR\x02ui\"\xab\x01\n" +
+	"\x02ui\x18\x02 \x01(\v2\x17.zpotify_api.UiSettingsR\x02ui\"\x93\x02\n" +
 	"\x0fHomePageSegment\x12Y\n" +
-	"\x10playlist_segment\x18\x01 \x01(\v2,.zpotify_api.HomePageSegment.PlaylistSegmentH\x00R\x0fplaylistSegment\x1a2\n" +
+	"\x10playlist_segment\x18\x01 \x01(\v2,.zpotify_api.HomePageSegment.PlaylistSegmentH\x00R\x0fplaylistSegment\x12X\n" +
+	"\x12management_segment\x18\x02 \x01(\v2'.zpotify_api.HomePageSegment.ManagementH\x00R\x11managementSegment\x1a2\n" +
 	"\x0fPlaylistSegment\x12\x1f\n" +
 	"\vplaylist_id\x18\x01 \x01(\tR\n" +
-	"playlistIdB\t\n" +
+	"playlistId\x1a\f\n" +
+	"\n" +
+	"ManagementB\t\n" +
 	"\asegment\"$\n" +
 	"\n" +
 	"UiSettings\x12\x16\n" +
@@ -258,22 +313,24 @@ func file_zpotify_user_settings_proto_rawDescGZIP() []byte {
 	return file_zpotify_user_settings_proto_rawDescData
 }
 
-var file_zpotify_user_settings_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_zpotify_user_settings_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_zpotify_user_settings_proto_goTypes = []any{
 	(*UserSettings)(nil),                    // 0: zpotify_api.UserSettings
 	(*HomePageSegment)(nil),                 // 1: zpotify_api.HomePageSegment
 	(*UiSettings)(nil),                      // 2: zpotify_api.UiSettings
 	(*HomePageSegment_PlaylistSegment)(nil), // 3: zpotify_api.HomePageSegment.PlaylistSegment
+	(*HomePageSegment_Management)(nil),      // 4: zpotify_api.HomePageSegment.Management
 }
 var file_zpotify_user_settings_proto_depIdxs = []int32{
 	1, // 0: zpotify_api.UserSettings.home_segments:type_name -> zpotify_api.HomePageSegment
 	2, // 1: zpotify_api.UserSettings.ui:type_name -> zpotify_api.UiSettings
 	3, // 2: zpotify_api.HomePageSegment.playlist_segment:type_name -> zpotify_api.HomePageSegment.PlaylistSegment
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 3: zpotify_api.HomePageSegment.management_segment:type_name -> zpotify_api.HomePageSegment.Management
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_user_settings_proto_init() }
@@ -283,6 +340,7 @@ func file_zpotify_user_settings_proto_init() {
 	}
 	file_zpotify_user_settings_proto_msgTypes[1].OneofWrappers = []any{
 		(*HomePageSegment_PlaylistSegment_)(nil),
+		(*HomePageSegment_ManagementSegment)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -290,7 +348,7 @@ func file_zpotify_user_settings_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_user_settings_proto_rawDesc), len(file_zpotify_user_settings_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
