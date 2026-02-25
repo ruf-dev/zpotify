@@ -17,6 +17,7 @@ interface InitPageProps {
 }
 
 export default function InitPage({AudioPlayer, UserState}: InitPageProps) {
+    // TODO Make it first try to fetch from server based on meta info (country, lang and etc)
     const trackId = `AgADBGcAAscmoEg`;
 
     const navigate = useNavigate();
