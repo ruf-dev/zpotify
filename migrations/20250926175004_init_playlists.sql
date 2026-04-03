@@ -18,8 +18,11 @@ CREATE TABLE IF NOT EXISTS playlist_songs
     unique (playlist_uuid, song_id, order_number)
 );
 
+INSERT INTO users(username)
+VALUES ('root');
+
 INSERT INTO playlists (uuid, name, description, owner_id)
-VALUES ('00000000-0000-0000-0000-000000000000', 'Global queue', null, 0);
+VALUES ('00000000-0000-0000-0000-000000000000', 'Global queue', '', 1);
 
 INSERT INTO playlist_songs (SELECT '00000000-0000-0000-0000-000000000000',
                                    file_id,

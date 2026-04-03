@@ -11,7 +11,6 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/background"
-	"go.zpotify.ru/zpotify/internal/background/integrity_checker"
 	"go.zpotify.ru/zpotify/internal/background/sessions_gc"
 	tgApi "go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/middleware"
@@ -50,7 +49,6 @@ func (c *Custom) Init(a *App) (err error) {
 
 	c.backgroundWorker = background.New(
 		sessions_gc.New(c.storage),
-		integrity_checker.New(c.tgApiClient, c.storage),
 	)
 
 	c.telegram, err = telegram.NewServer(a.Telegram, c.service)
