@@ -1,8 +1,5 @@
 -- +goose Up
 -- +goose StatementBegin
-ALTER TABLE songs
-    ALTER COLUMN title SET NOT NULL,
-    ALTER COLUMN duration_sec SET NOT NULL;
 
 CREATE OR REPLACE VIEW public.playlists_view(file_id, title, artists, duration_sec, playlist_uuid, order_number) as
 WITH artists_agg AS (SELECT songs_1.file_id,
