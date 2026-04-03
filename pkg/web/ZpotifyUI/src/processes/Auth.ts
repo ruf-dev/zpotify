@@ -1,6 +1,6 @@
 import {Observable} from "rxjs";
 
-import {AuthAuthData, AuthRequest, AuthResponse, RefreshRequest, RefreshResponse, UserAPI} from "@zpotify/api";
+import {AuthAuthData, AuthRequest, AuthResponse, RefreshRequest, RefreshResponse, UserAPI} from "@/app/api/zpotify";
 
 import {apiPrefix, InitReq} from "@/processes/Api.ts";
 import {Session} from "@/model/User.ts";

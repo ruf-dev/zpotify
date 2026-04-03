@@ -1,6 +1,6 @@
 import {RefObject} from "react";
 
-import {ArtistBase, ListSongsRequest, ListSongsResponse, SongBase, ZpotifyAPI} from "@zpotify/api";
+import {ArtistBase, ListSongsRequest, ListSongsResponse, SongBase, ZpotifyAPI} from "@/app/api/zpotify";
 
 import {Song, SongList} from "@/model/Song";
 

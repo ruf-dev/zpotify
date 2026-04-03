@@ -2,7 +2,7 @@ import {
     GetPlaylistRequest,
     GetPlaylistResponse,
     ZpotifyAPI
-} from "@zpotify/api";
+} from "@/app/api/zpotify";
 
 import {Playlist} from "@/model/Playlist.ts";
 import {BaseService} from "@/processes/BaseService.ts";

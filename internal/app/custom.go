@@ -67,6 +67,8 @@ func (c *Custom) Init(a *App) (err error) {
 			),
 			middleware.WithDebug(a.Cfg.Environment.DebugAuth),
 		),
+		middleware.LogInterceptor(),
+		middleware.PanicInterceptor(),
 	)
 
 	a.ServerMaster.AddImplementation(c.grpcImpl)

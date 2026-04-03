@@ -1,0 +1,12 @@
+deps:
+  - github.com/googleapis/googleapis
+  - go.redsock.ru/protoc-gen-npm@v0.0.17
+  - go.zpotify.ru/zpotify@1f8b4a1d62db02fcd79011a8805bcdd366726b18
+generate:
+  - inputs:
+      - git_repo:
+          url: go.zpotify.ru/zpotify@1f8b4a1d62db02fcd79011a8805bcdd366726b18
+          sub_directory: api/grpc
+    plugins:
+      - name: grpc-gateway-ts
+        out: src/app/api/zpotify

@@ -3,7 +3,7 @@ import {RefObject} from "react";
 import {
     MeRequest, MeResponse,
     UserAPI,
-} from "@zpotify/api";
+} from "@/app/api/zpotify";
 
 import {UserInfo} from "@/model/User.ts";
 

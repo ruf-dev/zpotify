@@ -33,6 +33,6 @@ func (h *Handler) Handle(in *model.MessageIn, out tgapi.Chat) error {
 	msgOut := &response.MessageOut{
 		Text: h.responseBuilder.GetResponses(in.Ctx).Hello(),
 	}
-	
+
 	return out.SendMessage(msgOut)
 }

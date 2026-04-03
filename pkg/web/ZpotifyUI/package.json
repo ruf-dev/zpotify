@@ -5,9 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:public": "lt --port 5173 --subdomain aslzpotify",
-    "build:api": "cd ./../@zpotify/api/ && npm install typescript && npm run build && npm link",
-    "link": "npm link @zpotify/api",
     "build:ui": "tsc -b && vite build",
     "build": "npm run build:api && npm run link && npm run build:ui",
     "lint": "eslint .",

@@ -191,7 +191,7 @@ func (s *AudioService) Get(uniqueFileId string, start, end int64) (domain.Song, 
 func (s *AudioService) GetInfo(ctx context.Context, uniqueFileId string) (domain.Song, error) {
 	fileMeta, err := s.fileMetaStorage.Get(ctx, uniqueFileId)
 	if err != nil {
-		return domain.Song{}, rerrors.Wrap(err, "error getting file from storage")
+		return domain.Song{}, rerrors.Wrap(err, "error getting file info from storage")
 	}
 
 	songBase, err := s.songsStorage.Get(ctx, uniqueFileId)

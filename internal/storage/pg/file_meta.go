@@ -77,7 +77,7 @@ func (s *FileMetaStorage) Get(ctx context.Context, uniqueFileId string) (file do
 
 	file, err = s.scan(rowScanner)
 	if err != nil {
-		return domain.FileMeta{}, wrapPgErr(rerrors.Wrap(err, "error getting file from storage"))
+		return domain.FileMeta{}, wrapPgErr(err)
 	}
 
 	return file, nil

@@ -1,4 +1,4 @@
-import {Permissions} from "@zpotify/api";
+import {Permissions} from "@/app/api/zpotify";
 
 export type UserInfo = {
     username: string
