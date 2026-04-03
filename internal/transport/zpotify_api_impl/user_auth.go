@@ -7,8 +7,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/domain"
-	"go.zpotify.ru/zpotify/pkg/zpotify_api"
 )
 
 func (impl *Impl) Auth(_ *zpotify_api.Auth_Request,

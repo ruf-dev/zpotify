@@ -6,9 +6,9 @@ import (
 
 	"go.redsock.ru/rerrors"
 
+	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/domain"
 	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
-	"go.zpotify.ru/zpotify/pkg/zpotify_api"
 )
 
 func (impl *Impl) GetUserSettings(ctx context.Context, _ *zpotify_api.GetUserSettings_Request) (*zpotify_api.GetUserSettings_Response, error) {

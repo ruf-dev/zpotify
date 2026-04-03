@@ -9,6 +9,7 @@ import (
 	"go.redsock.ru/rerrors"
 	"golang.org/x/sync/errgroup"
 
+	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/background"
 	"go.zpotify.ru/zpotify/internal/background/integrity_checker"
 	"go.zpotify.ru/zpotify/internal/background/sessions_gc"
@@ -22,7 +23,6 @@ import (
 	"go.zpotify.ru/zpotify/internal/transport/wapi"
 	"go.zpotify.ru/zpotify/internal/transport/zpotify_api_impl"
 	"go.zpotify.ru/zpotify/pkg/docs"
-	"go.zpotify.ru/zpotify/pkg/zpotify_api"
 )
 
 type Custom struct {

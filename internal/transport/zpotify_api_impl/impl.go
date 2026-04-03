@@ -8,8 +8,8 @@ import (
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 
+	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/service"
-	"go.zpotify.ru/zpotify/pkg/zpotify_api"
 )
 
 type Impl struct {

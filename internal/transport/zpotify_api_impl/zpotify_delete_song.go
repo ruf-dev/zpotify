@@ -5,7 +5,7 @@ import (
 
 	"go.redsock.ru/rerrors"
 
-	"go.zpotify.ru/zpotify/pkg/zpotify_api"
+	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 )
 
 func (impl *Impl) DeleteSong(ctx context.Context, req *zpotify_api.DeleteSong_Request) (

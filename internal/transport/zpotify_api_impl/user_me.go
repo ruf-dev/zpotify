@@ -5,8 +5,8 @@ import (
 
 	errors "go.redsock.ru/rerrors"
 
+	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/domain"
-	"go.zpotify.ru/zpotify/pkg/zpotify_api"
 )
 
 func (impl *Impl) Me(ctx context.Context, _ *zpotify_api.Me_Request) (*zpotify_api.Me_Response, error) {
