@@ -16,7 +16,7 @@ type GetAudioReq struct {
 }
 
 func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
-	fileId := r.URL.Query().Get("fileId")
+	fileIdStr := r.URL.Query().Get("fileId")
 
 	start, end, err := extractStartEnd(r)
 	if err != nil {
@@ -24,7 +24,13 @@ func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	track, stream, err := s.audioService.Get(fileId, start, end)
+	fileId, err := strconv.Atoi(fileIdStr)
+	if err != nil {
+		unwrapError(w, err)
+		return
+	}
+
+	track, stream, err := s.audioService.Get(int64(fileId), start, end)
 	if err != nil {
 		unwrapError(w, err)
 		return
@@ -43,7 +49,7 @@ func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().
 		Set("Content-Disposition",
-			fmt.Sprintf("inline; filename=\"%s - %s.ogg\"", track.Artists, track.Title))
+			fmt.Sprintf("inline; filename=\"%s - %s.ogg\"", "AlexSkilled", track.Title))
 	w.Header().
 		Set("Content-Length", strconv.FormatInt(end-start+1, 10))
 	w.Header().

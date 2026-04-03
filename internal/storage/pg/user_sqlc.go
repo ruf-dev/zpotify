@@ -11,12 +11,8 @@ import (
 	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 )
 
-func (s *UserStorage) Upsert(ctx context.Context, user domain.UserInfo) error {
-	upsertUser := querier.UpsertUserParams{
-		TgID:       user.TgId,
-		TgUsername: user.TgUserName,
-	}
-	err := s.querier.UpsertUser(ctx, upsertUser)
+func (s *UserStorage) Upsert(ctx context.Context, username string) error {
+	err := s.querier.UpsertUser(ctx, username)
 	if err != nil {
 		return rerrors.Wrap(wrapPgErr(err), "error upserting user")
 	}
@@ -24,19 +20,19 @@ func (s *UserStorage) Upsert(ctx context.Context, user domain.UserInfo) error {
 	return nil
 }
 
-func (s *UserStorage) GetUserByTgId(ctx context.Context, tgUserId int64) (domain.User, error) {
-	user, err := s.querier.GetUserByTgId(ctx, tgUserId)
+func (s *UserStorage) GetUserById(ctx context.Context, userId int64) (domain.UserBaseInfo, error) {
+	user, err := s.querier.GetUserById(ctx, int16(userId))
 	if err != nil {
-		return domain.User{}, wrapPgErr(err)
+		return domain.UserBaseInfo{}, wrapPgErr(err)
 	}
 
 	return userToDomain(user), nil
 }
 
-func (s *UserStorage) SaveSettings(ctx context.Context, userTgId int64, settings domain.UserUiSettings) error {
+func (s *UserStorage) SaveSettings(ctx context.Context, userId int64, settings domain.UserUiSettings) error {
 	userSettingsParams := querier.SaveUserSettingsParams{
-		UserTgID: userTgId,
-		Locale:   settings.Locale,
+		UserID: int16(userId),
+		Locale: settings.Locale,
 	}
 
 	err := s.querier.SaveUserSettings(ctx, userSettingsParams)
@@ -47,12 +43,12 @@ func (s *UserStorage) SaveSettings(ctx context.Context, userTgId int64, settings
 	return nil
 }
 
-func (s *UserStorage) SavePermissions(ctx context.Context, userTgId int64, permissions domain.UserPermissions) error {
+func (s *UserStorage) SavePermissions(ctx context.Context, userId int64, permissions domain.UserPermissions) error {
 	params := querier.SaveUserPermissionsParams{
-		UserTgID:    userTgId,
-		CanUpload:   permissions.CanUpload,
-		EarlyAccess: permissions.EarlyAccess,
-		CanDelete:   permissions.CanDelete,
+		UserID:            int16(userId),
+		CanUpload:         permissions.CanUpload,
+		EarlyAccess:       permissions.EarlyAccess,
+		CanCreatePlaylist: permissions.CanCreatePlaylist,
 	}
 
 	err := s.querier.SaveUserPermissions(ctx, params)
@@ -70,7 +66,7 @@ func (s *UserStorage) GetPermissionsOnPlaylist(ctx context.Context, userTgId int
 	}
 
 	params := querier.GetUserPermissionsOnPlaylistParams{
-		UserTgID:   userTgId,
+		UserID:     int16(userTgId),
 		PlaylistID: playlistId,
 	}
 	res, err := s.querier.GetUserPermissionsOnPlaylist(ctx, params)
@@ -86,4 +82,11 @@ func (s *UserStorage) GetPermissionsOnPlaylist(ctx context.Context, userTgId int
 		CanDeleteSongs: res.CanDeleteSongs,
 		CanAddSongs:    res.CanAddSongs,
 	}, nil
+}
+
+func userToDomain(u querier.User) domain.UserBaseInfo {
+	return domain.UserBaseInfo{
+		Id:       int64(u.ID),
+		Username: u.Username,
+	}
 }

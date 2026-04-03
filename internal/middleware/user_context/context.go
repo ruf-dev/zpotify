@@ -9,7 +9,7 @@ import (
 type tgUserId struct{}
 
 type UserContext struct {
-	TgUserId    int64
+	UserId      int64
 	Permissions domain.UserPermissions
 }
 

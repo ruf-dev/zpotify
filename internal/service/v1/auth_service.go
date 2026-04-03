@@ -46,14 +46,19 @@ func NewAuthService(data storage.Storage) *AuthService {
 }
 
 func (a *AuthService) GetUserContext(ctx context.Context, id int64) (user_context.UserContext, error) {
-	user, err := a.userStorage.GetUserByTgId(ctx, id)
+	user, err := a.userStorage.GetUserById(ctx, id)
 	if err != nil {
 		return user_context.UserContext{}, rerrors.Wrap(err, "error getting user")
 	}
 
+	permissions, err := a.userStorage.GetPermissions(ctx, id)
+	if err != nil {
+		return user_context.UserContext{}, rerrors.Wrap(err, "error getting permissions")
+	}
+
 	return user_context.UserContext{
-		TgUserId:    user.TgId,
-		Permissions: user.Permissions,
+		UserId:      user.Id,
+		Permissions: permissions,
 	}, nil
 }
 
@@ -133,7 +138,7 @@ func (a *AuthService) AuthWithToken(ctx context.Context, token string) (tgId int
 		return 0, rerrors.Wrap(user_errors.ErrAccessTokenExpired)
 	}
 
-	return accessToken.UserTgId, nil
+	return accessToken.UserId, nil
 }
 
 func (a *AuthService) Refresh(ctx context.Context, refreshToken string) (domain.UserSession, error) {
@@ -150,7 +155,7 @@ func (a *AuthService) Refresh(ctx context.Context, refreshToken string) (domain.
 		return domain.UserSession{}, rerrors.New("refresh token expired")
 	}
 
-	newSession := a.generateSession(oldSession.UserTgId)
+	newSession := a.generateSession(oldSession.UserId)
 
 	err = a.txManager.Execute(
 		func(tx *sql.Tx) error {
@@ -177,7 +182,7 @@ func (a *AuthService) Refresh(ctx context.Context, refreshToken string) (domain.
 
 func (a *AuthService) generateSession(tgId int64) domain.UserSession {
 	return domain.UserSession{
-		UserTgId:         tgId,
+		UserId:           tgId,
 		AccessToken:      uuid.New().String(),
 		AccessExpiresAt:  time.Now().Add(a.accessTokenTTL),
 		RefreshToken:     uuid.New().String(),

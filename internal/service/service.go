@@ -4,7 +4,6 @@ import (
 	"context"
 	"io"
 
-	"go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	v1 "go.zpotify.ru/zpotify/internal/service/v1"
@@ -26,9 +25,9 @@ type service struct {
 	playlistService PlaylistService
 }
 
-func New(tgApiClient telegram.TgApiClient, dataStorage storage.Storage, cache files_cache.FilesCache) Service {
+func New(dataStorage storage.Storage, cache files_cache.FilesCache) Service {
 	return &service{
-		audioService:    v1.NewAudioService(tgApiClient, dataStorage, cache),
+		audioService:    v1.NewAudioService(dataStorage, cache),
 		userService:     v1.NewUserService(dataStorage),
 		authService:     v1.NewAuthService(dataStorage),
 		playlistService: v1.NewPlaylistService(dataStorage),
@@ -52,16 +51,14 @@ func (s *service) PlaylistService() PlaylistService {
 }
 
 type AudioService interface {
-	GetInfo(ctx context.Context, uniqueFileId string) (domain.Song, error)
+	GetInfo(ctx context.Context, fileId int64) (domain.Song, error)
 	Save(ctx context.Context, req domain.AddAudio) (domain.SaveFileMetaResp, error)
 
 	List(ctx context.Context, req domain.ListSongs) (domain.SongsList, error)
 
-	// Get - returns song info and file readCloser
-	// no context is passed is on purpose
-	Get(uniqueFileId string, start, end int64) (domain.Song, io.ReadCloser, error)
+	Get(fileId int64, start, end int64) (domain.Song, io.ReadCloser, error)
 
-	Delete(ctx context.Context, id string) error
+	Delete(ctx context.Context, id int64) error
 }
 
 type UserService interface {

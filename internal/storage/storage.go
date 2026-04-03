@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/google/uuid"
+
 	"go.zpotify.ru/zpotify/internal/domain"
 	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
@@ -28,13 +30,14 @@ type UserStorage interface {
 	WithTx(tx *sql.Tx) UserStorage
 
 	ListUsers(ctx context.Context, filter domain.GetUserFilter) ([]domain.User, error)
-	GetUserByTgId(ctx context.Context, tgUserId int64) (domain.User, error)
+	GetUserById(ctx context.Context, tgId int64) (domain.UserBaseInfo, error)
 
-	Upsert(ctx context.Context, user domain.UserInfo) error
+	Upsert(ctx context.Context, username string) error
 
 	SaveSettings(ctx context.Context, id int64, settings domain.UserUiSettings) error
 	SavePermissions(ctx context.Context, id int64, permissions domain.UserPermissions) error
 	GetPermissionsOnPlaylist(ctx context.Context, userTgId int64, playlistUuid string) (domain.PlaylistPermissions, error)
+	GetPermissions(ctx context.Context, id int64) (domain.UserPermissions, error)
 }
 
 type FileMetaStorage interface {
@@ -45,11 +48,10 @@ type FileMetaStorage interface {
 
 	Upsert(ctx context.Context, user domain.FileMeta) error
 
-	// Get - gets file
-	Get(ctx context.Context, uniqueFileId string) (domain.FileMeta, error)
+	Get(ctx context.Context, uniqueFileId int64) (domain.FileMeta, error)
 
 	List(ctx context.Context, listReq domain.ListFileMeta) ([]domain.FileMeta, error)
-	Delete(ctx context.Context, uniqueFileId string) error
+	Delete(ctx context.Context, uniqueFileId int64) error
 }
 
 type SessionStorage interface {
@@ -69,14 +71,15 @@ type SongStorage interface {
 	WithTx(tx *sql.Tx) SongStorage
 
 	Save(ctx context.Context, song domain.SongBase) error
-	SaveSongsArtists(ctx context.Context, song domain.SongBase) error
+	SaveSongsArtists(ctx context.Context, songId int64, artist uuid.UUID, orderId int16) error
 
-	AddSongsToPlaylist(ctx context.Context, playlistUuid string, songIds ...string) error
+	AddSongsToPlaylist(ctx context.Context, playlistUuid string, songIds ...int32) error
 
 	List(ctx context.Context, r domain.ListSongs) ([]domain.SongBase, error)
 	Count(ctx context.Context, r domain.ListSongs) (uint64, error)
-	Get(ctx context.Context, uniqueId string) (domain.SongBase, error)
-	Delete(ctx context.Context, fileUniqueId string) error
+	Get(ctx context.Context, id int64) (domain.SongBase, error)
+	GetByFileId(ctx context.Context, id int64) (domain.SongBase, error)
+	Delete(ctx context.Context, id int64) error
 }
 
 type ArtistStorage interface {

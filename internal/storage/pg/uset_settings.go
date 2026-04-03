@@ -22,7 +22,7 @@ func NewUserSettingsStorage(db sqldb.DB) *UserSettingsStorage {
 }
 
 func (u *UserSettingsStorage) GetHomeSegments(ctx context.Context, userId int64) ([]domain.UserHomeSegment, error) {
-	segs, err := u.querier.GetHomeSegments(ctx, userId)
+	segs, err := u.querier.GetHomeSegments(ctx, int16(userId))
 	if err != nil {
 		return nil, wrapPgErr(err)
 	}
@@ -37,7 +37,7 @@ func (u *UserSettingsStorage) GetHomeSegments(ctx context.Context, userId int64)
 }
 
 func (u *UserSettingsStorage) GetUiSettings(ctx context.Context, userId int64) (domain.UserUiSettings, error) {
-	uiSettings, err := u.querier.GetUiSettings(ctx, userId)
+	uiSettings, err := u.querier.GetUiSettings(ctx, int16(userId))
 	if err != nil {
 		return domain.UserUiSettings{}, wrapPgErr(err)
 	}

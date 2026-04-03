@@ -2,8 +2,6 @@ package zpotify_api_impl
 
 import (
 	"context"
-	"strconv"
-	"time"
 
 	"go.redsock.ru/rerrors"
 
@@ -46,10 +44,10 @@ func toSongs(base []domain.SongBase) []*zpotify_api.SongBase {
 
 func toSong(base domain.SongBase) *zpotify_api.SongBase {
 	return &zpotify_api.SongBase{
-		UniqueId:    base.UniqueFileId,
-		Title:       base.Title,
-		Artists:     toArtists(base.Artists),
-		DurationSec: int32(base.Duration.Seconds()),
+		//UniqueId: base.FileId,
+		//Title:    base.Title,
+		//Artists:     toArtists(base.Artists),
+		//DurationSec: int32(base.Duration.Seconds()),
 	}
 }
 
@@ -74,14 +72,14 @@ func mockSongs(offSet int) []domain.SongBase {
 	for i := 0; i < cap(out); i++ {
 		out = append(out,
 			domain.SongBase{
-				UniqueFileId: strconv.Itoa(i + offSet),
-				Title:        "When did you get hot?",
-				Artists: []domain.ArtistsBase{
-					{
-						Name: "Sabrina Carpenter",
-					},
-				},
-				Duration: 3*time.Minute + time.Second*14,
+				//UniqueFileId: strconv.Itoa(i + offSet),
+				Title: "When did you get hot?",
+				//Artists: []domain.ArtistsBase{
+				//	{
+				//		Name: "Sabrina Carpenter",
+				//	},
+				//},
+				//Duration: 3*time.Minute + time.Second*14,
 			},
 		)
 	}

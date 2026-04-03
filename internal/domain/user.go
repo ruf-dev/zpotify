@@ -7,7 +7,7 @@ import (
 )
 
 type User struct {
-	UserInfo
+	UserBaseInfo
 	UserUiSettings
 	Permissions UserPermissions
 }
@@ -19,9 +19,9 @@ type GetUserFilter struct {
 	Offset uint64
 	Limit  uint64
 }
-type UserInfo struct {
-	TgId       int64
-	TgUserName string
+type UserBaseInfo struct {
+	Id       int64
+	Username string
 }
 
 type UserUiSettings struct {
@@ -35,7 +35,6 @@ type UserSettings struct {
 
 type UserPermissions struct {
 	CanUpload bool
-	CanDelete bool
 
 	EarlyAccess bool
 
@@ -43,15 +42,13 @@ type UserPermissions struct {
 }
 
 type UserSession struct {
-	UserTgId int64
+	UserId int64
 
 	AccessToken     string
 	AccessExpiresAt time.Time
 
 	RefreshToken     string
 	RefreshExpiresAt time.Time
-
-	Permissions UserPermissions
 }
 
 type UserHomeSegment querier.UserHomeSegment

@@ -15,13 +15,13 @@ const getUserPermissionsOnPlaylist = `-- name: GetUserPermissionsOnPlaylist :one
 SELECT can_delete_songs,
        can_add_songs
 FROM user_playlists
-WHERE user_tg_id = $1
+WHERE user_id = $1
   AND playlist_id = $2
     FETCH FIRST 1 ROW ONLY
 `
 
 type GetUserPermissionsOnPlaylistParams struct {
-	UserTgID   int64
+	UserID     int16
 	PlaylistID uuid.UUID
 }
 
@@ -31,22 +31,22 @@ type GetUserPermissionsOnPlaylistRow struct {
 }
 
 func (q *Queries) GetUserPermissionsOnPlaylist(ctx context.Context, arg GetUserPermissionsOnPlaylistParams) (GetUserPermissionsOnPlaylistRow, error) {
-	row := q.db.QueryRowContext(ctx, getUserPermissionsOnPlaylist, arg.UserTgID, arg.PlaylistID)
+	row := q.db.QueryRowContext(ctx, getUserPermissionsOnPlaylist, arg.UserID, arg.PlaylistID)
 	var i GetUserPermissionsOnPlaylistRow
 	err := row.Scan(&i.CanDeleteSongs, &i.CanAddSongs)
 	return i, err
 }
 
 const upsertUserPlaylist = `-- name: UpsertUserPlaylist :exec
-INSERT INTO user_playlists (user_tg_id, playlist_id, order_id, can_delete_songs, can_add_songs)
+INSERT INTO user_playlists (user_id, playlist_id, order_id, can_delete_songs, can_add_songs)
 VALUES ($1, $2, $3, $4, $5)
-ON CONFLICT (user_tg_id, playlist_id, order_id)
+ON CONFLICT (user_id, playlist_id, order_id)
     DO UPDATE SET can_delete_songs = excluded.can_delete_songs,
                   can_add_songs    = excluded.can_add_songs
 `
 
 type UpsertUserPlaylistParams struct {
-	UserTgID       int64
+	UserID         int16
 	PlaylistID     uuid.UUID
 	OrderID        int16
 	CanDeleteSongs bool
@@ -55,7 +55,7 @@ type UpsertUserPlaylistParams struct {
 
 func (q *Queries) UpsertUserPlaylist(ctx context.Context, arg UpsertUserPlaylistParams) error {
 	_, err := q.db.ExecContext(ctx, upsertUserPlaylist,
-		arg.UserTgID,
+		arg.UserID,
 		arg.PlaylistID,
 		arg.OrderID,
 		arg.CanDeleteSongs,

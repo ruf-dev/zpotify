@@ -9,88 +9,70 @@ import (
 	"context"
 )
 
-const getUserByTgId = `-- name: GetUserByTgId :one
-SELECT tg_id,
-       tg_username,
-       locale,
-       can_upload,
-       early_access,
-       can_delete,
-       can_create_playlist
-FROM users_full
-WHERE tg_id = $1
+const getUserById = `-- name: GetUserById :one
+SELECT id,
+       username
+FROM users
+WHERE id = $1
 `
 
-func (q *Queries) GetUserByTgId(ctx context.Context, tgID int64) (UsersFull, error) {
-	row := q.db.QueryRowContext(ctx, getUserByTgId, tgID)
-	var i UsersFull
-	err := row.Scan(
-		&i.TgID,
-		&i.TgUsername,
-		&i.Locale,
-		&i.CanUpload,
-		&i.EarlyAccess,
-		&i.CanDelete,
-		&i.CanCreatePlaylist,
-	)
+func (q *Queries) GetUserById(ctx context.Context, id int16) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUserById, id)
+	var i User
+	err := row.Scan(&i.ID, &i.Username)
 	return i, err
 }
 
 const saveUserPermissions = `-- name: SaveUserPermissions :exec
 INSERT INTO user_permissions
-    (user_tg_id, can_upload, early_access, can_delete)
+    (user_id, can_upload, early_access, can_create_playlist)
 VALUES ($1, $2, $3, $4)
 `
 
 type SaveUserPermissionsParams struct {
-	UserTgID    int64
-	CanUpload   bool
-	EarlyAccess bool
-	CanDelete   bool
+	UserID            int16
+	CanUpload         bool
+	EarlyAccess       bool
+	CanCreatePlaylist bool
 }
 
 func (q *Queries) SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error {
 	_, err := q.db.ExecContext(ctx, saveUserPermissions,
-		arg.UserTgID,
+		arg.UserID,
 		arg.CanUpload,
 		arg.EarlyAccess,
-		arg.CanDelete,
+		arg.CanCreatePlaylist,
 	)
 	return err
 }
 
 const saveUserSettings = `-- name: SaveUserSettings :exec
 INSERT INTO user_settings
-    (user_tg_id, locale)
+    (user_id, locale)
 VALUES ($1, $2)
-ON CONFLICT (user_tg_id)
+ON CONFLICT (user_id)
     DO UPDATE SET locale = EXCLUDED.locale
 `
 
 type SaveUserSettingsParams struct {
-	UserTgID int64
-	Locale   string
+	UserID int16
+	Locale string
 }
 
 func (q *Queries) SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error {
-	_, err := q.db.ExecContext(ctx, saveUserSettings, arg.UserTgID, arg.Locale)
+	_, err := q.db.ExecContext(ctx, saveUserSettings, arg.UserID, arg.Locale)
 	return err
 }
 
 const upsertUser = `-- name: UpsertUser :exec
 INSERT INTO users
-    (tg_id, tg_username)
-VALUES ($1, $2)
-ON CONFLICT (tg_id)
-    DO UPDATE SET tg_username = EXCLUDED.tg_username
+    (username)
+VALUES ($1)
+ON CONFLICT (username)
+    DO NOTHING
 `
 
-type UpsertUserParams struct {
-	TgID       int64
-	TgUsername string
-}
-
-func (q *Queries) UpsertUser(ctx context.Context, arg UpsertUserParams) error {
-	_, err := q.db.ExecContext(ctx, upsertUser, arg.TgID, arg.TgUsername)
+func (q *Queries) UpsertUser(ctx context.Context, username string) error {
+	_, err := q.db.ExecContext(ctx, upsertUser, username)
 	return err
 }

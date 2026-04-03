@@ -1089,7 +1089,7 @@ func (x *ListSongs_Response) GetUserCanDelete() bool {
 
 type DeleteSong_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UniqueId      string                 `protobuf:"bytes,1,opt,name=unique_id,json=uniqueId,proto3" json:"unique_id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1124,11 +1124,11 @@ func (*DeleteSong_Request) Descriptor() ([]byte, []int) {
 	return file_zpotify_api_proto_rawDescGZIP(), []int{7, 0}
 }
 
-func (x *DeleteSong_Request) GetUniqueId() string {
+func (x *DeleteSong_Request) GetId() int64 {
 	if x != nil {
-		return x.UniqueId
+		return x.Id
 	}
-	return ""
+	return 0
 }
 
 type DeleteSong_Response struct {
@@ -1481,11 +1481,11 @@ const file_zpotify_api_proto_rawDesc = "" +
 	"\bResponse\x12+\n" +
 	"\x05songs\x18\x01 \x03(\v2\x15.zpotify_api.SongBaseR\x05songs\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x04R\x05total\x12&\n" +
-	"\x0fuser_can_delete\x18\x03 \x01(\bR\ruserCanDelete\"@\n" +
+	"\x0fuser_can_delete\x18\x03 \x01(\bR\ruserCanDelete\"3\n" +
 	"\n" +
-	"DeleteSong\x1a&\n" +
-	"\aRequest\x12\x1b\n" +
-	"\tunique_id\x18\x01 \x01(\tR\buniqueId\x1a\n" +
+	"DeleteSong\x1a\x19\n" +
+	"\aRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x1a\n" +
 	"\n" +
 	"\bResponse\"\x86\x01\n" +
 	"\x0eCreatePlaylist\x1aT\n" +
@@ -1503,15 +1503,15 @@ const file_zpotify_api_proto_rawDesc = "" +
 	"\aRequest\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x1a=\n" +
 	"\bResponse\x121\n" +
-	"\bplaylist\x18\x01 \x01(\v2\x15.zpotify_api.PlaylistR\bplaylist2\xa9\x04\n" +
+	"\bplaylist\x18\x01 \x01(\v2\x15.zpotify_api.PlaylistR\bplaylist2\xa2\x04\n" +
 	"\n" +
 	"ZpotifyAPI\x12\\\n" +
 	"\aVersion\x12\x1c.zpotify_api.Version.Request\x1a\x1d.zpotify_api.Version.Response\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/api/version\x12c\n" +
 	"\tListSongs\x12\x1e.zpotify_api.ListSongs.Request\x1a\x1f.zpotify_api.ListSongs.Response\"\x15\x82\xd3\xe4\x93\x02\x0f:\x01*\"\n" +
 	"/api/songs\x12u\n" +
-	"\x0eCreatePlaylist\x12#.zpotify_api.CreatePlaylist.Request\x1a$.zpotify_api.CreatePlaylist.Response\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/playlist\x12o\n" +
+	"\x0eCreatePlaylist\x12#.zpotify_api.CreatePlaylist.Request\x1a$.zpotify_api.CreatePlaylist.Response\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/playlist\x12h\n" +
 	"\n" +
-	"DeleteSong\x12\x1f.zpotify_api.DeleteSong.Request\x1a .zpotify_api.DeleteSong.Response\"\x1e\x82\xd3\xe4\x93\x02\x18*\x16/api/songs/{unique_id}\x12p\n" +
+	"DeleteSong\x12\x1f.zpotify_api.DeleteSong.Request\x1a .zpotify_api.DeleteSong.Response\"\x17\x82\xd3\xe4\x93\x02\x11*\x0f/api/songs/{id}\x12p\n" +
 	"\vGetPlaylist\x12 .zpotify_api.GetPlaylist.Request\x1a!.zpotify_api.GetPlaylist.Response\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/api/playlist/{uuid}2\x9e\x03\n" +
 	"\aUserAPI\x12Z\n" +
 	"\x04Auth\x12\x19.zpotify_api.Auth.Request\x1a\x1a.zpotify_api.Auth.Response\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/user/auth0\x01\x12o\n" +

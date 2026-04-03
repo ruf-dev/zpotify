@@ -39,17 +39,17 @@ func (u *UserService) Init(ctx context.Context, user domain.User) error {
 		func(tx *sql.Tx) error {
 			userStorage := u.userStorage.WithTx(tx)
 
-			err := userStorage.Upsert(ctx, user.UserInfo)
+			err := userStorage.Upsert(ctx, user.UserBaseInfo.Username)
 			if err != nil {
 				return rerrors.Wrap(err, "error upserting user's info")
 			}
 
-			err = userStorage.SaveSettings(ctx, user.TgId, user.UserUiSettings)
+			err = userStorage.SaveSettings(ctx, user.Id, user.UserUiSettings)
 			if err != nil {
 				return rerrors.Wrap(err, "error saving user's settings")
 			}
 
-			err = userStorage.SavePermissions(ctx, user.TgId, user.Permissions)
+			err = userStorage.SavePermissions(ctx, user.Id, user.Permissions)
 			if err != nil {
 				return rerrors.Wrap(err, "error saving user's permissions")
 			}
@@ -69,7 +69,7 @@ func (u *UserService) GetMe(ctx context.Context) (domain.User, error) {
 	}
 
 	filter := domain.GetUserFilter{
-		TgUserId: []int64{uc.TgUserId},
+		TgUserId: []int64{uc.UserId},
 	}
 
 	users, err := u.userStorage.ListUsers(ctx, filter)
@@ -124,12 +124,12 @@ func (u *UserService) GetSettings(ctx context.Context) (settings domain.UserSett
 		return domain.UserSettings{}, rerrors.Wrap(user_errors.ErrUnauthenticated)
 	}
 
-	settings.HomeSegments, err = u.settingsStorage.GetHomeSegments(ctx, uc.TgUserId)
+	settings.HomeSegments, err = u.settingsStorage.GetHomeSegments(ctx, uc.UserId)
 	if err != nil {
 		return settings, rerrors.Wrap(err, "error reading home segments from storage")
 	}
 
-	settings.Ui, err = u.settingsStorage.GetUiSettings(ctx, uc.TgUserId)
+	settings.Ui, err = u.settingsStorage.GetUiSettings(ctx, uc.UserId)
 	if err != nil {
 		return settings, rerrors.Wrap(err, "error reading ui settings from starage")
 	}

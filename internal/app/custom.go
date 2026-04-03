@@ -12,12 +12,12 @@ import (
 	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/background"
 	"go.zpotify.ru/zpotify/internal/background/sessions_gc"
-	tgApi "go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/middleware"
 	"go.zpotify.ru/zpotify/internal/service"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
 	"go.zpotify.ru/zpotify/internal/storage/pg"
+	"go.zpotify.ru/zpotify/internal/transport"
 	"go.zpotify.ru/zpotify/internal/transport/telegram"
 	"go.zpotify.ru/zpotify/internal/transport/wapi"
 	"go.zpotify.ru/zpotify/internal/transport/zpotify_api_impl"
@@ -25,27 +25,30 @@ import (
 )
 
 type Custom struct {
-	storage     storage.Storage
-	tgApiClient tgApi.TgApiClient
+	storage storage.Storage
+	//tgApiClient tgApi.TgApiClient
 
 	service service.Service
 
 	grpcImpl         *zpotify_api_impl.Impl
 	telegram         *telegram.Server
 	backgroundWorker *background.Worker
+
+	ServerManager *transport.ServersManager
 }
 
 func (c *Custom) Init(a *App) (err error) {
 	c.storage = pg.NewStorage(a.Postgres)
 
-	c.tgApiClient = tgApi.NewTgApiClient(a.Telegram.Bot.Token)
+	//
+	//c.tgApiClient = tgApi.NewTgApiClient(a.Telegram.Bot.Token)
 
 	fc, err := files_cache.New()
 	if err != nil {
 		return rerrors.Wrap(err, "error creating files cache")
 	}
 
-	c.service = service.New(c.tgApiClient, c.storage, fc)
+	c.service = service.New(c.storage, fc)
 
 	c.backgroundWorker = background.New(
 		sessions_gc.New(c.storage),
@@ -58,7 +61,12 @@ func (c *Custom) Init(a *App) (err error) {
 
 	c.grpcImpl = zpotify_api_impl.New(c.service)
 
-	a.ServerMaster.AddServerOption(
+	c.ServerManager, err = transport.NewServerManager(a.Ctx, a.MASTER)
+	if err != nil {
+		return rerrors.Wrap(err, "error creating server manager")
+	}
+
+	c.ServerManager.AddServerOption(
 		middleware.GrpcAuthInterceptor(
 			c.service,
 			middleware.WithIgnoredPathAuthOption(
@@ -71,9 +79,9 @@ func (c *Custom) Init(a *App) (err error) {
 		middleware.PanicInterceptor(),
 	)
 
-	a.ServerMaster.AddImplementation(c.grpcImpl)
-	a.ServerMaster.AddHttpHandler(docs.Swagger())
-	a.ServerMaster.AddHttpHandler("/wapi/", wapi.New(c.service.AudioService()))
+	c.ServerManager.AddImplementation(c.grpcImpl)
+	c.ServerManager.AddHttpHandler(docs.Swagger())
+	c.ServerManager.AddHttpHandler("/wapi/", wapi.New(c.service.AudioService()))
 	return nil
 }
 
@@ -83,13 +91,13 @@ func (c *Custom) Start(ctx context.Context) error {
 
 	eg, ctx := errgroup.WithContext(ctx)
 
-	eg.Go(func() error {
-		return c.telegram.Start(ctx)
-	})
+	//eg.Go(func() error {
+	//	return c.telegram.Start(ctx)
+	//})
 
-	eg.Go(func() error {
-		return c.backgroundWorker.Start()
-	})
+	eg.Go(c.backgroundWorker.Start)
+
+	eg.Go(c.ServerManager.Start)
 
 	err := eg.Wait()
 	if err != nil {
@@ -104,13 +112,14 @@ func (c *Custom) Start(ctx context.Context) error {
 func (c *Custom) Stop() error {
 	eg := errgroup.Group{}
 
-	eg.Go(func() error {
-		return c.telegram.Stop()
-	})
+	//eg.Go(func() error {
+	//	return c.telegram.Stop()
+	//})
 
 	eg.Go(func() error {
 		return c.backgroundWorker.Stop()
 	})
+	eg.Go(c.ServerManager.Stop)
 
 	err := eg.Wait()
 	if err != nil {

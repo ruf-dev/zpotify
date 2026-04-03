@@ -17,7 +17,7 @@ message ArtistBase {
 }
 
 message SongBase {
-  string unique_id = 1;
+  int64 id = 1;
   string title = 2;
   repeated ArtistBase artists = 3;
   int32 duration_sec = 4;

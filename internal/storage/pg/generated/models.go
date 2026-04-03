@@ -5,10 +5,10 @@
 package querier
 
 import (
-	"database/sql"
 	"database/sql/driver"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -56,15 +56,15 @@ func (ns NullUserHomeSegmentType) Value() (driver.Value, error) {
 
 type Artist struct {
 	Uuid uuid.UUID
-	Name sql.NullString
+	Name string
 }
 
 type FilesMetum struct {
-	TgUniqueID  string
-	TgFileID    string
-	TgFilePath  string
-	AddedByTgID int64
-	SizeBytes   sql.NullInt32
+	ID          int32
+	FilePath    string
+	DurationSec int32
+	AddedByID   int16
+	SizeBytes   int32
 }
 
 type Locale struct {
@@ -76,60 +76,49 @@ type Playlist struct {
 	Name        string
 	Description string
 	IsPublic    bool
-	OwnerID     sql.NullInt64
+	OwnerID     int16
 }
 
 type PlaylistSong struct {
 	PlaylistUuid uuid.UUID
-	FileID       string
-	OrderNumber  int16
-}
-
-type PlaylistsView struct {
-	FileID       string
-	Title        string
-	Artists      json.RawMessage
-	DurationSec  int32
-	PlaylistUuid uuid.UUID
+	SongID       int32
 	OrderNumber  int16
 }
 
 type Song struct {
-	FileID      string
-	Artists     []uuid.UUID
-	Title       string
-	DurationSec int32
-	CreatedAt   sql.NullTime
+	ID        int32
+	FileID    int32
+	Title     string
+	CreatedAt time.Time
 }
 
 type SongsArtist struct {
-	SongID     string
+	SongID     int32
 	ArtistUuid uuid.UUID
 	OrderID    int16
 }
 
 type User struct {
-	TgID       int64
-	TgUsername string
+	ID       int16
+	Username string
 }
 
 type UserHomeSegment struct {
-	UserID      int64
+	UserID      int16
 	Segment     json.RawMessage
 	Type        UserHomeSegmentType
 	OrderNumber int32
 }
 
 type UserPermission struct {
-	UserTgID          int64
+	UserID            int16
 	CanUpload         bool
 	EarlyAccess       bool
-	CanDelete         bool
 	CanCreatePlaylist bool
 }
 
 type UserPlaylist struct {
-	UserTgID       int64
+	UserID         int16
 	PlaylistID     uuid.UUID
 	OrderID        int16
 	CanDeleteSongs bool
@@ -137,24 +126,14 @@ type UserPlaylist struct {
 }
 
 type UserSession struct {
-	UserID          sql.NullInt64
+	UserID          int16
 	AccessToken     string
-	RefreshToken    sql.NullString
-	AccessExpireAt  sql.NullTime
-	RefreshExpireAt sql.NullTime
+	RefreshToken    string
+	AccessExpireAt  time.Time
+	RefreshExpireAt time.Time
 }
 
 type UserSetting struct {
-	UserTgID int64
-	Locale   string
-}
-
-type UsersFull struct {
-	TgID              int64
-	TgUsername        string
-	Locale            string
-	CanUpload         bool
-	EarlyAccess       bool
-	CanDelete         bool
-	CanCreatePlaylist bool
+	UserID int16
+	Locale string
 }

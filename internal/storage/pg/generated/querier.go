@@ -12,15 +12,25 @@ import (
 
 type Querier interface {
 	CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error)
-	GetHomeSegments(ctx context.Context, userID int64) ([]UserHomeSegment, error)
+	CreateSong(ctx context.Context, arg CreateSongParams) error
+	DeleteExpiredSessions(ctx context.Context) error
+	DeleteFileById(ctx context.Context, id int32) error
+	DeleteSongById(ctx context.Context, id int32) error
+	GetFileById(ctx context.Context, id int32) (FilesMetum, error)
+	GetHomeSegments(ctx context.Context, userID int16) ([]UserHomeSegment, error)
 	GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error)
-	GetSongByUniqueId(ctx context.Context, fileID string) (GetSongByUniqueIdRow, error)
-	GetUiSettings(ctx context.Context, userTgID int64) (UserSetting, error)
-	GetUserByTgId(ctx context.Context, tgID int64) (UsersFull, error)
+	GetSongById(ctx context.Context, id int32) (Song, error)
+	GetUiSettings(ctx context.Context, userID int16) (UserSetting, error)
+	GetUserById(ctx context.Context, id int16) (User, error)
 	GetUserPermissionsOnPlaylist(ctx context.Context, arg GetUserPermissionsOnPlaylistParams) (GetUserPermissionsOnPlaylistRow, error)
+	GetUserSessionByAccessToken(ctx context.Context, accessToken string) (UserSession, error)
+	GetUserSessionByRefreshToken(ctx context.Context, refreshToken string) (UserSession, error)
+	ListSessionsByUserId(ctx context.Context, userID int16) ([]UserSession, error)
+	ListUserPermissionsByUserId(ctx context.Context, userID int16) (UserPermission, error)
 	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error
 	SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error
-	UpsertUser(ctx context.Context, arg UpsertUserParams) error
+	UpsertSongArtist(ctx context.Context, arg UpsertSongArtistParams) error
+	UpsertUser(ctx context.Context, username string) error
 	UpsertUserPlaylist(ctx context.Context, arg UpsertUserPlaylistParams) error
 }
 

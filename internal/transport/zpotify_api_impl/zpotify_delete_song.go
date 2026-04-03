@@ -11,7 +11,7 @@ import (
 func (impl *Impl) DeleteSong(ctx context.Context, req *zpotify_api.DeleteSong_Request) (
 	*zpotify_api.DeleteSong_Response, error) {
 
-	err := impl.audioService.Delete(ctx, req.UniqueId)
+	err := impl.audioService.Delete(ctx, req.Id)
 	if err != nil {
 		return nil, rerrors.Wrap(err)
 	}

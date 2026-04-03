@@ -47,7 +47,7 @@ func NewServer(bot *client.Bot, service service.Service) (s *Server, err error) 
 				localization.GetLocaleOrDefault(u.Locale))
 			ctx = user_context.WithUserContext(ctx,
 				user_context.UserContext{
-					TgUserId:    u.TgId,
+					UserId:      u.Id,
 					Permissions: u.Permissions,
 				})
 			return ctx
@@ -57,9 +57,9 @@ func NewServer(bot *client.Bot, service service.Service) (s *Server, err error) 
 		ctx = localization.LangToCtx(ctx, locale)
 
 		user := domain.User{
-			UserInfo: domain.UserInfo{
-				TgId:       in.From.ID,
-				TgUserName: in.From.UserName,
+			UserBaseInfo: domain.UserBaseInfo{
+				Id:       in.From.ID,
+				Username: in.From.UserName,
 			},
 			UserUiSettings: domain.UserUiSettings{
 				Locale: string(locale),
@@ -73,7 +73,7 @@ func NewServer(bot *client.Bot, service service.Service) (s *Server, err error) 
 
 		ctx = user_context.WithUserContext(ctx,
 			user_context.UserContext{
-				TgUserId:    u.TgId,
+				UserId:      u.Id,
 				Permissions: u.Permissions,
 			})
 

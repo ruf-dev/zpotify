@@ -38,7 +38,7 @@ service ZpotifyAPI {
   // Delete song from playlist TODO
   rpc DeleteSong(DeleteSong.Request) returns (DeleteSong.Response) {
     option (google.api.http) = {
-      delete: "/api/songs/{unique_id}",
+      delete: "/api/songs/{id}",
     };
   }
 
@@ -156,7 +156,7 @@ message ListSongs {
 
 message DeleteSong {
   message Request {
-    string unique_id = 1;
+    int64 id = 1;
   }
 
   message Response {}

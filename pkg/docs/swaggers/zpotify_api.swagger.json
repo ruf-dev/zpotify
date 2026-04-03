@@ -114,7 +114,7 @@
         ]
       }
     },
-    "/api/songs/{uniqueId}": {
+    "/api/songs/{id}": {
       "delete": {
         "summary": "Delete song from playlist TODO",
         "operationId": "ZpotifyAPI_DeleteSong",
@@ -134,10 +134,11 @@
         },
         "parameters": [
           {
-            "name": "uniqueId",
+            "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "format": "int64"
           }
         ],
         "tags": [
@@ -486,10 +487,6 @@
           "type": "boolean",
           "title": "User can interact at all (basically a feature flag)"
         },
-        "canDelete": {
-          "type": "boolean",
-          "title": "User can delete songs"
-        },
         "canCreatePlaylist": {
           "type": "boolean",
           "title": "User can create playlists"
@@ -532,8 +529,9 @@
     "zpotify_apiSongBase": {
       "type": "object",
       "properties": {
-        "uniqueId": {
-          "type": "string"
+        "id": {
+          "type": "string",
+          "format": "int64"
         },
         "title": {
           "type": "string"

@@ -59,6 +59,7 @@ func (d *dataStorage) SessionStorage() storage.SessionStorage {
 func (d *dataStorage) SongStorage() storage.SongStorage {
 	return d.songStorage
 }
+
 func (d *dataStorage) PlaylistStorage() storage.PlaylistStorage {
 	return d.playlistStorage
 }
@@ -87,4 +88,8 @@ func wrapPgErr(err error) error {
 	default:
 		return err
 	}
+}
+
+type scanner interface {
+	Scan(dest ...interface{}) error
 }

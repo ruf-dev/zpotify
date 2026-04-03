@@ -3,13 +3,13 @@ package pg
 import (
 	"context"
 	"database/sql"
-	"encoding/json"
-	"time"
 
 	sq "github.com/Masterminds/squirrel"
+	"github.com/google/uuid"
 	"github.com/lib/pq"
 	"go.redsock.ru/rerrors"
 	"go.redsock.ru/toolbox"
+	"google.golang.org/grpc/codes"
 
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
@@ -30,14 +30,12 @@ func NewSongStorage(db sqldb.DB) *SongsStorage {
 }
 
 func (s *SongsStorage) Save(ctx context.Context, song domain.SongBase) error {
-	_, err := s.db.ExecContext(ctx, `
-		INSERT INTO songs 
-				(file_id,  title, duration_sec)
-		VALUES 	(     $1,     $2,           $3)
-		ON CONFLICT (file_id) DO UPDATE SET
-			title 		 = excluded.title,
-			duration_sec = excluded.duration_sec;
-`, song.UniqueFileId, song.Title, song.Duration.Seconds())
+	params := querier.CreateSongParams{
+		ID:     song.Id,
+		FileID: song.FileId,
+		Title:  song.Title,
+	}
+	err := s.querier.CreateSong(ctx, params)
 	if err != nil {
 		return wrapPgErr(err)
 	}
@@ -45,23 +43,14 @@ func (s *SongsStorage) Save(ctx context.Context, song domain.SongBase) error {
 	return nil
 }
 
-func (s *SongsStorage) SaveSongsArtists(ctx context.Context, song domain.SongBase) error {
-	artistsUuids := make([]string, 0, len(song.Artists))
-	for _, artist := range song.Artists {
-		artistsUuids = append(artistsUuids, artist.Uuid)
+func (s *SongsStorage) SaveSongsArtists(ctx context.Context, songId int64, artistsId uuid.UUID, orderId int16) error {
+	params := querier.UpsertSongArtistParams{
+		SongID:     int32(songId),
+		ArtistUuid: artistsId,
+		OrderID:    orderId,
 	}
 
-	_, err := s.db.ExecContext(ctx, `
-		WITH input AS (
-			SELECT $1::text AS song_id,
-			       unnest($2::uuid[]) AS artist_uuid,
-			       generate_subscripts($2::uuid[], 1) AS order_id
-		)
-		INSERT INTO songs_artists(song_id, artist_uuid, order_id)
-		SELECT song_id, artist_uuid, order_id FROM input
-		ON CONFLICT (song_id, artist_uuid) 
-		DO UPDATE SET order_id = EXCLUDED.order_id;
-	`, song.UniqueFileId, pq.Array(artistsUuids))
+	err := s.querier.UpsertSongArtist(ctx, params)
 	if err != nil {
 		return wrapPgErr(err)
 	}
@@ -69,7 +58,7 @@ func (s *SongsStorage) SaveSongsArtists(ctx context.Context, song domain.SongBas
 	return nil
 }
 
-func (s *SongsStorage) AddSongsToPlaylist(ctx context.Context, playlistUuid string, songIds ...string) error {
+func (s *SongsStorage) AddSongsToPlaylist(ctx context.Context, playlistUuid string, songIds ...int32) error {
 	_, err := s.db.ExecContext(ctx, `
 		 INSERT INTO playlist_songs (playlist_uuid, file_id, order_number)
         	SELECT 
@@ -80,70 +69,70 @@ func (s *SongsStorage) AddSongsToPlaylist(ctx context.Context, playlistUuid stri
                     COALESCE(MAX(order_number), 0) + 1
                 FROM playlist_songs 
                 WHERE playlist_uuid = $1) + generate_series(0, array_length($2::text[], 1) - 1)
-`, playlistUuid, pq.StringArray(songIds))
+`, playlistUuid, pq.Int32Array(songIds))
 	if err != nil {
 		return wrapPgErr(err)
 	}
 
 	return nil
 }
+
 func (s *SongsStorage) List(ctx context.Context, r domain.ListSongs) ([]domain.SongBase, error) {
 	if r.PlaylistUuid == nil {
 		return nil, rerrors.New("no playlist uuid is passed to list songs")
 	}
-
-	builder := sq.Select(
-		"file_id",
-		"title",
-		"artists",
-		"duration_sec",
-	).
-		From("playlists_view").
-		Limit(r.Limit).
-		Offset(r.Offset).
-		PlaceholderFormat(sq.Dollar)
-
-	builder = s.applyListQueryFilters(builder, r)
-	builder = s.applyListQueryOrder(builder, r)
-
-	querySql, args, err := builder.ToSql()
-	if err != nil {
-		return nil, rerrors.Wrap(err, "error building query")
-	}
-
-	rows, err := s.db.QueryContext(ctx, querySql, args...)
-	if err != nil {
-		return nil, wrapPgErr(err)
-	}
-	defer rows.Close()
+	// TODO
+	//builder := sq.Select(
+	//	"file_id",
+	//	"title",
+	//	"artists",
+	//	"duration_sec",
+	//).
+	//	From("playlists_view").
+	//	Limit(r.Limit).
+	//	Offset(r.Offset).
+	//	PlaceholderFormat(sq.Dollar)
+	//
+	//builder = s.applyListQueryFilters(builder, r)
+	//builder = s.applyListQueryOrder(builder, r)
+	//
+	//querySql, args, err := builder.ToSql()
+	//if err != nil {
+	//	return nil, rerrors.Wrap(err, "error building query")
+	//}
+	//
+	//rows, err := s.db.QueryContext(ctx, querySql, args...)
+	//if err != nil {
+	//	return nil, wrapPgErr(err)
+	//}
+	//defer rows.Close()
 
 	var songs []domain.SongBase
-	for rows.Next() {
-		var song domain.SongBase
-		var artistsJson []byte
-		err = rows.Scan(
-			&song.UniqueFileId,
-			&song.Title,
-			&artistsJson,
-			&song.Duration,
-		)
-		if err != nil {
-			return nil, wrapPgErr(err)
-		}
-
-		err = json.Unmarshal(artistsJson, &song.Artists)
-		if err != nil {
-			return nil, rerrors.Wrap(err, "error unmarshalling artists from storage to model")
-		}
-		//by default, it simply scans number to time.Duration
-		// so need to multiply it by time.Seconds to get actual seconds
-		song.Duration = song.Duration * time.Second
-		songs = append(songs, song)
-	}
+	//for rows.Next() {
+	//	var song domain.SongBase
+	//	var artistsJson []byte
+	//	err = rows.Scan(
+	//		&song.UniqueFileId,
+	//		&song.Title,
+	//		&artistsJson,
+	//		&song.Duration,
+	//	)
+	//	if err != nil {
+	//		return nil, wrapPgErr(err)
+	//	}
+	//
+	//	err = json.Unmarshal(artistsJson, &song.Artists)
+	//	if err != nil {
+	//		return nil, rerrors.Wrap(err, "error unmarshalling artists from storage to model")
+	//	}
+	//	//by default, it simply scans number to time.Duration
+	//	// so need to multiply it by time.Seconds to get actual seconds
+	//	song.Duration = song.Duration * time.Second
+	//	songs = append(songs, song)
+	//}
 
 	return songs, nil
 }
-
 func (s *SongsStorage) Count(ctx context.Context, r domain.ListSongs) (uint64, error) {
 	if r.PlaylistUuid == nil {
 		return 0, rerrors.New("no playlist uuid is passed to count")
@@ -169,30 +158,28 @@ func (s *SongsStorage) Count(ctx context.Context, r domain.ListSongs) (uint64, e
 	return count, nil
 }
 
-func (s *SongsStorage) Get(ctx context.Context, uniqueId string) (domain.SongBase, error) {
-	songRow, err := s.querier.GetSongByUniqueId(ctx, uniqueId)
+func (s *SongsStorage) GetByFileId(ctx context.Context, id int64) (domain.SongBase, error) {
+	return domain.SongBase{}, rerrors.New("unsupported operation", codes.Unimplemented)
+}
+
+func (s *SongsStorage) Get(ctx context.Context, id int64) (domain.SongBase, error) {
+	songDb, err := s.querier.GetSongById(ctx, int32(id))
 	if err != nil {
 		return domain.SongBase{}, wrapPgErr(err)
 	}
 
 	song := domain.SongBase{
-		UniqueFileId: songRow.FileID,
-		Title:        songRow.Title,
-		Duration:     time.Duration(songRow.DurationSec) * time.Second,
-	}
-
-	err = json.Unmarshal(songRow.Artists, &song.Artists)
-	if err != nil {
-		return song, rerrors.Wrap(err, "error unmarshalling artists from storage to model")
+		Id:        songDb.ID,
+		Title:     songDb.Title,
+		FileId:    songDb.FileID,
+		CreatedAt: songDb.CreatedAt,
 	}
 
 	return song, nil
 }
 
-func (s *SongsStorage) Delete(ctx context.Context, fileUniqueId string) error {
-	_, err := s.db.ExecContext(ctx, `
-			DELETE FROM files_meta
-			WHERE tg_unique_id = $1`, fileUniqueId)
+func (s *SongsStorage) Delete(ctx context.Context, id int64) error {
+	err := s.querier.DeleteSongById(ctx, int32(id))
 	if err != nil {
 		return wrapPgErr(err)
 	}

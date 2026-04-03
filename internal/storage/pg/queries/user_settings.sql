@@ -9,7 +9,7 @@ ORDER BY order_number;
 
 
 -- name: GetUiSettings :one
-SELECT user_tg_id,
+SELECT user_id,
        locale
 FROM user_settings
-WHERE user_tg_id = $1;
+WHERE user_id = $1;

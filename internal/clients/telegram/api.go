@@ -16,7 +16,7 @@ import (
 
 type TgApiClient interface {
 	GetFile(ctx context.Context, fileId string) (*tgbotapi.File, error)
-	OpenFile(ctx context.Context, file domain.TgFile) (io.ReadCloser, error)
+	OpenFile(ctx context.Context, file domain.File) (io.ReadCloser, error)
 }
 
 type tgApi struct {
@@ -65,10 +65,10 @@ func (t *tgApi) GetFile(ctx context.Context, fileId string) (*tgbotapi.File, err
 	return &r.Result, nil
 }
 
-func (t *tgApi) OpenFile(ctx context.Context, file domain.TgFile) (io.ReadCloser, error) {
+func (t *tgApi) OpenFile(ctx context.Context, file domain.File) (io.ReadCloser, error) {
 	f := tgbotapi.File{
-		FileID:   file.FileId,
-		FilePath: file.FilePath,
+		//FileID:   file.FileId,
+		//FilePath: file.FilePath,
 	}
 
 	link := f.Link(t.token)

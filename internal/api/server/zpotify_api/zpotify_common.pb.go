@@ -120,7 +120,7 @@ func (x *ArtistBase) GetName() string {
 
 type SongBase struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UniqueId      string                 `protobuf:"bytes,1,opt,name=unique_id,json=uniqueId,proto3" json:"unique_id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
 	Artists       []*ArtistBase          `protobuf:"bytes,3,rep,name=artists,proto3" json:"artists,omitempty"`
 	DurationSec   int32                  `protobuf:"varint,4,opt,name=duration_sec,json=durationSec,proto3" json:"duration_sec,omitempty"`
@@ -158,11 +158,11 @@ func (*SongBase) Descriptor() ([]byte, []int) {
 	return file_zpotify_common_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *SongBase) GetUniqueId() string {
+func (x *SongBase) GetId() int64 {
 	if x != nil {
-		return x.UniqueId
+		return x.Id
 	}
-	return ""
+	return 0
 }
 
 func (x *SongBase) GetTitle() string {
@@ -264,9 +264,9 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\x06offset\x18\x02 \x01(\x04R\x06offset\" \n" +
 	"\n" +
 	"ArtistBase\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"\x93\x01\n" +
-	"\bSongBase\x12\x1b\n" +
-	"\tunique_id\x18\x01 \x01(\tR\buniqueId\x12\x14\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"\x86\x01\n" +
+	"\bSongBase\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x121\n" +
 	"\aartists\x18\x03 \x03(\v2\x17.zpotify_api.ArtistBaseR\aartists\x12!\n" +
 	"\fduration_sec\x18\x04 \x01(\x05R\vdurationSec\"\x86\x01\n" +

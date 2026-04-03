@@ -14,7 +14,7 @@ type AddAudio struct {
 }
 
 type FileMeta struct {
-	TgFile
+	File
 	AddedByTgId int64
 }
 
@@ -36,6 +36,11 @@ type TgFile struct {
 	FileId       string
 	FilePath     string
 	SizeBytes    int64
+}
+
+type File struct {
+	FilePath  string
+	SizeBytes int64
 }
 
 type ListSongs struct {
@@ -65,10 +70,10 @@ const (
 )
 
 type SongBase struct {
-	UniqueFileId string
-	Title        string
-	Artists      []ArtistsBase
-	Duration     time.Duration
+	Id        int32
+	Title     string
+	FileId    int32
+	CreatedAt time.Time
 }
 
 type Song struct {

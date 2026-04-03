@@ -7,34 +7,74 @@ package querier
 
 import (
 	"context"
-	"encoding/json"
+
+	"github.com/google/uuid"
 )
 
-const getSongByUniqueId = `-- name: GetSongByUniqueId :one
-SELECT file_id,
-       title,
-       artists,
-       duration_sec
-FROM playlists_view
-WHERE file_id = $1
-    FETCH FIRST 1 ROW ONLY
+const createSong = `-- name: CreateSong :exec
+INSERT INTO songs
+    (id, file_id, title, created_at)
+VALUES ($1, $2, $3, now())
 `
 
-type GetSongByUniqueIdRow struct {
-	FileID      string
-	Title       string
-	Artists     json.RawMessage
-	DurationSec int32
+type CreateSongParams struct {
+	ID     int32
+	FileID int32
+	Title  string
 }
 
-func (q *Queries) GetSongByUniqueId(ctx context.Context, fileID string) (GetSongByUniqueIdRow, error) {
-	row := q.db.QueryRowContext(ctx, getSongByUniqueId, fileID)
-	var i GetSongByUniqueIdRow
+func (q *Queries) CreateSong(ctx context.Context, arg CreateSongParams) error {
+	_, err := q.db.ExecContext(ctx, createSong, arg.ID, arg.FileID, arg.Title)
+	return err
+}
+
+const deleteSongById = `-- name: DeleteSongById :exec
+DELETE
+FROM files_meta
+WHERE id = $1
+`
+
+func (q *Queries) DeleteSongById(ctx context.Context, id int32) error {
+	_, err := q.db.ExecContext(ctx, deleteSongById, id)
+	return err
+}
+
+const getSongById = `-- name: GetSongById :one
+SELECT id,
+       file_id,
+       title,
+       created_at
+FROM songs
+WHERE id = $1
+`
+
+func (q *Queries) GetSongById(ctx context.Context, id int32) (Song, error) {
+	row := q.db.QueryRowContext(ctx, getSongById, id)
+	var i Song
 	err := row.Scan(
+		&i.ID,
 		&i.FileID,
 		&i.Title,
-		&i.Artists,
-		&i.DurationSec,
+		&i.CreatedAt,
 	)
 	return i, err
+}
+
+const upsertSongArtist = `-- name: UpsertSongArtist :exec
+INSERT INTO songs_artists
+    (song_id, artist_uuid, order_id)
+VALUES ($1, $2, $3)
+ON CONFLICT (song_id, artist_uuid)
+    DO UPDATE SET order_id = excluded.order_id
+`
+
+type UpsertSongArtistParams struct {
+	SongID     int32
+	ArtistUuid uuid.UUID
+	OrderID    int16
+}
+
+func (q *Queries) UpsertSongArtist(ctx context.Context, arg UpsertSongArtistParams) error {
+	_, err := q.db.ExecContext(ctx, upsertSongArtist, arg.SongID, arg.ArtistUuid, arg.OrderID)
+	return err
 }

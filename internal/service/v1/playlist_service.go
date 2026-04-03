@@ -36,7 +36,7 @@ func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistP
 	createPlaylistParams := querier.CreatePlaylistParams{
 		Name:        req.Name,
 		Description: req.Description,
-		UserTgID:    userCtx.TgUserId,
+		UserID:      int16(userCtx.UserId),
 	}
 
 	playlist, err := p.playlistStorage.Create(ctx, createPlaylistParams)
@@ -59,8 +59,8 @@ func (p *PlaylistService) Get(ctx context.Context, playlistUuid string) (domain.
 	}
 
 	storaageParams := querier.GetPlaylistWithAuthParams{
-		UserTgID: userCtx.TgUserId,
-		Uuid:     uuidParsed,
+		UserID: int16(userCtx.UserId),
+		Uuid:   uuidParsed,
 	}
 
 	playlist, err := p.playlistStorage.GetWithAuth(ctx, storaageParams)

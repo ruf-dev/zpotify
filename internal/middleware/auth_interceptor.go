@@ -103,7 +103,7 @@ func (ac *authMiddleware) authWithSession(ctx context.Context, md metadata.MD) (
 	}
 
 	uc := user_context.UserContext{
-		TgUserId: tgId,
+		UserId: tgId,
 		Permissions: domain.UserPermissions{
 			CanUpload:   false,
 			EarlyAccess: false,
@@ -134,7 +134,7 @@ func (ac *authMiddleware) authWithDebugHeaders(ctx context.Context, md metadata.
 		}
 
 		return &user_context.UserContext{
-			TgUserId: tgId,
+			UserId: tgId,
 			Permissions: domain.UserPermissions{
 				CanUpload:   true,
 				EarlyAccess: true,
@@ -149,7 +149,7 @@ func (ac *authMiddleware) authWithDebugHeaders(ctx context.Context, md metadata.
 			return nil, rerrors.Wrap(err)
 		}
 
-		return &user_context.UserContext{TgUserId: user.TgId}, nil
+		return &user_context.UserContext{UserId: user.Id}, nil
 	}
 
 	return nil, rerrors.New("no debug header or auth token passed", codes.Unauthenticated)

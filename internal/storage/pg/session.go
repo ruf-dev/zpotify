@@ -10,62 +10,37 @@ import (
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
+	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 )
 
 type SessionStorage struct {
 	db sqldb.DB
+	q  querier.Querier
 }
 
 func NewSessionStorage(db sqldb.DB) *SessionStorage {
-	return &SessionStorage{db: db}
+	return &SessionStorage{
+		db: db,
+		q:  querier.New(db),
+	}
 }
 
 func (s *SessionStorage) GetByAccessToken(ctx context.Context, accessToken string) (domain.UserSession, error) {
-	r := s.db.QueryRowContext(ctx, `
-		SELECT 
-			user_id,
-			access_token,
-			refresh_token,
-			access_expire_at,
-			refresh_expire_at,
-			COALESCE(user_permissions.can_upload, '0'),
-			COALESCE(user_permissions.early_access, '0')
-		FROM user_sessions
-		LEFT JOIN user_permissions ON user_sessions.user_id = user_permissions.user_tg_id
-		WHERE access_token = $1
-`, accessToken)
-
-	var userSession domain.UserSession
-	err := s.scanSession(r, &userSession)
+	userSession, err := s.q.GetUserSessionByAccessToken(ctx, accessToken)
 	if err != nil {
-		return userSession, wrapPgErr(err)
+		return domain.UserSession{}, wrapPgErr(err)
 	}
 
-	return userSession, nil
+	return toDomainUserSession(userSession), nil
 }
 
 func (s *SessionStorage) GetByRefreshToken(ctx context.Context, refreshToken string) (domain.UserSession, error) {
-	r := s.db.QueryRowContext(ctx, `
-		SELECT 
-			user_id,
-			access_token,
-			refresh_token,
-			access_expire_at,
-			refresh_expire_at,
-			COALESCE(user_permissions.can_upload, '0'),
-			COALESCE(user_permissions.early_access, '0')
-		FROM user_sessions
-		LEFT JOIN user_permissions ON user_sessions.user_id = user_permissions.user_tg_id
-		WHERE refresh_token = $1
-`, refreshToken)
-
-	var userSession domain.UserSession
-	err := s.scanSession(r, &userSession)
+	userSessionDb, err := s.q.GetUserSessionByRefreshToken(ctx, refreshToken)
 	if err != nil {
-		return userSession, wrapPgErr(err)
+		return domain.UserSession{}, wrapPgErr(err)
 	}
 
-	return userSession, nil
+	return toDomainUserSession(userSessionDb), nil
 }
 
 func (s *SessionStorage) Upsert(ctx context.Context, session domain.UserSession) error {
@@ -74,7 +49,7 @@ func (s *SessionStorage) Upsert(ctx context.Context, session domain.UserSession)
 			INSERT INTO user_sessions 
 					(user_id, access_token, refresh_token, access_expire_at, refresh_expire_at)
 			VALUES	($1, $2, $3, $4, $5)
-	`, session.UserTgId,
+	`, session.UserId,
 		session.AccessToken, session.RefreshToken,
 		session.AccessExpiresAt.UTC(), session.RefreshExpiresAt.UTC())
 	if err != nil {
@@ -94,45 +69,21 @@ func (s *SessionStorage) Delete(ctx context.Context, tokens ...string) error {
 }
 
 func (s *SessionStorage) ListByUserId(ctx context.Context, tgId int64) ([]domain.UserSession, error) {
-	rows, err := s.db.QueryContext(ctx, `
-		SELECT 
-			user_id,
-			access_token,
-			refresh_token,
-			access_expire_at,
-			refresh_expire_at,
-			COALESCE(user_permissions.can_upload, '0'),
-			COALESCE(user_permissions.early_access, '0')
-		FROM user_sessions
-		LEFT JOIN user_permissions ON user_sessions.user_id = user_permissions.user_tg_id
-		WHERE user_id = $1
-		ORDER BY refresh_expire_at DESC
-`, tgId)
+	sessionDb, err := s.q.ListSessionsByUserId(ctx, int16(tgId))
 	if err != nil {
-		return nil, rerrors.Wrap(err, "error listing user's sessions")
-	}
-	defer rows.Close()
-
-	sessions := make([]domain.UserSession, 0)
-
-	for rows.Next() {
-		var userSession domain.UserSession
-		err = s.scanSession(rows, &userSession)
-		if err != nil {
-			return nil, rerrors.Wrap(err, "error scanning user session")
-		}
-
-		sessions = append(sessions, userSession)
+		return nil, wrapPgErr(err)
 	}
 
-	return sessions, nil
+	out := make([]domain.UserSession, 0, len(sessionDb))
+	for _, session := range sessionDb {
+		out = append(out, toDomainUserSession(session))
+	}
+
+	return out, nil
 }
 
 func (s *SessionStorage) DeleteExpired(ctx context.Context) error {
-	_, err := s.db.ExecContext(ctx, `
-		DELETE FROM user_sessions 
-		WHERE refresh_expire_at < now()
-`)
+	err := s.q.DeleteExpiredSessions(ctx)
 	if err != nil {
 		return wrapPgErr(err)
 	}
@@ -144,19 +95,12 @@ func (s *SessionStorage) WithTx(tx *sql.Tx) storage.SessionStorage {
 	return NewSessionStorage(tx)
 }
 
-func (s *SessionStorage) scanSession(row scanner, session *domain.UserSession) error {
-	return row.Scan(
-		&session.UserTgId,
-		&session.AccessToken,
-		&session.RefreshToken,
-		&session.AccessExpiresAt,
-		&session.RefreshExpiresAt,
-
-		&session.Permissions.CanUpload,
-		&session.Permissions.EarlyAccess,
-	)
-}
-
-type scanner interface {
-	Scan(dest ...interface{}) error
+func toDomainUserSession(s querier.UserSession) domain.UserSession {
+	return domain.UserSession{
+		UserId:           int64(s.UserID),
+		AccessToken:      s.AccessToken,
+		AccessExpiresAt:  s.AccessExpireAt,
+		RefreshToken:     s.RefreshToken,
+		RefreshExpiresAt: s.RefreshExpireAt,
+	}
 }
