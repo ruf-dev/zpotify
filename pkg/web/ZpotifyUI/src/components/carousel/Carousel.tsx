@@ -77,6 +77,28 @@ const Carousel: React.FC<CarouselProps> = ({children, visibleItems = 3, width = 
         setIsUserScrolling(true);
         if (scrollTimeout) window.clearTimeout(scrollTimeout);
         scrollTimeout = window.setTimeout(() => setIsUserScrolling(false), 50);
+
+        // Find which item is closest to the center
+        const container = scrollRef.current;
+        if (!container) return;
+
+        const containerCenterX = container.scrollLeft + container.offsetWidth / 2;
+        let minDistance = Infinity;
+        let closestIndex = 0;
+
+        itemRefs.current.forEach((item, index) => {
+            if (!item) return;
+            const itemCenterX = item.offsetLeft + item.offsetWidth / 2;
+            const distance = Math.abs(containerCenterX - itemCenterX);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestIndex = index;
+            }
+        });
+
+        if (closestIndex !== centerIndex) {
+            setCenterIndex(closestIndex);
+        }
     };
 
     // -------------------------
@@ -86,10 +108,6 @@ const Carousel: React.FC<CarouselProps> = ({children, visibleItems = 3, width = 
 
         const container = scrollRef.current;
         const item = itemRefs.current[index];
-
-        if (index == centerIndex) {
-            return 1;
-        }
 
         if (!container || !item || containerWidth === 0) return 0.9;
 
