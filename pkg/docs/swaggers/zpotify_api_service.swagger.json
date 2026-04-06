@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "zpotify_api.proto",
+    "title": "zpotify_api_service.proto",
     "version": "version not set"
   },
   "tags": [
@@ -168,102 +168,6 @@
         ]
       }
     },
-    "/api/user/auth": {
-      "post": {
-        "summary": "Only Telegram auth is supported",
-        "operationId": "UserAPI_Auth",
-        "responses": {
-          "200": {
-            "description": "A successful response.(streaming responses)",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "$ref": "#/definitions/zpotify_apiAuthResponse"
-                },
-                "error": {
-                  "$ref": "#/definitions/rpcStatus"
-                }
-              },
-              "title": "Stream result of zpotify_apiAuthResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/zpotify_apiAuthRequest"
-            }
-          }
-        ],
-        "tags": [
-          "UserAPI"
-        ]
-      }
-    },
-    "/api/user/auth_methods": {
-      "get": {
-        "operationId": "UserAPI_GetAuthMethods",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/zpotify_apiGetAuthMethodsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "tags": [
-          "UserAPI"
-        ]
-      }
-    },
-    "/api/user/refresh_token": {
-      "post": {
-        "operationId": "UserAPI_RefreshToken",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/zpotify_apiRefreshResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/zpotify_apiRefreshRequest"
-            }
-          }
-        ],
-        "tags": [
-          "UserAPI"
-        ]
-      }
-    },
     "/api/user/settings": {
       "get": {
         "operationId": "UserAPI_GetUserSettings",
@@ -310,36 +214,6 @@
     }
   },
   "definitions": {
-    "AuthAuthData": {
-      "type": "object",
-      "properties": {
-        "accessToken": {
-          "type": "string"
-        },
-        "refreshToken": {
-          "type": "string"
-        },
-        "accessExpiresAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "refreshExpiresAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
-    "AuthLogPass": {
-      "type": "object",
-      "properties": {
-        "login": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        }
-      }
-    },
     "HomePageSegmentManagement": {
       "type": "object"
     },
@@ -387,37 +261,6 @@
         }
       }
     },
-    "zpotify_apiAuthMethods": {
-      "type": "string",
-      "enum": [
-        "AuthMethod_NotSpecified",
-        "AuthMethod_Offline",
-        "AuthMethod_Telegram"
-      ],
-      "default": "AuthMethod_NotSpecified"
-    },
-    "zpotify_apiAuthRequest": {
-      "type": "object",
-      "properties": {
-        "isUsingTelegram": {
-          "type": "boolean"
-        },
-        "logPass": {
-          "$ref": "#/definitions/AuthLogPass"
-        }
-      }
-    },
-    "zpotify_apiAuthResponse": {
-      "type": "object",
-      "properties": {
-        "authUuid": {
-          "type": "string"
-        },
-        "authData": {
-          "$ref": "#/definitions/AuthAuthData"
-        }
-      }
-    },
     "zpotify_apiCreatePlaylistRequest": {
       "type": "object",
       "properties": {
@@ -439,17 +282,6 @@
     },
     "zpotify_apiDeleteSongResponse": {
       "type": "object"
-    },
-    "zpotify_apiGetAuthMethodsResponse": {
-      "type": "object",
-      "properties": {
-        "authMethods": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/zpotify_apiAuthMethods"
-          }
-        }
-      }
     },
     "zpotify_apiGetPlaylistResponse": {
       "type": "object",
@@ -568,22 +400,6 @@
         },
         "isPublic": {
           "type": "boolean"
-        }
-      }
-    },
-    "zpotify_apiRefreshRequest": {
-      "type": "object",
-      "properties": {
-        "refreshToken": {
-          "type": "string"
-        }
-      }
-    },
-    "zpotify_apiRefreshResponse": {
-      "type": "object",
-      "properties": {
-        "authData": {
-          "$ref": "#/definitions/AuthAuthData"
         }
       }
     },

@@ -8,6 +8,7 @@ import (
 
 	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
+	"google.golang.org/grpc/codes"
 
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
@@ -178,6 +179,10 @@ func (a *AuthService) Refresh(ctx context.Context, refreshToken string) (domain.
 	}
 
 	return newSession, nil
+}
+
+func (a *AuthService) ListAuthMethods(ctx context.Context) error {
+	return rerrors.New("not implemented", codes.Unimplemented)
 }
 
 func (a *AuthService) generateSession(tgId int64) domain.UserSession {

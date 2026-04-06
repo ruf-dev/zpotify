@@ -4,11 +4,11 @@ import {Session, UserInfo} from "@/model/User.ts";
 
 import UserService from "@/processes/User.ts";
 import {ISongsService, SongsService} from "@/processes/Songs.ts";
-import {AuthMiddleware} from "@/processes/Auth.ts";
+import {AuthMiddleware, IAuthService} from "@/processes/Auth.ts";
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 import {ISettingsService, SettingsService} from "@/processes/HomePage.ts";
 import {IPlaylistService, PlaylistService} from "@/processes/PlaylistService.ts";
-
+// Todo redo onto UserContext
 export interface User {
     userData?: UserInfo
     setUserData: (user: UserInfo) => void;
@@ -25,6 +25,7 @@ export interface Services {
     Songs(): ISongsService
     Playlist(): IPlaylistService
     Settings(): ISettingsService
+    Auth(): IAuthService
 }
 
 export default function useUser(): User {
@@ -37,6 +38,7 @@ export default function useUser(): User {
     const userService = useRef(new UserService(authMiddleware))
     const settingsService = useRef(new SettingsService(authMiddleware))
     const playlistService = useRef(new PlaylistService(authMiddleware))
+    const authService = useRef(new AuthService(authMiddleware))
 
     useEffect(() => {
         if (authMiddleware.current.session) {
@@ -80,6 +82,9 @@ export default function useUser(): User {
                     },
                     Playlist(): IPlaylistService {
                         return playlistService.current
+                    }
+                    Auth(): IAuthService {
+                        return
                     }
                 }
             },

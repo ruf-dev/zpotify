@@ -22,6 +22,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type AuthMethods int32
+
+const (
+	AuthMethods_AuthMethod_NotSpecified AuthMethods = 0
+	AuthMethods_AuthMethod_Offline      AuthMethods = 1
+	AuthMethods_AuthMethod_Telegram     AuthMethods = 2
+)
+
+// Enum value maps for AuthMethods.
+var (
+	AuthMethods_name = map[int32]string{
+		0: "AuthMethod_NotSpecified",
+		1: "AuthMethod_Offline",
+		2: "AuthMethod_Telegram",
+	}
+	AuthMethods_value = map[string]int32{
+		"AuthMethod_NotSpecified": 0,
+		"AuthMethod_Offline":      1,
+		"AuthMethod_Telegram":     2,
+	}
+)
+
+func (x AuthMethods) Enum() *AuthMethods {
+	p := new(AuthMethods)
+	*p = x
+	return p
+}
+
+func (x AuthMethods) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AuthMethods) Descriptor() protoreflect.EnumDescriptor {
+	return file_zpotify_user_proto_enumTypes[0].Descriptor()
+}
+
+func (AuthMethods) Type() protoreflect.EnumType {
+	return &file_zpotify_user_proto_enumTypes[0]
+}
+
+func (x AuthMethods) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AuthMethods.Descriptor instead.
+func (AuthMethods) EnumDescriptor() ([]byte, []int) {
+	return file_zpotify_user_proto_rawDescGZIP(), []int{0}
+}
+
 type Permissions struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// User can upload tracks via telegram
@@ -94,7 +143,11 @@ const file_zpotify_user_proto_rawDesc = "" +
 	"\n" +
 	"can_upload\x18\x01 \x01(\bR\tcanUpload\x12!\n" +
 	"\fearly_access\x18\x02 \x01(\bR\vearlyAccess\x12.\n" +
-	"\x13can_create_playlist\x18\x03 \x01(\bR\x11canCreatePlaylistBC\x92\x82\x19\f@zpotify/apiZ1go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_apib\x06proto3"
+	"\x13can_create_playlist\x18\x03 \x01(\bR\x11canCreatePlaylist*[\n" +
+	"\vAuthMethods\x12\x1b\n" +
+	"\x17AuthMethod_NotSpecified\x10\x00\x12\x16\n" +
+	"\x12AuthMethod_Offline\x10\x01\x12\x17\n" +
+	"\x13AuthMethod_Telegram\x10\x02B*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_user_proto_rawDescOnce sync.Once
@@ -108,9 +161,11 @@ func file_zpotify_user_proto_rawDescGZIP() []byte {
 	return file_zpotify_user_proto_rawDescData
 }
 
+var file_zpotify_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_zpotify_user_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_zpotify_user_proto_goTypes = []any{
-	(*Permissions)(nil), // 0: zpotify_api.Permissions
+	(AuthMethods)(0),    // 0: zpotify_api.AuthMethods
+	(*Permissions)(nil), // 1: zpotify_api.Permissions
 }
 var file_zpotify_user_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -130,13 +185,14 @@ func file_zpotify_user_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_user_proto_rawDesc), len(file_zpotify_user_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_zpotify_user_proto_goTypes,
 		DependencyIndexes: file_zpotify_user_proto_depIdxs,
+		EnumInfos:         file_zpotify_user_proto_enumTypes,
 		MessageInfos:      file_zpotify_user_proto_msgTypes,
 	}.Build()
 	File_zpotify_user_proto = out.File

@@ -4,7 +4,7 @@ package zpotify_api;
 
 import "npm.proto";
 
-option go_package = "go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_api";
+option go_package = "/zpotify_api;zpotify_api";
 option (npm_package) = "@zpotify/api";
 
 message Paging {

@@ -10,7 +10,7 @@ import "zpotify_common.proto";
 import "zpotify_user.proto";
 import "zpotify_user_settings.proto";
 
-option go_package = "go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_api";
+option go_package = "/zpotify_api;zpotify_api";
 option (npm_package) = "@zpotify/api";
 
 service ZpotifyAPI {
@@ -50,21 +50,6 @@ service ZpotifyAPI {
 }
 
 service UserAPI {
-  //  Only Telegram auth is supported
-  rpc Auth(Auth.Request) returns (stream Auth.Response) {
-    option (google.api.http) = {
-      post: "/api/user/auth"
-      body: "*"
-    };
-  }
-
-  rpc RefreshToken(Refresh.Request) returns (Refresh.Response) {
-    option (google.api.http) = {
-      post: "/api/user/refresh_token"
-      body: "*"
-    };
-  }
-
   rpc Me(Me.Request) returns (Me.Response) {
     option (google.api.http) = {
       get: "/api/user"
@@ -97,24 +82,6 @@ message GetLink {
   }
 }
 
-message Auth {
-  message Request {}
-
-  message Response {
-    oneof payload {
-      string auth_uuid = 1;
-      AuthData auth_data = 2;
-    }
-  }
-
-  message AuthData {
-    string access_token = 1;
-    string refresh_token = 2;
-    google.protobuf.Timestamp access_expires_at = 3;
-    google.protobuf.Timestamp refresh_expires_at = 4;
-  }
-}
-
 message UserData {
   string username = 1;
 }
@@ -128,15 +95,6 @@ message Me {
   }
 }
 
-message Refresh {
-  message Request {
-    string refresh_token = 1;
-  }
-
-  message Response {
-    Auth.AuthData auth_data = 1;
-  }
-}
 
 message ListSongs {
   message Request {

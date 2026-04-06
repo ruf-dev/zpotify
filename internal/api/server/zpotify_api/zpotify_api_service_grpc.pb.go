@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.1
 // - protoc             v5.28.3
-// source: zpotify_api.proto
+// source: zpotify_api_service.proto
 
 package zpotify_api
 
@@ -273,12 +273,10 @@ var ZpotifyAPI_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "zpotify_api.proto",
+	Metadata: "zpotify_api_service.proto",
 }
 
 const (
-	UserAPI_Auth_FullMethodName            = "/zpotify_api.UserAPI/Auth"
-	UserAPI_RefreshToken_FullMethodName    = "/zpotify_api.UserAPI/RefreshToken"
 	UserAPI_Me_FullMethodName              = "/zpotify_api.UserAPI/Me"
 	UserAPI_GetUserSettings_FullMethodName = "/zpotify_api.UserAPI/GetUserSettings"
 )
@@ -287,9 +285,6 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserAPIClient interface {
-	// Only Telegram auth is supported
-	Auth(ctx context.Context, in *Auth_Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Auth_Response], error)
-	RefreshToken(ctx context.Context, in *Refresh_Request, opts ...grpc.CallOption) (*Refresh_Response, error)
 	Me(ctx context.Context, in *Me_Request, opts ...grpc.CallOption) (*Me_Response, error)
 	GetUserSettings(ctx context.Context, in *GetUserSettings_Request, opts ...grpc.CallOption) (*GetUserSettings_Response, error)
 }
@@ -300,35 +295,6 @@ type userAPIClient struct {
 
 func NewUserAPIClient(cc grpc.ClientConnInterface) UserAPIClient {
 	return &userAPIClient{cc}
-}
-
-func (c *userAPIClient) Auth(ctx context.Context, in *Auth_Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Auth_Response], error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &UserAPI_ServiceDesc.Streams[0], UserAPI_Auth_FullMethodName, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &grpc.GenericClientStream[Auth_Request, Auth_Response]{ClientStream: stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type UserAPI_AuthClient = grpc.ServerStreamingClient[Auth_Response]
-
-func (c *userAPIClient) RefreshToken(ctx context.Context, in *Refresh_Request, opts ...grpc.CallOption) (*Refresh_Response, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Refresh_Response)
-	err := c.cc.Invoke(ctx, UserAPI_RefreshToken_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *userAPIClient) Me(ctx context.Context, in *Me_Request, opts ...grpc.CallOption) (*Me_Response, error) {
@@ -355,9 +321,6 @@ func (c *userAPIClient) GetUserSettings(ctx context.Context, in *GetUserSettings
 // All implementations must embed UnimplementedUserAPIServer
 // for forward compatibility.
 type UserAPIServer interface {
-	// Only Telegram auth is supported
-	Auth(*Auth_Request, grpc.ServerStreamingServer[Auth_Response]) error
-	RefreshToken(context.Context, *Refresh_Request) (*Refresh_Response, error)
 	Me(context.Context, *Me_Request) (*Me_Response, error)
 	GetUserSettings(context.Context, *GetUserSettings_Request) (*GetUserSettings_Response, error)
 	mustEmbedUnimplementedUserAPIServer()
@@ -370,12 +333,6 @@ type UserAPIServer interface {
 // pointer dereference when methods are called.
 type UnimplementedUserAPIServer struct{}
 
-func (UnimplementedUserAPIServer) Auth(*Auth_Request, grpc.ServerStreamingServer[Auth_Response]) error {
-	return status.Error(codes.Unimplemented, "method Auth not implemented")
-}
-func (UnimplementedUserAPIServer) RefreshToken(context.Context, *Refresh_Request) (*Refresh_Response, error) {
-	return nil, status.Error(codes.Unimplemented, "method RefreshToken not implemented")
-}
 func (UnimplementedUserAPIServer) Me(context.Context, *Me_Request) (*Me_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method Me not implemented")
 }
@@ -401,35 +358,6 @@ func RegisterUserAPIServer(s grpc.ServiceRegistrar, srv UserAPIServer) {
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&UserAPI_ServiceDesc, srv)
-}
-
-func _UserAPI_Auth_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(Auth_Request)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(UserAPIServer).Auth(m, &grpc.GenericServerStream[Auth_Request, Auth_Response]{ServerStream: stream})
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type UserAPI_AuthServer = grpc.ServerStreamingServer[Auth_Response]
-
-func _UserAPI_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Refresh_Request)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserAPIServer).RefreshToken(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: UserAPI_RefreshToken_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserAPIServer).RefreshToken(ctx, req.(*Refresh_Request))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _UserAPI_Me_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -476,10 +404,6 @@ var UserAPI_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserAPIServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "RefreshToken",
-			Handler:    _UserAPI_RefreshToken_Handler,
-		},
-		{
 			MethodName: "Me",
 			Handler:    _UserAPI_Me_Handler,
 		},
@@ -488,12 +412,6 @@ var UserAPI_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserAPI_GetUserSettings_Handler,
 		},
 	},
-	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "Auth",
-			Handler:       _UserAPI_Auth_Handler,
-			ServerStreams: true,
-		},
-	},
-	Metadata: "zpotify_api.proto",
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "zpotify_api_service.proto",
 }

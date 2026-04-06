@@ -36,7 +36,12 @@ root, body {
 
     --header-height: 6vh;
     --border-radius: 1em;
+
+    --element-border-color: #999999;
+    --element-border-color-lighter: #c5c4c4;
 }
+
+
 
 /*TODO: DO FOR different screen sizes*/
 * {

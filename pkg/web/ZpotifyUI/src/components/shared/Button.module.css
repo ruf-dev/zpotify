@@ -1,0 +1,29 @@
+.ButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    transition: scale 0.2s ease;
+
+    border-radius: 0.25em;
+    border: none;
+
+    width: 6em;
+    height: 4em;
+
+    background: var(--accent-bg-color);
+    color: var(--secondary-fg-color);
+
+    &.disabled {
+        cursor: not-allowed;
+    }
+
+    &:hover&:not(.disabled) {
+        scale: 1.05;
+    }
+
+    &:focus {
+        outline: none;
+    }
+}

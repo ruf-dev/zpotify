@@ -1,0 +1,16 @@
+.LogPassWidgetContainer {
+    width: 20vw;
+    height: 21vh;
+
+    display: flex;
+    gap: 1em;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+
+    background: color-mix(in srgb, var(--main-bg-color) 70%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}

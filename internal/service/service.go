@@ -75,6 +75,8 @@ type AuthService interface {
 	AuthWithToken(ctx context.Context, s string) (tgId int64, err error)
 	Refresh(ctx context.Context, refreshToken string) (domain.UserSession, error)
 	GetUserContext(ctx context.Context, tgUserId int64) (user_context.UserContext, error)
+
+	ListAuthMethods(ctx context.Context) error
 }
 
 type PlaylistService interface {

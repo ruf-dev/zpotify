@@ -299,7 +299,7 @@ const file_zpotify_user_settings_proto_rawDesc = "" +
 	"\asegment\"$\n" +
 	"\n" +
 	"UiSettings\x12\x16\n" +
-	"\x06locale\x18\x01 \x01(\tR\x06localeBC\x92\x82\x19\f@zpotify/apiZ1go.zpotify.ru/zpotify/pkg/zpotify_api;zpotify_apib\x06proto3"
+	"\x06locale\x18\x01 \x01(\tR\x06localeB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_user_settings_proto_rawDescOnce sync.Once

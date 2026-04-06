@@ -36,8 +36,9 @@ export default function InitPage({AudioPlayer, UserState}: InitPageProps) {
             <MusicPlayerWithLogo
                 audioPlayer={AudioPlayer}
             />
+
             <AuthMethodsWidget
-                UserState={UserState}
+                userState={UserState}
             />
 
             <p className={cls.WorkInProgressHeader}>

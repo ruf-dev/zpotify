@@ -14,7 +14,6 @@ export type Session = {
 
 export type UserPermissions = Permissions
 
-
 export type SongListPermissions = {
     canDelete: boolean
 }

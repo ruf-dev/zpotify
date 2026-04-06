@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package zpotify_api;
+
+import "npm.proto";
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+import "zpotify_common.proto";
+import "zpotify_user.proto";
+
+option go_package = "/zpotify_api;zpotify_api";
+option (npm_package) = "@zpotify/api";
+
+service AuthService {
+  rpc GetAuthMethods(GetAuthMethods.Request) returns (GetAuthMethods.Response) {
+    option (google.api.http) = {
+      get: "/api/auth/auth_methods"
+    };
+  }
+
+  rpc Auth(Auth.Request) returns (stream Auth.Response) {
+    option (google.api.http) = {
+      post: "/api/auth"
+      body: "*"
+    };
+  }
+
+  rpc RefreshToken(Refresh.Request) returns (Refresh.Response) {
+    option (google.api.http) = {
+      post: "/api/auth/refresh_token"
+      body: "*"
+    };
+  }
+}
+
+message GetAuthMethods {
+  message Request {}
+
+  message Response {
+    repeated AuthMethods auth_methods = 1;
+  }
+}
+message Auth {
+  message Request {
+    oneof payload {
+      bool is_using_telegram = 1;
+      LogPass log_pass = 2;
+    }
+  }
+
+  message Response {
+    oneof payload {
+      string auth_uuid = 1;
+      AuthData auth_data = 2;
+    }
+  }
+
+  message LogPass {
+    string login = 1;
+    string password = 2;
+  }
+}
+
+message Refresh {
+  message Request {
+    string refresh_token = 1;
+  }
+
+  message Response {
+    AuthData auth_data = 1;
+  }
+}
+
+message AuthData {
+  string access_token = 1;
+  string refresh_token = 2;
+  google.protobuf.Timestamp access_expires_at = 3;
+  google.protobuf.Timestamp refresh_expires_at = 4;
+}

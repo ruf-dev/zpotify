@@ -13,6 +13,7 @@ import HomePage from "@/pages/home/HomePage.tsx";
 import Coloring from "@/admin-components/coloring/Coloring.tsx";
 
 import {Tooltip} from "react-tooltip";
+import Dialog from "@/pages/segments/Dialog.tsx";
 
 export enum Path {
     HomePage = "/",
@@ -52,16 +53,16 @@ export default function Router() {
                 </Routes>
 
                 <Toaster/>
+                <Dialog/>
+                <Tooltip
+                    id="root-tooltip"
+                    variant={"light"}
+                />
             </div>
 
             <div className={cls.Admins}>
                 <Coloring/>
             </div>
-
-            <Tooltip
-                id="root-tooltip"
-                variant={"light"}
-            />
         </div>
     )
 }

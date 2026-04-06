@@ -1,10 +1,20 @@
 import {Observable} from "rxjs";
 
-import {AuthAuthData, AuthRequest, AuthResponse, RefreshRequest, RefreshResponse, UserAPI} from "@/app/api/zpotify";
+import {
+    AuthAuthData,
+    AuthRequest,
+    AuthResponse,
+    GetPlaylistRequest,
+    RefreshRequest,
+    RefreshResponse,
+    UserAPI, ZpotifyAPI
+} from "@/app/api/zpotify";
 
 import {apiPrefix, InitReq} from "@/processes/Api.ts";
 import {Session} from "@/model/User.ts";
 import {ErrorReason, GrpcError, ServiceError, WithIsNonRetryable, WithReason, WithTitle} from "@/processes/Errors.ts";
+import {BaseService} from "@/processes/BaseService.ts";
+import {IPlaylistService} from "@/processes/PlaylistService.ts";
 
 export interface AuthResults {
     AuthUUID?: string
@@ -140,4 +150,23 @@ function clearLocalStorage() {
 
 function getLocalStorageAuthInfoKey(): string {
     return "user_session"
+}
+
+
+export interface IAuthService {
+    AuthViaPass: (login: string, password: string) => Promise<void>
+}
+
+export class AuthService extends BaseService implements IAuthService {
+    async AuthViaPass(login: string, password: string): Promise<void> {
+        this.executeAuthApiCall(async (initReq) => {
+            const req = {
+                uuid: uuid,
+            } as GetPlaylistRequest
+
+            return ZpotifyAPI
+                .GetPlaylist(req, initReq)
+                .then(toPlaylist)
+        })
+    };
 }
