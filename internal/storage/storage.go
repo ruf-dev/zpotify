@@ -8,29 +8,39 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/domain"
 	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
+	auth_q "go.zpotify.ru/zpotify/internal/storage/pg/generated/auth"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 )
 
 type Storage interface {
-	User() UserStorage
-	UserSettings() UserSettingsStorage
+
+	//FileMeta() FileMetaStorage
+	//
+	//SongStorage() SongStorage
+	//ArtistStorage() ArtistStorage
+	//
+	//PlaylistStorage() PlaylistStorage
+
+	Auth() AuthStorage
 	SessionStorage() SessionStorage
 
-	FileMeta() FileMetaStorage
-
-	SongStorage() SongStorage
-	ArtistStorage() ArtistStorage
-
-	PlaylistStorage() PlaylistStorage
+	User() UserStorage
+	UserSettings() UserSettingsStorage
 
 	TxManager() *tx_manager.TxManager
 }
 
+type AuthStorage interface {
+	CreateUserIdentity(ctx context.Context, params auth_q.CreateUserIdentityParams) error
+	GetIdentitiesByUsernameAndProvider(ctx context.Context,
+		username string, provider auth_q.IdentityProvider) (auth_q.UserIdentity, error)
+}
+
 type UserStorage interface {
 	WithTx(tx *sql.Tx) UserStorage
+	GetUserById(ctx context.Context, userId int64) (domain.UserBaseInfo, error)
 
-	ListUsers(ctx context.Context, filter domain.GetUserFilter) ([]domain.User, error)
-	GetUserById(ctx context.Context, tgId int64) (domain.UserBaseInfo, error)
+	//ListUsers(ctx context.Context, filter domain.GetUserFilter) ([]domain.User, error)
 
 	Upsert(ctx context.Context, username string) error
 

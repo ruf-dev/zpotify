@@ -14,7 +14,6 @@ import (
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
-	"go.zpotify.ru/zpotify/internal/user_errors"
 )
 
 const GlobalPlaylistUuid = "3a608e96-38ae-470c-83f2-842fc4a70ed2"
@@ -42,34 +41,34 @@ func NewAudioService(
 	return &AudioService{
 		txManager: dataStorage.TxManager(),
 
-		fileMetaStorage: dataStorage.FileMeta(),
-		songsStorage:    dataStorage.SongStorage(),
-		usersStorage:    dataStorage.User(),
-		artistStorage:   dataStorage.ArtistStorage(),
+		//fileMetaStorage: dataStorage.FileMeta(),
+		//songsStorage:    dataStorage.SongStorage(),
+		usersStorage: dataStorage.User(),
+		//artistStorage:   dataStorage.ArtistStorage(),
 
 		filesCache: filesCache,
 	}
 }
 
 func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domain.SaveFileMetaResp, err error) {
-	filter := domain.GetUserFilter{
-		TgUserId: []int64{req.AddedByTgId},
-	}
+	//filter := domain.GetUserFilter{
+	//	TgUserId: []int64{req.AddedByTgId},
+	//}
 
-	users, err := s.usersStorage.ListUsers(ctx, filter)
-	if err != nil {
-		return out, rerrors.Wrap(err, "error getting user from storage")
-	}
+	//users, err := s.usersStorage.ListUsers(ctx, filter)
+	//if err != nil {
+	//	return out, rerrors.Wrap(err, "error getting user from storage")
+	//}
 
-	if len(users) == 0 {
-		return domain.SaveFileMetaResp{}, rerrors.Wrap(user_errors.ErrNotFound, "user not found")
-	}
+	//if len(users) == 0 {
+	//	return domain.SaveFileMetaResp{}, rerrors.Wrap(user_errors.ErrNotFound, "user not found")
+	//}
 
 	// TODO get user from context
-	if !users[0].Permissions.CanUpload {
-		out.Code = domain.SaveFileCodeUserNotAllowed
-		return out, nil
-	}
+	//if !users[0].Permissions.CanUpload {
+	//	out.Code = domain.SaveFileCodeUserNotAllowed
+	//	return out, nil
+	//}
 
 	//TODO replace
 	//tgFile, err := s.tgApi.GetFile(ctx, req.TgFileId)

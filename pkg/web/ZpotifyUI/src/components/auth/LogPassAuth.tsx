@@ -8,11 +8,11 @@ interface LogPassAuthProps {
     userState: User
 }
 
-export default function LogPassAuth({}: LogPassAuthProps) {
+export default function LogPassAuth({userState}: LogPassAuthProps) {
     const {OpenDialog} = useDialog();
 
     function openLogPassAuthDialog() {
-        OpenDialog(<LogPassWidget/>)
+        OpenDialog(<LogPassWidget userState={userState}/>)
     }
 
     return (

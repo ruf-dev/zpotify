@@ -1,14 +1,13 @@
 import cn from 'classnames';
+import {useState} from "react";
 
 import cls from "@/components/auth/TelegramAuth.module.css"
 
 import {User} from "@/hooks/user/User.ts";
-import {AuthenticateViaTelegram, AuthResults} from "@/processes/Auth.ts";
+import {AuthenticateViaTelegram, AuthResults} from "@/processes/AuthTelegram.ts";
+import {TgDeeplink} from "@/common/Link.ts";
 
 import TelegramLogo from "@/assets/TelegramLogo.tsx";
-import {useState} from "react";
-import {TgDeeplink} from "@/common/Link.ts";
-import {Session} from "@/model/User.ts";
 
 interface TelegramAuthProps {
     userState: User
@@ -30,13 +29,7 @@ export default function TelegramAuth({userState}: TelegramAuthProps) {
                     }
 
                     if (res.AuthData) {
-                        userState.authenticate({
-                                token: res.AuthData.accessToken || "",
-                                refreshToken: res.AuthData.refreshToken || "",
-                                accessExpirationDate: new Date(res.AuthData.accessExpiresAt),
-                                refreshExpirationDate: new Date(res.AuthData.refreshExpiresAt),
-                            } as Session,
-                        );
+                        userState.Authenticate(res.AuthData);
                     }
 
                     setIsLoading(false)

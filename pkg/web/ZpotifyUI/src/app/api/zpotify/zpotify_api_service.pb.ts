@@ -11,15 +11,6 @@ import * as ZpotifyApiZpotifyCommon from "./zpotify_common.pb";
 import * as ZpotifyApiZpotifyUser from "./zpotify_user.pb";
 import * as ZpotifyApiZpotifyUserSettings from "./zpotify_user_settings.pb";
 
-type Absent<T, K extends keyof T> = { [k in Exclude<keyof T, K>]?: undefined };
-
-type OneOf<T> =
-  | { [k in keyof T]?: undefined }
-  | (keyof T extends infer K
-      ? K extends string & keyof T
-        ? { [k in K]: T[K] } & Absent<T, K>
-        : never
-      : never);
 
 export type VersionRequest = Record<string, never>;
 
@@ -40,26 +31,6 @@ export type GetLinkResponse = {
 
 export type GetLink = Record<string, never>;
 
-export type AuthRequest = Record<string, never>;
-
-type BaseAuthResponse = {
-};
-
-export type AuthResponse = BaseAuthResponse &
-  OneOf<{
-    authUuid: string;
-    authData: AuthAuthData;
-  }>;
-
-export type AuthAuthData = {
-  accessToken?: string;
-  refreshToken?: string;
-  accessExpiresAt?: GoogleProtobufTimestamp.Timestamp;
-  refreshExpiresAt?: GoogleProtobufTimestamp.Timestamp;
-};
-
-export type Auth = Record<string, never>;
-
 export type UserData = {
   username?: string;
 };
@@ -72,16 +43,6 @@ export type MeResponse = {
 };
 
 export type Me = Record<string, never>;
-
-export type RefreshRequest = {
-  refreshToken?: string;
-};
-
-export type RefreshResponse = {
-  authData?: AuthAuthData;
-};
-
-export type Refresh = Record<string, never>;
 
 export type ListSongsRequest = {
   paging?: ZpotifyApiZpotifyCommon.Paging;
@@ -98,7 +59,7 @@ export type ListSongsResponse = {
 export type ListSongs = Record<string, never>;
 
 export type DeleteSongRequest = {
-  uniqueId?: string;
+  id?: string;
 };
 
 export type DeleteSongResponse = Record<string, never>;
@@ -145,7 +106,7 @@ export class ZpotifyAPI {
     return fm.fetchRequest<CreatePlaylistResponse>(`/api/playlist`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
   static DeleteSong(this:void, req: DeleteSongRequest, initReq?: fm.InitReq): Promise<DeleteSongResponse> {
-    return fm.fetchRequest<DeleteSongResponse>(`/api/songs/${req.uniqueId}?${fm.renderURLSearchParams(req, ["uniqueId"])}`, {...initReq, method: "DELETE"});
+    return fm.fetchRequest<DeleteSongResponse>(`/api/songs/${req.id}?${fm.renderURLSearchParams(req, ["id"])}`, {...initReq, method: "DELETE"});
   }
   static GetPlaylist(this:void, req: GetPlaylistRequest, initReq?: fm.InitReq): Promise<GetPlaylistResponse> {
     return fm.fetchRequest<GetPlaylistResponse>(`/api/playlist/${req.uuid}?${fm.renderURLSearchParams(req, ["uuid"])}`, {...initReq, method: "GET"});
@@ -154,14 +115,8 @@ export class ZpotifyAPI {
 
 
 export class UserAPI {
-  static Auth(this:void, req: AuthRequest, entityNotifier?: fm.NotifyStreamEntityArrival<AuthResponse>, initReq?: fm.InitReq): Promise<void> {
-    return fm.fetchStreamingRequest<AuthResponse>(`/api/user/auth`, entityNotifier, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
-  }
-  static RefreshToken(this:void, req: RefreshRequest, initReq?: fm.InitReq): Promise<RefreshResponse> {
-    return fm.fetchRequest<RefreshResponse>(`/api/user/refresh_token`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
-  }
   static Me(this:void, req: MeRequest, initReq?: fm.InitReq): Promise<MeResponse> {
-    return fm.fetchRequest<MeResponse>(`/api/user?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});
+    return fm.fetchRequest<MeResponse>(`/api/user/me?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});
   }
   static GetUserSettings(this:void, req: GetUserSettingsRequest, initReq?: fm.InitReq): Promise<GetUserSettingsResponse> {
     return fm.fetchRequest<GetUserSettingsResponse>(`/api/user/settings?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});

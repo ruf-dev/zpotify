@@ -52,7 +52,7 @@ service ZpotifyAPI {
 service UserAPI {
   rpc Me(Me.Request) returns (Me.Response) {
     option (google.api.http) = {
-      get: "/api/user"
+      get: "/api/user/me"
     };
   }
 

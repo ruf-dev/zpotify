@@ -18,48 +18,43 @@ import (
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
 	"go.zpotify.ru/zpotify/internal/storage/pg"
 	"go.zpotify.ru/zpotify/internal/transport"
-	"go.zpotify.ru/zpotify/internal/transport/telegram"
+	"go.zpotify.ru/zpotify/internal/transport/auth_api_impl"
+	"go.zpotify.ru/zpotify/internal/transport/user_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/wapi"
-	"go.zpotify.ru/zpotify/internal/transport/zpotify_api_impl"
 	"go.zpotify.ru/zpotify/pkg/docs"
 )
 
 type Custom struct {
 	storage storage.Storage
-	//tgApiClient tgApi.TgApiClient
 
-	service service.Service
+	Service service.Service
 
-	grpcImpl         *zpotify_api_impl.Impl
-	telegram         *telegram.Server
-	backgroundWorker *background.Worker
+	BackgroundWorker *background.Worker
+
+	AuthApiImpl *auth_api_impl.Impl
+	UserApiImpl *user_api_impl.Impl
 
 	ServerManager *transport.ServersManager
 }
 
 func (c *Custom) Init(a *App) (err error) {
-	c.storage = pg.NewStorage(a.Postgres)
+	rerrors.SetSeparator(':')
 
-	//
-	//c.tgApiClient = tgApi.NewTgApiClient(a.Telegram.Bot.Token)
+	c.storage = pg.NewStorage(a.Postgres)
 
 	fc, err := files_cache.New()
 	if err != nil {
 		return rerrors.Wrap(err, "error creating files cache")
 	}
 
-	c.service = service.New(c.storage, fc)
+	c.Service = service.New(c.storage, fc)
 
-	c.backgroundWorker = background.New(
+	c.BackgroundWorker = background.New(
 		sessions_gc.New(c.storage),
 	)
 
-	c.telegram, err = telegram.NewServer(a.Telegram, c.service)
-	if err != nil {
-		return rerrors.Wrap(err, "error creating telegram server")
-	}
-
-	c.grpcImpl = zpotify_api_impl.New(c.service)
+	c.AuthApiImpl = auth_api_impl.New(c.Service)
+	c.UserApiImpl = user_api_impl.New(c.Service)
 
 	c.ServerManager, err = transport.NewServerManager(a.Ctx, a.MASTER)
 	if err != nil {
@@ -67,35 +62,31 @@ func (c *Custom) Init(a *App) (err error) {
 	}
 
 	c.ServerManager.AddServerOption(
+		middleware.PanicInterceptor(),
+		middleware.LogInterceptor(),
 		middleware.GrpcAuthInterceptor(
-			c.service,
+			c.Service,
 			middleware.WithIgnoredPathAuthOption(
-				zpotify_api.AuthService_Auth_FullMethodName,
-				zpotify_api.AuthService_RefreshToken_FullMethodName,
+				zpotify_api.AuthAPI_Auth_FullMethodName,
+				zpotify_api.AuthAPI_RefreshToken_FullMethodName,
 			),
 			middleware.WithDebug(a.Cfg.Environment.DebugAuth),
 		),
-		middleware.LogInterceptor(),
-		middleware.PanicInterceptor(),
 	)
 
-	c.ServerManager.AddImplementation(c.grpcImpl)
+	c.ServerManager.AddImplementation(c.AuthApiImpl, c.UserApiImpl)
+
 	c.ServerManager.AddHttpHandler(docs.Swagger())
-	c.ServerManager.AddHttpHandler("/wapi/", wapi.New(c.service.AudioService()))
+	c.ServerManager.AddHttpHandler("/wapi/", wapi.New(c.Service.AudioService()))
 	return nil
 }
 
 // Start - launch custom handlers
 // Even if you won't use it keep it for proper work
 func (c *Custom) Start(ctx context.Context) error {
-
 	eg, ctx := errgroup.WithContext(ctx)
 
-	//eg.Go(func() error {
-	//	return c.telegram.Start(ctx)
-	//})
-
-	eg.Go(c.backgroundWorker.Start)
+	eg.Go(c.BackgroundWorker.Start)
 
 	eg.Go(c.ServerManager.Start)
 
@@ -117,7 +108,7 @@ func (c *Custom) Stop() error {
 	//})
 
 	eg.Go(func() error {
-		return c.backgroundWorker.Stop()
+		return c.BackgroundWorker.Stop()
 	})
 	eg.Go(c.ServerManager.Stop)
 

@@ -11,61 +11,39 @@ import (
 )
 
 type dataStorage struct {
-	userStorage         *UserStorage
-	userSettingsStorage *UserSettingsStorage
-	sessionStorage      *SessionStorage
+	authStorage    *AuthStorage
+	sessionStorage *SessionStorage
 
-	fileMetaStorage *FileMetaStorage
-	songStorage     *SongsStorage
-	artistsStorage  *ArtistsStorage
-
-	playlistStorage *PlaylistStorage
+	userStorage *UserStorage
+	useSettings *UserSettingsStorage
 
 	conn *sql.DB
 }
 
 func NewStorage(conn *sql.DB) storage.Storage {
 	return &dataStorage{
-		userStorage:         NewUserStorage(conn),
-		userSettingsStorage: NewUserSettingsStorage(conn),
-		sessionStorage:      NewSessionStorage(conn),
-
-		fileMetaStorage: NewFileMetaStorage(conn),
-		songStorage:     NewSongStorage(conn),
-		artistsStorage:  NewArtistsStorage(conn),
-
-		playlistStorage: NewPlaylistStorage(conn),
-
-		conn: conn,
+		NewAuthStorage(conn),
+		NewSessionStorage(conn),
+		NewUserStorage(conn),
+		NewUserSettingsStorage(conn),
+		conn,
 	}
 }
 
-func (d *dataStorage) FileMeta() storage.FileMetaStorage {
-	return d.fileMetaStorage
-}
-
-func (d *dataStorage) ArtistStorage() storage.ArtistStorage {
-	return d.artistsStorage
-}
-
-func (d *dataStorage) User() storage.UserStorage {
-	return d.userStorage
+func (d *dataStorage) Auth() storage.AuthStorage {
+	return d.authStorage
 }
 
 func (d *dataStorage) SessionStorage() storage.SessionStorage {
 	return d.sessionStorage
 }
 
-func (d *dataStorage) SongStorage() storage.SongStorage {
-	return d.songStorage
-}
-
-func (d *dataStorage) PlaylistStorage() storage.PlaylistStorage {
-	return d.playlistStorage
+func (d *dataStorage) User() storage.UserStorage {
+	return d.userStorage
 }
 
 func (d *dataStorage) UserSettings() storage.UserSettingsStorage {
-	return d.userSettingsStorage
+	return d.useSettings
 }
 
 func (d *dataStorage) TxManager() *tx_manager.TxManager {

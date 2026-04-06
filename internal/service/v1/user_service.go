@@ -3,6 +3,7 @@ package v1
 import (
 	"context"
 	"database/sql"
+	"errors"
 
 	"go.redsock.ru/rerrors"
 	"google.golang.org/grpc/codes"
@@ -25,10 +26,9 @@ type UserService struct {
 
 func NewUserService(dataStorage storage.Storage) *UserService {
 	return &UserService{
-		userStorage:     dataStorage.User(),
-		settingsStorage: dataStorage.UserSettings(),
-
-		txManager: dataStorage.TxManager(),
+		dataStorage.User(),
+		dataStorage.UserSettings(),
+		dataStorage.TxManager(),
 	}
 }
 
@@ -68,54 +68,53 @@ func (u *UserService) GetMe(ctx context.Context) (domain.User, error) {
 		return domain.User{}, status.Error(codes.Unauthenticated, "no user id in context")
 	}
 
-	filter := domain.GetUserFilter{
-		TgUserId: []int64{uc.UserId},
-	}
-
-	users, err := u.userStorage.ListUsers(ctx, filter)
+	user, err := u.userStorage.GetUserById(ctx, uc.UserId)
 	if err != nil {
 		return domain.User{}, rerrors.Wrap(err, "error getting user from storage")
 	}
 
-	if len(users) == 0 {
-		return domain.User{}, rerrors.Wrap(user_errors.ErrNotFound, "user not found")
+	permissions, err := u.userStorage.GetPermissions(ctx, uc.UserId)
+	if err != nil {
+		return domain.User{}, rerrors.Wrap(err, "error getting permissions from storage")
 	}
 
-	return users[0], nil
+	return domain.User{
+		UserBaseInfo: user,
+		//TODO
+		UserUiSettings: domain.UserUiSettings{},
+		Permissions:    permissions,
+	}, nil
 }
 
-func (u *UserService) Get(ctx context.Context, tgId int64) (domain.User, error) {
-	filter := domain.GetUserFilter{
-		TgUserId: []int64{tgId},
-	}
-
-	users, err := u.userStorage.ListUsers(ctx, filter)
+func (u *UserService) Get(ctx context.Context, userId int64) (domain.User, error) {
+	user, err := u.userStorage.GetUserById(ctx, userId)
 	if err != nil {
 		return domain.User{}, rerrors.Wrap(err, "error getting user from storage")
 	}
 
-	if len(users) == 0 {
-		return domain.User{}, rerrors.Wrap(user_errors.ErrNotFound, "user not found")
-	}
-
-	return users[0], nil
+	return domain.User{
+		UserBaseInfo: user,
+		//TODO
+		UserUiSettings: domain.UserUiSettings{},
+		Permissions:    domain.UserPermissions{},
+	}, nil
 }
 
 func (u *UserService) GetByUsername(ctx context.Context, tgUsername string) (domain.User, error) {
-	filter := domain.GetUserFilter{
-		Username: []string{tgUsername},
-	}
+	//filter := domain.GetUserFilter{
+	//	Username: []string{tgUsername},
+	//}
 
-	users, err := u.userStorage.ListUsers(ctx, filter)
-	if err != nil {
-		return domain.User{}, rerrors.Wrap(err, "error getting user from storage")
-	}
+	//users, err := u.userStorage.Get(ctx, filter)
+	//if err != nil {
+	//	return domain.User{}, rerrors.Wrap(err, "error getting user from storage")
+	//}
+	//
+	//if len(users) == 0 {
+	//	return domain.User{}, rerrors.Wrap(user_errors.ErrNotFound, "user not found")
+	//}
 
-	if len(users) == 0 {
-		return domain.User{}, rerrors.Wrap(user_errors.ErrNotFound, "user not found")
-	}
-
-	return users[0], nil
+	return domain.User{}, nil
 }
 
 func (u *UserService) GetSettings(ctx context.Context) (settings domain.UserSettings, err error) {
@@ -131,8 +130,17 @@ func (u *UserService) GetSettings(ctx context.Context) (settings domain.UserSett
 
 	settings.Ui, err = u.settingsStorage.GetUiSettings(ctx, uc.UserId)
 	if err != nil {
-		return settings, rerrors.Wrap(err, "error reading ui settings from starage")
+		if !errors.Is(err, storage.ErrNotFound) {
+			return settings, rerrors.Wrap(err, "error reading ui settings from storage")
+		}
+		settings.Ui = defaultUiSettings()
 	}
 
 	return settings, nil
+}
+
+func defaultUiSettings() domain.UserUiSettings {
+	return domain.UserUiSettings{
+		Locale: string(localization.En),
+	}
 }

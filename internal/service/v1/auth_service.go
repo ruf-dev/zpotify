@@ -3,6 +3,8 @@ package v1
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
+	"errors"
 	"sync"
 	"time"
 
@@ -13,6 +15,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/storage"
+	auth_q "go.zpotify.ru/zpotify/internal/storage/pg/generated/auth"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 	"go.zpotify.ru/zpotify/internal/user_errors"
 )
@@ -25,6 +28,7 @@ type authData struct {
 type AuthService struct {
 	m sync.Map
 
+	authStorage    storage.AuthStorage
 	sessionStorage storage.SessionStorage
 	userStorage    storage.UserStorage
 
@@ -38,12 +42,46 @@ type AuthService struct {
 func NewAuthService(data storage.Storage) *AuthService {
 	return &AuthService{
 		sessionStorage: data.SessionStorage(),
-		txManager:      data.TxManager(),
+		authStorage:    data.Auth(),
+		userStorage:    data.User(),
+
+		txManager: data.TxManager(),
 
 		accessTokenTTL:     time.Hour,
 		refreshTokenTTL:    time.Hour * 24 * 7,
 		maxSessionsPerUser: 3,
 	}
+}
+
+func (a *AuthService) AuthWithPassword(ctx context.Context, login string, password string) (domain.UserSession, error) {
+	identity, err := a.authStorage.GetIdentitiesByUsernameAndProvider(ctx, login, auth_q.IdentityProviderZPOTIFY)
+	if err != nil {
+		if !errors.Is(err, storage.ErrNotFound) {
+			return domain.UserSession{}, rerrors.Wrap(err)
+		}
+
+		return domain.UserSession{}, rerrors.Wrap(err, "no such user or password mismatched")
+	}
+
+	var zpotifyIdentity domain.ZpotifyIdentity
+
+	err = json.Unmarshal(identity.Payload, &zpotifyIdentity)
+	if err != nil {
+		return domain.UserSession{}, rerrors.Wrap(err)
+	}
+
+	if zpotifyIdentity.Password != password {
+		return domain.UserSession{}, rerrors.Wrap(user_errors.ErrUnauthenticated)
+	}
+
+	session := a.generateSession(int64(identity.ID))
+
+	err = a.sessionStorage.Upsert(ctx, session)
+	if err != nil {
+		return domain.UserSession{}, rerrors.Wrap(err)
+	}
+
+	return session, nil
 }
 
 func (a *AuthService) GetUserContext(ctx context.Context, id int64) (user_context.UserContext, error) {
@@ -63,7 +101,7 @@ func (a *AuthService) GetUserContext(ctx context.Context, id int64) (user_contex
 	}, nil
 }
 
-func (a *AuthService) InitAuth() (authUuid string, doneC chan domain.UserSession) {
+func (a *AuthService) InitAsyncAuth() (authUuid string, doneC chan domain.UserSession) {
 	authUuid = uuid.New().String()
 
 	ad := authData{
@@ -76,7 +114,7 @@ func (a *AuthService) InitAuth() (authUuid string, doneC chan domain.UserSession
 	return authUuid, ad.outC
 }
 
-func (a *AuthService) AckAuth(ctx context.Context, authUuid string, tgId int64) error {
+func (a *AuthService) AckAsyncAuth(ctx context.Context, authUuid string, tgId int64) error {
 	c, ok := a.m.LoadAndDelete(authUuid)
 	if !ok {
 		return nil
@@ -155,27 +193,26 @@ func (a *AuthService) Refresh(ctx context.Context, refreshToken string) (domain.
 	if oldSession.RefreshExpiresAt.UTC().Before(time.Now().UTC()) {
 		return domain.UserSession{}, rerrors.New("refresh token expired")
 	}
-
 	newSession := a.generateSession(oldSession.UserId)
 
 	err = a.txManager.Execute(
 		func(tx *sql.Tx) error {
 			sessionStorage := a.sessionStorage.WithTx(tx)
 
-			err = sessionStorage.Delete(ctx, oldSession.AccessToken)
-			if err != nil {
-				return rerrors.Wrap(err, "failed to delete old access token")
+			txErr := sessionStorage.Delete(ctx, oldSession.AccessToken)
+			if txErr != nil {
+				return rerrors.Wrap(txErr, "error deleting old session")
 			}
 
-			err = sessionStorage.Upsert(ctx, newSession)
-			if err != nil {
+			txErr = sessionStorage.Upsert(ctx, newSession)
+			if txErr != nil {
 				return rerrors.Wrap(err, "failed to upsert new access token")
 			}
 
 			return nil
 		})
 	if err != nil {
-		return domain.UserSession{}, rerrors.Wrap(err)
+		return domain.UserSession{}, rerrors.Wrap(err, "failed to upsert new access token")
 	}
 
 	return newSession, nil
@@ -185,9 +222,9 @@ func (a *AuthService) ListAuthMethods(ctx context.Context) error {
 	return rerrors.New("not implemented", codes.Unimplemented)
 }
 
-func (a *AuthService) generateSession(tgId int64) domain.UserSession {
+func (a *AuthService) generateSession(userId int64) domain.UserSession {
 	return domain.UserSession{
-		UserId:           tgId,
+		UserId:           userId,
 		AccessToken:      uuid.New().String(),
 		AccessExpiresAt:  time.Now().Add(a.accessTokenTTL),
 		RefreshToken:     uuid.New().String(),

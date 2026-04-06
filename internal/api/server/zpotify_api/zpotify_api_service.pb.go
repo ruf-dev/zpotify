@@ -1150,9 +1150,9 @@ const file_zpotify_api_service_proto_rawDesc = "" +
 	"\x0eCreatePlaylist\x12#.zpotify_api.CreatePlaylist.Request\x1a$.zpotify_api.CreatePlaylist.Response\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/playlist\x12h\n" +
 	"\n" +
 	"DeleteSong\x12\x1f.zpotify_api.DeleteSong.Request\x1a .zpotify_api.DeleteSong.Response\"\x17\x82\xd3\xe4\x93\x02\x11*\x0f/api/songs/{id}\x12p\n" +
-	"\vGetPlaylist\x12 .zpotify_api.GetPlaylist.Request\x1a!.zpotify_api.GetPlaylist.Response\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/api/playlist/{uuid}2\xd1\x01\n" +
-	"\aUserAPI\x12J\n" +
-	"\x02Me\x12\x17.zpotify_api.Me.Request\x1a\x18.zpotify_api.Me.Response\"\x11\x82\xd3\xe4\x93\x02\v\x12\t/api/user\x12z\n" +
+	"\vGetPlaylist\x12 .zpotify_api.GetPlaylist.Request\x1a!.zpotify_api.GetPlaylist.Response\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/api/playlist/{uuid}2\xd4\x01\n" +
+	"\aUserAPI\x12M\n" +
+	"\x02Me\x12\x17.zpotify_api.Me.Request\x1a\x18.zpotify_api.Me.Response\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/api/user/me\x12z\n" +
 	"\x0fGetUserSettings\x12$.zpotify_api.GetUserSettings.Request\x1a%.zpotify_api.GetUserSettings.Response\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/user/settingsB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (

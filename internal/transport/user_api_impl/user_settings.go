@@ -1,4 +1,4 @@
-package zpotify_api_impl
+package user_api_impl
 
 import (
 	"context"

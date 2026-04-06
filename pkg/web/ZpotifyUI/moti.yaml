@@ -10,3 +10,10 @@ generate:
     plugins:
       - name: grpc-gateway-ts
         out: src/app/api/zpotify
+      - name: npm
+        out: src/app/api/zpotify
+
+
+replace:
+  - old: go.zpotify.ru/zpotify
+    new: /Users/alexbukov/ruf/zpotify

@@ -19,7 +19,7 @@ type PlaylistService struct {
 
 func NewPlaylistService(data storage.Storage) *PlaylistService {
 	return &PlaylistService{
-		playlistStorage: data.PlaylistStorage(),
+		//playlistStorage: data.PlaylistStorage(),
 	}
 }
 

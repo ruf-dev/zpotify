@@ -97,13 +97,13 @@ func (ac *authMiddleware) authWithSession(ctx context.Context, md metadata.MD) (
 		return ctx, status.Error(codes.Unauthenticated, "error unmarshalling auth header")
 	}
 
-	tgId, err := ac.authService.AuthWithToken(ctx, auth[0])
+	userId, err := ac.authService.AuthWithToken(ctx, auth[0])
 	if err != nil {
 		return nil, rerrors.Wrap(err)
 	}
 
 	uc := user_context.UserContext{
-		UserId: tgId,
+		UserId: userId,
 		Permissions: domain.UserPermissions{
 			CanUpload:   false,
 			EarlyAccess: false,

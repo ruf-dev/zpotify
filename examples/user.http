@@ -1,0 +1,9 @@
+### Get User info
+GET {{zpotify-api}}/api/user/me
+Authorization: {{token}}
+
+### Get User UI Settings
+GET {{zpotify-api}}/api/user/settings
+Authorization: {{token}}
+
+

@@ -27,10 +27,10 @@ type service struct {
 
 func New(dataStorage storage.Storage, cache files_cache.FilesCache) Service {
 	return &service{
-		audioService:    v1.NewAudioService(dataStorage, cache),
-		userService:     v1.NewUserService(dataStorage),
-		authService:     v1.NewAuthService(dataStorage),
-		playlistService: v1.NewPlaylistService(dataStorage),
+		//audioService:    v1.NewAudioService(dataStorage, cache),
+		userService: v1.NewUserService(dataStorage),
+		authService: v1.NewAuthService(dataStorage),
+		//playlistService: v1.NewPlaylistService(dataStorage),
 	}
 }
 
@@ -70,13 +70,17 @@ type UserService interface {
 }
 
 type AuthService interface {
-	InitAuth() (authUuid string, doneC chan domain.UserSession)
-	AckAuth(ctx context.Context, authUuid string, tgId int64) error
+	// Telegram auth old code
+	//InitAuth() (authUuid string, doneC chan domain.UserSession)
+	//AckAuth(ctx context.Context, authUuid string, tgId int64) error
+
 	AuthWithToken(ctx context.Context, s string) (tgId int64, err error)
 	Refresh(ctx context.Context, refreshToken string) (domain.UserSession, error)
 	GetUserContext(ctx context.Context, tgUserId int64) (user_context.UserContext, error)
 
 	ListAuthMethods(ctx context.Context) error
+
+	AuthWithPassword(ctx context.Context, login string, password string) (domain.UserSession, error)
 }
 
 type PlaylistService interface {

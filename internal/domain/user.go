@@ -13,7 +13,7 @@ type User struct {
 }
 
 type GetUserFilter struct {
-	TgUserId []int64
+	UserId   []int64
 	Username []string
 
 	Offset uint64
@@ -52,3 +52,7 @@ type UserSession struct {
 }
 
 type UserHomeSegment querier.UserHomeSegment
+
+type ZpotifyIdentity struct {
+	Password string `json:"password"`
+}

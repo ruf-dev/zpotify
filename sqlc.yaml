@@ -2,13 +2,13 @@ version: "2"
 sql:
   - engine: "postgresql"
     queries:
-      - "internal/storage/pg/queries/*.sql"
+      - "internal/storage/pg/queries/auth/*.sql"
     schema:
       - "migrations/*.sql"
     gen:
       go:
-        package: "querier"
-        out: "internal/storage/pg/generated"
+        package: "auth_q"
+        out: "internal/storage/pg/generated/auth"
         sql_package: "database/sql"
         emit_prepared_queries: false
         emit_interface: true

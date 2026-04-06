@@ -1,4 +1,7 @@
+import {RefObject} from "react";
+
 import {AuthMiddleware} from "@/processes/Auth.ts";
+
 import {
     ErrorReason,
     Errors,
@@ -8,8 +11,8 @@ import {
     WithIsNonRetryable,
     WithTitle
 } from "@/processes/Errors.ts";
-import {InitReq} from "@/processes/Api.ts";
-import {RefObject} from "react";
+
+import {InitReq} from "@/app/api/zpotify";
 
 export class BaseService {
     private auth: RefObject<AuthMiddleware>

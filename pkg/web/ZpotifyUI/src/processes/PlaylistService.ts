@@ -11,7 +11,6 @@ export interface IPlaylistService {
     GetPlaylist(uuid: string): Promise<Playlist>
 }
 
-
 export class PlaylistService extends BaseService implements IPlaylistService {
     async GetPlaylist(uuid: string): Promise<Playlist> {
         return this.executeAuthApiCall(async (initReq) => {

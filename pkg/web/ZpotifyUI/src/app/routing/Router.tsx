@@ -52,12 +52,13 @@ export default function Router() {
 
                 </Routes>
 
-                <Toaster/>
+
                 <Dialog/>
                 <Tooltip
                     id="root-tooltip"
                     variant={"light"}
                 />
+                <Toaster/>
             </div>
 
             <div className={cls.Admins}>

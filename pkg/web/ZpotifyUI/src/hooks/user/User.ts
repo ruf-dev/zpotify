@@ -1,33 +1,42 @@
 import {useEffect, useRef, useState} from "react";
 
-import {Session, UserInfo} from "@/model/User.ts";
+import {UserInfo} from "@/model/User.ts";
 
 import UserService from "@/processes/User.ts";
 import {ISongsService, SongsService} from "@/processes/Songs.ts";
-import {AuthMiddleware, IAuthService} from "@/processes/Auth.ts";
+
+import {AuthService, IAuthService, AuthMiddleware} from "@/processes/Auth.ts";
+
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 import {ISettingsService, SettingsService} from "@/processes/HomePage.ts";
 import {IPlaylistService, PlaylistService} from "@/processes/PlaylistService.ts";
+import {AuthData} from "@/app/api/zpotify/zpotify_auth_service.pb.ts";
+
 // Todo redo onto UserContext
 export interface User {
     userData?: UserInfo
     setUserData: (user: UserInfo) => void;
 
-    session?: Session
-    authenticate: (newSession: Session) => void;
+    session?: AuthData
+
+    Authenticate(newSession: AuthData): void;
+
+    Logout(): void
 
     Services(): Services
-
-    logout: () => void
 }
 
 export interface Services {
     Songs(): ISongsService
+
     Playlist(): IPlaylistService
+
     Settings(): ISettingsService
+
     Auth(): IAuthService
 }
 
+//  TODO TOTALY REDO
 export default function useUser(): User {
     const [userData, setUserData] = useState<UserInfo>();
 
@@ -54,12 +63,12 @@ export default function useUser(): User {
             .catch(toaster.catch)
     }
 
-    function authenticate(s: Session) {
+    function Authenticate(s: AuthData) {
         authMiddleware.current.login(s)
         fetchUserData()
     }
 
-    function logout() {
+    function Logout() {
         authMiddleware.current.logout()
         setUserData(undefined)
     }
@@ -68,8 +77,8 @@ export default function useUser(): User {
         userData,
         setUserData,
 
-        authenticate,
-        logout,
+        Authenticate,
+        Logout,
 
         Services:
             () => {
@@ -82,9 +91,9 @@ export default function useUser(): User {
                     },
                     Playlist(): IPlaylistService {
                         return playlistService.current
-                    }
+                    },
                     Auth(): IAuthService {
-                        return
+                        return authService.current
                     }
                 }
             },

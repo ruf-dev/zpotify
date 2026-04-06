@@ -16,7 +16,7 @@ export type ArtistBase = {
 };
 
 export type SongBase = {
-  uniqueId?: string;
+  id?: string;
   title?: string;
   artists?: ArtistBase[];
   durationSec?: number;

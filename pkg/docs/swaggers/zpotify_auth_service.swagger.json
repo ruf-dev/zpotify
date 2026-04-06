@@ -6,7 +6,7 @@
   },
   "tags": [
     {
-      "name": "AuthService"
+      "name": "AuthAPI"
     }
   ],
   "consumes": [
@@ -16,9 +16,9 @@
     "application/json"
   ],
   "paths": {
-    "/api/auth": {
+    "/api/auth/async": {
       "post": {
-        "operationId": "AuthService_Auth",
+        "operationId": "AuthAPI_AuthAsync",
         "responses": {
           "200": {
             "description": "A successful response.(streaming responses)",
@@ -26,13 +26,13 @@
               "type": "object",
               "properties": {
                 "result": {
-                  "$ref": "#/definitions/zpotify_apiAuthResponse"
+                  "$ref": "#/definitions/zpotify_apiAuthViaAsyncResponse"
                 },
                 "error": {
                   "$ref": "#/definitions/rpcStatus"
                 }
               },
-              "title": "Stream result of zpotify_apiAuthResponse"
+              "title": "Stream result of zpotify_apiAuthViaAsyncResponse"
             }
           },
           "default": {
@@ -48,18 +48,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/zpotify_apiAuthRequest"
+              "$ref": "#/definitions/zpotify_apiAuthViaAsyncRequest"
             }
           }
         ],
         "tags": [
-          "AuthService"
+          "AuthAPI"
         ]
       }
     },
     "/api/auth/auth_methods": {
       "get": {
-        "operationId": "AuthService_GetAuthMethods",
+        "operationId": "AuthAPI_GetAuthMethods",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -75,13 +75,13 @@
           }
         },
         "tags": [
-          "AuthService"
+          "AuthAPI"
         ]
       }
     },
     "/api/auth/refresh_token": {
       "post": {
-        "operationId": "AuthService_RefreshToken",
+        "operationId": "AuthAPI_RefreshToken",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -107,7 +107,39 @@
           }
         ],
         "tags": [
-          "AuthService"
+          "AuthAPI"
+        ]
+      }
+    },
+    "/api/auth/sync": {
+      "post": {
+        "operationId": "AuthAPI_Auth",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiAuthResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiAuthRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AuthAPI"
         ]
       }
     }
@@ -183,15 +215,24 @@
     "zpotify_apiAuthRequest": {
       "type": "object",
       "properties": {
-        "isUsingTelegram": {
-          "type": "boolean"
-        },
         "logPass": {
           "$ref": "#/definitions/AuthLogPass"
         }
       }
     },
     "zpotify_apiAuthResponse": {
+      "type": "object",
+      "properties": {
+        "authData": {
+          "$ref": "#/definitions/zpotify_apiAuthData"
+        }
+      }
+    },
+    "zpotify_apiAuthViaAsyncRequest": {
+      "type": "object",
+      "title": "By default considering auth goes via telegram"
+    },
+    "zpotify_apiAuthViaAsyncResponse": {
       "type": "object",
       "properties": {
         "authUuid": {

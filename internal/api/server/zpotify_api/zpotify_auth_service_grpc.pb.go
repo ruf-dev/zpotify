@@ -19,45 +19,57 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AuthService_GetAuthMethods_FullMethodName = "/zpotify_api.AuthService/GetAuthMethods"
-	AuthService_Auth_FullMethodName           = "/zpotify_api.AuthService/Auth"
-	AuthService_RefreshToken_FullMethodName   = "/zpotify_api.AuthService/RefreshToken"
+	AuthAPI_GetAuthMethods_FullMethodName = "/zpotify_api.AuthAPI/GetAuthMethods"
+	AuthAPI_Auth_FullMethodName           = "/zpotify_api.AuthAPI/Auth"
+	AuthAPI_AuthAsync_FullMethodName      = "/zpotify_api.AuthAPI/AuthAsync"
+	AuthAPI_RefreshToken_FullMethodName   = "/zpotify_api.AuthAPI/RefreshToken"
 )
 
-// AuthServiceClient is the client API for AuthService service.
+// AuthAPIClient is the client API for AuthAPI service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type AuthServiceClient interface {
+type AuthAPIClient interface {
 	GetAuthMethods(ctx context.Context, in *GetAuthMethods_Request, opts ...grpc.CallOption) (*GetAuthMethods_Response, error)
-	Auth(ctx context.Context, in *Auth_Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Auth_Response], error)
+	Auth(ctx context.Context, in *Auth_Request, opts ...grpc.CallOption) (*Auth_Response, error)
+	AuthAsync(ctx context.Context, in *AuthViaAsync_Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[AuthViaAsync_Response], error)
 	RefreshToken(ctx context.Context, in *Refresh_Request, opts ...grpc.CallOption) (*Refresh_Response, error)
 }
 
-type authServiceClient struct {
+type authAPIClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
-	return &authServiceClient{cc}
+func NewAuthAPIClient(cc grpc.ClientConnInterface) AuthAPIClient {
+	return &authAPIClient{cc}
 }
 
-func (c *authServiceClient) GetAuthMethods(ctx context.Context, in *GetAuthMethods_Request, opts ...grpc.CallOption) (*GetAuthMethods_Response, error) {
+func (c *authAPIClient) GetAuthMethods(ctx context.Context, in *GetAuthMethods_Request, opts ...grpc.CallOption) (*GetAuthMethods_Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetAuthMethods_Response)
-	err := c.cc.Invoke(ctx, AuthService_GetAuthMethods_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AuthAPI_GetAuthMethods_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authServiceClient) Auth(ctx context.Context, in *Auth_Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Auth_Response], error) {
+func (c *authAPIClient) Auth(ctx context.Context, in *Auth_Request, opts ...grpc.CallOption) (*Auth_Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &AuthService_ServiceDesc.Streams[0], AuthService_Auth_FullMethodName, cOpts...)
+	out := new(Auth_Response)
+	err := c.cc.Invoke(ctx, AuthAPI_Auth_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &grpc.GenericClientStream[Auth_Request, Auth_Response]{ClientStream: stream}
+	return out, nil
+}
+
+func (c *authAPIClient) AuthAsync(ctx context.Context, in *AuthViaAsync_Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[AuthViaAsync_Response], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &AuthAPI_ServiceDesc.Streams[0], AuthAPI_AuthAsync_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[AuthViaAsync_Request, AuthViaAsync_Response]{ClientStream: stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -68,132 +80,158 @@ func (c *authServiceClient) Auth(ctx context.Context, in *Auth_Request, opts ...
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type AuthService_AuthClient = grpc.ServerStreamingClient[Auth_Response]
+type AuthAPI_AuthAsyncClient = grpc.ServerStreamingClient[AuthViaAsync_Response]
 
-func (c *authServiceClient) RefreshToken(ctx context.Context, in *Refresh_Request, opts ...grpc.CallOption) (*Refresh_Response, error) {
+func (c *authAPIClient) RefreshToken(ctx context.Context, in *Refresh_Request, opts ...grpc.CallOption) (*Refresh_Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Refresh_Response)
-	err := c.cc.Invoke(ctx, AuthService_RefreshToken_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AuthAPI_RefreshToken_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// AuthServiceServer is the server API for AuthService service.
-// All implementations must embed UnimplementedAuthServiceServer
+// AuthAPIServer is the server API for AuthAPI service.
+// All implementations must embed UnimplementedAuthAPIServer
 // for forward compatibility.
-type AuthServiceServer interface {
+type AuthAPIServer interface {
 	GetAuthMethods(context.Context, *GetAuthMethods_Request) (*GetAuthMethods_Response, error)
-	Auth(*Auth_Request, grpc.ServerStreamingServer[Auth_Response]) error
+	Auth(context.Context, *Auth_Request) (*Auth_Response, error)
+	AuthAsync(*AuthViaAsync_Request, grpc.ServerStreamingServer[AuthViaAsync_Response]) error
 	RefreshToken(context.Context, *Refresh_Request) (*Refresh_Response, error)
-	mustEmbedUnimplementedAuthServiceServer()
+	mustEmbedUnimplementedAuthAPIServer()
 }
 
-// UnimplementedAuthServiceServer must be embedded to have
+// UnimplementedAuthAPIServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedAuthServiceServer struct{}
+type UnimplementedAuthAPIServer struct{}
 
-func (UnimplementedAuthServiceServer) GetAuthMethods(context.Context, *GetAuthMethods_Request) (*GetAuthMethods_Response, error) {
+func (UnimplementedAuthAPIServer) GetAuthMethods(context.Context, *GetAuthMethods_Request) (*GetAuthMethods_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetAuthMethods not implemented")
 }
-func (UnimplementedAuthServiceServer) Auth(*Auth_Request, grpc.ServerStreamingServer[Auth_Response]) error {
-	return status.Error(codes.Unimplemented, "method Auth not implemented")
+func (UnimplementedAuthAPIServer) Auth(context.Context, *Auth_Request) (*Auth_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method Auth not implemented")
 }
-func (UnimplementedAuthServiceServer) RefreshToken(context.Context, *Refresh_Request) (*Refresh_Response, error) {
+func (UnimplementedAuthAPIServer) AuthAsync(*AuthViaAsync_Request, grpc.ServerStreamingServer[AuthViaAsync_Response]) error {
+	return status.Error(codes.Unimplemented, "method AuthAsync not implemented")
+}
+func (UnimplementedAuthAPIServer) RefreshToken(context.Context, *Refresh_Request) (*Refresh_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method RefreshToken not implemented")
 }
-func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
-func (UnimplementedAuthServiceServer) testEmbeddedByValue()                     {}
+func (UnimplementedAuthAPIServer) mustEmbedUnimplementedAuthAPIServer() {}
+func (UnimplementedAuthAPIServer) testEmbeddedByValue()                 {}
 
-// UnsafeAuthServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AuthServiceServer will
+// UnsafeAuthAPIServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AuthAPIServer will
 // result in compilation errors.
-type UnsafeAuthServiceServer interface {
-	mustEmbedUnimplementedAuthServiceServer()
+type UnsafeAuthAPIServer interface {
+	mustEmbedUnimplementedAuthAPIServer()
 }
 
-func RegisterAuthServiceServer(s grpc.ServiceRegistrar, srv AuthServiceServer) {
-	// If the following call panics, it indicates UnimplementedAuthServiceServer was
+func RegisterAuthAPIServer(s grpc.ServiceRegistrar, srv AuthAPIServer) {
+	// If the following call panics, it indicates UnimplementedAuthAPIServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&AuthService_ServiceDesc, srv)
+	s.RegisterService(&AuthAPI_ServiceDesc, srv)
 }
 
-func _AuthService_GetAuthMethods_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuthAPI_GetAuthMethods_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetAuthMethods_Request)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).GetAuthMethods(ctx, in)
+		return srv.(AuthAPIServer).GetAuthMethods(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthService_GetAuthMethods_FullMethodName,
+		FullMethod: AuthAPI_GetAuthMethods_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).GetAuthMethods(ctx, req.(*GetAuthMethods_Request))
+		return srv.(AuthAPIServer).GetAuthMethods(ctx, req.(*GetAuthMethods_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_Auth_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(Auth_Request)
+func _AuthAPI_Auth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Auth_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthAPIServer).Auth(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthAPI_Auth_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthAPIServer).Auth(ctx, req.(*Auth_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthAPI_AuthAsync_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(AuthViaAsync_Request)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(AuthServiceServer).Auth(m, &grpc.GenericServerStream[Auth_Request, Auth_Response]{ServerStream: stream})
+	return srv.(AuthAPIServer).AuthAsync(m, &grpc.GenericServerStream[AuthViaAsync_Request, AuthViaAsync_Response]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type AuthService_AuthServer = grpc.ServerStreamingServer[Auth_Response]
+type AuthAPI_AuthAsyncServer = grpc.ServerStreamingServer[AuthViaAsync_Response]
 
-func _AuthService_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuthAPI_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Refresh_Request)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).RefreshToken(ctx, in)
+		return srv.(AuthAPIServer).RefreshToken(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthService_RefreshToken_FullMethodName,
+		FullMethod: AuthAPI_RefreshToken_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).RefreshToken(ctx, req.(*Refresh_Request))
+		return srv.(AuthAPIServer).RefreshToken(ctx, req.(*Refresh_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
+// AuthAPI_ServiceDesc is the grpc.ServiceDesc for AuthAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var AuthService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "zpotify_api.AuthService",
-	HandlerType: (*AuthServiceServer)(nil),
+var AuthAPI_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "zpotify_api.AuthAPI",
+	HandlerType: (*AuthAPIServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetAuthMethods",
-			Handler:    _AuthService_GetAuthMethods_Handler,
+			Handler:    _AuthAPI_GetAuthMethods_Handler,
+		},
+		{
+			MethodName: "Auth",
+			Handler:    _AuthAPI_Auth_Handler,
 		},
 		{
 			MethodName: "RefreshToken",
-			Handler:    _AuthService_RefreshToken_Handler,
+			Handler:    _AuthAPI_RefreshToken_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "Auth",
-			Handler:       _AuthService_Auth_Handler,
+			StreamName:    "AuthAsync",
+			Handler:       _AuthAPI_AuthAsync_Handler,
 			ServerStreams: true,
 		},
 	},

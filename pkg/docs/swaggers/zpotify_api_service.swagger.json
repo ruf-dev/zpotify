@@ -146,7 +146,7 @@
         ]
       }
     },
-    "/api/user": {
+    "/api/user/me": {
       "get": {
         "operationId": "UserAPI_Me",
         "responses": {

@@ -10,6 +10,7 @@ import {UserInfo} from "@/model/User.ts";
 import {AuthMiddleware} from "@/processes/Auth.ts";
 import {BaseService} from "@/processes/BaseService.ts";
 import {InitReq} from "@/processes/Api.ts";
+import {ServiceError, WithTitle} from "@/processes/Errors.ts";
 
 export default class UserService extends BaseService {
 
@@ -26,7 +27,7 @@ export default class UserService extends BaseService {
             })
             .then((r: MeResponse) => {
                 if (!r.userData) {
-                    throw new Error("empty user data in GetMe response")
+                    throw new ServiceError(WithTitle("empty user data in GetMe response"))
                 }
 
                 return {

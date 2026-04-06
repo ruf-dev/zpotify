@@ -1,0 +1,9 @@
+POST {{zpotify-api}}/api/auth/sync
+Content-Type: application/json
+
+{
+  "logPass": {
+    "login": "root",
+    "password": "root"
+  }
+}

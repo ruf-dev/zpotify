@@ -6,9 +6,14 @@
  */
 
 
+export enum AuthMethods {
+  AuthMethod_NotSpecified = "AuthMethod_NotSpecified",
+  AuthMethod_Offline = "AuthMethod_Offline",
+  AuthMethod_Telegram = "AuthMethod_Telegram",
+}
+
 export type Permissions = {
   canUpload?: boolean;
   earlyAccess?: boolean;
-  canDelete?: boolean;
   canCreatePlaylist?: boolean;
 };

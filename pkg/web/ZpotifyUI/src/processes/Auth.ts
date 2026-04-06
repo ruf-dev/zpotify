@@ -1,44 +1,48 @@
-import {Observable} from "rxjs";
+import {BaseService} from "@/processes/BaseService.ts";
 
 import {
-    AuthAuthData,
+    AuthAPI,
     AuthRequest,
-    AuthResponse,
-    GetPlaylistRequest,
-    RefreshRequest,
-    RefreshResponse,
-    UserAPI, ZpotifyAPI
+    AuthData,
+    RefreshRequest, InitReq
 } from "@/app/api/zpotify";
 
-import {apiPrefix, InitReq} from "@/processes/Api.ts";
-import {Session} from "@/model/User.ts";
 import {ErrorReason, GrpcError, ServiceError, WithIsNonRetryable, WithReason, WithTitle} from "@/processes/Errors.ts";
-import {BaseService} from "@/processes/BaseService.ts";
-import {IPlaylistService} from "@/processes/PlaylistService.ts";
+import {apiPrefix} from "@/processes/Api.ts";
 
-export interface AuthResults {
-    AuthUUID?: string
-    AuthData?: AuthAuthData
+export interface IAuthService {
+    AuthViaPass: (login: string, password: string) => Promise<AuthData>
 }
 
-export function AuthenticateViaTelegram(): Observable<AuthResults> {
-    return new Observable<AuthResults>((subscriber) => {
-        const req = {} as AuthRequest;
+export class AuthService extends BaseService implements IAuthService {
+    async AuthViaPass(login: string, password: string): Promise<AuthData> {
+        const req = {
+            logPass: {
+                login: login,
+                password: password,
+            }
+        } as AuthRequest
 
-        UserAPI.Auth(req,
-            (status: AuthResponse) => subscriber.next({
-                AuthUUID: status.authUuid,
-                AuthData: status.authData,
-            }),
-            apiPrefix())
-    })
+        return this.executeAuthApiCall(
+            async (initReq) => {
+                return AuthAPI
+                    .Auth(req, initReq)
+                    .then(r => {
+                        if (!r.authData) {
+                            throw new Error("authData is empty")
+                        }
+
+                        console.debug(r.authData)
+                        return r.authData
+                    })
+            })
+    };
 }
-
 
 export class AuthMiddleware {
-    session?: Session;
+    session?: AuthData;
 
-    constructor(session?: Session) {
+    constructor(session?: AuthData) {
         if (!session) {
             session = fromLocalStorage()
         }
@@ -63,11 +67,11 @@ export class AuthMiddleware {
             throw new Error("User is not authenticated")
         }
 
-        if (this.session.accessExpirationDate < new Date()) {
+        if (this.session.accessExpiresAt < new Date()) {
             await this.refreshToken()
         }
 
-        return this.session.token
+        return this.session.accessToken || ""
     }
 
     private async refreshToken() {
@@ -78,7 +82,7 @@ export class AuthMiddleware {
             )
         }
 
-        if (this.session.refreshExpirationDate < new Date()) {
+        if (this.session.refreshExpiresAt < new Date()) {
             throw new ServiceError(
                 WithTitle("Refresh token expired"),
                 WithIsNonRetryable(true)
@@ -89,8 +93,7 @@ export class AuthMiddleware {
             refreshToken: this.session.refreshToken
         }
 
-        const newSession = await UserAPI.RefreshToken(req, apiPrefix())
-            .then(fromAuthData)
+        const newSession = await AuthAPI.RefreshToken(req, apiPrefix())
             .catch((e: GrpcError) => {
 
                 if (e.details.find(d => d.reason == ErrorReason.REFRESH_TOKEN_NOT_FOUND)) {
@@ -105,12 +108,12 @@ export class AuthMiddleware {
                 )
             })
 
-        this.login(newSession)
+        newSession.authData && this.login(newSession.authData)
 
         return this.session
     }
 
-    login(s: Session) {
+    login(s: AuthData) {
         this.session = s;
         saveToLocalStorage(s)
     }
@@ -120,22 +123,11 @@ export class AuthMiddleware {
     }
 }
 
-
-function fromAuthData(r: RefreshResponse): Session {
-    return {
-        token: r.authData?.accessToken,
-        refreshToken: r.authData?.refreshToken,
-        accessExpirationDate: r.authData?.accessExpiresAt,
-        refreshExpirationDate: r.authData?.refreshExpiresAt,
-    } as Session
-}
-
-
-function saveToLocalStorage(session: Session) {
+function saveToLocalStorage(session: AuthData) {
     localStorage.setItem(getLocalStorageAuthInfoKey(), JSON.stringify(session))
 }
 
-function fromLocalStorage(): Session | undefined {
+function fromLocalStorage(): AuthData | undefined {
     const authInfoFromLocalStorage = localStorage.getItem(getLocalStorageAuthInfoKey())
     if (!authInfoFromLocalStorage) {
         return
@@ -150,23 +142,4 @@ function clearLocalStorage() {
 
 function getLocalStorageAuthInfoKey(): string {
     return "user_session"
-}
-
-
-export interface IAuthService {
-    AuthViaPass: (login: string, password: string) => Promise<void>
-}
-
-export class AuthService extends BaseService implements IAuthService {
-    async AuthViaPass(login: string, password: string): Promise<void> {
-        this.executeAuthApiCall(async (initReq) => {
-            const req = {
-                uuid: uuid,
-            } as GetPlaylistRequest
-
-            return ZpotifyAPI
-                .GetPlaylist(req, initReq)
-                .then(toPlaylist)
-        })
-    };
 }

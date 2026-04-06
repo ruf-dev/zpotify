@@ -6,6 +6,16 @@ CREATE TABLE IF NOT EXISTS users
     username TEXT NOT NULL UNIQUE
 );
 
+CREATE TYPE identity_provider AS ENUM ('ZPOTIFY');
+
+CREATE TABLE user_identities
+(
+    id                INT4 GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id           INT2 REFERENCES users (id) NOT NULL ,
+    identity_provider IDENTITY_PROVIDER NOT NULL ,
+    payload           JSON NOT NULL DEFAULT '{}'
+);
+
 CREATE TABLE IF NOT EXISTS locales
 (
     id TEXT PRIMARY KEY

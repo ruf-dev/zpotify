@@ -12,16 +12,23 @@ import "zpotify_user.proto";
 option go_package = "/zpotify_api;zpotify_api";
 option (npm_package) = "@zpotify/api";
 
-service AuthService {
+service AuthAPI {
   rpc GetAuthMethods(GetAuthMethods.Request) returns (GetAuthMethods.Response) {
     option (google.api.http) = {
       get: "/api/auth/auth_methods"
     };
   }
 
-  rpc Auth(Auth.Request) returns (stream Auth.Response) {
+  rpc Auth(Auth.Request) returns (Auth.Response) {
     option (google.api.http) = {
-      post: "/api/auth"
+      post: "/api/auth/sync"
+      body: "*"
+    };
+  }
+
+  rpc AuthAsync(AuthViaAsync.Request) returns (stream AuthViaAsync.Response) {
+    option (google.api.http) = {
+      post: "/api/auth/async"
       body: "*"
     };
   }
@@ -41,12 +48,9 @@ message GetAuthMethods {
     repeated AuthMethods auth_methods = 1;
   }
 }
-message Auth {
+message AuthViaAsync {
   message Request {
-    oneof payload {
-      bool is_using_telegram = 1;
-      LogPass log_pass = 2;
-    }
+    //    By default considering auth goes via telegram
   }
 
   message Response {
@@ -54,6 +58,18 @@ message Auth {
       string auth_uuid = 1;
       AuthData auth_data = 2;
     }
+  }
+}
+
+message Auth {
+  message Request {
+    oneof payload {
+      LogPass log_pass = 1;
+    }
+  }
+
+  message Response {
+    AuthData auth_data = 1;
   }
 
   message LogPass {

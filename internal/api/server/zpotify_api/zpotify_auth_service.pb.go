@@ -60,6 +60,42 @@ func (*GetAuthMethods) Descriptor() ([]byte, []int) {
 	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{0}
 }
 
+type AuthViaAsync struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AuthViaAsync) Reset() {
+	*x = AuthViaAsync{}
+	mi := &file_zpotify_auth_service_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuthViaAsync) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuthViaAsync) ProtoMessage() {}
+
+func (x *AuthViaAsync) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_auth_service_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuthViaAsync.ProtoReflect.Descriptor instead.
+func (*AuthViaAsync) Descriptor() ([]byte, []int) {
+	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{1}
+}
+
 type Auth struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -68,7 +104,7 @@ type Auth struct {
 
 func (x *Auth) Reset() {
 	*x = Auth{}
-	mi := &file_zpotify_auth_service_proto_msgTypes[1]
+	mi := &file_zpotify_auth_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -80,7 +116,7 @@ func (x *Auth) String() string {
 func (*Auth) ProtoMessage() {}
 
 func (x *Auth) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_auth_service_proto_msgTypes[1]
+	mi := &file_zpotify_auth_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -93,7 +129,7 @@ func (x *Auth) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Auth.ProtoReflect.Descriptor instead.
 func (*Auth) Descriptor() ([]byte, []int) {
-	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{1}
+	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{2}
 }
 
 type Refresh struct {
@@ -104,7 +140,7 @@ type Refresh struct {
 
 func (x *Refresh) Reset() {
 	*x = Refresh{}
-	mi := &file_zpotify_auth_service_proto_msgTypes[2]
+	mi := &file_zpotify_auth_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -116,7 +152,7 @@ func (x *Refresh) String() string {
 func (*Refresh) ProtoMessage() {}
 
 func (x *Refresh) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_auth_service_proto_msgTypes[2]
+	mi := &file_zpotify_auth_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -129,7 +165,7 @@ func (x *Refresh) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Refresh.ProtoReflect.Descriptor instead.
 func (*Refresh) Descriptor() ([]byte, []int) {
-	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{2}
+	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{3}
 }
 
 type AuthData struct {
@@ -144,7 +180,7 @@ type AuthData struct {
 
 func (x *AuthData) Reset() {
 	*x = AuthData{}
-	mi := &file_zpotify_auth_service_proto_msgTypes[3]
+	mi := &file_zpotify_auth_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -156,7 +192,7 @@ func (x *AuthData) String() string {
 func (*AuthData) ProtoMessage() {}
 
 func (x *AuthData) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_auth_service_proto_msgTypes[3]
+	mi := &file_zpotify_auth_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -169,7 +205,7 @@ func (x *AuthData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthData.ProtoReflect.Descriptor instead.
 func (*AuthData) Descriptor() ([]byte, []int) {
-	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{3}
+	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *AuthData) GetAccessToken() string {
@@ -208,7 +244,7 @@ type GetAuthMethods_Request struct {
 
 func (x *GetAuthMethods_Request) Reset() {
 	*x = GetAuthMethods_Request{}
-	mi := &file_zpotify_auth_service_proto_msgTypes[4]
+	mi := &file_zpotify_auth_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -220,7 +256,7 @@ func (x *GetAuthMethods_Request) String() string {
 func (*GetAuthMethods_Request) ProtoMessage() {}
 
 func (x *GetAuthMethods_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_auth_service_proto_msgTypes[4]
+	mi := &file_zpotify_auth_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -245,7 +281,7 @@ type GetAuthMethods_Response struct {
 
 func (x *GetAuthMethods_Response) Reset() {
 	*x = GetAuthMethods_Response{}
-	mi := &file_zpotify_auth_service_proto_msgTypes[5]
+	mi := &file_zpotify_auth_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -257,7 +293,7 @@ func (x *GetAuthMethods_Response) String() string {
 func (*GetAuthMethods_Response) ProtoMessage() {}
 
 func (x *GetAuthMethods_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_auth_service_proto_msgTypes[5]
+	mi := &file_zpotify_auth_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -280,11 +316,128 @@ func (x *GetAuthMethods_Response) GetAuthMethods() []AuthMethods {
 	return nil
 }
 
+type AuthViaAsync_Request struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AuthViaAsync_Request) Reset() {
+	*x = AuthViaAsync_Request{}
+	mi := &file_zpotify_auth_service_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuthViaAsync_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuthViaAsync_Request) ProtoMessage() {}
+
+func (x *AuthViaAsync_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_auth_service_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuthViaAsync_Request.ProtoReflect.Descriptor instead.
+func (*AuthViaAsync_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{1, 0}
+}
+
+type AuthViaAsync_Response struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Payload:
+	//
+	//	*AuthViaAsync_Response_AuthUuid
+	//	*AuthViaAsync_Response_AuthData
+	Payload       isAuthViaAsync_Response_Payload `protobuf_oneof:"payload"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AuthViaAsync_Response) Reset() {
+	*x = AuthViaAsync_Response{}
+	mi := &file_zpotify_auth_service_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuthViaAsync_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuthViaAsync_Response) ProtoMessage() {}
+
+func (x *AuthViaAsync_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_auth_service_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuthViaAsync_Response.ProtoReflect.Descriptor instead.
+func (*AuthViaAsync_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{1, 1}
+}
+
+func (x *AuthViaAsync_Response) GetPayload() isAuthViaAsync_Response_Payload {
+	if x != nil {
+		return x.Payload
+	}
+	return nil
+}
+
+func (x *AuthViaAsync_Response) GetAuthUuid() string {
+	if x != nil {
+		if x, ok := x.Payload.(*AuthViaAsync_Response_AuthUuid); ok {
+			return x.AuthUuid
+		}
+	}
+	return ""
+}
+
+func (x *AuthViaAsync_Response) GetAuthData() *AuthData {
+	if x != nil {
+		if x, ok := x.Payload.(*AuthViaAsync_Response_AuthData); ok {
+			return x.AuthData
+		}
+	}
+	return nil
+}
+
+type isAuthViaAsync_Response_Payload interface {
+	isAuthViaAsync_Response_Payload()
+}
+
+type AuthViaAsync_Response_AuthUuid struct {
+	AuthUuid string `protobuf:"bytes,1,opt,name=auth_uuid,json=authUuid,proto3,oneof"`
+}
+
+type AuthViaAsync_Response_AuthData struct {
+	AuthData *AuthData `protobuf:"bytes,2,opt,name=auth_data,json=authData,proto3,oneof"`
+}
+
+func (*AuthViaAsync_Response_AuthUuid) isAuthViaAsync_Response_Payload() {}
+
+func (*AuthViaAsync_Response_AuthData) isAuthViaAsync_Response_Payload() {}
+
 type Auth_Request struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Payload:
 	//
-	//	*Auth_Request_IsUsingTelegram
 	//	*Auth_Request_LogPass
 	Payload       isAuth_Request_Payload `protobuf_oneof:"payload"`
 	unknownFields protoimpl.UnknownFields
@@ -293,7 +446,7 @@ type Auth_Request struct {
 
 func (x *Auth_Request) Reset() {
 	*x = Auth_Request{}
-	mi := &file_zpotify_auth_service_proto_msgTypes[6]
+	mi := &file_zpotify_auth_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -305,7 +458,7 @@ func (x *Auth_Request) String() string {
 func (*Auth_Request) ProtoMessage() {}
 
 func (x *Auth_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_auth_service_proto_msgTypes[6]
+	mi := &file_zpotify_auth_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -318,7 +471,7 @@ func (x *Auth_Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Auth_Request.ProtoReflect.Descriptor instead.
 func (*Auth_Request) Descriptor() ([]byte, []int) {
-	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{1, 0}
+	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{2, 0}
 }
 
 func (x *Auth_Request) GetPayload() isAuth_Request_Payload {
@@ -326,15 +479,6 @@ func (x *Auth_Request) GetPayload() isAuth_Request_Payload {
 		return x.Payload
 	}
 	return nil
-}
-
-func (x *Auth_Request) GetIsUsingTelegram() bool {
-	if x != nil {
-		if x, ok := x.Payload.(*Auth_Request_IsUsingTelegram); ok {
-			return x.IsUsingTelegram
-		}
-	}
-	return false
 }
 
 func (x *Auth_Request) GetLogPass() *Auth_LogPass {
@@ -350,32 +494,22 @@ type isAuth_Request_Payload interface {
 	isAuth_Request_Payload()
 }
 
-type Auth_Request_IsUsingTelegram struct {
-	IsUsingTelegram bool `protobuf:"varint,1,opt,name=is_using_telegram,json=isUsingTelegram,proto3,oneof"`
-}
-
 type Auth_Request_LogPass struct {
-	LogPass *Auth_LogPass `protobuf:"bytes,2,opt,name=log_pass,json=logPass,proto3,oneof"`
+	LogPass *Auth_LogPass `protobuf:"bytes,1,opt,name=log_pass,json=logPass,proto3,oneof"`
 }
-
-func (*Auth_Request_IsUsingTelegram) isAuth_Request_Payload() {}
 
 func (*Auth_Request_LogPass) isAuth_Request_Payload() {}
 
 type Auth_Response struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Types that are valid to be assigned to Payload:
-	//
-	//	*Auth_Response_AuthUuid
-	//	*Auth_Response_AuthData
-	Payload       isAuth_Response_Payload `protobuf_oneof:"payload"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AuthData      *AuthData              `protobuf:"bytes,1,opt,name=auth_data,json=authData,proto3" json:"auth_data,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Auth_Response) Reset() {
 	*x = Auth_Response{}
-	mi := &file_zpotify_auth_service_proto_msgTypes[7]
+	mi := &file_zpotify_auth_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -387,7 +521,7 @@ func (x *Auth_Response) String() string {
 func (*Auth_Response) ProtoMessage() {}
 
 func (x *Auth_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_auth_service_proto_msgTypes[7]
+	mi := &file_zpotify_auth_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -400,49 +534,15 @@ func (x *Auth_Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Auth_Response.ProtoReflect.Descriptor instead.
 func (*Auth_Response) Descriptor() ([]byte, []int) {
-	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{1, 1}
-}
-
-func (x *Auth_Response) GetPayload() isAuth_Response_Payload {
-	if x != nil {
-		return x.Payload
-	}
-	return nil
-}
-
-func (x *Auth_Response) GetAuthUuid() string {
-	if x != nil {
-		if x, ok := x.Payload.(*Auth_Response_AuthUuid); ok {
-			return x.AuthUuid
-		}
-	}
-	return ""
+	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{2, 1}
 }
 
 func (x *Auth_Response) GetAuthData() *AuthData {
 	if x != nil {
-		if x, ok := x.Payload.(*Auth_Response_AuthData); ok {
-			return x.AuthData
-		}
+		return x.AuthData
 	}
 	return nil
 }
-
-type isAuth_Response_Payload interface {
-	isAuth_Response_Payload()
-}
-
-type Auth_Response_AuthUuid struct {
-	AuthUuid string `protobuf:"bytes,1,opt,name=auth_uuid,json=authUuid,proto3,oneof"`
-}
-
-type Auth_Response_AuthData struct {
-	AuthData *AuthData `protobuf:"bytes,2,opt,name=auth_data,json=authData,proto3,oneof"`
-}
-
-func (*Auth_Response_AuthUuid) isAuth_Response_Payload() {}
-
-func (*Auth_Response_AuthData) isAuth_Response_Payload() {}
 
 type Auth_LogPass struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -454,7 +554,7 @@ type Auth_LogPass struct {
 
 func (x *Auth_LogPass) Reset() {
 	*x = Auth_LogPass{}
-	mi := &file_zpotify_auth_service_proto_msgTypes[8]
+	mi := &file_zpotify_auth_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -466,7 +566,7 @@ func (x *Auth_LogPass) String() string {
 func (*Auth_LogPass) ProtoMessage() {}
 
 func (x *Auth_LogPass) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_auth_service_proto_msgTypes[8]
+	mi := &file_zpotify_auth_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -479,7 +579,7 @@ func (x *Auth_LogPass) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Auth_LogPass.ProtoReflect.Descriptor instead.
 func (*Auth_LogPass) Descriptor() ([]byte, []int) {
-	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{1, 2}
+	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{2, 2}
 }
 
 func (x *Auth_LogPass) GetLogin() string {
@@ -505,7 +605,7 @@ type Refresh_Request struct {
 
 func (x *Refresh_Request) Reset() {
 	*x = Refresh_Request{}
-	mi := &file_zpotify_auth_service_proto_msgTypes[9]
+	mi := &file_zpotify_auth_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -517,7 +617,7 @@ func (x *Refresh_Request) String() string {
 func (*Refresh_Request) ProtoMessage() {}
 
 func (x *Refresh_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_auth_service_proto_msgTypes[9]
+	mi := &file_zpotify_auth_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -530,7 +630,7 @@ func (x *Refresh_Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Refresh_Request.ProtoReflect.Descriptor instead.
 func (*Refresh_Request) Descriptor() ([]byte, []int) {
-	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{2, 0}
+	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{3, 0}
 }
 
 func (x *Refresh_Request) GetRefreshToken() string {
@@ -549,7 +649,7 @@ type Refresh_Response struct {
 
 func (x *Refresh_Response) Reset() {
 	*x = Refresh_Response{}
-	mi := &file_zpotify_auth_service_proto_msgTypes[10]
+	mi := &file_zpotify_auth_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -561,7 +661,7 @@ func (x *Refresh_Response) String() string {
 func (*Refresh_Response) ProtoMessage() {}
 
 func (x *Refresh_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_auth_service_proto_msgTypes[10]
+	mi := &file_zpotify_auth_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -574,7 +674,7 @@ func (x *Refresh_Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Refresh_Response.ProtoReflect.Descriptor instead.
 func (*Refresh_Response) Descriptor() ([]byte, []int) {
-	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{2, 1}
+	return file_zpotify_auth_service_proto_rawDescGZIP(), []int{3, 1}
 }
 
 func (x *Refresh_Response) GetAuthData() *AuthData {
@@ -592,16 +692,19 @@ const file_zpotify_auth_service_proto_rawDesc = "" +
 	"\x0eGetAuthMethods\x1a\t\n" +
 	"\aRequest\x1aG\n" +
 	"\bResponse\x12;\n" +
-	"\fauth_methods\x18\x01 \x03(\x0e2\x18.zpotify_api.AuthMethodsR\vauthMethods\"\xab\x02\n" +
-	"\x04Auth\x1az\n" +
-	"\aRequest\x12,\n" +
-	"\x11is_using_telegram\x18\x01 \x01(\bH\x00R\x0fisUsingTelegram\x126\n" +
-	"\blog_pass\x18\x02 \x01(\v2\x19.zpotify_api.Auth.LogPassH\x00R\alogPassB\t\n" +
-	"\apayload\x1aj\n" +
+	"\fauth_methods\x18\x01 \x03(\x0e2\x18.zpotify_api.AuthMethodsR\vauthMethods\"\x85\x01\n" +
+	"\fAuthViaAsync\x1a\t\n" +
+	"\aRequest\x1aj\n" +
 	"\bResponse\x12\x1d\n" +
 	"\tauth_uuid\x18\x01 \x01(\tH\x00R\bauthUuid\x124\n" +
 	"\tauth_data\x18\x02 \x01(\v2\x15.zpotify_api.AuthDataH\x00R\bauthDataB\t\n" +
-	"\apayload\x1a;\n" +
+	"\apayload\"\xd1\x01\n" +
+	"\x04Auth\x1aL\n" +
+	"\aRequest\x126\n" +
+	"\blog_pass\x18\x01 \x01(\v2\x19.zpotify_api.Auth.LogPassH\x00R\alogPassB\t\n" +
+	"\apayload\x1a>\n" +
+	"\bResponse\x122\n" +
+	"\tauth_data\x18\x01 \x01(\v2\x15.zpotify_api.AuthDataR\bauthData\x1a;\n" +
 	"\aLogPass\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"y\n" +
@@ -614,10 +717,11 @@ const file_zpotify_auth_service_proto_rawDesc = "" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x12F\n" +
 	"\x11access_expires_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x0faccessExpiresAt\x12H\n" +
-	"\x12refresh_expires_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x10refreshExpiresAt2\xd2\x02\n" +
-	"\vAuthService\x12{\n" +
-	"\x0eGetAuthMethods\x12#.zpotify_api.GetAuthMethods.Request\x1a$.zpotify_api.GetAuthMethods.Response\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/api/auth/auth_methods\x12U\n" +
-	"\x04Auth\x12\x19.zpotify_api.Auth.Request\x1a\x1a.zpotify_api.Auth.Response\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/api/auth0\x01\x12o\n" +
+	"\x12refresh_expires_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x10refreshExpiresAt2\xc3\x03\n" +
+	"\aAuthAPI\x12{\n" +
+	"\x0eGetAuthMethods\x12#.zpotify_api.GetAuthMethods.Request\x1a$.zpotify_api.GetAuthMethods.Response\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/api/auth/auth_methods\x12X\n" +
+	"\x04Auth\x12\x19.zpotify_api.Auth.Request\x1a\x1a.zpotify_api.Auth.Response\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/auth/sync\x12p\n" +
+	"\tAuthAsync\x12!.zpotify_api.AuthViaAsync.Request\x1a\".zpotify_api.AuthViaAsync.Response\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/auth/async0\x01\x12o\n" +
 	"\fRefreshToken\x12\x1c.zpotify_api.Refresh.Request\x1a\x1d.zpotify_api.Refresh.Response\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/api/auth/refresh_tokenB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
@@ -632,40 +736,46 @@ func file_zpotify_auth_service_proto_rawDescGZIP() []byte {
 	return file_zpotify_auth_service_proto_rawDescData
 }
 
-var file_zpotify_auth_service_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_zpotify_auth_service_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_zpotify_auth_service_proto_goTypes = []any{
 	(*GetAuthMethods)(nil),          // 0: zpotify_api.GetAuthMethods
-	(*Auth)(nil),                    // 1: zpotify_api.Auth
-	(*Refresh)(nil),                 // 2: zpotify_api.Refresh
-	(*AuthData)(nil),                // 3: zpotify_api.AuthData
-	(*GetAuthMethods_Request)(nil),  // 4: zpotify_api.GetAuthMethods.Request
-	(*GetAuthMethods_Response)(nil), // 5: zpotify_api.GetAuthMethods.Response
-	(*Auth_Request)(nil),            // 6: zpotify_api.Auth.Request
-	(*Auth_Response)(nil),           // 7: zpotify_api.Auth.Response
-	(*Auth_LogPass)(nil),            // 8: zpotify_api.Auth.LogPass
-	(*Refresh_Request)(nil),         // 9: zpotify_api.Refresh.Request
-	(*Refresh_Response)(nil),        // 10: zpotify_api.Refresh.Response
-	(*timestamppb.Timestamp)(nil),   // 11: google.protobuf.Timestamp
-	(AuthMethods)(0),                // 12: zpotify_api.AuthMethods
+	(*AuthViaAsync)(nil),            // 1: zpotify_api.AuthViaAsync
+	(*Auth)(nil),                    // 2: zpotify_api.Auth
+	(*Refresh)(nil),                 // 3: zpotify_api.Refresh
+	(*AuthData)(nil),                // 4: zpotify_api.AuthData
+	(*GetAuthMethods_Request)(nil),  // 5: zpotify_api.GetAuthMethods.Request
+	(*GetAuthMethods_Response)(nil), // 6: zpotify_api.GetAuthMethods.Response
+	(*AuthViaAsync_Request)(nil),    // 7: zpotify_api.AuthViaAsync.Request
+	(*AuthViaAsync_Response)(nil),   // 8: zpotify_api.AuthViaAsync.Response
+	(*Auth_Request)(nil),            // 9: zpotify_api.Auth.Request
+	(*Auth_Response)(nil),           // 10: zpotify_api.Auth.Response
+	(*Auth_LogPass)(nil),            // 11: zpotify_api.Auth.LogPass
+	(*Refresh_Request)(nil),         // 12: zpotify_api.Refresh.Request
+	(*Refresh_Response)(nil),        // 13: zpotify_api.Refresh.Response
+	(*timestamppb.Timestamp)(nil),   // 14: google.protobuf.Timestamp
+	(AuthMethods)(0),                // 15: zpotify_api.AuthMethods
 }
 var file_zpotify_auth_service_proto_depIdxs = []int32{
-	11, // 0: zpotify_api.AuthData.access_expires_at:type_name -> google.protobuf.Timestamp
-	11, // 1: zpotify_api.AuthData.refresh_expires_at:type_name -> google.protobuf.Timestamp
-	12, // 2: zpotify_api.GetAuthMethods.Response.auth_methods:type_name -> zpotify_api.AuthMethods
-	8,  // 3: zpotify_api.Auth.Request.log_pass:type_name -> zpotify_api.Auth.LogPass
-	3,  // 4: zpotify_api.Auth.Response.auth_data:type_name -> zpotify_api.AuthData
-	3,  // 5: zpotify_api.Refresh.Response.auth_data:type_name -> zpotify_api.AuthData
-	4,  // 6: zpotify_api.AuthService.GetAuthMethods:input_type -> zpotify_api.GetAuthMethods.Request
-	6,  // 7: zpotify_api.AuthService.Auth:input_type -> zpotify_api.Auth.Request
-	9,  // 8: zpotify_api.AuthService.RefreshToken:input_type -> zpotify_api.Refresh.Request
-	5,  // 9: zpotify_api.AuthService.GetAuthMethods:output_type -> zpotify_api.GetAuthMethods.Response
-	7,  // 10: zpotify_api.AuthService.Auth:output_type -> zpotify_api.Auth.Response
-	10, // 11: zpotify_api.AuthService.RefreshToken:output_type -> zpotify_api.Refresh.Response
-	9,  // [9:12] is the sub-list for method output_type
-	6,  // [6:9] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	14, // 0: zpotify_api.AuthData.access_expires_at:type_name -> google.protobuf.Timestamp
+	14, // 1: zpotify_api.AuthData.refresh_expires_at:type_name -> google.protobuf.Timestamp
+	15, // 2: zpotify_api.GetAuthMethods.Response.auth_methods:type_name -> zpotify_api.AuthMethods
+	4,  // 3: zpotify_api.AuthViaAsync.Response.auth_data:type_name -> zpotify_api.AuthData
+	11, // 4: zpotify_api.Auth.Request.log_pass:type_name -> zpotify_api.Auth.LogPass
+	4,  // 5: zpotify_api.Auth.Response.auth_data:type_name -> zpotify_api.AuthData
+	4,  // 6: zpotify_api.Refresh.Response.auth_data:type_name -> zpotify_api.AuthData
+	5,  // 7: zpotify_api.AuthAPI.GetAuthMethods:input_type -> zpotify_api.GetAuthMethods.Request
+	9,  // 8: zpotify_api.AuthAPI.Auth:input_type -> zpotify_api.Auth.Request
+	7,  // 9: zpotify_api.AuthAPI.AuthAsync:input_type -> zpotify_api.AuthViaAsync.Request
+	12, // 10: zpotify_api.AuthAPI.RefreshToken:input_type -> zpotify_api.Refresh.Request
+	6,  // 11: zpotify_api.AuthAPI.GetAuthMethods:output_type -> zpotify_api.GetAuthMethods.Response
+	10, // 12: zpotify_api.AuthAPI.Auth:output_type -> zpotify_api.Auth.Response
+	8,  // 13: zpotify_api.AuthAPI.AuthAsync:output_type -> zpotify_api.AuthViaAsync.Response
+	13, // 14: zpotify_api.AuthAPI.RefreshToken:output_type -> zpotify_api.Refresh.Response
+	11, // [11:15] is the sub-list for method output_type
+	7,  // [7:11] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_auth_service_proto_init() }
@@ -675,13 +785,12 @@ func file_zpotify_auth_service_proto_init() {
 	}
 	file_zpotify_common_proto_init()
 	file_zpotify_user_proto_init()
-	file_zpotify_auth_service_proto_msgTypes[6].OneofWrappers = []any{
-		(*Auth_Request_IsUsingTelegram)(nil),
-		(*Auth_Request_LogPass)(nil),
+	file_zpotify_auth_service_proto_msgTypes[8].OneofWrappers = []any{
+		(*AuthViaAsync_Response_AuthUuid)(nil),
+		(*AuthViaAsync_Response_AuthData)(nil),
 	}
-	file_zpotify_auth_service_proto_msgTypes[7].OneofWrappers = []any{
-		(*Auth_Response_AuthUuid)(nil),
-		(*Auth_Response_AuthData)(nil),
+	file_zpotify_auth_service_proto_msgTypes[9].OneofWrappers = []any{
+		(*Auth_Request_LogPass)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -689,7 +798,7 @@ func file_zpotify_auth_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_auth_service_proto_rawDesc), len(file_zpotify_auth_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
