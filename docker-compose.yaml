@@ -11,7 +11,7 @@ services:
     volumes:
       - ./data/pg:/var/lib/postgresql/data
 
-  angie:
+  nginx:
     image: nginx:alpine
     ports:
       - '8085:8085'
