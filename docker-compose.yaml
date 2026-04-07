@@ -10,3 +10,11 @@ services:
       - '15432:5432'
     volumes:
       - ./data/pg:/var/lib/postgresql/data
+
+  angie:
+    image: nginx:alpine
+    ports:
+      - '8085:8085'
+    volumes:
+      - ./data/angie:/data/nginx
+      - ./angie/conf.d/default.conf:/etc/nginx/nginx.conf:ro
