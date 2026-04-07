@@ -1,4 +1,5 @@
 import {Outlet} from "react-router-dom";
+
 import Toaster from "@/components/notifications/Toaster.tsx";
 import Dialog from "@/pages/segments/Dialog.tsx";
 
