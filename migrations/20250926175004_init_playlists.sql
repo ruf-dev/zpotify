@@ -42,13 +42,14 @@ CREATE TABLE IF NOT EXISTS user_playlists
 );
 
 
-CREATE VIEW playlists_songs_v1 AS
+CREATE OR REPLACE VIEW playlists_songs_v1 AS
 (
-SELECT playlist_songs.playlist_uuid,
-       songs.id,
-       songs.title,
-       files_meta.duration_sec,
-       json_agg(json_build_object('uuid', artists.uuid::text, 'name', artists.name) order by songs_artists.order_id),
+SELECT playlist_songs.playlist_uuid                                                                                  AS playlist_uuid,
+       songs.id                                                                                                      AS id,
+       songs.title                                                                                                   AS title,
+       files_meta.duration_sec                                                                                       AS duration_sec,
+       json_agg(json_build_object('uuid', artists.uuid::text, 'name', artists.name)
+                order by songs_artists.order_id)                                                                     AS artist_info,
        playlist_songs.order_number
 FROM playlist_songs
          INNER JOIN songs ON songs.id = playlist_songs.song_id

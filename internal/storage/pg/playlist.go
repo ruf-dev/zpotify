@@ -2,6 +2,7 @@ package pg
 
 import (
 	"context"
+	"encoding/json"
 	"time"
 
 	sq "github.com/Masterminds/squirrel"
@@ -32,17 +33,12 @@ func NewPlaylistStorage(db sqldb.DB) *PlaylistStorage {
 func (s *PlaylistStorage) ListSongs(ctx context.Context, r domain.ListSongs) ([]domain.PlaylistSong, error) {
 	builder := playlistSongsQueryBuilder{
 		sq.Select(
-			"songs.id",
-			"songs.title",
-			"files_meta.duration_sec",
-			`json_agg(
-				json_build_object(
-					'uuid', artists.uuid::text, 
-					'name', artists.name) 
-				ORDER BY songs_artists.order_id)`,
+			"id",
+			"title",
+			"duration_sec",
+			"artist_info",
 		)}.
 		buildSongBaseQuery().
-		joinArtists().
 		applyListQueryFilters(r).
 		applyListQueryOrder(r).
 		Limit(r.Limit).
@@ -63,18 +59,26 @@ func (s *PlaylistStorage) ListSongs(ctx context.Context, r domain.ListSongs) ([]
 	var songs []domain.PlaylistSong
 	for rows.Next() {
 		var song domain.PlaylistSong
-
 		var durationSeconds int64
+		var artistsInfoJson json.RawMessage
+
 		err = rows.Scan(
 			&song.Id,
 			&song.Title,
 			&durationSeconds,
+			&artistsInfoJson,
 		)
 		if err != nil {
 			return nil, wrapPgErr(err)
 		}
 
 		song.Duration = time.Duration(durationSeconds) * time.Second
+
+		err = json.Unmarshal(artistsInfoJson, &song.Artists)
+		if err != nil {
+			return nil, rerrors.Wrap(err, "error unmarshalling artists info from storage json")
+		}
+
 		songs = append(songs, song)
 	}
 
@@ -112,18 +116,8 @@ type playlistSongsQueryBuilder struct {
 }
 
 func (builder playlistSongsQueryBuilder) buildSongBaseQuery() playlistSongsQueryBuilder {
-	builder.SelectBuilder = builder.From("playlist_songs").
-		InnerJoin("songs ON songs.id = playlist_songs.song_id").
-		InnerJoin("files_meta ON files_meta.id = songs.file_id").
+	builder.SelectBuilder = builder.From("playlists_songs_v1").
 		PlaceholderFormat(sq.Dollar)
-
-	return builder
-}
-
-func (builder playlistSongsQueryBuilder) joinArtists() playlistSongsQueryBuilder {
-	builder.SelectBuilder = builder.
-		InnerJoin(`songs_artists on songs.id = songs_artists.song_id`).
-		InnerJoin(`artists on artists.uuid = songs_artists.artist_uuid`)
 
 	return builder
 }

@@ -31,7 +31,7 @@ func (p *PlaylistService) ListSongs(ctx context.Context, req domain.ListSongs) (
 		req.PlaylistUuid = toolbox.ToPtr(domain.GlobalPlaylistUuid)
 	}
 
-	songsBase, err := p.playlistStorage.ListSongs(ctx, req)
+	songs, err := p.playlistStorage.ListSongs(ctx, req)
 	if err != nil {
 		return domain.SongsInPlaylist{}, rerrors.Wrap(err, "error listing songs for playlist from storage")
 	}
@@ -41,10 +41,8 @@ func (p *PlaylistService) ListSongs(ctx context.Context, req domain.ListSongs) (
 		return domain.SongsInPlaylist{}, rerrors.Wrap(err, "error counting songs in playlist from storage")
 	}
 
-	_ = songsBase
-
 	return domain.SongsInPlaylist{
-		Songs: []domain.PlaylistSong{},
+		Songs: songs,
 		Total: total,
 	}, nil
 }
