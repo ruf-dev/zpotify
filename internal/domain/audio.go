@@ -15,7 +15,7 @@ type AddAudio struct {
 
 type FileMeta struct {
 	File
-	AddedByTgId int64
+	AddedById int64
 }
 
 type SaveFileCode int64
@@ -41,11 +41,13 @@ type TgFile struct {
 type File struct {
 	FilePath  string
 	SizeBytes int64
+	Duration  time.Duration
 }
 
+const GlobalPlaylistUuid = "00000000-0000-0000-0000-000000000000"
+
 type ListSongs struct {
-	PlaylistUuid *string
-	UniqueIds    []string
+	ListSongsFilters
 
 	Limit  uint64
 	Offset uint64
@@ -53,6 +55,10 @@ type ListSongs struct {
 	OrderBy    SongsOrderBy
 	Desc       bool
 	RandomHash *uint64
+}
+
+type ListSongsFilters struct {
+	PlaylistUuid *string
 }
 
 type ListFileMeta struct {
@@ -70,26 +76,25 @@ const (
 )
 
 type SongBase struct {
-	Id        int32
-	Title     string
-	FileId    int32
-	CreatedAt time.Time
+	Id       int32
+	Title    string
+	Duration time.Duration
 }
 
 type Song struct {
 	SongBase
 	FileMeta
+	Artists []ArtistsBase
 }
 
 type ArtistsBase struct {
-	Uuid string
-	Name string
+	Uuid string `json:"uuid"`
+	Name string `json:"name"`
 }
 
 type SongsList struct {
-	Songs                  []SongBase
-	Total                  uint64
-	UserPlaylistPermission PlaylistPermissions
+	Songs []Song
+	Total uint16
 }
 
 type ListArtists struct {

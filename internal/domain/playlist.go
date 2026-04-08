@@ -16,3 +16,13 @@ type CreatePlaylistParams struct {
 	Name        string
 	Description string
 }
+
+type SongsInPlaylist struct {
+	Songs []PlaylistSong
+	Total uint16
+}
+
+type PlaylistSong struct {
+	SongBase
+	Artists []ArtistsBase
+}

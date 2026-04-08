@@ -4,10 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/google/uuid"
-
 	"go.zpotify.ru/zpotify/internal/domain"
-	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 	auth_q "go.zpotify.ru/zpotify/internal/storage/pg/generated/auth"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 )
@@ -16,16 +13,17 @@ type Storage interface {
 
 	//FileMeta() FileMetaStorage
 	//
-	//SongStorage() SongStorage
 	//ArtistStorage() ArtistStorage
 	//
-	//PlaylistStorage() PlaylistStorage
 
 	Auth() AuthStorage
 	SessionStorage() SessionStorage
 
 	User() UserStorage
 	UserSettings() UserSettingsStorage
+
+	SongsStorage() SongStorage
+	PlaylistStorage() PlaylistStorage
 
 	TxManager() *tx_manager.TxManager
 }
@@ -80,16 +78,16 @@ type SessionStorage interface {
 type SongStorage interface {
 	WithTx(tx *sql.Tx) SongStorage
 
-	Save(ctx context.Context, song domain.SongBase) error
-	SaveSongsArtists(ctx context.Context, songId int64, artist uuid.UUID, orderId int16) error
+	//Save(ctx context.Context, song domain.SongBase) error
+	//SaveSongsArtists(ctx context.Context, songId int64, artist uuid.UUID, orderId int16) error
 
-	AddSongsToPlaylist(ctx context.Context, playlistUuid string, songIds ...int32) error
+	//AddSongsToPlaylist(ctx context.Context, playlistUuid string, songIds ...int32) error
 
-	List(ctx context.Context, r domain.ListSongs) ([]domain.SongBase, error)
-	Count(ctx context.Context, r domain.ListSongs) (uint64, error)
-	Get(ctx context.Context, id int64) (domain.SongBase, error)
-	GetByFileId(ctx context.Context, id int64) (domain.SongBase, error)
-	Delete(ctx context.Context, id int64) error
+	//Count(ctx context.Context, r domain.ListSongsInPlaylist) (uint64, error)
+
+	//Get(ctx context.Context, id int64) (domain.SongBase, error)
+	//GetByFileId(ctx context.Context, id int64) (domain.SongBase, error)
+	//Delete(ctx context.Context, id int64) error
 }
 
 type ArtistStorage interface {
@@ -99,9 +97,10 @@ type ArtistStorage interface {
 }
 
 type PlaylistStorage interface {
-	Create(ctx context.Context, req querier.CreatePlaylistParams) (domain.Playlist, error)
-	// GetWithAuth Returns playlist based on weather user has access or playlist is public
-	GetWithAuth(ctx context.Context, uuid querier.GetPlaylistWithAuthParams) (domain.Playlist, error)
+	//Create(ctx context.Context, req querier.CreatePlaylistParams) (domain.Playlist, error)
+
+	ListSongs(ctx context.Context, r domain.ListSongs) ([]domain.PlaylistSong, error)
+	CountSongs(ctx context.Context, r domain.ListSongs) (uint16, error)
 }
 
 type UserSettingsStorage interface {

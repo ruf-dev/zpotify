@@ -1,4 +1,4 @@
-package zpotify_api_impl
+package playlist_api_impl
 
 import (
 	"context"
@@ -13,31 +13,26 @@ import (
 )
 
 type Impl struct {
-	zpotify_api.UnimplementedZpotifyAPIServer
+	zpotify_api.UnimplementedPlaylistAPIServer
 
-	audioService    service.AudioService
-	userService     service.UserService
-	authService     service.AuthService
 	playlistService service.PlaylistService
 }
 
 func New(srv service.Service) *Impl {
 	return &Impl{
-		audioService:    srv.AudioService(),
-		userService:     srv.UserService(),
-		authService:     srv.AuthService(),
-		playlistService: srv.PlaylistService(),
+		zpotify_api.UnimplementedPlaylistAPIServer{},
+		srv.PlaylistService(),
 	}
 }
 
 func (impl *Impl) Register(server grpc.ServiceRegistrar) {
-	zpotify_api.RegisterZpotifyAPIServer(server, impl)
+	zpotify_api.RegisterPlaylistAPIServer(server, impl)
 }
 
 func (impl *Impl) Gateway(ctx context.Context, endpoint string, opts ...grpc.DialOption) (route string, handler http.Handler) {
 	gwHttpMux := runtime.NewServeMux()
 
-	err := zpotify_api.RegisterZpotifyAPIHandlerFromEndpoint(
+	err := zpotify_api.RegisterPlaylistAPIHandlerFromEndpoint(
 		ctx,
 		gwHttpMux,
 		endpoint,
@@ -47,5 +42,5 @@ func (impl *Impl) Gateway(ctx context.Context, endpoint string, opts ...grpc.Dia
 		log.Error().Err(err).Msg("error registering grpc2http handler")
 	}
 
-	return "/api/", gwHttpMux
+	return "/api/playlist/", gwHttpMux
 }

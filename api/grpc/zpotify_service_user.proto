@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package zpotify_api;
+
+import "npm.proto";
+
+import "zpotify_user.proto";
+import "zpotify_user_settings.proto";
+import "google/api/annotations.proto";
+
+option go_package = "/zpotify_api;zpotify_api";
+option (npm_package) = "@zpotify/api";
+
+service UserAPI {
+  rpc Me(Me.Request) returns (Me.Response) {
+    option (google.api.http) = {
+      get: "/api/user/me"
+    };
+  }
+
+  rpc GetUserSettings(GetUserSettings.Request) returns (GetUserSettings.Response) {
+    option (google.api.http) = {
+      get: "/api/user/settings"
+    };
+  }
+}
+
+message UserData {
+  string username = 1;
+}
+
+message Me {
+  message Request {}
+
+  message Response {
+    UserData user_data = 1;
+    Permissions permissions = 2;
+  }
+}
+
+message GetUserSettings {
+  message Request {}
+
+  message Response {
+    UserSettings settings = 1;
+  }
+}

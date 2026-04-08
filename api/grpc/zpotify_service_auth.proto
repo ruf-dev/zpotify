@@ -6,7 +6,6 @@ import "npm.proto";
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
-import "zpotify_common.proto";
 import "zpotify_user.proto";
 
 option go_package = "/zpotify_api;zpotify_api";

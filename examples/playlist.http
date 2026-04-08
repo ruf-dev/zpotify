@@ -1,0 +1,13 @@
+### Get playlist info
+GET {{zpotify-api}}/api/playlist/00000000-0000-0000-0000-000000000000
+Authorization: {{token}}
+
+
+### List songs in playlist
+POST {{zpotify-api}}/api/playlist/songs
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "playlist_uuid": "00000000-0000-0000-0000-000000000000"
+}

@@ -23,7 +23,7 @@ func (impl *Impl) ListSongs(ctx context.Context, req *zpotify_api.ListSongs_Requ
 
 	list, err := impl.audioService.List(ctx, listReq)
 	if err != nil {
-		return nil, rerrors.Wrap(err, "Unable to list audio")
+		return nil, rerrors.Wrap(err, "Unable to list songs ")
 	}
 
 	return &zpotify_api.ListSongs_Response{

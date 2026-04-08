@@ -9,14 +9,10 @@ import (
 	"go.redsock.ru/toolbox"
 
 	"go.zpotify.ru/zpotify/internal/domain"
-	"go.zpotify.ru/zpotify/internal/middleware/user_context"
-	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 )
-
-const GlobalPlaylistUuid = "3a608e96-38ae-470c-83f2-842fc4a70ed2"
 
 type AudioService struct {
 	txManager *tx_manager.TxManager
@@ -205,11 +201,6 @@ func (s *AudioService) GetInfo(ctx context.Context, fileId int64) (domain.Song, 
 }
 
 func (s *AudioService) List(ctx context.Context, req domain.ListSongs) (domain.SongsList, error) {
-	usr, ok := user_context.GetUserContext(ctx)
-	if !ok {
-		return domain.SongsList{}, service_errors.ErrUnauthenticated
-	}
-
 	if req.Limit == 0 {
 		req.Limit = 10
 	}
@@ -218,25 +209,21 @@ func (s *AudioService) List(ctx context.Context, req domain.ListSongs) (domain.S
 		req.PlaylistUuid = toolbox.ToPtr(GlobalPlaylistUuid)
 	}
 
-	list, err := s.songsStorage.List(ctx, req)
+	songsBase, err := s.playlistStorage.List(ctx, req)
 	if err != nil {
 		return domain.SongsList{}, rerrors.Wrap(err, "error listing songs")
 	}
 
-	total, err := s.songsStorage.Count(ctx, req)
+	total, err := s.playlistStorage.Count(ctx, req)
 	if err != nil {
 		return domain.SongsList{}, rerrors.Wrap(err, "error counting songs")
 	}
 
-	perms, err := s.usersStorage.GetPermissionsOnPlaylist(ctx, usr.UserId, *req.PlaylistUuid)
-	if err != nil {
-		return domain.SongsList{}, rerrors.Wrap(err, "error getting user's permissions on playlist")
-	}
+	_ = songsBase
 
 	return domain.SongsList{
-		Songs:                  list,
-		Total:                  total,
-		UserPlaylistPermission: perms,
+		Songs: []domain.Song{},
+		Total: total,
 	}, nil
 }
 

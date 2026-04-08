@@ -115,6 +115,6 @@ func toFileDomain(f querier.FilesMetum) domain.FileMeta {
 			FilePath:  f.FilePath,
 			SizeBytes: int64(f.SizeBytes),
 		},
-		AddedByTgId: int64(f.AddedByID),
+		AddedById: int64(f.AddedByID),
 	}
 }

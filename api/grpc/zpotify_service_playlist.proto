@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package zpotify_api;
+
+import "google/api/annotations.proto";
+import "npm.proto";
+
+import "zpotify_common.proto";
+
+option go_package = "/zpotify_api;zpotify_api";
+option (npm_package) = "@zpotify/api";
+
+service PlaylistAPI {
+  rpc CreatePlaylist(CreatePlaylist.Request) returns (CreatePlaylist.Response) {
+    option (google.api.http) = {
+      post: "/api/playlist/create",
+      body: "*"
+    };
+  };
+
+  rpc GetPlaylist(GetPlaylist.Request) returns (GetPlaylist.Response) {
+    option (google.api.http) = {
+      get: "/api/playlist/{uuid}"
+    };
+  }
+
+  rpc DeleteSong(DeleteSong.Request) returns (DeleteSong.Response) {
+    option (google.api.http) = {
+      post: "/api/playlist/delete_song",
+    };
+  }
+
+  rpc ListSongs(ListSongs.Request) returns (ListSongs.Response) {
+    option (google.api.http) = {
+      post: "/api/playlist/songs",
+    };
+  };
+}
+
+
+message ListSongs {
+  message Request {
+    Paging paging = 1;
+
+    optional uint64 random_hash = 2;
+    // by default returns songs from global queue (last added tracks)
+    optional string playlist_uuid = 3;
+  }
+
+  message Response {
+    repeated SongBase songs = 1;
+    uint64 total = 2;
+  }
+}
+
+message DeleteSong {
+  message Request {
+    string playlist_uuid = 1;
+    int32 song_id = 2;
+  }
+
+  message Response {}
+}
+
+message CreatePlaylist {
+  message Request {
+    string name = 1;
+    optional string description = 2;
+  }
+
+  message Response {
+    string uuid = 1;
+  }
+}
+
+
+message GetPlaylist {
+  message Request {
+    string uuid = 1;
+  }
+
+  message Response {
+    Playlist playlist = 1;
+  }
+}

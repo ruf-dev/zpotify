@@ -28,9 +28,9 @@ type service struct {
 func New(dataStorage storage.Storage, cache files_cache.FilesCache) Service {
 	return &service{
 		//audioService:    v1.NewAudioService(dataStorage, cache),
-		userService: v1.NewUserService(dataStorage),
-		authService: v1.NewAuthService(dataStorage),
-		//playlistService: v1.NewPlaylistService(dataStorage),
+		userService:     v1.NewUserService(dataStorage),
+		authService:     v1.NewAuthService(dataStorage),
+		playlistService: v1.NewPlaylistService(dataStorage),
 	}
 }
 
@@ -84,6 +84,8 @@ type AuthService interface {
 }
 
 type PlaylistService interface {
-	Create(context.Context, domain.CreatePlaylistParams) (domain.Playlist, error)
-	Get(ctx context.Context, uuid string) (domain.Playlist, error)
+	//Create(context.Context, domain.CreatePlaylistParams) (domain.Playlist, error)
+	//Get(ctx context.Context, uuid string) (domain.Playlist, error)
+
+	ListSongs(ctx context.Context, songs domain.ListSongs) (domain.SongsInPlaylist, error)
 }

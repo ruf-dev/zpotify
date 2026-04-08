@@ -31,20 +31,28 @@ func Swagger() (p string, handler http.HandlerFunc) {
 					URL:  path.Join(swaggerPath, "zpotify_common.swagger.json"),
 				},
 				{
+					Name: "ZpotifyServiceApi",
+					URL:  path.Join(swaggerPath, "zpotify_service_api.swagger.json"),
+				},
+				{
 					Name: "ZpotifyUser",
 					URL:  path.Join(swaggerPath, "zpotify_user.swagger.json"),
+				},
+				{
+					Name: "ZpotifyServiceAuth",
+					URL:  path.Join(swaggerPath, "zpotify_service_auth.swagger.json"),
+				},
+				{
+					Name: "ZpotifyServicePlaylist",
+					URL:  path.Join(swaggerPath, "zpotify_service_playlist.swagger.json"),
 				},
 				{
 					Name: "ZpotifyUserSettings",
 					URL:  path.Join(swaggerPath, "zpotify_user_settings.swagger.json"),
 				},
 				{
-					Name: "ZpotifyApiService",
-					URL:  path.Join(swaggerPath, "zpotify_api_service.swagger.json"),
-				},
-				{
-					Name: "ZpotifyAuthService",
-					URL:  path.Join(swaggerPath, "zpotify_auth_service.swagger.json"),
+					Name: "ZpotifyServiceUser",
+					URL:  path.Join(swaggerPath, "zpotify_service_user.swagger.json"),
 				},
 			}),
 		swaggerui.WithShowExtensions(true),

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.1
 // - protoc             v5.28.3
-// source: zpotify_auth_service.proto
+// source: zpotify_service_auth.proto
 
 package zpotify_api
 
@@ -235,5 +235,5 @@ var AuthAPI_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "zpotify_auth_service.proto",
+	Metadata: "zpotify_service_auth.proto",
 }

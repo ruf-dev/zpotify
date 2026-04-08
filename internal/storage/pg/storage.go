@@ -5,6 +5,8 @@ import (
 	"errors"
 
 	"github.com/lib/pq"
+	"github.com/rs/zerolog/log"
+	"go.redsock.ru/toolbox/closer"
 
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
@@ -14,8 +16,11 @@ type dataStorage struct {
 	authStorage    *AuthStorage
 	sessionStorage *SessionStorage
 
-	userStorage *UserStorage
-	useSettings *UserSettingsStorage
+	userStorage         *UserStorage
+	userSettingsStorage *UserSettingsStorage
+
+	songsStorage    *SongsStorage
+	playlistStorage *PlaylistStorage
 
 	conn *sql.DB
 }
@@ -26,6 +31,8 @@ func NewStorage(conn *sql.DB) storage.Storage {
 		NewSessionStorage(conn),
 		NewUserStorage(conn),
 		NewUserSettingsStorage(conn),
+		NewSongStorage(conn),
+		NewPlaylistStorage(conn),
 		conn,
 	}
 }
@@ -43,7 +50,15 @@ func (d *dataStorage) User() storage.UserStorage {
 }
 
 func (d *dataStorage) UserSettings() storage.UserSettingsStorage {
-	return d.useSettings
+	return d.userSettingsStorage
+}
+
+func (d *dataStorage) SongsStorage() storage.SongStorage {
+	return d.songsStorage
+}
+
+func (d *dataStorage) PlaylistStorage() storage.PlaylistStorage {
+	return d.playlistStorage
 }
 
 func (d *dataStorage) TxManager() *tx_manager.TxManager {
@@ -70,4 +85,12 @@ func wrapPgErr(err error) error {
 
 type scanner interface {
 	Scan(dest ...interface{}) error
+}
+
+func closeRowScanner(s closer.Closable) {
+	err := s()
+	if err != nil {
+		log.Err(err).
+			Msg("error closing row scanner")
+	}
 }
