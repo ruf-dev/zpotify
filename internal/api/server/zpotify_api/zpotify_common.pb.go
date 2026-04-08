@@ -124,6 +124,7 @@ type SongBase struct {
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
 	Artists       []*ArtistBase          `protobuf:"bytes,3,rep,name=artists,proto3" json:"artists,omitempty"`
 	DurationSec   int32                  `protobuf:"varint,4,opt,name=duration_sec,json=durationSec,proto3" json:"duration_sec,omitempty"`
+	FilePath      string                 `protobuf:"bytes,5,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -184,6 +185,13 @@ func (x *SongBase) GetDurationSec() int32 {
 		return x.DurationSec
 	}
 	return 0
+}
+
+func (x *SongBase) GetFilePath() string {
+	if x != nil {
+		return x.FilePath
+	}
+	return ""
 }
 
 type Playlist struct {
@@ -264,12 +272,13 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\x06offset\x18\x02 \x01(\x04R\x06offset\" \n" +
 	"\n" +
 	"ArtistBase\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"\x86\x01\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"\xa3\x01\n" +
 	"\bSongBase\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x121\n" +
 	"\aartists\x18\x03 \x03(\v2\x17.zpotify_api.ArtistBaseR\aartists\x12!\n" +
-	"\fduration_sec\x18\x04 \x01(\x05R\vdurationSec\"\x86\x01\n" +
+	"\fduration_sec\x18\x04 \x01(\x05R\vdurationSec\x12\x1b\n" +
+	"\tfile_path\x18\x05 \x01(\tR\bfilePath\"\x86\x01\n" +
 	"\bPlaylist\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +

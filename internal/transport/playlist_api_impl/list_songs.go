@@ -51,6 +51,7 @@ func toSong(base domain.PlaylistSong) *zpotify_api.SongBase {
 		Title:       base.Title,
 		Artists:     toArtists(base.Artists),
 		DurationSec: int32(base.Duration.Seconds()),
+		FilePath:    base.FilePath,
 	}
 }
 

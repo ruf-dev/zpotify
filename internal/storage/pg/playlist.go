@@ -37,6 +37,7 @@ func (s *PlaylistStorage) ListSongs(ctx context.Context, r domain.ListSongs) ([]
 			"title",
 			"duration_sec",
 			"artist_info",
+			"file_path",
 		)}.
 		buildSongBaseQuery().
 		applyListQueryFilters(r).
@@ -67,6 +68,7 @@ func (s *PlaylistStorage) ListSongs(ctx context.Context, r domain.ListSongs) ([]
 			&song.Title,
 			&durationSeconds,
 			&artistsInfoJson,
+			&song.FilePath,
 		)
 		if err != nil {
 			return nil, wrapPgErr(err)

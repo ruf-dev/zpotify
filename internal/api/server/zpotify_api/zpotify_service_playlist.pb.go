@@ -232,7 +232,6 @@ type ListSongs_Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Songs         []*SongBase            `protobuf:"bytes,1,rep,name=songs,proto3" json:"songs,omitempty"`
 	Total         uint64                 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
-	UserCanDelete bool                   `protobuf:"varint,3,opt,name=user_can_delete,json=userCanDelete,proto3" json:"user_can_delete,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -279,13 +278,6 @@ func (x *ListSongs_Response) GetTotal() uint64 {
 		return x.Total
 	}
 	return 0
-}
-
-func (x *ListSongs_Response) GetUserCanDelete() bool {
-	if x != nil {
-		return x.UserCanDelete
-	}
-	return false
 }
 
 type DeleteSong_Request struct {
@@ -564,7 +556,7 @@ var File_zpotify_service_playlist_proto protoreflect.FileDescriptor
 
 const file_zpotify_service_playlist_proto_rawDesc = "" +
 	"\n" +
-	"\x1ezpotify_service_playlist.proto\x12\vzpotify_api\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\x1a\x14zpotify_common.proto\"\xad\x02\n" +
+	"\x1ezpotify_service_playlist.proto\x12\vzpotify_api\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\x1a\x14zpotify_common.proto\"\x85\x02\n" +
 	"\tListSongs\x1a\xa8\x01\n" +
 	"\aRequest\x12+\n" +
 	"\x06paging\x18\x01 \x01(\v2\x13.zpotify_api.PagingR\x06paging\x12$\n" +
@@ -572,11 +564,10 @@ const file_zpotify_service_playlist_proto_rawDesc = "" +
 	"randomHash\x88\x01\x01\x12(\n" +
 	"\rplaylist_uuid\x18\x03 \x01(\tH\x01R\fplaylistUuid\x88\x01\x01B\x0e\n" +
 	"\f_random_hashB\x10\n" +
-	"\x0e_playlist_uuid\x1au\n" +
+	"\x0e_playlist_uuid\x1aM\n" +
 	"\bResponse\x12+\n" +
 	"\x05songs\x18\x01 \x03(\v2\x15.zpotify_api.SongBaseR\x05songs\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x04R\x05total\x12&\n" +
-	"\x0fuser_can_delete\x18\x03 \x01(\bR\ruserCanDelete\"a\n" +
+	"\x05total\x18\x02 \x01(\x04R\x05total\"a\n" +
 	"\n" +
 	"DeleteSong\x1aG\n" +
 	"\aRequest\x12#\n" +

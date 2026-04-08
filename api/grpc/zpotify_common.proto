@@ -21,6 +21,7 @@ message SongBase {
   string title = 2;
   repeated ArtistBase artists = 3;
   int32 duration_sec = 4;
+  string file_path = 5;
 }
 
 message Playlist {

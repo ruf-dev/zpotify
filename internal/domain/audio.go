@@ -79,6 +79,7 @@ type SongBase struct {
 	Id       int32
 	Title    string
 	Duration time.Duration
+	FilePath string
 }
 
 type Song struct {

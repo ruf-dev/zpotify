@@ -248,9 +248,6 @@
         "total": {
           "type": "string",
           "format": "uint64"
-        },
-        "userCanDelete": {
-          "type": "boolean"
         }
       }
     },
@@ -304,6 +301,9 @@
         "durationSec": {
           "type": "integer",
           "format": "int32"
+        },
+        "filePath": {
+          "type": "string"
         }
       }
     }
