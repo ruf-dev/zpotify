@@ -67,7 +67,9 @@ export default function MoreButton({onOpen, onClose, ops}: MoreButtonProps) {
                 <Menu options={ops}/>
             </div>
 
-            <div ref={buttonRef}>
+            <div
+                className={cls.MoreDotsWrapper}
+                ref={buttonRef}>
                 <MoreDots/>
             </div>
         </div>

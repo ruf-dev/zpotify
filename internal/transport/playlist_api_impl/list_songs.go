@@ -31,7 +31,7 @@ func (impl *Impl) ListSongs(ctx context.Context, req *zpotify_api.ListSongs_Requ
 
 	return &zpotify_api.ListSongs_Response{
 		Songs: toSongs(list.Songs),
-		Total: uint64(list.Total),
+		Total: uint32(list.Total),
 	}, nil
 }
 

@@ -88,4 +88,6 @@ type PlaylistService interface {
 	//Get(ctx context.Context, uuid string) (domain.Playlist, error)
 
 	ListSongs(ctx context.Context, songs domain.ListSongs) (domain.SongsInPlaylist, error)
+
+	//	https://claude.ai/chat/1f62c4c8-ea0c-4ade-ae1d-cb1b35bc7a5e Changine order
 }

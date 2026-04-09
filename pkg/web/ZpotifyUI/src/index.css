@@ -39,6 +39,8 @@ root, body {
 
     --element-border-color: #999999;
     --element-border-color-lighter: #c5c4c4;
+
+    --action-button-size: 2em;
 }
 
 

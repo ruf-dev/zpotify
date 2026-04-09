@@ -76,7 +76,8 @@ func (x *Paging) GetOffset() uint64 {
 
 type ArtistBase struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -109,6 +110,13 @@ func (x *ArtistBase) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ArtistBase.ProtoReflect.Descriptor instead.
 func (*ArtistBase) Descriptor() ([]byte, []int) {
 	return file_zpotify_common_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ArtistBase) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
 }
 
 func (x *ArtistBase) GetName() string {
@@ -269,10 +277,11 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\x14zpotify_common.proto\x12\vzpotify_api\x1a\tnpm.proto\"6\n" +
 	"\x06Paging\x12\x14\n" +
 	"\x05limit\x18\x01 \x01(\x04R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x02 \x01(\x04R\x06offset\" \n" +
+	"\x06offset\x18\x02 \x01(\x04R\x06offset\"4\n" +
 	"\n" +
 	"ArtistBase\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"\xa3\x01\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"\xa3\x01\n" +
 	"\bSongBase\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x121\n" +

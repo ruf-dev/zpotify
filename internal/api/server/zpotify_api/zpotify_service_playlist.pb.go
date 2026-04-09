@@ -231,7 +231,7 @@ func (x *ListSongs_Request) GetPlaylistUuid() string {
 type ListSongs_Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Songs         []*SongBase            `protobuf:"bytes,1,rep,name=songs,proto3" json:"songs,omitempty"`
-	Total         uint64                 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	Total         uint32                 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -273,7 +273,7 @@ func (x *ListSongs_Response) GetSongs() []*SongBase {
 	return nil
 }
 
-func (x *ListSongs_Response) GetTotal() uint64 {
+func (x *ListSongs_Response) GetTotal() uint32 {
 	if x != nil {
 		return x.Total
 	}
@@ -567,7 +567,7 @@ const file_zpotify_service_playlist_proto_rawDesc = "" +
 	"\x0e_playlist_uuid\x1aM\n" +
 	"\bResponse\x12+\n" +
 	"\x05songs\x18\x01 \x03(\v2\x15.zpotify_api.SongBaseR\x05songs\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x04R\x05total\"a\n" +
+	"\x05total\x18\x02 \x01(\rR\x05total\"a\n" +
 	"\n" +
 	"DeleteSong\x1aG\n" +
 	"\aRequest\x12#\n" +

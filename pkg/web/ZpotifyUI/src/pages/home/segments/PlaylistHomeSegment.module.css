@@ -1,9 +1,37 @@
 .PlaylistSegmentContainer {
-
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding-top: 2em;
 }
 
 .Tittle {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.EditButton {
+    position: absolute;
+    top: 1.5em;
+    right: 1.5em;
+}
+
+.GhostButtonWrapper {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out, grid-template-rows 0.3s ease-out;
+    opacity: 1;
+    transform: translateY(0);
+
+    & > div {
+        overflow: hidden;
+    }
+
+    &.hidden {
+        opacity: 0;
+        transform: translateY(-20px);
+        pointer-events: none;
+        grid-template-rows: 0fr;
+    }
 }

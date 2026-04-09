@@ -200,6 +200,9 @@
     "zpotify_apiArtistBase": {
       "type": "object",
       "properties": {
+        "uuid": {
+          "type": "string"
+        },
         "name": {
           "type": "string"
         }
@@ -246,8 +249,8 @@
           }
         },
         "total": {
-          "type": "string",
-          "format": "uint64"
+          "type": "integer",
+          "format": "int64"
         }
       }
     },
