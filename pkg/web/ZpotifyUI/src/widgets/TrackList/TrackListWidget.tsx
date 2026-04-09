@@ -64,9 +64,9 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
         const song = songs[idx];
         if (!song) return;
 
-        if (!song.id) throw "No song id";
+        if (!song.filePath) throw "No song url path";
 
-        audioPlayer.play(song.id);
+        audioPlayer.play(song.filePath);
 
         setCurrentSongIdx(idx);
 

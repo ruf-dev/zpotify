@@ -1,13 +1,12 @@
 import {useEffect, useState} from "react";
-import api from "@/app/api/api.ts";
 
 export interface AudioPlayer {
     isPlaying: boolean;
 
     togglePlay: () => boolean;
-    preload: (trackUniqueId: string) => void;
+    preload: (id: string) => void;
     unload: () => void;
-    play: (trackUniqueId: string) => void;
+    play: (id: string) => void;
 
     setVolume: (volume: number) => void;
     volume: number;
@@ -37,7 +36,7 @@ export default function useAudioPlayer(): AudioPlayer {
     const [volume, setVolume] = useState(36);
     const [isMuted, setIsMuted] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [songUniqueId, setSongUniqueId] = useState<string | null>(null);
+    const [songUniqueId, setSongUrl] = useState<string | null>(null);
 
     const [progress, setProgress] = useState(0); // 0–100 percentage
 
@@ -71,17 +70,16 @@ export default function useAudioPlayer(): AudioPlayer {
         setIsMuted(!isMuted);
     }
 
-    function preload(trackUniqueId: string): void {
-        const src = `${api()}/wapi/audio?fileId=${trackUniqueId}`;
-        if (audio.src === src) return;
+    function preload(trackUrl: string): void {
+        if (audio.src === trackUrl) return;
 
-        audio.src = src;
+        audio.src = trackUrl;
         audio.load();
-        setSongUniqueId(trackUniqueId);
+        setSongUrl(trackUrl);
     }
 
-    function play(trackUniqueId: string): void {
-        preload(trackUniqueId);
+    function play(trackUrl: string): void {
+        preload(trackUrl);
         startPlay();
     }
 
@@ -107,18 +105,18 @@ export default function useAudioPlayer(): AudioPlayer {
     }, [audio]);
 
 
-    const [nextUniqueId, setNextUniqueId] = useState<string | undefined>();
-    const [prevUniqueId, setPrevUniqueId] = useState<string | undefined>();
+    const [nextTrackUrl, setNextTrackUrl] = useState<string | undefined>();
+    const [prevTrackUrl, setPrevTrackUrl] = useState<string | undefined>();
 
     function playNext() {
-        if (nextUniqueId) {
-            play(nextUniqueId)
+        if (nextTrackUrl) {
+            play(nextTrackUrl)
         }
     }
 
     function playPrev() {
-        if (prevUniqueId) {
-            play(prevUniqueId)
+        if (prevTrackUrl) {
+            play(prevTrackUrl)
         }
     }
 
@@ -130,7 +128,7 @@ export default function useAudioPlayer(): AudioPlayer {
         preload,
         unload: () => {
             audio.src = '';
-            setSongUniqueId(null)
+            setSongUrl(null)
         },
         play,
         togglePlay,
@@ -150,8 +148,8 @@ export default function useAudioPlayer(): AudioPlayer {
         playNext,
         playPrev,
 
-        setNext: setNextUniqueId,
-        setPrev: setPrevUniqueId,
+        setNext: setNextTrackUrl,
+        setPrev: setPrevTrackUrl,
 
         shuffleHash,
         setShuffleHash,
