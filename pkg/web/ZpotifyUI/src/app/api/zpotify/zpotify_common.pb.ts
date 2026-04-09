@@ -12,6 +12,7 @@ export type Paging = {
 };
 
 export type ArtistBase = {
+  uuid?: string;
   name?: string;
 };
 
@@ -20,6 +21,7 @@ export type SongBase = {
   title?: string;
   artists?: ArtistBase[];
   durationSec?: number;
+  filePath?: string;
 };
 
 export type Playlist = {

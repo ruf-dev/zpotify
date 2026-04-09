@@ -1,24 +1,25 @@
 import cn from "classnames";
+import {useEffect, useState} from "react";
+import {SongBase} from "@/app/api/zpotify";
 
 import cls from "@/components/song/SongListItem.module.scss";
 
-import {Song} from "@/model/Song.ts";
-
-import MoreButton from "@/components/song/more/MoreButton.tsx";
-import {useEffect, useState} from "react";
 import {SongListPermissions} from "@/model/User.ts";
 
+import MoreButton from "@/components/song/more/MoreButton.tsx";
+import {formatDuration} from "@/utils/time.ts";
+
 type SongItemProp = {
-    song: Song
+    song: SongBase
     isSelected: boolean;
     isPlaying: boolean;
 
     isInteractionDisabled: boolean;
 
-    onMenuOpened?: (songUniqueId: string) => void
+    onMenuOpened?: (songId: string) => void
     onMenuClosed?: () => void
 
-    permissions: SongListPermissions
+    permissions?: SongListPermissions
 }
 
 export default function SongItem({
@@ -26,13 +27,15 @@ export default function SongItem({
                                      isPlaying, isSelected,
                                      onMenuOpened, onMenuClosed,
                                      isInteractionDisabled,
-                                     permissions,
                                  }: SongItemProp) {
     const [isHovered, setIsHovered] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     useEffect(() => {
-        if (isMenuOpen && onMenuOpened) onMenuOpened(song.uniqueId)
+        if (!song.id) throw new Error("song id must be provided");
+
+
+        if (isMenuOpen && onMenuOpened) onMenuOpened(song.id)
 
         if (!isMenuOpen && onMenuClosed) onMenuClosed()
     }, [isMenuOpen]);
@@ -41,7 +44,7 @@ export default function SongItem({
         {
             label: "Delete",
             onClick: () => console.log("Delete"),
-            disabled: !permissions.canDelete,
+            disabled: true,//!permissions.canDelete,
         },
     ]
 
@@ -65,7 +68,7 @@ export default function SongItem({
                     {song.title}
                 </div>
                 <div className={cls.Artists}>
-                    {song.artistsNames.join(", ")}
+                    {song.artists?.map((a) => a.name).join(", ")}
                 </div>
             </div>
 
@@ -79,11 +82,9 @@ export default function SongItem({
                 </div>
             ) : (
                 <div className={cls.Duration}>
-                    <div>{song.duration}</div>
+                    <div>{formatDuration(song.durationSec ?? 0)}</div>
                 </div>
             )}
-
-
         </div>
     );
 };

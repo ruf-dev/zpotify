@@ -1,38 +1,32 @@
 import {
-    GetPlaylistRequest,
-    GetPlaylistResponse,
-    ZpotifyAPI
+    PlaylistAPI,
+    Paging,
+
+    ListSongsResponse, ListSongsRequest,
+
 } from "@/app/api/zpotify";
 
-import {Playlist} from "@/model/Playlist.ts";
 import {BaseService} from "@/processes/BaseService.ts";
 
 export interface IPlaylistService {
-    GetPlaylist(uuid: string): Promise<Playlist>
+    ListSongs(uuid: string, offset: number, limit: number, shuffleHash: string | undefined): Promise<ListSongsResponse>
 }
 
 export class PlaylistService extends BaseService implements IPlaylistService {
-    async GetPlaylist(uuid: string): Promise<Playlist> {
-        return this.executeAuthApiCall(async (initReq) => {
-            const req = {
-                uuid: uuid,
-            } as GetPlaylistRequest
+    async ListSongs(uuid: string, offset: number, limit: number, shuffleHash: string | undefined): Promise<ListSongsResponse> {
+        const req = {
+            uuid: uuid,
+            paging: {
+                limit: limit.toString(),
+                offset: offset.toString(),
+            } as Paging,
+            randomHash: shuffleHash
+        } as ListSongsRequest
 
-            return ZpotifyAPI
-                .GetPlaylist(req, initReq)
-                .then(toPlaylist)
-        })
+        return this.executeAuthApiCall(
+            async (initReq) => {
+                return PlaylistAPI.ListSongs(req, initReq)
+            })
     }
 }
 
-function toPlaylist(pbPlaylist: GetPlaylistResponse): Playlist {
-    if (!pbPlaylist.playlist) {
-        throw new Error("playlist is empty")
-    }
-
-    return {
-        uuid: pbPlaylist.playlist.uuid,
-        title: pbPlaylist.playlist.name,
-        description: pbPlaylist.playlist.description,
-    } as Playlist
-}

@@ -1,16 +1,13 @@
 import {useEffect, useRef, useState} from "react";
-
-import {UserInfo} from "@/model/User.ts";
-
-import UserService from "@/processes/User.ts";
-import {ISongsService, SongsService} from "@/processes/Songs.ts";
-
-import {AuthService, IAuthService, AuthMiddleware} from "@/processes/Auth.ts";
+import {AuthData} from "@/app/api/zpotify";
 
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
+import {UserInfo} from "@/model/User.ts";
+import UserService from "@/processes/User.ts";
+import {ISongsService, SongsService} from "@/processes/Songs.ts";
+import {AuthService, IAuthService, AuthMiddleware} from "@/processes/Auth.ts";
 import {ISettingsService, SettingsService} from "@/processes/HomePage.ts";
 import {IPlaylistService, PlaylistService} from "@/processes/PlaylistService.ts";
-import {AuthData} from "@/app/api/zpotify/zpotify_auth_service.pb.ts";
 
 // Todo redo onto UserContext
 export interface User {

@@ -49,7 +49,7 @@ message ListSongs {
 
   message Response {
     repeated SongBase songs = 1;
-    uint64 total = 2;
+    uint32 total = 2;
   }
 }
 

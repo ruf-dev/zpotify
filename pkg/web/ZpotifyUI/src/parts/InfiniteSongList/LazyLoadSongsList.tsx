@@ -1,23 +1,20 @@
-import cls from "@/parts/InfiniteSongList/InfiniteSongsList.module.css";
-
-import {useEffect, useState} from "react";
-
-import SongListWidget from "@/widgets/TrackList/TrackListWidget.tsx";
-
-import {Song} from "@/model/Song.ts";
-
-import {AudioPlayer} from "@/hooks/player/player.ts";
-import ZButton from "@/components/base/button/ZButton.tsx";
-import {User} from "@/hooks/user/User.ts";
-import {SongListPermissions} from "@/model/User.ts";
-import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 import cn from "classnames";
+import {useEffect, useState} from "react";
+import {SongBase} from "@/app/api/zpotify";
+
+import cls from "@/parts/InfiniteSongList/InfiniteSongsList.module.css";
+import {AudioPlayer} from "@/hooks/player/player.ts";
+import {User} from "@/hooks/user/User.ts";
+
+import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
+import SongListWidget from "@/widgets/TrackList/TrackListWidget.tsx";
+import ZButton from "@/components/base/button/ZButton.tsx";
 
 interface InfiniteSongsListProps {
     audioPlayer: AudioPlayer
     user: User
 
-    playlistId?: string
+    playlistId: string
 
     // if true - block becomes scrollable
     fixedSize?: boolean
@@ -27,42 +24,39 @@ const songsPerPage = 10;
 
 export default function LazyLoadSongsList({audioPlayer, playlistId, user, fixedSize}: InfiniteSongsListProps) {
     const [offset, setOffset] = useState(0)
-    const [shuffleHash, setShuffleHash] = useState<number | null>(null);
+    const [shuffleHash, setShuffleHash] = useState<string | undefined>();
 
-    const [songs, setSongs] = useState<Song[]>([])
+    const [songs, setSongs] = useState<SongBase[]>([])
     const [isListEnded, setIsListEnded] = useState(false)
 
-    const songsService = user.Services().Songs()
-    const [permissions, setPermissions] = useState<SongListPermissions>({} as SongListPermissions);
+    const playlistService = user.Services().Playlist()
 
     const toaster = useToaster();
 
     function loadTracksPage() {
-        songsService.ListSongs(songsPerPage, offset, shuffleHash, playlistId)
+        playlistService
+            .ListSongs(playlistId, offset, songsPerPage, shuffleHash?.toString())
             .then((resp) => {
+                resp.songs = resp.songs || [];
 
-                setSongs(prev => [...prev, ...resp.songs.filter((newSong) => {
-                    return !prev.some(old => old.uniqueId == newSong.uniqueId)
+                setSongs(prev => [...prev, ...(resp.songs || []).filter((newSong) => {
+                    return !prev.some(old => old.id == newSong.id)
                 })])
 
                 setIsListEnded(resp.total == (songs.length + resp.songs.length))
-
-                const perms = {
-                    canDelete: resp.canDeleteSongs
-                } as SongListPermissions
-
-                setPermissions(perms)
             })
             .catch(toaster.catch)
     }
 
-    async function loadTracksShuffled(hash: number): Promise<string> {
-        return songsService.ListSongs(songs.length, 0, hash, playlistId)
+    async function loadTracksShuffled(hash: string): Promise<string> {
+        return playlistService.ListSongs(playlistId, 0, songs.length, hash)
             .then((resp) => {
-                setSongs(resp.songs)
-                setIsListEnded(resp.total == resp.songs.length)
+                if (!resp.songs) return
 
-                return resp.songs[0].uniqueId
+                setSongs(resp.songs)
+                setIsListEnded(resp.total == resp.songs?.length)
+
+                return resp.songs[0].id
             })
             .catch(toaster.catch)
             .then()
@@ -83,7 +77,7 @@ export default function LazyLoadSongsList({audioPlayer, playlistId, user, fixedS
     }, [shuffleHash]);
 
     useEffect(() => {
-        setShuffleHash(audioPlayer.shuffleHash)
+        setShuffleHash(audioPlayer.shuffleHash?.toString())
     }, [audioPlayer.shuffleHash]);
 
     function loadMore() {
@@ -96,7 +90,6 @@ export default function LazyLoadSongsList({audioPlayer, playlistId, user, fixedS
         })}>
             <SongListWidget
                 songs={songs}
-                permissions={permissions}
                 audioPlayer={audioPlayer}
             />
 
