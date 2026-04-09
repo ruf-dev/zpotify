@@ -13,7 +13,6 @@ interface DisplayPlaylistSegmentProps {
 }
 
 export default function PlaylistHomeSegment({audioPlayer, user, playlistUuid}: DisplayPlaylistSegmentProps) {
-
     return (
         <div>
             <div className={cls.Tittle}>{"Global queue"}</div>
@@ -22,6 +21,7 @@ export default function PlaylistHomeSegment({audioPlayer, user, playlistUuid}: D
                 user={user}
                 playlistId={playlistUuid}
             />
+            <button>+</button>
         </div>
     )
 }

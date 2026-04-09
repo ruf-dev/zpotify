@@ -71,13 +71,13 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
         setCurrentSongIdx(idx);
 
         audioPlayer.onEnd(() => {
-            const nextSongId = getNext(idx);
-            if (nextSongId) {
-                const nextIdx = songs.findIndex(s => s.id === nextSongId);
+            const nextSongUrl = getNext(idx);
+            if (nextSongUrl) {
+                const nextIdx = songs.findIndex(s => s.filePath === nextSongUrl);
                 playSongAtIndex(nextIdx);
             }
 
-            return nextSongId
+            return nextSongUrl
         });
     }
 
