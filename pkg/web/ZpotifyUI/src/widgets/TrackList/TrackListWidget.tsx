@@ -23,11 +23,11 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
     useEffect(() => {
         if (!songs) return
 
-        const uId = songs.findIndex((s) => s.id == audioPlayer.songUniqueId)
+        const uId = songs.findIndex((s) => s.filePath == audioPlayer.songUrl)
         if (uId == -1) return;
 
         setCurrentSongIdx(uId);
-    }, [audioPlayer.songUniqueId, songs]);
+    }, [audioPlayer.songUrl, songs]);
 
     function getNext(currentIdx: number): string | undefined {
         if (songs.length == 0 || currentIdx == -1) {
@@ -35,10 +35,10 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
         }
 
         if (currentIdx < 0 || currentIdx + 1 >= songs.length) {
-            return songs[0].id;
+            return songs[0].filePath;
         }
 
-        return songs[currentIdx + 1].id;
+        return songs[currentIdx + 1].filePath;
     }
 
     function getPrev(currentIdx: number): string | undefined {
@@ -47,18 +47,18 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
         }
 
         if (currentIdx === 0) {
-            return songs[songs.length - 1].id;
+            return songs[songs.length - 1].filePath;
         }
 
-        return songs[currentIdx - 1].id;
+        return songs[currentIdx - 1].filePath;
     }
 
     useEffect(() => {
         const currentSongIdx = songs
-            .findIndex((s) => s.id == audioPlayer.songUniqueId)
+            .findIndex((s) => s.filePath == audioPlayer.songUrl)
         audioPlayer.setNext(getNext(currentSongIdx))
         audioPlayer.setPrev(getPrev(currentSongIdx))
-    }, [audioPlayer.songUniqueId]);
+    }, [audioPlayer.songUrl]);
 
     function playSongAtIndex(idx: number) {
         const song = songs[idx];
@@ -92,7 +92,7 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
                     <SongListItem
                         song={s}
 
-                        isPlaying={audioPlayer.isPlaying && audioPlayer.songUniqueId === s.id}
+                        isPlaying={audioPlayer.isPlaying && audioPlayer.songUrl === s.id}
                         isSelected={currentSongIdx === idx}
 
                         onMenuOpened={setMenuOpenedSongId}

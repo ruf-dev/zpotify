@@ -41,7 +41,7 @@ export default function MusicPlayerWithLogo({audioPlayer}: MusicPlayerProps) {
 
             <div className={cn(cls.TrackProgressControlsWrapper,
                 {
-                    [cls.open]: isOpened && audioPlayer.songUniqueId != null
+                    [cls.open]: isOpened && audioPlayer.songUrl != null
                 })}>
                 <TrackProgressControls audioPlayer={audioPlayer}/>
             </div>
