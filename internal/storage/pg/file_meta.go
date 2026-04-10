@@ -3,6 +3,7 @@ package pg
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
@@ -22,12 +23,18 @@ func NewFileMetaStorage(db sqldb.DB) *FileMetaStorage {
 	}
 }
 
-func (s *FileMetaStorage) Add(ctx context.Context, req domain.FileMeta) error {
-	return nil
-}
+func (s *FileMetaStorage) Add(ctx context.Context, req domain.FileMeta) (int64, error) {
+	id, err := s.q.CreateFile(ctx, querier.CreateFileParams{
+		FilePath:    req.FilePath,
+		DurationSec: int32(req.Duration.Seconds()),
+		AddedByID:   int16(req.AddedById),
+		SizeBytes:   int32(req.SizeBytes),
+	})
+	if err != nil {
+		return 0, wrapPgErr(err)
+	}
 
-func (s *FileMetaStorage) Upsert(ctx context.Context, req domain.FileMeta) error {
-	return nil
+	return int64(id), nil
 }
 
 func (s *FileMetaStorage) Get(ctx context.Context, fileId int64) (file domain.FileMeta, err error) {
@@ -95,6 +102,19 @@ func (s *FileMetaStorage) Delete(ctx context.Context, fileId int64) error {
 	return nil
 }
 
+func (s *FileMetaStorage) Update(ctx context.Context, fileId int64, file domain.File) error {
+	err := s.q.UpdateFile(ctx, querier.UpdateFileParams{
+		ID:          int32(fileId),
+		DurationSec: int32(file.Duration.Seconds()),
+		SizeBytes:   int32(file.SizeBytes),
+	})
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
 //func (s *FileMetaStorage) scan(rs scanner) (file domain.FileMeta, err error) {
 //	return file, rs.Scan(
 //		&file.UniqueFileId,
@@ -105,16 +125,20 @@ func (s *FileMetaStorage) Delete(ctx context.Context, fileId int64) error {
 //	)
 //}
 
-func (s *FileMetaStorage) WithTx(tx *sql.Tx) storage.FileMetaStorage {
-	return NewFileMetaStorage(tx)
-}
-
 func toFileDomain(f querier.FilesMetum) domain.FileMeta {
 	return domain.FileMeta{
 		File: domain.File{
 			FilePath:  f.FilePath,
 			SizeBytes: int64(f.SizeBytes),
+			Duration:  time.Duration(f.DurationSec) * time.Second,
 		},
 		AddedById: int64(f.AddedByID),
+	}
+}
+
+func (s *FileMetaStorage) WithTx(tx *sql.Tx) storage.FileMetaStorage {
+	return &FileMetaStorage{
+		db: tx,
+		q:  querier.New(tx),
 	}
 }

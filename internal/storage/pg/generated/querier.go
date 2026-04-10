@@ -11,6 +11,7 @@ import (
 )
 
 type Querier interface {
+	CreateFile(ctx context.Context, arg CreateFileParams) (int32, error)
 	CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error)
 	CreateSong(ctx context.Context, arg CreateSongParams) error
 	DeleteExpiredSessions(ctx context.Context) error
@@ -29,6 +30,7 @@ type Querier interface {
 	ListUserPermissionsByUserId(ctx context.Context, userID int16) (UserPermission, error)
 	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error
 	SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error
+	UpdateFile(ctx context.Context, arg UpdateFileParams) error
 	UpsertSongArtist(ctx context.Context, arg UpsertSongArtistParams) error
 	UpsertUser(ctx context.Context, username string) error
 	UpsertUserPlaylist(ctx context.Context, arg UpsertUserPlaylistParams) error

@@ -24,6 +24,7 @@ type Storage interface {
 
 	SongsStorage() SongStorage
 	PlaylistStorage() PlaylistStorage
+	FileMeta() FileMetaStorage
 
 	TxManager() *tx_manager.TxManager
 }
@@ -51,15 +52,15 @@ type UserStorage interface {
 type FileMetaStorage interface {
 	WithTx(tx *sql.Tx) FileMetaStorage
 
-	// Add - saves meta to storage. Can return ErrAlreadyExists error
-	Add(ctx context.Context, user domain.FileMeta) error
+	// Add - saves meta to storage.
+	Add(ctx context.Context, file domain.FileMeta) (int64, error)
 
-	Upsert(ctx context.Context, user domain.FileMeta) error
+	Get(ctx context.Context, fileId int64) (domain.FileMeta, error)
 
-	Get(ctx context.Context, uniqueFileId int64) (domain.FileMeta, error)
+	Update(ctx context.Context, fileId int64, file domain.File) error
 
 	List(ctx context.Context, listReq domain.ListFileMeta) ([]domain.FileMeta, error)
-	Delete(ctx context.Context, uniqueFileId int64) error
+	Delete(ctx context.Context, fileId int64) error
 }
 
 type SessionStorage interface {

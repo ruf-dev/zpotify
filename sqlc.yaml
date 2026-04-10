@@ -16,13 +16,13 @@ sql:
         emit_empty_slices: true
   - engine: "postgresql"
     queries:
-      - "internal/storage/pg/queries/playlist/*.sql"
+      - "internal/storage/pg/queries/*.sql"
     schema:
       - "migrations/*.sql"
     gen:
       go:
-        package: "playlist_q"
-        out: "internal/storage/pg/generated/playlist_q"
+        package: "querier"
+        out: "internal/storage/pg/generated"
         sql_package: "database/sql"
         emit_prepared_queries: false
         emit_interface: true

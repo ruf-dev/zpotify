@@ -16,6 +16,7 @@ type Service interface {
 	UserService() UserService
 	AuthService() AuthService
 	PlaylistService() PlaylistService
+	FileService() FileService
 }
 
 type service struct {
@@ -23,6 +24,7 @@ type service struct {
 	userService     UserService
 	authService     AuthService
 	playlistService PlaylistService
+	fileService     FileService
 }
 
 func New(dataStorage storage.Storage, cache files_cache.FilesCache) Service {
@@ -31,6 +33,7 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache) Service {
 		userService:     v1.NewUserService(dataStorage),
 		authService:     v1.NewAuthService(dataStorage),
 		playlistService: v1.NewPlaylistService(dataStorage),
+		fileService:     v1.NewFileService(dataStorage),
 	}
 }
 
@@ -48,6 +51,10 @@ func (s *service) AuthService() AuthService {
 
 func (s *service) PlaylistService() PlaylistService {
 	return s.playlistService
+}
+
+func (s *service) FileService() FileService {
+	return s.fileService
 }
 
 type AudioService interface {
@@ -88,6 +95,9 @@ type PlaylistService interface {
 	//Get(ctx context.Context, uuid string) (domain.Playlist, error)
 
 	ListSongs(ctx context.Context, songs domain.ListSongs) (domain.SongsInPlaylist, error)
+}
 
-	//	https://claude.ai/chat/1f62c4c8-ea0c-4ade-ae1d-cb1b35bc7a5e Changine order
+type FileService interface {
+	Create(ctx context.Context, name string) (int64, error)
+	Upload(ctx context.Context, id int64, content []byte) (string, error)
 }

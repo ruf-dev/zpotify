@@ -13,6 +13,7 @@ Data flows: **Transport -> Service -> Storage**.
 - Responsible for request/response mapping between external protocols (e.g., Protobuf) and `internal/domain`.
 - No business logic should reside here.
 - Example: `internal/transport/playlist_api_impl/list_songs.go`.
+- Each handle should be in separate file
 
 ### 2. Service Layer (`internal/service/`)
 - Contains core business logic.

@@ -126,6 +126,16 @@ type PlaylistSong struct {
 	OrderNumber  int16
 }
 
+type PlaylistsSongsV1 struct {
+	PlaylistUuid uuid.UUID
+	ID           int32
+	Title        string
+	DurationSec  int32
+	FilePath     string
+	ArtistInfo   json.RawMessage
+	OrderNumber  int16
+}
+
 type Song struct {
 	ID        int32
 	FileID    int32

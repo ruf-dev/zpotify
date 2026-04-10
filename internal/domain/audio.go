@@ -44,6 +44,10 @@ type File struct {
 	Duration  time.Duration
 }
 
+type FileParser interface {
+	Parse(content []byte) (duration time.Duration, size int64, err error)
+}
+
 const GlobalPlaylistUuid = "00000000-0000-0000-0000-000000000000"
 
 type ListSongs struct {

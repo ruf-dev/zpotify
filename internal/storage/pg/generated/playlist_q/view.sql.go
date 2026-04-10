@@ -14,22 +14,18 @@ import (
 const listSongs = `-- name: ListSongs :many
 SELECT songs.id,
        songs.title,
-       files_meta.duration_sec,
-       array_agg(artists.uuid order by songs_artists.order_id)
+       files_meta.duration_sec
 FROM playlist_songs
          INNER JOIN songs ON songs.id = playlist_songs.song_id
          INNER JOIN files_meta ON files_meta.id = songs.file_id
-         INNER JOIN songs_artists ON songs.id = songs_artists.song_id
-         INNER JOIN artists ON artists.uuid = songs_artists.artist_uuid
 WHERE playlist_uuid = $1
-group by songs.id, songs.title, files_meta.duration_sec
+GROUP BY songs.id, songs.title, files_meta.duration_sec
 `
 
 type ListSongsRow struct {
 	ID          int32
 	Title       string
 	DurationSec int32
-	ArrayAgg    interface{}
 }
 
 func (q *Queries) ListSongs(ctx context.Context, playlistUuid uuid.UUID) ([]ListSongsRow, error) {
@@ -41,12 +37,7 @@ func (q *Queries) ListSongs(ctx context.Context, playlistUuid uuid.UUID) ([]List
 	items := []ListSongsRow{}
 	for rows.Next() {
 		var i ListSongsRow
-		if err := rows.Scan(
-			&i.ID,
-			&i.Title,
-			&i.DurationSec,
-			&i.ArrayAgg,
-		); err != nil {
+		if err := rows.Scan(&i.ID, &i.Title, &i.DurationSec); err != nil {
 			return nil, err
 		}
 		items = append(items, i)

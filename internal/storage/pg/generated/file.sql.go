@@ -9,6 +9,31 @@ import (
 	"context"
 )
 
+const createFile = `-- name: CreateFile :one
+INSERT INTO files_meta (file_path, duration_sec, added_by_id, size_bytes)
+VALUES ($1, $2, $3, $4)
+RETURNING id
+`
+
+type CreateFileParams struct {
+	FilePath    string
+	DurationSec int32
+	AddedByID   int16
+	SizeBytes   int32
+}
+
+func (q *Queries) CreateFile(ctx context.Context, arg CreateFileParams) (int32, error) {
+	row := q.db.QueryRowContext(ctx, createFile,
+		arg.FilePath,
+		arg.DurationSec,
+		arg.AddedByID,
+		arg.SizeBytes,
+	)
+	var id int32
+	err := row.Scan(&id)
+	return id, err
+}
+
 const deleteFileById = `-- name: DeleteFileById :exec
 DELETE FROM files_meta
 WHERE id = $1
@@ -40,4 +65,22 @@ func (q *Queries) GetFileById(ctx context.Context, id int32) (FilesMetum, error)
 		&i.SizeBytes,
 	)
 	return i, err
+}
+
+const updateFile = `-- name: UpdateFile :exec
+UPDATE files_meta
+SET duration_sec = $2,
+    size_bytes = $3
+WHERE id = $1
+`
+
+type UpdateFileParams struct {
+	ID          int32
+	DurationSec int32
+	SizeBytes   int32
+}
+
+func (q *Queries) UpdateFile(ctx context.Context, arg UpdateFileParams) error {
+	_, err := q.db.ExecContext(ctx, updateFile, arg.ID, arg.DurationSec, arg.SizeBytes)
+	return err
 }

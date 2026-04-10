@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package zpotify_api;
+
+import "google/api/annotations.proto";
+import "npm.proto";
+
+option go_package = "/zpotify_api;zpotify_api";
+option (npm_package) = "@zpotify/api";
+
+service FileAPI {
+  rpc CreateFile(CreateFile.Request) returns (CreateFile.Response) {
+    option (google.api.http) = {
+      post: "/api/file/create",
+      body: "*"
+    };
+  };
+
+  rpc UploadFile(UploadFile.Request) returns (UploadFile.Response) {
+    option (google.api.http) = {
+      post: "/api/file/upload",
+      body: "*"
+    };
+  };
+}
+
+message CreateFile {
+  message Request {
+    string name = 1;
+    optional string content_type = 2;
+  }
+
+  message Response {
+    string id = 1;
+  }
+}
+
+message UploadFile {
+  message Request {
+    string id = 1;
+    bytes content = 2;
+  }
+
+  message Response {
+    string path = 1;
+  }
+}

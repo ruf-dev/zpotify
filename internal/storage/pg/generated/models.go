@@ -13,6 +13,47 @@ import (
 	"github.com/google/uuid"
 )
 
+type IdentityProvider string
+
+const (
+	IdentityProviderZPOTIFY IdentityProvider = "ZPOTIFY"
+)
+
+func (e *IdentityProvider) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = IdentityProvider(s)
+	case string:
+		*e = IdentityProvider(s)
+	default:
+		return fmt.Errorf("unsupported scan type for IdentityProvider: %T", src)
+	}
+	return nil
+}
+
+type NullIdentityProvider struct {
+	IdentityProvider IdentityProvider
+	Valid            bool // Valid is true if IdentityProvider is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullIdentityProvider) Scan(value interface{}) error {
+	if value == nil {
+		ns.IdentityProvider, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.IdentityProvider.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullIdentityProvider) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.IdentityProvider), nil
+}
+
 type UserHomeSegmentType string
 
 const (
@@ -85,6 +126,16 @@ type PlaylistSong struct {
 	OrderNumber  int16
 }
 
+type PlaylistsSongsV1 struct {
+	PlaylistUuid uuid.UUID
+	ID           int32
+	Title        string
+	DurationSec  int32
+	FilePath     string
+	ArtistInfo   json.RawMessage
+	OrderNumber  int16
+}
+
 type Song struct {
 	ID        int32
 	FileID    int32
@@ -108,6 +159,13 @@ type UserHomeSegment struct {
 	Segment     json.RawMessage
 	Type        UserHomeSegmentType
 	OrderNumber int32
+}
+
+type UserIdentity struct {
+	ID               int32
+	UserID           int16
+	IdentityProvider IdentityProvider
+	Payload          json.RawMessage
 }
 
 type UserPermission struct {

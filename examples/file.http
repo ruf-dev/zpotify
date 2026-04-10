@@ -1,0 +1,19 @@
+### Create file metadata
+POST {{zpotify-api}}/api/file/create
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "name": "example_song.mp3",
+  "content_type": "audio/mpeg"
+}
+
+### Upload file content
+POST {{zpotify-api}}/api/file/upload
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "id": "3",
+  "content": "SGVsbG8gWnBvdGlmeSE="
+}
