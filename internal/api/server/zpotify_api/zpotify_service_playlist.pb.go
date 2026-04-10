@@ -167,6 +167,42 @@ func (*GetPlaylist) Descriptor() ([]byte, []int) {
 	return file_zpotify_service_playlist_proto_rawDescGZIP(), []int{3}
 }
 
+type ChangeSongsOrder struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChangeSongsOrder) Reset() {
+	*x = ChangeSongsOrder{}
+	mi := &file_zpotify_service_playlist_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChangeSongsOrder) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChangeSongsOrder) ProtoMessage() {}
+
+func (x *ChangeSongsOrder) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_playlist_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChangeSongsOrder.ProtoReflect.Descriptor instead.
+func (*ChangeSongsOrder) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_playlist_proto_rawDescGZIP(), []int{4}
+}
+
 type ListSongs_Request struct {
 	state      protoimpl.MessageState `protogen:"open.v1"`
 	Paging     *Paging                `protobuf:"bytes,1,opt,name=paging,proto3" json:"paging,omitempty"`
@@ -179,7 +215,7 @@ type ListSongs_Request struct {
 
 func (x *ListSongs_Request) Reset() {
 	*x = ListSongs_Request{}
-	mi := &file_zpotify_service_playlist_proto_msgTypes[4]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -191,7 +227,7 @@ func (x *ListSongs_Request) String() string {
 func (*ListSongs_Request) ProtoMessage() {}
 
 func (x *ListSongs_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_playlist_proto_msgTypes[4]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -238,7 +274,7 @@ type ListSongs_Response struct {
 
 func (x *ListSongs_Response) Reset() {
 	*x = ListSongs_Response{}
-	mi := &file_zpotify_service_playlist_proto_msgTypes[5]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -250,7 +286,7 @@ func (x *ListSongs_Response) String() string {
 func (*ListSongs_Response) ProtoMessage() {}
 
 func (x *ListSongs_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_playlist_proto_msgTypes[5]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -290,7 +326,7 @@ type DeleteSong_Request struct {
 
 func (x *DeleteSong_Request) Reset() {
 	*x = DeleteSong_Request{}
-	mi := &file_zpotify_service_playlist_proto_msgTypes[6]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -302,7 +338,7 @@ func (x *DeleteSong_Request) String() string {
 func (*DeleteSong_Request) ProtoMessage() {}
 
 func (x *DeleteSong_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_playlist_proto_msgTypes[6]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -340,7 +376,7 @@ type DeleteSong_Response struct {
 
 func (x *DeleteSong_Response) Reset() {
 	*x = DeleteSong_Response{}
-	mi := &file_zpotify_service_playlist_proto_msgTypes[7]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -352,7 +388,7 @@ func (x *DeleteSong_Response) String() string {
 func (*DeleteSong_Response) ProtoMessage() {}
 
 func (x *DeleteSong_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_playlist_proto_msgTypes[7]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -378,7 +414,7 @@ type CreatePlaylist_Request struct {
 
 func (x *CreatePlaylist_Request) Reset() {
 	*x = CreatePlaylist_Request{}
-	mi := &file_zpotify_service_playlist_proto_msgTypes[8]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -390,7 +426,7 @@ func (x *CreatePlaylist_Request) String() string {
 func (*CreatePlaylist_Request) ProtoMessage() {}
 
 func (x *CreatePlaylist_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_playlist_proto_msgTypes[8]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -429,7 +465,7 @@ type CreatePlaylist_Response struct {
 
 func (x *CreatePlaylist_Response) Reset() {
 	*x = CreatePlaylist_Response{}
-	mi := &file_zpotify_service_playlist_proto_msgTypes[9]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -441,7 +477,7 @@ func (x *CreatePlaylist_Response) String() string {
 func (*CreatePlaylist_Response) ProtoMessage() {}
 
 func (x *CreatePlaylist_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_playlist_proto_msgTypes[9]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -473,7 +509,7 @@ type GetPlaylist_Request struct {
 
 func (x *GetPlaylist_Request) Reset() {
 	*x = GetPlaylist_Request{}
-	mi := &file_zpotify_service_playlist_proto_msgTypes[10]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -485,7 +521,7 @@ func (x *GetPlaylist_Request) String() string {
 func (*GetPlaylist_Request) ProtoMessage() {}
 
 func (x *GetPlaylist_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_playlist_proto_msgTypes[10]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -517,7 +553,7 @@ type GetPlaylist_Response struct {
 
 func (x *GetPlaylist_Response) Reset() {
 	*x = GetPlaylist_Response{}
-	mi := &file_zpotify_service_playlist_proto_msgTypes[11]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -529,7 +565,7 @@ func (x *GetPlaylist_Response) String() string {
 func (*GetPlaylist_Response) ProtoMessage() {}
 
 func (x *GetPlaylist_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_playlist_proto_msgTypes[11]
+	mi := &file_zpotify_service_playlist_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -550,6 +586,78 @@ func (x *GetPlaylist_Response) GetPlaylist() *Playlist {
 		return x.Playlist
 	}
 	return nil
+}
+
+type ChangeSongsOrder_Request struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChangeSongsOrder_Request) Reset() {
+	*x = ChangeSongsOrder_Request{}
+	mi := &file_zpotify_service_playlist_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChangeSongsOrder_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChangeSongsOrder_Request) ProtoMessage() {}
+
+func (x *ChangeSongsOrder_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_playlist_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChangeSongsOrder_Request.ProtoReflect.Descriptor instead.
+func (*ChangeSongsOrder_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_playlist_proto_rawDescGZIP(), []int{4, 0}
+}
+
+type ChangeSongsOrder_Response struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChangeSongsOrder_Response) Reset() {
+	*x = ChangeSongsOrder_Response{}
+	mi := &file_zpotify_service_playlist_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChangeSongsOrder_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChangeSongsOrder_Response) ProtoMessage() {}
+
+func (x *ChangeSongsOrder_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_playlist_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChangeSongsOrder_Response.ProtoReflect.Descriptor instead.
+func (*ChangeSongsOrder_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_playlist_proto_rawDescGZIP(), []int{4, 1}
 }
 
 var File_zpotify_service_playlist_proto protoreflect.FileDescriptor
@@ -586,13 +694,18 @@ const file_zpotify_service_playlist_proto_rawDesc = "" +
 	"\aRequest\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x1a=\n" +
 	"\bResponse\x121\n" +
-	"\bplaylist\x18\x01 \x01(\v2\x15.zpotify_api.PlaylistR\bplaylist2\xdc\x03\n" +
+	"\bplaylist\x18\x01 \x01(\v2\x15.zpotify_api.PlaylistR\bplaylist\")\n" +
+	"\x10ChangeSongsOrder\x1a\t\n" +
+	"\aRequest\x1a\n" +
+	"\n" +
+	"\bResponse2\xe3\x04\n" +
 	"\vPlaylistAPI\x12|\n" +
 	"\x0eCreatePlaylist\x12#.zpotify_api.CreatePlaylist.Request\x1a$.zpotify_api.CreatePlaylist.Response\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/playlist/create\x12p\n" +
 	"\vGetPlaylist\x12 .zpotify_api.GetPlaylist.Request\x1a!.zpotify_api.GetPlaylist.Response\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/api/playlist/{uuid}\x12r\n" +
 	"\n" +
 	"DeleteSong\x12\x1f.zpotify_api.DeleteSong.Request\x1a .zpotify_api.DeleteSong.Response\"!\x82\xd3\xe4\x93\x02\x1b\"\x19/api/playlist/delete_song\x12i\n" +
-	"\tListSongs\x12\x1e.zpotify_api.ListSongs.Request\x1a\x1f.zpotify_api.ListSongs.Response\"\x1b\x82\xd3\xe4\x93\x02\x15\"\x13/api/playlist/songsB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\tListSongs\x12\x1e.zpotify_api.ListSongs.Request\x1a\x1f.zpotify_api.ListSongs.Response\"\x1b\x82\xd3\xe4\x93\x02\x15\"\x13/api/playlist/songs\x12\x84\x01\n" +
+	"\x10ChangeSongsOrder\x12%.zpotify_api.ChangeSongsOrder.Request\x1a&.zpotify_api.ChangeSongsOrder.Response\"!\x82\xd3\xe4\x93\x02\x1b\"\x19/api/playlist/songs/orderB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_playlist_proto_rawDescOnce sync.Once
@@ -606,38 +719,43 @@ func file_zpotify_service_playlist_proto_rawDescGZIP() []byte {
 	return file_zpotify_service_playlist_proto_rawDescData
 }
 
-var file_zpotify_service_playlist_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_zpotify_service_playlist_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_zpotify_service_playlist_proto_goTypes = []any{
-	(*ListSongs)(nil),               // 0: zpotify_api.ListSongs
-	(*DeleteSong)(nil),              // 1: zpotify_api.DeleteSong
-	(*CreatePlaylist)(nil),          // 2: zpotify_api.CreatePlaylist
-	(*GetPlaylist)(nil),             // 3: zpotify_api.GetPlaylist
-	(*ListSongs_Request)(nil),       // 4: zpotify_api.ListSongs.Request
-	(*ListSongs_Response)(nil),      // 5: zpotify_api.ListSongs.Response
-	(*DeleteSong_Request)(nil),      // 6: zpotify_api.DeleteSong.Request
-	(*DeleteSong_Response)(nil),     // 7: zpotify_api.DeleteSong.Response
-	(*CreatePlaylist_Request)(nil),  // 8: zpotify_api.CreatePlaylist.Request
-	(*CreatePlaylist_Response)(nil), // 9: zpotify_api.CreatePlaylist.Response
-	(*GetPlaylist_Request)(nil),     // 10: zpotify_api.GetPlaylist.Request
-	(*GetPlaylist_Response)(nil),    // 11: zpotify_api.GetPlaylist.Response
-	(*Paging)(nil),                  // 12: zpotify_api.Paging
-	(*SongBase)(nil),                // 13: zpotify_api.SongBase
-	(*Playlist)(nil),                // 14: zpotify_api.Playlist
+	(*ListSongs)(nil),                 // 0: zpotify_api.ListSongs
+	(*DeleteSong)(nil),                // 1: zpotify_api.DeleteSong
+	(*CreatePlaylist)(nil),            // 2: zpotify_api.CreatePlaylist
+	(*GetPlaylist)(nil),               // 3: zpotify_api.GetPlaylist
+	(*ChangeSongsOrder)(nil),          // 4: zpotify_api.ChangeSongsOrder
+	(*ListSongs_Request)(nil),         // 5: zpotify_api.ListSongs.Request
+	(*ListSongs_Response)(nil),        // 6: zpotify_api.ListSongs.Response
+	(*DeleteSong_Request)(nil),        // 7: zpotify_api.DeleteSong.Request
+	(*DeleteSong_Response)(nil),       // 8: zpotify_api.DeleteSong.Response
+	(*CreatePlaylist_Request)(nil),    // 9: zpotify_api.CreatePlaylist.Request
+	(*CreatePlaylist_Response)(nil),   // 10: zpotify_api.CreatePlaylist.Response
+	(*GetPlaylist_Request)(nil),       // 11: zpotify_api.GetPlaylist.Request
+	(*GetPlaylist_Response)(nil),      // 12: zpotify_api.GetPlaylist.Response
+	(*ChangeSongsOrder_Request)(nil),  // 13: zpotify_api.ChangeSongsOrder.Request
+	(*ChangeSongsOrder_Response)(nil), // 14: zpotify_api.ChangeSongsOrder.Response
+	(*Paging)(nil),                    // 15: zpotify_api.Paging
+	(*SongBase)(nil),                  // 16: zpotify_api.SongBase
+	(*Playlist)(nil),                  // 17: zpotify_api.Playlist
 }
 var file_zpotify_service_playlist_proto_depIdxs = []int32{
-	12, // 0: zpotify_api.ListSongs.Request.paging:type_name -> zpotify_api.Paging
-	13, // 1: zpotify_api.ListSongs.Response.songs:type_name -> zpotify_api.SongBase
-	14, // 2: zpotify_api.GetPlaylist.Response.playlist:type_name -> zpotify_api.Playlist
-	8,  // 3: zpotify_api.PlaylistAPI.CreatePlaylist:input_type -> zpotify_api.CreatePlaylist.Request
-	10, // 4: zpotify_api.PlaylistAPI.GetPlaylist:input_type -> zpotify_api.GetPlaylist.Request
-	6,  // 5: zpotify_api.PlaylistAPI.DeleteSong:input_type -> zpotify_api.DeleteSong.Request
-	4,  // 6: zpotify_api.PlaylistAPI.ListSongs:input_type -> zpotify_api.ListSongs.Request
-	9,  // 7: zpotify_api.PlaylistAPI.CreatePlaylist:output_type -> zpotify_api.CreatePlaylist.Response
-	11, // 8: zpotify_api.PlaylistAPI.GetPlaylist:output_type -> zpotify_api.GetPlaylist.Response
-	7,  // 9: zpotify_api.PlaylistAPI.DeleteSong:output_type -> zpotify_api.DeleteSong.Response
-	5,  // 10: zpotify_api.PlaylistAPI.ListSongs:output_type -> zpotify_api.ListSongs.Response
-	7,  // [7:11] is the sub-list for method output_type
-	3,  // [3:7] is the sub-list for method input_type
+	15, // 0: zpotify_api.ListSongs.Request.paging:type_name -> zpotify_api.Paging
+	16, // 1: zpotify_api.ListSongs.Response.songs:type_name -> zpotify_api.SongBase
+	17, // 2: zpotify_api.GetPlaylist.Response.playlist:type_name -> zpotify_api.Playlist
+	9,  // 3: zpotify_api.PlaylistAPI.CreatePlaylist:input_type -> zpotify_api.CreatePlaylist.Request
+	11, // 4: zpotify_api.PlaylistAPI.GetPlaylist:input_type -> zpotify_api.GetPlaylist.Request
+	7,  // 5: zpotify_api.PlaylistAPI.DeleteSong:input_type -> zpotify_api.DeleteSong.Request
+	5,  // 6: zpotify_api.PlaylistAPI.ListSongs:input_type -> zpotify_api.ListSongs.Request
+	13, // 7: zpotify_api.PlaylistAPI.ChangeSongsOrder:input_type -> zpotify_api.ChangeSongsOrder.Request
+	10, // 8: zpotify_api.PlaylistAPI.CreatePlaylist:output_type -> zpotify_api.CreatePlaylist.Response
+	12, // 9: zpotify_api.PlaylistAPI.GetPlaylist:output_type -> zpotify_api.GetPlaylist.Response
+	8,  // 10: zpotify_api.PlaylistAPI.DeleteSong:output_type -> zpotify_api.DeleteSong.Response
+	6,  // 11: zpotify_api.PlaylistAPI.ListSongs:output_type -> zpotify_api.ListSongs.Response
+	14, // 12: zpotify_api.PlaylistAPI.ChangeSongsOrder:output_type -> zpotify_api.ChangeSongsOrder.Response
+	8,  // [8:13] is the sub-list for method output_type
+	3,  // [3:8] is the sub-list for method input_type
 	3,  // [3:3] is the sub-list for extension type_name
 	3,  // [3:3] is the sub-list for extension extendee
 	0,  // [0:3] is the sub-list for field type_name
@@ -649,15 +767,15 @@ func file_zpotify_service_playlist_proto_init() {
 		return
 	}
 	file_zpotify_common_proto_init()
-	file_zpotify_service_playlist_proto_msgTypes[4].OneofWrappers = []any{}
-	file_zpotify_service_playlist_proto_msgTypes[8].OneofWrappers = []any{}
+	file_zpotify_service_playlist_proto_msgTypes[5].OneofWrappers = []any{}
+	file_zpotify_service_playlist_proto_msgTypes[9].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_service_playlist_proto_rawDesc), len(file_zpotify_service_playlist_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

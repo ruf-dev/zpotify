@@ -137,6 +137,28 @@
         ]
       }
     },
+    "/api/playlist/songs/order": {
+      "post": {
+        "operationId": "PlaylistAPI_ChangeSongsOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiChangeSongsOrderResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "PlaylistAPI"
+        ]
+      }
+    },
     "/api/playlist/{uuid}": {
       "get": {
         "operationId": "PlaylistAPI_GetPlaylist",
@@ -207,6 +229,9 @@
           "type": "string"
         }
       }
+    },
+    "zpotify_apiChangeSongsOrderResponse": {
+      "type": "object"
     },
     "zpotify_apiCreatePlaylistRequest": {
       "type": "object",

@@ -35,6 +35,12 @@ service PlaylistAPI {
       post: "/api/playlist/songs",
     };
   };
+
+  rpc ChangeSongsOrder(ChangeSongsOrder.Request) returns (ChangeSongsOrder.Response) {
+    option (google.api.http) = {
+      post: "/api/playlist/songs/order",
+    };
+  }
 }
 
 
@@ -82,4 +88,9 @@ message GetPlaylist {
   message Response {
     Playlist playlist = 1;
   }
+}
+
+message ChangeSongsOrder{
+  message Request {}
+  message Response {}
 }

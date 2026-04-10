@@ -1,8 +1,5 @@
 include rscli.mk
 
-sqlc:
-	sqlc generate
-
 # Installs golang dependencies for codegen
 install-go-deps:
 	go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
@@ -25,8 +22,8 @@ warmup:
 	PROTOPACKPATH=proto_deps protopack mod download
 # generates code on warm project
 codegen:
-	PROTOPACKPATH=proto_deps protopack generate
-	cd pkg/web/ZpotifyUI && npm run build:api && npm run link
+	moti g
+	sqlc generate
 
 lint:
 	golangci-lint run ./...

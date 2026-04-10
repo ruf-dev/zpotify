@@ -19,10 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PlaylistAPI_CreatePlaylist_FullMethodName = "/zpotify_api.PlaylistAPI/CreatePlaylist"
-	PlaylistAPI_GetPlaylist_FullMethodName    = "/zpotify_api.PlaylistAPI/GetPlaylist"
-	PlaylistAPI_DeleteSong_FullMethodName     = "/zpotify_api.PlaylistAPI/DeleteSong"
-	PlaylistAPI_ListSongs_FullMethodName      = "/zpotify_api.PlaylistAPI/ListSongs"
+	PlaylistAPI_CreatePlaylist_FullMethodName   = "/zpotify_api.PlaylistAPI/CreatePlaylist"
+	PlaylistAPI_GetPlaylist_FullMethodName      = "/zpotify_api.PlaylistAPI/GetPlaylist"
+	PlaylistAPI_DeleteSong_FullMethodName       = "/zpotify_api.PlaylistAPI/DeleteSong"
+	PlaylistAPI_ListSongs_FullMethodName        = "/zpotify_api.PlaylistAPI/ListSongs"
+	PlaylistAPI_ChangeSongsOrder_FullMethodName = "/zpotify_api.PlaylistAPI/ChangeSongsOrder"
 )
 
 // PlaylistAPIClient is the client API for PlaylistAPI service.
@@ -33,6 +34,7 @@ type PlaylistAPIClient interface {
 	GetPlaylist(ctx context.Context, in *GetPlaylist_Request, opts ...grpc.CallOption) (*GetPlaylist_Response, error)
 	DeleteSong(ctx context.Context, in *DeleteSong_Request, opts ...grpc.CallOption) (*DeleteSong_Response, error)
 	ListSongs(ctx context.Context, in *ListSongs_Request, opts ...grpc.CallOption) (*ListSongs_Response, error)
+	ChangeSongsOrder(ctx context.Context, in *ChangeSongsOrder_Request, opts ...grpc.CallOption) (*ChangeSongsOrder_Response, error)
 }
 
 type playlistAPIClient struct {
@@ -83,6 +85,16 @@ func (c *playlistAPIClient) ListSongs(ctx context.Context, in *ListSongs_Request
 	return out, nil
 }
 
+func (c *playlistAPIClient) ChangeSongsOrder(ctx context.Context, in *ChangeSongsOrder_Request, opts ...grpc.CallOption) (*ChangeSongsOrder_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ChangeSongsOrder_Response)
+	err := c.cc.Invoke(ctx, PlaylistAPI_ChangeSongsOrder_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PlaylistAPIServer is the server API for PlaylistAPI service.
 // All implementations must embed UnimplementedPlaylistAPIServer
 // for forward compatibility.
@@ -91,6 +103,7 @@ type PlaylistAPIServer interface {
 	GetPlaylist(context.Context, *GetPlaylist_Request) (*GetPlaylist_Response, error)
 	DeleteSong(context.Context, *DeleteSong_Request) (*DeleteSong_Response, error)
 	ListSongs(context.Context, *ListSongs_Request) (*ListSongs_Response, error)
+	ChangeSongsOrder(context.Context, *ChangeSongsOrder_Request) (*ChangeSongsOrder_Response, error)
 	mustEmbedUnimplementedPlaylistAPIServer()
 }
 
@@ -112,6 +125,9 @@ func (UnimplementedPlaylistAPIServer) DeleteSong(context.Context, *DeleteSong_Re
 }
 func (UnimplementedPlaylistAPIServer) ListSongs(context.Context, *ListSongs_Request) (*ListSongs_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListSongs not implemented")
+}
+func (UnimplementedPlaylistAPIServer) ChangeSongsOrder(context.Context, *ChangeSongsOrder_Request) (*ChangeSongsOrder_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method ChangeSongsOrder not implemented")
 }
 func (UnimplementedPlaylistAPIServer) mustEmbedUnimplementedPlaylistAPIServer() {}
 func (UnimplementedPlaylistAPIServer) testEmbeddedByValue()                     {}
@@ -206,6 +222,24 @@ func _PlaylistAPI_ListSongs_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PlaylistAPI_ChangeSongsOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChangeSongsOrder_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlaylistAPIServer).ChangeSongsOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PlaylistAPI_ChangeSongsOrder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlaylistAPIServer).ChangeSongsOrder(ctx, req.(*ChangeSongsOrder_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PlaylistAPI_ServiceDesc is the grpc.ServiceDesc for PlaylistAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -228,6 +262,10 @@ var PlaylistAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSongs",
 			Handler:    _PlaylistAPI_ListSongs_Handler,
+		},
+		{
+			MethodName: "ChangeSongsOrder",
+			Handler:    _PlaylistAPI_ChangeSongsOrder_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
