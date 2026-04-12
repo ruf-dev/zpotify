@@ -17,12 +17,11 @@ func New(audioService service.AudioService, fileService service.FileService) htt
 	srv := &Server{
 		audioService: audioService,
 		fileService:  fileService,
-
-		mux: http.ServeMux{},
 	}
 
 	srv.mux.HandleFunc("/wapi/audio", srv.GetAudio)
-	srv.mux.HandleFunc("/api/files/upload", srv.Upload)
+	srv.mux.HandleFunc("/wapi/files/upload", srv.Upload)
 
-	return &srv.mux
+	handler := &srv.mux
+	return handler
 }

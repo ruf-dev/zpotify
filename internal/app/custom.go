@@ -88,7 +88,12 @@ func (c *Custom) Init(a *App) (err error) {
 	)
 
 	c.ServerManager.AddHttpHandler(docs.Swagger())
-	c.ServerManager.AddHttpHandler("/wapi/", wapi.New(c.Service.AudioService(), c.Service.FileService()))
+
+	audioService := c.Service.AudioService()
+	fileService := c.Service.FileService()
+
+	wapiHandler := wapi.New(audioService, fileService)
+	c.ServerManager.AddHttpHandler("/wapi/", wapiHandler)
 	return nil
 }
 

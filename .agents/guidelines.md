@@ -57,6 +57,10 @@ Data flows: **Transport -> Service -> Storage**.
 ### Pointers and Nil Checks
 - Use `go.redsock.ru/toolbox.ToPtr` for converting values to pointers if needed in requests.
 
+### Go Style Preferences
+- **No in-place function calls with error checks:** Avoid `if err := someFunc(); err != nil`. Instead, call the function first: `err := someFunc(); if err != nil`.
+- **No in-place struct/variable creation in function calls:** Avoid passing complex literals directly to functions. Create the variable first, then pass it: `req := domain.Request{...}; res, err := service.Call(req)`.
+
 ### Database Patterns
 - Use `squirrel` (aliased as `sq`) for building complex queries.
 - SQL placeholders: `sq.Dollar`.

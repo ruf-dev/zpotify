@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ### Upload file content
-POST {{zpotify-api}}/api/file/upload
+POST {{zpotify-api}}/wapi/files/upload
 Authorization: {{token}}
 Content-Type: application/json
 

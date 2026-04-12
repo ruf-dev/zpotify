@@ -10,6 +10,9 @@ output:
   format: colored-line-number
 
 linters-settings:
+  govet:
+    enable:
+      - shadow
   varnamelen: # scope of variable
     max-distance: 25 # amount of lines when variable can be used (about 1 screen space)
     min-name-length: 2 # minimal lenght of variable that goes out of scope
@@ -22,6 +25,7 @@ linters:
   disable-all: true
   enable:
     - varnamelen # check lenght of scope of a variable
+    - govet
 
     - asasalint # prevents from passing []any
     - asciicheck
