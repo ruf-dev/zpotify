@@ -1,7 +1,6 @@
 package file_parser
 
 import (
-	"bytes"
 	"errors"
 	"io"
 	"time"
@@ -18,10 +17,10 @@ func NewMP3Parser() domain.FileParser {
 	return &MP3Parser{}
 }
 
-func (p *MP3Parser) Parse(content []byte) (time.Duration, int64, error) {
-	r := bytes.NewReader(content)
-	d := mp3.NewDecoder(r)
+func (p *MP3Parser) Parse(reader io.Reader) (time.Duration, int64, error) {
+	d := mp3.NewDecoder(reader)
 	var duration time.Duration
+	var size int64
 	for {
 		var f mp3.Frame
 		var skipped int
@@ -33,7 +32,9 @@ func (p *MP3Parser) Parse(content []byte) (time.Duration, int64, error) {
 			return 0, 0, rerrors.Wrap(err, "error decoding mp3 frame")
 		}
 		duration += f.Duration()
+		size += int64(f.Size())
+		size += int64(skipped)
 	}
 
-	return duration, int64(len(content)), nil
+	return duration, size, nil
 }

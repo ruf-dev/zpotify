@@ -99,5 +99,5 @@ type PlaylistService interface {
 
 type FileService interface {
 	Create(ctx context.Context, name string) (int64, error)
-	Upload(ctx context.Context, id int64, content []byte) (string, error)
+	StoreToLocalStorage(ctx context.Context, name string, content io.Reader) (int64, error)
 }

@@ -47,38 +47,6 @@
           "FileAPI"
         ]
       }
-    },
-    "/api/file/upload": {
-      "post": {
-        "operationId": "FileAPI_UploadFile",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/zpotify_apiUploadFileResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/zpotify_apiUploadFileRequest"
-            }
-          }
-        ],
-        "tags": [
-          "FileAPI"
-        ]
-      }
     }
   },
   "definitions": {
@@ -125,26 +93,6 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
-        }
-      }
-    },
-    "zpotify_apiUploadFileRequest": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "content": {
-          "type": "string",
-          "format": "byte"
-        }
-      }
-    },
-    "zpotify_apiUploadFileResponse": {
-      "type": "object",
-      "properties": {
-        "path": {
           "type": "string"
         }
       }

@@ -1,6 +1,7 @@
 package file_parser
 
 import (
+	"bytes"
 	"testing"
 )
 
@@ -12,7 +13,7 @@ func TestMP3Parser_Parse(t *testing.T) {
 	// However, for a meaningful test, I should ideally have a small valid mp3.
 
 	t.Run("Empty content", func(t *testing.T) {
-		duration, size, err := parser.Parse([]byte{})
+		duration, size, err := parser.Parse(bytes.NewReader([]byte{}))
 		if err != nil {
 			t.Errorf("expected no error, got %v", err)
 		}

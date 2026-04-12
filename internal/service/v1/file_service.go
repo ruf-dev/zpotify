@@ -2,11 +2,13 @@ package v1
 
 import (
 	"context"
-	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
+	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/domain"
@@ -44,51 +46,75 @@ func (s *FileService) Create(ctx context.Context, name string) (int64, error) {
 	return id, nil
 }
 
-func (s *FileService) Upload(ctx context.Context, id int64, content []byte) (string, error) {
-	meta, err := s.storage.Get(ctx, id)
-	if err != nil {
-		return "", rerrors.Wrap(err, "error getting file meta")
+func (s *FileService) StoreToLocalStorage(ctx context.Context, name string, content io.Reader) (int64, error) {
+	uCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return 0, rerrors.New("unauthenticated")
 	}
 
-	// For now, let's assume we save it in a 'data' directory
-	dataDir := "data"
+	dataDir := filepath.Join("data", "tmp")
 	if _, err := os.Stat(dataDir); os.IsNotExist(err) {
 		err = os.MkdirAll(dataDir, 0755)
 		if err != nil {
-			return "", rerrors.Wrap(err, "error creating data directory")
+			return 0, rerrors.Wrap(err, "error creating data directory")
 		}
 	}
 
-	fileName := fmt.Sprintf("%d_%s", id, filepath.Base(meta.FilePath))
+	ext := filepath.Ext(name)
+	fileName := uuid.New().String() + ext
 	fullPath := filepath.Join(dataDir, fileName)
 
-	err = os.WriteFile(fullPath, content, 0644)
+	f, err := os.Create(fullPath)
 	if err != nil {
-		return "", rerrors.Wrap(err, "error writing file content")
+		return 0, rerrors.Wrap(err, "error creating file")
 	}
+	defer f.Close()
 
 	var parser domain.FileParser
-	if strings.HasSuffix(strings.ToLower(meta.FilePath), ".mp3") {
+	if strings.HasSuffix(strings.ToLower(name), ".mp3") {
 		parser = file_parser.NewMP3Parser()
 	}
 
+	var duration time.Duration
+	var size int64
+
 	if parser != nil {
-		duration, size, err := parser.Parse(content)
+		pr, pw := io.Pipe()
+		tr := io.TeeReader(content, pw)
+
+		errChan := make(chan error, 1)
+		go func() {
+			defer pw.Close()
+			_, err := io.Copy(f, tr)
+			errChan <- err
+		}()
+
+		duration, size, err = parser.Parse(pr)
 		if err != nil {
-			// We might not want to fail the whole upload if parsing fails,
-			// but for now let's be strict or at least log it.
-			return fullPath, rerrors.Wrap(err, "error parsing file")
+			return 0, rerrors.Wrap(err, "error parsing file")
 		}
 
-		err = s.storage.Update(ctx, id, domain.File{
-			FilePath:  meta.FilePath,
-			SizeBytes: size,
-			Duration:  duration,
-		})
+		if err := <-errChan; err != nil {
+			return 0, rerrors.Wrap(err, "error writing file content")
+		}
+	} else {
+		size, err = io.Copy(f, content)
 		if err != nil {
-			return fullPath, rerrors.Wrap(err, "error updating file meta")
+			return 0, rerrors.Wrap(err, "error writing file content")
 		}
 	}
 
-	return fullPath, nil
+	id, err := s.storage.Add(ctx, domain.FileMeta{
+		File: domain.File{
+			FilePath:  fullPath,
+			SizeBytes: size,
+			Duration:  duration,
+		},
+		AddedById: uCtx.UserId,
+	})
+	if err != nil {
+		return 0, rerrors.Wrap(err, "error saving file meta")
+	}
+
+	return id, nil
 }
