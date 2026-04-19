@@ -3,9 +3,10 @@
 package config
 
 type EnvironmentConfig struct {
-	DebugAuth bool
-	LogFormat string
-	LogLevel  string
+	DebugAuth        bool
+	LocalStoragePath string
+	LogFormat        string
+	LogLevel         string
 }
 
 const (

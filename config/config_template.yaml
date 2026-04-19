@@ -22,6 +22,9 @@ environment:
     - name: debug_auth
       type: bool
       value: true
+    - name: local_storage_path
+      type: string
+      value: data/angie
     - name: log_format
       type: string
       enum: [JSON, TEXT]

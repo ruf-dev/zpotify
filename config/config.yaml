@@ -30,3 +30,6 @@ environment:
       type: string
       enum: [Trace, Debug, Info, Warn, Error, Fatal, Panic]
       value: Info
+    - name: local_storage_path
+      type: string
+      value: data/angie
