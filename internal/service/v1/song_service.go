@@ -32,9 +32,10 @@ func NewAudioService(
 	return &AudioService{
 		txManager: dataStorage.TxManager(),
 
-		//fileMetaStorage: dataStorage.FileMeta(),
-		//songsStorage:    dataStorage.SongStorage(),
+		songsStorage: dataStorage.SongsStorage(),
 		usersStorage: dataStorage.User(),
+
+		//fileMetaStorage: dataStorage.FileMeta(),
 		//artistStorage:   dataStorage.ArtistStorage(),
 
 		filesCache: filesCache,

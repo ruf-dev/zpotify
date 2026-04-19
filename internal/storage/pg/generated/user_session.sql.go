@@ -81,7 +81,7 @@ WHERE user_sessions.user_id = $1
 ORDER BY refresh_expire_at DESC
 `
 
-func (q *Queries) ListSessionsByUserId(ctx context.Context, userID int16) ([]UserSession, error) {
+func (q *Queries) ListSessionsByUserId(ctx context.Context, userID int64) ([]UserSession, error) {
 	rows, err := q.db.QueryContext(ctx, listSessionsByUserId, userID)
 	if err != nil {
 		return nil, err

@@ -26,9 +26,9 @@ func NewFileMetaStorage(db sqldb.DB) *FileMetaStorage {
 func (s *FileMetaStorage) Add(ctx context.Context, req domain.FileMeta) (int64, error) {
 	params := querier.CreateFileParams{
 		FilePath:    req.FilePath,
-		DurationSec: int32(req.Duration.Seconds()),
-		AddedByID:   int16(req.AddedById),
-		SizeBytes:   int32(req.SizeBytes),
+		DurationSec: int64(req.Duration.Seconds()),
+		AddedByID:   req.AddedById,
+		SizeBytes:   req.SizeBytes,
 	}
 
 	id, err := s.q.CreateFile(ctx, params)
@@ -36,11 +36,11 @@ func (s *FileMetaStorage) Add(ctx context.Context, req domain.FileMeta) (int64, 
 		return 0, wrapPgErr(err)
 	}
 
-	return int64(id), nil
+	return id, nil
 }
 
 func (s *FileMetaStorage) Get(ctx context.Context, fileId int64) (file domain.FileMeta, err error) {
-	fileDb, err := s.q.GetFileById(ctx, int32(fileId))
+	fileDb, err := s.q.GetFileById(ctx, fileId)
 	if err != nil {
 		return domain.FileMeta{}, err
 	}
@@ -96,7 +96,7 @@ func (s *FileMetaStorage) List(ctx context.Context, listReq domain.ListFileMeta)
 }
 
 func (s *FileMetaStorage) Delete(ctx context.Context, fileId int64) error {
-	err := s.q.DeleteFileById(ctx, int32(fileId))
+	err := s.q.DeleteFileById(ctx, fileId)
 	if err != nil {
 		return wrapPgErr(err)
 	}
@@ -106,9 +106,9 @@ func (s *FileMetaStorage) Delete(ctx context.Context, fileId int64) error {
 
 func (s *FileMetaStorage) Update(ctx context.Context, fileId int64, file domain.File) error {
 	err := s.q.UpdateFile(ctx, querier.UpdateFileParams{
-		ID:          int32(fileId),
-		DurationSec: int32(file.Duration.Seconds()),
-		SizeBytes:   int32(file.SizeBytes),
+		ID:          fileId,
+		DurationSec: int64(file.Duration.Seconds()),
+		SizeBytes:   file.SizeBytes,
 	})
 	if err != nil {
 		return wrapPgErr(err)

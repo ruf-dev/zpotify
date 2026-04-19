@@ -18,7 +18,7 @@ FROM user_permissions
 WHERE user_id = $1
 `
 
-func (q *Queries) ListUserPermissionsByUserId(ctx context.Context, userID int16) (UserPermission, error) {
+func (q *Queries) ListUserPermissionsByUserId(ctx context.Context, userID int64) (UserPermission, error) {
 	row := q.db.QueryRowContext(ctx, listUserPermissionsByUserId, userID)
 	var i UserPermission
 	err := row.Scan(

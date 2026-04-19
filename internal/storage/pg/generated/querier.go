@@ -11,22 +11,22 @@ import (
 )
 
 type Querier interface {
-	CreateFile(ctx context.Context, arg CreateFileParams) (int32, error)
+	CreateFile(ctx context.Context, arg CreateFileParams) (int64, error)
 	CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error)
 	DeleteExpiredSessions(ctx context.Context) error
-	DeleteFileById(ctx context.Context, id int32) error
-	DeleteSongById(ctx context.Context, id int32) error
-	GetFileById(ctx context.Context, id int32) (FilesMetum, error)
-	GetHomeSegments(ctx context.Context, userID int16) ([]UserHomeSegment, error)
+	DeleteFileById(ctx context.Context, id int64) error
+	DeleteSongById(ctx context.Context, id int64) error
+	GetFileById(ctx context.Context, id int64) (FilesMetum, error)
+	GetHomeSegments(ctx context.Context, userID int64) ([]UserHomeSegment, error)
 	GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error)
-	GetSongById(ctx context.Context, id int32) (Song, error)
-	GetUiSettings(ctx context.Context, userID int16) (UserSetting, error)
-	GetUserById(ctx context.Context, id int16) (User, error)
+	GetSongById(ctx context.Context, id int64) (Song, error)
+	GetUiSettings(ctx context.Context, userID int64) (UserSetting, error)
+	GetUserById(ctx context.Context, id int64) (User, error)
 	GetUserPermissionsOnPlaylist(ctx context.Context, arg GetUserPermissionsOnPlaylistParams) (GetUserPermissionsOnPlaylistRow, error)
 	GetUserSessionByAccessToken(ctx context.Context, accessToken string) (UserSession, error)
 	GetUserSessionByRefreshToken(ctx context.Context, refreshToken string) (UserSession, error)
-	ListSessionsByUserId(ctx context.Context, userID int16) ([]UserSession, error)
-	ListUserPermissionsByUserId(ctx context.Context, userID int16) (UserPermission, error)
+	ListSessionsByUserId(ctx context.Context, userID int64) ([]UserSession, error)
+	ListUserPermissionsByUserId(ctx context.Context, userID int64) (UserPermission, error)
 	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error
 	SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error
 	UpdateFile(ctx context.Context, arg UpdateFileParams) error

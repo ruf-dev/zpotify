@@ -43,10 +43,6 @@ func Swagger() (p string, handler http.HandlerFunc) {
 					URL:  path.Join(swaggerPath, "zpotify_service_auth.swagger.json"),
 				},
 				{
-					Name: "ZpotifyServiceFile",
-					URL:  path.Join(swaggerPath, "zpotify_service_file.swagger.json"),
-				},
-				{
 					Name: "ZpotifyServicePlaylist",
 					URL:  path.Join(swaggerPath, "zpotify_service_playlist.swagger.json"),
 				},

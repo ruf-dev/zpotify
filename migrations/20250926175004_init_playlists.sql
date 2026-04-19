@@ -6,14 +6,14 @@ CREATE TABLE IF NOT EXISTS playlists
     name        TEXT                       NOT NULL,
     description TEXT                       NOT NULL DEFAULT '',
     is_public   BOOLEAN                             DEFAULT FALSE NOT NULL,
-    owner_id    INT2 REFERENCES users (id) NOT NULL
+    owner_id    INT8 REFERENCES users (id) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS playlist_songs
 (
     playlist_uuid UUID NOT NULL references playlists (uuid),
-    song_id       INT4 NOT NULL references songs (id),
-    order_number  INT2 NOT NULL,
+    song_id       INT8 NOT NULL references songs (id),
+    order_number  INT8 NOT NULL,
 
     unique (playlist_uuid, song_id, order_number)
 );
@@ -32,9 +32,9 @@ INSERT INTO playlist_songs (SELECT '00000000-0000-0000-0000-000000000000',
 
 CREATE TABLE IF NOT EXISTS user_playlists
 (
-    user_id          INT2    NOT NULL REFERENCES users (id),
+    user_id          INT8    NOT NULL REFERENCES users (id),
     playlist_id      UUID    NOT NULL REFERENCES playlists (uuid),
-    order_id         INT2    NOT NULL,
+    order_id         INT8    NOT NULL,
     can_delete_songs BOOLEAN NOT NULL DEFAULT FALSE,
     can_add_songs    BOOLEAN NOT NULL DEFAULT FALSE,
     UNIQUE (user_id, playlist_id),

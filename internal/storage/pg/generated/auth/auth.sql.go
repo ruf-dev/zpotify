@@ -17,7 +17,7 @@ VALUES ($1, $2, $3)
 `
 
 type CreateUserIdentityParams struct {
-	UserID           int16
+	UserID           int64
 	IdentityProvider IdentityProvider
 	Payload          json.RawMessage
 }

@@ -101,11 +101,11 @@ type Artist struct {
 }
 
 type FilesMetum struct {
-	ID          int32
+	ID          int64
 	FilePath    string
-	DurationSec int32
-	AddedByID   int16
-	SizeBytes   int32
+	DurationSec int64
+	AddedByID   int64
+	SizeBytes   int64
 }
 
 type Locale struct {
@@ -117,74 +117,74 @@ type Playlist struct {
 	Name        string
 	Description string
 	IsPublic    bool
-	OwnerID     int16
+	OwnerID     int64
 }
 
 type PlaylistSong struct {
 	PlaylistUuid uuid.UUID
-	SongID       int32
-	OrderNumber  int16
+	SongID       int64
+	OrderNumber  int64
 }
 
 type PlaylistsSongsV1 struct {
 	PlaylistUuid uuid.UUID
-	ID           int32
+	ID           int64
 	Title        string
-	DurationSec  int32
+	DurationSec  int64
 	FilePath     string
 	ArtistInfo   json.RawMessage
-	OrderNumber  int16
+	OrderNumber  int64
 }
 
 type Song struct {
-	ID        int32
-	FileID    int32
+	ID        int64
+	FileID    int64
 	Title     string
 	CreatedAt time.Time
 }
 
 type SongsArtist struct {
-	SongID     int32
+	SongID     int64
 	ArtistUuid uuid.UUID
-	OrderID    int16
+	OrderID    int64
 }
 
 type User struct {
-	ID       int16
+	ID       int64
 	Username string
 }
 
 type UserHomeSegment struct {
-	UserID      int16
+	UserID      int64
 	Segment     json.RawMessage
 	Type        UserHomeSegmentType
 	OrderNumber int32
 }
 
 type UserIdentity struct {
-	ID               int32
-	UserID           int16
+	ID               int64
+	UserID           int64
 	IdentityProvider IdentityProvider
 	Payload          json.RawMessage
 }
 
 type UserPermission struct {
-	UserID            int16
+	UserID            int64
 	CanUpload         bool
 	EarlyAccess       bool
 	CanCreatePlaylist bool
 }
 
 type UserPlaylist struct {
-	UserID         int16
+	UserID         int64
 	PlaylistID     uuid.UUID
-	OrderID        int16
+	OrderID        int64
 	CanDeleteSongs bool
 	CanAddSongs    bool
 }
 
 type UserSession struct {
-	UserID          int16
+	UserID          int64
 	AccessToken     string
 	RefreshToken    string
 	AccessExpireAt  time.Time
@@ -192,6 +192,6 @@ type UserSession struct {
 }
 
 type UserSetting struct {
-	UserID int16
+	UserID int64
 	Locale string
 }

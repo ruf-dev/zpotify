@@ -1,5 +1,0 @@
-### Get audio
-GET {{zpotify-api}}/wapi/audio?fileId=AgAD8AEAAuzm-Uk
-
-### Get unknown audio
-GET {{zpotify-api}}/wapi/audio?fileId=unknown

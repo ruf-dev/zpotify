@@ -80,9 +80,9 @@ func (u *UserService) GetMe(ctx context.Context) (domain.User, error) {
 
 	return domain.User{
 		UserBaseInfo: user,
+		Permissions:  permissions,
 		//TODO
 		UserUiSettings: domain.UserUiSettings{},
-		Permissions:    permissions,
 	}, nil
 }
 

@@ -16,7 +16,7 @@ FROM users
 WHERE id = $1
 `
 
-func (q *Queries) GetUserById(ctx context.Context, id int16) (User, error) {
+func (q *Queries) GetUserById(ctx context.Context, id int64) (User, error) {
 	row := q.db.QueryRowContext(ctx, getUserById, id)
 	var i User
 	err := row.Scan(&i.ID, &i.Username)
@@ -30,7 +30,7 @@ VALUES ($1, $2, $3, $4)
 `
 
 type SaveUserPermissionsParams struct {
-	UserID            int16
+	UserID            int64
 	CanUpload         bool
 	EarlyAccess       bool
 	CanCreatePlaylist bool
@@ -55,7 +55,7 @@ ON CONFLICT (user_id)
 `
 
 type SaveUserSettingsParams struct {
-	UserID int16
+	UserID int64
 	Locale string
 }
 

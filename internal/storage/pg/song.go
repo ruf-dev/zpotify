@@ -21,7 +21,7 @@ func NewSongStorage(db sqldb.DB) *SongsStorage {
 	}
 }
 
-func (s *SongsStorage) Create(ctx context.Context, params songs_q.CreateSongParams) (int32, error) {
+func (s *SongsStorage) Create(ctx context.Context, params songs_q.CreateSongParams) (int64, error) {
 	id, err := s.querier.CreateSong(ctx, params)
 	if err != nil {
 		return 0, wrapPgErr(err)

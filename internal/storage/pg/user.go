@@ -3,6 +3,7 @@ package pg
 import (
 	"context"
 	"database/sql"
+	"errors"
 
 	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
@@ -27,7 +28,7 @@ func NewUserStorage(db sqldb.DB) *UserStorage {
 }
 
 func (s *UserStorage) GetUserById(ctx context.Context, userId int64) (domain.UserBaseInfo, error) {
-	user, err := s.querier.GetUserById(ctx, int16(userId))
+	user, err := s.querier.GetUserById(ctx, userId)
 	if err != nil {
 		return domain.UserBaseInfo{}, wrapPgErr(err)
 	}
@@ -36,8 +37,8 @@ func (s *UserStorage) GetUserById(ctx context.Context, userId int64) (domain.Use
 }
 
 func (s *UserStorage) GetPermissions(ctx context.Context, id int64) (domain.UserPermissions, error) {
-	permissions, err := s.querier.ListUserPermissionsByUserId(ctx, int16(id))
-	if err != nil {
+	permissions, err := s.querier.ListUserPermissionsByUserId(ctx, id)
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
 		return domain.UserPermissions{}, wrapPgErr(err)
 	}
 
@@ -55,7 +56,7 @@ func (s *UserStorage) Upsert(ctx context.Context, username string) error {
 
 func (s *UserStorage) SaveSettings(ctx context.Context, userId int64, settings domain.UserUiSettings) error {
 	userSettingsParams := querier.SaveUserSettingsParams{
-		UserID: int16(userId),
+		UserID: userId,
 		Locale: settings.Locale,
 	}
 
@@ -69,7 +70,7 @@ func (s *UserStorage) SaveSettings(ctx context.Context, userId int64, settings d
 
 func (s *UserStorage) SavePermissions(ctx context.Context, userId int64, permissions domain.UserPermissions) error {
 	params := querier.SaveUserPermissionsParams{
-		UserID:            int16(userId),
+		UserID:            userId,
 		CanUpload:         permissions.CanUpload,
 		EarlyAccess:       permissions.EarlyAccess,
 		CanCreatePlaylist: permissions.CanCreatePlaylist,
@@ -90,7 +91,7 @@ func (s *UserStorage) GetPermissionsOnPlaylist(ctx context.Context, userTgId int
 	}
 
 	params := querier.GetUserPermissionsOnPlaylistParams{
-		UserID:     int16(userTgId),
+		UserID:     userTgId,
 		PlaylistID: playlistId,
 	}
 	res, err := s.querier.GetUserPermissionsOnPlaylist(ctx, params)

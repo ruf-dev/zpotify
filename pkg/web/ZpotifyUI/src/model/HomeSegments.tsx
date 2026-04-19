@@ -13,7 +13,6 @@ export interface HomeSegment {
     buildComponent(props: HomeSegmentProps): JSX.Element
 }
 
-
 export class PlaylistSegmentInfo implements HomeSegment {
     private readonly playlistUuid: string
 

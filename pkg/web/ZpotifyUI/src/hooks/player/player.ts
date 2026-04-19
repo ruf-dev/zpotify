@@ -133,6 +133,8 @@ class AudioPlayerImpl implements AudioPlayer {
     }
 
     private startPlay() {
+        console.debug(`Playing ${this.audio.src}`)
+
         this.audio.play()
             .then(() => {
                 useAudioStore.setState({isPlaying: true});
@@ -154,7 +156,8 @@ class AudioPlayerImpl implements AudioPlayer {
         return useAudioStore.getState().isPlaying;
     }
 
-    preload(trackUrl: string): void {
+    preload(trackUuid: string): void {
+        const trackUrl = import.meta.env.VITE_ZPOTIFY_API+trackUuid
         if (this.audio.src === trackUrl) return;
 
         this.audio.src = trackUrl;

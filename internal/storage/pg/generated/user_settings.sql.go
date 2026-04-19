@@ -19,7 +19,7 @@ WHERE user_id = $1
 ORDER BY order_number
 `
 
-func (q *Queries) GetHomeSegments(ctx context.Context, userID int16) ([]UserHomeSegment, error) {
+func (q *Queries) GetHomeSegments(ctx context.Context, userID int64) ([]UserHomeSegment, error) {
 	rows, err := q.db.QueryContext(ctx, getHomeSegments, userID)
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ FROM user_settings
 WHERE user_id = $1
 `
 
-func (q *Queries) GetUiSettings(ctx context.Context, userID int16) (UserSetting, error) {
+func (q *Queries) GetUiSettings(ctx context.Context, userID int64) (UserSetting, error) {
 	row := q.db.QueryRowContext(ctx, getUiSettings, userID)
 	var i UserSetting
 	err := row.Scan(&i.UserID, &i.Locale)

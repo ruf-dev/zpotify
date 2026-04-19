@@ -21,7 +21,7 @@ message CreateSong {
   message Request {
     string title = 1;
     repeated string artist_uuids = 2;
-    uint32 file_id = 3;
+    int64 file_id = 3;
   }
 
   message Response {

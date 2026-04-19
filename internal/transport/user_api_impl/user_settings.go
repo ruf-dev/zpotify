@@ -50,7 +50,7 @@ func toPbHomeSegments(segment []domain.UserHomeSegment) ([]*zpotify_api.HomePage
 	for _, s := range segment {
 		pbSeg, err := toPbHomeSegment(s)
 		if err != nil {
-			return nil, rerrors.Wrap(err, "")
+			return nil, rerrors.Wrap(err, "error mapping toPbHomeSegment")
 		}
 
 		if pbSeg != nil {

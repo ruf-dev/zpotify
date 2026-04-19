@@ -63,7 +63,7 @@ type CreateSong_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Title         string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	ArtistUuids   []string               `protobuf:"bytes,2,rep,name=artist_uuids,json=artistUuids,proto3" json:"artist_uuids,omitempty"`
-	FileId        string                 `protobuf:"bytes,3,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	FileId        int64                  `protobuf:"varint,3,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -112,11 +112,11 @@ func (x *CreateSong_Request) GetArtistUuids() []string {
 	return nil
 }
 
-func (x *CreateSong_Request) GetFileId() string {
+func (x *CreateSong_Request) GetFileId() int64 {
 	if x != nil {
 		return x.FileId
 	}
-	return ""
+	return 0
 }
 
 type CreateSong_Response struct {
@@ -173,7 +173,7 @@ const file_zpotify_service_song_proto_rawDesc = "" +
 	"\aRequest\x12\x14\n" +
 	"\x05title\x18\x01 \x01(\tR\x05title\x12!\n" +
 	"\fartist_uuids\x18\x02 \x03(\tR\vartistUuids\x12\x17\n" +
-	"\afile_id\x18\x03 \x01(\tR\x06fileId\x1a\x1a\n" +
+	"\afile_id\x18\x03 \x01(\x03R\x06fileId\x1a\x1a\n" +
 	"\bResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id2w\n" +
 	"\aSongAPI\x12l\n" +

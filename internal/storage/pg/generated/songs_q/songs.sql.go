@@ -16,13 +16,13 @@ VALUES ($1, $2) RETURNING id
 `
 
 type CreateSongParams struct {
-	FileID int32
+	FileID int64
 	Title  string
 }
 
-func (q *Queries) CreateSong(ctx context.Context, arg CreateSongParams) (int32, error) {
+func (q *Queries) CreateSong(ctx context.Context, arg CreateSongParams) (int64, error) {
 	row := q.db.QueryRowContext(ctx, createSong, arg.FileID, arg.Title)
-	var id int32
+	var id int64
 	err := row.Scan(&id)
 	return id, err
 }

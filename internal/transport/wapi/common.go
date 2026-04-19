@@ -8,7 +8,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
 
-	"go.zpotify.ru/zpotify/internal/user_errors"
+	"go.zpotify.ru/zpotify/internal/service/service_errors"
 )
 
 func unwrapError(w http.ResponseWriter, err error) {
@@ -22,7 +22,7 @@ func unwrapError(w http.ResponseWriter, err error) {
 		return
 	}
 
-	if stderrs.Is(err, user_errors.ErrNotFound) {
+	if stderrs.Is(err, service_errors.ErrNotFound) {
 		w.WriteHeader(http.StatusNotFound)
 		_, _ = w.Write([]byte(err.Error()))
 		return

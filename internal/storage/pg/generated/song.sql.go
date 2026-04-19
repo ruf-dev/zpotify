@@ -17,7 +17,7 @@ FROM files_meta
 WHERE id = $1
 `
 
-func (q *Queries) DeleteSongById(ctx context.Context, id int32) error {
+func (q *Queries) DeleteSongById(ctx context.Context, id int64) error {
 	_, err := q.db.ExecContext(ctx, deleteSongById, id)
 	return err
 }
@@ -31,7 +31,7 @@ FROM songs
 WHERE id = $1
 `
 
-func (q *Queries) GetSongById(ctx context.Context, id int32) (Song, error) {
+func (q *Queries) GetSongById(ctx context.Context, id int64) (Song, error) {
 	row := q.db.QueryRowContext(ctx, getSongById, id)
 	var i Song
 	err := row.Scan(
@@ -52,9 +52,9 @@ ON CONFLICT (song_id, artist_uuid)
 `
 
 type UpsertSongArtistParams struct {
-	SongID     int32
+	SongID     int64
 	ArtistUuid uuid.UUID
-	OrderID    int16
+	OrderID    int64
 }
 
 func (q *Queries) UpsertSongArtist(ctx context.Context, arg UpsertSongArtistParams) error {

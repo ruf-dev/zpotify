@@ -21,7 +21,7 @@ WHERE user_id = $1
 `
 
 type GetUserPermissionsOnPlaylistParams struct {
-	UserID     int16
+	UserID     int64
 	PlaylistID uuid.UUID
 }
 
@@ -46,9 +46,9 @@ ON CONFLICT (user_id, playlist_id, order_id)
 `
 
 type UpsertUserPlaylistParams struct {
-	UserID         int16
+	UserID         int64
 	PlaylistID     uuid.UUID
-	OrderID        int16
+	OrderID        int64
 	CanDeleteSongs bool
 	CanAddSongs    bool
 }

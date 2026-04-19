@@ -17,19 +17,19 @@ RETURNING id
 
 type CreateFileParams struct {
 	FilePath    string
-	DurationSec int32
-	AddedByID   int16
-	SizeBytes   int32
+	DurationSec int64
+	AddedByID   int64
+	SizeBytes   int64
 }
 
-func (q *Queries) CreateFile(ctx context.Context, arg CreateFileParams) (int32, error) {
+func (q *Queries) CreateFile(ctx context.Context, arg CreateFileParams) (int64, error) {
 	row := q.db.QueryRowContext(ctx, createFile,
 		arg.FilePath,
 		arg.DurationSec,
 		arg.AddedByID,
 		arg.SizeBytes,
 	)
-	var id int32
+	var id int64
 	err := row.Scan(&id)
 	return id, err
 }
@@ -39,7 +39,7 @@ DELETE FROM files_meta
 WHERE id = $1
 `
 
-func (q *Queries) DeleteFileById(ctx context.Context, id int32) error {
+func (q *Queries) DeleteFileById(ctx context.Context, id int64) error {
 	_, err := q.db.ExecContext(ctx, deleteFileById, id)
 	return err
 }
@@ -54,7 +54,7 @@ FROM files_meta
 WHERE id = $1
 `
 
-func (q *Queries) GetFileById(ctx context.Context, id int32) (FilesMetum, error) {
+func (q *Queries) GetFileById(ctx context.Context, id int64) (FilesMetum, error) {
 	row := q.db.QueryRowContext(ctx, getFileById, id)
 	var i FilesMetum
 	err := row.Scan(
@@ -75,9 +75,9 @@ WHERE id = $1
 `
 
 type UpdateFileParams struct {
-	ID          int32
-	DurationSec int32
-	SizeBytes   int32
+	ID          int64
+	DurationSec int64
+	SizeBytes   int64
 }
 
 func (q *Queries) UpdateFile(ctx context.Context, arg UpdateFileParams) error {

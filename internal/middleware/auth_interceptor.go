@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -128,10 +129,20 @@ func HttpAuthMiddleware(srv service.Service, opts ...authOption) func(http.Handl
 				}
 			}
 
-			w.WriteHeader(http.StatusUnauthorized)
-			_, _ = w.Write([]byte(err.Error()))
+			writeError(err, w)
 		})
 	}
+}
+
+func writeError(err error, w http.ResponseWriter) {
+	rerr := &rerrors.Error{}
+	if errors.As(err, rerr) {
+		rerr.HttpStatus(w)
+		return
+	}
+
+	w.WriteHeader(http.StatusInternalServerError)
+	_, _ = w.Write([]byte(err.Error()))
 }
 
 func (ac *authMiddleware) authWithSession(ctx context.Context, md metadata.MD) (context.Context, error) {
@@ -158,7 +169,7 @@ func (ac *authMiddleware) authWithSession(ctx context.Context, md metadata.MD) (
 
 	if !user.Permissions.EarlyAccess {
 		return nil, status.Error(codes.Unavailable,
-			"Service in early access. Ask administrator for Early access")
+			"Service in early access. Ask administrator to add you to white list")
 	}
 
 	uc.Permissions = user.Permissions

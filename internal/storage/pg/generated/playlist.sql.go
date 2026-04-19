@@ -25,7 +25,7 @@ RETURNING playlist_id
 type CreatePlaylistParams struct {
 	Name        string
 	Description string
-	UserID      int16
+	UserID      int64
 }
 
 func (q *Queries) CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error) {
@@ -52,7 +52,7 @@ WHERE playlists.uuid = $2
 `
 
 type GetPlaylistWithAuthParams struct {
-	UserID int16
+	UserID int64
 	Uuid   uuid.UUID
 }
 

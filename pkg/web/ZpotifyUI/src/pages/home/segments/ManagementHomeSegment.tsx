@@ -10,8 +10,6 @@ interface ManagementHomeSegmentProps {
 }
 
 export default function ManagementHomeSegment({}: ManagementHomeSegmentProps) {
-
-
     return (
         <div className={cls.ManagementHomeSegmentContainer}>
             <DisplayKeys/>
@@ -27,7 +25,7 @@ function DisplayKeys() {
                 <div
                     className={cls.Card}
                 >
-                    New playlist
+                    Add playlist to home screen
                 </div>
                 <div
                     className={cn(cls.Card, {

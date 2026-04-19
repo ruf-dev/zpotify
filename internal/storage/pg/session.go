@@ -68,8 +68,8 @@ func (s *SessionStorage) Delete(ctx context.Context, tokens ...string) error {
 	return nil
 }
 
-func (s *SessionStorage) ListByUserId(ctx context.Context, tgId int64) ([]domain.UserSession, error) {
-	sessionDb, err := s.q.ListSessionsByUserId(ctx, int16(tgId))
+func (s *SessionStorage) ListByUserId(ctx context.Context, userId int64) ([]domain.UserSession, error) {
+	sessionDb, err := s.q.ListSessionsByUserId(ctx, userId)
 	if err != nil {
 		return nil, wrapPgErr(err)
 	}
