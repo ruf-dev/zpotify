@@ -29,7 +29,7 @@ type service struct {
 
 func New(dataStorage storage.Storage, cache files_cache.FilesCache) Service {
 	return &service{
-		//audioService:    v1.NewAudioService(dataStorage, cache),
+		audioService:    v1.NewAudioService(dataStorage, cache),
 		userService:     v1.NewUserService(dataStorage),
 		authService:     v1.NewAuthService(dataStorage),
 		playlistService: v1.NewPlaylistService(dataStorage),
@@ -65,6 +65,8 @@ type AudioService interface {
 
 	Get(fileId int64, start, end int64) (domain.Song, io.ReadCloser, error)
 
+	Create(ctx context.Context, req domain.CreateSong) (int64, error)
+
 	Delete(ctx context.Context, id int64) error
 }
 
@@ -98,6 +100,5 @@ type PlaylistService interface {
 }
 
 type FileService interface {
-	Create(ctx context.Context, name string) (int64, error)
 	StoreToLocalStorage(ctx context.Context, name string, content io.Reader) (int64, error)
 }

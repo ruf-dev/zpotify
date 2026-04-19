@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"net/http"
 	"strconv"
 
 	"go.redsock.ru/rerrors"
@@ -91,6 +92,48 @@ func GrpcAuthInterceptor(srv service.Service, opts ...authOption) grpc.ServerOpt
 	})
 }
 
+func HttpAuthMiddleware(srv service.Service, opts ...authOption) func(http.Handler) http.Handler {
+	ac := &authMiddleware{
+		authService: srv.AuthService(),
+		userService: srv.UserService(),
+	}
+	for _, opt := range opts {
+		opt(ac)
+	}
+
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if ac.isIgnored(r.URL.Path) {
+				next.ServeHTTP(w, r)
+				return
+			}
+
+			md := metadata.MD{}
+			for k, v := range r.Header {
+				md.Set(k, v...)
+			}
+
+			ctx := r.Context()
+			ctxWithUser, err := ac.authWithSession(ctx, md)
+			if err == nil {
+				next.ServeHTTP(w, r.WithContext(ctxWithUser))
+				return
+			}
+
+			if ac.isDebugEnabled {
+				userCtx, debugErr := ac.authWithDebugHeaders(ctx, md)
+				if debugErr == nil && userCtx != nil {
+					next.ServeHTTP(w, r.WithContext(user_context.WithUserContext(ctx, *userCtx)))
+					return
+				}
+			}
+
+			w.WriteHeader(http.StatusUnauthorized)
+			_, _ = w.Write([]byte(err.Error()))
+		})
+	}
+}
+
 func (ac *authMiddleware) authWithSession(ctx context.Context, md metadata.MD) (context.Context, error) {
 	auth := md.Get(authHeader)
 	if len(auth) == 0 {
@@ -104,10 +147,6 @@ func (ac *authMiddleware) authWithSession(ctx context.Context, md metadata.MD) (
 
 	uc := user_context.UserContext{
 		UserId: userId,
-		Permissions: domain.UserPermissions{
-			CanUpload:   false,
-			EarlyAccess: false,
-		},
 	}
 
 	ctx = user_context.WithUserContext(ctx, uc)
@@ -122,7 +161,9 @@ func (ac *authMiddleware) authWithSession(ctx context.Context, md metadata.MD) (
 			"Service in early access. Ask administrator for Early access")
 	}
 
-	return ctx, nil
+	uc.Permissions = user.Permissions
+
+	return user_context.WithUserContext(ctx, uc), nil
 }
 
 func (ac *authMiddleware) authWithDebugHeaders(ctx context.Context, md metadata.MD) (*user_context.UserContext, error) {

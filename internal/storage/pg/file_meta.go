@@ -24,12 +24,14 @@ func NewFileMetaStorage(db sqldb.DB) *FileMetaStorage {
 }
 
 func (s *FileMetaStorage) Add(ctx context.Context, req domain.FileMeta) (int64, error) {
-	id, err := s.q.CreateFile(ctx, querier.CreateFileParams{
+	params := querier.CreateFileParams{
 		FilePath:    req.FilePath,
 		DurationSec: int32(req.Duration.Seconds()),
 		AddedByID:   int16(req.AddedById),
 		SizeBytes:   int32(req.SizeBytes),
-	})
+	}
+
+	id, err := s.q.CreateFile(ctx, params)
 	if err != nil {
 		return 0, wrapPgErr(err)
 	}

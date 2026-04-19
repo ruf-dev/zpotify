@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"go.redsock.ru/rerrors"
-	"go.redsock.ru/toolbox"
 
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
@@ -25,10 +24,6 @@ type AudioService struct {
 	filesCache files_cache.FilesCache
 }
 
-func (s *AudioService) Delete(ctx context.Context, id int64) error {
-	return s.fileMetaStorage.Delete(ctx, id)
-}
-
 func NewAudioService(
 	dataStorage storage.Storage,
 
@@ -44,6 +39,21 @@ func NewAudioService(
 
 		filesCache: filesCache,
 	}
+}
+
+func (s *AudioService) Create(ctx context.Context, req domain.CreateSong) (int64, error) {
+	id, err := s.songsStorage.Create(ctx, req.CreateSongParams)
+	if err != nil {
+		return 0, rerrors.Wrap(err, "error creating song in storage")
+	}
+
+	//Todo add artists
+
+	return id, nil
+}
+
+func (s *AudioService) Delete(ctx context.Context, id int64) error {
+	return nil
 }
 
 func (s *AudioService) Save(ctx context.Context, req domain.AddAudio) (out domain.SaveFileMetaResp, err error) {
@@ -184,47 +194,11 @@ func (s *AudioService) Get(uniqueFileId int64, start, end int64) (domain.Song, i
 }
 
 func (s *AudioService) GetInfo(ctx context.Context, fileId int64) (domain.Song, error) {
-	fileMeta, err := s.fileMetaStorage.Get(ctx, fileId)
-	if err != nil {
-		return domain.Song{}, rerrors.Wrap(err, "error getting file info from storage")
-	}
-
-	songBase, err := s.songsStorage.GetByFileId(ctx, fileId)
-	if err != nil {
-		return domain.Song{}, rerrors.Wrap(err, "error getting songBase from storage")
-	}
-
-	return domain.Song{
-		SongBase: songBase,
-		FileMeta: fileMeta,
-	}, nil
+	return domain.Song{}, nil
 }
 
 func (s *AudioService) List(ctx context.Context, req domain.ListSongs) (domain.SongsList, error) {
-	if req.Limit == 0 {
-		req.Limit = 10
-	}
-
-	if req.PlaylistUuid == nil {
-		req.PlaylistUuid = toolbox.ToPtr(GlobalPlaylistUuid)
-	}
-
-	songsBase, err := s.playlistStorage.List(ctx, req)
-	if err != nil {
-		return domain.SongsList{}, rerrors.Wrap(err, "error listing songs")
-	}
-
-	total, err := s.playlistStorage.Count(ctx, req)
-	if err != nil {
-		return domain.SongsList{}, rerrors.Wrap(err, "error counting songs")
-	}
-
-	_ = songsBase
-
-	return domain.SongsList{
-		Songs: []domain.Song{},
-		Total: total,
-	}, nil
+	return domain.SongsList{}, nil
 }
 
 func (s *AudioService) openFileWithFallback(ctx context.Context, file domain.FileMeta) (io.ReadCloser, error) {

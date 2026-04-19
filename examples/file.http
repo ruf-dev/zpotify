@@ -11,9 +11,11 @@ Content-Type: application/json
 ### Upload file content
 POST {{zpotify-api}}/wapi/files/upload
 Authorization: {{token}}
-Content-Type: application/json
+Content-Type: multipart/form-data; boundary=WebAppBoundary
 
-{
-  "id": "3",
-  "content": "SGVsbG8gWnBvdGlmeSE="
-}
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="sc_1.mp3"
+Content-Type: audio/mpeg
+
+< ./data/sc_1.mp3
+--WebAppBoundary--

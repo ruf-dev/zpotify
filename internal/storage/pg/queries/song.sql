@@ -1,7 +1,3 @@
--- name: CreateSong :exec
-INSERT INTO songs
-    (id, file_id, title, created_at)
-VALUES ($1, $2, $3, now());
 
 -- name: GetSongById :one
 SELECT id,

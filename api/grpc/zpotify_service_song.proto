@@ -8,23 +8,23 @@ import "npm.proto";
 option go_package = "/zpotify_api;zpotify_api";
 option (npm_package) = "@zpotify/api";
 
-service FileAPI {
-  rpc CreateFile(CreateFile.Request) returns (CreateFile.Response) {
+service SongAPI {
+  rpc CreateSong(CreateSong.Request) returns (CreateSong.Response) {
     option (google.api.http) = {
-      post: "/api/file/create",
+      post: "/api/song/create",
       body: "*"
     };
   };
 }
 
-message CreateFile {
+message CreateSong {
   message Request {
-    string name = 1;
-    optional string content_type = 2;
+    string title = 1;
+    repeated string artist_uuids = 2;
+    uint32 file_id = 3;
   }
 
   message Response {
-    string id = 1;
+    int64 id = 1;
   }
 }
-

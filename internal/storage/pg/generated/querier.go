@@ -13,7 +13,6 @@ import (
 type Querier interface {
 	CreateFile(ctx context.Context, arg CreateFileParams) (int32, error)
 	CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error)
-	CreateSong(ctx context.Context, arg CreateSongParams) error
 	DeleteExpiredSessions(ctx context.Context) error
 	DeleteFileById(ctx context.Context, id int32) error
 	DeleteSongById(ctx context.Context, id int32) error

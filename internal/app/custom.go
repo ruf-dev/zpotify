@@ -19,8 +19,8 @@ import (
 	"go.zpotify.ru/zpotify/internal/storage/pg"
 	"go.zpotify.ru/zpotify/internal/transport"
 	"go.zpotify.ru/zpotify/internal/transport/auth_api_impl"
-	"go.zpotify.ru/zpotify/internal/transport/file_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/playlist_api_impl"
+	"go.zpotify.ru/zpotify/internal/transport/song_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/user_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/wapi"
 	"go.zpotify.ru/zpotify/pkg/docs"
@@ -36,7 +36,7 @@ type Custom struct {
 	AuthApiImpl     *auth_api_impl.Impl
 	UserApiImpl     *user_api_impl.Impl
 	PlaylistApiImpl *playlist_api_impl.Impl
-	FileApiImpl     *file_api_impl.Impl
+	SongApiImpl     *song_api_impl.Impl
 
 	ServerManager *transport.ServersManager
 }
@@ -60,7 +60,7 @@ func (c *Custom) Init(a *App) (err error) {
 	c.AuthApiImpl = auth_api_impl.New(c.Service)
 	c.UserApiImpl = user_api_impl.New(c.Service)
 	c.PlaylistApiImpl = playlist_api_impl.New(c.Service)
-	c.FileApiImpl = file_api_impl.New(c.Service)
+	c.SongApiImpl = song_api_impl.New(c.Service)
 
 	c.ServerManager, err = transport.NewServerManager(a.Ctx, a.MASTER)
 	if err != nil {
@@ -83,8 +83,8 @@ func (c *Custom) Init(a *App) (err error) {
 	c.ServerManager.AddImplementation(
 		c.AuthApiImpl,
 		c.UserApiImpl,
+		c.SongApiImpl,
 		c.PlaylistApiImpl,
-		c.FileApiImpl,
 	)
 
 	c.ServerManager.AddHttpHandler(docs.Swagger())
@@ -93,6 +93,10 @@ func (c *Custom) Init(a *App) (err error) {
 	fileService := c.Service.FileService()
 
 	wapiHandler := wapi.New(audioService, fileService)
+	wapiHandler = middleware.HttpAuthMiddleware(
+		c.Service,
+		middleware.WithDebug(a.Cfg.Environment.DebugAuth),
+	)(wapiHandler)
 	c.ServerManager.AddHttpHandler("/wapi/", wapiHandler)
 	return nil
 }

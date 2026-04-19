@@ -11,23 +11,6 @@ import (
 	"github.com/google/uuid"
 )
 
-const createSong = `-- name: CreateSong :exec
-INSERT INTO songs
-    (id, file_id, title, created_at)
-VALUES ($1, $2, $3, now())
-`
-
-type CreateSongParams struct {
-	ID     int32
-	FileID int32
-	Title  string
-}
-
-func (q *Queries) CreateSong(ctx context.Context, arg CreateSongParams) error {
-	_, err := q.db.ExecContext(ctx, createSong, arg.ID, arg.FileID, arg.Title)
-	return err
-}
-
 const deleteSongById = `-- name: DeleteSongById :exec
 DELETE
 FROM files_meta

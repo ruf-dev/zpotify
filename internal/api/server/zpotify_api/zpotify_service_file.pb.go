@@ -12,7 +12,6 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
-	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -23,178 +22,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type CreateFile struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateFile) Reset() {
-	*x = CreateFile{}
-	mi := &file_zpotify_service_file_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateFile) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateFile) ProtoMessage() {}
-
-func (x *CreateFile) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_file_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateFile.ProtoReflect.Descriptor instead.
-func (*CreateFile) Descriptor() ([]byte, []int) {
-	return file_zpotify_service_file_proto_rawDescGZIP(), []int{0}
-}
-
-type CreateFile_Request struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	ContentType   *string                `protobuf:"bytes,2,opt,name=content_type,json=contentType,proto3,oneof" json:"content_type,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateFile_Request) Reset() {
-	*x = CreateFile_Request{}
-	mi := &file_zpotify_service_file_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateFile_Request) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateFile_Request) ProtoMessage() {}
-
-func (x *CreateFile_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_file_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateFile_Request.ProtoReflect.Descriptor instead.
-func (*CreateFile_Request) Descriptor() ([]byte, []int) {
-	return file_zpotify_service_file_proto_rawDescGZIP(), []int{0, 0}
-}
-
-func (x *CreateFile_Request) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *CreateFile_Request) GetContentType() string {
-	if x != nil && x.ContentType != nil {
-		return *x.ContentType
-	}
-	return ""
-}
-
-type CreateFile_Response struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateFile_Response) Reset() {
-	*x = CreateFile_Response{}
-	mi := &file_zpotify_service_file_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateFile_Response) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateFile_Response) ProtoMessage() {}
-
-func (x *CreateFile_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_file_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateFile_Response.ProtoReflect.Descriptor instead.
-func (*CreateFile_Response) Descriptor() ([]byte, []int) {
-	return file_zpotify_service_file_proto_rawDescGZIP(), []int{0, 1}
-}
-
-func (x *CreateFile_Response) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
 var File_zpotify_service_file_proto protoreflect.FileDescriptor
 
 const file_zpotify_service_file_proto_rawDesc = "" +
 	"\n" +
-	"\x1azpotify_service_file.proto\x12\vzpotify_api\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\"\x80\x01\n" +
-	"\n" +
-	"CreateFile\x1aV\n" +
-	"\aRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12&\n" +
-	"\fcontent_type\x18\x02 \x01(\tH\x00R\vcontentType\x88\x01\x01B\x0f\n" +
-	"\r_content_type\x1a\x1a\n" +
-	"\bResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id2w\n" +
-	"\aFileAPI\x12l\n" +
-	"\n" +
-	"CreateFile\x12\x1f.zpotify_api.CreateFile.Request\x1a .zpotify_api.CreateFile.Response\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/file/createB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\x1azpotify_service_file.proto\x12\vzpotify_api\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto2\t\n" +
+	"\aFileAPIB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
 
-var (
-	file_zpotify_service_file_proto_rawDescOnce sync.Once
-	file_zpotify_service_file_proto_rawDescData []byte
-)
-
-func file_zpotify_service_file_proto_rawDescGZIP() []byte {
-	file_zpotify_service_file_proto_rawDescOnce.Do(func() {
-		file_zpotify_service_file_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_zpotify_service_file_proto_rawDesc), len(file_zpotify_service_file_proto_rawDesc)))
-	})
-	return file_zpotify_service_file_proto_rawDescData
-}
-
-var file_zpotify_service_file_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_zpotify_service_file_proto_goTypes = []any{
-	(*CreateFile)(nil),          // 0: zpotify_api.CreateFile
-	(*CreateFile_Request)(nil),  // 1: zpotify_api.CreateFile.Request
-	(*CreateFile_Response)(nil), // 2: zpotify_api.CreateFile.Response
-}
+var file_zpotify_service_file_proto_goTypes = []any{}
 var file_zpotify_service_file_proto_depIdxs = []int32{
-	1, // 0: zpotify_api.FileAPI.CreateFile:input_type -> zpotify_api.CreateFile.Request
-	2, // 1: zpotify_api.FileAPI.CreateFile:output_type -> zpotify_api.CreateFile.Response
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -205,20 +43,18 @@ func file_zpotify_service_file_proto_init() {
 	if File_zpotify_service_file_proto != nil {
 		return
 	}
-	file_zpotify_service_file_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_service_file_proto_rawDesc), len(file_zpotify_service_file_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_zpotify_service_file_proto_goTypes,
 		DependencyIndexes: file_zpotify_service_file_proto_depIdxs,
-		MessageInfos:      file_zpotify_service_file_proto_msgTypes,
 	}.Build()
 	File_zpotify_service_file_proto = out.File
 	file_zpotify_service_file_proto_goTypes = nil

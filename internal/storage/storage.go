@@ -6,6 +6,7 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/domain"
 	auth_q "go.zpotify.ru/zpotify/internal/storage/pg/generated/auth"
+	"go.zpotify.ru/zpotify/internal/storage/pg/generated/songs_q"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 )
 
@@ -78,6 +79,8 @@ type SessionStorage interface {
 
 type SongStorage interface {
 	WithTx(tx *sql.Tx) SongStorage
+
+	Create(ctx context.Context, song songs_q.CreateSongParams) (int64, error)
 
 	//Save(ctx context.Context, song domain.SongBase) error
 	//SaveSongsArtists(ctx context.Context, songId int64, artist uuid.UUID, orderId int16) error

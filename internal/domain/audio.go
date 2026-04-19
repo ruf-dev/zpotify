@@ -3,6 +3,8 @@ package domain
 import (
 	"io"
 	"time"
+
+	"go.zpotify.ru/zpotify/internal/storage/pg/generated/songs_q"
 )
 
 type AddAudio struct {
@@ -111,4 +113,9 @@ type SeekFile struct {
 	UniqueId string
 	Offset   int64
 	Limit    int64
+}
+
+type CreateSong struct {
+	songs_q.CreateSongParams
+	ArtistUuids []string
 }

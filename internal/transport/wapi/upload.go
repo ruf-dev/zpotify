@@ -8,6 +8,8 @@ import (
 )
 
 func (s *Server) Upload(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
 	method := r.Method
 	if method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -22,7 +24,7 @@ func (s *Server) Upload(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	id, err := s.fileService.StoreToLocalStorage(r.Context(), header.Filename, file)
+	id, err := s.fileService.StoreToLocalStorage(ctx, header.Filename, file)
 	if err != nil {
 		unwrapError(w, rerrors.Wrap(err, "error in file service StoreToLocalStorage"))
 		return

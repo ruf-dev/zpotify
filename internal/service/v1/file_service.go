@@ -15,6 +15,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/pkg/file_parser"
 	"go.zpotify.ru/zpotify/internal/storage"
+	"go.zpotify.ru/zpotify/internal/user_errors"
 )
 
 type FileService struct {
@@ -27,31 +28,14 @@ func NewFileService(s storage.Storage) *FileService {
 	}
 }
 
-func (s *FileService) Create(ctx context.Context, name string) (int64, error) {
-	uCtx, ok := user_context.GetUserContext(ctx)
-	if !ok {
-		return 0, rerrors.New("unauthenticated")
-	}
-
-	fileMeta := domain.FileMeta{
-		File: domain.File{
-			FilePath: name,
-		},
-		AddedById: uCtx.UserId,
-	}
-
-	id, err := s.storage.Add(ctx, fileMeta)
-	if err != nil {
-		return 0, rerrors.Wrap(err, "error creating file meta")
-	}
-
-	return id, nil
-}
-
 func (s *FileService) StoreToLocalStorage(ctx context.Context, name string, content io.Reader) (int64, error) {
 	uCtx, ok := user_context.GetUserContext(ctx)
 	if !ok {
 		return 0, rerrors.New("unauthenticated")
+	}
+
+	if !uCtx.Permissions.CanUpload {
+		return 0, rerrors.Wrap(user_errors.ErrPermissionDenied, "not allowed to upload file")
 	}
 
 	dataDir := filepath.Join("data", "tmp")

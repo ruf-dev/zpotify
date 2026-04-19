@@ -7,10 +7,7 @@
 package zpotify_api
 
 import (
-	context "context"
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -18,15 +15,10 @@ import (
 // Requires gRPC-Go v1.64.0 or later.
 const _ = grpc.SupportPackageIsVersion9
 
-const (
-	FileAPI_CreateFile_FullMethodName = "/zpotify_api.FileAPI/CreateFile"
-)
-
 // FileAPIClient is the client API for FileAPI service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FileAPIClient interface {
-	CreateFile(ctx context.Context, in *CreateFile_Request, opts ...grpc.CallOption) (*CreateFile_Response, error)
 }
 
 type fileAPIClient struct {
@@ -37,21 +29,10 @@ func NewFileAPIClient(cc grpc.ClientConnInterface) FileAPIClient {
 	return &fileAPIClient{cc}
 }
 
-func (c *fileAPIClient) CreateFile(ctx context.Context, in *CreateFile_Request, opts ...grpc.CallOption) (*CreateFile_Response, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateFile_Response)
-	err := c.cc.Invoke(ctx, FileAPI_CreateFile_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // FileAPIServer is the server API for FileAPI service.
 // All implementations must embed UnimplementedFileAPIServer
 // for forward compatibility.
 type FileAPIServer interface {
-	CreateFile(context.Context, *CreateFile_Request) (*CreateFile_Response, error)
 	mustEmbedUnimplementedFileAPIServer()
 }
 
@@ -62,9 +43,6 @@ type FileAPIServer interface {
 // pointer dereference when methods are called.
 type UnimplementedFileAPIServer struct{}
 
-func (UnimplementedFileAPIServer) CreateFile(context.Context, *CreateFile_Request) (*CreateFile_Response, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateFile not implemented")
-}
 func (UnimplementedFileAPIServer) mustEmbedUnimplementedFileAPIServer() {}
 func (UnimplementedFileAPIServer) testEmbeddedByValue()                 {}
 
@@ -86,36 +64,13 @@ func RegisterFileAPIServer(s grpc.ServiceRegistrar, srv FileAPIServer) {
 	s.RegisterService(&FileAPI_ServiceDesc, srv)
 }
 
-func _FileAPI_CreateFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateFile_Request)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FileAPIServer).CreateFile(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: FileAPI_CreateFile_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FileAPIServer).CreateFile(ctx, req.(*CreateFile_Request))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // FileAPI_ServiceDesc is the grpc.ServiceDesc for FileAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var FileAPI_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "zpotify_api.FileAPI",
 	HandlerType: (*FileAPIServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "CreateFile",
-			Handler:    _FileAPI_CreateFile_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "zpotify_service_file.proto",
+	Methods:     []grpc.MethodDesc{},
+	Streams:     []grpc.StreamDesc{},
+	Metadata:    "zpotify_service_file.proto",
 }

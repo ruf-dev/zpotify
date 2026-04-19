@@ -1,5 +1,11 @@
-POST {{zpotify-api}}/api/songs
+POST {{zpotify-api}}/api/song/create
 Content-Type: application/json
-Grpc-Metadata-Z-Tg-Username: alexskilled
+Authorization: {{token}}
 
-{}
+{
+  "title": "Enjoy the summer",
+  "artistUuids": [
+    "5ccbb4e4-a483-406f-98c0-49d83a0d506b"
+  ],
+  "file_id": "4"
+}
