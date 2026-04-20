@@ -1,0 +1,11 @@
+### List artists
+POST {{zpotify-api}}/api/artists/list
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "filters": {
+    "search": "car"
+  }
+}
+

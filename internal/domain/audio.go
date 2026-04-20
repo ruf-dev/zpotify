@@ -103,7 +103,10 @@ type SongsList struct {
 }
 
 type ListArtists struct {
-	Name []string
+	Name   []string
+	Search *string
+	Limit  uint64
+	Offset uint64
 }
 
 type SeekFile struct {

@@ -2,6 +2,7 @@ package pg
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"time"
 
@@ -11,6 +12,7 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/storage"
 	generated "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 )
 
@@ -26,6 +28,33 @@ func NewPlaylistStorage(db sqldb.DB) *PlaylistStorage {
 
 		querier: generated.New(db),
 	}
+}
+
+func (s *PlaylistStorage) WithTx(tx *sql.Tx) storage.PlaylistStorage {
+	return &PlaylistStorage{
+		db:      &txWrapper{tx},
+		querier: generated.New(tx),
+	}
+}
+
+type txWrapper struct {
+	*sql.Tx
+}
+
+func (w *txWrapper) Prepare(query string) (*sql.Stmt, error) {
+	return nil, rerrors.New("not implemented")
+}
+
+func (w *txWrapper) Exec(query string, args ...any) (sql.Result, error) {
+	return nil, rerrors.New("not implemented")
+}
+
+func (w *txWrapper) Query(query string, args ...any) (*sql.Rows, error) {
+	return nil, rerrors.New("not implemented")
+}
+
+func (w *txWrapper) QueryRow(query string, args ...any) *sql.Row {
+	return nil
 }
 
 func (s *PlaylistStorage) ListSongs(ctx context.Context, r domain.ListSongs) ([]domain.PlaylistSong, error) {

@@ -9,6 +9,7 @@ import {AuthService, IAuthService, AuthMiddleware} from "@/processes/Auth.ts";
 import {ISettingsService, SettingsService} from "@/processes/HomePage.ts";
 import {IPlaylistService, PlaylistService} from "@/processes/PlaylistService.ts";
 import {IFileService, FileService} from "@/processes/FileService.ts";
+import { IArtistsService, ArtistsService } from "@/processes/ArtistsService.ts";
 
 // Todo redo onto UserContext
 export interface User {
@@ -34,6 +35,8 @@ export interface Services {
     Settings(): ISettingsService
 
     Auth(): IAuthService
+
+    Artists(): IArtistsService
 }
 
 //  TODO TOTALY REDO
@@ -49,6 +52,7 @@ export default function useUser(): User {
     const playlistService = useRef(new PlaylistService(authMiddleware))
     const fileService = useRef(new FileService(authMiddleware))
     const authService = useRef(new AuthService(authMiddleware))
+    const artistsService = useRef(new ArtistsService(authMiddleware))
 
     useEffect(() => {
         if (authMiddleware.current.session) {
@@ -98,6 +102,9 @@ export default function useUser(): User {
                     },
                     Auth(): IAuthService {
                         return authService.current
+                    },
+                    Artists(): IArtistsService {
+                        return artistsService.current
                     }
                 }
             },

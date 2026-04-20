@@ -26,6 +26,7 @@ type Storage interface {
 
 	SongsStorage() SongStorage
 	PlaylistStorage() PlaylistStorage
+	ArtistStorage() ArtistStorage
 	FileMeta() FileMetaStorage
 
 	TxManager() *tx_manager.TxManager
@@ -85,6 +86,8 @@ type SongStorage interface {
 
 	Create(ctx context.Context, song songs_q.CreateSongParams) (int64, error)
 
+	AddArtist(ctx context.Context, songId int64, artistUuid string, order int) error
+
 	//Save(ctx context.Context, song domain.SongBase) error
 	//SaveSongsArtists(ctx context.Context, songId int64, artist uuid.UUID, orderId int16) error
 
@@ -101,9 +104,11 @@ type ArtistStorage interface {
 	WithTx(tx *sql.Tx) ArtistStorage
 
 	Return(ctx context.Context, artists []string) ([]domain.ArtistsBase, error)
+	List(ctx context.Context, req domain.ListArtists) ([]domain.ArtistsBase, error)
 }
 
 type PlaylistStorage interface {
+	WithTx(tx *sql.Tx) PlaylistStorage
 	//Create(ctx context.Context, req querier.CreatePlaylistParams) (domain.Playlist, error)
 
 	ListSongs(ctx context.Context, r domain.ListSongs) ([]domain.PlaylistSong, error)
@@ -123,4 +128,7 @@ type BinaryFileStorage interface {
 	SaveToTempFolder(ctx context.Context, userId int64, filePath string, content io.Reader) (tempPath string, err error)
 	// ListFiles - returns list of files in user's temporary folder
 	ListFiles(ctx context.Context, userId int64) (files []string, err error)
+
+	// Move - moves file from one place to another
+	Move(ctx context.Context, fromPath string, newPath string) error
 }

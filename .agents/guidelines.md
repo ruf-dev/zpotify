@@ -43,6 +43,7 @@ Data flows: **Transport -> Service -> Storage**.
   - `sqlc` for SQL query generation.
   - `rscli.mk` (via `Makefile`) for standard tasks.
   - `rscli-dev project tidy` - a custom cli utility for projects
+  - `moti g` for protoc generation
 
 ## 📝 Code Style & Patterns
 

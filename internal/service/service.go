@@ -16,6 +16,7 @@ type Service interface {
 	UserService() UserService
 	AuthService() AuthService
 	PlaylistService() PlaylistService
+	ArtistsService() ArtistsService
 	FileService() FileService
 }
 
@@ -24,15 +25,17 @@ type service struct {
 	userService     UserService
 	authService     AuthService
 	playlistService PlaylistService
+	artistsService  ArtistsService
 	fileService     FileService
 }
 
 func New(dataStorage storage.Storage, cache files_cache.FilesCache, fileStorage storage.BinaryFileStorage) Service {
 	return &service{
-		audioService:    v1.NewAudioService(dataStorage, cache),
+		audioService:    v1.NewAudioService(dataStorage, cache, fileStorage),
 		userService:     v1.NewUserService(dataStorage),
 		authService:     v1.NewAuthService(dataStorage),
 		playlistService: v1.NewPlaylistService(dataStorage),
+		artistsService:  v1.NewArtistsService(dataStorage),
 		fileService:     v1.NewFileService(dataStorage, fileStorage),
 	}
 }
@@ -51,6 +54,10 @@ func (s *service) AuthService() AuthService {
 
 func (s *service) PlaylistService() PlaylistService {
 	return s.playlistService
+}
+
+func (s *service) ArtistsService() ArtistsService {
+	return s.artistsService
 }
 
 func (s *service) FileService() FileService {
@@ -98,6 +105,10 @@ type PlaylistService interface {
 
 	ListSongs(ctx context.Context, songs domain.ListSongs) (domain.SongsInPlaylist, error)
 	AddSong(ctx context.Context, req domain.AddSongToPlaylist) error
+}
+
+type ArtistsService interface {
+	List(ctx context.Context, req domain.ListArtists) ([]domain.ArtistsBase, error)
 }
 
 type FileService interface {

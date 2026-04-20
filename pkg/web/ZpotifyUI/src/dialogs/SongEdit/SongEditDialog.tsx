@@ -4,15 +4,16 @@ import React from "react";
 import cls from "@/dialogs/SongEdit/SongEditDialog.module.css";
 
 import {useDialog} from "@/app/hooks/Dialog.tsx";
+import useUser from "@/hooks/user/User.ts";
 
 import Button from "@/components/shared/Button.tsx";
 import Input from "@/components/shared/Input.tsx";
 import Chip from "@/components/shared/Chip.tsx";
+import MultiSelect, {Option} from "@/components/shared/MultiSelect.tsx";
 
 interface SongEditDialogProps {
     path: string;
     initialTitle?: string;
-    initialArtists?: string;
     duration?: string;
     size?: string;
     previousScreen?: React.JSX.Element;
@@ -21,14 +22,24 @@ interface SongEditDialogProps {
 export default function SongEditDialog({
                                            path,
                                            initialTitle = "Espresso",
-                                           initialArtists = "Sabrina Carpenter",
                                            duration = "2:54",
                                            size = "6.7 MB",
                                            previousScreen
                                        }: SongEditDialogProps) {
     const {OpenDialog, CloseDialog} = useDialog();
+    const user = useUser();
+
     const [title, setTitle] = useState(initialTitle);
-    const [artists, setArtists] = useState(initialArtists);
+    const [selectedArtistIds, setSelectedArtistIds] = useState<string[]>([]);
+
+    const doListArtists = async (query: string): Promise<Option[]> => {
+        const resp = await user.Services().Artists().ListArtist(query, 0, 20);
+
+        const artists = resp.artists || [];
+        return artists
+            .filter(a => !!a.uuid && !!a.name)
+            .map(a => ({ id: a.uuid as string, label: a.name as string }));
+    };
 
     return (
         <div className={cls.SongEditDialog}>
@@ -54,11 +65,13 @@ export default function SongEditDialog({
                     inputValue={title}
                     onChange={setTitle}
                 />
-                <Input
+                <MultiSelect
                     label="Artists"
-                    inputValue={artists}
-                    onChange={setArtists}
+                    selectedIds={selectedArtistIds}
+                    onChange={setSelectedArtistIds}
+                    doList={doListArtists}
                 />
+
                 <div className={cls.Chips}>
                     <Chip value={duration} label="duration"/>
                     <Chip value={size} label="size"/>
@@ -70,7 +83,7 @@ export default function SongEditDialog({
                 <Button
                     title="Save"
                     onClick={() => {
-                        console.log("Saving...", {title, artists});
+                        console.log("Saving...", { title, artistIds: selectedArtistIds });
                     }}
                 />
             </div>

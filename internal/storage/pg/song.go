@@ -4,6 +4,9 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/google/uuid"
+	"go.redsock.ru/rerrors"
+
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/pg/generated/songs_q"
@@ -30,6 +33,24 @@ func (s *SongsStorage) Create(ctx context.Context, params songs_q.CreateSongPara
 	return id, nil
 }
 
+func (s *SongsStorage) AddArtist(ctx context.Context, songId int64, artistUuid string, order int) error {
+	aUuid, err := uuid.Parse(artistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing artist uuid")
+	}
+
+	_, err = s.db.ExecContext(ctx, `
+		INSERT INTO songs_artists (song_id, artist_uuid, order_id)
+		VALUES ($1, $2, $3)
+		ON CONFLICT (song_id, artist_uuid) DO UPDATE SET order_id = EXCLUDED.order_id
+	`, songId, aUuid, order)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
 //func (s *SongsStorage) AddSongsToPlaylist(ctx context.Context, playlistUuid string, songIds ...int32) error {
 //	_, err := s.db.ExecContext(ctx, `
 //		 INSERT INTO playlist_songs (playlist_uuid, file_id, order_number)
@@ -50,5 +71,8 @@ func (s *SongsStorage) Create(ctx context.Context, params songs_q.CreateSongPara
 //}
 
 func (s *SongsStorage) WithTx(tx *sql.Tx) storage.SongStorage {
-	return NewSongStorage(tx)
+	return &SongsStorage{
+		db:      &txWrapper{tx},
+		querier: songs_q.New(tx),
+	}
 }

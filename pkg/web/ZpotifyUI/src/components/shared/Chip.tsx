@@ -7,7 +7,7 @@ interface ChipProps {
     value: React.ReactNode;
     label?: string;
     className?: string;
-    onClick?: () => void;
+    onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
 }
 
 export default function Chip({ value, label, className, onClick }: ChipProps) {

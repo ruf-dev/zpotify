@@ -2,7 +2,10 @@ package v1
 
 import (
 	"context"
+	"database/sql"
+	"fmt"
 	"io"
+	"path"
 	"strings"
 
 	"go.redsock.ru/rerrors"
@@ -16,41 +19,89 @@ import (
 type AudioService struct {
 	txManager *tx_manager.TxManager
 
-	fileMetaStorage storage.FileMetaStorage
 	songsStorage    storage.SongStorage
-	usersStorage    storage.UserStorage
-	artistStorage   storage.ArtistStorage
+	fileMetaStorage storage.FileMetaStorage
+	playlistStorage storage.PlaylistStorage
+	binaryStorage   storage.BinaryFileStorage
 
 	filesCache files_cache.FilesCache
 }
 
 func NewAudioService(
 	dataStorage storage.Storage,
-
 	filesCache files_cache.FilesCache,
+	binaryStorage storage.BinaryFileStorage,
 ) *AudioService {
 	return &AudioService{
 		txManager: dataStorage.TxManager(),
 
-		songsStorage: dataStorage.SongsStorage(),
-		usersStorage: dataStorage.User(),
-
-		//fileMetaStorage: dataStorage.FileMeta(),
-		//artistStorage:   dataStorage.ArtistStorage(),
+		songsStorage:    dataStorage.SongsStorage(),
+		fileMetaStorage: dataStorage.FileMeta(),
+		playlistStorage: dataStorage.PlaylistStorage(),
+		binaryStorage:   binaryStorage,
 
 		filesCache: filesCache,
 	}
 }
 
 func (s *AudioService) Create(ctx context.Context, req domain.CreateSong) (int64, error) {
-	id, err := s.songsStorage.Create(ctx, req.CreateSongParams)
-	if err != nil {
-		return 0, rerrors.Wrap(err, "error creating song in storage")
+	if len(req.ArtistUuids) == 0 {
+		return 0, rerrors.New("at least one artist is required")
 	}
 
-	//Todo add artists
+	var songId int64
 
-	return id, nil
+	err := s.txManager.Execute(
+		func(tx *sql.Tx) error {
+
+			songsStorage := s.songsStorage.WithTx(tx)
+			fileMetaStorage := s.fileMetaStorage.WithTx(tx)
+			playlistStorage := s.playlistStorage.WithTx(tx)
+
+			fileMeta, err := fileMetaStorage.Get(ctx, req.FileID)
+			if err != nil {
+				return rerrors.Wrap(err, "error getting file meta")
+			}
+
+			songId, err = songsStorage.Create(ctx, req.CreateSongParams)
+			if err != nil {
+				return rerrors.Wrap(err, "error creating song in storage")
+			}
+
+			ext := path.Ext(fileMeta.FilePath)
+			newPath := fmt.Sprintf("%s/%d%s", req.ArtistUuids[0], songId, ext)
+
+			err = s.binaryStorage.Move(ctx, fileMeta.FilePath, newPath)
+			if err != nil {
+				return rerrors.Wrap(err, "error moving file to permanent storage")
+			}
+
+			fileMeta.FilePath = newPath
+			err = fileMetaStorage.Update(ctx, req.FileID, fileMeta.File)
+			if err != nil {
+				return rerrors.Wrap(err, "error updating file meta with new path")
+			}
+
+			for i, artistUuid := range req.ArtistUuids {
+				err = songsStorage.AddArtist(ctx, songId, artistUuid, i)
+				if err != nil {
+					return rerrors.Wrap(err, fmt.Sprintf("error adding artist %s to song", artistUuid))
+				}
+			}
+
+			// 5. Add song to global playlist
+			err = playlistStorage.AddSong(ctx, domain.GlobalPlaylistUuid, int32(songId))
+			if err != nil {
+				return rerrors.Wrap(err, "error adding song to global playlist")
+			}
+
+			return nil
+		})
+	if err != nil {
+		return 0, err
+	}
+
+	return songId, nil
 }
 
 func (s *AudioService) Delete(ctx context.Context, id int64) error {

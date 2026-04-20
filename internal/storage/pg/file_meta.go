@@ -123,12 +123,13 @@ func (s *FileMetaStorage) Delete(ctx context.Context, fileId int64) error {
 }
 
 func (s *FileMetaStorage) Update(ctx context.Context, fileId int64, file domain.File) error {
-	err := s.q.UpdateFile(ctx, querier.UpdateFileParams{
-		ID:          fileId,
-		DurationSec: int64(file.Duration.Seconds()),
-		SizeBytes:   file.SizeBytes,
-		Verified:    file.Verified,
-	})
+	_, err := s.db.ExecContext(ctx, `
+		UPDATE files_meta
+		SET file_path = $1,
+			duration_sec = $2,
+			size_bytes = $3
+		WHERE id = $4
+	`, file.FilePath, int64(file.Duration.Seconds()), file.SizeBytes, fileId)
 	if err != nil {
 		return wrapPgErr(err)
 	}
@@ -161,7 +162,7 @@ func toFileDomain(f querier.FilesMetum) domain.FileMeta {
 
 func (s *FileMetaStorage) WithTx(tx *sql.Tx) storage.FileMetaStorage {
 	return &FileMetaStorage{
-		db: tx,
+		db: &txWrapper{tx},
 		q:  querier.New(tx),
 	}
 }

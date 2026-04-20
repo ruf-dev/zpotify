@@ -19,6 +19,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
 	"go.zpotify.ru/zpotify/internal/storage/pg"
 	"go.zpotify.ru/zpotify/internal/transport"
+	"go.zpotify.ru/zpotify/internal/transport/artists_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/auth_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/file_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/playlist_api_impl"
@@ -36,6 +37,7 @@ type Custom struct {
 
 	BackgroundWorker *background.Worker
 
+	ArtistsApiImpl  *artists_api_impl.Impl
 	AuthApiImpl     *auth_api_impl.Impl
 	FileApiImpl     *file_api_impl.Impl
 	UserApiImpl     *user_api_impl.Impl
@@ -65,6 +67,7 @@ func (c *Custom) Init(a *App) (err error) {
 		sessions_gc.New(c.dataStorage),
 	)
 
+	c.ArtistsApiImpl = artists_api_impl.New(c.Service)
 	c.AuthApiImpl = auth_api_impl.New(c.Service)
 	c.FileApiImpl = file_api_impl.New(c.Service)
 	c.UserApiImpl = user_api_impl.New(c.Service)
@@ -90,6 +93,7 @@ func (c *Custom) Init(a *App) (err error) {
 	)
 
 	c.ServerManager.AddImplementation(
+		c.ArtistsApiImpl,
 		c.AuthApiImpl,
 		c.FileApiImpl,
 		c.UserApiImpl,

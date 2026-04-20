@@ -77,6 +77,21 @@ func (l LocalStorageProvider) ListFiles(_ context.Context, userId int64) ([]stri
 	return files, nil
 }
 
+func (l LocalStorageProvider) Move(_ context.Context, fromPath, newPath string) error {
+	fullNewPath := path.Join(l.root, newPath)
+	err := verifyFolderExists(path.Dir(fullNewPath))
+	if err != nil {
+		return rerrors.Wrap(err, "error verifying destination folder exists")
+	}
+
+	err = os.Rename(fromPath, fullNewPath)
+	if err != nil {
+		return rerrors.Wrap(err, "error renaming/moving file")
+	}
+
+	return nil
+}
+
 func (l LocalStorageProvider) openFile(fullPath string) (*os.File, error) {
 	err := verifyFolderExists(path.Dir(fullPath))
 	if err != nil {
