@@ -8,6 +8,13 @@
     padding: 1.5rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     color: var(--primary-fg-color, #ffffff);
+    position: relative;
+}
+
+.CloseButton {
+    position: absolute;
+    top: 12px;
+    right: 12px;
 }
 
 .Header {
@@ -15,6 +22,10 @@
     font-weight: bold;
     margin-bottom: 1rem;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
 }
 
 .List {

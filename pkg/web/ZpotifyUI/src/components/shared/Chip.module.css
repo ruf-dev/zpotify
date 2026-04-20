@@ -5,19 +5,31 @@
     gap: 4px;
 }
 
+.Clickable {
+    cursor: pointer;
+}
+
+.Clickable:hover .Chip {
+    background-color: var(--secondary-bg-color, #444);
+}
+
 .Chip {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     padding: 4px 12px;
+    min-width: 32px;
+    height: 32px;
     border-radius: 16px;
-    background-color: var(--background-secondary, #333);
-    color: var(--text-primary, #fff);
-    font-size: 12px;
+    background-color: var(--secondary-bg-color, #333);
+    color: var(--main-fg-color, #fff);
+    font-size: 16px;
     font-weight: 500;
+    box-sizing: border-box;
 }
 
 .Label {
     font-size: 10px;
-    color: var(--text-secondary, #b3b3b3);
+    color: var(--secondary-fg-color, #b3b3b3);
     text-transform: lowercase;
 }

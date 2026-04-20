@@ -12,6 +12,19 @@
     border-radius: 12px;
     padding: 2rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.CloseButton {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
+
+.Header {
+    position: absolute;
+    top: 12px;
+    left: 12px;
 }
 
 .DialogButton {

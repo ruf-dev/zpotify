@@ -13,4 +13,17 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+}
+
+.CloseButton {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
+
+.Header {
+    position: absolute;
+    top: 12px;
+    left: 12px;
 }

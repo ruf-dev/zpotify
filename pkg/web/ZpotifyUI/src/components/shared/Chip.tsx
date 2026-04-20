@@ -4,14 +4,20 @@ import cn from "classnames";
 import cls from "@/components/shared/Chip.module.css";
 
 interface ChipProps {
-    value: string;
+    value: React.ReactNode;
     label?: string;
     className?: string;
+    onClick?: () => void;
 }
 
-export default function Chip({ value, label, className }: ChipProps) {
+export default function Chip({ value, label, className, onClick }: ChipProps) {
     return (
-        <div className={cls.ChipContainer}>
+        <div
+            className={cn(cls.ChipContainer, {
+                [cls.Clickable]: !!onClick
+            })}
+            onClick={onClick}
+        >
             <div className={cn(cls.Chip, className)}>
                 {value}
             </div>
