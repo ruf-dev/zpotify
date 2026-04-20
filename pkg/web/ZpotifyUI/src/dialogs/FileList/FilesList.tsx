@@ -61,6 +61,7 @@ export default function FilesList({user, previousScreen}: FilesListProps) {
                             className={cls.FileItem}
                             onClick={() => OpenDialog(
                                 <SongEditDialog
+                                    fileId={file.id || ''}
                                     path={file.path || ''}
                                     previousScreen={<FilesList user={user} previousScreen={previousScreen}/>}
                                 />

@@ -89,7 +89,6 @@ func (s *AudioService) Create(ctx context.Context, req domain.CreateSong) (int64
 				}
 			}
 
-			// 5. Add song to global playlist
 			err = playlistStorage.AddSong(ctx, domain.GlobalPlaylistUuid, int32(songId))
 			if err != nil {
 				return rerrors.Wrap(err, "error adding song to global playlist")

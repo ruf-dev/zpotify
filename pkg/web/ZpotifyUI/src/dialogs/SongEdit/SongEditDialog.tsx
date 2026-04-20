@@ -5,6 +5,7 @@ import cls from "@/dialogs/SongEdit/SongEditDialog.module.css";
 
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 import useUser from "@/hooks/user/User.ts";
+import {Toast, useToaster} from "@/hooks/toaster/ToasterZ.ts";
 
 import Button from "@/components/shared/Button.tsx";
 import Input from "@/components/shared/Input.tsx";
@@ -12,6 +13,7 @@ import Chip from "@/components/shared/Chip.tsx";
 import MultiSelect, {Option} from "@/components/shared/MultiSelect.tsx";
 
 interface SongEditDialogProps {
+    fileId: string;
     path: string;
     initialTitle?: string;
     duration?: string;
@@ -20,6 +22,7 @@ interface SongEditDialogProps {
 }
 
 export default function SongEditDialog({
+                                           fileId,
                                            path,
                                            initialTitle = "Espresso",
                                            duration = "2:54",
@@ -28,6 +31,7 @@ export default function SongEditDialog({
                                        }: SongEditDialogProps) {
     const {OpenDialog, CloseDialog} = useDialog();
     const user = useUser();
+    const toaster = useToaster();
 
     const [title, setTitle] = useState(initialTitle);
     const [selectedArtistIds, setSelectedArtistIds] = useState<string[]>([]);
@@ -38,7 +42,7 @@ export default function SongEditDialog({
         const artists = resp.artists || [];
         return artists
             .filter(a => !!a.uuid && !!a.name)
-            .map(a => ({ id: a.uuid as string, label: a.name as string }));
+            .map(a => ({id: a.uuid as string, label: a.name as string}));
     };
 
     return (
@@ -83,7 +87,14 @@ export default function SongEditDialog({
                 <Button
                     title="Save"
                     onClick={() => {
-                        console.log("Saving...", { title, artistIds: selectedArtistIds });
+                        user.Services()
+                            .Songs()
+                            .CreateSong(title, selectedArtistIds, fileId)
+                            .then(() => {
+                                toaster.bake({title: "Song created successfully"} as Toast);
+                                CloseDialog();
+                            })
+                            .catch(toaster.catch);
                     }}
                 />
             </div>
