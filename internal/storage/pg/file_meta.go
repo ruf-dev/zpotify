@@ -57,6 +57,15 @@ func (s *FileMetaStorage) GetBySongId(ctx context.Context, songId int32) (domain
 	return toFileDomain(fileDb), nil
 }
 
+func (s *FileMetaStorage) GetByPath(ctx context.Context, path string) (domain.FileMeta, error) {
+	fileDb, err := s.q.GetFileByPath(ctx, path)
+	if err != nil {
+		return domain.FileMeta{}, err
+	}
+
+	return toFileDomain(fileDb), nil
+}
+
 func (s *FileMetaStorage) List(ctx context.Context, listReq domain.ListFileMeta) ([]domain.FileMeta, error) {
 	//TODO
 	//builder := sq.Select(`
@@ -139,6 +148,7 @@ func (s *FileMetaStorage) Update(ctx context.Context, fileId int64, file domain.
 
 func toFileDomain(f querier.FilesMetum) domain.FileMeta {
 	return domain.FileMeta{
+		Id: f.ID,
 		File: domain.File{
 			FilePath:  f.FilePath,
 			SizeBytes: int64(f.SizeBytes),

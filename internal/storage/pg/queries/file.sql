@@ -24,6 +24,16 @@ INSERT INTO files_meta (file_path, duration_sec, added_by_id, size_bytes, verifi
 VALUES ($1, $2, $3, $4, $5)
 RETURNING id;
 
+-- name: GetFileByPath :one
+SELECT id,
+       file_path,
+       duration_sec,
+       added_by_id,
+       size_bytes,
+       verified
+FROM files_meta
+WHERE file_path = $1;
+
 -- name: DeleteFileById :exec
 DELETE FROM files_meta
 WHERE id = $1;

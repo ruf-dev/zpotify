@@ -68,10 +68,16 @@ func (s *FileService) ListUploadedFiles(ctx context.Context, req domain.ListUplo
 
 	res := make([]domain.SongFile, 0, len(files))
 	for _, f := range files {
-		res = append(res,
-			domain.SongFile{
-				Path: f,
-			})
+		sf := domain.SongFile{
+			Path: f,
+		}
+
+		meta, err := s.storage.GetByPath(ctx, f)
+		if err == nil {
+			sf.Id = meta.Id
+		}
+
+		res = append(res, sf)
 	}
 
 	return res, nil

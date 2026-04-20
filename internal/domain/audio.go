@@ -16,6 +16,7 @@ type AddAudio struct {
 }
 
 type FileMeta struct {
+	Id int64
 	File
 	AddedById int64
 }

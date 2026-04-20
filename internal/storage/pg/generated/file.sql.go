@@ -71,6 +71,31 @@ func (q *Queries) GetFileById(ctx context.Context, id int64) (FilesMetum, error)
 	return i, err
 }
 
+const getFileByPath = `-- name: GetFileByPath :one
+SELECT id,
+       file_path,
+       duration_sec,
+       added_by_id,
+       size_bytes,
+       verified
+FROM files_meta
+WHERE file_path = $1
+`
+
+func (q *Queries) GetFileByPath(ctx context.Context, filePath string) (FilesMetum, error) {
+	row := q.db.QueryRowContext(ctx, getFileByPath, filePath)
+	var i FilesMetum
+	err := row.Scan(
+		&i.ID,
+		&i.FilePath,
+		&i.DurationSec,
+		&i.AddedByID,
+		&i.SizeBytes,
+		&i.Verified,
+	)
+	return i, err
+}
+
 const getFileBySongId = `-- name: GetFileBySongId :one
 SELECT fm.id,
        fm.file_path,

@@ -18,6 +18,7 @@ type Querier interface {
 	DeleteFileById(ctx context.Context, id int64) error
 	DeleteSongById(ctx context.Context, id int64) error
 	GetFileById(ctx context.Context, id int64) (FilesMetum, error)
+	GetFileByPath(ctx context.Context, filePath string) (FilesMetum, error)
 	GetFileBySongId(ctx context.Context, id int64) (FilesMetum, error)
 	GetHomeSegments(ctx context.Context, userID int64) ([]UserHomeSegment, error)
 	GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error)

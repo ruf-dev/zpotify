@@ -70,7 +70,7 @@ func (l LocalStorageProvider) ListFiles(_ context.Context, userId int64) ([]stri
 	var files []string
 	for _, entry := range entries {
 		if !entry.IsDir() {
-			files = append(files, entry.Name())
+			files = append(files, path.Join(userTmpDir, entry.Name()))
 		}
 	}
 
