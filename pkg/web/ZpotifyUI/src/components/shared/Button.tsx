@@ -5,12 +5,13 @@ interface ButtonProps {
     title: string
     isDisabled?: boolean
     onClick?: () => void
+    className?: string
 }
 
-export default function Button({onClick, title, isDisabled}: ButtonProps) {
+export default function Button({onClick, title, isDisabled, className}: ButtonProps) {
     return (
         <button
-            className={cn(cls.ButtonContainer, {
+            className={cn(cls.ButtonContainer, className, {
                 [cls.disabled]: isDisabled
             })}
             onClick={onClick}
