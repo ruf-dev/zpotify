@@ -11,3 +11,13 @@ Content-Type: application/json
 {
   "playlist_uuid": "00000000-0000-0000-0000-000000000000"
 }
+
+### Add song to playlist
+POST {{zpotify-api}}/api/playlist/add_song
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "playlist_uuid": "00000000-0000-0000-0000-000000000000",
+  "song_id": 2
+}

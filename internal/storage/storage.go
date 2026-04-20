@@ -106,6 +106,8 @@ type PlaylistStorage interface {
 
 	ListSongs(ctx context.Context, r domain.ListSongs) ([]domain.PlaylistSong, error)
 	CountSongs(ctx context.Context, r domain.ListSongs) (uint16, error)
+
+	AddSong(ctx context.Context, playlistUuid string, songId int32) error
 }
 
 type UserSettingsStorage interface {

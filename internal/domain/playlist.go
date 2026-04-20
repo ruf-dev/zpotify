@@ -26,3 +26,8 @@ type PlaylistSong struct {
 	SongBase
 	Artists []ArtistsBase
 }
+
+type AddSongToPlaylist struct {
+	PlaylistUuid string
+	SongId       int32
+}

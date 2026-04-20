@@ -97,6 +97,7 @@ type PlaylistService interface {
 	//Get(ctx context.Context, uuid string) (domain.Playlist, error)
 
 	ListSongs(ctx context.Context, songs domain.ListSongs) (domain.SongsInPlaylist, error)
+	AddSong(ctx context.Context, req domain.AddSongToPlaylist) error
 }
 
 type FileService interface {

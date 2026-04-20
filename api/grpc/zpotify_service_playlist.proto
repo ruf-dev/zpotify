@@ -27,24 +27,28 @@ service PlaylistAPI {
   rpc DeleteSong(DeleteSong.Request) returns (DeleteSong.Response) {
     option (google.api.http) = {
       post: "/api/playlist/delete_song",
+      body: "*"
     };
   }
 
   rpc ListSongs(ListSongs.Request) returns (ListSongs.Response) {
     option (google.api.http) = {
       post: "/api/playlist/songs",
+      body: "*"
     };
   };
 
   rpc ChangeSongsOrder(ChangeSongsOrder.Request) returns (ChangeSongsOrder.Response) {
     option (google.api.http) = {
       post: "/api/playlist/songs/order",
+      body: "*"
     };
   }
 
-  rpc AddSongToPlaylist(AddSongToPlaylist.Request) returns (AddSongToPlaylist.Reponse) {
+  rpc AddSongToPlaylist(AddSongToPlaylist.Request) returns (AddSongToPlaylist.Response) {
     option (google.api.http) = {
-      post: "/api/playlist/songs",
+      post: "/api/playlist/add_song",
+      body: "*"
     };
   }
 }
@@ -98,5 +102,13 @@ message GetPlaylist {
 
 message ChangeSongsOrder{
   message Request {}
+  message Response {}
+}
+
+message AddSongToPlaylist {
+  message Request {
+    string playlist_uuid = 1;
+    int32 song_id = 2;
+  }
   message Response {}
 }

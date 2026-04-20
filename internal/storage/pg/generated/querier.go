@@ -11,6 +11,7 @@ import (
 )
 
 type Querier interface {
+	AddSongToPlaylist(ctx context.Context, arg AddSongToPlaylistParams) error
 	CreateFile(ctx context.Context, arg CreateFileParams) (int64, error)
 	CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error)
 	DeleteExpiredSessions(ctx context.Context) error

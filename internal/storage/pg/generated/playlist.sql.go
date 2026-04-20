@@ -11,6 +11,21 @@ import (
 	"github.com/google/uuid"
 )
 
+const addSongToPlaylist = `-- name: AddSongToPlaylist :exec
+INSERT INTO playlist_songs (playlist_uuid, song_id, order_number)
+VALUES ($1, $2, (SELECT COALESCE(MAX(order_number), 0) + 1 FROM playlist_songs WHERE playlist_uuid = $1))
+`
+
+type AddSongToPlaylistParams struct {
+	PlaylistUuid uuid.UUID
+	SongID       int64
+}
+
+func (q *Queries) AddSongToPlaylist(ctx context.Context, arg AddSongToPlaylistParams) error {
+	_, err := q.db.ExecContext(ctx, addSongToPlaylist, arg.PlaylistUuid, arg.SongID)
+	return err
+}
+
 const createPlaylist = `-- name: CreatePlaylist :one
 WITH created_playlist AS (
     INSERT INTO playlists (name, description, owner_id)

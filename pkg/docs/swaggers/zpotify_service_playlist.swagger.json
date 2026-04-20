@@ -16,6 +16,38 @@
     "application/json"
   ],
   "paths": {
+    "/api/playlist/add_song": {
+      "post": {
+        "operationId": "PlaylistAPI_AddSongToPlaylist",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiAddSongToPlaylistResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiAddSongToPlaylistRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PlaylistAPI"
+        ]
+      }
+    },
     "/api/playlist/create": {
       "post": {
         "operationId": "PlaylistAPI_CreatePlaylist",
@@ -67,17 +99,12 @@
         },
         "parameters": [
           {
-            "name": "playlistUuid",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "songId",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiDeleteSongRequest"
+            }
           }
         ],
         "tags": [
@@ -104,32 +131,12 @@
         },
         "parameters": [
           {
-            "name": "paging.limit",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "paging.offset",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "randomHash",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "playlistUuid",
-            "description": "by default returns songs from global queue (last added tracks)",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiListSongsRequest"
+            }
           }
         ],
         "tags": [
@@ -154,6 +161,16 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiChangeSongsOrderRequest"
+            }
+          }
+        ],
         "tags": [
           "PlaylistAPI"
         ]
@@ -219,6 +236,21 @@
         }
       }
     },
+    "zpotify_apiAddSongToPlaylistRequest": {
+      "type": "object",
+      "properties": {
+        "playlistUuid": {
+          "type": "string"
+        },
+        "songId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "zpotify_apiAddSongToPlaylistResponse": {
+      "type": "object"
+    },
     "zpotify_apiArtistBase": {
       "type": "object",
       "properties": {
@@ -229,6 +261,9 @@
           "type": "string"
         }
       }
+    },
+    "zpotify_apiChangeSongsOrderRequest": {
+      "type": "object"
     },
     "zpotify_apiChangeSongsOrderResponse": {
       "type": "object"
@@ -252,6 +287,18 @@
         }
       }
     },
+    "zpotify_apiDeleteSongRequest": {
+      "type": "object",
+      "properties": {
+        "playlistUuid": {
+          "type": "string"
+        },
+        "songId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "zpotify_apiDeleteSongResponse": {
       "type": "object"
     },
@@ -260,6 +307,22 @@
       "properties": {
         "playlist": {
           "$ref": "#/definitions/zpotify_apiPlaylist"
+        }
+      }
+    },
+    "zpotify_apiListSongsRequest": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/zpotify_apiPaging"
+        },
+        "randomHash": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "playlistUuid": {
+          "type": "string",
+          "title": "by default returns songs from global queue (last added tracks)"
         }
       }
     },

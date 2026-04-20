@@ -7,18 +7,24 @@ import (
 	"go.redsock.ru/toolbox"
 
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/middleware/user_context"
+	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/storage"
 )
 
 type PlaylistService struct {
 	playlistStorage storage.PlaylistStorage
-	songsStorage    storage.SongStorage
+	userStorage     storage.UserStorage
+	fileMetaStorage storage.FileMetaStorage
 }
 
 func NewPlaylistService(data storage.Storage) *PlaylistService {
 	return &PlaylistService{
 		playlistStorage: data.PlaylistStorage(),
-		songsStorage:    data.SongsStorage(),
+
+		userStorage: data.User(),
+
+		fileMetaStorage: data.FileMeta(),
 	}
 }
 
@@ -45,6 +51,34 @@ func (p *PlaylistService) ListSongs(ctx context.Context, req domain.ListSongs) (
 		Songs: songs,
 		Total: total,
 	}, nil
+}
+
+func (p *PlaylistService) AddSong(ctx context.Context, req domain.AddSongToPlaylist) error {
+	userCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return rerrors.Wrap(service_errors.ErrUnauthenticated)
+	}
+
+	permissions, err := p.userStorage.GetPermissionsOnPlaylist(ctx, userCtx.UserId, req.PlaylistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting permissions for playlist")
+	}
+
+	if !permissions.CanAddSongs {
+		return rerrors.Wrap(service_errors.ErrUnauthorized)
+	}
+
+	songFile, err := p.fileMetaStorage.GetBySongId(ctx, req.SongId)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting song file from storage")
+	}
+
+	err = p.playlistStorage.AddSong(ctx, req.PlaylistUuid, req.SongId)
+	if err != nil {
+		return rerrors.Wrap(err, "error adding song to playlist")
+	}
+
+	return nil
 }
 
 //func (p *PlaylistService) Get(ctx context.Context, playlistUuid string) (domain.Playlist, error) {

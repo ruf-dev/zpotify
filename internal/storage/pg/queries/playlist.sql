@@ -23,3 +23,7 @@ WHERE playlists.uuid = $2
     playlists.is_public
         OR
     up.user_id IS NOT NULL);
+
+-- name: AddSongToPlaylist :exec
+INSERT INTO playlist_songs (playlist_uuid, song_id, order_number)
+VALUES ($1, $2, (SELECT COALESCE(MAX(order_number), 0) + 1 FROM playlist_songs WHERE playlist_uuid = $1));
