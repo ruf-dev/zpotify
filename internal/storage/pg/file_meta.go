@@ -48,6 +48,14 @@ func (s *FileMetaStorage) Get(ctx context.Context, fileId int64) (file domain.Fi
 
 	return toFileDomain(fileDb), nil
 }
+func (s *FileMetaStorage) GetBySongId(ctx context.Context, songId int32) (domain.FileMeta, error) {
+	fileDb, err := s.q.GetFileBySongId(ctx, int64(songId))
+	if err != nil {
+		return domain.FileMeta{}, err
+	}
+
+	return toFileDomain(fileDb), nil
+}
 
 func (s *FileMetaStorage) List(ctx context.Context, listReq domain.ListFileMeta) ([]domain.FileMeta, error) {
 	//TODO

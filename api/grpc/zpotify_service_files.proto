@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package zpotify_api;
+
+import "npm.proto";
+
+import "zpotify_user.proto";
+import "zpotify_user_settings.proto";
+import "google/api/annotations.proto";
+
+option go_package = "/zpotify_api;zpotify_api";
+option (npm_package) = "@zpotify/api";
+
+service FileMetaAPI {
+  rpc ListUploadedFiles(ListUploadedFiles.Request) returns (ListUploadedFiles.Response) {
+    option (google.api.http) = {
+      post: "/api/file_meta/list"
+      body: "*",
+    };
+  }
+}
+
+message ListUploadedFiles {
+  message Request {
+    bool temporary_only = 1;
+  }
+
+  message Response {
+  }
+}

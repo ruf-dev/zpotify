@@ -71,6 +71,32 @@ func (q *Queries) GetFileById(ctx context.Context, id int64) (FilesMetum, error)
 	return i, err
 }
 
+const getFileBySongId = `-- name: GetFileBySongId :one
+SELECT fm.id,
+       fm.file_path,
+       fm.duration_sec,
+       fm.added_by_id,
+       fm.size_bytes,
+       fm.verified
+FROM files_meta fm
+JOIN songs s ON s.file_id = fm.id
+WHERE s.id = $1
+`
+
+func (q *Queries) GetFileBySongId(ctx context.Context, id int64) (FilesMetum, error) {
+	row := q.db.QueryRowContext(ctx, getFileBySongId, id)
+	var i FilesMetum
+	err := row.Scan(
+		&i.ID,
+		&i.FilePath,
+		&i.DurationSec,
+		&i.AddedByID,
+		&i.SizeBytes,
+		&i.Verified,
+	)
+	return i, err
+}
+
 const updateFile = `-- name: UpdateFile :exec
 UPDATE files_meta
 SET duration_sec = $2,
