@@ -13,6 +13,8 @@ import (
 	"go.zpotify.ru/zpotify/internal/storage"
 )
 
+const tmpFolder = "tmp"
+
 type LocalStorageProvider struct {
 	root string
 }
@@ -31,7 +33,7 @@ func NewLocalStorageProvider(rootPath string) (storage.BinaryFileStorage, error)
 }
 
 func (l LocalStorageProvider) SaveToTempFolder(ctx context.Context, userId int64, filePath string, content io.Reader) (string, error) {
-	tempPath := path.Join(l.root, strconv.FormatInt(userId, 10), filePath)
+	tempPath := path.Join(l.root, tmpFolder, strconv.FormatInt(userId, 10), filePath)
 
 	f, err := l.openFile(tempPath)
 	if err != nil {
@@ -52,6 +54,27 @@ func (l LocalStorageProvider) SaveToTempFolder(ctx context.Context, userId int64
 	}
 
 	return tempPath, nil
+}
+
+func (l LocalStorageProvider) ListFiles(_ context.Context, userId int64) ([]string, error) {
+	userTmpDir := path.Join(l.root, tmpFolder, strconv.FormatInt(userId, 10))
+
+	entries, err := os.ReadDir(userTmpDir)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil, nil
+		}
+		return nil, rerrors.Wrap(err, "error reading user temporary directory")
+	}
+
+	var files []string
+	for _, entry := range entries {
+		if !entry.IsDir() {
+			files = append(files, entry.Name())
+		}
+	}
+
+	return files, nil
 }
 
 func (l LocalStorageProvider) openFile(fullPath string) (*os.File, error) {

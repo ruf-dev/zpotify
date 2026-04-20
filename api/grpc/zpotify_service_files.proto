@@ -6,6 +6,7 @@ import "npm.proto";
 
 import "zpotify_user.proto";
 import "zpotify_user_settings.proto";
+import "zpotify_common.proto";
 import "google/api/annotations.proto";
 
 option go_package = "/zpotify_api;zpotify_api";
@@ -26,5 +27,6 @@ message ListUploadedFiles {
   }
 
   message Response {
+    repeated SongFile files = 1;
   }
 }

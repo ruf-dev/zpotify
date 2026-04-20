@@ -4,7 +4,7 @@ Authorization: {{token}}
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
-Content-Disposition: form-data; name="file"; filename="sc_1.mp3"
+Content-Disposition: form-data; name="file"; filename="817f421b-71eb-4992-946f-5890aa7dbdfd.mp3"
 Content-Type: audio/mpeg
 
 < ./data/sc_1.mp3

@@ -83,3 +83,7 @@ Data flows: **Transport -> Service -> Storage**.
 - `internal/storage/`: Data persistence.
 - `pkg/web/`: Frontend and UI-related code.
 - `examples/`: `.http` files for manual API testing.
+
+
+## Examples folder
+Contains all api calls examples. 

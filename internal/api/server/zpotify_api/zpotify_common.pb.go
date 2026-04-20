@@ -270,6 +270,58 @@ func (x *Playlist) GetIsPublic() bool {
 	return false
 }
 
+type SongFile struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Path          string                 `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SongFile) Reset() {
+	*x = SongFile{}
+	mi := &file_zpotify_common_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SongFile) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SongFile) ProtoMessage() {}
+
+func (x *SongFile) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_common_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SongFile.ProtoReflect.Descriptor instead.
+func (*SongFile) Descriptor() ([]byte, []int) {
+	return file_zpotify_common_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *SongFile) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *SongFile) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
 var File_zpotify_common_proto protoreflect.FileDescriptor
 
 const file_zpotify_common_proto_rawDesc = "" +
@@ -293,7 +345,10 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x00R\vdescription\x88\x01\x01\x12\x1b\n" +
 	"\tis_public\x18\x04 \x01(\bR\bisPublicB\x0e\n" +
-	"\f_descriptionB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\f_description\".\n" +
+	"\bSongFile\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04path\x18\x02 \x01(\tR\x04pathB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_common_proto_rawDescOnce sync.Once
@@ -307,12 +362,13 @@ func file_zpotify_common_proto_rawDescGZIP() []byte {
 	return file_zpotify_common_proto_rawDescData
 }
 
-var file_zpotify_common_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_zpotify_common_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_zpotify_common_proto_goTypes = []any{
 	(*Paging)(nil),     // 0: zpotify_api.Paging
 	(*ArtistBase)(nil), // 1: zpotify_api.ArtistBase
 	(*SongBase)(nil),   // 2: zpotify_api.SongBase
 	(*Playlist)(nil),   // 3: zpotify_api.Playlist
+	(*SongFile)(nil),   // 4: zpotify_api.SongFile
 }
 var file_zpotify_common_proto_depIdxs = []int32{
 	1, // 0: zpotify_api.SongBase.artists:type_name -> zpotify_api.ArtistBase
@@ -335,7 +391,7 @@ func file_zpotify_common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_common_proto_rawDesc), len(file_zpotify_common_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

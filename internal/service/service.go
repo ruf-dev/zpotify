@@ -102,4 +102,5 @@ type PlaylistService interface {
 
 type FileService interface {
 	SaveFile(ctx context.Context, fileNameWithExt string, content io.Reader) (int64, error)
+	ListUploadedFiles(ctx context.Context, req domain.ListUploadedFiles) ([]domain.SongFile, error)
 }

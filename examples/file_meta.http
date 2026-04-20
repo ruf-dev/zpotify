@@ -1,0 +1,8 @@
+### FileMeta ListUploadedFiles
+POST {{zpotify-api}}/api/file_meta/list
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "temporary_only": true
+}

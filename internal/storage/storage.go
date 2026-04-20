@@ -120,4 +120,6 @@ type UserSettingsStorage interface {
 type BinaryFileStorage interface {
 	// SaveToTempFolder - downloads file and stores it to temporary folder
 	SaveToTempFolder(ctx context.Context, userId int64, filePath string, content io.Reader) (tempPath string, err error)
+	// ListFiles - returns list of files in user's temporary folder
+	ListFiles(ctx context.Context, userId int64) (files []string, err error)
 }

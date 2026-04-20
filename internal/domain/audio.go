@@ -115,3 +115,12 @@ type CreateSong struct {
 	songs_q.CreateSongParams
 	ArtistUuids []string
 }
+
+type ListUploadedFiles struct {
+	TemporaryOnly bool
+}
+
+type SongFile struct {
+	Id   int64
+	Path string
+}

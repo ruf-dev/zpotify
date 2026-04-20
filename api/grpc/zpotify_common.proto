@@ -31,3 +31,8 @@ message Playlist {
   optional string description = 3;
   bool is_public = 4;
 }
+
+message SongFile {
+  int64 id = 1;
+  string path = 2;
+}

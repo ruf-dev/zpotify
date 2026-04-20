@@ -54,3 +54,25 @@ func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, cont
 
 	return id, nil
 }
+
+func (s *FileService) ListUploadedFiles(ctx context.Context, req domain.ListUploadedFiles) ([]domain.SongFile, error) {
+	uCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return nil, rerrors.Wrap(user_errors.ErrUnauthenticated)
+	}
+
+	files, err := s.binaryStorage.ListFiles(ctx, uCtx.UserId)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error listing files from binary storage")
+	}
+
+	res := make([]domain.SongFile, 0, len(files))
+	for _, f := range files {
+		res = append(res,
+			domain.SongFile{
+				Path: f,
+			})
+	}
+
+	return res, nil
+}
