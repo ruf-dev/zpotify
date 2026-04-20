@@ -8,6 +8,7 @@ import {ISongsService, SongsService} from "@/processes/Songs.ts";
 import {AuthService, IAuthService, AuthMiddleware} from "@/processes/Auth.ts";
 import {ISettingsService, SettingsService} from "@/processes/HomePage.ts";
 import {IPlaylistService, PlaylistService} from "@/processes/PlaylistService.ts";
+import {IFileService, FileService} from "@/processes/FileService.ts";
 
 // Todo redo onto UserContext
 export interface User {
@@ -28,6 +29,8 @@ export interface Services {
 
     Playlist(): IPlaylistService
 
+    File(): IFileService
+
     Settings(): ISettingsService
 
     Auth(): IAuthService
@@ -44,6 +47,7 @@ export default function useUser(): User {
     const userService = useRef(new UserService(authMiddleware))
     const settingsService = useRef(new SettingsService(authMiddleware))
     const playlistService = useRef(new PlaylistService(authMiddleware))
+    const fileService = useRef(new FileService(authMiddleware))
     const authService = useRef(new AuthService(authMiddleware))
 
     useEffect(() => {
@@ -88,6 +92,9 @@ export default function useUser(): User {
                     },
                     Playlist(): IPlaylistService {
                         return playlistService.current
+                    },
+                    File(): IFileService {
+                        return fileService.current
                     },
                     Auth(): IAuthService {
                         return authService.current

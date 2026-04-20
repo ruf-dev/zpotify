@@ -37,8 +37,10 @@ export default function PlaylistHomeSegment({audioPlayer, user, playlistUuid}: D
                 cn(cls.GhostButtonWrapper, {
                     [cls.hidden]: !isEditing,
                 })}>
-                    <GhostSong
-                        onClick={addSongClicked}/>
+                <GhostSong
+                    onClick={addSongClicked}
+                    user={user}
+                />
             </div>
 
             <div className={cls.EditButton}>
