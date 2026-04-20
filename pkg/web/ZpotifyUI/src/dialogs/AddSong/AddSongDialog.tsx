@@ -1,11 +1,11 @@
-import cls from "@/components/song/AddSongDialog.module.css";
+import cls from "@/dialogs/AddSong/AddSongDialog.module.css";
 
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 
 import {User} from "@/hooks/user/User.ts";
 
 import Button from "@/components/shared/Button.tsx";
-import FilesList from "@/components/song/FilesList.tsx";
+import FilesList from "@/dialogs/FileList/FilesList.tsx";
 
 interface AddSongDialogProps {
     user: User;

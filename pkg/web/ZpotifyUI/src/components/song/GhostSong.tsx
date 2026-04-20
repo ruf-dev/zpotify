@@ -4,7 +4,7 @@ import {useDialog} from "@/app/hooks/Dialog.tsx";
 
 import {User} from "@/hooks/user/User.ts";
 
-import AddSongDialog from "@/components/song/AddSongDialog.tsx";
+import AddSongDialog from "@/dialogs/AddSong/AddSongDialog.tsx";
 
 interface GhostSongProps {
     user: User;

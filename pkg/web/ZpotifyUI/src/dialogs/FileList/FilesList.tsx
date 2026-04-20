@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {SongFile} from "@/app/api/zpotify";
 
-import cls from "@/components/song/FilesList.module.css";
+import cls from "@/dialogs/FileList/FilesList.module.css";
 import {User} from "@/hooks/user/User.ts";
 
 
