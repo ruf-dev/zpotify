@@ -30,3 +30,8 @@ export type Playlist = {
   description?: string;
   isPublic?: boolean;
 };
+
+export type SongFile = {
+  id?: string;
+  path?: string;
+};

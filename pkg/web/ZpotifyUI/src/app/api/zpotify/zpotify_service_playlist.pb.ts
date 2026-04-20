@@ -52,6 +52,21 @@ export type GetPlaylistResponse = {
 
 export type GetPlaylist = Record<string, never>;
 
+export type ChangeSongsOrderRequest = Record<string, never>;
+
+export type ChangeSongsOrderResponse = Record<string, never>;
+
+export type ChangeSongsOrder = Record<string, never>;
+
+export type AddSongToPlaylistRequest = {
+  playlistUuid?: string;
+  songId?: number;
+};
+
+export type AddSongToPlaylistResponse = Record<string, never>;
+
+export type AddSongToPlaylist = Record<string, never>;
+
 export class PlaylistAPI {
   static CreatePlaylist(this:void, req: CreatePlaylistRequest, initReq?: fm.InitReq): Promise<CreatePlaylistResponse> {
     return fm.fetchRequest<CreatePlaylistResponse>(`/api/playlist/create`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
@@ -60,9 +75,15 @@ export class PlaylistAPI {
     return fm.fetchRequest<GetPlaylistResponse>(`/api/playlist/${req.uuid}?${fm.renderURLSearchParams(req, ["uuid"])}`, {...initReq, method: "GET"});
   }
   static DeleteSong(this:void, req: DeleteSongRequest, initReq?: fm.InitReq): Promise<DeleteSongResponse> {
-    return fm.fetchRequest<DeleteSongResponse>(`/api/playlist/delete_song`, {...initReq, method: "POST"});
+    return fm.fetchRequest<DeleteSongResponse>(`/api/playlist/delete_song`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
   static ListSongs(this:void, req: ListSongsRequest, initReq?: fm.InitReq): Promise<ListSongsResponse> {
-    return fm.fetchRequest<ListSongsResponse>(`/api/playlist/songs`, {...initReq, method: "POST"});
+    return fm.fetchRequest<ListSongsResponse>(`/api/playlist/songs`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static ChangeSongsOrder(this:void, req: ChangeSongsOrderRequest, initReq?: fm.InitReq): Promise<ChangeSongsOrderResponse> {
+    return fm.fetchRequest<ChangeSongsOrderResponse>(`/api/playlist/songs/order`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static AddSongToPlaylist(this:void, req: AddSongToPlaylistRequest, initReq?: fm.InitReq): Promise<AddSongToPlaylistResponse> {
+    return fm.fetchRequest<AddSongToPlaylistResponse>(`/api/playlist/add_song`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }
