@@ -32,4 +32,4 @@ environment:
       value: Info
     - name: local_storage_path
       type: string
-      value: data/angie
+      value: /data

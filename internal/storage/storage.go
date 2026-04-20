@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"database/sql"
+	"io"
 
 	"go.zpotify.ru/zpotify/internal/domain"
 	auth_q "go.zpotify.ru/zpotify/internal/storage/pg/generated/auth"
@@ -110,4 +111,10 @@ type PlaylistStorage interface {
 type UserSettingsStorage interface {
 	GetHomeSegments(ctx context.Context, userId int64) ([]domain.UserHomeSegment, error)
 	GetUiSettings(ctx context.Context, userId int64) (domain.UserUiSettings, error)
+}
+
+// BinaryFileStorage - describes a provider to store / retrieve actual binary file data
+type BinaryFileStorage interface {
+	// SaveToTempFolder - downloads file and stores it to temporary folder
+	SaveToTempFolder(ctx context.Context, userId int64, filePath string, content io.Reader) (tempPath string, err error)
 }

@@ -1,7 +1,6 @@
 package domain
 
 import (
-	"io"
 	"time"
 
 	"go.zpotify.ru/zpotify/internal/storage/pg/generated/songs_q"
@@ -45,10 +44,7 @@ type File struct {
 	FilePath  string
 	SizeBytes int64
 	Duration  time.Duration
-}
-
-type FileParser interface {
-	Parse(reader io.Reader) (duration time.Duration, size int64, err error)
+	Verified  bool
 }
 
 const GlobalPlaylistUuid = "00000000-0000-0000-0000-000000000000"

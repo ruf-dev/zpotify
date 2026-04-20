@@ -3,101 +3,46 @@ package v1
 import (
 	"context"
 	"io"
-	"os"
-	"path/filepath"
-	"strings"
-	"time"
 
-	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
-	"go.zpotify.ru/zpotify/internal/pkg/file_parser"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/user_errors"
 )
 
 type FileService struct {
 	storage storage.FileMetaStorage
+
+	binaryStorage storage.BinaryFileStorage
 }
 
-func NewFileService(s storage.Storage) *FileService {
+func NewFileService(s storage.Storage, binaryStorage storage.BinaryFileStorage) *FileService {
 	return &FileService{
-		storage: s.FileMeta(),
+		storage:       s.FileMeta(),
+		binaryStorage: binaryStorage,
 	}
 }
 
-func (s *FileService) StoreToLocalStorage(ctx context.Context, name string, content io.Reader) (int64, error) {
+func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, content io.Reader) (int64, error) {
 	uCtx, ok := user_context.GetUserContext(ctx)
 	if !ok {
-		return 0, rerrors.New("unauthenticated")
+		return 0, rerrors.Wrap(user_errors.ErrUnauthenticated)
 	}
 
 	if !uCtx.Permissions.CanUpload {
 		return 0, rerrors.Wrap(user_errors.ErrPermissionDenied, "not allowed to upload file")
 	}
 
-	dataDir := filepath.Join("data", "tmp")
-	_, err := os.Stat(dataDir)
-	if os.IsNotExist(err) {
-		err = os.MkdirAll(dataDir, 0755)
-		if err != nil {
-			return 0, rerrors.Wrap(err, "error creating data directory")
-		}
-	}
-
-	ext := filepath.Ext(name)
-	idStr := uuid.New().String()
-	fileName := idStr + ext
-	fullPath := filepath.Join(dataDir, fileName)
-
-	f, err := os.Create(fullPath)
+	tmpFilePath, err := s.binaryStorage.SaveToTempFolder(ctx, uCtx.UserId, fileNameWithExt, content)
 	if err != nil {
-		return 0, rerrors.Wrap(err, "error creating file")
-	}
-	defer f.Close()
-
-	var parser domain.FileParser
-	if strings.HasSuffix(strings.ToLower(name), ".mp3") {
-		parser = file_parser.NewMP3Parser()
-	}
-
-	var duration time.Duration
-	var size int64
-
-	if parser != nil {
-		pr, pw := io.Pipe()
-		tr := io.TeeReader(content, pw)
-
-		errChan := make(chan error, 1)
-		go func() {
-			defer pw.Close()
-			_, err := io.Copy(f, tr)
-			errChan <- err
-		}()
-
-		duration, size, err = parser.Parse(pr)
-		if err != nil {
-			return 0, rerrors.Wrap(err, "error parsing file")
-		}
-
-		err = <-errChan
-		if err != nil {
-			return 0, rerrors.Wrap(err, "error writing file content")
-		}
-	} else {
-		size, err = io.Copy(f, content)
-		if err != nil {
-			return 0, rerrors.Wrap(err, "error writing file content")
-		}
+		return 0, rerrors.Wrap(err, "error storing to temporary folder")
 	}
 
 	fileMetaUpdate := domain.FileMeta{
 		File: domain.File{
-			FilePath:  fullPath,
-			SizeBytes: size,
-			Duration:  duration,
+			FilePath: tmpFilePath,
 		},
 		AddedById: uCtx.UserId,
 	}

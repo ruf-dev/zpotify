@@ -29,6 +29,7 @@ func (s *FileMetaStorage) Add(ctx context.Context, req domain.FileMeta) (int64, 
 		DurationSec: int64(req.Duration.Seconds()),
 		AddedByID:   req.AddedById,
 		SizeBytes:   req.SizeBytes,
+		Verified:    req.Verified,
 	}
 
 	id, err := s.q.CreateFile(ctx, params)
@@ -109,6 +110,7 @@ func (s *FileMetaStorage) Update(ctx context.Context, fileId int64, file domain.
 		ID:          fileId,
 		DurationSec: int64(file.Duration.Seconds()),
 		SizeBytes:   file.SizeBytes,
+		Verified:    file.Verified,
 	})
 	if err != nil {
 		return wrapPgErr(err)
@@ -133,6 +135,7 @@ func toFileDomain(f querier.FilesMetum) domain.FileMeta {
 			FilePath:  f.FilePath,
 			SizeBytes: int64(f.SizeBytes),
 			Duration:  time.Duration(f.DurationSec) * time.Second,
+			Verified:  f.Verified,
 		},
 		AddedById: int64(f.AddedByID),
 	}

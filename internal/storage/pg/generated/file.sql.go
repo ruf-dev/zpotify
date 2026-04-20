@@ -10,8 +10,8 @@ import (
 )
 
 const createFile = `-- name: CreateFile :one
-INSERT INTO files_meta (file_path, duration_sec, added_by_id, size_bytes)
-VALUES ($1, $2, $3, $4)
+INSERT INTO files_meta (file_path, duration_sec, added_by_id, size_bytes, verified)
+VALUES ($1, $2, $3, $4, $5)
 RETURNING id
 `
 
@@ -20,6 +20,7 @@ type CreateFileParams struct {
 	DurationSec int64
 	AddedByID   int64
 	SizeBytes   int64
+	Verified    bool
 }
 
 func (q *Queries) CreateFile(ctx context.Context, arg CreateFileParams) (int64, error) {
@@ -28,6 +29,7 @@ func (q *Queries) CreateFile(ctx context.Context, arg CreateFileParams) (int64, 
 		arg.DurationSec,
 		arg.AddedByID,
 		arg.SizeBytes,
+		arg.Verified,
 	)
 	var id int64
 	err := row.Scan(&id)
@@ -49,7 +51,8 @@ SELECT id,
        file_path,
        duration_sec,
        added_by_id,
-       size_bytes
+       size_bytes,
+       verified
 FROM files_meta
 WHERE id = $1
 `
@@ -63,6 +66,7 @@ func (q *Queries) GetFileById(ctx context.Context, id int64) (FilesMetum, error)
 		&i.DurationSec,
 		&i.AddedByID,
 		&i.SizeBytes,
+		&i.Verified,
 	)
 	return i, err
 }
@@ -70,7 +74,8 @@ func (q *Queries) GetFileById(ctx context.Context, id int64) (FilesMetum, error)
 const updateFile = `-- name: UpdateFile :exec
 UPDATE files_meta
 SET duration_sec = $2,
-    size_bytes = $3
+    size_bytes = $3,
+    verified = $4
 WHERE id = $1
 `
 
@@ -78,9 +83,15 @@ type UpdateFileParams struct {
 	ID          int64
 	DurationSec int64
 	SizeBytes   int64
+	Verified    bool
 }
 
 func (q *Queries) UpdateFile(ctx context.Context, arg UpdateFileParams) error {
-	_, err := q.db.ExecContext(ctx, updateFile, arg.ID, arg.DurationSec, arg.SizeBytes)
+	_, err := q.db.ExecContext(ctx, updateFile,
+		arg.ID,
+		arg.DurationSec,
+		arg.SizeBytes,
+		arg.Verified,
+	)
 	return err
 }

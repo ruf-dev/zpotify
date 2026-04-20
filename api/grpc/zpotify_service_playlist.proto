@@ -41,6 +41,12 @@ service PlaylistAPI {
       post: "/api/playlist/songs/order",
     };
   }
+
+  rpc AddSongToPlaylist(AddSongToPlaylist.Request) returns (AddSongToPlaylist.Reponse) {
+    option (google.api.http) = {
+      post: "/api/playlist/songs",
+    };
+  }
 }
 
 

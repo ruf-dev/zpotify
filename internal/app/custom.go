@@ -15,6 +15,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/middleware"
 	"go.zpotify.ru/zpotify/internal/service"
 	"go.zpotify.ru/zpotify/internal/storage"
+	"go.zpotify.ru/zpotify/internal/storage/file_storage_providers"
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
 	"go.zpotify.ru/zpotify/internal/storage/pg"
 	"go.zpotify.ru/zpotify/internal/transport"
@@ -27,7 +28,8 @@ import (
 )
 
 type Custom struct {
-	storage storage.Storage
+	dataStorage   storage.Storage
+	binaryStorage storage.BinaryFileStorage
 
 	Service service.Service
 
@@ -44,17 +46,21 @@ type Custom struct {
 func (c *Custom) Init(a *App) (err error) {
 	rerrors.SetSeparator(':')
 
-	c.storage = pg.NewStorage(a.Postgres)
+	c.dataStorage = pg.NewStorage(a.Postgres)
+	c.binaryStorage, err = file_storage_providers.NewLocalStorageProvider(a.Cfg.Environment.LocalStoragePath)
+	if err != nil {
+		return rerrors.Wrap(err, "error creating local file storage provider")
+	}
 
 	fc, err := files_cache.New()
 	if err != nil {
 		return rerrors.Wrap(err, "error creating files cache")
 	}
 
-	c.Service = service.New(c.storage, fc)
+	c.Service = service.New(c.dataStorage, fc, c.binaryStorage)
 
 	c.BackgroundWorker = background.New(
-		sessions_gc.New(c.storage),
+		sessions_gc.New(c.dataStorage),
 	)
 
 	c.AuthApiImpl = auth_api_impl.New(c.Service)

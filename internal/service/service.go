@@ -27,13 +27,13 @@ type service struct {
 	fileService     FileService
 }
 
-func New(dataStorage storage.Storage, cache files_cache.FilesCache) Service {
+func New(dataStorage storage.Storage, cache files_cache.FilesCache, fileStorage storage.BinaryFileStorage) Service {
 	return &service{
 		audioService:    v1.NewAudioService(dataStorage, cache),
 		userService:     v1.NewUserService(dataStorage),
 		authService:     v1.NewAuthService(dataStorage),
 		playlistService: v1.NewPlaylistService(dataStorage),
-		fileService:     v1.NewFileService(dataStorage),
+		fileService:     v1.NewFileService(dataStorage, fileStorage),
 	}
 }
 
@@ -100,5 +100,5 @@ type PlaylistService interface {
 }
 
 type FileService interface {
-	StoreToLocalStorage(ctx context.Context, name string, content io.Reader) (int64, error)
+	SaveFile(ctx context.Context, fileNameWithExt string, content io.Reader) (int64, error)
 }

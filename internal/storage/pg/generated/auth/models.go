@@ -106,6 +106,7 @@ type FilesMetum struct {
 	DurationSec int64
 	AddedByID   int64
 	SizeBytes   int64
+	Verified    bool
 }
 
 type Locale struct {
