@@ -1,0 +1,33 @@
+.SongEditDialog {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 400px;
+}
+
+.PathContainer {
+    font-size: 12px;
+    color: var(--text-secondary, #b3b3b3);
+    word-break: break-all;
+    margin-bottom: 8px;
+}
+
+.Form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.Chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.Footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}

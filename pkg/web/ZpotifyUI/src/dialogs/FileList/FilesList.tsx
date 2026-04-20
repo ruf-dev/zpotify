@@ -4,12 +4,16 @@ import {SongFile} from "@/app/api/zpotify";
 import cls from "@/dialogs/FileList/FilesList.module.css";
 import {User} from "@/hooks/user/User.ts";
 
+import {useDialog} from "@/app/hooks/Dialog.tsx";
+import SongEditDialog from "@/dialogs/SongEdit/SongEditDialog.tsx";
+
 
 interface FilesListProps {
     user: User;
 }
 
 export default function FilesList({user}: FilesListProps) {
+    const {OpenDialog} = useDialog();
     const [files, setFiles] = useState<SongFile[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -37,7 +41,13 @@ export default function FilesList({user}: FilesListProps) {
                     <div className={cls.Empty}>No files found</div>
                 ) : (
                     files.map(file => (
-                        <div key={file.id} className={cls.FileItem}>
+                        <div
+                            key={file.id}
+                            className={cls.FileItem}
+                            onClick={() => OpenDialog(
+                                <SongEditDialog path={file.path || ''}/>
+                            )}
+                        >
                             <div className={cls.FileName}>{file.path?.split('/').pop() || 'Unknown File'}</div>
                             <div className={cls.FilePath}>{file.path}</div>
                         </div>
