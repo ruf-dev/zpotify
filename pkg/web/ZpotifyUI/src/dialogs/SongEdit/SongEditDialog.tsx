@@ -42,8 +42,9 @@ export default function SongEditDialog({
                     onChange={setArtists}
                 />
                 <div className={cls.Chips}>
-                    <Chip label={duration}/>
-                    <Chip label={size}/>
+                    <Chip value={duration} label="duration"/>
+                    <Chip value={size} label="size"/>
+                    <Chip value={'hit'}/>
                 </div>
             </div>
 
