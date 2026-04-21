@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	FileMetaAPI_ListUploadedFiles_FullMethodName = "/zpotify_api.FileMetaAPI/ListUploadedFiles"
+	FileMetaAPI_GetFile_FullMethodName           = "/zpotify_api.FileMetaAPI/GetFile"
 )
 
 // FileMetaAPIClient is the client API for FileMetaAPI service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FileMetaAPIClient interface {
 	ListUploadedFiles(ctx context.Context, in *ListUploadedFiles_Request, opts ...grpc.CallOption) (*ListUploadedFiles_Response, error)
+	GetFile(ctx context.Context, in *GetFile_Request, opts ...grpc.CallOption) (*GetFile_Response, error)
 }
 
 type fileMetaAPIClient struct {
@@ -47,11 +49,22 @@ func (c *fileMetaAPIClient) ListUploadedFiles(ctx context.Context, in *ListUploa
 	return out, nil
 }
 
+func (c *fileMetaAPIClient) GetFile(ctx context.Context, in *GetFile_Request, opts ...grpc.CallOption) (*GetFile_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetFile_Response)
+	err := c.cc.Invoke(ctx, FileMetaAPI_GetFile_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FileMetaAPIServer is the server API for FileMetaAPI service.
 // All implementations must embed UnimplementedFileMetaAPIServer
 // for forward compatibility.
 type FileMetaAPIServer interface {
 	ListUploadedFiles(context.Context, *ListUploadedFiles_Request) (*ListUploadedFiles_Response, error)
+	GetFile(context.Context, *GetFile_Request) (*GetFile_Response, error)
 	mustEmbedUnimplementedFileMetaAPIServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedFileMetaAPIServer struct{}
 
 func (UnimplementedFileMetaAPIServer) ListUploadedFiles(context.Context, *ListUploadedFiles_Request) (*ListUploadedFiles_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListUploadedFiles not implemented")
+}
+func (UnimplementedFileMetaAPIServer) GetFile(context.Context, *GetFile_Request) (*GetFile_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetFile not implemented")
 }
 func (UnimplementedFileMetaAPIServer) mustEmbedUnimplementedFileMetaAPIServer() {}
 func (UnimplementedFileMetaAPIServer) testEmbeddedByValue()                     {}
@@ -104,6 +120,24 @@ func _FileMetaAPI_ListUploadedFiles_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FileMetaAPI_GetFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFile_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FileMetaAPIServer).GetFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FileMetaAPI_GetFile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FileMetaAPIServer).GetFile(ctx, req.(*GetFile_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FileMetaAPI_ServiceDesc is the grpc.ServiceDesc for FileMetaAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var FileMetaAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListUploadedFiles",
 			Handler:    _FileMetaAPI_ListUploadedFiles_Handler,
+		},
+		{
+			MethodName: "GetFile",
+			Handler:    _FileMetaAPI_GetFile_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

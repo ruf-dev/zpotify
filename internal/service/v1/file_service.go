@@ -82,3 +82,16 @@ func (s *FileService) ListUploadedFiles(ctx context.Context, req domain.ListUplo
 
 	return res, nil
 }
+
+func (s *FileService) GetFile(ctx context.Context, fileId int64) (domain.FileMeta, error) {
+	file, err := s.storage.Get(ctx, fileId)
+	if err != nil {
+		return domain.FileMeta{}, rerrors.Wrap(err, "error getting file meta from storage")
+	}
+
+	if file.Verified {
+		return file, nil
+	}
+
+	return file, nil
+}

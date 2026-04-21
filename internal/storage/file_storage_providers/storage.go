@@ -92,6 +92,15 @@ func (l LocalStorageProvider) Move(_ context.Context, fromPath, newPath string) 
 	return nil
 }
 
+func (l LocalStorageProvider) GetFile(_ context.Context, filePath string) (io.ReadCloser, error) {
+	f, err := os.Open(filePath)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error opening file")
+	}
+
+	return f, nil
+}
+
 func (l LocalStorageProvider) openFile(fullPath string) (*os.File, error) {
 	err := verifyFolderExists(path.Dir(fullPath))
 	if err != nil {

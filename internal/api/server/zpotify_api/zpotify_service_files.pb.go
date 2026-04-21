@@ -59,6 +59,110 @@ func (*ListUploadedFiles) Descriptor() ([]byte, []int) {
 	return file_zpotify_service_files_proto_rawDescGZIP(), []int{0}
 }
 
+type GetFile struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetFile) Reset() {
+	*x = GetFile{}
+	mi := &file_zpotify_service_files_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetFile) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetFile) ProtoMessage() {}
+
+func (x *GetFile) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_files_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetFile.ProtoReflect.Descriptor instead.
+func (*GetFile) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_files_proto_rawDescGZIP(), []int{1}
+}
+
+type FileInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Path          string                 `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	SizeBytes     int64                  `protobuf:"varint,3,opt,name=size_bytes,json=sizeBytes,proto3" json:"size_bytes,omitempty"`
+	DurationSec   int64                  `protobuf:"varint,4,opt,name=duration_sec,json=durationSec,proto3" json:"duration_sec,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FileInfo) Reset() {
+	*x = FileInfo{}
+	mi := &file_zpotify_service_files_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FileInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FileInfo) ProtoMessage() {}
+
+func (x *FileInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_files_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FileInfo.ProtoReflect.Descriptor instead.
+func (*FileInfo) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_files_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *FileInfo) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *FileInfo) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *FileInfo) GetSizeBytes() int64 {
+	if x != nil {
+		return x.SizeBytes
+	}
+	return 0
+}
+
+func (x *FileInfo) GetDurationSec() int64 {
+	if x != nil {
+		return x.DurationSec
+	}
+	return 0
+}
+
 type ListUploadedFiles_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	TemporaryOnly bool                   `protobuf:"varint,1,opt,name=temporary_only,json=temporaryOnly,proto3" json:"temporary_only,omitempty"`
@@ -68,7 +172,7 @@ type ListUploadedFiles_Request struct {
 
 func (x *ListUploadedFiles_Request) Reset() {
 	*x = ListUploadedFiles_Request{}
-	mi := &file_zpotify_service_files_proto_msgTypes[1]
+	mi := &file_zpotify_service_files_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -80,7 +184,7 @@ func (x *ListUploadedFiles_Request) String() string {
 func (*ListUploadedFiles_Request) ProtoMessage() {}
 
 func (x *ListUploadedFiles_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[1]
+	mi := &file_zpotify_service_files_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -112,7 +216,7 @@ type ListUploadedFiles_Response struct {
 
 func (x *ListUploadedFiles_Response) Reset() {
 	*x = ListUploadedFiles_Response{}
-	mi := &file_zpotify_service_files_proto_msgTypes[2]
+	mi := &file_zpotify_service_files_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -124,7 +228,7 @@ func (x *ListUploadedFiles_Response) String() string {
 func (*ListUploadedFiles_Response) ProtoMessage() {}
 
 func (x *ListUploadedFiles_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[2]
+	mi := &file_zpotify_service_files_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -147,6 +251,94 @@ func (x *ListUploadedFiles_Response) GetFiles() []*SongFile {
 	return nil
 }
 
+type GetFile_Request struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileId        int64                  `protobuf:"varint,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetFile_Request) Reset() {
+	*x = GetFile_Request{}
+	mi := &file_zpotify_service_files_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetFile_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetFile_Request) ProtoMessage() {}
+
+func (x *GetFile_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_files_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetFile_Request.ProtoReflect.Descriptor instead.
+func (*GetFile_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_files_proto_rawDescGZIP(), []int{1, 0}
+}
+
+func (x *GetFile_Request) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+type GetFile_Response struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	File          *FileInfo              `protobuf:"bytes,1,opt,name=file,proto3" json:"file,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetFile_Response) Reset() {
+	*x = GetFile_Response{}
+	mi := &file_zpotify_service_files_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetFile_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetFile_Response) ProtoMessage() {}
+
+func (x *GetFile_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_files_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetFile_Response.ProtoReflect.Descriptor instead.
+func (*GetFile_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_files_proto_rawDescGZIP(), []int{1, 1}
+}
+
+func (x *GetFile_Response) GetFile() *FileInfo {
+	if x != nil {
+		return x.File
+	}
+	return nil
+}
+
 var File_zpotify_service_files_proto protoreflect.FileDescriptor
 
 const file_zpotify_service_files_proto_rawDesc = "" +
@@ -156,9 +348,21 @@ const file_zpotify_service_files_proto_rawDesc = "" +
 	"\aRequest\x12%\n" +
 	"\x0etemporary_only\x18\x01 \x01(\bR\rtemporaryOnly\x1a7\n" +
 	"\bResponse\x12+\n" +
-	"\x05files\x18\x01 \x03(\v2\x15.zpotify_api.SongFileR\x05files2\x94\x01\n" +
+	"\x05files\x18\x01 \x03(\v2\x15.zpotify_api.SongFileR\x05files\"d\n" +
+	"\aGetFile\x1a\"\n" +
+	"\aRequest\x12\x17\n" +
+	"\afile_id\x18\x01 \x01(\x03R\x06fileId\x1a5\n" +
+	"\bResponse\x12)\n" +
+	"\x04file\x18\x01 \x01(\v2\x15.zpotify_api.FileInfoR\x04file\"p\n" +
+	"\bFileInfo\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04path\x18\x02 \x01(\tR\x04path\x12\x1d\n" +
+	"\n" +
+	"size_bytes\x18\x03 \x01(\x03R\tsizeBytes\x12!\n" +
+	"\fduration_sec\x18\x04 \x01(\x03R\vdurationSec2\xfe\x01\n" +
 	"\vFileMetaAPI\x12\x84\x01\n" +
-	"\x11ListUploadedFiles\x12&.zpotify_api.ListUploadedFiles.Request\x1a'.zpotify_api.ListUploadedFiles.Response\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/file_meta/listB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\x11ListUploadedFiles\x12&.zpotify_api.ListUploadedFiles.Request\x1a'.zpotify_api.ListUploadedFiles.Response\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/file_meta/list\x12h\n" +
+	"\aGetFile\x12\x1c.zpotify_api.GetFile.Request\x1a\x1d.zpotify_api.GetFile.Response\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/api/file_meta/{file_id}B*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_files_proto_rawDescOnce sync.Once
@@ -172,22 +376,29 @@ func file_zpotify_service_files_proto_rawDescGZIP() []byte {
 	return file_zpotify_service_files_proto_rawDescData
 }
 
-var file_zpotify_service_files_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_zpotify_service_files_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_zpotify_service_files_proto_goTypes = []any{
 	(*ListUploadedFiles)(nil),          // 0: zpotify_api.ListUploadedFiles
-	(*ListUploadedFiles_Request)(nil),  // 1: zpotify_api.ListUploadedFiles.Request
-	(*ListUploadedFiles_Response)(nil), // 2: zpotify_api.ListUploadedFiles.Response
-	(*SongFile)(nil),                   // 3: zpotify_api.SongFile
+	(*GetFile)(nil),                    // 1: zpotify_api.GetFile
+	(*FileInfo)(nil),                   // 2: zpotify_api.FileInfo
+	(*ListUploadedFiles_Request)(nil),  // 3: zpotify_api.ListUploadedFiles.Request
+	(*ListUploadedFiles_Response)(nil), // 4: zpotify_api.ListUploadedFiles.Response
+	(*GetFile_Request)(nil),            // 5: zpotify_api.GetFile.Request
+	(*GetFile_Response)(nil),           // 6: zpotify_api.GetFile.Response
+	(*SongFile)(nil),                   // 7: zpotify_api.SongFile
 }
 var file_zpotify_service_files_proto_depIdxs = []int32{
-	3, // 0: zpotify_api.ListUploadedFiles.Response.files:type_name -> zpotify_api.SongFile
-	1, // 1: zpotify_api.FileMetaAPI.ListUploadedFiles:input_type -> zpotify_api.ListUploadedFiles.Request
-	2, // 2: zpotify_api.FileMetaAPI.ListUploadedFiles:output_type -> zpotify_api.ListUploadedFiles.Response
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	7, // 0: zpotify_api.ListUploadedFiles.Response.files:type_name -> zpotify_api.SongFile
+	2, // 1: zpotify_api.GetFile.Response.file:type_name -> zpotify_api.FileInfo
+	3, // 2: zpotify_api.FileMetaAPI.ListUploadedFiles:input_type -> zpotify_api.ListUploadedFiles.Request
+	5, // 3: zpotify_api.FileMetaAPI.GetFile:input_type -> zpotify_api.GetFile.Request
+	4, // 4: zpotify_api.FileMetaAPI.ListUploadedFiles:output_type -> zpotify_api.ListUploadedFiles.Response
+	6, // 5: zpotify_api.FileMetaAPI.GetFile:output_type -> zpotify_api.GetFile.Response
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_service_files_proto_init() }
@@ -204,7 +415,7 @@ func file_zpotify_service_files_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_service_files_proto_rawDesc), len(file_zpotify_service_files_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

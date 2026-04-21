@@ -131,4 +131,7 @@ type BinaryFileStorage interface {
 
 	// Move - moves file from one place to another
 	Move(ctx context.Context, fromPath string, newPath string) error
+
+	// GetFile - returns file content
+	GetFile(ctx context.Context, path string) (io.ReadCloser, error)
 }

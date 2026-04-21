@@ -47,6 +47,37 @@
           "FileMetaAPI"
         ]
       }
+    },
+    "/api/file_meta/{fileId}": {
+      "get": {
+        "operationId": "FileMetaAPI_GetFile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetFileResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "fileId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "FileMetaAPI"
+        ]
+      }
     }
   },
   "definitions": {
@@ -75,6 +106,34 @@
             "type": "object",
             "$ref": "#/definitions/protobufAny"
           }
+        }
+      }
+    },
+    "zpotify_apiFileInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "path": {
+          "type": "string"
+        },
+        "sizeBytes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "durationSec": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "zpotify_apiGetFileResponse": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "$ref": "#/definitions/zpotify_apiFileInfo"
         }
       }
     },

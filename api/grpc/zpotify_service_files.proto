@@ -19,6 +19,14 @@ service FileMetaAPI {
       body: "*",
     };
   }
+
+  rpc GetFile(GetFile.Request) returns (GetFile.Response) {
+    option (google.api.http) = {
+      get: "/api/file_meta/{file_id}"
+    };
+  }
+
+
 }
 
 message ListUploadedFiles {
@@ -29,4 +37,21 @@ message ListUploadedFiles {
   message Response {
     repeated SongFile files = 1;
   }
+}
+
+message GetFile {
+  message Request {
+    int64 file_id = 1;
+  }
+
+  message Response {
+    FileInfo file = 1;
+  }
+}
+
+message FileInfo {
+  int64 id = 1;
+  string path = 2;
+  int64 size_bytes = 3;
+  int64 duration_sec = 4;
 }

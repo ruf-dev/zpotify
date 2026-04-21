@@ -114,4 +114,5 @@ type ArtistsService interface {
 type FileService interface {
 	SaveFile(ctx context.Context, fileNameWithExt string, content io.Reader) (int64, error)
 	ListUploadedFiles(ctx context.Context, req domain.ListUploadedFiles) ([]domain.SongFile, error)
+	GetFile(ctx context.Context, fileId int64) (domain.FileMeta, error)
 }
