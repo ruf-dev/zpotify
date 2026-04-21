@@ -6,3 +6,8 @@ Authorization: {{token}}
 {
   "temporary_only": true
 }
+
+
+### FileMeta ListUploadedFiles
+GET {{zpotify-api}}/api/file_meta/5
+Authorization: {{token}}

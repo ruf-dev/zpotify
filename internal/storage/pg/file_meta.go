@@ -9,17 +9,20 @@ import (
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
 	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
+	"go.zpotify.ru/zpotify/internal/storage/pg/generated/file_meta_q"
 )
 
 type FileMetaStorage struct {
-	db sqldb.DB
-	q  querier.Querier
+	db  sqldb.DB
+	q   querier.Querier
+	fmq file_meta_q.Querier
 }
 
 func NewFileMetaStorage(db sqldb.DB) *FileMetaStorage {
 	return &FileMetaStorage{
-		db: db,
-		q:  querier.New(db),
+		db:  db,
+		q:   querier.New(db),
+		fmq: file_meta_q.New(db),
 	}
 }
 
@@ -123,13 +126,14 @@ func (s *FileMetaStorage) Delete(ctx context.Context, fileId int64) error {
 }
 
 func (s *FileMetaStorage) Update(ctx context.Context, fileId int64, file domain.File) error {
-	_, err := s.db.ExecContext(ctx, `
-		UPDATE files_meta
-		SET file_path = $1,
-			duration_sec = $2,
-			size_bytes = $3
-		WHERE id = $4
-	`, file.FilePath, int64(file.Duration.Seconds()), file.SizeBytes, fileId)
+	params := file_meta_q.UpdateFileMetaParams{
+		FilePath:    file.FilePath,
+		DurationSec: int64(file.Duration.Seconds()),
+		SizeBytes:   file.SizeBytes,
+		ID:          fileId,
+	}
+
+	err := s.fmq.UpdateFileMeta(ctx, params)
 	if err != nil {
 		return wrapPgErr(err)
 	}
@@ -162,7 +166,8 @@ func toFileDomain(f querier.FilesMetum) domain.FileMeta {
 
 func (s *FileMetaStorage) WithTx(tx *sql.Tx) storage.FileMetaStorage {
 	return &FileMetaStorage{
-		db: &txWrapper{tx},
-		q:  querier.New(tx),
+		db:  &txWrapper{tx},
+		q:   querier.New(tx),
+		fmq: file_meta_q.New(tx),
 	}
 }

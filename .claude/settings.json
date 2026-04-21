@@ -4,10 +4,10 @@
       "Bash(go build:*)",
       "Bash(go test:*)",
       "Bash(go run:*)",
-      "golangci-lint:*",
-      "mkdir:*",
-      "ls:*",
-      "cat:*"
+      "Golangci-lint:*",
+      "Mkdir:*",
+      "Ls:*",
+      "Cat:*"
     ],
     "deny": [
       "Bash(rm -rf:*)",

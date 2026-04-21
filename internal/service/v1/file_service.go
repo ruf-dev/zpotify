@@ -110,7 +110,8 @@ func (s *FileService) GetFile(ctx context.Context, fileId int64) (domain.FileMet
 	file.SizeBytes = info.SizeBytes
 	file.Verified = true
 
-	if uErr := s.storage.Update(ctx, file.Id, file.File); uErr != nil {
+	uErr := s.storage.Update(ctx, file.Id, file.File)
+	if uErr != nil {
 		return domain.FileMeta{}, rerrors.Wrap(uErr, "error updating file meta after parsing")
 	}
 
