@@ -6,10 +6,12 @@ import (
 
 	"go.redsock.ru/rerrors"
 
+	"go.zpotify.ru/zpotify/internal/audio_parsers"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/user_errors"
+	"go.zpotify.ru/zpotify/internal/utils"
 )
 
 type FileService struct {
@@ -91,6 +93,25 @@ func (s *FileService) GetFile(ctx context.Context, fileId int64) (domain.FileMet
 
 	if file.Verified {
 		return file, nil
+	}
+
+	rc, err := s.binaryStorage.GetFile(ctx, file.FilePath)
+	if err != nil {
+		return domain.FileMeta{}, rerrors.Wrap(err, "error opening file for parsing")
+	}
+	defer utils.CloseWithLog(rc, file.FilePath)
+
+	info, err := audio_parsers.ParseMP3(rc)
+	if err != nil {
+		return domain.FileMeta{}, rerrors.Wrap(err, "error parsing mp3 file")
+	}
+
+	file.Duration = info.Duration
+	file.SizeBytes = info.SizeBytes
+	file.Verified = true
+
+	if uErr := s.storage.Update(ctx, file.Id, file.File); uErr != nil {
+		return domain.FileMeta{}, rerrors.Wrap(uErr, "error updating file meta after parsing")
 	}
 
 	return file, nil

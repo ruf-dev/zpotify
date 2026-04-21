@@ -92,3 +92,7 @@ Runtime config is YAML-based (matreshka framework). Dev config: `config/dev.yaml
 React 18 + TypeScript, built with Vite. State: Zustand. Backend calls via **gRPC-web**. After `npm run build:ui`, the built `dist/` is copied into the Go backend for serving.
 
 Frontend source: `pkg/web/ZpotifyUI/src/`. API client processes live in `src/processes/`.
+
+## Go Coding Rules
+
+- **Always use `utils.CloseWithLog(c, "subject")` for deferred closes** instead of inline `defer c.Close()` or manual close-with-error-log patterns. The function is at `internal/utils/closer.go` (`go.zpotify.ru/zpotify/internal/utils`).
