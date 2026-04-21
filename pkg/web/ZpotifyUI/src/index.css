@@ -1,11 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
+@import './colors_and_type.css';
 
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Comfortaa', sans-serif;
-    font-size: 16px;
 }
 
 ::-webkit-scrollbar { display: none; }
@@ -20,31 +18,5 @@ body {
     background: var(--main-bg-color);
     overflow-x: hidden;
     color: var(--main-fg-color);
-}
-
-:root {
-    --main-bg-color: #000000;
-    --secondary-bg-color: #310049;
-
-    --main-fg-color: #d9007f;
-    --secondary-fg-color: #dc6dae;
-    --thirdy-fg-color: #d186b2;
-
-    --disabled-fg-color: #9f8d98;
-
-    --accent-fg-color: #f1a0d2;
-    --accent-bg-color: #600052;
-
-    --error-color: #c1253d;
-    --warning-color: #ffa500;
-    --info-color: #e5f4d5;
-
-    --header-height: 6vh;
-    --border-radius: 1em;
-
-    --element-border-color: #999999;
-    --element-border-color-lighter: #c5c4c4;
-
-    --action-button-size: 2em;
 }
 

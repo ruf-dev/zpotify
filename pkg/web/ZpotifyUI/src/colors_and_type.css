@@ -1,0 +1,43 @@
+/* ============================================================
+   ZPOTIFY — COLOR TOKENS (Red Coral Palette)
+   Generated from Design System · April 2026
+   ============================================================ */
+
+:root {
+  /* ── Foreground / Brand ──────────────────────────────────── */
+  --color-fg-primary:   #f5003d;   /* Red coral — main brand color */
+  --color-fg-secondary: #f06080;   /* Soft coral — secondary text, buttons */
+  --color-fg-tertiary:  #d87a8e;   /* Muted rose — artist names, captions */
+  --color-fg-accent:    #f8a0b0;   /* Pale blush — highlights */
+  --color-fg-disabled:  #9a8d90;   /* Gray-pink — disabled/muted state */
+
+  /* ── Backgrounds ─────────────────────────────────────────── */
+  --color-bg-base:      #000000;   /* App background */
+  --color-bg-secondary: #3a0018;   /* Cards, inputs, overlays */
+  --color-bg-accent:    #6b0028;   /* Elevated surfaces, card borders */
+  --color-bg-auth:      #320015;   /* Auth button background */
+
+  /* ── Borders ─────────────────────────────────────────────── */
+  --color-border:       #999999;   /* Input default border */
+  --color-border-light: #c5c4c4;   /* Input focus border */
+
+  /* ── Status ──────────────────────────────────────────────── */
+  --color-error:        #c1253d;
+  --color-warning:      #ffa500;
+  --color-info:         #e5f4d5;
+
+  /* ── Semantic Aliases (legacy compat) ────────────────────── */
+  --main-bg-color:                var(--color-bg-base);
+  --secondary-bg-color:           var(--color-bg-secondary);
+  --accent-bg-color:              var(--color-bg-accent);
+  --main-fg-color:                var(--color-fg-primary);
+  --secondary-fg-color:           var(--color-fg-secondary);
+  --thirdy-fg-color:              var(--color-fg-tertiary);
+  --accent-fg-color:              var(--color-fg-accent);
+  --disabled-fg-color:            var(--color-fg-disabled);
+  --element-border-color:         var(--color-border);
+  --element-border-color-lighter: var(--color-border-light);
+  --error-color:                  var(--color-error);
+  --warning-color:                var(--color-warning);
+  --info-color:                   var(--color-info);
+}

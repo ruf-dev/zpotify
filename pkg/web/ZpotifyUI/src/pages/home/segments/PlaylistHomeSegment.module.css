@@ -20,9 +20,10 @@
 .GhostButtonWrapper {
     display: grid;
     grid-template-rows: 1fr;
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out, grid-template-rows 0.3s ease-out;
     opacity: 1;
     transform: translateY(0);
+    visibility: visible;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out, grid-template-rows 0.3s ease-out, visibility 0s 0s;
 
     & > div {
         overflow: hidden;
@@ -31,7 +32,8 @@
     &.hidden {
         opacity: 0;
         transform: translateY(-20px);
-        pointer-events: none;
         grid-template-rows: 0fr;
+        visibility: hidden;
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out, grid-template-rows 0.3s ease-out, visibility 0s 0.3s;
     }
 }
