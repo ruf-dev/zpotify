@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { font-family: 'Comfortaa', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; padding: 16px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .swatch { border-radius: 10px; overflow: hidden; width: 130px; }
+  .color { height: 50px; display: flex; align-items: center; justify-content: center; }
+  .label { font-size: 11px; font-weight: 700; color: #000; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+  .info { background: #111; padding: 6px 8px; }
+  .name { color: #dc6dae; font-size: 11px; font-weight: 700; }
+  .use { color: #9f8d98; font-size: 9px; margin-top: 2px; }
+  .divider { width: 100%; height: 1px; background: #1a1a1a; margin: 12px 0 10px; }
+  .section-label { color: #600052; font-size: 10px; margin-bottom: 8px; font-weight: 700; letter-spacing: 0.05em; }
+</style></head><body>
+<div class="section-label">STATUS COLORS</div>
+<div class="row">
+  <div class="swatch"><div class="color" style="background:#c1253d"><span class="label">Error</span></div><div class="info"><div class="name">Error</div><div class="use">#c1253d — toast border, destructive</div></div></div>
+  <div class="swatch"><div class="color" style="background:#ffa500"><span class="label">Warning</span></div><div class="info"><div class="name">Warning</div><div class="use">#ffa500 — toast warning border</div></div></div>
+  <div class="swatch"><div class="color" style="background:#e5f4d5"><span class="label" style="color:#333">Info</span></div><div class="info"><div class="name">Info</div><div class="use">#e5f4d5 — toast info border</div></div></div>
+</div>
+<div class="divider"></div>
+<div class="section-label">BORDER COLORS</div>
+<div class="row">
+  <div class="swatch"><div class="color" style="background:#999999"></div><div class="info"><div class="name">Border</div><div class="use">#999 — input default</div></div></div>
+  <div class="swatch"><div class="color" style="background:#c5c4c4"></div><div class="info"><div class="name">Border Light</div><div class="use">#c5c4c4 — input focus</div></div></div>
+  <div class="swatch"><div class="color" style="background:#600052"></div><div class="info"><div class="name">Card Border</div><div class="use">#600052 — card/toast borders</div></div></div>
+</div>
+</body></html>

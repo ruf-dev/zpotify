@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zpotify</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body, #root { width: 100%; height: 100%; }
+  body {
+    background: #000;
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 16px;
+    color: #d9007f;
+    overflow-x: hidden;
+  }
+  :root {
+    --main-bg: #000000;
+    --secondary-bg: #310049;
+    --accent-bg: #600052;
+    --auth-bg: #2f1542;
+    --fg-primary: #d9007f;
+    --fg-secondary: #dc6dae;
+    --fg-tertiary: #d186b2;
+    --fg-accent: #f1a0d2;
+    --fg-disabled: #9f8d98;
+    --border: #999;
+    --border-light: #c5c4c4;
+    --error: #c1253d;
+    --warning: #ffa500;
+    --header-h: 56px;
+    --player-bottom: 7vh;
+  }
+  ::-webkit-scrollbar { display: none; }
+  * { scrollbar-width: none; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+/* ── ZLogo SVG ──────────────────────────────────── */
+function ZLogo({ size = 40, spinning = false, pulsing = false }) {
+  const style = {
+    width: size, height: size,
+    borderRadius: '50%',
+    flexShrink: 0,
+    animation: spinning
+      ? 'logoSpin 8s linear infinite'
+      : pulsing
+      ? 'logoPulse 2s linear infinite'
+      : 'none',
+    display: 'block',
+  };
+  return (
+    <svg style={style} viewBox="0 0 914 914" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <style>{`
+        @keyframes logoPulse {
+          0%   { filter: drop-shadow(0 0 0px rgba(217,0,127,0.8)); }
+          70%  { filter: drop-shadow(0 0 12px rgba(217,0,127,0)); }
+          100% { filter: drop-shadow(0 0 0px rgba(217,0,127,0.8)); }
+        }
+        @keyframes logoSpin {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+        #tl { animation: topLineWipe 3s ease forwards infinite; }
+        #ml { animation: midLineWipe 3s ease forwards infinite; animation-delay: 0.25s; }
+        #bl { animation: botLineWipe 3s ease forwards infinite; animation-delay: 0.5s; }
+        @keyframes topLineWipe {
+          0%  { width: 0; } 25% { width: 914px; } 80% { width: 914px; } 100% { width: 0; }
+        }
+        @keyframes midLineWipe {
+          0%  { x: 914; width: 0; } 30% { x: 0; width: 914px; } 60% { x: 0; width: 914px; } 100% { x: 914; width: 0; }
+        }
+        @keyframes botLineWipe {
+          0%  { width: 0; } 25% { width: 914px; } 50% { width: 914px; } 100% { width: 0; }
+        }
+      `}</style>
+      <defs>
+        <clipPath id="cl1"><rect id="tl" x="0" y="0" width="0" height="914"/></clipPath>
+        <clipPath id="cl2"><rect id="ml" x="914" y="0" width="0" height="914"/></clipPath>
+        <clipPath id="cl3"><rect id="bl" x="0" y="0" width="0" height="914"/></clipPath>
+        <clipPath id="cl0"><rect width="914" height="914"/></clipPath>
+      </defs>
+      <g clipPath="url(#cl0)">
+        <path d="M914 457C914 709.394 709.394 914 457 914C204.606 914 0 709.394 0 457C0 204.606 204.606 0 457 0C709.394 0 914 204.606 914 457Z" fill="#D9007F"/>
+        <g clipPath="url(#cl1)"><path d="M730.708 429.918C586.777 337.574 341.371 319.798 199.718 358.625C188.954 361.324 177.565 359.772 167.916 354.292C158.266 348.812 151.1 339.825 147.904 329.198C145.151 318.42 146.672 306.995 152.149 297.312C157.626 287.629 166.634 280.439 177.29 277.245C342.041 234.713 610.435 253.246 776.865 360.368C797.107 372.536 803.04 400.361 790.826 420.602C778.77 436.291 750.995 442.133 730.708 429.918Z" fill="black"/></g>
+        <g clipPath="url(#cl2)"><path d="M781.897 401.637C779.902 421.55 765.291 438.049 745.32 436.14C598.271 432.556 421.488 507.636 317.887 621.206C304.192 634.542 281.29 636.96 268.035 623.218C254.605 609.362 252.234 586.54 265.993 573.221C387.431 444.085 581.539 361.582 750.563 366.079C766.127 365.103 783.789 381.73 781.897 401.637Z" fill="black"/></g>
+        <g clipPath="url(#cl3)"><path d="M731.655 680.383C722.218 693.54 706.291 697.54 693.043 688.101C589.494 619.078 457.194 600.925 298.385 631.421C282.546 635.469 269.423 623.734 265.392 610.015C261.392 594.088 273.124 581.055 286.844 576.978C459.159 544.654 607.192 565.656 721.68 641.782C737.214 649.046 738.839 667.101 731.655 680.383Z" fill="black"/></g>
+      </g>
+    </svg>
+  );
+}
+
+/* ── Player ─────────────────────────────────────── */
+function Player({ isPlaying, onToggle, progress, onSeek }) {
+  const [open, setOpen] = useState(false);
+  const [volume, setVolume] = useState(0.8);
+  const [shuffled, setShuffled] = useState(false);
+
+  useEffect(() => { if (isPlaying) setOpen(true); }, [isPlaying]);
+
+  const playerW = open ? 360 : 56;
+
+  return (
+    <div style={{
+      position: 'fixed', bottom: 'var(--player-bottom)', width: '100vw',
+      display: 'flex', justifyContent: 'center', alignItems: 'flex-end',
+      pointerEvents: 'none', zIndex: 100,
+    }}>
+      <div style={{
+        position: 'relative',
+        width: playerW, height: 56, background: '#B3005E',
+        borderRadius: '6em', transition: 'width 0.3s ease-in-out',
+        display: 'flex', alignItems: 'center',
+        pointerEvents: 'all', overflow: open ? 'visible' : 'hidden',
+      }}>
+        {/* Logo button */}
+        <div
+          onClick={() => setOpen(o => !o)}
+          style={{
+            position: 'absolute', left: 0, top: 0,
+            width: 56, height: 56, borderRadius: '50%',
+            background: 'var(--fg-primary)', cursor: 'pointer', zIndex: 2,
+            animation: isPlaying ? 'logoSpin 8s linear infinite' : 'logoPulseBtn 2s linear infinite',
+          }}
+        >
+          <style>{`
+            @keyframes logoPulseBtn {
+              0%   { box-shadow: 0 0 0 0 rgba(217,0,127,0.7); }
+              70%  { box-shadow: 0 0 0 15px rgba(217,0,127,0); }
+              100% { box-shadow: 0 0 0 0 rgba(217,0,127,0.7); }
+            }
+          `}</style>
+          <ZLogo size={56} />
+        </div>
+
+        {/* Controls */}
+        {open && (
+          <div style={{
+            position: 'absolute', right: 8, top: 0, height: 56,
+            display: 'flex', alignItems: 'center', gap: 4,
+          }}>
+            {/* Shuffle */}
+            <div onClick={() => setShuffled(s => !s)} style={{ cursor: 'pointer', opacity: shuffled ? 1 : 0.4, padding: 6 }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fg-primary)" strokeWidth="2">
+                <polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/>
+                <polyline points="21 16 21 21 16 21"/><line x1="4" y1="4" x2="9" y2="9"/>
+              </svg>
+            </div>
+            {/* Prev */}
+            <div style={{ cursor: 'pointer', padding: 6 }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--fg-primary)">
+                <polygon points="19 20 9 12 19 4 19 20"/>
+                <line x1="5" y1="19" x2="5" y2="5" stroke="var(--fg-primary)" strokeWidth="2"/>
+              </svg>
+            </div>
+            {/* Play/Pause */}
+            <div onClick={onToggle} style={{
+              width: 44, height: 44, background: 'var(--fg-primary)', borderRadius: 6,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+              transition: 'transform 0.2s ease',
+            }}
+              onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'}
+              onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
+            >
+              {isPlaying ? (
+                <div style={{ display: 'flex', gap: 4 }}>
+                  <div style={{ width: 5, height: 20, background: 'black', borderRadius: 2 }}/>
+                  <div style={{ width: 5, height: 20, background: 'black', borderRadius: 2 }}/>
+                </div>
+              ) : (
+                <div style={{ width: 0, height: 0, borderTop: '9px solid transparent', borderBottom: '9px solid transparent', borderLeft: '16px solid black', marginLeft: 3 }}/>
+              )}
+            </div>
+            {/* Next */}
+            <div style={{ cursor: 'pointer', padding: 6 }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--fg-primary)">
+                <polygon points="5 4 15 12 5 20 5 4"/>
+                <line x1="19" y1="5" x2="19" y2="19" stroke="var(--fg-primary)" strokeWidth="2"/>
+              </svg>
+            </div>
+            {/* Volume icon */}
+            <div style={{ cursor: 'pointer', padding: 6, opacity: 0.7 }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fg-secondary)" strokeWidth="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              </svg>
+            </div>
+          </div>
+        )}
+
+        {/* Progress bar */}
+        {open && (
+          <div
+            onClick={onSeek}
+            style={{
+              position: 'absolute', left: 0, top: '115%',
+              width: '100%', height: 10, background: 'var(--fg-primary)',
+              borderRadius: 8, cursor: 'pointer', overflow: 'hidden',
+            }}
+          >
+            <div style={{ width: `${progress * 100}%`, height: '100%', background: 'rgba(0,0,0,0.35)', borderRadius: '8px 0 0 8px' }}/>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ── Header ─────────────────────────────────────── */
+function Header({ onLogoClick, username }) {
+  return (
+    <div style={{
+      position: 'fixed', top: 0, left: 0, width: '100vw',
+      height: 'var(--header-h)', background: 'rgba(0,0,0,0.9)',
+      backdropFilter: 'blur(8px)', display: 'flex',
+      alignItems: 'center', padding: '0 20px', zIndex: 50,
+      borderBottom: '1px solid #111',
+    }}>
+      <div onClick={onLogoClick} style={{ cursor: 'pointer', flexShrink: 0 }}>
+        <ZLogo size={36} pulsing />
+      </div>
+      <div style={{ flex: 1 }} />
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 10,
+        background: 'var(--secondary-bg)', borderRadius: '15em',
+        padding: '6px 16px', cursor: 'pointer',
+        border: '1px solid var(--accent-bg)',
+      }}>
+        <div style={{
+          width: 28, height: 28, borderRadius: '50%',
+          background: 'var(--accent-bg)', display: 'flex',
+          alignItems: 'center', justifyContent: 'center',
+          color: 'var(--fg-secondary)', fontSize: 13, fontWeight: 700,
+        }}>
+          {username ? username[0].toUpperCase() : 'Z'}
+        </div>
+        <span style={{ color: 'var(--fg-secondary)', fontSize: 13 }}>{username || 'Guest'}</span>
+      </div>
+    </div>
+  );
+}
+
+/* ── Toast ──────────────────────────────────────── */
+function Toaster({ toasts, onDismiss }) {
+  return (
+    <div style={{
+      position: 'fixed', right: 20, top: 72, width: 320,
+      display: 'flex', flexDirection: 'column', gap: 10, zIndex: 200,
+    }}>
+      {toasts.map(t => (
+        <div key={t.id} style={{
+          border: `1px solid ${t.type === 'error' ? 'var(--error)' : t.type === 'warn' ? 'var(--warning)' : 'var(--accent-bg)'}`,
+          borderRadius: '1em', padding: '12px 16px', background: '#000',
+          display: 'flex', flexDirection: 'column', gap: 4, position: 'relative',
+          animation: 'fadeIn 0.2s ease',
+        }}>
+          <style>{`@keyframes fadeIn { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:none; } }`}</style>
+          <div style={{ color: t.type === 'error' ? 'var(--error)' : t.type === 'warn' ? 'var(--warning)' : 'var(--fg-primary)', fontSize: 13, fontWeight: 700 }}>{t.title}</div>
+          {t.msg && <div style={{ color: 'var(--fg-disabled)', fontSize: 11 }}>{t.msg}</div>}
+          <div onClick={() => onDismiss(t.id)} style={{ position: 'absolute', top: 4, right: 12, cursor: 'pointer', color: 'var(--fg-disabled)', fontSize: 20 }}>×</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Auth Page ──────────────────────────────────── */
+function AuthPage({ onLogin }) {
+  const [user, setUser] = useState('');
+  const [pass, setPass] = useState('');
+  const [userFocused, setUserFocused] = useState(false);
+  const [passFocused, setPassFocused] = useState(false);
+
+  return (
+    <div style={{
+      width: '100%', height: '100%', display: 'flex',
+      flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      paddingTop: '20vh', gap: 24,
+    }}>
+      {/* Animated logo */}
+      <div style={{
+        width: 100, height: 100, borderRadius: '50%',
+        animation: 'logoPulseBtn 2s linear infinite',
+      }}>
+        <ZLogo size={100} pulsing />
+      </div>
+
+      {/* Tagline */}
+      <p style={{
+        fontSize: '1.4em', fontWeight: 700,
+        background: 'linear-gradient(270deg, #d9007f, #00d95a)',
+        backgroundSize: '600% 600%',
+        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+        animation: 'gradShift 5s ease infinite',
+        textAlign: 'center', maxWidth: 400,
+      }}>
+        Soon, there will be some great music. Keep in touch.
+        <style>{`
+          @keyframes gradShift {
+            0% { background-position: 0 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0 50%; }
+          }
+        `}</style>
+      </p>
+
+      {/* Auth buttons */}
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
+        {/* Password auth button */}
+        <div
+          onClick={() => onLogin('password')}
+          style={{
+            background: 'var(--auth-bg)', borderRadius: '15em',
+            padding: '12px 32px', cursor: 'pointer', color: 'var(--fg-secondary)',
+            fontSize: 15, fontWeight: 500,
+            transition: 'transform 0.1s ease-in-out',
+            border: '1px solid #3d1a5a',
+          }}
+          onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'}
+          onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          Password
+        </div>
+        {/* Telegram auth button */}
+        <div
+          onClick={() => onLogin('telegram')}
+          style={{
+            background: 'var(--auth-bg)', borderRadius: '15em',
+            padding: '12px 28px', cursor: 'pointer', color: 'var(--fg-secondary)',
+            fontSize: 15, fontWeight: 500, display: 'flex', alignItems: 'center', gap: 10,
+            transition: 'transform 0.1s ease-in-out',
+            border: '1px solid #3d1a5a',
+          }}
+          onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'}
+          onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          <svg width="20" height="20" viewBox="0 0 240 240" fill="none">
+            <circle cx="120" cy="120" r="120" fill="#229ED9"/>
+            <path d="M175 68L33 122c-9 3.5-8.8 8.5-1.6 10.7l35.5 11 82-51.6c3.8-2.4 7.3-1.1 4.4 1.5l-66.4 60h-.1l2.5 36.8c3.5 0 5-1.6 7-3.5l16.8-16.4 35 25.8c6.4 3.5 11 1.7 12.6-5.9l22.8-107.5c2.3-9.2-3.5-13.4-10.5-10.4z" fill="white"/>
+          </svg>
+          Telegram
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Password Dialog ────────────────────────────── */
+function PasswordDialog({ onClose, onSubmit }) {
+  const [user, setUser] = useState('');
+  const [pass, setPass] = useState('');
+  const [uFocus, setUFocus] = useState(false);
+  const [pFocus, setPFocus] = useState(false);
+
+  const FloatInput = ({ value, onChange, type='text', label, focused, onFocus, onBlur }) => (
+    <div style={{ position: 'relative', width: '100%', height: 44 }}>
+      <input
+        type={type} value={value} onChange={e => onChange(e.target.value)}
+        onFocus={onFocus} onBlur={onBlur}
+        placeholder=" "
+        style={{
+          width: '100%', height: '100%', padding: '0.75em 12px',
+          background: 'var(--secondary-bg)', color: 'var(--fg-primary)',
+          border: `1px solid ${focused ? 'var(--border-light)' : 'var(--border)'}`,
+          borderRadius: '1em', outline: 'none', fontFamily: 'Comfortaa',
+          fontSize: 14, transition: 'border-color 0.2s',
+        }}
+      />
+      <label style={{
+        position: 'absolute', top: focused || value ? 0 : '50%',
+        left: focused || value ? 8 : 12,
+        transform: focused || value ? 'translateY(-50%) scale(0.85)' : 'translateY(-50%)',
+        color: focused || value ? 'var(--fg-primary)' : '#999',
+        fontSize: 14, pointerEvents: 'none',
+        transition: 'all 0.2s ease', padding: '0 4px',
+        background: '#000', borderRadius: 4,
+      }}>{label}</label>
+    </div>
+  );
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 300,
+    }} onClick={e => { if(e.target === e.currentTarget) onClose(); }}>
+      <div style={{
+        background: 'var(--secondary-bg)', border: '1px solid var(--accent-bg)',
+        borderRadius: '1em', padding: 28, width: 320, display: 'flex',
+        flexDirection: 'column', gap: 16,
+      }}>
+        <div style={{ color: 'var(--fg-primary)', fontSize: 18, fontWeight: 700 }}>Sign In</div>
+        <FloatInput value={user} onChange={setUser} label="Username"
+          focused={uFocus} onFocus={() => setUFocus(true)} onBlur={() => setUFocus(false)}/>
+        <FloatInput value={pass} onChange={setPass} type="password" label="Password"
+          focused={pFocus} onFocus={() => setPFocus(true)} onBlur={() => setPFocus(false)}/>
+        <button
+          onClick={() => onSubmit(user)}
+          style={{
+            background: 'var(--accent-bg)', color: 'var(--fg-secondary)',
+            border: 'none', borderRadius: '0.25em', height: 44, cursor: 'pointer',
+            fontFamily: 'Comfortaa', fontSize: 14, transition: 'transform 0.2s ease',
+          }}
+          onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'}
+          onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
+        >Sign In</button>
+        <div onClick={onClose} style={{ textAlign: 'center', color: 'var(--fg-disabled)', fontSize: 12, cursor: 'pointer' }}>Cancel</div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Song List Item ─────────────────────────────── */
+function SongItem({ title, artist, duration, isPlaying, onPlay }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onClick={onPlay}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: 'flex', alignItems: 'center', gap: 12,
+        padding: '8px 8px 6px 8px',
+        borderBottom: `1px solid ${isPlaying ? 'var(--fg-primary)' : 'var(--fg-disabled)'}`,
+        borderRadius: '1em', cursor: 'pointer',
+        background: hovered ? 'rgba(119,137,145,0.2)' : 'transparent',
+        transition: 'background 0.125s ease-in-out, border-bottom-color 0.125s',
+      }}
+    >
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{
+          color: 'var(--fg-primary)', fontSize: 15, fontWeight: 700,
+          animation: isPlaying ? 'songGlow 4s infinite alternate' : 'none',
+          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+        }}>
+          <style>{`@keyframes songGlow { 0%{text-shadow:0 0 2px #d9007f} 50%{text-shadow:0 0 10px #d9007f} 100%{text-shadow:0 0 2px #d9007f} }`}</style>
+          {title}
+        </div>
+        <div style={{ color: 'var(--fg-tertiary)', fontSize: 11, fontWeight: 300, marginTop: 2 }}>{artist}</div>
+      </div>
+      <div style={{ color: 'var(--fg-primary)', fontSize: 13, fontWeight: 700, flexShrink: 0 }}>{duration}</div>
+      <div style={{ color: 'var(--fg-disabled)', fontSize: 20, letterSpacing: -2, flexShrink: 0, lineHeight: 1 }}>···</div>
+    </div>
+  );
+}
+
+/* ── Section Card ───────────────────────────────── */
+function SectionCard({ title, children }) {
+  return (
+    <div style={{
+      padding: '16px 16px 32px 16px',
+      border: '1px solid var(--accent-bg)',
+      borderRadius: '1em', background: 'var(--main-bg)',
+      display: 'flex', flexDirection: 'column', gap: 12,
+      width: '42vw', minWidth: 280, maxWidth: 520,
+      height: 'calc(100vh - 130px)',
+      overflowY: 'auto',
+    }}>
+      <div style={{ color: 'var(--fg-primary)', fontSize: 18, fontWeight: 700, flexShrink: 0 }}>{title}</div>
+      {children}
+    </div>
+  );
+}
+
+/* ── Home Page ──────────────────────────────────── */
+const SONGS = [
+  { id: 1, title: 'Midnight Dreams',    artist: 'The Night Owls · Chill Wave',  duration: '3:42' },
+  { id: 2, title: 'Electric Pulse',     artist: 'Neon Riders',                  duration: '4:11' },
+  { id: 3, title: 'Quiet Hours',        artist: 'Still Frame · Ambient',        duration: '5:03' },
+  { id: 4, title: 'Glass Cities',       artist: 'Mirror Lake',                  duration: '3:58' },
+  { id: 5, title: 'Binary Sunset',      artist: 'Digital Horizons',             duration: '4:27' },
+  { id: 6, title: 'Neon Monsoon',       artist: 'Rain Protocol',                duration: '3:15' },
+  { id: 7, title: 'Soft Static',        artist: 'The Noise Floor',              duration: '6:02' },
+  { id: 8, title: 'Phosphene',          artist: 'Cortex Blue',                  duration: '4:44' },
+];
+
+const PLAYLISTS = [
+  { id: 'p1', name: 'Late Night Drive', count: 12 },
+  { id: 'p2', name: 'Focus Mode',       count: 24 },
+  { id: 'p3', name: 'Workout',          count: 18 },
+  { id: 'p4', name: 'Chill Sunday',     count: 9  },
+];
+
+function HomePage({ username, onSongPlay, playingId, onLogout }) {
+  return (
+    <div style={{
+      marginTop: 'var(--header-h)', marginBottom: '18vh',
+      display: 'flex', justifyContent: 'center', gap: 24,
+      padding: '20px 20px 0', flexWrap: 'wrap',
+    }}>
+      {/* Playlist segment */}
+      <SectionCard title="My Playlists">
+        {PLAYLISTS.map(pl => (
+          <div key={pl.id} style={{
+            background: 'var(--secondary-bg)', border: '1px solid var(--accent-bg)',
+            borderRadius: '1em', padding: '12px 16px', cursor: 'pointer',
+            transition: 'transform 0.125s ease-in-out',
+          }}
+            onMouseOver={e => e.currentTarget.style.transform = 'scale(1.02)'}
+            onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
+          >
+            <div style={{ color: 'var(--fg-primary)', fontSize: 14, fontWeight: 700 }}>{pl.name}</div>
+            <div style={{ color: 'var(--fg-tertiary)', fontSize: 11, marginTop: 4 }}>{pl.count} tracks</div>
+          </div>
+        ))}
+      </SectionCard>
+
+      {/* Track segment */}
+      <SectionCard title="All Tracks">
+        {SONGS.map(s => (
+          <SongItem key={s.id} {...s} isPlaying={playingId === s.id} onPlay={() => onSongPlay(s.id)} />
+        ))}
+      </SectionCard>
+    </div>
+  );
+}
+
+/* ── App Root ───────────────────────────────────── */
+function App() {
+  const stored = localStorage.getItem('zp_state');
+  const initial = stored ? JSON.parse(stored) : { page: 'init', username: '', playingId: null };
+
+  const [page, setPage] = useState(initial.page);
+  const [username, setUsername] = useState(initial.username);
+  const [playingId, setPlayingId] = useState(initial.playingId);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [progress, setProgress] = useState(0.35);
+  const [toasts, setToasts] = useState([]);
+  const [dialog, setDialog] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem('zp_state', JSON.stringify({ page, username, playingId }));
+  }, [page, username, playingId]);
+
+  // Fake progress tick
+  useEffect(() => {
+    if (!isPlaying) return;
+    const t = setInterval(() => setProgress(p => p >= 1 ? 0 : p + 0.002), 500);
+    return () => clearInterval(t);
+  }, [isPlaying]);
+
+  const addToast = useCallback((title, msg, type='info') => {
+    const id = Date.now();
+    setToasts(ts => [...ts, { id, title, msg, type }]);
+    setTimeout(() => setToasts(ts => ts.filter(t => t.id !== id)), 4000);
+  }, []);
+
+  const handleLogin = (method) => {
+    if (method === 'password') {
+      setDialog('password');
+    } else {
+      addToast('Telegram', 'Redirecting to Telegram auth...', 'info');
+      setTimeout(() => {
+        setUsername('zp_user'); setPage('home'); setIsPlaying(true);
+        addToast('Welcome back!', 'Logged in via Telegram.');
+      }, 1500);
+    }
+  };
+
+  const handlePasswordSubmit = (u) => {
+    setDialog(null);
+    if (!u) { addToast('Error', 'Please enter your username.', 'error'); return; }
+    setUsername(u); setPage('home');
+    addToast('Welcome back!', `Signed in as ${u}.`);
+    setIsPlaying(true);
+  };
+
+  const handleSongPlay = (id) => {
+    setPlayingId(id); setIsPlaying(true); setProgress(0);
+    const s = SONGS.find(s => s.id === id);
+    if (s) addToast('Now Playing', s.title);
+  };
+
+  return (
+    <div style={{ width: '100vw', height: '100vh', overflow: 'hidden', position: 'relative' }}>
+      {page === 'home' && <Header onLogoClick={() => setPage('home')} username={username} />}
+
+      {page === 'init'
+        ? <AuthPage onLogin={handleLogin} />
+        : <HomePage username={username} onSongPlay={handleSongPlay} playingId={playingId} />
+      }
+
+      <Player
+        isPlaying={isPlaying}
+        onToggle={() => setIsPlaying(p => !p)}
+        progress={progress}
+        onSeek={e => {
+          const r = e.currentTarget.getBoundingClientRect();
+          setProgress((e.clientX - r.left) / r.width);
+        }}
+      />
+
+      <Toaster toasts={toasts} onDismiss={id => setToasts(ts => ts.filter(t => t.id !== id))} />
+
+      {dialog === 'password' && (
+        <PasswordDialog onClose={() => setDialog(null)} onSubmit={handlePasswordSubmit} />
+      )}
+
+      {/* Tweaks panel */}
+      <TweaksPanel />
+    </div>
+  );
+}
+
+/* ── Tweaks ─────────────────────────────────────── */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentColor": "#d9007f",
+  "bgColor": "#000000",
+  "cardBorder": "#600052",
+  "fontWeight": "400"
+}/*EDITMODE-END*/;
+
+function TweaksPanel() {
+  const [visible, setVisible] = useState(false);
+  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.data?.type === '__activate_edit_mode') setVisible(true);
+      if (e.data?.type === '__deactivate_edit_mode') setVisible(false);
+    };
+    window.addEventListener('message', handler);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', handler);
+  }, []);
+
+  const set = (key, val) => {
+    const next = { ...tweaks, [key]: val };
+    setTweaks(next);
+    document.documentElement.style.setProperty('--fg-primary', next.accentColor);
+    document.documentElement.style.setProperty('--main-bg', next.bgColor);
+    document.documentElement.style.setProperty('--accent-bg', next.cardBorder);
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: next }, '*');
+  };
+
+  if (!visible) return null;
+
+  return (
+    <div style={{
+      position: 'fixed', bottom: 20, right: 20, background: '#0f0f0f',
+      border: '1px solid var(--accent-bg)', borderRadius: '1em', padding: 20,
+      zIndex: 1000, width: 220, display: 'flex', flexDirection: 'column', gap: 14,
+    }}>
+      <div style={{ color: 'var(--fg-primary)', fontSize: 13, fontWeight: 700 }}>Tweaks</div>
+      {[
+        ['accentColor', 'Accent / Primary'],
+        ['bgColor', 'Background'],
+        ['cardBorder', 'Card Border'],
+      ].map(([key, label]) => (
+        <div key={key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ color: 'var(--fg-secondary)', fontSize: 11 }}>{label}</span>
+          <input type="color" value={tweaks[key]} onChange={e => set(key, e.target.value)}
+            style={{ border: 'none', background: 'none', cursor: 'pointer', width: 32, height: 24 }} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+</body>
+</html>

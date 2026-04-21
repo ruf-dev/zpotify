@@ -1,16 +1,12 @@
 .AuthMethods {
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-
-    gap: 0.5em;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1em;
 }
 
 .AuthMethod {
-    width: 10em;
     height: 3em;
-
-    flex-direction: column;
 }

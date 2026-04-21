@@ -23,18 +23,17 @@ export class AuthService extends BaseService implements IAuthService {
             }
         } as AuthRequest
 
-        return this.executeAuthApiCall(
-            async (initReq) => {
-                return AuthAPI
-                    .Auth(req, initReq)
-                    .then(r => {
-                        if (!r.authData) {
-                            throw new Error("authData is empty")
-                        }
+        const initReq = apiPrefix();
 
-                        console.debug(r.authData)
-                        return r.authData
-                    })
+        return AuthAPI
+            .Auth(req, initReq)
+            .then(r => {
+                if (!r.authData) {
+                    throw new Error("authData is empty")
+                }
+
+                console.debug(r.authData)
+                return r.authData
             })
     };
 }

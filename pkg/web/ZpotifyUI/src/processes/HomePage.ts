@@ -1,8 +1,7 @@
 import {HomeSegment, ManagementSegmentInfo, PlaylistSegmentInfo} from "@/model/HomeSegments.tsx";
 import {BaseService} from "@/processes/BaseService.ts";
-import {InitReq} from "@/processes/Api.ts";
 
-import {HomePageSegment, UserAPI} from "@/app/api/zpotify";
+import {HomePageSegment, InitReq, UserAPI} from "@/app/api/zpotify";
 
 export interface ISettingsService {
     ListHomeSegments(): Promise<HomeSegment[]>

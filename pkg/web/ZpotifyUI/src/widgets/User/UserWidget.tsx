@@ -1,4 +1,3 @@
-import cn from 'classnames';
 import {useEffect, useRef, useState} from "react";
 
 import cls from "@/widgets/User/UserWidget.module.css";
@@ -13,11 +12,8 @@ interface UserWidgetProps {
 }
 
 export default function UserWidget({user}: UserWidgetProps) {
-    if (!user.userData) {
-        return (<></>)
-    }
-
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const widgetRef = useRef<HTMLDivElement>(null);
 
     const menuOptions = [
         {label: 'Profile', disabled: true},
@@ -25,65 +21,42 @@ export default function UserWidget({user}: UserWidgetProps) {
         {},
         {
             label: 'Logout', onClick: () => {
-                user.logout()
+                user.Logout()
             }
         }
     ]
 
-    const dropdownRef = useRef(null);
-    const avatarRef = useRef(null);
-
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            // @ts-ignore
-            if (avatarRef.current && avatarRef.current.contains(event.target)) {
-                return
-            }
-
-            // @ts-ignore
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            if (widgetRef.current && !widgetRef.current.contains(event.target as Node)) {
                 setIsMenuOpen(false);
             }
         }
-
-        // Bind the listener
         document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
-        return () => {
-            // Clean up the listener on unmount
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [dropdownRef]);
+    if (!user.userData) {
+        return (<></>)
+    }
 
     return (
-        <div className={cls.UserWidget}>
+        <div className={cls.UserWidget} ref={widgetRef}>
             <div
-                ref={dropdownRef}
-                className={cn(cls.SubMenuContainer, {
-                    [cls.open]: isMenuOpen,
-                })}
+                className={cls.Pill}
+                onClick={() => setIsMenuOpen(o => !o)}
             >
-                <div className={cn(cls.SubMenu,
-                    {[cls.open]: isMenuOpen})}>
+                <div className={cls.AvatarContainer}>
+                    <GeneratedAvatar username={user.userData.username}/>
+                </div>
+                <span className={cls.Username}>{user.userData.username}</span>
+            </div>
+
+            {isMenuOpen && (
+                <div className={cls.Dropdown}>
                     <Menu options={menuOptions}/>
                 </div>
-            </div>
-
-            <div className={cls.MainContent}>
-                <div className={cls.Username}>
-                    {user.userData.username}
-                </div>
-
-                <div
-                    ref={avatarRef}
-                    className={cls.AvatarContainer}>
-                    <div className={cls.Avatar}
-                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    >
-                        <GeneratedAvatar username={user.userData.username}/>
-                    </div>
-                </div>
-            </div>
+            )}
         </div>
     )
 }

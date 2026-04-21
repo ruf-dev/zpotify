@@ -1,84 +1,50 @@
 .UserWidget {
-    width: 100%;
-    height: 100%;
-
-
     position: relative;
-}
-
-
-.SubMenuContainer {
-    width: 0;
-    position: absolute;
-
-    top: 100%;
-
-    overflow: hidden;
-}
-
-.SubMenuContainer.open {
-    width: 100%;
-}
-
-.SubMenu {
-    width: 100%;
-    background: var(--main-fg-color);
-
-    transition: all 0.25s ease-in-out;
-
-    border-radius: 0.25em;
-    transform: translateY(-100%);
-
-}
-
-.SubMenu.open {
-    transform: translateY(0%);
-    padding: 0.5em;
-}
-
-
-.MainContent {
-    width: 100%;
-    height: 100%;
-
-    background: transparent;
-
-    position: absolute;
-    top: 0;
-    left: 0;
-
     display: flex;
-    justify-content: flex-end;
     align-items: center;
-    gap: 1em;
-    padding: 0.25em;
-
-    box-sizing: border-box;
 }
 
-.Username {
-    height: 100%;
+.Pill {
     display: flex;
-    justify-content: center;
     align-items: center;
-    color: var(--main-fg-color);
+    gap: 10px;
+    background: var(--secondary-bg-color);
+    border-radius: 15em;
+    padding: 6px 16px;
+    border: 1px solid var(--accent-bg-color);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.Pill:hover {
+    transform: scale(1.02);
 }
 
 .AvatarContainer {
-    height: 80%;
-    width: auto;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent-bg-color);
+    overflow: hidden;
+    flex-shrink: 0;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
-.Avatar {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.Username {
+    color: var(--secondary-fg-color);
+    font-size: 13px;
 }
 
-.Avatar:hover {
-    cursor: pointer;
+.Dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: var(--secondary-bg-color);
+    border: 1px solid var(--accent-bg-color);
+    border-radius: 0.75em;
+    padding: 0.5em;
+    min-width: 130px;
+    z-index: 100;
 }

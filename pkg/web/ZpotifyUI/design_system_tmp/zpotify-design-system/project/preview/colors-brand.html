@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { font-family: 'Comfortaa', sans-serif; font-size: 13px; margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; padding: 16px; display: flex; flex-direction: column; gap: 20px; }
+
+  .palette-block { display: flex; gap: 12px; }
+  .half { flex: 1; border-radius: 12px; overflow: hidden; border: 1px solid #1e1e1e; }
+  .half.light-half { border-color: #e0e0e0; }
+
+  .theme-header { padding: 10px 12px 8px; display: flex; justify-content: space-between; align-items: center; }
+  .theme-label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.5; }
+  .opt-label { font-size: 12px; font-weight: 700; }
+
+  .swatches { display: flex; height: 40px; }
+  .sw { flex: 1; }
+
+  .mock { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .track { font-size: 14px; font-weight: 700; }
+  .artist { font-size: 10px; font-weight: 300; margin-top: 1px; }
+  .btn { display: inline-flex; align-items: center; height: 28px; padding: 0 14px; border-radius: 15em; font-size: 11px; font-weight: 500; cursor: default; }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+  .logo-sm { width: 32px; height: 32px; border-radius: 50%; }
+
+  .section-label { color: #444; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+</style>
+</head><body>
+
+<!-- ── A: Red Coral (current pick) ── -->
+<div class="section-label">A — Red Coral &nbsp;·&nbsp; #f5003d &nbsp;·&nbsp; hue 352°</div>
+<div class="palette-block">
+  <!-- dark -->
+  <div class="half" style="background:#000">
+    <div class="theme-header" style="background:#0d0d0d">
+      <span class="opt-label" style="color:#f5003d">Red Coral</span>
+      <span class="theme-label" style="color:#f5003d">Dark</span>
+    </div>
+    <div class="swatches">
+      <div class="sw" style="background:#f5003d"></div>
+      <div class="sw" style="background:#f06080"></div>
+      <div class="sw" style="background:#d87a8e"></div>
+      <div class="sw" style="background:#3a0018"></div>
+      <div class="sw" style="background:#6b0028"></div>
+      <div class="sw" style="background:#000"></div>
+    </div>
+    <div class="mock">
+      <div class="track" style="color:#f5003d">Midnight Dreams</div>
+      <div class="artist" style="color:#d87a8e">The Night Owls · Chill</div>
+      <div class="row">
+        <span class="btn" style="background:#3a0018;color:#f06080;border:1px solid #6b0028">Password</span>
+        <svg class="logo-sm" viewBox="0 0 914 914" fill="none"><circle cx="457" cy="457" r="457" fill="#f5003d"/><path d="M730.7 429.9C586.8 337.6 341.4 319.8 199.7 358.6C177 364.6 153 346.7 147.9 329.2C141.7 306.9 157.6 281.1 177.3 277.2C342 234.7 610.4 253.2 776.9 360.4C803 376.5 803 400.4 790.8 420.6C778.8 436.3 751 442.1 730.7 429.9Z" fill="black"/><path d="M781.9 401.6C598.3 432.6 421.5 507.6 317.9 621.2C304.2 634.5 281.3 637 268 623.2C254.6 609.4 252.2 586.5 266 573.2C387.4 444.1 581.5 361.6 750.6 366.1C766.1 365.1 783.8 381.7 781.9 401.6Z" fill="black"/><path d="M731.7 680.4C722.2 693.5 706.3 697.5 693 688.1C589.5 619.1 457.2 600.9 298.4 631.4C282.5 635.5 269.4 623.7 265.4 610C261.4 594.1 273.1 581.1 286.8 577C459.2 544.7 607.2 565.7 721.7 641.8C737.2 649 738.8 667.1 731.7 680.4Z" fill="black"/></svg>
+      </div>
+    </div>
+  </div>
+  <!-- light -->
+  <div class="half light-half" style="background:#fff">
+    <div class="theme-header" style="background:#fafafa">
+      <span class="opt-label" style="color:#d00030">Red Coral</span>
+      <span class="theme-label" style="color:#999">Light</span>
+    </div>
+    <div class="swatches">
+      <div class="sw" style="background:#f5003d"></div>
+      <div class="sw" style="background:#f06080"></div>
+      <div class="sw" style="background:#ffd0da"></div>
+      <div class="sw" style="background:#fff0f3"></div>
+      <div class="sw" style="background:#ffe0e6"></div>
+      <div class="sw" style="background:#fff"></div>
+    </div>
+    <div class="mock" style="background:#fff">
+      <div class="track" style="color:#d00030">Midnight Dreams</div>
+      <div class="artist" style="color:#9e4455">The Night Owls · Chill</div>
+      <div class="row">
+        <span class="btn" style="background:#fff0f3;color:#d00030;border:1px solid #ffc0c8">Password</span>
+        <svg class="logo-sm" viewBox="0 0 914 914" fill="none"><circle cx="457" cy="457" r="457" fill="#f5003d"/><path d="M730.7 429.9C586.8 337.6 341.4 319.8 199.7 358.6C177 364.6 153 346.7 147.9 329.2C141.7 306.9 157.6 281.1 177.3 277.2C342 234.7 610.4 253.2 776.9 360.4C803 376.5 803 400.4 790.8 420.6C778.8 436.3 751 442.1 730.7 429.9Z" fill="white"/><path d="M781.9 401.6C598.3 432.6 421.5 507.6 317.9 621.2C304.2 634.5 281.3 637 268 623.2C254.6 609.4 252.2 586.5 266 573.2C387.4 444.1 581.5 361.6 750.6 366.1C766.1 365.1 783.8 381.7 781.9 401.6Z" fill="white"/><path d="M731.7 680.4C722.2 693.5 706.3 697.5 693 688.1C589.5 619.1 457.2 600.9 298.4 631.4C282.5 635.5 269.4 623.7 265.4 610C261.4 594.1 273.1 581.1 286.8 577C459.2 544.7 607.2 565.7 721.7 641.8C737.2 649 738.8 667.1 731.7 680.4Z" fill="white"/></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── B: Scarlet ── -->
+<div class="section-label">B — Scarlet &nbsp;·&nbsp; #e8001a &nbsp;·&nbsp; hue 356° — deeper, more red</div>
+<div class="palette-block">
+  <div class="half" style="background:#000">
+    <div class="theme-header" style="background:#0d0d0d">
+      <span class="opt-label" style="color:#e8001a">Scarlet</span>
+      <span class="theme-label" style="color:#e8001a">Dark</span>
+    </div>
+    <div class="swatches">
+      <div class="sw" style="background:#e8001a"></div>
+      <div class="sw" style="background:#e86070"></div>
+      <div class="sw" style="background:#cc7070"></div>
+      <div class="sw" style="background:#380010"></div>
+      <div class="sw" style="background:#680020"></div>
+      <div class="sw" style="background:#000"></div>
+    </div>
+    <div class="mock">
+      <div class="track" style="color:#e8001a">Midnight Dreams</div>
+      <div class="artist" style="color:#cc7070">The Night Owls · Chill</div>
+      <div class="row">
+        <span class="btn" style="background:#380010;color:#e86070;border:1px solid #680020">Password</span>
+        <svg class="logo-sm" viewBox="0 0 914 914" fill="none"><circle cx="457" cy="457" r="457" fill="#e8001a"/><path d="M730.7 429.9C586.8 337.6 341.4 319.8 199.7 358.6C177 364.6 153 346.7 147.9 329.2C141.7 306.9 157.6 281.1 177.3 277.2C342 234.7 610.4 253.2 776.9 360.4C803 376.5 803 400.4 790.8 420.6C778.8 436.3 751 442.1 730.7 429.9Z" fill="black"/><path d="M781.9 401.6C598.3 432.6 421.5 507.6 317.9 621.2C304.2 634.5 281.3 637 268 623.2C254.6 609.4 252.2 586.5 266 573.2C387.4 444.1 581.5 361.6 750.6 366.1C766.1 365.1 783.8 381.7 781.9 401.6Z" fill="black"/><path d="M731.7 680.4C722.2 693.5 706.3 697.5 693 688.1C589.5 619.1 457.2 600.9 298.4 631.4C282.5 635.5 269.4 623.7 265.4 610C261.4 594.1 273.1 581.1 286.8 577C459.2 544.7 607.2 565.7 721.7 641.8C737.2 649 738.8 667.1 731.7 680.4Z" fill="black"/></svg>
+      </div>
+    </div>
+  </div>
+  <div class="half light-half" style="background:#fff">
+    <div class="theme-header" style="background:#fafafa">
+      <span class="opt-label" style="color:#c40016">Scarlet</span>
+      <span class="theme-label" style="color:#999">Light</span>
+    </div>
+    <div class="swatches">
+      <div class="sw" style="background:#e8001a"></div>
+      <div class="sw" style="background:#e86070"></div>
+      <div class="sw" style="background:#ffd0d4"></div>
+      <div class="sw" style="background:#fff2f2"></div>
+      <div class="sw" style="background:#ffe0e0"></div>
+      <div class="sw" style="background:#fff"></div>
+    </div>
+    <div class="mock" style="background:#fff">
+      <div class="track" style="color:#c40016">Midnight Dreams</div>
+      <div class="artist" style="color:#994050">The Night Owls · Chill</div>
+      <div class="row">
+        <span class="btn" style="background:#fff2f2;color:#c40016;border:1px solid #ffbcbc">Password</span>
+        <svg class="logo-sm" viewBox="0 0 914 914" fill="none"><circle cx="457" cy="457" r="457" fill="#e8001a"/><path d="M730.7 429.9C586.8 337.6 341.4 319.8 199.7 358.6C177 364.6 153 346.7 147.9 329.2C141.7 306.9 157.6 281.1 177.3 277.2C342 234.7 610.4 253.2 776.9 360.4C803 376.5 803 400.4 790.8 420.6C778.8 436.3 751 442.1 730.7 429.9Z" fill="white"/><path d="M781.9 401.6C598.3 432.6 421.5 507.6 317.9 621.2C304.2 634.5 281.3 637 268 623.2C254.6 609.4 252.2 586.5 266 573.2C387.4 444.1 581.5 361.6 750.6 366.1C766.1 365.1 783.8 381.7 781.9 401.6Z" fill="white"/><path d="M731.7 680.4C722.2 693.5 706.3 697.5 693 688.1C589.5 619.1 457.2 600.9 298.4 631.4C282.5 635.5 269.4 623.7 265.4 610C261.4 594.1 273.1 581.1 286.8 577C459.2 544.7 607.2 565.7 721.7 641.8C737.2 649 738.8 667.1 731.7 680.4Z" fill="white"/></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── C: Ruby ── -->
+<div class="section-label">C — Ruby &nbsp;·&nbsp; #ff1245 &nbsp;·&nbsp; hue 350° — between A and B, vivid</div>
+<div class="palette-block">
+  <div class="half" style="background:#000">
+    <div class="theme-header" style="background:#0d0d0d">
+      <span class="opt-label" style="color:#ff1245">Ruby</span>
+      <span class="theme-label" style="color:#ff1245">Dark</span>
+    </div>
+    <div class="swatches">
+      <div class="sw" style="background:#ff1245"></div>
+      <div class="sw" style="background:#f06882"></div>
+      <div class="sw" style="background:#d07888"></div>
+      <div class="sw" style="background:#3d0016"></div>
+      <div class="sw" style="background:#6e0028"></div>
+      <div class="sw" style="background:#000"></div>
+    </div>
+    <div class="mock">
+      <div class="track" style="color:#ff1245">Midnight Dreams</div>
+      <div class="artist" style="color:#d07888">The Night Owls · Chill</div>
+      <div class="row">
+        <span class="btn" style="background:#3d0016;color:#f06882;border:1px solid #6e0028">Password</span>
+        <svg class="logo-sm" viewBox="0 0 914 914" fill="none"><circle cx="457" cy="457" r="457" fill="#ff1245"/><path d="M730.7 429.9C586.8 337.6 341.4 319.8 199.7 358.6C177 364.6 153 346.7 147.9 329.2C141.7 306.9 157.6 281.1 177.3 277.2C342 234.7 610.4 253.2 776.9 360.4C803 376.5 803 400.4 790.8 420.6C778.8 436.3 751 442.1 730.7 429.9Z" fill="black"/><path d="M781.9 401.6C598.3 432.6 421.5 507.6 317.9 621.2C304.2 634.5 281.3 637 268 623.2C254.6 609.4 252.2 586.5 266 573.2C387.4 444.1 581.5 361.6 750.6 366.1C766.1 365.1 783.8 381.7 781.9 401.6Z" fill="black"/><path d="M731.7 680.4C722.2 693.5 706.3 697.5 693 688.1C589.5 619.1 457.2 600.9 298.4 631.4C282.5 635.5 269.4 623.7 265.4 610C261.4 594.1 273.1 581.1 286.8 577C459.2 544.7 607.2 565.7 721.7 641.8C737.2 649 738.8 667.1 731.7 680.4Z" fill="black"/></svg>
+      </div>
+    </div>
+  </div>
+  <div class="half light-half" style="background:#fff">
+    <div class="theme-header" style="background:#fafafa">
+      <span class="opt-label" style="color:#d40038">Ruby</span>
+      <span class="theme-label" style="color:#999">Light</span>
+    </div>
+    <div class="swatches">
+      <div class="sw" style="background:#ff1245"></div>
+      <div class="sw" style="background:#f06882"></div>
+      <div class="sw" style="background:#ffd4dc"></div>
+      <div class="sw" style="background:#fff2f4"></div>
+      <div class="sw" style="background:#ffe0e6"></div>
+      <div class="sw" style="background:#fff"></div>
+    </div>
+    <div class="mock" style="background:#fff">
+      <div class="track" style="color:#d40038">Midnight Dreams</div>
+      <div class="artist" style="color:#a04458">The Night Owls · Chill</div>
+      <div class="row">
+        <span class="btn" style="background:#fff2f4;color:#d40038;border:1px solid #ffc0c8">Password</span>
+        <svg class="logo-sm" viewBox="0 0 914 914" fill="none"><circle cx="457" cy="457" r="457" fill="#ff1245"/><path d="M730.7 429.9C586.8 337.6 341.4 319.8 199.7 358.6C177 364.6 153 346.7 147.9 329.2C141.7 306.9 157.6 281.1 177.3 277.2C342 234.7 610.4 253.2 776.9 360.4C803 376.5 803 400.4 790.8 420.6C778.8 436.3 751 442.1 730.7 429.9Z" fill="white"/><path d="M781.9 401.6C598.3 432.6 421.5 507.6 317.9 621.2C304.2 634.5 281.3 637 268 623.2C254.6 609.4 252.2 586.5 266 573.2C387.4 444.1 581.5 361.6 750.6 366.1C766.1 365.1 783.8 381.7 781.9 401.6Z" fill="white"/><path d="M731.7 680.4C722.2 693.5 706.3 697.5 693 688.1C589.5 619.1 457.2 600.9 298.4 631.4C282.5 635.5 269.4 623.7 265.4 610C261.4 594.1 273.1 581.1 286.8 577C459.2 544.7 607.2 565.7 721.7 641.8C737.2 649 738.8 667.1 731.7 680.4Z" fill="white"/></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body></html>

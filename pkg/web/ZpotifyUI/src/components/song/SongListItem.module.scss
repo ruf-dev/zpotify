@@ -40,9 +40,12 @@
 
   padding: 4px 4px 0 4px;
 
-  font-weight: bolder;
-  font-size: 1.5em;
+  font-weight: 700;
+  font-size: 15px;
   color: var(--main-fg-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   border: none;
 
