@@ -1,0 +1,64 @@
+.AuthButton {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    padding: 13px 28px;
+    min-width: 160px;
+
+    background: #161616;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 15em;
+
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.45);
+
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.18s ease;
+}
+
+.AuthButton:not(.disabled):hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.13);
+    color: rgba(255, 255, 255, 0.88);
+    transform: scale(1.04);
+}
+
+.AuthButton.disabled {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.18);
+    cursor: not-allowed;
+}
+
+.Icon {
+    display: flex;
+    align-items: center;
+    opacity: 0.75;
+}
+
+.Icon.disabledIcon {
+    opacity: 0.35;
+}
+
+.SoonBadge {
+    position: absolute;
+    top: -8px;
+    right: 10px;
+
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8em;
+    padding: 2px 6px;
+    color: rgba(255, 255, 255, 0.3);
+}

@@ -1,0 +1,25 @@
+@keyframes logoPulse {
+    0%   { filter: drop-shadow(0 0 0px rgba(217, 0, 127, 0.9)); }
+    60%  { filter: drop-shadow(0 0 22px rgba(217, 0, 127, 0)); }
+    100% { filter: drop-shadow(0 0 0px rgba(217, 0, 127, 0.9)); }
+}
+
+@keyframes logoSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+.Logo {
+    width: 108px;
+    height: 108px;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+    display: block;
+    flex-shrink: 0;
+    animation: logoPulse 2.2s ease-in-out infinite;
+}
+
+.Logo.spinning {
+    animation: logoSpin 8s linear infinite;
+}
