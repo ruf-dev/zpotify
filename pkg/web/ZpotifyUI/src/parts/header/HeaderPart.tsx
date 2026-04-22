@@ -15,12 +15,11 @@ export default function HeaderPart({user}: HeaderPartProps) {
 
     return (
         <div className={cls.Header}>
-            <div className={cls.LogoContainer}>
-                <div
-                    className={cls.Logo}
-                    onClick={() => navigate(Path.HomePage)}>
+            <div className={cls.LogoContainer} onClick={() => navigate(Path.HomePage)}>
+                <div className={cls.Logo}>
                     <AnimatedZ/>
                 </div>
+                <span className={cls.Wordmark}>zpotify</span>
             </div>
 
             <div className={cls.SearchContainer}/>

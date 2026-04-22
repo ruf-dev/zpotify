@@ -8,23 +8,23 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background: var(--secondary-bg-color);
+    background: #141414;
     border-radius: 15em;
-    padding: 6px 16px;
-    border: 1px solid var(--accent-bg-color);
+    padding: 5px 12px 5px 5px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: border-color 0.15s ease;
 }
 
 .Pill:hover {
-    transform: scale(1.02);
+    border-color: rgba(255, 255, 255, 0.11);
 }
 
 .AvatarContainer {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    background: var(--accent-bg-color);
+    background: rgba(255, 255, 255, 0.22);
     overflow: hidden;
     flex-shrink: 0;
     display: flex;
@@ -33,8 +33,8 @@
 }
 
 .Username {
-    color: var(--secondary-fg-color);
-    font-size: 13px;
+    color: rgba(255, 255, 255, 0.50);
+    font-size: 12px;
 }
 
 .Dropdown {

@@ -7,7 +7,6 @@
     top: 0;
     width: 100vw;
     height: var(--header-height);
-    z-index: 50;
 }
 
 .MainBody {
