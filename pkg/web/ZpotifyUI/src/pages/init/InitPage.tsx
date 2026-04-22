@@ -56,6 +56,7 @@ const GithubIcon = () => (
 export default function InitPage({AudioPlayer, UserState}: InitPageProps) {
     const trackId = `AgADBGcAAscmoEg`;
     const navigate = useNavigate();
+
     const [showPasswordModal, setShowPasswordModal] = useState(false);
 
     useEffect(() => {
@@ -90,8 +91,8 @@ export default function InitPage({AudioPlayer, UserState}: InitPageProps) {
                 <ZLogoLanding/>
             </div>
 
-            <div className={cls.AppName}>zpotify</div>
-            <div className={cls.Tagline}>your music, your server</div>
+            <div className={cls.AppName}>Zpotify</div>
+            <div className={cls.Tagline}>Music your way</div>
 
             <div className={cls.Divider}/>
 

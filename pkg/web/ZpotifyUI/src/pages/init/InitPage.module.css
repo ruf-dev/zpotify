@@ -23,19 +23,16 @@
     border-radius: 50%;
     background: radial-gradient(circle, rgba(217, 0, 127, 0.07) 0%, transparent 70%);
     pointer-events: none;
-    z-index: 0;
 }
 
 .Logo {
     position: relative;
-    z-index: 1;
     animation: fadeUp 0.6s ease both;
     animation-delay: 0.1s;
 }
 
 .AppName {
     position: relative;
-    z-index: 1;
     margin-top: 24px;
     font-size: 28px;
     font-weight: 700;
@@ -47,7 +44,6 @@
 
 .Tagline {
     position: relative;
-    z-index: 1;
     margin-top: 8px;
     font-size: 13px;
     font-weight: 300;
@@ -58,7 +54,6 @@
 
 .Divider {
     position: relative;
-    z-index: 1;
     width: 1px;
     height: 32px;
     background: rgba(255, 255, 255, 0.07);
@@ -69,7 +64,6 @@
 
 .ActiveButtons {
     position: relative;
-    z-index: 1;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -81,7 +75,6 @@
 
 .ComingSoonButtons {
     position: relative;
-    z-index: 1;
     display: flex;
     flex-direction: row;
     gap: 8px;
@@ -97,5 +90,4 @@
     color: rgba(255, 255, 255, 0.22);
     animation: fadeUp 0.6s ease both;
     animation-delay: 0.54s;
-    z-index: 1;
 }
