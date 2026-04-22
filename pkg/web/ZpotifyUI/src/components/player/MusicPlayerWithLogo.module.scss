@@ -1,138 +1,131 @@
+@keyframes enableOverflow {
+  to { overflow: visible; }
+}
+
+@keyframes logoPulsing {
+  0%   { box-shadow: 0 0 0 0 rgba(217, 0, 127, 0.6); }
+  70%  { box-shadow: 0 0 0 14px rgba(217, 0, 127, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(217, 0, 127, 0.6); }
+}
+
+@keyframes logoRotatingAnim {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes songGlow {
+  0%   { text-shadow: 0 0 4px rgba(217, 0, 127, 0.5); }
+  50%  { text-shadow: 0 0 14px rgba(217, 0, 127, 0.9); }
+  100% { text-shadow: 0 0 4px rgba(217, 0, 127, 0.5); }
+}
+
 .Player {
-  width: 4em;
-  height: 4em;
+  width: 52px;
+  height: 52px;
 
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
-
   overflow: hidden;
 
-  transition: all 0.3s ease-in-out;
+  transition: width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
 
-  background: #B3005E;
+  background: #1a001a;
   border-radius: 6em;
-
+  border: 1px solid rgba(217, 0, 127, 0.3);
   position: relative;
 
   &.open {
-    animation: enableOverflow 0s linear 0.2s forwards;
+    width: 380px;
+    animation: enableOverflow 0s linear 0.3s forwards;
   }
-}
 
-@keyframes enableOverflow {
-  to {
-    overflow: visible;
+  &.playing {
+    box-shadow: 0 0 32px rgba(217, 0, 127, 0.2);
   }
 }
 
 .Logo {
-  width: 4em;
-  height: 4em;
-  animation: logoPulsing 2s linear infinite;
-  flex: 1;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
 
   position: absolute;
   left: 0;
   top: 0;
 
-  background: var(--main-fg-color);
-  border-radius: 16em;
+  background: #d9007f;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+
+  animation: logoPulsing 2s ease-in-out infinite;
 
   &.playing {
     animation: logoRotatingAnim 10s linear infinite;
   }
-
-  &:hover {
-    cursor: pointer;
-  }
 }
 
-@keyframes logoPulsing {
-  0% {
-    box-shadow: 0 0 0 0 rgba(217, 0, 127, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 15px rgba(217, 0, 127, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(217, 0, 127, 0);
-  }
-}
-
-@keyframes logoRotatingAnim {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.PlayerControlsWrapper {
-  margin-right: 0.5em;
-
-  display: none;
-
+.Content {
   position: absolute;
-  right: 0;
-  top: 0;
+  left: 60px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  animation: contentFadeIn 0.2s ease 0.15s forwards;
+}
 
-  height: 4em;
+@keyframes contentFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 
-  &.open {
-    display: flex;
-    align-items: center;
+.TrackInfo {
+  flex: 1;
+  min-width: 0;
+  margin-right: 4px;
+}
+
+.TrackTitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.25);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &.glowing {
+    color: #d9007f;
+    animation: songGlow 3s ease-in-out infinite;
   }
 }
 
-.ShuffleWrapper {
-  width: 2em;
-  height: 3em;
-
-  padding: 0.25em;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  box-sizing: border-box;
-
-  transition: all 0.125s ease-in-out;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-}
-
-.VolumeControlWrapper {
-  width: 3em;
-  height: 3em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.TrackArtist {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.25);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .TrackProgressControlsWrapper {
   width: 100%;
-  height: 2em;
+  height: 3px;
 
   position: absolute;
   left: 0;
-  top: 25%;
+  top: calc(100% + 4px);
 
-  background: var(--main-fg-color);
-
-  border-radius: 8em;
-
-  display: flex;
+  border-radius: 4px;
+  overflow: hidden;
   opacity: 0;
 
-  transition: all 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
   transition-delay: 0.2s;
+
   &.open {
-    top: 120%;
     opacity: 1;
   }
 }

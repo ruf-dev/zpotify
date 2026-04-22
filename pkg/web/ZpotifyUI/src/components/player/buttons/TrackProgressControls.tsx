@@ -66,6 +66,7 @@ export default function TrackProgressControls({ audioPlayer }: TrackProgressCont
                 className={cls.TrackLine}
                 onMouseDown={handleMouseDown}
             >
+                <div className={cls.TrackFill} style={{ width: `${progress}%` }} />
                 <div
                     className={cls.TrackBall}
                     style={{ left: `${progress}%` }}

@@ -67,6 +67,7 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
         if (!song.filePath) throw "No song url path";
 
         audioPlayer.play(song.filePath);
+        audioPlayer.setSongInfo(song.title || null, song.artists?.[0]?.name || null);
 
         setCurrentSongIdx(idx);
 

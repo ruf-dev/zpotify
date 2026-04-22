@@ -7,7 +7,6 @@ import PlayerControls from "@/components/player/PlayerControls.tsx";
 import AnimatedZ from "@/assets/AnimatedZ.tsx";
 
 import {AudioPlayer} from "@/hooks/player/player.ts";
-import VolumeControls from "@/components/player/buttons/VolumeControls.tsx";
 import TrackProgressControls from "@/components/player/buttons/TrackProgressControls.tsx";
 import ShuffleTracksButton from "@/components/player/buttons/ShuffleTracksButton.tsx";
 
@@ -24,51 +23,38 @@ export default function MusicPlayerWithLogo({audioPlayer}: MusicPlayerProps) {
         }
     }, [audioPlayer.isPlaying]);
 
-    const logoSizeEm = 4;
-    const controlsSizeEm = 8;
-    const shuffleSizeEm = 2;
-    const volumeSizeEm = 4.25;
-
     return (
         <div
             className={cn(cls.Player, {
                 [cls.open]: isOpened,
+                [cls.playing]: audioPlayer.isPlaying,
             })}
-            style={{
-                width: `${isOpened ? `${logoSizeEm + controlsSizeEm + shuffleSizeEm + volumeSizeEm}` : '4'}em`,
-            }}
         >
-
-            <div className={cn(cls.TrackProgressControlsWrapper,
-                {
-                    [cls.open]: isOpened && audioPlayer.songUrl != null
-                })}>
-                <TrackProgressControls audioPlayer={audioPlayer}/>
-            </div>
-
-            <div className={cn(cls.PlayerControlsWrapper, cls.hidden,
-                {
-                    [cls.open]: isOpened,
-                })}>
-
-                <PlayerControls audioPlayer={audioPlayer}/>
-
-                <div className={cls.ShuffleWrapper}>
-                    <ShuffleTracksButton
-                        audioPlayer={audioPlayer}/>
-                </div>
-
-                <div className={cn(cls.VolumeControlWrapper, cls.NotOverflown)}>
-                    <VolumeControls audioPlayer={audioPlayer}/>
-                </div>
-            </div>
-
             <div
-                className={cn(cls.Logo, {
-                    [cls.playing]: isOpened
-                })}
-                onClick={() => setIsOpened(!isOpened)}>
+                className={cn(cls.Logo, {[cls.playing]: isOpened})}
+                onClick={() => setIsOpened(!isOpened)}
+            >
                 <AnimatedZ/>
+            </div>
+
+            {isOpened && (
+                <div className={cls.Content}>
+                    <div className={cls.TrackInfo}>
+                        <div className={cn(cls.TrackTitle, {[cls.glowing]: audioPlayer.isPlaying && !!audioPlayer.songTitle})}>
+                            {audioPlayer.songTitle || 'nothing playing'}
+                        </div>
+                        {audioPlayer.songArtist && (
+                            <div className={cls.TrackArtist}>{audioPlayer.songArtist}</div>
+                        )}
+                    </div>
+
+                    <ShuffleTracksButton audioPlayer={audioPlayer}/>
+                    <PlayerControls audioPlayer={audioPlayer}/>
+                </div>
+            )}
+
+            <div className={cn(cls.TrackProgressControlsWrapper, {[cls.open]: isOpened && audioPlayer.songUrl != null})}>
+                <TrackProgressControls audioPlayer={audioPlayer}/>
             </div>
         </div>
     )

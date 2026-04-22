@@ -1,23 +1,29 @@
 .PlayPauseWrapper {
-  width: 2.75em;
-  height: 2.75em;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
   box-sizing: border-box;
 
-  border-radius: 5px;
+  border-radius: 50%;
+  background: #d9007f;
 
   position: relative;
 
-  transition: all 0.25s ease;
+  transition: transform 0.15s ease;
   overflow: hidden;
 
   &:hover {
     cursor: pointer;
-    transform: scale(1.05);
+    transform: scale(1.08);
   }
 
-  &.Disabled:hover {
-    cursor: not-allowed;
-    transform: scale(1);
+  &.Disabled {
+    background: rgba(217, 0, 127, 0.4);
+
+    &:hover {
+      cursor: not-allowed;
+      transform: scale(1);
+    }
   }
 }
 
