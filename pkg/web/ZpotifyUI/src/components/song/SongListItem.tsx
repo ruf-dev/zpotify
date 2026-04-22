@@ -1,5 +1,5 @@
 import cn from "classnames";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {SongBase} from "@/app/api/zpotify";
 
 import cls from "@/components/song/SongListItem.module.scss";
@@ -8,9 +8,11 @@ import {SongListPermissions} from "@/model/User.ts";
 
 import MoreButton from "@/components/song/more/MoreButton.tsx";
 import {formatDuration} from "@/utils/time.ts";
+import NowPlayingBars from "@/assets/icons/NowPlayingBars.tsx";
 
 type SongItemProp = {
     song: SongBase
+    num?: number
     isSelected: boolean;
     isPlaying: boolean;
 
@@ -24,47 +26,50 @@ type SongItemProp = {
 
 export default function SongItem({
                                      song,
+                                     num,
                                      isPlaying, isSelected,
                                      onMenuOpened, onMenuClosed,
                                      isInteractionDisabled,
                                  }: SongItemProp) {
-    const [isHovered, setIsHovered] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    useEffect(() => {
-        if (!song.id) throw new Error("song id must be provided");
+    function handleMenuOpen() {
+        setIsMenuOpen(true);
+        if (song.id && onMenuOpened) onMenuOpened(song.id);
+    }
 
-
-        if (isMenuOpen && onMenuOpened) onMenuOpened(song.id)
-
-        if (!isMenuOpen && onMenuClosed) onMenuClosed()
-    }, [isMenuOpen]);
+    function handleMenuClose() {
+        setIsMenuOpen(false);
+        if (onMenuClosed) onMenuClosed();
+    }
 
     const menuOps = [
         {
             label: "Delete",
             onClick: () => console.log("Delete"),
-            disabled: true,//!permissions.canDelete,
+            disabled: true,
         },
     ]
 
-    function isItemSelected(): boolean {
-        return (isHovered || isSelected || isMenuOpen) && !isInteractionDisabled
-    }
+    const active = isSelected && !isInteractionDisabled;
 
     return (
         <div
-            className={cn(cls.SongItem, {
-                [cls.isPlaying]: isPlaying && !isInteractionDisabled,
-                [cls.hovered]: (isMenuOpen || isHovered) && !isInteractionDisabled,
+            className={cn(cls.SongItemContainer, {
+                [cls.isPlaying]: active,
+                [cls.menuOpen]: isMenuOpen,
             })}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
         >
+            <div className={cls.NumColumn}>
+                {isPlaying && active ? (
+                    <NowPlayingBars/>
+                ) : (
+                    <span className={cls.TrackNum}>{num}</span>
+                )}
+            </div>
+
             <div className={cls.Titles}>
-                <div className={cn(cls.Title, {
-                    [cls.isSelected]: isItemSelected(),
-                })}>
+                <div className={cn(cls.Title, { [cls.isPlaying]: active })}>
                     {song.title}
                 </div>
                 <div className={cls.Artists}>
@@ -72,19 +77,17 @@ export default function SongItem({
                 </div>
             </div>
 
-            {(isHovered || isMenuOpen) && !isInteractionDisabled ? (
-                <div className={cls.MoreDotsWrapper}>
-                    <MoreButton
-                        ops={menuOps}
-                        onOpen={() => setIsMenuOpen(true)}
-                        onClose={() => setIsMenuOpen(false)}
-                    />
-                </div>
-            ) : (
-                <div className={cls.Duration}>
-                    <div>{formatDuration(song.durationSec ?? 0)}</div>
-                </div>
-            )}
+            <div className={cls.Duration}>
+                {formatDuration(song.durationSec ?? 0)}
+            </div>
+
+            <div className={cls.MoreDotsWrapper}>
+                <MoreButton
+                    ops={menuOps}
+                    onOpen={handleMenuOpen}
+                    onClose={handleMenuClose}
+                />
+            </div>
         </div>
     );
-};
+}

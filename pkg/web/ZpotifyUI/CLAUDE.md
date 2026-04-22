@@ -34,12 +34,13 @@ components; nothing imports from pages.
 
 - Always use CSS Modules — no inline styles, no `styled-components` for new code
 - Use CSS nesting for child selectors inside a module
-- All colors, borders, spacing tokens come from global CSS variables defined in `src/colors_and_type.css`:
+- All colors, borders, spacing tokens, sizes come from global CSS variables defined in `src/colors_and_type.css`:
     - Brand colors: `--color-fg-primary`, `--color-fg-secondary`, `--color-fg-tertiary`, `--color-fg-accent`,
       `--color-fg-disabled`
     - Backgrounds: `--color-bg-base`, `--color-bg-secondary`, `--color-bg-accent`
     - Borders: `--color-border`, `--color-border-light`
     - Status: `--color-error`, `--color-warning`, `--color-info`
+- Do NOT write px, em and other in styling files or components directly. Use variables instead. Variable should be located at src/sizes.css
 - Never hardcode color hex values in component CSS — always reference a variable
 - Prefer CSS `transition`, `animation`, and `@keyframes` over JS-driven animation
 - Root style for component should have suffix `Container`

@@ -92,8 +92,9 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
                 >
                     <SongListItem
                         song={s}
+                        num={idx + 1}
 
-                        isPlaying={audioPlayer.isPlaying && audioPlayer.songUrl === s.id}
+                        isPlaying={audioPlayer.isPlaying && audioPlayer.songUrl === s.filePath}
                         isSelected={currentSongIdx === idx}
 
                         onMenuOpened={setMenuOpenedSongId}
