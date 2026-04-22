@@ -5,16 +5,16 @@
     .TrackLine {
         width: 100%;
         height: 100%;
-        background: rgba(217, 0, 127, 0.2);
+        background: rgba(255, 255, 255, 0.1);
         border-radius: 4px;
         position: relative;
         cursor: pointer;
 
         .TrackFill {
             height: 100%;
-            background: #d9007f;
+            background: rgba(255, 255, 255, 0.35);
             border-radius: 4px;
-            transition: width 0.5s linear;
+            transition: width 0.5s linear, background 0.2s ease;
             pointer-events: none;
         }
 
@@ -22,4 +22,9 @@
             display: none;
         }
     }
+
+    &.hovered .TrackLine .TrackFill {
+        background: var(--color-fg-accent);
+    }
 }
+

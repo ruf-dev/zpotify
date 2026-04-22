@@ -14,7 +14,7 @@
 
   &.isPlaying {
     background: rgba(217, 0, 127, 0.12);
-    border-left-color: #d9007f;
+    border-left-color: var(--color-fg-accent);
   }
 
   &:hover:not(.isPlaying) {
@@ -57,7 +57,7 @@
   text-overflow: ellipsis;
 
   &.isPlaying {
-    color: #d9007f;
+    color: var(--color-fg-accent);
     animation: songGlow 3s ease-in-out infinite;
   }
 }

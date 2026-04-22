@@ -16,6 +16,7 @@ interface MusicPlayerProps {
 
 export default function MusicPlayerWithLogo({audioPlayer}: MusicPlayerProps) {
     const [isOpened, setIsOpened] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
         if (audioPlayer.isPlaying) {
@@ -29,6 +30,8 @@ export default function MusicPlayerWithLogo({audioPlayer}: MusicPlayerProps) {
                 [cls.open]: isOpened,
                 [cls.playing]: audioPlayer.isPlaying,
             })}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
             <div
                 className={cn(cls.Logo, {[cls.playing]: isOpened})}
@@ -40,7 +43,8 @@ export default function MusicPlayerWithLogo({audioPlayer}: MusicPlayerProps) {
             {isOpened && (
                 <div className={cls.Content}>
                     <div className={cls.TrackInfo}>
-                        <div className={cn(cls.TrackTitle, {[cls.glowing]: audioPlayer.isPlaying && !!audioPlayer.songTitle})}>
+                        <div
+                            className={cn(cls.TrackTitle, {[cls.glowing]: audioPlayer.isPlaying && !!audioPlayer.songTitle})}>
                             {audioPlayer.songTitle || 'nothing playing'}
                         </div>
                         {audioPlayer.songArtist && (
@@ -53,8 +57,12 @@ export default function MusicPlayerWithLogo({audioPlayer}: MusicPlayerProps) {
                 </div>
             )}
 
-            <div className={cn(cls.TrackProgressControlsWrapper, {[cls.open]: isOpened && audioPlayer.trackPath != null})}>
-                <TrackProgressControls audioPlayer={audioPlayer}/>
+            <div
+                className={cn(cls.TrackProgressControlsWrapper,
+                    {
+                        [cls.open]: isOpened && audioPlayer.trackPath != null,
+                    })}>
+                <TrackProgressControls audioPlayer={audioPlayer} isHovered={isHovered}/>
             </div>
         </div>
     )

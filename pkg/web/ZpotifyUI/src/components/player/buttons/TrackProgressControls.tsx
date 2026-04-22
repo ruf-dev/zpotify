@@ -1,3 +1,5 @@
+import cn from "classnames";
+
 import cls from "@/components/player/buttons/TrackProgressControls.module.scss"
 
 import { AudioPlayer } from "@/hooks/player/player.ts";
@@ -5,9 +7,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 interface TrackProgressControlsProps {
     audioPlayer: AudioPlayer
+    isHovered?: boolean
 }
 
-export default function TrackProgressControls({ audioPlayer }: TrackProgressControlsProps) {
+export default function TrackProgressControls({ audioPlayer, isHovered }: TrackProgressControlsProps) {
     const trackLineRef = useRef<HTMLDivElement>(null);
     const [isDragging, setIsDragging] = useState(false);
     const [progress, setProgress] = useState(audioPlayer.progress);
@@ -60,7 +63,7 @@ export default function TrackProgressControls({ audioPlayer }: TrackProgressCont
     }, [isDragging, handleMouseMove, handleMouseUp]);
 
     return (
-        <div className={cls.TrackProgressControlsContainer}>
+        <div className={cn(cls.TrackProgressControlsContainer, { [cls.hovered]: isHovered })}>
             <div
                 ref={trackLineRef}
                 className={cls.TrackLine}

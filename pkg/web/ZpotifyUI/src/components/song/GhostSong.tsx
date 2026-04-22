@@ -9,16 +9,14 @@ import AddSongDialog from "@/dialogs/AddSong/AddSongDialog.tsx";
 interface GhostSongProps {
     user: User;
 
-    onClick?: () => void;
 }
 
-export default function GhostSong({onClick, user}: GhostSongProps) {
+export default function GhostSong({user}: GhostSongProps) {
     const {OpenDialog} = useDialog();
 
     const handleOnClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         OpenDialog(<AddSongDialog user={user}/>);
-        onClick?.();
     }
 
     return (

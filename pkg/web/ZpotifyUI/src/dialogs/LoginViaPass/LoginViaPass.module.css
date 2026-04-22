@@ -39,7 +39,7 @@
     margin-top: 4px;
     height: 46px;
     width: 100%;
-    background: #d9007f;
+    background: var(--color-fg-accent);
     color: #fff;
     border: none;
     border-radius: 0.75em;

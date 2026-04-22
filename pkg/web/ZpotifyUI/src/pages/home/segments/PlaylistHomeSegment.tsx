@@ -20,9 +20,6 @@ interface DisplayPlaylistSegmentProps {
 export default function PlaylistHomeSegment({audioPlayer, user, playlistUuid}: DisplayPlaylistSegmentProps) {
     const [isEditing, setEditing] = useState(false);
 
-    function addSongClicked() {
-    }
-
     return (
         <div className={cls.PlaylistSegmentContainer}>
             <div className={cls.Tittle}>{"Global queue"}</div>
@@ -38,7 +35,6 @@ export default function PlaylistHomeSegment({audioPlayer, user, playlistUuid}: D
                     [cls.hidden]: !isEditing,
                 })}>
                 <GhostSong
-                    onClick={addSongClicked}
                     user={user}
                 />
             </div>

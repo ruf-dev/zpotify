@@ -5,21 +5,21 @@
 
 :root {
   /* Backgrounds */
-  --color-bg-base:        #000000;   /* App background */
-  --color-bg-secondary:   #310049;   /* Cards, inputs, overlays */
-  --color-bg-accent:      #600052;   /* Elevated surfaces, borders */
-  --color-bg-auth:        #2f1542;   /* Auth button bg */
+  --color-bg-base:        #0a0a0a;   /* App background */
+  --color-bg-secondary:   #141414;   /* Cards, inputs, overlays */
+  --color-bg-accent:      #242424;   /* Elevated surfaces */
+  --color-bg-auth:        #1a1a1a;   /* Auth button bg */
 
-  /* Foregrounds / Brand Pink */
-  --color-fg-primary:     #d9007f;   /* Hot pink — primary brand color */
-  --color-fg-secondary:   #dc6dae;   /* Soft pink — secondary text */
-  --color-fg-tertiary:    #d186b2;   /* Muted pink — tertiary text */
-  --color-fg-accent:      #f1a0d2;   /* Pale pink — highlights */
-  --color-fg-disabled:    #9f8d98;   /* Disabled / muted state */
+  /* Foregrounds */
+  --color-fg-primary:     #f0f0f0;   /* Near-white — primary text */
+  --color-fg-secondary:   #a0a0a0;   /* Mid-gray — secondary text */
+  --color-fg-tertiary:    #686868;   /* Dim gray — tertiary text */
+  --color-fg-accent:      #d9007f;   /* Pink — accent/highlight only */
+  --color-fg-disabled:    #555555;   /* Disabled / muted state */
 
   /* Borders */
-  --color-border:         #999999;
-  --color-border-light:   #c5c4c4;
+  --color-border:         #2e2e2e;
+  --color-border-light:   #3e3e3e;
 
   /* Status */
   --color-error:          #c1253d;
@@ -100,6 +100,11 @@ h2, .t-h2 {
   font-weight: 600;
   color: var(--color-fg-primary);
   line-height: 1.3;
+}
+
+/* Accent — pink highlight, use sparingly */
+.t-accent {
+  color: var(--color-fg-accent);
 }
 
 /* Body */

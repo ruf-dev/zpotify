@@ -29,9 +29,9 @@
 
   transition: width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
 
-  background: #1a001a;
+  background: #111111;
   border-radius: 6em;
-  border: 1px solid rgba(217, 0, 127, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
 
   &.open {
@@ -53,7 +53,7 @@
   left: 0;
   top: 0;
 
-  background: #d9007f;
+  background: var(--color-fg-accent);
   border-radius: 50%;
   cursor: pointer;
   z-index: 2;
@@ -96,7 +96,7 @@
   text-overflow: ellipsis;
 
   &.glowing {
-    color: #d9007f;
+    color: var(--color-fg-accent);
     animation: songGlow 3s ease-in-out infinite;
   }
 }
@@ -122,10 +122,14 @@
   overflow: hidden;
   opacity: 0;
 
-  transition: opacity 0.3s ease-in-out;
-  transition-delay: 0.2s;
+  transition: opacity 0.3s ease-in-out, height 0.2s ease;
+  transition-delay: 0.2s, 0s;
 
   &.open {
     opacity: 1;
   }
+}
+
+.Player:hover .TrackProgressControlsWrapper.open {
+  height: 5px;
 }
