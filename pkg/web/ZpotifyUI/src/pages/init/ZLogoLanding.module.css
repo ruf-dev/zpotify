@@ -9,6 +9,27 @@
     to   { transform: rotate(360deg); }
 }
 
+@keyframes lzTopAnim {
+    0%   { width: 914px; }
+    25%  { width: 0; }
+    55%  { width: 914px; }
+    100% { width: 914px; }
+}
+
+@keyframes lzMidAnim {
+    0%   { x: 0;   width: 914px; }
+    25%  { x: 914; width: 0; }
+    55%  { x: 0;   width: 914px; }
+    100% { x: 0;   width: 914px; }
+}
+
+@keyframes lzBotAnim {
+    0%   { width: 914px; }
+    25%  { width: 0; }
+    50%  { width: 914px; }
+    100% { width: 914px; }
+}
+
 .Logo {
     width: 108px;
     height: 108px;
@@ -22,4 +43,18 @@
 
 .Logo.spinning {
     animation: logoSpin 8s linear infinite;
+}
+
+.spinning :global(#lz-top) {
+    animation: lzTopAnim 3s ease infinite;
+}
+
+.spinning :global(#lz-mid) {
+    animation: lzMidAnim 3s ease infinite;
+    animation-delay: 0.2s;
+}
+
+.spinning :global(#lz-bot) {
+    animation: lzBotAnim 3s ease infinite;
+    animation-delay: 0.4s;
 }

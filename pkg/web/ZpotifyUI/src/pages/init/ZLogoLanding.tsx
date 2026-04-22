@@ -21,9 +21,9 @@ export default function ZLogoLanding() {
             xmlns="http://www.w3.org/2000/svg"
         >
             <defs>
-                <clipPath id="lzcl1"><rect id="lztl" x="0" y="0" width="0" height="914"/></clipPath>
-                <clipPath id="lzcl2"><rect id="lzml" x="914" y="0" width="0" height="914"/></clipPath>
-                <clipPath id="lzcl3"><rect id="lzbl" x="0" y="0" width="0" height="914"/></clipPath>
+                <clipPath id="lzcl1"><rect id="lz-top" x="0" y="0" width="914" height="914"/></clipPath>
+                <clipPath id="lzcl2"><rect id="lz-mid" x="0" y="0" width="914" height="914"/></clipPath>
+                <clipPath id="lzcl3"><rect id="lz-bot" x="0" y="0" width="914" height="914"/></clipPath>
                 <clipPath id="lzcl0"><rect width="914" height="914"/></clipPath>
             </defs>
             <g clipPath="url(#lzcl0)">

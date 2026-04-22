@@ -31,7 +31,7 @@ export default function Router() {
                     <Route
                         path={Path.IntiPage}
                         element={<InitPage
-                            UserState={user}
+                            userState={user}
                             AudioPlayer={audioPlayer}/>}
                         errorElement={<ErrorPage/>}
                     />

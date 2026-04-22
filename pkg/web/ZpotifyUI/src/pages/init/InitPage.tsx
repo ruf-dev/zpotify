@@ -1,13 +1,14 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 
 import cls from '@/pages/init/InitPage.module.css';
 
 import ZLogoLanding from "@/pages/init/ZLogoLanding.tsx";
-import PasswordModal from "@/pages/init/PasswordModal.tsx";
+import LoginPasswordDialog from "@/dialogs/LoginViaPass/LoginViaPass.tsx";
 import AuthButton from "@/components/shared/AuthButton.tsx";
 
 import {Path} from "@/app/routing/Router.tsx";
+import {useDialog} from "@/app/hooks/Dialog.tsx";
 
 import {AudioPlayer} from "@/hooks/player/player.ts";
 import {User} from "@/hooks/user/User.ts";
@@ -22,23 +23,19 @@ import githubIcon from "@/assets/icons/github.svg";
 
 interface InitPageProps {
     AudioPlayer: AudioPlayer;
-    UserState: User;
+    userState: User;
 }
 
-export default function InitPage({AudioPlayer, UserState}: InitPageProps) {
-    const trackId = `AgADBGcAAscmoEg`;
+export default function InitPage({AudioPlayer, userState}: InitPageProps) {
     const navigate = useNavigate();
-
-    const [showPasswordModal, setShowPasswordModal] = useState(false);
+    const {OpenDialog} = useDialog();
 
     useEffect(() => {
-        if (UserState.userData) {
+        if (userState.userData) {
             navigate(Path.HomePage);
             AudioPlayer.unload();
-        } else {
-            AudioPlayer.preload(trackId);
         }
-    }, [UserState.userData]);
+    }, [userState.userData]);
 
     function handleTelegramLogin() {
         const authProcess = AuthenticateViaTelegram();
@@ -50,9 +47,13 @@ export default function InitPage({AudioPlayer, UserState}: InitPageProps) {
                 );
             }
             if (res.AuthData) {
-                UserState.Authenticate(res.AuthData);
+                userState.Authenticate(res.AuthData);
             }
         });
+    }
+
+    function openLogoPassDialog() {
+        OpenDialog(<LoginPasswordDialog userState={userState}/>)
     }
 
     return (
@@ -77,24 +78,29 @@ export default function InitPage({AudioPlayer, UserState}: InitPageProps) {
                 <AuthButton
                     icon={<img src={lockIcon} width={16} height={16} alt=""/>}
                     label="Username & Password"
-                    onClick={() => setShowPasswordModal(true)}
+                    onClick={openLogoPassDialog}
                 />
             </div>
 
             <div className={cls.ComingSoonButtons}>
-                <AuthButton icon={<img src={googleIcon} width={16} height={16} alt=""/>} label="Google" disabled comingSoon/>
-                <AuthButton icon={<img src={appleIcon} width={16} height={16} alt=""/>} label="Apple" disabled comingSoon/>
-                <AuthButton icon={<img src={githubIcon} width={16} height={16} alt=""/>} label="GitHub" disabled comingSoon/>
+                <AuthButton
+                    icon={<img src={googleIcon} width={16} height={16} alt=""/>}
+                    label="Google"
+                    disabled
+                    comingSoon/>
+                <AuthButton
+                    icon={<img src={appleIcon} width={16} height={16} alt=""/>}
+                    label="Apple"
+                    disabled
+                    comingSoon/>
+                <AuthButton
+                    icon={<img src={githubIcon} width={16} height={16} alt=""/>}
+                    label="GitHub"
+                    disabled
+                    comingSoon/>
             </div>
 
             <div className={cls.Footer}>self-hosted · open source</div>
-
-            {showPasswordModal && (
-                <PasswordModal
-                    userState={UserState}
-                    onClose={() => setShowPasswordModal(false)}
-                />
-            )}
         </div>
     );
 }

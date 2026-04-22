@@ -32,6 +32,7 @@ export default function UserWidget({user}: UserWidgetProps) {
                 setIsMenuOpen(false);
             }
         }
+
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);

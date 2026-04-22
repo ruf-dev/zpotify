@@ -45,6 +45,7 @@ components; nothing imports from pages.
 - Components should be a named functions - not a const arrow functions
 - One file – one component.
 - Icons and minor components should be located at `src/assets/icons`
+- For dialog should only use global Dialog via useDialog hook. Import it from `@/app/hooks/Dialog.tsx`
 
 ## Path Alias
 

@@ -8,17 +8,6 @@
     to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.Overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.75);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 200;
-    animation: overlayIn 0.2s ease;
-}
-
 .Card {
     width: 340px;
     background: #0d0d0d;
