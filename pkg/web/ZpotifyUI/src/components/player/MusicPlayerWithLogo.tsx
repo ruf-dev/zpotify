@@ -53,7 +53,7 @@ export default function MusicPlayerWithLogo({audioPlayer}: MusicPlayerProps) {
                 </div>
             )}
 
-            <div className={cn(cls.TrackProgressControlsWrapper, {[cls.open]: isOpened && audioPlayer.songUrl != null})}>
+            <div className={cn(cls.TrackProgressControlsWrapper, {[cls.open]: isOpened && audioPlayer.trackPath != null})}>
                 <TrackProgressControls audioPlayer={audioPlayer}/>
             </div>
         </div>

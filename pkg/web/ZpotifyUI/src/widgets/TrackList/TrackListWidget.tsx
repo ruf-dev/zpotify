@@ -23,11 +23,11 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
     useEffect(() => {
         if (!songs) return
 
-        const uId = songs.findIndex((s) => s.filePath == audioPlayer.songUrl)
+        const uId = songs.findIndex((s) => s.filePath == audioPlayer.trackPath)
         if (uId == -1) return;
 
         setCurrentSongIdx(uId);
-    }, [audioPlayer.songUrl, songs]);
+    }, [audioPlayer.trackPath, songs]);
 
     function getNext(currentIdx: number): string | undefined {
         if (songs.length == 0 || currentIdx == -1) {
@@ -55,10 +55,10 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
 
     useEffect(() => {
         const currentSongIdx = songs
-            .findIndex((s) => s.filePath == audioPlayer.songUrl)
+            .findIndex((s) => s.filePath == audioPlayer.trackPath)
         audioPlayer.setNext(getNext(currentSongIdx))
         audioPlayer.setPrev(getPrev(currentSongIdx))
-    }, [audioPlayer.songUrl]);
+    }, [audioPlayer.trackPath]);
 
     function playSongAtIndex(idx: number) {
         const song = songs[idx];
@@ -94,7 +94,7 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
                         song={s}
                         num={idx + 1}
 
-                        isPlaying={audioPlayer.isPlaying && audioPlayer.songUrl === s.filePath}
+                        isPlaying={audioPlayer.isPlaying && audioPlayer.trackPath === s.filePath}
                         isSelected={currentSongIdx === idx}
 
                         onMenuOpened={setMenuOpenedSongId}

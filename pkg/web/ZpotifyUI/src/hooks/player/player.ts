@@ -14,7 +14,7 @@ export interface AudioPlayer {
     toggleMute: () => void;
     isMuted: boolean;
 
-    songUrl: string | null;
+    trackPath: string | null;
     songTitle: string | null;
     songArtist: string | null;
     setSongInfo: (title: string | null, artist: string | null) => void;
@@ -38,10 +38,14 @@ interface AudioStoreState {
     isPlaying: boolean;
     volume: number;
     isMuted: boolean;
-    songUniqueId: string | null;
+
+    trackPath: string | null;
+
     songTitle: string | null;
     songArtist: string | null;
+
     progress: number;
+
     nextTrackUrl: string | undefined;
     prevTrackUrl: string | undefined;
     shuffleHash: number | null;
@@ -50,8 +54,10 @@ interface AudioStoreState {
 const useAudioStore = create<AudioStoreState>(() => ({
     isPlaying: false,
     volume: 36,
+    trackPath: null,
+
     isMuted: false,
-    songUniqueId: null,
+
     songTitle: null,
     songArtist: null,
     progress: 0,
@@ -127,8 +133,8 @@ class AudioPlayerImpl implements AudioPlayer {
         return useAudioStore.getState().isMuted;
     }
 
-    get songUrl() {
-        return useAudioStore.getState().songUniqueId;
+    get trackPath() {
+        return useAudioStore.getState().trackPath;
     }
 
     get songTitle() {
@@ -152,8 +158,6 @@ class AudioPlayerImpl implements AudioPlayer {
     }
 
     private startPlay() {
-        console.debug(`Playing ${this.audio.src}`)
-
         this.audio.play()
             .then(() => {
                 useAudioStore.setState({isPlaying: true});
@@ -162,8 +166,8 @@ class AudioPlayerImpl implements AudioPlayer {
     }
 
     togglePlay(): boolean {
-        const {songUniqueId, isPlaying} = useAudioStore.getState();
-        if (songUniqueId == null) return false;
+        const {trackPath, isPlaying} = useAudioStore.getState();
+        if (trackPath == null) return false;
 
         if (isPlaying) {
             this.audio.pause();
@@ -175,13 +179,13 @@ class AudioPlayerImpl implements AudioPlayer {
         return useAudioStore.getState().isPlaying;
     }
 
-    preload(trackUuid: string): void {
-        const trackUrl = import.meta.env.VITE_ZPOTIFY_API+trackUuid
+    preload(trackPath: string): void {
+        const trackUrl = import.meta.env.VITE_ZPOTIFY_API+trackPath
         if (this.audio.src === trackUrl) return;
 
         this.audio.src = trackUrl;
         this.audio.load();
-        useAudioStore.setState({songUniqueId: trackUrl});
+        useAudioStore.setState({trackPath: trackPath});
 
         if ('mediaSession' in navigator) {
             // Ideally we should set metadata here, but we only have trackUrl
@@ -196,7 +200,7 @@ class AudioPlayerImpl implements AudioPlayer {
 
     unload(): void {
         this.audio.src = '';
-        useAudioStore.setState({songUniqueId: null, isPlaying: false});
+        useAudioStore.setState({trackPath: null, isPlaying: false});
     }
 
     play(trackUrl: string): void {
