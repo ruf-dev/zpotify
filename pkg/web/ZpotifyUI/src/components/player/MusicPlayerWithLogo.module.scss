@@ -20,8 +20,8 @@
 }
 
 .Player {
-  width: 52px;
-  height: 52px;
+  width: var(--player-pill-size);
+  height: var(--player-pill-size);
 
   display: flex;
   align-items: center;
@@ -35,7 +35,7 @@
   position: relative;
 
   &.open {
-    width: 380px;
+    width: var(--player-pill-open-width);
     animation: enableOverflow 0s linear 0.3s forwards;
   }
 
@@ -45,8 +45,8 @@
 }
 
 .Logo {
-  width: 52px;
-  height: 52px;
+  width: var(--player-pill-size);
+  height: var(--player-pill-size);
   flex-shrink: 0;
 
   position: absolute;
@@ -88,7 +88,7 @@
 }
 
 .TrackTitle {
-  font-size: 12px;
+  font-size: var(--font-size-md);
   font-weight: 700;
   color: rgba(255, 255, 255, 0.25);
   white-space: nowrap;
@@ -102,7 +102,7 @@
 }
 
 .TrackArtist {
-  font-size: 10px;
+  font-size: var(--font-size-sm);
   color: rgba(255, 255, 255, 0.25);
   margin-top: 1px;
   white-space: nowrap;

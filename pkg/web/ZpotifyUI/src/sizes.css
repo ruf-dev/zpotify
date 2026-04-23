@@ -1,0 +1,17 @@
+:root {
+    font-size: 24px;
+
+    /* Font sizes */
+    --font-size-xs: 0.5em;
+    --font-size-sm: 0.75em;
+    --font-size-md: 0.85em;
+    --font-size-base: 1em;
+    --font-size-lg: 1.125em;
+    --font-size-xl: 1.25em;
+    --font-size-2xl: 1.5em;
+    --font-size-3xl: 2em;
+
+    /* Component sizes */
+    --player-pill-size: 3.25em; /* 52px — player logo button */
+    --player-pill-open-width: 23.75em; /* 380px — expanded player */
+}

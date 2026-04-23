@@ -57,7 +57,7 @@
 
     transition: all 0.2s ease;
     padding: 0 4px;
-    font-size: clamp(1px, 16px, 32px);
+    font-size: var(--font-size-base);
 
     box-sizing: border-box;
 

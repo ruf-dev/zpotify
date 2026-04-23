@@ -25,7 +25,7 @@
 
     & > div:first-child {
         font-weight: 700;
-        font-size: 13px;
+        font-size: var(--font-size-sm);
         color: var(--main-fg-color);
     }
 
@@ -51,7 +51,7 @@
 
     .Description {
         color: var(--disabled-fg-color);
-        font-size: 11px;
+        font-size: var(--font-size-xs);
         margin-top: 2px;
     }
 

@@ -69,7 +69,10 @@ export default function SongItem({
             </div>
 
             <div className={cls.Titles}>
-                <div className={cn(cls.Title, { [cls.isPlaying]: active })}>
+                <div className={
+                    cn(cls.Title, {
+                        [cls.isPlaying]: active,
+                    })}>
                     {song.title}
                 </div>
                 <div className={cls.Artists}>

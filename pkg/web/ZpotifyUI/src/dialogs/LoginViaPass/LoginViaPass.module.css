@@ -23,7 +23,7 @@
 .Title {
     color: rgba(255, 255, 255, 0.88);
     font-family: 'Comfortaa', sans-serif;
-    font-size: 17px;
+    font-size: var(--font-size-lg);
     font-weight: 700;
     margin-bottom: 4px;
 }
@@ -31,7 +31,7 @@
 .Error {
     color: #c1253d;
     font-family: 'Comfortaa', sans-serif;
-    font-size: 12px;
+    font-size: var(--font-size-sm);
     margin-top: -4px;
 }
 
@@ -44,7 +44,7 @@
     border: none;
     border-radius: 0.75em;
     font-family: 'Comfortaa', sans-serif;
-    font-size: 14px;
+    font-size: var(--font-size-md);
     font-weight: 700;
     cursor: pointer;
     transition: transform 0.15s ease;
@@ -59,7 +59,7 @@
     border: none;
     color: rgba(255, 255, 255, 0.22);
     font-family: 'Comfortaa', sans-serif;
-    font-size: 12px;
+    font-size: var(--font-size-sm);
     cursor: pointer;
     padding: 0;
     align-self: center;

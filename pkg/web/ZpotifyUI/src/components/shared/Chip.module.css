@@ -23,13 +23,13 @@
     border-radius: 16px;
     background-color: var(--secondary-bg-color, #333);
     color: var(--main-fg-color, #fff);
-    font-size: 16px;
+    font-size: var(--font-size-base);
     font-weight: 500;
     box-sizing: border-box;
 }
 
 .Label {
-    font-size: 10px;
+    font-size: var(--font-size-xs);
     color: var(--secondary-fg-color, #b3b3b3);
     text-transform: lowercase;
 }

@@ -36,7 +36,7 @@
 }
 
 .TrackNum {
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   color: rgba(255, 255, 255, 0.25);
 
   .SongItemContainer:hover & {
@@ -49,7 +49,8 @@
 }
 
 .Title {
-  font-size: 13px;
+  font-size: var(--font-size-md);
+
   font-weight: 600;
   color: rgba(255, 255, 255, 0.88);
   white-space: nowrap;
@@ -63,7 +64,7 @@
 }
 
 .Artists {
-  font-size: 11px;
+  font-size: var(--font-size-sm);
   color: rgba(255, 255, 255, 0.25);
   margin-top: 2px;
   white-space: nowrap;
@@ -72,7 +73,7 @@
 }
 
 .Duration {
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   color: rgba(255, 255, 255, 0.25);
   flex-shrink: 0;
 }
