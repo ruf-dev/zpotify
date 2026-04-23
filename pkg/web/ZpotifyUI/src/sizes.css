@@ -1,17 +1,27 @@
-:root {
-    font-size: 24px;
+:root { font-size: 16px; }
 
+@media (max-width: 480px)                          { :root { font-size: 12px; } }
+@media (min-width: 481px)  and (max-width: 767px)  { :root { font-size: 13px; } }
+@media (min-width: 768px)  and (max-width: 1023px) { :root { font-size: 14px; } }
+@media (min-width: 1024px) and (max-width: 1439px) { :root { font-size: 16px; } }
+@media (min-width: 1440px) and (max-width: 1919px) { :root { font-size: 17px; } }
+@media (min-width: 1920px)                         { :root { font-size: 19px; } }
+
+:root {
     /* Font sizes */
-    --font-size-xs: 0.5em;
-    --font-size-sm: 0.75em;
-    --font-size-md: 0.85em;
-    --font-size-base: 1em;
-    --font-size-lg: 1.125em;
-    --font-size-xl: 1.25em;
-    --font-size-2xl: 1.5em;
-    --font-size-3xl: 2em;
+    --font-size-xs:   0.625rem;    /* 10px */
+    --font-size-sm:   0.6875rem;   /* 11px */
+    --font-size-md:   0.75rem;     /* 12px */
+    --font-size-base: 0.8125rem;   /* 13px */
+    --font-size-lg:   0.875rem;    /* 14px */
+    --font-size-xl:   0.9375rem;   /* 15px */
+    --font-size-2xl:  1rem;        /* 16px */
+    --font-size-3xl:  1.125rem;    /* 18px */
 
     /* Component sizes */
-    --player-pill-size: 3.25em; /* 52px — player logo button */
-    --player-pill-open-width: 23.75em; /* 380px — expanded player */
+    --player-pill-size:       3.25rem;   /* 52px */
+    --player-pill-open-width: 23.75rem;  /* 380px */
+    --player-bottom:          1.75rem;   /* 28px */
+    --player-icon-size:       0.6875rem; /* 11px — SVG icon inside play/pause button */
+    --player-icon-nudge:      0.125rem;  /* 2px  — optical left offset for play triangle */
 }

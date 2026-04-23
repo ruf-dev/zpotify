@@ -38,7 +38,7 @@
 
 .Player {
     position: fixed;
-    bottom: 7vh;
+    bottom: var(--player-bottom);
     width: 100vw;
 
     display: flex;

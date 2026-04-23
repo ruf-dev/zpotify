@@ -11,42 +11,19 @@ export interface PlayPauseButtonProps {
 export default function PlayPauseButton({isPlaying, onClick, isDisabled}: PlayPauseButtonProps) {
     return (
         <div
-            className={cn(cls.PlayPauseWrapper, {
-                [cls.Disabled]: isDisabled
-            })}
+            className={cn(cls.PlayPauseWrapper, {[cls.Disabled]: isDisabled})}
             onClick={onClick}
         >
-            <div className={cls.InnerTriangleWrapper}>
-                <div className={cn(cls.InnerTriangle, {
-                    [cls.Active]: isPlaying,
-                    [cls.Disabled]: isDisabled
-                })}/>
-            </div>
-
-            <div className={
-                cn(cls.Stick, cls.Stick1, {
-                    [cls.Active]: isPlaying,
-                    [cls.Inactive]: !isPlaying,
-                    [cls.Disabled]: isDisabled
-                })
-            }/>
-
-            <div className={
-                cn(cls.Stick, cls.Stick2, {
-                    [cls.Active]: isPlaying,
-                    [cls.Inactive]: !isPlaying,
-                    [cls.Disabled]: isDisabled
-                })
-            }/>
-
-            <div className={
-                cn(cls.Stick, cls.Stick3, {
-                    [cls.Active]: isPlaying,
-                    [cls.Inactive]: !isPlaying,
-                    [cls.Disabled]: isDisabled
-                })
-            }/>
-
+            {isPlaying ? (
+                <svg className={cls.Icon} viewBox="0 0 24 24" fill="black">
+                    <rect x="6" y="4" width="4" height="16" rx="1"/>
+                    <rect x="14" y="4" width="4" height="16" rx="1"/>
+                </svg>
+            ) : (
+                <svg className={cn(cls.Icon, cls.PlayIcon)} viewBox="0 0 24 24" fill="black">
+                    <polygon points="5 3 19 12 5 21"/>
+                </svg>
+            )}
         </div>
     )
 }

@@ -181,6 +181,10 @@
   },
   "active": "568506529ccb83d3",
   "lastOpenFiles": [
+    "agents/pipeline.md",
+    "agents/context-pack.md",
+    "agents/task-template.md",
+    "agents",
     "INDEX.md",
     "Design.md",
     "ui/components.md",
