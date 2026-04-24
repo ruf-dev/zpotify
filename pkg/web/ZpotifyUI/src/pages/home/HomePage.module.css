@@ -1,5 +1,7 @@
 .HomePage {
-
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .Header {
@@ -9,38 +11,30 @@
     height: var(--header-height);
 }
 
-.MainBody {
-    margin: 8vh 0 16vh 0;
+.ContentArea {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.Empty {
+    display: flex;
+    align-items: center;
     justify-content: center;
-
-    position: relative;
-
-    gap: 3em;
-
-    .Section {
-        padding: 1em 1em 2em 1em;
-        box-sizing: border-box;
-
-        display: flex;
-        flex-direction: column;
-
-        width: 45vw;
-        height: 100vh;
-
-        border: var(--accent-bg-color) solid 1px;
-        border-radius: 1em;
-        background: var(--main-bg-color);
-    }
-
+    height: 100%;
+    color: var(--color-fg-tertiary);
+    font-size: var(--font-size-base);
 }
 
 .Player {
     position: fixed;
     bottom: var(--player-bottom);
     width: 100vw;
-
     display: flex;
     justify-content: center;
     align-items: center;

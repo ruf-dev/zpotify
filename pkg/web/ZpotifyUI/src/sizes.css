@@ -24,4 +24,12 @@
     --player-bottom:          1.75rem;   /* 28px */
     --player-icon-size:       0.6875rem; /* 11px — SVG icon inside play/pause button */
     --player-icon-nudge:      0.125rem;  /* 2px  — optical left offset for play triangle */
+
+    /* Header */
+    --header-logo-size:  1.875rem;   /* 30px */
+    --header-padding-x:  1.5rem;     /* 24px */
+    --header-logo-gap:   0.625rem;   /* 10px */
+
+    /* Home page */
+    --home-section-max-width: 56rem;  /* ~896px */
 }

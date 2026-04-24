@@ -45,6 +45,8 @@ components; nothing imports from pages.
 - Prefer CSS `transition`, `animation`, and `@keyframes` over JS-driven animation
 - Root style for component should have suffix `Container`
 - Classes that wraps some components should have suffix `Wrapper`
+- Do NOT use `!important` `z-index`
+- Use rem units for font sizes and spacing
 
 ## Coding rules
 - Components should be a named functions - not a const arrow functions

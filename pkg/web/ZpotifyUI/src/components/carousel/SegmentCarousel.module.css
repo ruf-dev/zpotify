@@ -1,0 +1,50 @@
+.SegmentCarouselContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 1rem;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Allow first/last cards to snap to center */
+    padding-inline: calc((100% - min(30rem, 82vw)) / 2);
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.Card {
+    flex: 0 0 min(30rem, 82vw);
+    scroll-snap-align: center;
+    margin-block: var(--space-3);
+    transform-origin: top center;
+    background: var(--color-bg-secondary);
+    border: 0.0625rem solid var(--color-border);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: pointer;
+
+    &.Active {
+        border-color: var(--color-border-bright);
+        cursor: default;
+    }
+}
+
+.CardContent {
+    flex: 1;
+    overflow-y: hidden;
+    padding: var(--space-4) var(--space-4);
+    padding-bottom: calc(var(--player-bottom) + var(--player-pill-size) + var(--space-4));
+    user-select: none;
+
+    &.Scrollable {
+        overflow-y: auto;
+        user-select: auto;
+    }
+}
