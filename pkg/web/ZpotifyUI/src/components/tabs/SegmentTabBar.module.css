@@ -1,0 +1,42 @@
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(0.625rem); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.SegmentTabBarContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--space-1);
+    padding: var(--space-4) 0 0;
+    flex-shrink: 0;
+    animation: fadeUp 0.5s ease both;
+    animation-delay: 0.1s;
+}
+
+.Tab {
+    padding: 0.4375rem var(--space-4);
+    border-radius: var(--border-radius-pill);
+    border: 0.0625rem solid var(--color-border);
+    background: transparent;
+    color: var(--color-fg-tertiary);
+    font-family: 'Comfortaa', sans-serif;
+    font-size: var(--font-size-base);
+    font-weight: 400;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    outline: none;
+    transition: color var(--ease-quick), background var(--ease-quick), border-color var(--ease-quick);
+
+    &:hover {
+        color: var(--color-fg-secondary);
+        border-color: var(--color-border-light);
+    }
+
+    &.Active {
+        color: var(--color-fg-primary);
+        background: var(--color-bg-accent);
+        border-color: var(--color-border-bright);
+        font-weight: 600;
+    }
+}

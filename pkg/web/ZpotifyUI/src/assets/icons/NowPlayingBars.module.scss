@@ -1,0 +1,33 @@
+.Container {
+  display: block;
+  margin: 0 auto;
+}
+
+.Bar1 {
+  animation: b1 0.9s ease-in-out infinite;
+}
+
+.Bar2 {
+  animation: b2 0.9s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+
+.Bar3 {
+  animation: b3 0.9s ease-in-out infinite;
+  animation-delay: 0.35s;
+}
+
+@keyframes b1 {
+  0%, 100% { height: 4px; y: 5px; }
+  50%       { height: 10px; y: 2px; }
+}
+
+@keyframes b2 {
+  0%, 100% { height: 8px; y: 3px; }
+  50%       { height: 4px; y: 5px; }
+}
+
+@keyframes b3 {
+  0%, 100% { height: 6px; y: 4px; }
+  50%       { height: 12px; y: 1px; }
+}
