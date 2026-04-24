@@ -11,10 +11,14 @@
             "id": "568506529ccb83d3",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "crazy-ideas/forum-comments.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "forum-comments"
             }
           }
         ]
@@ -181,6 +185,9 @@
   },
   "active": "568506529ccb83d3",
   "lastOpenFiles": [
+    "crazy-ideas/forum-comments.md",
+    "crazy-ideas/README.md",
+    "crazy-ideas",
     "Финансы/Расходы/2026-04-23 Закупка Лента.md",
     "Финансы/Расходы",
     "Финансы",
@@ -212,10 +219,7 @@
     "roadmap",
     "stack/frontend.md",
     "stack/backend.md",
-    "stack",
     "architecture/database.md",
-    "architecture/api.md",
-    "architecture/overview.md",
-    "Welcome.md"
+    "architecture/api.md"
   ]
 }
