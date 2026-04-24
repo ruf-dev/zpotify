@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 import cls from "@/pages/home/HomePage.module.css"
@@ -9,17 +9,10 @@ import {Path} from "@/app/routing/Router.tsx";
 
 import HeaderPart from "@/parts/header/HeaderPart.tsx";
 import MusicPlayerWithLogo from "@/components/player/MusicPlayerWithLogo.tsx";
-import {HomeSegment, HomeSegmentProps, PlaylistSegmentInfo} from "@/model/HomeSegments.tsx";
+import {HomeSegment, HomeSegmentProps} from "@/model/HomeSegments.tsx";
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 import SegmentTabBar, {Tab} from "@/components/tabs/SegmentTabBar.tsx";
 import SegmentCarousel from "@/components/carousel/SegmentCarousel.tsx";
-
-const HOME_TABS: Tab[] = [
-    {id: 'tracks',    label: 'tracks'},
-    {id: 'playlists', label: 'playlists'},
-    {id: 'recent',    label: 'recent'},
-    {id: 'artists',   label: 'artists'},
-];
 
 interface HomePageProps {
     audioPlayer: AudioPlayer
@@ -28,21 +21,35 @@ interface HomePageProps {
 
 export default function HomePage({user, audioPlayer}: HomePageProps) {
     const navigate = useNavigate();
+    const toaster = useToaster();
+    const [segments, setSegments] = useState<HomeSegment[]>([]);
+    const savedIdx = parseInt(localStorage.getItem('zp_tab_idx') || '0', 10);
+    const [activeIdx, setActiveIdx] = useState(!isNaN(savedIdx) ? savedIdx : 0);
 
     useEffect(() => {
         if (!user.userData) {
-            navigate(Path.IntiPage)
+            navigate(Path.IntiPage);
         }
     }, [user.userData]);
 
+    useEffect(() => {
+        user.Services().Settings().ListHomeSegments()
+            .then(setSegments)
+            .catch(toaster.catch);
+    }, []);
+
+    useEffect(() => {
+        if (segments.length > 0 && activeIdx >= segments.length) {
+            setActiveIdx(0);
+        }
+    }, [segments]);
+
     if (!user.userData) {
-        return (<div>loading</div>)
+        return (<div>loading</div>);
     }
 
-    const savedIdx = parseInt(localStorage.getItem('zp_tab_idx') || '0', 10);
-    const [activeIdx, setActiveIdx] = useState(!isNaN(savedIdx) && savedIdx < HOME_TABS.length ? savedIdx : 0);
-    const [segments, setSegments] = useState<HomeSegment[]>([]);
-    const toaster = useToaster();
+    const tabs: Tab[] = segments.map(s => ({id: s.id, label: s.label}));
+    const activeTab = tabs[activeIdx];
 
     const handleChange = (idx: number) => {
         setActiveIdx(idx);
@@ -50,36 +57,19 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
     };
 
     const handleTabClick = (id: string) => {
-        const idx = HOME_TABS.findIndex(t => t.id === id);
+        const idx = tabs.findIndex(t => t.id === id);
         if (idx >= 0) handleChange(idx);
     };
-
-    useEffect(() => {
-        user
-            .Services()
-            .Settings()
-            .ListHomeSegments()
-            .then(setSegments)
-            .catch(toaster.catch)
-    }, [])
 
     const homePageProps: HomeSegmentProps = {
         audioPlayer: audioPlayer,
         user: user,
-    } as HomeSegmentProps
+    };
 
     function renderSlide(idx: number): React.ReactNode {
-        const tab = HOME_TABS[idx];
-        switch (tab.id) {
-            case 'playlists': {
-                const segment = segments.find(s => s instanceof PlaylistSegmentInfo);
-                return segment
-                    ? segment.buildComponent(homePageProps)
-                    : <div className={cls.Empty}>No playlists configured</div>;
-            }
-            default:
-                return <div className={cls.Empty}>Coming soon</div>;
-        }
+        const segment = segments[idx];
+        if (!segment) return null;
+        return segment.buildComponent(homePageProps);
     }
 
     return (
@@ -89,14 +79,16 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
             </div>
 
             <div className={cls.ContentArea}>
-                <SegmentTabBar
-                    tabs={HOME_TABS}
-                    activeId={HOME_TABS[activeIdx].id}
-                    onChange={handleTabClick}
-                />
+                {tabs.length > 0 && (
+                    <SegmentTabBar
+                        tabs={tabs}
+                        activeId={activeTab?.id ?? ''}
+                        onChange={handleTabClick}
+                    />
+                )}
                 <SegmentCarousel
                     activeIdx={activeIdx}
-                    count={HOME_TABS.length}
+                    count={segments.length}
                     onChange={handleChange}
                     renderSlide={renderSlide}
                 />

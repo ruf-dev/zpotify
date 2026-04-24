@@ -28,7 +28,9 @@ export default function SegmentCarousel({activeIdx, count, onChange, renderSlide
 
         isProgrammatic.current = true;
         container.scrollTo({left: targetScrollLeft, behavior: 'smooth'});
-        setTimeout(() => { isProgrammatic.current = false; }, 450);
+        setTimeout(() => {
+            isProgrammatic.current = false;
+        }, 450);
     }, [activeIdx]);
 
     const handleScroll = () => {
@@ -59,31 +61,43 @@ export default function SegmentCarousel({activeIdx, count, onChange, renderSlide
             className={cls.SegmentCarouselContainer}
             onScroll={handleScroll}
         >
-            {Array.from({length: count}).map((_, idx) => {
-                const offset = idx - activeIdx;
-                const isActive = offset === 0;
-                const isAdjacent = Math.abs(offset) === 1;
-                const opacity = isActive ? 1 : isAdjacent ? 0.38 : 0.15;
-                const scale = isActive ? 1 : 0.965;
+            {
+                Array
+                    .from({length: count})
+                    .map((_, idx) => {
+                        const offset = idx - activeIdx;
+                        const isActive = offset === 0;
+                        const isAdjacent = Math.abs(offset) === 1;
+                        const opacity = isActive ? 1 : isAdjacent ? 0.38 : 0.15;
+                        const scale = isActive ? 1 : 0.965;
 
-                return (
-                    <div
-                        key={idx}
-                        ref={el => { cardRefs.current[idx] = el; }}
-                        className={cn(cls.Card, {[cls.Active]: isActive})}
-                        style={{
-                            opacity,
-                            transform: `scale(${scale})`,
-                            transition: 'opacity 0.22s ease, transform 0.34s cubic-bezier(0.4,0,0.2,1)',
-                        }}
-                        onClick={() => { if (!isActive) onChange(idx); }}
-                    >
-                        <div className={cn(cls.CardContent, {[cls.Scrollable]: isActive})}>
-                            {renderSlide(idx, isActive)}
-                        </div>
-                    </div>
-                );
-            })}
+                        return (
+                            <div
+                                key={idx}
+                                ref={el => {
+                                    cardRefs.current[idx] = el;
+                                }}
+                                className={cn(cls.Card, {
+                                    [cls.Active]: isActive,
+                                })}
+                                style={{
+                                    opacity,
+                                    transform: `scale(${scale})`,
+                                    transition: 'opacity 0.22s ease, transform 0.34s cubic-bezier(0.4,0,0.2,1)',
+                                }}
+                                onClick={() => {
+                                    if (!isActive) onChange(idx);
+                                }}
+                            >
+                                <div className={
+                                    cn(cls.CardContent, {
+                                        [cls.Scrollable]: isActive,
+                                    })}>
+                                    {renderSlide(idx, isActive)}
+                                </div>
+                            </div>
+                        );
+                    })}
         </div>
     );
 }

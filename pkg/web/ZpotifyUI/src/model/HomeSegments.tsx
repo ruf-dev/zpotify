@@ -10,14 +10,19 @@ export type HomeSegmentProps = {
 }
 
 export interface HomeSegment {
-    buildComponent(props: HomeSegmentProps): JSX.Element
+    id: string;
+    label: string;
+    buildComponent(props: HomeSegmentProps): JSX.Element;
 }
 
 export class PlaylistSegmentInfo implements HomeSegment {
-    private readonly playlistUuid: string
+    readonly id: string;
+    readonly label = 'playlist';
+    private readonly playlistUuid: string;
 
     constructor(playlistId: string) {
         this.playlistUuid = playlistId;
+        this.id = playlistId;
     }
 
     buildComponent({audioPlayer, user}: HomeSegmentProps): React.JSX.Element {
@@ -30,6 +35,9 @@ export class PlaylistSegmentInfo implements HomeSegment {
 }
 
 export class ManagementSegmentInfo implements HomeSegment {
+    readonly id = 'management';
+    readonly label = 'management';
+
     buildComponent({audioPlayer, user}: HomeSegmentProps): React.JSX.Element {
         return (<ManagementHomeSegment
             audioPlayer={audioPlayer}

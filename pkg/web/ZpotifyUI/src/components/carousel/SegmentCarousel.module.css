@@ -1,3 +1,11 @@
+:root {
+    --carousel-card-width: 33vw;
+
+    @media (orientation: portrait) {
+        --carousel-card-width: 85vw;
+    }
+}
+
 .SegmentCarouselContainer {
     flex: 1;
     display: flex;
@@ -9,8 +17,7 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    /* Allow first/last cards to snap to center */
-    padding-inline: calc((100% - min(30rem, 82vw)) / 2);
+    padding-inline: calc((100% - var(--carousel-card-width)) / 2);
 
     &::-webkit-scrollbar {
         display: none;
@@ -18,7 +25,7 @@
 }
 
 .Card {
-    flex: 0 0 min(30rem, 82vw);
+    flex: 0 0 var(--carousel-card-width);
     scroll-snap-align: center;
     margin-block: var(--space-3);
     transform-origin: top center;
