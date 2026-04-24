@@ -1,20 +1,35 @@
 .PlaylistSegmentContainer {
     display: flex;
     flex-direction: column;
-    gap: 1em;
-    padding-top: 2em;
+    height: 100%;
 }
 
-.Tittle {
+.Header {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: var(--space-4);
+    flex-shrink: 0;
 }
 
-.EditButton {
-    position: absolute;
-    top: 1.5em;
-    right: 1.5em;
+.Title {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-fg-tertiary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.HeaderRight {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.TrackCount {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-disabled);
 }
 
 .GhostButtonWrapper {

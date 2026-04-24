@@ -18,16 +18,19 @@ interface InfiniteSongsListProps {
 
     // if true - block becomes scrollable
     fixedSize?: boolean
+
+    onTotal?: (total: number) => void
 }
 
 const songsPerPage = 10;
 
-export default function LazyLoadSongsList({audioPlayer, playlistId, user, fixedSize}: InfiniteSongsListProps) {
+export default function LazyLoadSongsList({audioPlayer, playlistId, user, fixedSize, onTotal}: InfiniteSongsListProps) {
     const [offset, setOffset] = useState(0)
     const [shuffleHash, setShuffleHash] = useState<string | undefined>();
 
-    const [songs, setSongs] = useState<SongBase[]>([])
-    const [isListEnded, setIsListEnded] = useState(false)
+    const [songs, setSongs] = useState<SongBase[]>([]);
+    const [totalSongs, setTotalSongs] = useState(0);
+    const [isListEnded, setIsListEnded] = useState(false);
 
     const playlistService = user.Services().Playlist()
 
@@ -41,9 +44,11 @@ export default function LazyLoadSongsList({audioPlayer, playlistId, user, fixedS
 
                 setSongs(prev => [...prev, ...(resp.songs || []).filter((newSong) => {
                     return !prev.some(old => old.id == newSong.id)
-                })])
+                })]);
 
-                setIsListEnded(resp.total == (songs.length + resp.songs.length))
+                setTotalSongs(resp.total || 0);
+
+                if (onTotal != null && resp.total != null) onTotal(resp.total)
             })
             .catch(toaster.catch)
     }
@@ -66,6 +71,10 @@ export default function LazyLoadSongsList({audioPlayer, playlistId, user, fixedS
     useEffect(() => {
         loadTracksPage()
     }, [offset]);
+
+    useEffect(() => {
+        setIsListEnded(totalSongs == songs.length)
+    }, [songs, totalSongs]);
 
     useEffect(() => {
         if (!shuffleHash) return

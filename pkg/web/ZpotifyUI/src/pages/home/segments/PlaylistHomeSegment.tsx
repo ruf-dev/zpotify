@@ -1,3 +1,6 @@
+import {useState} from "react";
+import cn from "classnames";
+
 import cls from "@/pages/home/segments/PlaylistHomeSegment.module.css";
 import Pen from "@/assets/pen.svg";
 
@@ -6,9 +9,7 @@ import {User} from "@/hooks/user/User.ts";
 
 import LazyLoadSongsList from "@/parts/InfiniteSongList/LazyLoadSongsList.tsx";
 import IconButton from "@/components/shared/IconButton.tsx";
-import {useState} from "react";
 import GhostSong from "@/components/song/GhostSong.tsx";
-import cn from "classnames";
 
 interface DisplayPlaylistSegmentProps {
     audioPlayer: AudioPlayer;
@@ -19,16 +20,28 @@ interface DisplayPlaylistSegmentProps {
 
 export default function PlaylistHomeSegment({audioPlayer, user, playlistUuid}: DisplayPlaylistSegmentProps) {
     const [isEditing, setEditing] = useState(false);
+    const [totalCount, setTotalCount] = useState<number | null>(null);
 
     return (
         <div className={cls.PlaylistSegmentContainer}>
-            <div className={cls.Tittle}>{"Global queue"}</div>
+            <div className={cls.Header}>
+                <span className={cls.Title}>Global queue</span>
+                <div className={cls.HeaderRight}>
+                    {totalCount !== null && (
+                        <span className={cls.TrackCount}>{totalCount} tracks</span>
+                    )}
+                    <IconButton
+                        onClick={() => setEditing(!isEditing)}
+                        iconPath={Pen}/>
+                </div>
+            </div>
+
             <LazyLoadSongsList
                 audioPlayer={audioPlayer}
                 user={user}
                 playlistId={playlistUuid}
+                onTotal={setTotalCount}
             />
-
 
             <div className={
                 cn(cls.GhostButtonWrapper, {
@@ -37,12 +50,6 @@ export default function PlaylistHomeSegment({audioPlayer, user, playlistUuid}: D
                 <GhostSong
                     user={user}
                 />
-            </div>
-
-            <div className={cls.EditButton}>
-                <IconButton
-                    onClick={() => setEditing(!isEditing)}
-                    iconPath={Pen}/>
             </div>
         </div>
     )
