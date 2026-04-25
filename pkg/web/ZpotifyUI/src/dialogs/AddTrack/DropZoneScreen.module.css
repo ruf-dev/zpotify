@@ -1,0 +1,151 @@
+@keyframes slideIn {
+    from { transform: translateX(1.125rem); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes rotate {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes rotateCcw {
+    to { transform: rotate(-360deg); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-0.5625rem); }
+}
+
+@keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30%            { transform: translateY(0.5625rem); }
+    75%            { transform: translateY(-0.25rem); }
+}
+
+@keyframes radarPulse {
+    0%   { transform: scale(0.6); opacity: 0.7; }
+    100% { transform: scale(2.4); opacity: 0; }
+}
+
+.DropZoneScreenContainer {
+    animation: slideIn 0.2s ease both;
+}
+
+.DropZone {
+    position: relative;
+    height: 16rem;
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+    background: var(--color-bg-card);
+    transition: background 0.25s ease;
+}
+
+.DropZoneDragOver {
+    background: var(--color-accent-surface);
+}
+
+.HiddenInput {
+    display: none;
+}
+
+.Ring1 {
+    position: absolute;
+    color: var(--color-border-light);
+    opacity: 0.35;
+    animation: rotate 12s linear infinite;
+}
+
+.Ring2 {
+    position: absolute;
+    color: var(--color-border-bright);
+    opacity: 0.25;
+    animation: rotateCcw 8s linear infinite;
+}
+
+.DragBorder {
+    position: absolute;
+    inset: 0;
+    border: 0.125rem solid var(--color-fg-accent);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 1.75rem var(--color-accent-glow), inset 0 0 1.75rem var(--color-accent-dim);
+    pointer-events: none;
+}
+
+.RadarPulse {
+    position: absolute;
+    width: 5rem;
+    height: 5rem;
+    border-radius: var(--border-radius-circle);
+    border: 0.09375rem solid var(--color-fg-accent);
+    animation: radarPulse 1.2s ease-out infinite;
+    animation-delay: 0s;
+}
+
+.RadarPulse2 {
+    animation-delay: 0.3s;
+}
+
+.RadarPulse3 {
+    animation-delay: 0.6s;
+}
+
+.CenterContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.IconIdle {
+    color: var(--color-fg-tertiary);
+    animation: float 3s ease-in-out infinite;
+}
+
+.IconDragOver {
+    color: var(--color-fg-accent);
+    animation: bounce 0.6s ease infinite;
+}
+
+.TextContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.TextIdle {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-fg-primary);
+}
+
+.TextSub {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-secondary);
+}
+
+.TextSub u {
+    color: var(--color-fg-secondary);
+    text-decoration-color: var(--color-fg-secondary);
+}
+
+.TextDragOver {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-fg-accent);
+}
+
+.BottomHint {
+    position: absolute;
+    bottom: 0.875rem;
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-disabled);
+    letter-spacing: 0.06em;
+}

@@ -5,6 +5,9 @@ import AnimatedZ from "@/assets/AnimatedZ.tsx";
 import {useNavigate} from "react-router-dom";
 import {Path} from "@/app/routing/Router.tsx";
 import UserWidget from "@/widgets/User/UserWidget.tsx";
+import AddTrackButton from "@/components/AddTrackButton/AddTrackButton.tsx";
+import AddTrackModal from "@/dialogs/AddTrack/AddTrackModal.tsx";
+import {useDialog} from "@/app/hooks/Dialog.tsx";
 
 interface HeaderPartProps {
     user: User
@@ -12,6 +15,13 @@ interface HeaderPartProps {
 
 export default function HeaderPart({user}: HeaderPartProps) {
     const navigate = useNavigate();
+    const {OpenDialog} = useDialog();
+
+    const handleAddTrack = () => {
+        OpenDialog(
+            <AddTrackModal playlists={[]} artistOptions={[]}/>
+        );
+    };
 
     return (
         <div className={cls.Header}>
@@ -24,6 +34,7 @@ export default function HeaderPart({user}: HeaderPartProps) {
 
             <div className={cls.SearchContainer}/>
             <div className={cls.UserContainer}>
+                <AddTrackButton onClick={handleAddTrack}/>
                 <UserWidget user={user}/>
             </div>
 

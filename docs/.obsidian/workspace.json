@@ -185,6 +185,11 @@
   },
   "active": "568506529ccb83d3",
   "lastOpenFiles": [
+    "agents/tasks/M0-1-2-3-sa-docs.md",
+    "agents/tasks/M0-1-2-3-qa.md",
+    "agents/tasks/M0-2-3-frontend-upload-create-song.md",
+    "agents/tasks/M0-1-backend-upload-handler.md",
+    "agents/tasks",
     "crazy-ideas/forum-comments.md",
     "crazy-ideas/README.md",
     "crazy-ideas",
@@ -215,11 +220,6 @@
     "ui/components.md",
     "ui",
     "roadmap/in-progress.md",
-    "roadmap/backlog.md",
-    "roadmap",
-    "stack/frontend.md",
-    "stack/backend.md",
-    "architecture/database.md",
-    "architecture/api.md"
+    "roadmap/backlog.md"
   ]
 }

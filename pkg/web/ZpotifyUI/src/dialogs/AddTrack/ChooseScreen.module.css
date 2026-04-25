@@ -1,0 +1,86 @@
+@keyframes slideIn {
+    from { transform: translateX(1.125rem); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+}
+
+.ChooseScreenContainer {
+    animation: slideIn 0.2s ease both;
+}
+
+.GridWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.625rem;
+}
+
+.Card {
+    padding: 1.25rem 1rem;
+    border-radius: var(--border-radius-md);
+    background: var(--color-bg-card);
+    border: 0.0625rem solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.Card:hover {
+    background: var(--color-bg-hover);
+    border-color: var(--color-border-bright);
+}
+
+.CardAccent {
+    background: var(--color-accent-dim);
+    border-color: var(--color-accent-border);
+    box-shadow: 0 0.25rem 1.25rem var(--color-accent-shadow);
+}
+
+.CardAccent:hover {
+    background: var(--color-accent-dim-hover);
+    box-shadow: 0 0.25rem 1.75rem var(--color-accent-glow);
+}
+
+.IconCircle {
+    width: var(--icon-circle-md);
+    height: var(--icon-circle-md);
+    border-radius: var(--border-radius-circle);
+    background: var(--color-bg-accent);
+    border: 0.0625rem solid var(--color-border-light);
+    color: var(--color-fg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.IconCircleAccent {
+    width: var(--icon-circle-md);
+    height: var(--icon-circle-md);
+    border-radius: var(--border-radius-circle);
+    background: var(--color-fg-accent);
+    box-shadow: 0 0 1rem var(--color-accent-glow);
+    color: var(--color-fg-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.CardTitle {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-fg-primary);
+}
+
+.CardSubtitle {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+    line-height: 1.4;
+}
+
+.CardSubtitleAccent {
+    color: var(--color-fg-secondary);
+}

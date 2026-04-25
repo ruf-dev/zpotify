@@ -42,6 +42,14 @@
 
     /* Home page */
     --home-section-max-width: 56rem;  /* ~896px */
+
+    /* Border radius (additional) */
+    --border-radius-sm: 0.5rem;
+    --border-radius-md: 0.875rem;
+
+    /* Icon circles */
+    --icon-circle-sm: 1.25rem;   /* 20px — small icon button circle */
+    --icon-circle-md: 2.75rem;   /* 44px — card icon circles */
 }
 
 /*

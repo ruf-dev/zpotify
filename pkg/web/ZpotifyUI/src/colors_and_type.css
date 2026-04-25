@@ -62,6 +62,25 @@
   --shadow-glow-pink:  0 0 0 15px rgba(217, 0, 127, 0);
   --shadow-glow-ring:  0 0 0 0 rgba(217, 0, 127, 0.7);
 
+  /* ── Accent / Glow Variants ─────────────────────────────── */
+  --color-accent-glow:      rgba(217,0,127,0.35);
+  --color-accent-dim:       rgba(217,0,127,0.12);
+  --color-accent-dim-hover: rgba(217,0,127,0.18);
+  --color-accent-surface:   rgba(217,0,127,0.07);
+  --color-accent-border:    rgba(217,0,127,0.30);
+  --color-accent-shadow:    rgba(217,0,127,0.20);
+
+  /* ── Surface Variants ───────────────────────────────────── */
+  --color-bg-card:       #0d0d0d;
+  --color-bg-hover:      rgba(255,255,255,0.04);
+  --color-bg-hover-mid:  rgba(255,255,255,0.07);
+  --color-bg-submitted:  rgba(255,255,255,0.08);
+  --color-shadow-deep:   rgba(0,0,0,0.80);
+  --color-shadow-drop:   rgba(0,0,0,0.70);
+
+  /* ── Misc ───────────────────────────────────────────────── */
+  --color-fg-white: #ffffff;
+
   /* ── Animation Timing ───────────────────────────────────── */
   --ease-quick:   0.125s ease-in-out;
   --ease-default: 0.2s ease;

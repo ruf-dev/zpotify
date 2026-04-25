@@ -1,0 +1,161 @@
+@keyframes slideIn {
+    from { transform: translateX(1.125rem); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+}
+
+.MetaScreenContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    animation: slideIn 0.2s ease both;
+}
+
+.FileInfoRow {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.625rem 0.75rem;
+    background: var(--color-bg-card);
+    border: 0.0625rem solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+}
+
+.FileIcon {
+    color: var(--color-fg-accent);
+    flex-shrink: 0;
+}
+
+.FileName {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+}
+
+.SizePill {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+    background: var(--color-bg-accent);
+    border: 0.0625rem solid var(--color-border);
+    border-radius: var(--border-radius-pill);
+    padding: 0.15rem 0.45rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.Field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.FieldLabel {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--color-fg-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.FieldInput {
+    width: 100%;
+    padding: 0.5rem 0.625rem;
+    background: var(--color-bg-accent);
+    border: 0.0625rem solid var(--color-border-light);
+    border-radius: var(--border-radius-sm);
+    color: var(--color-fg-primary);
+    font-size: var(--font-size-base);
+    font-family: 'Comfortaa', sans-serif;
+    transition: border-color 0.15s ease;
+    outline: none;
+}
+
+.FieldInput:focus {
+    border-color: var(--color-border-bright);
+}
+
+.TwoColGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.625rem;
+}
+
+.ReadOnlyTile {
+    padding: 0.5rem 0.625rem;
+    background: var(--color-bg-card);
+    border: 0.0625rem solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-base);
+    color: var(--color-fg-tertiary);
+}
+
+.Select {
+    width: 100%;
+    padding: 0.5rem 2rem 0.5rem 0.625rem;
+    background: var(--color-bg-accent);
+    border: 0.0625rem solid var(--color-border-light);
+    border-radius: var(--border-radius-sm);
+    color: var(--color-fg-tertiary);
+    font-size: var(--font-size-base);
+    font-family: 'Comfortaa', sans-serif;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='rgba(255%2C255%2C255%2C0.4)' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.625rem center;
+    background-size: 0.75rem;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.Select option {
+    background: var(--color-bg-secondary);
+    color: var(--color-fg-primary);
+}
+
+.SelectFilled {
+    border-color: var(--color-border-bright);
+    color: var(--color-fg-primary);
+}
+
+.SubmitButton {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border-radius: var(--border-radius-pill);
+    text-align: center;
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    font-family: 'Comfortaa', sans-serif;
+    border: 0.0625rem solid transparent;
+    transition: all 0.22s ease;
+}
+
+.ButtonDisabled {
+    background: var(--color-bg-card);
+    border-color: var(--color-border);
+    color: var(--color-fg-disabled);
+    cursor: default;
+}
+
+.ButtonReady {
+    background: var(--color-fg-accent);
+    border-color: var(--color-fg-accent);
+    color: var(--color-fg-white);
+    box-shadow: 0 0.25rem 1.25rem var(--color-accent-shadow);
+    cursor: pointer;
+}
+
+.ButtonReady:hover {
+    transform: scale(1.02);
+}
+
+.ButtonSubmitted {
+    background: var(--color-bg-submitted);
+    border-color: var(--color-border-light);
+    color: var(--color-fg-tertiary);
+    cursor: default;
+}
