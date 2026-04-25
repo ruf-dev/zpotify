@@ -1,3 +1,5 @@
+export const GrpcAuthHeader = "Grpc-Metadata-Authorization"
+
 export interface InitReq {
     pathPrefix: string,
     headers: {

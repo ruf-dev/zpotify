@@ -1,5 +1,9 @@
+import {useEffect, useState} from 'react';
 import ArtistMultiSelect from '@/dialogs/AddTrack/ArtistMultiSelect';
 import cls from '@/dialogs/AddTrack/MetaScreen.module.css';
+import {IFileService} from '@/processes/FileService.ts';
+import {FileInfo} from '@/app/api/zpotify';
+import {formatFileDuration, formatFileBytes} from '@/utils/files.ts';
 
 interface Playlist {
     id: string;
@@ -9,6 +13,8 @@ interface Playlist {
 
 interface MetaScreenProps {
     file: File;
+    fileId: string;
+    fileService: IFileService;
     title: string;
     onTitleChange: (title: string) => void;
     selectedArtists: string[];
@@ -21,19 +27,21 @@ interface MetaScreenProps {
     onSubmit: () => void;
 }
 
-function formatFileSize(bytes: number): string {
-    if (bytes >= 1024 * 1024) {
-        return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
-    }
-    return `${Math.round(bytes / 1024)} KB`;
-}
-
 export default function MetaScreen({
-    file, title, onTitleChange,
+    file, fileId, fileService,
+    title, onTitleChange,
     selectedArtists, onArtistsChange, artistOptions,
     playlistId, onPlaylistChange, playlists,
     submitted, onSubmit,
 }: MetaScreenProps) {
+    const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
+
+    useEffect(() => {
+        fileService.GetFile({fileId}).then((res) => {
+            if (res.file) setFileInfo(res.file);
+        });
+    }, [fileId]);
+
     const ready = Boolean(playlistId) && !submitted;
 
     const buttonClass = submitted
@@ -51,7 +59,7 @@ export default function MetaScreen({
                     <circle cx="18" cy="16" r="3"/>
                 </svg>
                 <span className={cls.FileName}>{file.name}</span>
-                <span className={cls.SizePill}>{formatFileSize(file.size)}</span>
+                <span className={cls.SizePill}>{formatFileBytes(fileInfo?.sizeBytes, file.size)}</span>
             </div>
 
             <div className={cls.Field}>
@@ -76,11 +84,11 @@ export default function MetaScreen({
             <div className={cls.TwoColGrid}>
                 <div className={cls.Field}>
                     <label className={cls.FieldLabel}>duration</label>
-                    <div className={cls.ReadOnlyTile}>—</div>
+                    <div className={cls.ReadOnlyTile}>{formatFileDuration(fileInfo?.durationSec)}</div>
                 </div>
                 <div className={cls.Field}>
                     <label className={cls.FieldLabel}>file size</label>
-                    <div className={cls.ReadOnlyTile}>{formatFileSize(file.size)}</div>
+                    <div className={cls.ReadOnlyTile}>{formatFileBytes(fileInfo?.sizeBytes, file.size)}</div>
                 </div>
             </div>
 

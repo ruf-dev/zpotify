@@ -31,7 +31,6 @@ export const useDialog =
 
         OpenDialog(...children: React.JSX.Element[] ) {
             set({children: children});
-            console.debug("Opened dialog with", children)
         },
 
         CloseDialog() {

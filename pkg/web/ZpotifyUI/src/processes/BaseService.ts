@@ -24,11 +24,14 @@ export class BaseService {
     protected async executeAuthApiCall<T>(
         callback: (initReq: InitReq) => Promise<T>,
     ): Promise<T> {
-
         return withRetries<T>(
             async (): Promise<T> =>
                 callback(await this.auth.current.GetMetadata())
-                    .catch(async (err: GrpcError) => {
+                    .catch(async (err: GrpcError | ServiceError) => {
+                        if (err instanceof ServiceError) {
+                            throw err
+                        }
+
                         if (err.message === "Failed to fetch") {
                             throw new ServiceError(WithTitle("Server is not available. Try again later"));
                         }
@@ -42,7 +45,7 @@ export class BaseService {
 
                             if (isReason(err.details, ErrorReason.ACCESS_TOKEN_EXPIRED)) {
                                 await this.auth.current.RefreshToken()
-                                console.debug('token refreshed')
+
                                 throw new ServiceError(
                                     WithTitle('Session expired. Refreshing'),
                                     WithIsNonRetryable(false),
@@ -58,6 +61,7 @@ export class BaseService {
 
 
 function withRetries<T>(callback: () => Promise<T>, retries: number): Promise<T> {
+
     return callback()
         .catch((err) => {
             if (err.isNonRetryable) {
@@ -72,3 +76,8 @@ function withRetries<T>(callback: () => Promise<T>, retries: number): Promise<T>
         });
 }
 
+
+export interface WebApiParams {
+    targetUrl: string
+    authHeaderValue: string
+}

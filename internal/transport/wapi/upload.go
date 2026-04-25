@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"go.redsock.ru/rerrors"
+
+	"go.zpotify.ru/zpotify/internal/utils"
 )
 
 func (s *Server) Upload(w http.ResponseWriter, r *http.Request) {
@@ -22,7 +24,7 @@ func (s *Server) Upload(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte("error getting file from form: " + err.Error()))
 		return
 	}
-	defer file.Close()
+	defer utils.CloseWithLog(file, "File "+header.Filename+" uploaded by user")
 
 	id, err := s.fileService.SaveFile(ctx, header.Filename, file)
 	if err != nil {

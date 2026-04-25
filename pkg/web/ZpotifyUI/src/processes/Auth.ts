@@ -32,7 +32,6 @@ export class AuthService extends BaseService implements IAuthService {
                     throw new Error("authData is empty")
                 }
 
-                console.debug(r.authData)
                 return r.authData
             })
     };

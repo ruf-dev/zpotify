@@ -111,6 +111,9 @@ func (c *Custom) Init(a *App) (err error) {
 		c.Service,
 		middleware.WithDebug(a.Cfg.Environment.DebugAuth),
 	)(wapiHandler)
+	wapiHandler = middleware.CorsMiddleware(a.Cfg.Environment.CorsAllowedOrigins)(wapiHandler)
+	wapiHandler = middleware.LogWebMiddleware(wapiHandler)
+
 	c.ServerManager.AddHttpHandler("/wapi/", wapiHandler)
 	return nil
 }

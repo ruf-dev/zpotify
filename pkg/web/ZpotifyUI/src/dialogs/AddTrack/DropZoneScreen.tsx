@@ -90,7 +90,7 @@ export default function DropZoneScreen({onFile}: DropZoneScreenProps) {
                 </div>
 
                 {!dragOver && (
-                    <span className={cls.BottomHint}>mp3 · flac · wav · aac · ogg</span>
+                    <span className={cls.BottomHint}>mp3</span>
                 )}
             </div>
         </div>

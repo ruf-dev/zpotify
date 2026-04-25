@@ -19,8 +19,28 @@ export type ListUploadedFilesResponse = {
 
 export type ListUploadedFiles = Record<string, never>;
 
+export type GetFileRequest = {
+  fileId?: string;
+};
+
+export type GetFileResponse = {
+  file?: FileInfo;
+};
+
+export type GetFile = Record<string, never>;
+
+export type FileInfo = {
+  id?: string;
+  path?: string;
+  sizeBytes?: string;
+  durationSec?: string;
+};
+
 export class FileMetaAPI {
   static ListUploadedFiles(this:void, req: ListUploadedFilesRequest, initReq?: fm.InitReq): Promise<ListUploadedFilesResponse> {
     return fm.fetchRequest<ListUploadedFilesResponse>(`/api/file_meta/list`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static GetFile(this:void, req: GetFileRequest, initReq?: fm.InitReq): Promise<GetFileResponse> {
+    return fm.fetchRequest<GetFileResponse>(`/api/file_meta/${req.fileId}?${fm.renderURLSearchParams(req, ["fileId"])}`, {...initReq, method: "GET"});
   }
 }

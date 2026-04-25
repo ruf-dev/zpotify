@@ -1,6 +1,7 @@
 import {RefObject} from "react";
 
 import {
+    InitReq,
     MeRequest, MeResponse,
     UserAPI,
 } from "@/app/api/zpotify";
@@ -9,7 +10,6 @@ import {UserInfo} from "@/model/User.ts";
 
 import {AuthMiddleware} from "@/processes/Auth.ts";
 import {BaseService} from "@/processes/BaseService.ts";
-import {InitReq} from "@/processes/Api.ts";
 import {ServiceError, WithTitle} from "@/processes/Errors.ts";
 
 export default class UserService extends BaseService {

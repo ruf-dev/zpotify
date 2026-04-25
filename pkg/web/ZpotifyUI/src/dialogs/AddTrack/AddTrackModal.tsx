@@ -4,6 +4,9 @@ import ChooseScreen from '@/dialogs/AddTrack/ChooseScreen';
 import DropZoneScreen from '@/dialogs/AddTrack/DropZoneScreen';
 import MetaScreen from '@/dialogs/AddTrack/MetaScreen';
 import cls from '@/dialogs/AddTrack/AddTrackModal.module.css';
+import {Services} from '@/hooks/user/User.ts';
+import {AudioFile} from '@/model/AudioFile.ts';
+import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 
 type ModalStep = 'choose' | 'drop' | 'meta';
 
@@ -16,6 +19,7 @@ interface Playlist {
 interface AddTrackModalProps {
     playlists: Playlist[];
     artistOptions: string[];
+    services: Services;
 }
 
 const STEPS: ModalStep[] = ['choose', 'drop', 'meta'];
@@ -31,19 +35,35 @@ const BACK_STEPS: Partial<Record<ModalStep, ModalStep>> = {
     drop: 'choose',
 };
 
-export default function AddTrackModal({playlists, artistOptions}: AddTrackModalProps) {
+export default function AddTrackModal({playlists, artistOptions, services}: AddTrackModalProps) {
     const {CloseDialog} = useDialog();
+    const toaster = useToaster();
+
     const [step, setStep] = useState<ModalStep>('choose');
     const [file, setFile] = useState<File | null>(null);
+
+    const [fileId, setFileId] = useState<string | null>(null);
+    const [uploading, setUploading] = useState(false);
     const [title, setTitle] = useState('');
     const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
     const [playlistId, setPlaylistId] = useState('');
     const [submitted, setSubmitted] = useState(false);
 
+
+
     const handleFile = (f: File) => {
         setFile(f);
         setTitle(f.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '));
-        setStep('meta');
+        setUploading(true);
+        const audioFile = new AudioFile(f);
+        services.WebApi()
+            .UploadFile(audioFile)
+            .then((id) => {
+                setFileId(id);
+                setStep('meta');
+            })
+            .catch(toaster.catch)
+            .finally(() => setUploading(false));
     };
 
     const handleSubmit = () => {
@@ -59,7 +79,7 @@ export default function AddTrackModal({playlists, artistOptions}: AddTrackModalP
         <div className={cls.Panel}>
             <div className={cls.PanelHeader}>
                 <div className={cls.HeaderLeft}>
-                    {backStep && (
+                    {backStep && !uploading && (
                         <button className={cls.BackButton} type="button" onClick={() => setStep(backStep)}>
                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M9 2L4 7l5 5"/>
@@ -95,12 +115,23 @@ export default function AddTrackModal({playlists, artistOptions}: AddTrackModalP
                 {step === 'choose' && (
                     <ChooseScreen onUploadNew={() => setStep('drop')}/>
                 )}
-                {step === 'drop' && (
+                {step === 'drop' && !uploading && (
                     <DropZoneScreen onFile={handleFile}/>
                 )}
-                {step === 'meta' && file && (
+                {step === 'drop' && uploading && (
+                    <div className={cls.UploadingState}>
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                            <circle cx="16" cy="16" r="12" strokeOpacity="0.2"/>
+                            <path d="M16 4a12 12 0 0 1 12 12" className={cls.Spinner}/>
+                        </svg>
+                        <span>uploading…</span>
+                    </div>
+                )}
+                {step === 'meta' && file && fileId && (
                     <MetaScreen
                         file={file}
+                        fileId={fileId}
+                        fileService={services.File()}
                         title={title}
                         onTitleChange={setTitle}
                         selectedArtists={selectedArtists}

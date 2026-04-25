@@ -24,8 +24,8 @@ export enum ErrorReason {
     ACCESS_TOKEN_EXPIRED = 'ACCESS_TOKEN_EXPIRED'
 }
 
-export function isReason(det: GrpcErrorDetails[], ...res: ErrorReason[]) : boolean{
-    return det.find(d=> res.includes(d.reason)) !== undefined
+export function isReason(det: GrpcErrorDetails[], ...res: ErrorReason[]): boolean {
+    return det.find(d => res.includes(d.reason)) !== undefined
 }
 
 export type GrpcError = {
@@ -61,6 +61,13 @@ export function WithIsNonRetryable(isNonRetryable: boolean): (e: ServiceError) =
     }
 }
 
+
+export function WithHttpStatus(code: number): (e: ServiceError) => void {
+    return (e: ServiceError) => {
+        return e.isNonRetryable = !isHttpCodeRetryable(code)
+    }
+}
+
 export function WithTitle(title: string): (e: ServiceError) => void {
     return (e: ServiceError) => {
         return e.title = title
@@ -71,4 +78,18 @@ export function WithReason(reason?: ErrorReason): (e: ServiceError) => void {
     return (e: ServiceError) => {
         return e.reason = reason
     }
+}
+
+export function WithDescription(desc: string): (e: ServiceError) => void {
+    return (e: ServiceError) => {
+        return e.details = desc
+    }
+}
+
+function isHttpCodeRetryable(code: number): boolean {
+    if (code >= 500) {
+        return false
+    }
+
+    return false
 }

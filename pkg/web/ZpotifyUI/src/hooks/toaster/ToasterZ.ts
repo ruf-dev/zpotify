@@ -46,8 +46,6 @@ export const useToaster = create<Toaster>(
         catch: (e: ServiceError) => {
             if (e.reason && internalErrors.includes(e.reason)) return
 
-            console.log(e)
-
             get().bake({
                 title: e.title,
                 description: e.details,
