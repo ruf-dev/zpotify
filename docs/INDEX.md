@@ -1,6 +1,7 @@
 # zpotify — knowledge index
 
-zpotify is an open-source Spotify alternative: a Go backend serving gRPC + REST, a React/TypeScript frontend embedded in the binary, PostgreSQL for storage, and nginx for audio streaming.
+zpotify is an open-source Spotify alternative: a Go backend serving gRPC + REST, a React/TypeScript frontend embedded in
+the binary, PostgreSQL for storage, and nginx for audio streaming.
 
 ---
 
@@ -9,9 +10,9 @@ zpotify is an open-source Spotify alternative: a Go backend serving gRPC + REST,
 | Question type | Go to |
 |---|---|
 | "How does X flow / where does Y live / system design" | `architecture/` |
-| "What do we use for X / tech versions / dependencies" | `stack/` |
-| "Add / update / check tasks and features" | `roadmap/` |
-| "Show / save a UI component" | `ui/` |
+| "What do we use for X / tech versions / dependencies" | `stack/`        |
+| "Add / update / check tasks and features"             | `roadmap/`      |
+| "Show / save a UI component"                          | `ui/`           |
 
 ---
 

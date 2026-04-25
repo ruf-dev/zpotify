@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"go.redsock.ru/rerrors"
 	"google.golang.org/grpc"
@@ -111,6 +112,7 @@ func HttpAuthMiddleware(srv service.Service, opts ...authOption) func(http.Handl
 
 			md := metadata.MD{}
 			for k, v := range r.Header {
+				k = strings.TrimPrefix(k, "Grpc-Metadata-")
 				md.Set(k, v...)
 			}
 
@@ -148,7 +150,9 @@ func writeError(err error, w http.ResponseWriter) {
 func (ac *authMiddleware) authWithSession(ctx context.Context, md metadata.MD) (context.Context, error) {
 	auth := md.Get(authHeader)
 	if len(auth) == 0 {
-		return ctx, status.Error(codes.Unauthenticated, "error unmarshalling auth header")
+		return ctx, rerrors.New("error getting auth header",
+			codes.Unauthenticated,
+			rerrors.WithHttpStatus(http.StatusUnauthorized))
 	}
 
 	userId, err := ac.authService.AuthWithToken(ctx, auth[0])
