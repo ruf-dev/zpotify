@@ -126,10 +126,6 @@
 /* ─── Dropdown ─────────────────────────────────────────── */
 
 .Dropdown {
-    position: absolute;
-    top: calc(100% + 0.25rem);
-    left: 0;
-    right: 0;
     background: var(--color-bg-card);
     border: 0.0625rem solid var(--color-border);
     border-radius: var(--border-radius-sm);

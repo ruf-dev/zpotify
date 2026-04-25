@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
+import {createPortal} from "react-dom";
 import cn from "classnames";
 
 import cls from "@/components/shared/MultiSelect.module.css";
@@ -31,8 +32,10 @@ export default function MultiSelect({
     const [query, setQuery] = useState("");
     const [options, setOptions] = useState<Option[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [dropdownRect, setDropdownRect] = useState<DOMRect | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
     const searchRef = useRef<HTMLInputElement>(null);
 
     const selectedChips = selectedIds.map(
@@ -61,7 +64,10 @@ export default function MultiSelect({
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
-            if (isOpen && containerRef.current && !containerRef.current.contains(e.target as Node)) {
+            const target = e.target as Node;
+            const inContainer = containerRef.current?.contains(target);
+            const inDropdown = dropdownRef.current?.contains(target);
+            if (isOpen && !inContainer && !inDropdown) {
                 setIsOpen(false);
                 e.stopPropagation();
                 e.preventDefault();
@@ -73,6 +79,7 @@ export default function MultiSelect({
 
     useEffect(() => {
         if (isOpen) {
+            setDropdownRect(containerRef.current?.getBoundingClientRect() ?? null);
             setTimeout(() => searchRef.current?.focus(), 0);
         } else {
             setQuery("");
@@ -162,8 +169,17 @@ export default function MultiSelect({
                 </label>
             )}
 
-            {isOpen && (
-                <div className={cls.Dropdown}>
+            {isOpen && dropdownRect && createPortal(
+                <div
+                    ref={dropdownRef}
+                    className={cls.Dropdown}
+                    style={{
+                        position: 'fixed',
+                        top: dropdownRect.bottom + 4,
+                        left: dropdownRect.left,
+                        width: dropdownRect.width,
+                    }}
+                >
                     <div className={cls.SearchRow}>
                         <input
                             ref={searchRef}
@@ -215,7 +231,8 @@ export default function MultiSelect({
                             <span className={cls.CreateLabel}>create "{trimmed}"</span>
                         </div>
                     )}
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );
