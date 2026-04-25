@@ -12,7 +12,7 @@ interface Playlist {
 }
 
 interface MetaScreenProps {
-    file: File;
+    file?: File | null;
     fileId: string;
     fileService: IFileService;
     title: string;
@@ -28,7 +28,7 @@ interface MetaScreenProps {
 }
 
 export default function MetaScreen({
-    file, fileId, fileService,
+    file = null, fileId, fileService,
     title, onTitleChange,
     selectedArtists, onArtistsChange, artistOptions,
     playlistId, onPlaylistChange, playlists,
@@ -58,8 +58,8 @@ export default function MetaScreen({
                     <circle cx="6" cy="18" r="3"/>
                     <circle cx="18" cy="16" r="3"/>
                 </svg>
-                <span className={cls.FileName}>{file.name}</span>
-                <span className={cls.SizePill}>{formatFileBytes(fileInfo?.sizeBytes, file.size)}</span>
+                <span className={cls.FileName}>{file?.name ?? fileInfo?.path?.split('/').pop() ?? 'uploaded file'}</span>
+                <span className={cls.SizePill}>{formatFileBytes(fileInfo?.sizeBytes, file?.size ?? 0)}</span>
             </div>
 
             <div className={cls.Field}>
@@ -88,7 +88,7 @@ export default function MetaScreen({
                 </div>
                 <div className={cls.Field}>
                     <label className={cls.FieldLabel}>file size</label>
-                    <div className={cls.ReadOnlyTile}>{formatFileBytes(fileInfo?.sizeBytes, file.size)}</div>
+                    <div className={cls.ReadOnlyTile}>{formatFileBytes(fileInfo?.sizeBytes, file?.size ?? 0)}</div>
                 </div>
             </div>
 

@@ -84,3 +84,25 @@
 .CardSubtitleAccent {
     color: var(--color-fg-secondary);
 }
+
+.CardDisabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.UsageChip {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-secondary);
+    background: var(--color-bg-accent);
+    border: 0.0625rem solid var(--color-border-light);
+    border-radius: 0.75rem;
+    padding: 0.125rem 0.5rem;
+    line-height: 1.4;
+}
+
+.UsageChipLimit {
+    color: var(--color-error);
+    background: transparent;
+    border-color: var(--color-error);
+}

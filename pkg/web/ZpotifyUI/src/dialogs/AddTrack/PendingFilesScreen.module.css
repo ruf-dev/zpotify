@@ -1,0 +1,57 @@
+@keyframes slideIn {
+    from { transform: translateX(1.125rem); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+}
+
+.PendingFilesScreenContainer {
+    animation: slideIn 0.2s ease both;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.Loading,
+.Empty {
+    color: var(--color-fg-tertiary);
+    font-size: var(--font-size-sm);
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.FileList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.FileItem {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius-md);
+    background: var(--color-bg-card);
+    border: 0.0625rem solid var(--color-border);
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.FileItem:hover {
+    background: var(--color-bg-hover);
+    border-color: var(--color-border-bright);
+}
+
+.FileIcon {
+    color: var(--color-fg-secondary);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.FileName {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
