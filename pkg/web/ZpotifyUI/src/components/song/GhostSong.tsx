@@ -3,8 +3,7 @@ import cls from "@/components/song/GhostSong.module.css";
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 
 import {User} from "@/hooks/user/User.ts";
-
-import AddSongDialog from "@/dialogs/AddSong/AddSongDialog.tsx";
+import AddTrackModal from "@/dialogs/AddTrack/AddTrackModal.tsx";
 
 interface GhostSongProps {
     user: User;
@@ -16,7 +15,7 @@ export default function GhostSong({user}: GhostSongProps) {
 
     const handleOnClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        OpenDialog(<AddSongDialog user={user}/>);
+        OpenDialog(<AddTrackModal playlists={[]} artistOptions={[]} services={user.Services()}/>);
     }
 
     return (
