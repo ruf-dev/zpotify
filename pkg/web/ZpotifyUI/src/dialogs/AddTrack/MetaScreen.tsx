@@ -1,7 +1,8 @@
-import {useEffect, useState} from 'react';
-import ArtistMultiSelect from '@/dialogs/AddTrack/ArtistMultiSelect';
-import PlaylistSelect, {PlaylistOption} from '@/dialogs/AddTrack/PlaylistSelect';
+import {useCallback, useEffect, useState} from 'react';
 import cls from '@/dialogs/AddTrack/MetaScreen.module.css';
+import MusicFileIcon from '@/assets/icons/MusicFileIcon.tsx';
+
+import MultiSelect, {Option} from '@/components/shared/MultiSelect.tsx';
 import {IFileService} from '@/processes/FileService.ts';
 import {IArtistsService} from '@/processes/ArtistsService.ts';
 import {FileInfo} from '@/app/api/zpotify';
@@ -30,8 +31,7 @@ export default function MetaScreen({
     submitted, onSubmit,
 }: MetaScreenProps) {
     const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
-    const [artistOptions, setArtistOptions] = useState<string[]>([]);
-    const [playlistOptions, setPlaylistOptions] = useState<PlaylistOption[]>([]);
+    const [playlistOptions, setPlaylistOptions] = useState<Option[]>([]);
 
     useEffect(() => {
         fileService.GetFile({fileId}).then((res) => {
@@ -39,37 +39,45 @@ export default function MetaScreen({
         });
     }, [fileId]);
 
-    useEffect(() => {
-        artistsService.ListArtist('', 0, 100)
-            .then(res => setArtistOptions(
-                (res.artists || []).map(a => a.name ?? '').filter(Boolean)
-            ));
-    }, []);
+    const listArtists = useCallback(
+        (query: string): Promise<Option[]> =>
+            artistsService.ListArtist(query, 0, 100)
+                .then(res => (res.artists ?? [])
+                    .filter(a => a.name)
+                    .map(a => ({id: a.name!, label: a.name!}))),
+        [artistsService]
+    );
 
-    const handleCreateArtist = (name: string) => {
-        setArtistOptions(prev => [...prev, name]);
-    };
+    const addArtist = useCallback(
+        async (name: string): Promise<Option> => ({id: name, label: name}),
+        []
+    );
 
-    const handleCreatePlaylist = (name: string) => {
-        const tempId = `temp-${Date.now()}`;
-        setPlaylistOptions(prev => [...prev, {id: tempId, name}]);
-        onPlaylistChange(tempId);
-    };
+    const listPlaylists = useCallback(
+        (query: string): Promise<Option[]> => {
+            const q = query.toLowerCase();
+            return Promise.resolve(
+                q ? playlistOptions.filter(o => o.label.toLowerCase().includes(q)) : playlistOptions
+            );
+        },
+        [playlistOptions]
+    );
 
-    const ready = !submitted;
+    const addPlaylist = useCallback(
+        async (name: string): Promise<Option> => {
+            const opt: Option = {id: `temp-${Date.now()}`, label: name};
+            setPlaylistOptions(prev => [...prev, opt]);
+            return opt;
+        },
+        []
+    );
 
-    const buttonClass = submitted
-        ? cls.ButtonSubmitted
-        : cls.ButtonReady;
+    const buttonClass = submitted ? cls.ButtonSubmitted : cls.ButtonReady;
 
     return (
         <div className={cls.MetaScreenContainer}>
             <div className={cls.FileInfoRow}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={cls.FileIcon}>
-                    <path d="M9 18V5l12-2v13"/>
-                    <circle cx="6" cy="18" r="3"/>
-                    <circle cx="18" cy="16" r="3"/>
-                </svg>
+                <MusicFileIcon className={cls.FileIcon}/>
                 <span className={cls.FileName}>{file?.name ?? fileInfo?.path?.split('/').pop() ?? 'uploaded file'}</span>
                 <span className={cls.SizePill}>{formatFileBytes(fileInfo?.sizeBytes, file?.size ?? 0)}</span>
             </div>
@@ -86,11 +94,12 @@ export default function MetaScreen({
 
             <div className={cls.Field}>
                 <label className={cls.FieldLabel}>artist(s)</label>
-                <ArtistMultiSelect
-                    options={artistOptions}
-                    selected={selectedArtists}
+                <MultiSelect
+                    placeholder="pick artist(s)…"
+                    selectedIds={selectedArtists}
                     onChange={onArtistsChange}
-                    onCreateArtist={handleCreateArtist}
+                    doList={listArtists}
+                    onAdd={addArtist}
                 />
             </div>
 
@@ -107,11 +116,13 @@ export default function MetaScreen({
 
             <div className={cls.Field}>
                 <label className={cls.FieldLabel}>add to playlist <span className={cls.FieldLabelOptional}>(optional)</span></label>
-                <PlaylistSelect
-                    options={playlistOptions}
-                    value={playlistId}
-                    onChange={onPlaylistChange}
-                    onCreatePlaylist={handleCreatePlaylist}
+                <MultiSelect
+                    isMultiselect={false}
+                    placeholder="pick a playlist…"
+                    selectedIds={playlistId ? [playlistId] : []}
+                    onChange={ids => onPlaylistChange(ids[0] ?? '')}
+                    doList={listPlaylists}
+                    onAdd={addPlaylist}
                 />
             </div>
 
@@ -119,7 +130,7 @@ export default function MetaScreen({
                 className={`${cls.SubmitButton} ${buttonClass}`}
                 type="button"
                 onClick={onSubmit}
-                disabled={!ready}
+                disabled={submitted}
             >
                 {submitted ? '✓ added' : 'add track'}
             </button>

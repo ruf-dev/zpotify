@@ -1,121 +1,252 @@
+@keyframes scaleIn {
+    from { transform: scaleY(0.92); opacity: 0; }
+    to   { transform: scaleY(1);    opacity: 1; }
+}
+
 .MultiSelectContainer {
     position: relative;
     width: 100%;
-    display: flex;
-    flex-direction: column;
 }
+
+/* ─── Control ──────────────────────────────────────────── */
 
 .Control {
     display: flex;
-    flex-wrap: nowrap;
     align-items: center;
-    min-height: 2.75em;
-    padding: 4px 12px;
-    background: var(--secondary-bg-color);
-    border: 1px solid var(--element-border-color);
-    border-radius: 1em;
+    gap: 0.375rem;
+    min-height: 2rem;
+    padding: 0.375rem 0.625rem;
+    background: var(--color-bg-accent);
+    border: 0.0625rem solid var(--color-border-light);
+    border-radius: var(--border-radius-sm);
     cursor: pointer;
-    transition: border-color 0.2s;
+    transition: border-color var(--ease-default);
     box-sizing: border-box;
-    overflow: hidden;
 }
 
-.Control:focus-within {
-    border-color: var(--element-border-color-lighter);
+.ControlOpen,
+.ControlFilled {
+    border-color: var(--color-border-bright);
 }
 
-.ChipsContainer {
+/* ─── Chips (multi-select selected state) ─────────────── */
+
+.ChipsRow {
     display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 8px;
+    flex-wrap: wrap;
+    gap: 0.25rem;
     flex: 1;
-    scrollbar-width: none; /* Firefox */
-
-    .ChipContainer {
-        border: 5px solid black;
-        border-radius: 1em;
-    }
+    min-width: 0;
 }
 
-.ChipsContainer::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Edge */
+.Chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.15rem 0.45rem;
+    background: var(--color-accent-dim);
+    border: 0.0625rem solid var(--color-accent-border);
+    border-radius: var(--border-radius-pill);
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-primary);
+    white-space: nowrap;
 }
 
-.Input {
-    flex: 1;
-    min-width: 50px;
+.ChipRemove {
+    background: none;
     border: none;
-    background: transparent;
-    color: var(--main-fg-color);
-    outline: none;
-    padding: 4px 0;
-    font-size: var(--font-size-base);
+    padding: 0;
+    margin: 0;
+    color: var(--color-fg-tertiary);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    line-height: 1;
+    transition: color var(--ease-quick);
 }
+
+.ChipRemove:hover {
+    color: var(--color-fg-primary);
+}
+
+/* ─── Placeholder / single value ──────────────────────── */
+
+.Placeholder {
+    flex: 1;
+    color: var(--color-fg-disabled);
+    font-size: var(--font-size-base);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ControlValue {
+    flex: 1;
+    color: var(--color-fg-primary);
+    font-size: var(--font-size-base);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ─── Chevron ──────────────────────────────────────────── */
+
+.Chevron {
+    flex-shrink: 0;
+    color: var(--color-fg-tertiary);
+    transition: transform var(--ease-default);
+}
+
+.ChevronOpen {
+    transform: rotate(180deg);
+}
+
+/* ─── Floating label (SongEditDialog compat) ──────────── */
 
 .Label {
     position: absolute;
     top: 50%;
-    left: 12px;
+    left: 0.75rem;
     transform: translateY(-50%);
-    background: var(--main-bg-color);
-    color: #999;
+    background: var(--color-bg-secondary);
+    color: var(--color-fg-disabled);
     pointer-events: none;
-    transition: all 0.2s ease;
-    padding: 0 4px;
+    transition: all var(--ease-default);
+    padding: 0 0.25rem;
     font-size: var(--font-size-base);
-    border-radius: 0.25em;
+    border-radius: 0.25rem;
 }
 
-.Label.Floating {
+.LabelFloating {
     top: 0;
     transform: translateY(-50%) scale(0.85);
-    color: var(--main-fg-color);
-    left: 8px;
+    color: var(--color-fg-secondary);
+    left: 0.5rem;
 }
+
+/* ─── Dropdown ─────────────────────────────────────────── */
 
 .Dropdown {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 0.25rem);
     left: 0;
     right: 0;
-    margin-top: 4px;
-    background: var(--secondary-bg-color);
-    border: 1px solid var(--element-border-color);
-    border-radius: 0.5em;
-    max-height: 200px;
+    background: var(--color-bg-card);
+    border: 0.0625rem solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    max-height: 12rem;
     overflow-y: auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0.25rem 0.75rem var(--color-shadow-drop);
+    animation: scaleIn 0.15s ease both;
+    transform-origin: top center;
 }
 
+.SearchRow {
+    padding: 0.375rem 0.625rem;
+    border-bottom: 0.0625rem solid var(--color-border);
+}
+
+.SearchInput {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--color-fg-primary);
+    font-size: var(--font-size-base);
+    font-family: 'Comfortaa', sans-serif;
+}
+
+.SearchInput::placeholder {
+    color: var(--color-fg-disabled);
+}
+
+/* ─── State hints ──────────────────────────────────────── */
+
+.StateHint {
+    padding: 0.5rem 0.75rem;
+    color: var(--color-fg-disabled);
+    font-size: var(--font-size-sm);
+}
+
+/* ─── Options ──────────────────────────────────────────── */
+
 .Option {
-    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
     cursor: pointer;
-    transition: background 0.2s;
-    color: var(--main-fg-color);
+    transition: background var(--ease-quick);
 }
 
 .Option:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--color-bg-hover);
 }
 
-.Option.Selected {
-    background: rgba(255, 255, 255, 0.2);
+.OptionSelected {
+    background: var(--color-accent-surface);
 }
 
-.NoOptions {
-    padding: 8px 12px;
-    color: #999;
-    font-style: italic;
+.OptionSelected:hover {
+    background: var(--color-accent-dim);
 }
 
-.AddOption {
-    border-top: 1px solid var(--element-border-color);
-    font-weight: bold;
-    color: var(--accent-color, #1db954);
+.OptionLabel {
+    font-size: var(--font-size-base);
+    color: var(--color-fg-secondary);
 }
 
-.Loading {
-    padding: 8px 12px;
-    color: #999;
+.OptionLabelSelected {
+    color: var(--color-fg-primary);
+}
+
+/* ─── Checkbox (multi-select indicator) ───────────────── */
+
+.Checkbox {
+    width: 0.875rem;
+    height: 0.875rem;
+    border: 0.0625rem solid var(--color-border-light);
+    border-radius: 0.25rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--ease-quick), border-color var(--ease-quick);
+}
+
+.CheckboxChecked {
+    background: var(--color-fg-accent);
+    border-color: var(--color-fg-accent);
+    color: var(--color-fg-white);
+}
+
+/* ─── Radio dot (single-select indicator) ─────────────── */
+
+.RadioDot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    border: 0.0625rem solid var(--color-border-light);
+    flex-shrink: 0;
+    transition: background var(--ease-quick), border-color var(--ease-quick);
+}
+
+.RadioDotSelected {
+    background: var(--color-fg-accent);
+    border-color: var(--color-fg-accent);
+}
+
+/* ─── Create option ────────────────────────────────────── */
+
+.CreateOption {
+    border-top: 0.0625rem solid var(--color-border);
+}
+
+.CreateOption:hover {
+    background: var(--color-accent-dim);
+}
+
+.CreateLabel {
+    font-size: var(--font-size-base);
+    color: var(--color-fg-accent);
+    font-weight: 600;
 }
