@@ -60,6 +60,13 @@
     letter-spacing: 0.07em;
 }
 
+.FieldLabelOptional {
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--color-fg-disabled);
+}
+
 .FieldInput {
     width: 100%;
     padding: 0.5rem 0.625rem;

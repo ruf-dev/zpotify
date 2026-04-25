@@ -19,7 +19,7 @@ export default function HeaderPart({user}: HeaderPartProps) {
 
     const handleAddTrack = () => {
         OpenDialog(
-            <AddTrackModal playlists={[]} artistOptions={[]} services={user.Services()}/>
+            <AddTrackModal services={user.Services()}/>
         );
     };
 

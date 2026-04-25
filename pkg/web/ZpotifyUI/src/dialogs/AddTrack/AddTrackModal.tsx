@@ -16,15 +16,7 @@ import {AudioFile} from '@/model/AudioFile.ts';
 
 type ModalStep = 'choose' | 'drop' | 'library' | 'meta';
 
-interface Playlist {
-    id: string;
-    name: string;
-    count: number;
-}
-
 interface AddTrackModalProps {
-    playlists: Playlist[];
-    artistOptions: string[];
     services: Services;
 }
 
@@ -43,7 +35,7 @@ const BACK_STEPS: Partial<Record<ModalStep, ModalStep>> = {
     library: 'choose',
 };
 
-export default function AddTrackModal({playlists, artistOptions, services}: AddTrackModalProps) {
+export default function AddTrackModal({services}: AddTrackModalProps) {
     const {CloseDialog} = useDialog();
     const toaster = useToaster();
 
@@ -82,7 +74,7 @@ export default function AddTrackModal({playlists, artistOptions, services}: AddT
     };
 
     const handleSubmit = () => {
-        if (!playlistId || submitted) return;
+        if (submitted) return;
         setSubmitted(true);
         setTimeout(() => CloseDialog(), 1100);
     };
@@ -157,14 +149,13 @@ export default function AddTrackModal({playlists, artistOptions, services}: AddT
                         file={file}
                         fileId={fileId}
                         fileService={services.File()}
+                        artistsService={services.Artists()}
                         title={title}
                         onTitleChange={setTitle}
                         selectedArtists={selectedArtists}
                         onArtistsChange={setSelectedArtists}
-                        artistOptions={artistOptions}
                         playlistId={playlistId}
                         onPlaylistChange={setPlaylistId}
-                        playlists={playlists}
                         submitted={submitted}
                         onSubmit={handleSubmit}
                     />

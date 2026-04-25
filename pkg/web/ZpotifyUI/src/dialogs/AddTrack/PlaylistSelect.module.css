@@ -3,35 +3,28 @@
     to   { transform: scale(1); opacity: 1; }
 }
 
-@keyframes pillPop {
-    from { transform: scale(0.7); opacity: 0; }
-    to   { transform: scale(1); opacity: 1; }
-}
-
-@keyframes drawCheck {
-    from { stroke-dashoffset: 20; }
-    to   { stroke-dashoffset: 0; }
-}
-
-.ArtistMultiSelectContainer {
+.PlaylistSelectContainer {
     position: relative;
 }
 
 .Trigger {
     min-height: 2.5rem;
-    padding: 0.4rem 0.625rem;
+    padding: 0.4rem 0.625rem 0.4rem 0.75rem;
     background: var(--color-bg-accent);
     border: 0.0625rem solid var(--color-border-light);
     border-radius: var(--border-radius-sm);
     cursor: pointer;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem;
     align-items: center;
+    gap: 0.5rem;
     transition: border-color 0.15s ease;
 }
 
 .TriggerOpen {
+    border-color: var(--color-border-bright);
+}
+
+.TriggerFilled {
     border-color: var(--color-border-bright);
 }
 
@@ -41,35 +34,13 @@
     flex: 1;
 }
 
-.Pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    background: var(--color-accent-dim);
-    border: 0.0625rem solid var(--color-accent-border);
-    border-radius: var(--border-radius-pill);
-    padding: 0.15rem 0.5rem 0.15rem 0.6rem;
-    font-size: var(--font-size-xs);
+.TriggerValue {
+    font-size: var(--font-size-sm);
     color: var(--color-fg-primary);
-    font-weight: 600;
-    animation: pillPop 0.2s ease both;
-}
-
-.PillRemove {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--color-fg-secondary);
-    font-size: 0.85rem;
-    line-height: 1;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    transition: color 0.1s ease;
-}
-
-.PillRemove:hover {
-    color: var(--color-fg-primary);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .Chevron {
@@ -97,70 +68,6 @@
     overflow-y: auto;
 }
 
-.Option {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    padding: 0.55rem 0.875rem;
-    cursor: pointer;
-    background: transparent;
-    transition: background 0.15s ease;
-}
-
-.Option:hover {
-    background: var(--color-bg-hover-mid);
-}
-
-.OptionChecked {
-    background: var(--color-accent-dim);
-}
-
-.OptionChecked:hover {
-    background: var(--color-accent-dim);
-}
-
-.Checkbox {
-    width: 1rem;
-    height: 1rem;
-    border-radius: 0.25rem;
-    border: 0.09375rem solid var(--color-border-bright);
-    background: transparent;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.15s ease, border-color 0.15s ease;
-}
-
-.CheckboxChecked {
-    background: var(--color-fg-accent);
-    border-color: var(--color-fg-accent);
-    color: var(--color-fg-white);
-}
-
-.CheckPath {
-    stroke-dasharray: 20;
-    stroke-dashoffset: 20;
-    animation: drawCheck 0.2s ease forwards;
-}
-
-.OptionLabel {
-    font-size: var(--font-size-sm);
-    color: var(--color-fg-secondary);
-    font-weight: 400;
-}
-
-.OptionLabelChecked {
-    color: var(--color-fg-primary);
-    font-weight: 600;
-}
-
-.EmptyOption {
-    padding: 0.75rem 0.875rem;
-    font-size: var(--font-size-sm);
-    color: var(--color-fg-tertiary);
-}
-
 .SearchRow {
     padding: 0.5rem 0.625rem 0.375rem;
     border-bottom: 0.0625rem solid var(--color-border);
@@ -178,6 +85,62 @@
 
 .SearchInput::placeholder {
     color: var(--color-fg-tertiary);
+}
+
+.EmptyOption {
+    padding: 0.75rem 0.875rem;
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-tertiary);
+}
+
+.Option {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.55rem 0.875rem;
+    cursor: pointer;
+    background: transparent;
+    transition: background 0.15s ease;
+}
+
+.Option:hover {
+    background: var(--color-bg-hover-mid);
+}
+
+.OptionSelected {
+    background: var(--color-accent-dim);
+}
+
+.OptionSelected:hover {
+    background: var(--color-accent-dim);
+}
+
+.RadioDot {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: var(--border-radius-circle);
+    border: 0.09375rem solid var(--color-border-bright);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.RadioDotSelected {
+    background: var(--color-fg-accent);
+    border-color: var(--color-fg-accent);
+    box-shadow: 0 0 0 0.1875rem var(--color-accent-dim);
+}
+
+.OptionLabel {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-secondary);
+}
+
+.OptionLabelSelected {
+    color: var(--color-fg-primary);
+    font-weight: 600;
 }
 
 .CreateOption {

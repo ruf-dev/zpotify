@@ -15,7 +15,7 @@ export default function GhostSong({user}: GhostSongProps) {
 
     const handleOnClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        OpenDialog(<AddTrackModal playlists={[]} artistOptions={[]} services={user.Services()}/>);
+        OpenDialog(<AddTrackModal services={user.Services()}/>);
     }
 
     return (

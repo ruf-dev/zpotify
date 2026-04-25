@@ -1,40 +1,37 @@
 import {useEffect, useState} from 'react';
 import ArtistMultiSelect from '@/dialogs/AddTrack/ArtistMultiSelect';
+import PlaylistSelect, {PlaylistOption} from '@/dialogs/AddTrack/PlaylistSelect';
 import cls from '@/dialogs/AddTrack/MetaScreen.module.css';
 import {IFileService} from '@/processes/FileService.ts';
+import {IArtistsService} from '@/processes/ArtistsService.ts';
 import {FileInfo} from '@/app/api/zpotify';
 import {formatFileDuration, formatFileBytes} from '@/utils/files.ts';
-
-interface Playlist {
-    id: string;
-    name: string;
-    count: number;
-}
 
 interface MetaScreenProps {
     file?: File | null;
     fileId: string;
     fileService: IFileService;
+    artistsService: IArtistsService;
     title: string;
     onTitleChange: (title: string) => void;
     selectedArtists: string[];
     onArtistsChange: (artists: string[]) => void;
-    artistOptions: string[];
     playlistId: string;
     onPlaylistChange: (id: string) => void;
-    playlists: Playlist[];
     submitted: boolean;
     onSubmit: () => void;
 }
 
 export default function MetaScreen({
-    file = null, fileId, fileService,
+    file = null, fileId, fileService, artistsService,
     title, onTitleChange,
-    selectedArtists, onArtistsChange, artistOptions,
-    playlistId, onPlaylistChange, playlists,
+    selectedArtists, onArtistsChange,
+    playlistId, onPlaylistChange,
     submitted, onSubmit,
 }: MetaScreenProps) {
     const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
+    const [artistOptions, setArtistOptions] = useState<string[]>([]);
+    const [playlistOptions, setPlaylistOptions] = useState<PlaylistOption[]>([]);
 
     useEffect(() => {
         fileService.GetFile({fileId}).then((res) => {
@@ -42,13 +39,28 @@ export default function MetaScreen({
         });
     }, [fileId]);
 
-    const ready = Boolean(playlistId) && !submitted;
+    useEffect(() => {
+        artistsService.ListArtist('', 0, 100)
+            .then(res => setArtistOptions(
+                (res.artists || []).map(a => a.name ?? '').filter(Boolean)
+            ));
+    }, []);
+
+    const handleCreateArtist = (name: string) => {
+        setArtistOptions(prev => [...prev, name]);
+    };
+
+    const handleCreatePlaylist = (name: string) => {
+        const tempId = `temp-${Date.now()}`;
+        setPlaylistOptions(prev => [...prev, {id: tempId, name}]);
+        onPlaylistChange(tempId);
+    };
+
+    const ready = !submitted;
 
     const buttonClass = submitted
         ? cls.ButtonSubmitted
-        : ready
-        ? cls.ButtonReady
-        : cls.ButtonDisabled;
+        : cls.ButtonReady;
 
     return (
         <div className={cls.MetaScreenContainer}>
@@ -78,6 +90,7 @@ export default function MetaScreen({
                     options={artistOptions}
                     selected={selectedArtists}
                     onChange={onArtistsChange}
+                    onCreateArtist={handleCreateArtist}
                 />
             </div>
 
@@ -93,17 +106,13 @@ export default function MetaScreen({
             </div>
 
             <div className={cls.Field}>
-                <label className={cls.FieldLabel}>add to playlist</label>
-                <select
-                    className={`${cls.Select} ${playlistId ? cls.SelectFilled : ''}`}
+                <label className={cls.FieldLabel}>add to playlist <span className={cls.FieldLabelOptional}>(optional)</span></label>
+                <PlaylistSelect
+                    options={playlistOptions}
                     value={playlistId}
-                    onChange={e => onPlaylistChange(e.target.value)}
-                >
-                    <option value="">pick a playlist…</option>
-                    {playlists.map(p => (
-                        <option key={p.id} value={p.id}>{p.name}</option>
-                    ))}
-                </select>
+                    onChange={onPlaylistChange}
+                    onCreatePlaylist={handleCreatePlaylist}
+                />
             </div>
 
             <button
@@ -112,7 +121,7 @@ export default function MetaScreen({
                 onClick={onSubmit}
                 disabled={!ready}
             >
-                {submitted ? '✓ added to playlist' : 'add to playlist'}
+                {submitted ? '✓ added' : 'add track'}
             </button>
         </div>
     );
