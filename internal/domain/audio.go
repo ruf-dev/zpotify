@@ -120,6 +120,12 @@ type CreateSong struct {
 	ArtistUuids []string
 }
 
+type UpdateSong struct {
+	Id          int64
+	Title       string
+	ArtistUuids []string
+}
+
 type ListUploadedFiles struct {
 	TemporaryOnly bool
 }

@@ -15,6 +15,13 @@ service SongAPI {
       body: "*"
     };
   };
+
+  rpc UpdateSong(UpdateSong.Request) returns (UpdateSong.Response) {
+    option (google.api.http) = {
+      patch: "/api/song/update",
+      body: "*"
+    };
+  };
 }
 
 message CreateSong {
@@ -27,4 +34,14 @@ message CreateSong {
   message Response {
     int64 id = 1;
   }
+}
+
+message UpdateSong {
+  message Request {
+    int64 id = 1;
+    string title = 2;
+    repeated string artist_uuids = 3;
+  }
+
+  message Response {}
 }

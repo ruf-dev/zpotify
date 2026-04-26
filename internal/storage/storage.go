@@ -85,6 +85,8 @@ type SongStorage interface {
 	WithTx(tx *sql.Tx) SongStorage
 
 	Create(ctx context.Context, song songs_q.CreateSongParams) (int64, error)
+	UpdateTitle(ctx context.Context, songId int64, title string) error
+	ClearArtists(ctx context.Context, songId int64) error
 
 	AddArtist(ctx context.Context, songId int64, artistUuid string, order int) error
 

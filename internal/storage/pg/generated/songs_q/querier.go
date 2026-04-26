@@ -9,7 +9,9 @@ import (
 )
 
 type Querier interface {
+	ClearSongArtists(ctx context.Context, songID int64) error
 	CreateSong(ctx context.Context, arg CreateSongParams) (int64, error)
+	UpdateSongTitle(ctx context.Context, arg UpdateSongTitleParams) error
 }
 
 var _ Querier = (*Queries)(nil)

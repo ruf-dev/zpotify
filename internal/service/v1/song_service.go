@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"path"
-	"strings"
 
 	"go.redsock.ru/rerrors"
 
@@ -101,6 +100,41 @@ func (s *AudioService) Create(ctx context.Context, req domain.CreateSong) (int64
 	}
 
 	return songId, nil
+}
+
+func (s *AudioService) Update(ctx context.Context, req domain.UpdateSong) error {
+	err := s.txManager.Execute(
+		func(tx *sql.Tx) error {
+			songsStorage := s.songsStorage.WithTx(tx)
+
+			if req.Title != "" {
+				err := songsStorage.UpdateTitle(ctx, req.Id, req.Title)
+				if err != nil {
+					return rerrors.Wrap(err, "error updating song title")
+				}
+			}
+
+			if len(req.ArtistUuids) > 0 {
+				err := songsStorage.ClearArtists(ctx, req.Id)
+				if err != nil {
+					return rerrors.Wrap(err, "error clearing song artists")
+				}
+
+				for i, artistUuid := range req.ArtistUuids {
+					err = songsStorage.AddArtist(ctx, req.Id, artistUuid, i)
+					if err != nil {
+						return rerrors.Wrap(err, "error adding artist to song", artistUuid)
+					}
+				}
+			}
+
+			return nil
+		})
+	if err != nil {
+		return rerrors.Wrap(err)
+	}
+
+	return nil
 }
 
 func (s *AudioService) Delete(ctx context.Context, id int64) error {
@@ -284,23 +318,4 @@ func (s *AudioService) openFileWithFallback(ctx context.Context, file domain.Fil
 	//}
 
 	return nil, nil
-}
-
-func separateArtists(artists string) []string {
-	comaSeparated := strings.Split(artists, ",")
-
-	for idx := range comaSeparated {
-		comaSeparated[idx] = strings.TrimSpace(comaSeparated[idx])
-		comaSeparated[idx] = sanitizeTitle(comaSeparated[idx])
-	}
-
-	return comaSeparated
-}
-
-var replacer = strings.NewReplacer(
-	"&#39;", "'",
-)
-
-func sanitizeTitle(title string) string {
-	return replacer.Replace(title)
 }

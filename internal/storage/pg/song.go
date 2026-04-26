@@ -33,6 +33,28 @@ func (s *SongsStorage) Create(ctx context.Context, params songs_q.CreateSongPara
 	return id, nil
 }
 
+func (s *SongsStorage) UpdateTitle(ctx context.Context, songId int64, title string) error {
+	params := songs_q.UpdateSongTitleParams{
+		ID:    songId,
+		Title: title,
+	}
+	err := s.querier.UpdateSongTitle(ctx, params)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
+func (s *SongsStorage) ClearArtists(ctx context.Context, songId int64) error {
+	err := s.querier.ClearSongArtists(ctx, songId)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
 func (s *SongsStorage) AddArtist(ctx context.Context, songId int64, artistUuid string, order int) error {
 	aUuid, err := uuid.Parse(artistUuid)
 	if err != nil {

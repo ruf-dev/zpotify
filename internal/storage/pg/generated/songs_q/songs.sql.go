@@ -9,6 +9,15 @@ import (
 	"context"
 )
 
+const clearSongArtists = `-- name: ClearSongArtists :exec
+DELETE FROM songs_artists WHERE song_id = $1
+`
+
+func (q *Queries) ClearSongArtists(ctx context.Context, songID int64) error {
+	_, err := q.db.ExecContext(ctx, clearSongArtists, songID)
+	return err
+}
+
 const createSong = `-- name: CreateSong :one
 INSERT INTO songs
     (file_id, title)
@@ -25,4 +34,18 @@ func (q *Queries) CreateSong(ctx context.Context, arg CreateSongParams) (int64, 
 	var id int64
 	err := row.Scan(&id)
 	return id, err
+}
+
+const updateSongTitle = `-- name: UpdateSongTitle :exec
+UPDATE songs SET title = $1 WHERE id = $2
+`
+
+type UpdateSongTitleParams struct {
+	Title string
+	ID    int64
+}
+
+func (q *Queries) UpdateSongTitle(ctx context.Context, arg UpdateSongTitleParams) error {
+	_, err := q.db.ExecContext(ctx, updateSongTitle, arg.Title, arg.ID)
+	return err
 }

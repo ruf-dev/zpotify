@@ -47,6 +47,38 @@
           "SongAPI"
         ]
       }
+    },
+    "/api/song/update": {
+      "patch": {
+        "operationId": "SongAPI_UpdateSong",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiUpdateSongResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiUpdateSongRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SongAPI"
+        ]
+      }
     }
   },
   "definitions": {
@@ -104,6 +136,27 @@
           "format": "int64"
         }
       }
+    },
+    "zpotify_apiUpdateSongRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string"
+        },
+        "artistUuids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "zpotify_apiUpdateSongResponse": {
+      "type": "object"
     }
   }
 }
