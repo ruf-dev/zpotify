@@ -19,6 +19,11 @@
     color: var(--color-fg-tertiary);
     letter-spacing: 0.08em;
     text-transform: uppercase;
+    cursor: pointer;
+
+    &:hover {
+        color: var(--color-fg-secondary);
+    }
 }
 
 .HeaderRight {

@@ -86,6 +86,8 @@ export default function useUser(): User {
         userData,
         setUserData,
 
+        session: authMiddleware.current.session,
+
         Authenticate,
         Logout,
 

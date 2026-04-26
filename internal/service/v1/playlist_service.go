@@ -86,29 +86,19 @@ func (p *PlaylistService) AddSong(ctx context.Context, req domain.AddSongToPlayl
 	return nil
 }
 
-//func (p *PlaylistService) Get(ctx context.Context, playlistUuid string) (domain.Playlist, error) {
-//	userCtx, ok := user_context.GetUserContext(ctx)
-//	if !ok {
-//		return domain.Playlist{}, rerrors.Wrap(service_errors.ErrUnauthenticated)
-//	}
-//
-//	uuidParsed, err := uuid.Parse(playlistUuid)
-//	if err != nil {
-//		return domain.Playlist{}, rerrors.Wrap(err, "error parsing playlist uuid")
-//	}
-//
-//	storaageParams := querier.GetPlaylistWithAuthParams{
-//		UserID: int16(userCtx.UserId),
-//		Uuid:   uuidParsed,
-//	}
-//
-//	playlist, err := p.playlistStorage.GetWithAuth(ctx, storaageParams)
-//	if err != nil {
-//		return playlist, rerrors.Wrap(err, "error reading playlist info")
-//	}
-//
-//	return playlist, nil
-//}
+func (p *PlaylistService) Get(ctx context.Context, playlistUuid string) (domain.Playlist, error) {
+	userCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return domain.Playlist{}, rerrors.Wrap(service_errors.ErrUnauthenticated)
+	}
+
+	playlist, err := p.playlistStorage.Get(ctx, userCtx.UserId, playlistUuid)
+	if err != nil {
+		return domain.Playlist{}, rerrors.Wrap(err, "error reading playlist info")
+	}
+
+	return playlist, nil
+}
 
 //func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistParams) (domain.Playlist, error) {
 //	userCtx, ok := user_context.GetUserContext(ctx)

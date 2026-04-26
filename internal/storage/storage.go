@@ -113,6 +113,8 @@ type PlaylistStorage interface {
 	WithTx(tx *sql.Tx) PlaylistStorage
 	//Create(ctx context.Context, req querier.CreatePlaylistParams) (domain.Playlist, error)
 
+	Get(ctx context.Context, userId int64, playlistUuid string) (domain.Playlist, error)
+
 	ListSongs(ctx context.Context, r domain.ListSongs) ([]domain.PlaylistSong, error)
 	CountSongs(ctx context.Context, r domain.ListSongs) (uint16, error)
 

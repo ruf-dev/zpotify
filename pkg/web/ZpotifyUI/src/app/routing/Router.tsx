@@ -4,6 +4,7 @@ import {Navigate, Route, Routes} from "react-router-dom";
 
 import InitPage from "@/pages/init/InitPage.tsx";
 import ErrorPage from "@/pages/error/ErrorPage.tsx";
+import PlaylistPage from "@/pages/playlist/PlaylistPage.tsx";
 
 import useAudioPlayer from "@/hooks/player/player.ts";
 import useUser from "@/hooks/user/User.ts";
@@ -17,7 +18,12 @@ import Dialog from "@/pages/segments/Dialog.tsx";
 
 export enum Path {
     HomePage = "/",
-    IntiPage = "/init"
+    IntiPage = "/init",
+    PlaylistPage = "/playlist/:id",
+}
+
+export function playlistPath(id: string): string {
+    return `/playlist/${id}`;
 }
 
 export default function Router() {
@@ -39,6 +45,14 @@ export default function Router() {
                     <Route
                         path={Path.HomePage}
                         element={<HomePage
+                            audioPlayer={audioPlayer}
+                            user={user}/>}
+                        errorElement={<ErrorPage/>}
+                    />
+
+                    <Route
+                        path={Path.PlaylistPage}
+                        element={<PlaylistPage
                             audioPlayer={audioPlayer}
                             user={user}/>}
                         errorElement={<ErrorPage/>}

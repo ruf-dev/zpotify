@@ -182,6 +182,32 @@ func (builder playlistSongsQueryBuilder) applyListQueryOrder(r domain.ListSongs)
 	return builder
 }
 
+func (p *PlaylistStorage) Get(ctx context.Context, userId int64, playlistUuid string) (domain.Playlist, error) {
+	parsedUuid, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return domain.Playlist{}, rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+
+	params := generated.GetPlaylistWithAuthParams{
+		UserID: userId,
+		Uuid:   parsedUuid,
+	}
+
+	row, err := p.querier.GetPlaylistWithAuth(ctx, params)
+	if err != nil {
+		return domain.Playlist{}, wrapPgErr(err)
+	}
+
+	playlist := domain.Playlist{
+		Uuid:        row.Uuid.String(),
+		Name:        row.Name,
+		Description: row.Description,
+		IsPublic:    row.IsPublic,
+	}
+
+	return playlist, nil
+}
+
 func (p *PlaylistStorage) Create(ctx context.Context, params generated.CreatePlaylistParams) (domain.Playlist, error) {
 	playlistUuid, err := p.querier.CreatePlaylist(ctx, params)
 	if err != nil {

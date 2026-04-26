@@ -3,6 +3,7 @@ import {
     Paging,
 
     ListSongsResponse, ListSongsRequest,
+    GetPlaylistResponse, GetPlaylistRequest,
 
 } from "@/app/api/zpotify";
 
@@ -10,6 +11,7 @@ import {BaseService} from "@/processes/BaseService.ts";
 
 export interface IPlaylistService {
     ListSongs(uuid: string, offset: number, limit: number, shuffleHash: string | undefined): Promise<ListSongsResponse>
+    GetPlaylist(uuid: string): Promise<GetPlaylistResponse>
 }
 
 export class PlaylistService extends BaseService implements IPlaylistService {
@@ -26,6 +28,14 @@ export class PlaylistService extends BaseService implements IPlaylistService {
         return this.executeAuthApiCall(
             async (initReq) => {
                 return PlaylistAPI.ListSongs(req, initReq)
+            })
+    }
+
+    async GetPlaylist(uuid: string): Promise<GetPlaylistResponse> {
+        const req = { uuid } as GetPlaylistRequest
+        return this.executeAuthApiCall(
+            async (initReq) => {
+                return PlaylistAPI.GetPlaylist(req, initReq)
             })
     }
 }
