@@ -6,11 +6,12 @@ import (
 	"os"
 	"path"
 	"strconv"
+	"strings"
 
-	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/storage"
+	"go.zpotify.ru/zpotify/internal/utils"
 )
 
 const tmpFolder = "tmp"
@@ -40,20 +41,14 @@ func (l LocalStorageProvider) SaveToTempFolder(ctx context.Context, userId int64
 		return "", rerrors.Wrap(err, `error opening file to write to`)
 	}
 
-	defer func() {
-		cErr := f.Close()
-		if cErr != nil {
-			log.Err(cErr).
-				Msg("error closing file in temp folder when saving")
-		}
-	}()
+	defer utils.CloseWithLog(f, "temp file in SaveToTempFolder")
 
 	_, err = io.Copy(f, content)
 	if err != nil {
 		return "", rerrors.Wrap(err, "error writing file to temp folder")
 	}
 
-	return tempPath, nil
+	return strings.TrimPrefix(tempPath, l.root), nil
 }
 
 func (l LocalStorageProvider) ListFiles(_ context.Context, userId int64) ([]string, error) {
@@ -78,21 +73,42 @@ func (l LocalStorageProvider) ListFiles(_ context.Context, userId int64) ([]stri
 }
 
 func (l LocalStorageProvider) Move(_ context.Context, fromPath, newPath string) error {
+	fullFromPath := path.Join(l.root, fromPath)
 	fullNewPath := path.Join(l.root, newPath)
+
 	err := verifyFolderExists(path.Dir(fullNewPath))
 	if err != nil {
 		return rerrors.Wrap(err, "error verifying destination folder exists")
 	}
 
-	err = os.Rename(fromPath, fullNewPath)
+	src, err := os.Open(fullFromPath)
 	if err != nil {
-		return rerrors.Wrap(err, "error renaming/moving file")
+		return rerrors.Wrap(err, "error opening source file: "+fullFromPath)
+	}
+	defer utils.CloseWithLog(src, "source file in Move")
+
+	dst, err := os.Create(fullNewPath)
+	if err != nil {
+		return rerrors.Wrap(err, "error creating destination file: "+fullNewPath)
+	}
+	defer utils.CloseWithLog(dst, "destination file in Move")
+
+	_, err = io.Copy(dst, src)
+	if err != nil {
+		return rerrors.Wrap(err, "error copying file")
+	}
+
+	err = os.Remove(fullFromPath)
+	if err != nil {
+		return rerrors.Wrap(err, "error removing source file after copy")
 	}
 
 	return nil
 }
 
 func (l LocalStorageProvider) GetFile(_ context.Context, filePath string) (io.ReadCloser, error) {
+	filePath = path.Join(l.root, filePath)
+
 	f, err := os.Open(filePath)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error opening file")

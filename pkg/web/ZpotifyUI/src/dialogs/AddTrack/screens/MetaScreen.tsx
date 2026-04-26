@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from 'react';
-import cls from '@/dialogs/AddTrack/MetaScreen.module.css';
+import cls from '@/dialogs/AddTrack/screens/MetaScreen.module.css';
 import MusicFileIcon from '@/assets/icons/MusicFileIcon.tsx';
 
 import MultiSelect, {Option} from '@/components/shared/MultiSelect.tsx';

@@ -1,5 +1,5 @@
 import {useRef, useState} from 'react';
-import cls from '@/dialogs/AddTrack/DropZoneScreen.module.css';
+import cls from '@/dialogs/AddTrack/screens/DropZoneScreen.module.css';
 
 interface DropZoneScreenProps {
     onFile: (file: File) => void;

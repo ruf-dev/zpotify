@@ -6,10 +6,10 @@ import cls from '@/dialogs/AddTrack/AddTrackModal.module.css';
 import {useDialog} from '@/app/hooks/Dialog.tsx';
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 
-import ChooseScreen from '@/dialogs/AddTrack/ChooseScreen';
-import DropZoneScreen from '@/dialogs/AddTrack/DropZoneScreen';
-import MetaScreen from '@/dialogs/AddTrack/MetaScreen';
-import PendingFilesScreen from '@/dialogs/AddTrack/PendingFilesScreen';
+import ChooseScreen from '@/dialogs/AddTrack/screens/ChooseScreen';
+import DropZoneScreen from '@/dialogs/AddTrack/screens/DropZoneScreen';
+import MetaScreen from '@/dialogs/AddTrack/screens/MetaScreen';
+import PendingFilesScreen from '@/dialogs/AddTrack/screens/PendingFilesScreen';
 
 import {Services} from '@/hooks/user/User.ts';
 import {AudioFile} from '@/model/AudioFile.ts';
@@ -74,9 +74,15 @@ export default function AddTrackModal({services}: AddTrackModalProps) {
     };
 
     const handleSubmit = () => {
-        if (submitted) return;
+        if (submitted || !fileId) return;
         setSubmitted(true);
-        setTimeout(() => CloseDialog(), 1100);
+        services.Songs()
+            .CreateSong(title, selectedArtists, fileId)
+            .then(() => setTimeout(() => CloseDialog(), 1100))
+            .catch((e) => {
+                setSubmitted(false);
+                toaster.catch(e);
+            });
     };
 
     const backStep = BACK_STEPS[step];

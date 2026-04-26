@@ -53,6 +53,7 @@ components; nothing imports from pages.
 - One file – one component.
 - Icons and minor components should be located at `src/assets/icons`
 - For dialog should only use global Dialog via useDialog hook. Import it from `@/app/hooks/Dialog.tsx`
+- Dialog screens (multi-step modal views) must live in a `screens/` subfolder inside the dialog directory (e.g. `src/dialogs/AddTrack/screens/ChooseScreen.tsx`). The root dialog file imports from `screens/`.
 
 
 ## Path Alias

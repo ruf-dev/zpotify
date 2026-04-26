@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import cls from '@/dialogs/AddTrack/PendingFilesScreen.module.css';
+import cls from '@/dialogs/AddTrack/screens/PendingFilesScreen.module.css';
 import {IFileService} from '@/processes/FileService.ts';
 import {SongFile} from '@/app/api/zpotify';
 

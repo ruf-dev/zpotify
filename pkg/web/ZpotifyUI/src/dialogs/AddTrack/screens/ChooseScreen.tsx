@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import cls from '@/dialogs/AddTrack/ChooseScreen.module.css';
+import cls from '@/dialogs/AddTrack/screens/ChooseScreen.module.css';
 import {IFileService} from '@/processes/FileService.ts';
 
 const UPLOAD_LIMIT = 5;

@@ -97,3 +97,4 @@ Frontend source: `pkg/web/ZpotifyUI/src/`. API client processes live in `src/pro
 
 - **Always use `utils.CloseWithLog(c, "subject")` for deferred closes** instead of inline `defer c.Close()` or manual close-with-error-log patterns. The function is at `internal/utils/closer.go` (`go.zpotify.ru/zpotify/internal/utils`).
 - **Never create struct/value literals inline in a function call.** Always assign to a named variable first, then pass the variable. Example — wrong: `foo(Bar{X: 1})`; correct: `bar := Bar{X: 1}; foo(bar)`.
+- **NEVER check function errors inline:** use `if err := func(); err != nil` — always split into a separate assignment (`err := func()`) followed by `if err != nil` on the next line.
