@@ -6,18 +6,6 @@ Tasks not yet started. Move to [[roadmap/in-progress]] when picked up.
 
 ## M0 — "It Works" · target: ~May 9
 
-### M0-1 · Web upload flow (backend)
-**Area:** backend
-**Summary:** Add HTTP upload handler in `internal/transport/wapi/` that accepts an audio file, writes it to disk, creates a `files_meta` row, and returns the new file ID. Must validate MIME type and file size. Wire permission check: `can_upload` required.
-
-### M0-2 · Web upload flow (frontend)
-**Area:** frontend
-**Summary:** Upload page/widget in FSD structure. File picker → POST to upload endpoint → on success, open "Create song" form pre-filled with filename. Progress indicator during upload. Lives in `pages/upload/` + process in `processes/`.
-
-### M0-3 · Create song entry (frontend)
-**Area:** frontend
-**Summary:** Form to create a song from an uploaded file: title, artist(s) (multi-select with create-new), link to file_id. Calls existing `SongAPI.CreateSong` RPC. One component per file rule applies.
-
 ### M0-4 · Song library view
 **Area:** frontend
 **Summary:** Page listing all songs. Shows title, artists, duration. Click to play. Zustand store for playback state. Uses existing `PlaylistAPI` (global playlist) or a new `SongAPI.ListSongs` RPC if needed. Sortable by title / artist / date added.

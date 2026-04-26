@@ -14,7 +14,7 @@ Audio upload and streaming have dedicated HTTP handlers in `internal/transport/w
 |---|---|
 | `AuthAPI` | Login with password, async Telegram auth, refresh token, list auth methods |
 | `UserAPI` | Get current user, get user settings |
-| `SongAPI` | Create song entry |
+| `SongAPI` | Create song entry, update song metadata (title, artists) |
 | `PlaylistAPI` | List songs, add/remove/reorder songs, create/get/delete playlist |
 | `FileMetaAPI` | List uploaded files, get file metadata |
 | `ArtistsAPI` | List artists |
@@ -42,6 +42,18 @@ Per-user flags stored in DB:
 - `can_upload` — allowed to upload audio files
 - `can_create_playlist` — allowed to create playlists
 - `early_access` — access to unreleased features
+
+---
+
+## HTTP-only endpoints (wapi)
+
+Plain `net/http` handlers in `internal/transport/wapi/` — not gRPC, not grpc-gateway.
+
+| Method | Path | Auth | Permission | Description |
+|---|---|---|---|---|
+| POST | `/api/upload/audio` | required | `can_upload` | Upload audio file (multipart); returns `file_id` |
+
+Auth token extraction and permission checks in wapi handlers follow the same pattern as other wapi handlers. Routes are registered in the wapi router (not the gRPC gateway mux).
 
 ---
 

@@ -23,6 +23,10 @@ Client → transport/*_api_impl (gRPC handler)
 7. Implement storage method (SQLC-backed)
 8. Implement gRPC handler in `internal/transport/*_api_impl/`
 
+### HTTP upload handler pattern
+
+Audio file upload lives in `internal/transport/wapi/` as a plain `net/http` handler (not gRPC). Auth token extraction and permission checks follow the same pattern as other wapi handlers. Routes are registered in the wapi router, not the gRPC gateway mux. New wapi endpoints do **not** need a proto definition.
+
 ### Hard rules
 - **SQLC only** — never write raw query strings in Go code
 - **Never hand-edit** `internal/storage/pg/` or `internal/api/server/zpotify_api/`
