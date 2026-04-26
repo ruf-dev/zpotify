@@ -8,7 +8,7 @@ import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 
 import ChooseScreen from '@/dialogs/AddTrack/screens/ChooseScreen';
 import DropZoneScreen from '@/dialogs/AddTrack/screens/DropZoneScreen';
-import MetaScreen from '@/dialogs/AddTrack/screens/MetaScreen';
+import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
 import PendingFilesScreen from '@/dialogs/AddTrack/screens/PendingFilesScreen';
 
 import {Services} from '@/hooks/user/User.ts';
@@ -78,7 +78,7 @@ export default function AddTrackModal({services}: AddTrackModalProps) {
         setSubmitted(true);
         services.Songs()
             .CreateSong(title, selectedArtists, fileId)
-            .then(() => setTimeout(() => CloseDialog(), 1100))
+            .then(() => setTimeout(() => { CloseDialog(); window.location.reload(); }, 1100))
             .catch((e) => {
                 setSubmitted(false);
                 toaster.catch(e);
@@ -151,20 +151,28 @@ export default function AddTrackModal({services}: AddTrackModalProps) {
                     </div>
                 )}
                 {step === 'meta' && fileId && (
-                    <MetaScreen
-                        file={file}
-                        fileId={fileId}
-                        fileService={services.File()}
-                        artistsService={services.Artists()}
-                        title={title}
-                        onTitleChange={setTitle}
-                        selectedArtists={selectedArtists}
-                        onArtistsChange={setSelectedArtists}
-                        playlistId={playlistId}
-                        onPlaylistChange={setPlaylistId}
-                        submitted={submitted}
-                        onSubmit={handleSubmit}
-                    />
+                    <>
+                        <MetaScreen
+                            file={file}
+                            fileId={fileId}
+                            fileService={services.File()}
+                            artistsService={services.Artists()}
+                            title={title}
+                            onTitleChange={setTitle}
+                            selectedArtists={selectedArtists}
+                            onArtistsChange={setSelectedArtists}
+                            playlistId={playlistId}
+                            onPlaylistChange={setPlaylistId}
+                        />
+                        <button
+                            className={`${cls.SubmitButton} ${submitted ? cls.ButtonSubmitted : cls.ButtonReady}`}
+                            type="button"
+                            onClick={handleSubmit}
+                            disabled={submitted}
+                        >
+                            {submitted ? '✓ added' : 'add track'}
+                        </button>
+                    </>
                 )}
             </div>
         </div>
