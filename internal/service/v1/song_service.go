@@ -85,7 +85,7 @@ func (s *AudioService) Create(ctx context.Context, req domain.CreateSong) (int64
 			for i, artistUuid := range req.ArtistUuids {
 				err = songsStorage.AddArtist(ctx, songId, artistUuid, i)
 				if err != nil {
-					return rerrors.Wrap(err, fmt.Sprintf("error adding artist %s to song", artistUuid))
+					return rerrors.Wrap(err, "error adding artist to song", artistUuid)
 				}
 			}
 

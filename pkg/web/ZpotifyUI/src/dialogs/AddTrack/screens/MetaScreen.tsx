@@ -43,12 +43,12 @@ export default function MetaScreen({
         (query: string): Promise<Option[]> =>
             artistsService.ListArtist(query, 0, 100)
                 .then(res => (res.artists ?? [])
-                    .filter(a => a.name)
-                    .map(a => ({id: a.name!, label: a.name!}))),
+                    .filter(a => a.name && a.uuid)
+                    .map(a => ({id: a.uuid!, label: a.name!}))),
         [artistsService]
     );
 
-    const addArtist = useCallback(
+    const createArtist = useCallback(
         async (name: string): Promise<Option> => ({id: name, label: name}),
         []
     );
@@ -99,7 +99,7 @@ export default function MetaScreen({
                     selectedIds={selectedArtists}
                     onChange={onArtistsChange}
                     doList={listArtists}
-                    onAdd={addArtist}
+                    onAdd={createArtist}
                 />
             </div>
 
