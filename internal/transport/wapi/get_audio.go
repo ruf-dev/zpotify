@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"path"
 	"strconv"
+	"strings"
 	"syscall"
 
 	"github.com/rs/zerolog/log"
@@ -44,12 +46,13 @@ func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Range",
 		fmt.Sprintf("bytes %d-%d/%d", start, end, track.SizeBytes))
 
+	ext := path.Ext(track.FilePath)
 	w.Header().
-		Set("Content-Type", "audio/ogg")
+		Set("Content-Type", audioMIMEType(ext))
 
 	w.Header().
 		Set("Content-Disposition",
-			fmt.Sprintf("inline; filename=\"%s - %s.ogg\"", "AlexSkilled", track.Title))
+			fmt.Sprintf("inline; filename=\"%s - %s%s\"", "AlexSkilled", track.Title, ext))
 	w.Header().
 		Set("Content-Length", strconv.FormatInt(end-start+1, 10))
 	w.Header().
@@ -68,6 +71,25 @@ func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+}
+
+func audioMIMEType(ext string) string {
+	switch strings.ToLower(ext) {
+	case ".mp3":
+		return "audio/mpeg"
+	case ".flac":
+		return "audio/flac"
+	case ".aac":
+		return "audio/aac"
+	case ".ogg", ".oga":
+		return "audio/ogg"
+	case ".wav":
+		return "audio/wav"
+	case ".m4a":
+		return "audio/x-m4a"
+	default:
+		return "application/octet-stream"
+	}
 }
 
 func extractStartEnd(r *http.Request) (start, end int64, err error) {

@@ -101,9 +101,9 @@ func (s *FileService) GetFile(ctx context.Context, fileId int64) (domain.FileMet
 	}
 	defer utils.CloseWithLog(rc, file.FilePath)
 
-	info, err := audio_parsers.ParseMP3(rc)
+	info, err := audio_parsers.Parse(file.FilePath, rc)
 	if err != nil {
-		return domain.FileMeta{}, rerrors.Wrap(err, "error parsing mp3 file")
+		return domain.FileMeta{}, rerrors.Wrap(err, "error parsing audio file")
 	}
 
 	file.Duration = info.Duration

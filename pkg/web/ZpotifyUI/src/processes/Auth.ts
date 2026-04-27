@@ -39,6 +39,7 @@ export class AuthService extends BaseService implements IAuthService {
 
 export class AuthMiddleware {
     session?: AuthData;
+    private refreshPromise: Promise<void> | null = null;
 
     constructor(session?: AuthData) {
         if (!session) {
@@ -65,7 +66,7 @@ export class AuthMiddleware {
             throw new Error("User is not authenticated")
         }
 
-        if (this.session.accessExpiresAt < new Date()) {
+        if (new Date(this.session.accessExpiresAt as string) < new Date()) {
             await this.refreshToken()
         }
 
@@ -73,6 +74,18 @@ export class AuthMiddleware {
     }
 
     private async refreshToken() {
+        if (this.refreshPromise) {
+            return this.refreshPromise
+        }
+
+        this.refreshPromise = this.doRefresh().finally(() => {
+            this.refreshPromise = null
+        })
+
+        return this.refreshPromise
+    }
+
+    private async doRefresh() {
         if (!this.session) {
             throw new ServiceError(
                 WithTitle("User is not authenticated"),
@@ -80,9 +93,10 @@ export class AuthMiddleware {
             )
         }
 
-        if (this.session.refreshExpiresAt < new Date()) {
+        if (new Date(this.session.refreshExpiresAt as string) < new Date()) {
+            this.logout()
             throw new ServiceError(
-                WithTitle("Refresh token expired"),
+                WithTitle("Session expired. Please log in again."),
                 WithIsNonRetryable(true)
             )
         }
@@ -93,10 +107,8 @@ export class AuthMiddleware {
 
         const newSession = await AuthAPI.RefreshToken(req, apiPrefix())
             .catch((e: GrpcError) => {
-
                 if (e.details.find(d => d.reason == ErrorReason.REFRESH_TOKEN_NOT_FOUND)) {
-                    // TODO
-                    // this.logout()
+                    this.logout()
                 }
 
                 throw new ServiceError(
@@ -107,8 +119,6 @@ export class AuthMiddleware {
             })
 
         newSession.authData && this.login(newSession.authData)
-
-        return this.session
     }
 
     login(s: AuthData) {

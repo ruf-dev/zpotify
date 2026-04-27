@@ -37,13 +37,14 @@ export class BaseService {
                         }
 
                         if (err.code == Errors.UNAUTHENTICATED) {
+                            console.log(err)
+
                             if (isReason(err.details, ErrorReason.ACCESS_TOKEN_NOT_FOUND)) {
                                 throw new ServiceError(
                                     WithTitle('Session expired. Login again'),
                                     WithIsNonRetryable(true));
                             }
-
-                            if (isReason(err.details, ErrorReason.ACCESS_TOKEN_EXPIRED)) {
+                            if (err.message == 'token expired') {
                                 await this.auth.current.RefreshToken()
 
                                 throw new ServiceError(
