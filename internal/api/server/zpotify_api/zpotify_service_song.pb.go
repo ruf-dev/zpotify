@@ -95,6 +95,42 @@ func (*UpdateSong) Descriptor() ([]byte, []int) {
 	return file_zpotify_service_song_proto_rawDescGZIP(), []int{1}
 }
 
+type GetSong struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSong) Reset() {
+	*x = GetSong{}
+	mi := &file_zpotify_service_song_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSong) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSong) ProtoMessage() {}
+
+func (x *GetSong) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_song_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSong.ProtoReflect.Descriptor instead.
+func (*GetSong) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_song_proto_rawDescGZIP(), []int{2}
+}
+
 type CreateSong_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Title         string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
@@ -106,7 +142,7 @@ type CreateSong_Request struct {
 
 func (x *CreateSong_Request) Reset() {
 	*x = CreateSong_Request{}
-	mi := &file_zpotify_service_song_proto_msgTypes[2]
+	mi := &file_zpotify_service_song_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -118,7 +154,7 @@ func (x *CreateSong_Request) String() string {
 func (*CreateSong_Request) ProtoMessage() {}
 
 func (x *CreateSong_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_song_proto_msgTypes[2]
+	mi := &file_zpotify_service_song_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -164,7 +200,7 @@ type CreateSong_Response struct {
 
 func (x *CreateSong_Response) Reset() {
 	*x = CreateSong_Response{}
-	mi := &file_zpotify_service_song_proto_msgTypes[3]
+	mi := &file_zpotify_service_song_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -176,7 +212,7 @@ func (x *CreateSong_Response) String() string {
 func (*CreateSong_Response) ProtoMessage() {}
 
 func (x *CreateSong_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_song_proto_msgTypes[3]
+	mi := &file_zpotify_service_song_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -210,7 +246,7 @@ type UpdateSong_Request struct {
 
 func (x *UpdateSong_Request) Reset() {
 	*x = UpdateSong_Request{}
-	mi := &file_zpotify_service_song_proto_msgTypes[4]
+	mi := &file_zpotify_service_song_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -222,7 +258,7 @@ func (x *UpdateSong_Request) String() string {
 func (*UpdateSong_Request) ProtoMessage() {}
 
 func (x *UpdateSong_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_song_proto_msgTypes[4]
+	mi := &file_zpotify_service_song_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -267,7 +303,7 @@ type UpdateSong_Response struct {
 
 func (x *UpdateSong_Response) Reset() {
 	*x = UpdateSong_Response{}
-	mi := &file_zpotify_service_song_proto_msgTypes[5]
+	mi := &file_zpotify_service_song_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -279,7 +315,7 @@ func (x *UpdateSong_Response) String() string {
 func (*UpdateSong_Response) ProtoMessage() {}
 
 func (x *UpdateSong_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_song_proto_msgTypes[5]
+	mi := &file_zpotify_service_song_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -295,11 +331,99 @@ func (*UpdateSong_Response) Descriptor() ([]byte, []int) {
 	return file_zpotify_service_song_proto_rawDescGZIP(), []int{1, 1}
 }
 
+type GetSong_Request struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSong_Request) Reset() {
+	*x = GetSong_Request{}
+	mi := &file_zpotify_service_song_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSong_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSong_Request) ProtoMessage() {}
+
+func (x *GetSong_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_song_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSong_Request.ProtoReflect.Descriptor instead.
+func (*GetSong_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_song_proto_rawDescGZIP(), []int{2, 0}
+}
+
+func (x *GetSong_Request) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type GetSong_Response struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Song          *SongBase              `protobuf:"bytes,1,opt,name=song,proto3" json:"song,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSong_Response) Reset() {
+	*x = GetSong_Response{}
+	mi := &file_zpotify_service_song_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSong_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSong_Response) ProtoMessage() {}
+
+func (x *GetSong_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_song_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSong_Response.ProtoReflect.Descriptor instead.
+func (*GetSong_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_song_proto_rawDescGZIP(), []int{2, 1}
+}
+
+func (x *GetSong_Response) GetSong() *SongBase {
+	if x != nil {
+		return x.Song
+	}
+	return nil
+}
+
 var File_zpotify_service_song_proto protoreflect.FileDescriptor
 
 const file_zpotify_service_song_proto_rawDesc = "" +
 	"\n" +
-	"\x1azpotify_service_song.proto\x12\vzpotify_api\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\"\x85\x01\n" +
+	"\x1azpotify_service_song.proto\x12\vzpotify_api\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\x1a\x14zpotify_common.proto\"\x85\x01\n" +
 	"\n" +
 	"CreateSong\x1a[\n" +
 	"\aRequest\x12\x14\n" +
@@ -315,12 +439,18 @@ const file_zpotify_service_song_proto_rawDesc = "" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12!\n" +
 	"\fartist_uuids\x18\x03 \x03(\tR\vartistUuids\x1a\n" +
 	"\n" +
-	"\bResponse2\xe5\x01\n" +
+	"\bResponse\"[\n" +
+	"\aGetSong\x1a\x19\n" +
+	"\aRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x1a5\n" +
+	"\bResponse\x12)\n" +
+	"\x04song\x18\x01 \x01(\v2\x15.zpotify_api.SongBaseR\x04song2\xc5\x02\n" +
 	"\aSongAPI\x12l\n" +
 	"\n" +
 	"CreateSong\x12\x1f.zpotify_api.CreateSong.Request\x1a .zpotify_api.CreateSong.Response\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/song/create\x12l\n" +
 	"\n" +
-	"UpdateSong\x12\x1f.zpotify_api.UpdateSong.Request\x1a .zpotify_api.UpdateSong.Response\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/song/updateB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"UpdateSong\x12\x1f.zpotify_api.UpdateSong.Request\x1a .zpotify_api.UpdateSong.Response\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/song/update\x12^\n" +
+	"\aGetSong\x12\x1c.zpotify_api.GetSong.Request\x1a\x1d.zpotify_api.GetSong.Response\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/api/song/{id}B*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_song_proto_rawDescOnce sync.Once
@@ -334,25 +464,32 @@ func file_zpotify_service_song_proto_rawDescGZIP() []byte {
 	return file_zpotify_service_song_proto_rawDescData
 }
 
-var file_zpotify_service_song_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_zpotify_service_song_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_zpotify_service_song_proto_goTypes = []any{
 	(*CreateSong)(nil),          // 0: zpotify_api.CreateSong
 	(*UpdateSong)(nil),          // 1: zpotify_api.UpdateSong
-	(*CreateSong_Request)(nil),  // 2: zpotify_api.CreateSong.Request
-	(*CreateSong_Response)(nil), // 3: zpotify_api.CreateSong.Response
-	(*UpdateSong_Request)(nil),  // 4: zpotify_api.UpdateSong.Request
-	(*UpdateSong_Response)(nil), // 5: zpotify_api.UpdateSong.Response
+	(*GetSong)(nil),             // 2: zpotify_api.GetSong
+	(*CreateSong_Request)(nil),  // 3: zpotify_api.CreateSong.Request
+	(*CreateSong_Response)(nil), // 4: zpotify_api.CreateSong.Response
+	(*UpdateSong_Request)(nil),  // 5: zpotify_api.UpdateSong.Request
+	(*UpdateSong_Response)(nil), // 6: zpotify_api.UpdateSong.Response
+	(*GetSong_Request)(nil),     // 7: zpotify_api.GetSong.Request
+	(*GetSong_Response)(nil),    // 8: zpotify_api.GetSong.Response
+	(*SongBase)(nil),            // 9: zpotify_api.SongBase
 }
 var file_zpotify_service_song_proto_depIdxs = []int32{
-	2, // 0: zpotify_api.SongAPI.CreateSong:input_type -> zpotify_api.CreateSong.Request
-	4, // 1: zpotify_api.SongAPI.UpdateSong:input_type -> zpotify_api.UpdateSong.Request
-	3, // 2: zpotify_api.SongAPI.CreateSong:output_type -> zpotify_api.CreateSong.Response
-	5, // 3: zpotify_api.SongAPI.UpdateSong:output_type -> zpotify_api.UpdateSong.Response
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	9, // 0: zpotify_api.GetSong.Response.song:type_name -> zpotify_api.SongBase
+	3, // 1: zpotify_api.SongAPI.CreateSong:input_type -> zpotify_api.CreateSong.Request
+	5, // 2: zpotify_api.SongAPI.UpdateSong:input_type -> zpotify_api.UpdateSong.Request
+	7, // 3: zpotify_api.SongAPI.GetSong:input_type -> zpotify_api.GetSong.Request
+	4, // 4: zpotify_api.SongAPI.CreateSong:output_type -> zpotify_api.CreateSong.Response
+	6, // 5: zpotify_api.SongAPI.UpdateSong:output_type -> zpotify_api.UpdateSong.Response
+	8, // 6: zpotify_api.SongAPI.GetSong:output_type -> zpotify_api.GetSong.Response
+	4, // [4:7] is the sub-list for method output_type
+	1, // [1:4] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_service_song_proto_init() }
@@ -360,13 +497,14 @@ func file_zpotify_service_song_proto_init() {
 	if File_zpotify_service_song_proto != nil {
 		return
 	}
+	file_zpotify_common_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_service_song_proto_rawDesc), len(file_zpotify_service_song_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

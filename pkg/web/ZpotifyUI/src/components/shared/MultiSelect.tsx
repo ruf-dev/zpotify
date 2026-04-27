@@ -17,6 +17,7 @@ interface MultiSelectProps {
     doList: (query: string) => Promise<Option[]>;
     onAdd?: (label: string) => Promise<Option>;
     isMultiselect?: boolean;
+    initialOptions?: Option[];
 }
 
 export default function MultiSelect({
@@ -27,10 +28,11 @@ export default function MultiSelect({
     doList,
     onAdd,
     isMultiselect = true,
+    initialOptions,
 }: MultiSelectProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState("");
-    const [options, setOptions] = useState<Option[]>([]);
+    const [options, setOptions] = useState<Option[]>(initialOptions ?? []);
     const [isLoading, setIsLoading] = useState(false);
     const [dropdownRect, setDropdownRect] = useState<DOMRect | null>(null);
 
@@ -38,12 +40,13 @@ export default function MultiSelect({
     const dropdownRef = useRef<HTMLDivElement>(null);
     const searchRef = useRef<HTMLInputElement>(null);
 
-    const selectedChips = selectedIds.map(
-        id => options.find(o => o.id === id) ?? {id, label: id}
-    );
+    const findOption = (id: string) =>
+        options.find(o => o.id === id) ?? initialOptions?.find(o => o.id === id) ?? {id, label: id};
+
+    const selectedChips = selectedIds.map(findOption);
 
     const singleSelected = !isMultiselect && selectedIds.length > 0
-        ? (options.find(o => o.id === selectedIds[0]) ?? {id: selectedIds[0], label: selectedIds[0]})
+        ? findOption(selectedIds[0])
         : null;
 
     useEffect(() => {

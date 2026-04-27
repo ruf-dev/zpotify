@@ -137,6 +137,15 @@ func (s *AudioService) Update(ctx context.Context, req domain.UpdateSong) error 
 	return nil
 }
 
+func (s *AudioService) GetSong(ctx context.Context, songId int64) (domain.Song, error) {
+	song, err := s.songsStorage.GetById(ctx, songId)
+	if err != nil {
+		return domain.Song{}, rerrors.Wrap(err, "error getting song from storage")
+	}
+
+	return song, nil
+}
+
 func (s *AudioService) Delete(ctx context.Context, id int64) error {
 	return nil
 }

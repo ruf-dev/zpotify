@@ -10,7 +10,6 @@ import MoreButton from "@/components/song/more/MoreButton.tsx";
 import {formatDuration} from "@/utils/time.ts";
 import NowPlayingBars from "@/assets/icons/NowPlayingBars.tsx";
 import {useDialog} from "@/app/hooks/Dialog.tsx";
-import useUser from "@/hooks/user/User.ts";
 import EditTrackDialog from "@/dialogs/EditTrack/EditTrackDialog.tsx";
 
 type SongItemProp = {
@@ -36,7 +35,6 @@ export default function SongItem({
                                  }: SongItemProp) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const {OpenDialog} = useDialog();
-    const user = useUser();
 
     function handleMenuOpen() {
         setIsMenuOpen(true);
@@ -51,7 +49,7 @@ export default function SongItem({
     const menuOps = [
         {
             label: "Edit",
-            onClick: () => OpenDialog(<EditTrackDialog song={song} services={user.Services()}/>),
+            onClick: () => OpenDialog(<EditTrackDialog song={song}/>),
         },
         {
             label: "Delete",

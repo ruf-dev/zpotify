@@ -1,19 +1,19 @@
 import {useEffect, useState} from 'react';
 import cls from '@/dialogs/AddTrack/screens/PendingFilesScreen.module.css';
-import {IFileService} from '@/processes/FileService.ts';
 import {SongFile} from '@/app/api/zpotify';
+import useUser from '@/hooks/user/User.ts';
 
 interface PendingFilesScreenProps {
-    fileService: IFileService;
     onSelect: (file: SongFile) => void;
 }
 
-export default function PendingFilesScreen({fileService, onSelect}: PendingFilesScreenProps) {
+export default function PendingFilesScreen({onSelect}: PendingFilesScreenProps) {
+    const {Services} = useUser();
     const [files, setFiles] = useState<SongFile[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fileService.ListUploadedFiles({temporaryOnly: true})
+        Services().File().ListUploadedFiles({temporaryOnly: true})
             .then(res => setFiles(res.files || []))
             .finally(() => setLoading(false));
     }, []);

@@ -3,6 +3,7 @@ import {RefObject} from "react";
 import {
     InitReq,
     SongAPI,
+    SongBase,
 } from "@/app/api/zpotify";
 
 import {AuthMiddleware} from "@/processes/Auth.ts";
@@ -12,6 +13,7 @@ import {BaseService} from "@/processes/BaseService.ts";
 export interface ISongsService {
     CreateSong: (title: string, artistUuids: string[], fileId: string) => Promise<string>
     UpdateSong: (id: string, title: string, artistUuids: string[]) => Promise<void>
+    GetSong: (id: string) => Promise<SongBase>
 }
 
 export class SongsService extends BaseService implements ISongsService {
@@ -35,6 +37,16 @@ export class SongsService extends BaseService implements ISongsService {
                 return SongAPI
                     .UpdateSong({id, title, artistUuids}, initReq)
                     .then(() => undefined)
+            }
+        )
+    }
+
+    async GetSong(id: string): Promise<SongBase> {
+        return this.executeAuthApiCall(
+            (initReq: InitReq) => {
+                return SongAPI
+                    .GetSong({id}, initReq)
+                    .then(resp => resp.song!)
             }
         )
     }

@@ -22,6 +22,7 @@ export type SongBase = {
   artists?: ArtistBase[];
   durationSec?: number;
   filePath?: string;
+  fileId?: string;
 };
 
 export type Playlist = {

@@ -1,8 +1,10 @@
 
 export class AudioFile {
-    bytes: File
+    fileId?: string
+    durationSec?: number
 
-    constructor(bytes: File) {
-        this.bytes = bytes
+    constructor(fileId?: string, durationSec?: number) {
+        this.fileId = fileId
+        this.durationSec = durationSec
     }
 }

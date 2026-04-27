@@ -1,34 +1,59 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {SongBase} from '@/app/api/zpotify';
 
 import cls from '@/dialogs/EditTrack/EditTrackDialog.module.css';
 
 import {useDialog} from '@/app/hooks/Dialog.tsx';
-import {Services} from '@/hooks/user/User.ts';
+import useUser from '@/hooks/user/User.ts';
 
 import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
+import {Option} from "@/components/shared/MultiSelect.tsx";
+import {AudioFile} from "@/model/AudioFile.ts";
 
 interface EditTrackDialogProps {
     song: SongBase;
-    services: Services;
 }
 
-export default function EditTrackDialog({song, services}: EditTrackDialogProps) {
+export default function EditTrackDialog({song}: EditTrackDialogProps) {
     const {CloseDialog} = useDialog();
     const toaster = useToaster();
+    const {Services} = useUser();
+
     const [title, setTitle] = useState(song.title ?? '');
     const [selectedArtists, setSelectedArtists] = useState<string[]>(
         (song.artists ?? []).filter(a => a.uuid).map(a => a.uuid!)
     );
+    const [initialArtistOptions, setInitialArtistOptions] = useState<Option[]>(
+        (song.artists ?? []).filter(a => a.uuid && a.name).map(a => ({id: a.uuid!, label: a.name!}))
+    );
     const [playlistId, setPlaylistId] = useState('');
+    const [audioFile, setAudioFile] = useState(new AudioFile(undefined, song.durationSec));
 
-    const handleSave = () => {
-        services.Songs()
-            .UpdateSong(song.id ?? '', title, selectedArtists)
-            .then(CloseDialog)
+    useEffect(() => {
+        Services().Songs()
+            .GetSong(song.id ?? '')
+            .then(s => {
+                const opts = (s.artists ?? [])
+                    .filter(a => a.uuid && a.name)
+                    .map(a => ({id: a.uuid!, label: a.name!}));
+                setInitialArtistOptions(opts);
+                setSelectedArtists((s.artists ?? []).filter(a => a.uuid).map(a => a.uuid!));
+                setAudioFile(new AudioFile(s.fileId, s.durationSec));
+            })
             .catch(toaster.catch);
-    };
+    }, []);
+
+    function handleSave() {
+        Services().Songs()
+            .UpdateSong(song.id ?? '', title, selectedArtists)
+            .then(() => {
+                CloseDialog();
+                // TODO Make reloading component not page
+                window.location.reload();
+            })
+            .catch(toaster.catch);
+    }
 
     return (
         <div className={cls.Panel}>
@@ -45,15 +70,14 @@ export default function EditTrackDialog({song, services}: EditTrackDialogProps) 
 
             <div className={cls.PanelBody}>
                 <MetaScreen
-                    fileService={services.File()}
-                    artistsService={services.Artists()}
-                    durationSec={song.durationSec}
+                    audioFile={audioFile}
                     title={title}
                     onTitleChange={setTitle}
                     selectedArtists={selectedArtists}
                     onArtistsChange={setSelectedArtists}
                     playlistId={playlistId}
                     onPlaylistChange={setPlaylistId}
+                    initialArtistOptions={initialArtistOptions}
                 />
                 <button
                     className={`${cls.SubmitButton} ${cls.ButtonReady}`}

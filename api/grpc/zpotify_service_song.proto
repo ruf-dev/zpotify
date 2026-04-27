@@ -4,6 +4,7 @@ package zpotify_api;
 
 import "google/api/annotations.proto";
 import "npm.proto";
+import "zpotify_common.proto";
 
 option go_package = "/zpotify_api;zpotify_api";
 option (npm_package) = "@zpotify/api";
@@ -20,6 +21,12 @@ service SongAPI {
     option (google.api.http) = {
       post: "/api/song/update",
       body: "*"
+    };
+  };
+
+  rpc GetSong(GetSong.Request) returns (GetSong.Response) {
+    option (google.api.http) = {
+      get: "/api/song/{id}"
     };
   };
 }
@@ -44,4 +51,14 @@ message UpdateSong {
   }
 
   message Response {}
+}
+
+message GetSong {
+  message Request {
+    int64 id = 1;
+  }
+
+  message Response {
+    SongBase song = 1;
+  }
 }

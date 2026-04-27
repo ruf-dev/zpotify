@@ -7,6 +7,7 @@ package songs_q
 
 import (
 	"context"
+	"time"
 )
 
 const clearSongArtists = `-- name: ClearSongArtists :exec
@@ -34,6 +35,73 @@ func (q *Queries) CreateSong(ctx context.Context, arg CreateSongParams) (int64, 
 	var id int64
 	err := row.Scan(&id)
 	return id, err
+}
+
+const getArtistsBySongId = `-- name: GetArtistsBySongId :many
+SELECT a.uuid,
+       a.name
+FROM artists a
+         JOIN songs_artists sa ON sa.artist_uuid = a.uuid
+WHERE sa.song_id = $1
+ORDER BY sa.order_id
+`
+
+func (q *Queries) GetArtistsBySongId(ctx context.Context, songID int64) ([]Artist, error) {
+	rows, err := q.db.QueryContext(ctx, getArtistsBySongId, songID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Artist{}
+	for rows.Next() {
+		var i Artist
+		if err := rows.Scan(&i.Uuid, &i.Name); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getSongById = `-- name: GetSongById :one
+SELECT s.id,
+       s.title,
+       s.created_at,
+       fm.duration_sec,
+       fm.file_path,
+       s.file_id
+FROM songs s
+         JOIN files_meta fm ON fm.id = s.file_id
+WHERE s.id = $1
+`
+
+type GetSongByIdRow struct {
+	ID          int64
+	Title       string
+	CreatedAt   time.Time
+	DurationSec int64
+	FilePath    string
+	FileID      int64
+}
+
+func (q *Queries) GetSongById(ctx context.Context, id int64) (GetSongByIdRow, error) {
+	row := q.db.QueryRowContext(ctx, getSongById, id)
+	var i GetSongByIdRow
+	err := row.Scan(
+		&i.ID,
+		&i.Title,
+		&i.CreatedAt,
+		&i.DurationSec,
+		&i.FilePath,
+		&i.FileID,
+	)
+	return i, err
 }
 
 const updateSongTitle = `-- name: UpdateSongTitle :exec

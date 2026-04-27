@@ -11,6 +11,8 @@ import (
 type Querier interface {
 	ClearSongArtists(ctx context.Context, songID int64) error
 	CreateSong(ctx context.Context, arg CreateSongParams) (int64, error)
+	GetArtistsBySongId(ctx context.Context, songID int64) ([]Artist, error)
+	GetSongById(ctx context.Context, id int64) (GetSongByIdRow, error)
 	UpdateSongTitle(ctx context.Context, arg UpdateSongTitleParams) error
 }
 

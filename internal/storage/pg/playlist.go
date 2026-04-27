@@ -65,6 +65,7 @@ func (s *PlaylistStorage) ListSongs(ctx context.Context, r domain.ListSongs) ([]
 			"duration_sec",
 			"artist_info",
 			"file_path",
+			"file_id",
 		)}.
 		buildSongBaseQuery().
 		applyListQueryFilters(r).
@@ -96,6 +97,7 @@ func (s *PlaylistStorage) ListSongs(ctx context.Context, r domain.ListSongs) ([]
 			&durationSeconds,
 			&artistsInfoJson,
 			&song.FilePath,
+			&song.FileId,
 		)
 		if err != nil {
 			return nil, wrapPgErr(err)
@@ -145,7 +147,7 @@ type playlistSongsQueryBuilder struct {
 }
 
 func (builder playlistSongsQueryBuilder) buildSongBaseQuery() playlistSongsQueryBuilder {
-	builder.SelectBuilder = builder.From("playlists_songs_v1").
+	builder.SelectBuilder = builder.From("playlists_songs_v2").
 		PlaceholderFormat(sq.Dollar)
 
 	return builder

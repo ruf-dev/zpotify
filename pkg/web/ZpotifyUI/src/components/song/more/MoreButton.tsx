@@ -1,8 +1,8 @@
 import cls from "@/components/song/more/MoreButton.module.scss"
 
 import MoreDots from "@/assets/MoreDots.tsx";
-import {useEffect, useRef, useState} from "react";
-import cn from "classnames";
+import {MouseEvent as ReactMouseEvent, useEffect, useRef, useState} from "react";
+import {createPortal} from "react-dom";
 import Menu, {MenuOption} from "@/components/menu/Menu.tsx";
 
 interface MoreButtonProps {
@@ -14,64 +14,49 @@ interface MoreButtonProps {
 
 export default function MoreButton({onOpen, onClose, ops}: MoreButtonProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [menuRect, setMenuRect] = useState<DOMRect | null>(null);
 
-    const dropdownRef = useRef(null);
-    const buttonRef = useRef(null);
+    const buttonRef = useRef<HTMLDivElement>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (isMenuOpen && onOpen) {
-            onOpen()
-        } else if (onClose) {
-            onClose()
-        }
+        if (isMenuOpen && onOpen) onOpen();
+        else if (onClose) onClose();
     }, [isMenuOpen]);
 
     useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (buttonRef.current &&
-                // @ts-ignore
-                buttonRef.current.contains(event.target)) {
-                return
-            }
-
-            if (dropdownRef.current &&
-                // @ts-ignore
-                !dropdownRef.current.contains(event.target)) {
-                setIsMenuOpen(false);
-            }
+        function handleClickOutside(event: globalThis.MouseEvent) {
+            const target = event.target as Node;
+            if (buttonRef.current?.contains(target)) return;
+            if (!dropdownRef.current?.contains(target)) setIsMenuOpen(false);
         }
-
-        // Bind the listener
         document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
-        return () => {
-            // Clean up the listener on unmount
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [dropdownRef]);
+    function handleToggle(event: ReactMouseEvent) {
+        event.stopPropagation();
+        if (!isMenuOpen) setMenuRect(buttonRef.current?.getBoundingClientRect() ?? null);
+        setIsMenuOpen(prev => !prev);
+    }
 
     return (
-        <div
-            className={cls.MoreButtonContainer}
-            onClick={(event) => {
-                event.stopPropagation()
-                setIsMenuOpen(!isMenuOpen)
-            }}
-        >
-            <div
-                ref={dropdownRef}
-                className={cn(cls.SubMenuContainer, {
-                    [cls.open]: isMenuOpen,
-                })}
-            >
-                <Menu options={ops}/>
-            </div>
-
-            <div
-                className={cls.MoreDotsWrapper}
-                ref={buttonRef}>
-                <MoreDots/>
-            </div>
+        <div ref={buttonRef} className={cls.MoreButtonContainer} onClick={handleToggle}>
+            <MoreDots/>
+            {isMenuOpen && menuRect && createPortal(
+                <div
+                    ref={dropdownRef}
+                    className={cls.DropdownMenu}
+                    style={{
+                        position: 'fixed',
+                        top: menuRect.bottom + 4,
+                        right: window.innerWidth - menuRect.right,
+                    }}
+                >
+                    <Menu options={ops}/>
+                </div>,
+                document.body
+            )}
         </div>
-    )
+    );
 }

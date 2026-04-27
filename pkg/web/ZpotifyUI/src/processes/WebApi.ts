@@ -2,7 +2,6 @@ import {RefObject} from "react";
 
 import {AuthMiddleware} from "@/processes/Auth.ts";
 import {BaseService} from "@/processes/BaseService.ts";
-import {AudioFile} from "@/model/AudioFile.ts";
 import {
     ServiceError, WithDescription,
     WithHttpStatus,
@@ -10,7 +9,7 @@ import {
 } from "@/processes/Errors.ts";
 
 export interface WebApi {
-    UploadFile(file: AudioFile): Promise<string>
+    UploadFile(file: File): Promise<string>
 }
 
 enum WebApiUriPath {
@@ -22,10 +21,10 @@ export class WebApiImpl extends BaseService implements WebApi {
         super(auth)
     }
 
-    UploadFile(file: AudioFile): Promise<string> {
+    UploadFile(file: File): Promise<string> {
         return this.executeAuthApiCall(async (initReq) => {
                 const formData = new FormData()
-                formData.append('file', file.bytes, file.bytes.name)
+                formData.append('file', file, file.name)
 
                 const headers = new Headers(initReq.headers as HeadersInit)
                 headers.delete('Content-Type')

@@ -79,6 +79,37 @@
           "SongAPI"
         ]
       }
+    },
+    "/api/song/{id}": {
+      "get": {
+        "operationId": "SongAPI_GetSong",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetSongResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "SongAPI"
+        ]
+      }
     }
   },
   "definitions": {
@@ -110,6 +141,17 @@
         }
       }
     },
+    "zpotify_apiArtistBase": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
     "zpotify_apiCreateSongRequest": {
       "type": "object",
       "properties": {
@@ -132,6 +174,44 @@
       "type": "object",
       "properties": {
         "id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "zpotify_apiGetSongResponse": {
+      "type": "object",
+      "properties": {
+        "song": {
+          "$ref": "#/definitions/zpotify_apiSongBase"
+        }
+      }
+    },
+    "zpotify_apiSongBase": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string"
+        },
+        "artists": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiArtistBase"
+          }
+        },
+        "durationSec": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "filePath": {
+          "type": "string"
+        },
+        "fileId": {
           "type": "string",
           "format": "int64"
         }

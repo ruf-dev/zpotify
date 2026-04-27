@@ -5,20 +5,16 @@ import cls from '@/dialogs/AddTrack/AddTrackModal.module.css';
 
 import {useDialog} from '@/app/hooks/Dialog.tsx';
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
+import useUser from '@/hooks/user/User.ts';
 
 import ChooseScreen from '@/dialogs/AddTrack/screens/ChooseScreen';
 import DropZoneScreen from '@/dialogs/AddTrack/screens/DropZoneScreen';
 import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
 import PendingFilesScreen from '@/dialogs/AddTrack/screens/PendingFilesScreen';
 
-import {Services} from '@/hooks/user/User.ts';
 import {AudioFile} from '@/model/AudioFile.ts';
 
 type ModalStep = 'choose' | 'drop' | 'library' | 'meta';
-
-interface AddTrackModalProps {
-    services: Services;
-}
 
 const DOT_STEPS: ModalStep[] = ['choose', 'drop', 'meta'];
 
@@ -35,55 +31,51 @@ const BACK_STEPS: Partial<Record<ModalStep, ModalStep>> = {
     library: 'choose',
 };
 
-export default function AddTrackModal({services}: AddTrackModalProps) {
+export default function AddTrackModal() {
     const {CloseDialog} = useDialog();
     const toaster = useToaster();
+    const {Services} = useUser();
 
     const [step, setStep] = useState<ModalStep>('choose');
-    const [file, setFile] = useState<File | null>(null);
-
-    const [fileId, setFileId] = useState<string | null>(null);
+    const [audioFile, setAudioFile] = useState<AudioFile | null>(null);
     const [uploading, setUploading] = useState(false);
     const [title, setTitle] = useState('');
     const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
     const [playlistId, setPlaylistId] = useState('');
     const [submitted, setSubmitted] = useState(false);
 
-    const handleFile = (f: File) => {
-        setFile(f);
+    function handleFile(f: File) {
         setTitle(f.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '));
         setUploading(true);
-        const audioFile = new AudioFile(f);
-        services.WebApi()
-            .UploadFile(audioFile)
+        Services().WebApi()
+            .UploadFile(f)
             .then((id) => {
-                setFileId(id);
+                setAudioFile(new AudioFile(id));
                 setStep('meta');
             })
             .catch(toaster.catch)
             .finally(() => setUploading(false));
-    };
+    }
 
-    const handleSelectFromLibrary = (songFile: SongFile) => {
+    function handleSelectFromLibrary(songFile: SongFile) {
         const id = songFile.id ?? '';
         const name = songFile.path?.split('/').pop() ?? '';
-        setFileId(id);
-        setFile(null);
+        setAudioFile(new AudioFile(id));
         setTitle(name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '));
         setStep('meta');
-    };
+    }
 
-    const handleSubmit = () => {
-        if (submitted || !fileId) return;
+    function handleSubmit() {
+        if (submitted || !audioFile?.fileId) return;
         setSubmitted(true);
-        services.Songs()
-            .CreateSong(title, selectedArtists, fileId)
+        Services().Songs()
+            .CreateSong(title, selectedArtists, audioFile.fileId)
             .then(() => setTimeout(() => { CloseDialog(); window.location.reload(); }, 1100))
             .catch((e) => {
                 setSubmitted(false);
                 toaster.catch(e);
             });
-    };
+    }
 
     const backStep = BACK_STEPS[step];
     const dotIndex = step === 'library' ? 1 : DOT_STEPS.indexOf(step as 'choose' | 'drop' | 'meta');
@@ -129,12 +121,10 @@ export default function AddTrackModal({services}: AddTrackModalProps) {
                     <ChooseScreen
                         onUploadNew={() => setStep('drop')}
                         onFromLibrary={() => setStep('library')}
-                        fileService={services.File()}
                     />
                 )}
                 {step === 'library' && (
                     <PendingFilesScreen
-                        fileService={services.File()}
                         onSelect={handleSelectFromLibrary}
                     />
                 )}
@@ -150,13 +140,10 @@ export default function AddTrackModal({services}: AddTrackModalProps) {
                         <span>uploading…</span>
                     </div>
                 )}
-                {step === 'meta' && fileId && (
+                {step === 'meta' && audioFile?.fileId && (
                     <>
                         <MetaScreen
-                            file={file}
-                            fileId={fileId}
-                            fileService={services.File()}
-                            artistsService={services.Artists()}
+                            audioFile={audioFile}
                             title={title}
                             onTitleChange={setTitle}
                             selectedArtists={selectedArtists}

@@ -84,6 +84,7 @@ type SongBase struct {
 	Title    string
 	Duration time.Duration
 	FilePath string
+	FileId   int64
 }
 
 type Song struct {

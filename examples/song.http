@@ -22,3 +22,7 @@ Authorization: {{token}}
   "title": "New song song",
   "artistUuids": ["a79e2214-3bcc-454b-aa74-f5ecf1d0b06b"]
 }
+
+### Get song
+GET {{zpotify-api}}/api/song/1
+Authorization: {{token}}

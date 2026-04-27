@@ -3,11 +3,13 @@ package pg
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
+	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/pg/generated/songs_q"
 )
@@ -22,6 +24,39 @@ func NewSongStorage(db sqldb.DB) *SongsStorage {
 		db:      db,
 		querier: songs_q.New(db),
 	}
+}
+
+func (s *SongsStorage) GetById(ctx context.Context, songId int64) (domain.Song, error) {
+	row, err := s.querier.GetSongById(ctx, songId)
+	if err != nil {
+		return domain.Song{}, wrapPgErr(err)
+	}
+
+	artists, err := s.querier.GetArtistsBySongId(ctx, songId)
+	if err != nil {
+		return domain.Song{}, wrapPgErr(err)
+	}
+
+	domainArtists := make([]domain.ArtistsBase, len(artists))
+	for i, a := range artists {
+		domainArtists[i] = domain.ArtistsBase{
+			Uuid: a.Uuid.String(),
+			Name: a.Name,
+		}
+	}
+
+	song := domain.Song{
+		SongBase: domain.SongBase{
+			Id:       int32(row.ID),
+			Title:    row.Title,
+			Duration: time.Duration(row.DurationSec) * time.Second,
+			FilePath: row.FilePath,
+			FileId:   row.FileID,
+		},
+		Artists: domainArtists,
+	}
+
+	return song, nil
 }
 
 func (s *SongsStorage) Create(ctx context.Context, params songs_q.CreateSongParams) (int64, error) {

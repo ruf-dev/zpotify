@@ -3,41 +3,45 @@ import cls from '@/dialogs/shared/screens/MetaScreen.module.css';
 import MusicFileIcon from '@/assets/icons/MusicFileIcon.tsx';
 
 import MultiSelect, {Option} from '@/components/shared/MultiSelect.tsx';
-import {IFileService} from '@/processes/FileService.ts';
-import {IArtistsService} from '@/processes/ArtistsService.ts';
 import {FileInfo} from '@/app/api/zpotify';
 import {formatFileDuration, formatFileBytes} from '@/utils/files.ts';
 import {formatDuration} from '@/utils/time.ts';
+import {AudioFile} from '@/model/AudioFile.ts';
+import useUser from '@/hooks/user/User.ts';
 
 interface MetaScreenProps {
-    file?: File | null;
-    fileId?: string;
-    durationSec?: number;
-    fileService: IFileService;
-    artistsService: IArtistsService;
+    audioFile?: AudioFile;
     title: string;
     onTitleChange: (title: string) => void;
     selectedArtists: string[];
     onArtistsChange: (artists: string[]) => void;
     playlistId: string;
     onPlaylistChange: (id: string) => void;
+    initialArtistOptions?: Option[];
 }
 
 export default function MetaScreen({
-    file = null, fileId, durationSec, fileService, artistsService,
-    title, onTitleChange,
-    selectedArtists, onArtistsChange,
-    playlistId, onPlaylistChange,
-}: MetaScreenProps) {
+                                       audioFile,
+                                       title, onTitleChange,
+                                       selectedArtists, onArtistsChange,
+                                       playlistId, onPlaylistChange,
+                                       initialArtistOptions,
+                                   }: MetaScreenProps) {
+    const {Services} = useUser();
+    const fileService = Services().File();
+    const artistsService = Services().Artists();
+
     const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
     const [playlistOptions, setPlaylistOptions] = useState<Option[]>([]);
 
     useEffect(() => {
-        if (!fileId) return;
-        fileService.GetFile({fileId}).then((res) => {
-            if (res.file) setFileInfo(res.file);
-        });
-    }, [fileId]);
+        if (!audioFile?.fileId) return;
+
+        fileService.GetFile({fileId: audioFile.fileId})
+            .then((res) => {
+                if (res.file) setFileInfo(res.file);
+            });
+    }, [audioFile?.fileId]);
 
     const listArtists = useCallback(
         (query: string): Promise<Option[]> =>
@@ -74,16 +78,17 @@ export default function MetaScreen({
 
     const displayDuration = fileInfo
         ? formatFileDuration(fileInfo.durationSec)
-        : durationSec != null
-        ? formatDuration(Math.round(durationSec))
-        : '—';
+        : audioFile?.durationSec != null
+            ? formatDuration(Math.round(audioFile.durationSec))
+            : '—';
 
     return (
         <div className={cls.MetaScreenContainer}>
             <div className={cls.FileInfoRow}>
                 <MusicFileIcon className={cls.FileIcon}/>
-                <span className={cls.FileName}>{file?.name ?? fileInfo?.path?.split('/').pop() ?? 'uploaded file'}</span>
-                <span className={cls.SizePill}>{formatFileBytes(fileInfo?.sizeBytes, file?.size ?? 0)}</span>
+                <span className={cls.FileName}>
+                    {fileInfo?.path?.split('/').pop() ?? 'uploaded file'}
+                </span>
             </div>
 
             <div className={cls.Field}>
@@ -104,6 +109,7 @@ export default function MetaScreen({
                     onChange={onArtistsChange}
                     doList={listArtists}
                     onAdd={createArtist}
+                    initialOptions={initialArtistOptions}
                 />
             </div>
 
@@ -114,12 +120,15 @@ export default function MetaScreen({
                 </div>
                 <div className={cls.Field}>
                     <label className={cls.FieldLabel}>file size</label>
-                    <div className={cls.ReadOnlyTile}>{formatFileBytes(fileInfo?.sizeBytes, file?.size ?? 0)}</div>
+                    <div className={cls.ReadOnlyTile}>
+                        {formatFileBytes(fileInfo?.sizeBytes, 0)}
+                    </div>
                 </div>
             </div>
 
             <div className={cls.Field}>
-                <label className={cls.FieldLabel}>add to playlist <span className={cls.FieldLabelOptional}>(optional)</span></label>
+                <label className={cls.FieldLabel}>add to playlist <span
+                    className={cls.FieldLabelOptional}>(optional)</span></label>
                 <MultiSelect
                     isMultiselect={false}
                     placeholder="pick a playlist…"

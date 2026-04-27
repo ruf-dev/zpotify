@@ -1,21 +1,21 @@
 import {useEffect, useState} from 'react';
 import cls from '@/dialogs/AddTrack/screens/ChooseScreen.module.css';
-import {IFileService} from '@/processes/FileService.ts';
+import useUser from '@/hooks/user/User.ts';
 
 const UPLOAD_LIMIT = 5;
 
 interface ChooseScreenProps {
     onUploadNew: () => void;
     onFromLibrary: () => void;
-    fileService: IFileService;
 }
 
-export default function ChooseScreen({onUploadNew, onFromLibrary, fileService}: ChooseScreenProps) {
+export default function ChooseScreen({onUploadNew, onFromLibrary}: ChooseScreenProps) {
+    const {Services} = useUser();
     const [pendingCount, setPendingCount] = useState(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fileService.ListUploadedFiles({temporaryOnly: true})
+        Services().File().ListUploadedFiles({temporaryOnly: true})
             .then(res => setPendingCount((res.files || []).length))
             .finally(() => setLoading(false));
     }, []);

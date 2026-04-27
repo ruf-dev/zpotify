@@ -17,11 +17,9 @@ export default function HeaderPart({user}: HeaderPartProps) {
     const navigate = useNavigate();
     const {OpenDialog} = useDialog();
 
-    const handleAddTrack = () => {
-        OpenDialog(
-            <AddTrackModal services={user.Services()}/>
-        );
-    };
+    function handleAddTrack() {
+        OpenDialog(<AddTrackModal/>);
+    }
 
     return (
         <div className={cls.Header}>

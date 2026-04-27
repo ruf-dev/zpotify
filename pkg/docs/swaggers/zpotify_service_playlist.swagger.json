@@ -395,6 +395,10 @@
         },
         "filePath": {
           "type": "string"
+        },
+        "fileId": {
+          "type": "string",
+          "format": "int64"
         }
       }
     }

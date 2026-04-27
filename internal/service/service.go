@@ -65,6 +65,8 @@ func (s *service) FileService() FileService {
 }
 
 type AudioService interface {
+	GetSong(ctx context.Context, songId int64) (domain.Song, error)
+
 	GetInfo(ctx context.Context, fileId int64) (domain.Song, error)
 	Save(ctx context.Context, req domain.AddAudio) (domain.SaveFileMetaResp, error)
 
