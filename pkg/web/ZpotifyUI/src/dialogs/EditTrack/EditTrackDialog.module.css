@@ -4,8 +4,9 @@
 }
 
 .Panel {
-    width: 100%;
-    max-width: 26rem;
+    width: 35vw;
+    min-width: 22rem;
+    max-width: 56rem;
     background: var(--color-bg-secondary);
     border: 0.0625rem solid var(--color-border-light);
     border-radius: var(--border-radius);
@@ -81,4 +82,11 @@
     border-color: var(--color-border-light);
     color: var(--color-fg-tertiary);
     cursor: default;
+}
+
+@media (max-width: 600px) {
+    .Panel {
+        width: 94vw;
+        min-width: unset;
+    }
 }

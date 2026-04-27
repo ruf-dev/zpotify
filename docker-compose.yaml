@@ -13,6 +13,7 @@ services:
 
   nginx:
     image: nginx:alpine
+    container_name: zpotify-webserver
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:

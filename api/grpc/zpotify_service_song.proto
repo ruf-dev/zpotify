@@ -18,7 +18,7 @@ service SongAPI {
 
   rpc UpdateSong(UpdateSong.Request) returns (UpdateSong.Response) {
     option (google.api.http) = {
-      patch: "/api/song/update",
+      post: "/api/song/update",
       body: "*"
     };
   };

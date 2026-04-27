@@ -27,3 +27,7 @@ codegen:
 
 lint:
 	golangci-lint run ./...
+
+
+reload-webserver:
+	docker compose restart

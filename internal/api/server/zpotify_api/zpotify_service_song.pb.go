@@ -320,7 +320,7 @@ const file_zpotify_service_song_proto_rawDesc = "" +
 	"\n" +
 	"CreateSong\x12\x1f.zpotify_api.CreateSong.Request\x1a .zpotify_api.CreateSong.Response\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/song/create\x12l\n" +
 	"\n" +
-	"UpdateSong\x12\x1f.zpotify_api.UpdateSong.Request\x1a .zpotify_api.UpdateSong.Response\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*2\x10/api/song/updateB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"UpdateSong\x12\x1f.zpotify_api.UpdateSong.Request\x1a .zpotify_api.UpdateSong.Response\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/song/updateB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_song_proto_rawDescOnce sync.Once

@@ -1,3 +1,4 @@
+### Create song
 POST {{zpotify-api}}/api/song/create
 Content-Type: application/json
 Authorization: {{token}}
@@ -8,4 +9,16 @@ Authorization: {{token}}
     "5ccbb4e4-a483-406f-98c0-49d83a0d506b"
   ],
   "file_id": "2"
+}
+
+
+### Edit song info
+POST {{zpotify-api}}/api/song/update
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "id": "1",
+  "title": "New song song",
+  "artistUuids": ["a79e2214-3bcc-454b-aa74-f5ecf1d0b06b"]
 }

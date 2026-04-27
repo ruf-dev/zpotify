@@ -49,7 +49,7 @@
       }
     },
     "/api/song/update": {
-      "patch": {
+      "post": {
         "operationId": "SongAPI_UpdateSong",
         "responses": {
           "200": {

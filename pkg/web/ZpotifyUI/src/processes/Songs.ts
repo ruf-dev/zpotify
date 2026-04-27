@@ -11,6 +11,7 @@ import {BaseService} from "@/processes/BaseService.ts";
 
 export interface ISongsService {
     CreateSong: (title: string, artistUuids: string[], fileId: string) => Promise<string>
+    UpdateSong: (id: string, title: string, artistUuids: string[]) => Promise<void>
 }
 
 export class SongsService extends BaseService implements ISongsService {
@@ -24,6 +25,16 @@ export class SongsService extends BaseService implements ISongsService {
                 return SongAPI
                     .CreateSong({title, artistUuids, fileId}, initReq)
                     .then(resp => resp.id || "")
+            }
+        )
+    }
+
+    async UpdateSong(id: string, title: string, artistUuids: string[]): Promise<void> {
+        return this.executeAuthApiCall(
+            (initReq: InitReq) => {
+                return SongAPI
+                    .UpdateSong({id, title, artistUuids}, initReq)
+                    .then(() => undefined)
             }
         )
     }
