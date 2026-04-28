@@ -19,10 +19,10 @@ require (
 	github.com/stretchr/testify v1.11.1
 	github.com/tcolgate/mp3 v0.0.0-20170426193717-e79c5a46d300
 	go.redsock.ru/protoc-gen-npm v0.0.12
-	go.redsock.ru/rerrors v0.0.11
+	go.redsock.ru/rerrors v0.0.13
 	go.redsock.ru/toolbox v0.0.11
 	go.vervstack.ru/matreshka v1.0.95
-	golang.org/x/sync v0.17.0
+	golang.org/x/sync v0.19.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250603155806-513f23925822
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250603155806-513f23925822
 	google.golang.org/grpc v1.73.0
@@ -42,8 +42,8 @@ require (
 	github.com/sethvargo/go-retry v0.3.0 // indirect
 	go.redsock.ru/evon v0.0.30 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/net v0.41.0 // indirect
-	golang.org/x/sys v0.37.0 // indirect
-	golang.org/x/text v0.26.0 // indirect
+	golang.org/x/net v0.48.0 // indirect
+	golang.org/x/sys v0.39.0 // indirect
+	golang.org/x/text v0.32.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

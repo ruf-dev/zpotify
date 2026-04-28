@@ -191,7 +191,7 @@ func (a *AuthService) Refresh(ctx context.Context, refreshToken string) (domain.
 	}
 
 	if oldSession.RefreshExpiresAt.UTC().Before(time.Now().UTC()) {
-		return domain.UserSession{}, rerrors.New("refresh token expired")
+		return domain.UserSession{}, rerrors.Wrap(user_errors.ErrAccessTokenExpired)
 	}
 	newSession := a.generateSession(oldSession.UserId)
 
