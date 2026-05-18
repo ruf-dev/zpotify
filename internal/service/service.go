@@ -29,15 +29,20 @@ type service struct {
 	fileService     FileService
 }
 
-func New(dataStorage storage.Storage, cache files_cache.FilesCache, fileStorage storage.BinaryFileStorage) Service {
+func New(dataStorage storage.Storage, cache files_cache.FilesCache, fileStorage storage.BinaryFileStorage, telegramClientId string) (Service, error) {
+	authSvc, err := v1.NewAuthService(dataStorage, telegramClientId)
+	if err != nil {
+		return nil, err
+	}
+
 	return &service{
 		audioService:    v1.NewAudioService(dataStorage, cache, fileStorage),
 		userService:     v1.NewUserService(dataStorage),
-		authService:     v1.NewAuthService(dataStorage),
+		authService:     authSvc,
 		playlistService: v1.NewPlaylistService(dataStorage),
 		artistsService:  v1.NewArtistsService(dataStorage),
 		fileService:     v1.NewFileService(dataStorage, fileStorage),
-	}
+	}, nil
 }
 
 func (s *service) AudioService() AudioService {
@@ -100,6 +105,7 @@ type AuthService interface {
 	ListAuthMethods(ctx context.Context) error
 
 	AuthWithPassword(ctx context.Context, login string, password string) (domain.UserSession, error)
+	AuthWithTelegramOAuth(ctx context.Context, idToken string) (domain.UserSession, error)
 }
 
 type PlaylistService interface {

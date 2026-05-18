@@ -156,6 +156,14 @@
         }
       }
     },
+    "AuthTelegramOAuth": {
+      "type": "object",
+      "properties": {
+        "idToken": {
+          "type": "string"
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -217,6 +225,9 @@
       "properties": {
         "logPass": {
           "$ref": "#/definitions/AuthLogPass"
+        },
+        "telegramOauth": {
+          "$ref": "#/definitions/AuthTelegramOAuth"
         }
       }
     },

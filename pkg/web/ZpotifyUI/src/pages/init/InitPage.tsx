@@ -6,16 +6,14 @@ import cls from '@/pages/init/InitPage.module.css';
 import ZLogoLanding from "@/pages/init/ZLogoLanding.tsx";
 import LoginPasswordDialog from "@/dialogs/LoginViaPass/LoginViaPass.tsx";
 import AuthButton from "@/components/shared/AuthButton.tsx";
+import TelegramAuth from "@/components/auth/TelegramAuth.tsx";
 
 import {Path} from "@/app/routing/Router.tsx";
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 
 import {AudioPlayer} from "@/hooks/player/player.ts";
 import {User} from "@/hooks/user/User.ts";
-import {AuthenticateViaTelegram, AuthResults} from "@/processes/AuthTelegram.ts";
-import {TgDeeplink} from "@/common/Link.ts";
 
-import telegramIcon from "@/assets/icons/telegram.svg";
 import lockIcon from "@/assets/icons/lock.svg";
 import googleIcon from "@/assets/icons/google.svg";
 import appleIcon from "@/assets/icons/apple.svg";
@@ -37,21 +35,6 @@ export default function InitPage({AudioPlayer, userState}: InitPageProps) {
         }
     }, [userState.userData]);
 
-    function handleTelegramLogin() {
-        const authProcess = AuthenticateViaTelegram();
-        authProcess.subscribe((res: AuthResults) => {
-            if (res.AuthUUID) {
-                window.open(
-                    TgDeeplink(`resolve?domain=${import.meta.env.VITE_TG_BOT_NAME}&start=auth_${res.AuthUUID}`),
-                    "_blank"
-                );
-            }
-            if (res.AuthData) {
-                userState.Authenticate(res.AuthData);
-            }
-        });
-    }
-
     function openLogoPassDialog() {
         OpenDialog(<LoginPasswordDialog userState={userState}/>)
     }
@@ -70,11 +53,7 @@ export default function InitPage({AudioPlayer, userState}: InitPageProps) {
             <div className={cls.Divider}/>
 
             <div className={cls.ActiveButtons}>
-                <AuthButton
-                    icon={<img src={telegramIcon} width={18} height={18} alt=""/>}
-                    label="Continue with Telegram"
-                    onClick={handleTelegramLogin}
-                />
+                <TelegramAuth userState={userState}/>
                 <AuthButton
                     icon={<img src={lockIcon} width={16} height={16} alt=""/>}
                     label="Username & Password"

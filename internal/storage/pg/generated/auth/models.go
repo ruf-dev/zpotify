@@ -133,6 +133,16 @@ type PlaylistsSongsV1 struct {
 	Title        string
 	DurationSec  int64
 	FilePath     string
+	ArtistInfo   json.RawMessage
+	OrderNumber  int64
+}
+
+type PlaylistsSongsV2 struct {
+	PlaylistUuid uuid.UUID
+	ID           int64
+	Title        string
+	DurationSec  int64
+	FilePath     string
 	FileID       int64
 	ArtistInfo   json.RawMessage
 	OrderNumber  int64

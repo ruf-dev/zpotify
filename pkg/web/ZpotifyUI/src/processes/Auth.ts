@@ -34,7 +34,24 @@ export class AuthService extends BaseService implements IAuthService {
 
                 return r.authData
             })
-    };
+    }
+
+}
+
+export async function AuthViaTelegram(idToken: string): Promise<AuthData> {
+    const req = {
+        telegramOauth: { idToken }
+    } as AuthRequest
+
+    return AuthAPI
+        .Auth(req, apiPrefix())
+        .then(r => {
+            if (!r.authData) {
+                throw new Error("authData is empty")
+            }
+
+            return r.authData
+        })
 }
 
 export class AuthMiddleware {

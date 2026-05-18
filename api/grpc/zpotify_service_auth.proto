@@ -64,6 +64,7 @@ message Auth {
   message Request {
     oneof payload {
       LogPass log_pass = 1;
+      TelegramOAuth telegram_oauth = 2;
     }
   }
 
@@ -74,6 +75,10 @@ message Auth {
   message LogPass {
     string login = 1;
     string password = 2;
+  }
+
+  message TelegramOAuth {
+    string id_token = 1;
   }
 }
 

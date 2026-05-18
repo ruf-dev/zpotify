@@ -76,3 +76,19 @@ func (q *Queries) UpsertUser(ctx context.Context, username string) error {
 	_, err := q.db.ExecContext(ctx, upsertUser, username)
 	return err
 }
+
+const upsertUserByTelegramId = `-- name: UpsertUserByTelegramId :exec
+INSERT INTO users (id, username)
+VALUES ($1, $2)
+ON CONFLICT (id) DO UPDATE SET username = EXCLUDED.username
+`
+
+type UpsertUserByTelegramIdParams struct {
+	ID       int64
+	Username string
+}
+
+func (q *Queries) UpsertUserByTelegramId(ctx context.Context, arg UpsertUserByTelegramIdParams) error {
+	_, err := q.db.ExecContext(ctx, upsertUserByTelegramId, arg.ID, arg.Username)
+	return err
+}

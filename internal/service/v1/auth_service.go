@@ -5,9 +5,12 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"strconv"
 	"sync"
 	"time"
 
+	"github.com/MicahParks/keyfunc/v3"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
 	"google.golang.org/grpc/codes"
@@ -32,6 +35,8 @@ type AuthService struct {
 	sessionStorage storage.SessionStorage
 	userStorage    storage.UserStorage
 
+	jwksClient keyfunc.Keyfunc
+
 	txManager *tx_manager.TxManager
 
 	accessTokenTTL     time.Duration
@@ -39,18 +44,25 @@ type AuthService struct {
 	maxSessionsPerUser int
 }
 
-func NewAuthService(data storage.Storage) *AuthService {
+func NewAuthService(data storage.Storage, telegramClientId string) (*AuthService, error) {
+	jwks, err := keyfunc.NewDefaultCtx(context.Background(), []string{"https://oauth.telegram.org/.well-known/jwks.json"})
+	if err != nil {
+		return nil, rerrors.Wrap(err, "init telegram jwks client")
+	}
+
 	return &AuthService{
 		sessionStorage: data.SessionStorage(),
 		authStorage:    data.Auth(),
 		userStorage:    data.User(),
+
+		jwksClient: jwks,
 
 		txManager: data.TxManager(),
 
 		accessTokenTTL:     time.Hour,
 		refreshTokenTTL:    time.Hour * 24 * 7,
 		maxSessionsPerUser: 3,
-	}
+	}, nil
 }
 
 func (a *AuthService) AuthWithPassword(ctx context.Context, login string, password string) (domain.UserSession, error) {
@@ -216,6 +228,38 @@ func (a *AuthService) Refresh(ctx context.Context, refreshToken string) (domain.
 	}
 
 	return newSession, nil
+}
+
+func (a *AuthService) AuthWithTelegramOAuth(ctx context.Context, idToken string) (domain.UserSession, error) {
+	claims := &jwt.RegisteredClaims{}
+	token, err := jwt.ParseWithClaims(idToken, claims, a.jwksClient.Keyfunc,
+		jwt.WithValidMethods([]string{"RS256", "ES256"}))
+	if err != nil {
+		return domain.UserSession{}, rerrors.Wrap(err, "parse telegram id_token")
+	}
+
+	if !token.Valid {
+		return domain.UserSession{}, rerrors.New("invalid telegram token")
+	}
+
+	tgId, err := strconv.ParseInt(claims.Subject, 10, 64)
+	if err != nil {
+		return domain.UserSession{}, rerrors.Wrap(err, "parse telegram id from subject claim")
+	}
+
+	err = a.userStorage.UpsertByTelegramId(ctx, tgId, claims.Subject)
+	if err != nil {
+		return domain.UserSession{}, rerrors.Wrap(err, "upsert telegram user")
+	}
+
+	session := a.generateSession(tgId)
+
+	err = a.sessionStorage.Upsert(ctx, session)
+	if err != nil {
+		return domain.UserSession{}, rerrors.Wrap(err, "upsert session")
+	}
+
+	return session, nil
 }
 
 func (a *AuthService) ListAuthMethods(ctx context.Context) error {

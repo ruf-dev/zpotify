@@ -35,6 +35,7 @@ type Querier interface {
 	UpdateFile(ctx context.Context, arg UpdateFileParams) error
 	UpsertSongArtist(ctx context.Context, arg UpsertSongArtistParams) error
 	UpsertUser(ctx context.Context, username string) error
+	UpsertUserByTelegramId(ctx context.Context, arg UpsertUserByTelegramIdParams) error
 	UpsertUserPlaylist(ctx context.Context, arg UpsertUserPlaylistParams) error
 }
 

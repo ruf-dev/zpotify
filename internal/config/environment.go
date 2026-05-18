@@ -3,11 +3,11 @@
 package config
 
 type EnvironmentConfig struct {
-	CorsAllowedOrigins string
-	DebugAuth          bool
-	LocalStoragePath   string
-	LogFormat          string
-	LogLevel           string
+	DebugAuth        bool
+	LocalStoragePath string
+	LogFormat        string
+	LogLevel         string
+	TelegramClientID string
 }
 
 const (

@@ -22,6 +22,9 @@ environment:
     - name: debug_auth
       type: bool
       value: false
+    - name: local_storage_path
+      type: string
+      value: /data
     - name: log_format
       type: string
       enum: [JSON, TEXT]
@@ -30,6 +33,6 @@ environment:
       type: string
       enum: [Trace, Debug, Info, Warn, Error, Fatal, Panic]
       value: Info
-    - name: local_storage_path
+    - name: telegram_client_id
       type: string
-      value: /data
+      value: ""

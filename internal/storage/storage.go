@@ -45,6 +45,7 @@ type UserStorage interface {
 	//ListUsers(ctx context.Context, filter domain.GetUserFilter) ([]domain.User, error)
 
 	Upsert(ctx context.Context, username string) error
+	UpsertByTelegramId(ctx context.Context, tgId int64, username string) error
 
 	SaveSettings(ctx context.Context, id int64, settings domain.UserUiSettings) error
 	SavePermissions(ctx context.Context, id int64, permissions domain.UserPermissions) error

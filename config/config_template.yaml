@@ -33,3 +33,6 @@ environment:
       type: string
       enum: [Trace, Debug, Info, Warn, Error, Fatal, Panic]
       value: Info
+    - name: telegram_client_id
+      type: string
+      value: ""

@@ -1,40 +1,11 @@
 .TelegramAuth {
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 0.625em;
-    padding: 0.75em 1.75em;
-    background: #2f1542;
-    border-radius: 15em;
-    border: 1px solid #3d1a5a;
-    transition: transform 0.1s ease-in-out;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-.TelegramAuth.IsLoading {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.TelegramAuth:hover:not(.IsLoading) {
-    transform: scale(1.05);
-}
-
-.TgLogo {
     display: flex;
     align-items: center;
-    width: 1.25em;
-    height: 1.25em;
-    flex-shrink: 0;
+    justify-content: center;
 }
 
-.AuthButton {
+.WidgetContainer {
     display: flex;
+    align-items: center;
     justify-content: center;
-    color: var(--secondary-fg-color);
-    font-size: 0.9375em;
-    font-weight: 500;
 }

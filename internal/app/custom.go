@@ -64,7 +64,10 @@ func (c *Custom) Init(a *App) (err error) {
 		return rerrors.Wrap(err, "error creating files cache")
 	}
 
-	c.Service = service.New(c.dataStorage, fc, c.binaryStorage)
+	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, a.Cfg.Environment.TelegramClientId)
+	if err != nil {
+		return rerrors.Wrap(err, "error creating service")
+	}
 
 	c.BackgroundWorker = background.New(
 		sessions_gc.New(c.dataStorage),
@@ -90,6 +93,7 @@ func (c *Custom) Init(a *App) (err error) {
 			middleware.WithIgnoredPathAuthOption(
 				zpotify_api.AuthAPI_Auth_FullMethodName,
 				zpotify_api.AuthAPI_RefreshToken_FullMethodName,
+				zpotify_api.AuthAPI_AuthAsync_FullMethodName,
 			),
 			middleware.WithDebug(a.Cfg.Environment.DebugAuth),
 		),

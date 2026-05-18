@@ -5,6 +5,11 @@ VALUES ($1)
 ON CONFLICT (username)
     DO NOTHING;
 
+-- name: UpsertUserByTelegramId :exec
+INSERT INTO users (id, username)
+VALUES ($1, $2)
+ON CONFLICT (id) DO UPDATE SET username = EXCLUDED.username;
+
 -- name: GetUserById :one
 SELECT id,
        username

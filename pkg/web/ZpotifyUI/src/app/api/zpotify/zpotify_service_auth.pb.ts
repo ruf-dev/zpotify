@@ -46,6 +46,7 @@ type BaseAuthRequest = {
 export type AuthRequest = BaseAuthRequest &
   OneOf<{
     logPass: AuthLogPass;
+    telegramOauth: AuthTelegramOAuth;
   }>;
 
 export type AuthResponse = {
@@ -55,6 +56,10 @@ export type AuthResponse = {
 export type AuthLogPass = {
   login?: string;
   password?: string;
+};
+
+export type AuthTelegramOAuth = {
+  idToken?: string;
 };
 
 export type Auth = Record<string, never>;
