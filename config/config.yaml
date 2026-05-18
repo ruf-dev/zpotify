@@ -36,3 +36,6 @@ environment:
     - name: telegram_client_id
       type: string
       value: ""
+    - name: cors_allowed_origins
+      type: string
+      value: "*"

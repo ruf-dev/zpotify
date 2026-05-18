@@ -19,6 +19,9 @@ servers:
             module: go.zpotify.ru/zpotify
             gateway: /api
 environment:
+    - name: cors_allowed_origins
+      type: string
+      value: '*'
     - name: debug_auth
       type: bool
       value: true
