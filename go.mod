@@ -6,6 +6,7 @@ require (
 	github.com/Masterminds/squirrel v1.5.4
 	github.com/Red-Sock/go-swagger-ui v0.0.2
 	github.com/Red-Sock/go_tg v0.0.26
+	github.com/Red-Sock/trace-errors v0.0.13
 	github.com/dgraph-io/ristretto/v2 v2.3.0
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/google/uuid v1.6.0
@@ -47,3 +48,5 @@ require (
 	golang.org/x/text v0.32.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/Red-Sock/go_tg => /Users/alexbukov/redsock/go_tg

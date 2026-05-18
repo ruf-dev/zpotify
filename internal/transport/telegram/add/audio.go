@@ -7,6 +7,7 @@ import (
 	"github.com/Red-Sock/go_tg/model"
 	"github.com/Red-Sock/go_tg/model/response"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/domain"
@@ -83,6 +84,9 @@ func (h *Handler) Handle(in *model.MessageIn, out tgapi.Chat) error {
 	case domain.SaveFileCodeUserNotAllowed:
 		msg.Text = responses.File().UserNowAllowedToAdd()
 	default:
+		log.Error().
+			Int("code", int(resp.Code)).
+			Msg("unhandled response code on \"add\" handler")
 		msg.Text = "Error building response. We already working on it"
 	}
 

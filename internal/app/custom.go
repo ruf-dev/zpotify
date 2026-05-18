@@ -24,6 +24,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/transport/file_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/playlist_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/song_api_impl"
+	telegramtransport "go.zpotify.ru/zpotify/internal/transport/telegram"
 	"go.zpotify.ru/zpotify/internal/transport/user_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/wapi"
 	"go.zpotify.ru/zpotify/pkg/docs"
@@ -44,13 +45,15 @@ type Custom struct {
 	PlaylistApiImpl *playlist_api_impl.Impl
 	SongApiImpl     *song_api_impl.Impl
 
-	ServerManager *transport.ServersManager
+	ServerManager  *transport.ServersManager
+	telegramServer *telegramtransport.Server
 }
 
 func (c *Custom) Init(a *App) (err error) {
 	rerrors.SetSeparator(':')
 
 	c.dataStorage = pg.NewStorage(a.Postgres)
+
 	c.binaryStorage, err = file_storage_providers.NewLocalStorageProvider(a.Cfg.Environment.LocalStoragePath)
 	if err != nil {
 		return rerrors.Wrap(err, "error creating local file storage provider")
@@ -115,6 +118,12 @@ func (c *Custom) Init(a *App) (err error) {
 	wapiHandler = middleware.LogWebMiddleware(wapiHandler)
 
 	c.ServerManager.AddHttpHandler("/wapi/", wapiHandler)
+
+	c.telegramServer, err = telegramtransport.NewServer(a.Telegram, c.Service)
+	if err != nil {
+		return rerrors.Wrap(err, "error creating telegram server")
+	}
+
 	return nil
 }
 
@@ -126,6 +135,10 @@ func (c *Custom) Start(ctx context.Context) error {
 	eg.Go(c.BackgroundWorker.Start)
 
 	eg.Go(c.ServerManager.Start)
+
+	eg.Go(func() error {
+		return c.telegramServer.Start(ctx)
+	})
 
 	err := eg.Wait()
 	if err != nil {
@@ -140,9 +153,7 @@ func (c *Custom) Start(ctx context.Context) error {
 func (c *Custom) Stop() error {
 	eg := errgroup.Group{}
 
-	//eg.Go(func() error {
-	//	return c.telegram.Stop()
-	//})
+	eg.Go(c.telegramServer.Stop)
 
 	eg.Go(func() error {
 		return c.BackgroundWorker.Stop()
