@@ -5,8 +5,8 @@ import (
 	"io"
 
 	"go.zpotify.ru/zpotify/internal/domain"
-	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	v1 "go.zpotify.ru/zpotify/internal/service/v1"
+	"go.zpotify.ru/zpotify/internal/service/v1/auth"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
 )
@@ -29,8 +29,8 @@ type service struct {
 	fileService     FileService
 }
 
-func New(dataStorage storage.Storage, cache files_cache.FilesCache, fileStorage storage.BinaryFileStorage, telegramClientId string) (Service, error) {
-	authSvc, err := v1.NewAuthService(dataStorage, telegramClientId)
+func New(dataStorage storage.Storage, cache files_cache.FilesCache, fileStorage storage.BinaryFileStorage) (Service, error) {
+	authSvc, err := auth.New(dataStorage)
 	if err != nil {
 		return nil, err
 	}
@@ -94,18 +94,13 @@ type UserService interface {
 }
 
 type AuthService interface {
-	// Telegram auth old code
-	//InitAuth() (authUuid string, doneC chan domain.UserSession)
-	//AckAuth(ctx context.Context, authUuid string, tgId int64) error
-
-	AuthWithToken(ctx context.Context, s string) (tgId int64, err error)
+	Login(ctx context.Context, login string, password string) (domain.UserSession, error)
+	LoginViaTelegram(ctx context.Context, idToken string) (domain.UserSession, error)
+	ValidateToken(ctx context.Context, token string) (userId int64, err error)
+	Logout(ctx context.Context, accessToken string) error
 	Refresh(ctx context.Context, refreshToken string) (domain.UserSession, error)
-	GetUserContext(ctx context.Context, tgUserId int64) (user_context.UserContext, error)
-
+	GetMe(ctx context.Context, userId int64) (domain.User, domain.UserPermissions, error)
 	ListAuthMethods(ctx context.Context) error
-
-	AuthWithPassword(ctx context.Context, login string, password string) (domain.UserSession, error)
-	AuthWithTelegramOAuth(ctx context.Context, idToken string) (domain.UserSession, error)
 
 	// GetOrCreateTelegramUser finds or creates a user by telegram ID without JWT validation.
 	// Used by the Telegram bot listener.

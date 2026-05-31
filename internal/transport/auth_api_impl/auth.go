@@ -16,9 +16,9 @@ func (impl *Impl) Auth(ctx context.Context, r *pb.Auth_Request) (*pb.Auth_Respon
 
 	switch payload := r.GetPayload().(type) {
 	case *pb.Auth_Request_LogPass:
-		session, err = impl.authService.AuthWithPassword(ctx, payload.LogPass.Login, payload.LogPass.Password)
+		session, err = impl.authService.Login(ctx, payload.LogPass.Login, payload.LogPass.Password)
 	case *pb.Auth_Request_TelegramOauth:
-		session, err = impl.authService.AuthWithTelegramOAuth(ctx, payload.TelegramOauth.IdToken)
+		session, err = impl.authService.LoginViaTelegram(ctx, payload.TelegramOauth.IdToken)
 	}
 
 	if err != nil {

@@ -64,7 +64,7 @@ func (c *Custom) Init(a *App) (err error) {
 		return rerrors.Wrap(err, "error creating files cache")
 	}
 
-	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, a.Cfg.Environment.TelegramClientID)
+	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage)
 	if err != nil {
 		return rerrors.Wrap(err, "error creating service")
 	}

@@ -155,28 +155,25 @@ func (ac *authMiddleware) authWithSession(ctx context.Context, md metadata.MD) (
 			rerrors.WithHttpStatus(http.StatusUnauthorized))
 	}
 
-	userId, err := ac.authService.AuthWithToken(ctx, auth[0])
+	userId, err := ac.authService.ValidateToken(ctx, auth[0])
 	if err != nil {
 		return nil, rerrors.Wrap(err)
 	}
 
-	uc := user_context.UserContext{
-		UserId: userId,
-	}
-
-	ctx = user_context.WithUserContext(ctx, uc)
-
-	user, err := ac.userService.GetMe(ctx)
+	_, permissions, err := ac.authService.GetMe(ctx, userId)
 	if err != nil {
 		return nil, rerrors.Wrap(err)
 	}
 
-	if !user.Permissions.EarlyAccess {
+	if !permissions.EarlyAccess {
 		return nil, status.Error(codes.Unavailable,
 			"Service in early access. Ask administrator to add you to white list")
 	}
 
-	uc.Permissions = user.Permissions
+	uc := user_context.UserContext{
+		UserId:      userId,
+		Permissions: permissions,
+	}
 
 	return user_context.WithUserContext(ctx, uc), nil
 }

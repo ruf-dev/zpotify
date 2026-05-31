@@ -38,6 +38,13 @@ service AuthAPI {
       body: "*"
     };
   }
+
+  rpc Logout(Logout.Request) returns (Logout.Response) {
+    option (google.api.http) = {
+      post: "/api/auth/logout"
+      body: "*"
+    };
+  }
 }
 
 message GetAuthMethods {
@@ -97,4 +104,9 @@ message AuthData {
   string refresh_token = 2;
   google.protobuf.Timestamp access_expires_at = 3;
   google.protobuf.Timestamp refresh_expires_at = 4;
+}
+
+message Logout {
+  message Request {}
+  message Response {}
 }

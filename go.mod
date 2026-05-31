@@ -1,6 +1,6 @@
 module go.zpotify.ru/zpotify
 
-go 1.24.2
+go 1.25.0
 
 require (
 	github.com/Masterminds/squirrel v1.5.4
@@ -23,7 +23,8 @@ require (
 	go.redsock.ru/rerrors v0.0.13
 	go.redsock.ru/toolbox v0.0.11
 	go.vervstack.ru/matreshka v1.0.95
-	golang.org/x/sync v0.19.0
+	golang.org/x/crypto v0.52.0
+	golang.org/x/sync v0.20.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250603155806-513f23925822
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250603155806-513f23925822
 	google.golang.org/grpc v1.73.0
@@ -46,9 +47,9 @@ require (
 	github.com/sethvargo/go-retry v0.3.0 // indirect
 	go.redsock.ru/evon v0.0.30 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/net v0.48.0 // indirect
-	golang.org/x/sys v0.39.0 // indirect
-	golang.org/x/text v0.32.0 // indirect
+	golang.org/x/net v0.54.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
 	golang.org/x/time v0.9.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

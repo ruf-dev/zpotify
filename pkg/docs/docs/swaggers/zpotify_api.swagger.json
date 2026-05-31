@@ -1,0 +1,657 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "zpotify_api.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "ZpotifyAPI"
+    },
+    {
+      "name": "UserAPI"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/playlist": {
+      "post": {
+        "operationId": "ZpotifyAPI_CreatePlaylist",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiCreatePlaylistResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiCreatePlaylistRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ZpotifyAPI"
+        ]
+      }
+    },
+    "/api/playlist/{uuid}": {
+      "get": {
+        "operationId": "ZpotifyAPI_GetPlaylist",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetPlaylistResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZpotifyAPI"
+        ]
+      }
+    },
+    "/api/songs": {
+      "post": {
+        "summary": "List Songs of playlist",
+        "operationId": "ZpotifyAPI_ListSongs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiListSongsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiListSongsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ZpotifyAPI"
+        ]
+      }
+    },
+    "/api/songs/{id}": {
+      "delete": {
+        "summary": "Delete song from playlist TODO",
+        "operationId": "ZpotifyAPI_DeleteSong",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiDeleteSongResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "ZpotifyAPI"
+        ]
+      }
+    },
+    "/api/user": {
+      "get": {
+        "operationId": "UserAPI_Me",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiMeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "UserAPI"
+        ]
+      }
+    },
+    "/api/user/auth": {
+      "post": {
+        "summary": "Only Telegram auth is supported",
+        "operationId": "UserAPI_Auth",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/zpotify_apiAuthResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of zpotify_apiAuthResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiAuthRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserAPI"
+        ]
+      }
+    },
+    "/api/user/auth_methods": {
+      "get": {
+        "operationId": "UserAPI_GetAuthMethods",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetAuthMethodsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "UserAPI"
+        ]
+      }
+    },
+    "/api/user/refresh_token": {
+      "post": {
+        "operationId": "UserAPI_RefreshToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiRefreshResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiRefreshRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserAPI"
+        ]
+      }
+    },
+    "/api/user/settings": {
+      "get": {
+        "operationId": "UserAPI_GetUserSettings",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetUserSettingsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "UserAPI"
+        ]
+      }
+    },
+    "/api/version": {
+      "get": {
+        "operationId": "ZpotifyAPI_Version",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiVersionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "ZpotifyAPI"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AuthAuthData": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string"
+        },
+        "refreshToken": {
+          "type": "string"
+        },
+        "accessExpiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "refreshExpiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "AuthLogPass": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "HomePageSegmentManagement": {
+      "type": "object"
+    },
+    "HomePageSegmentPlaylistSegment": {
+      "type": "object",
+      "properties": {
+        "playlistId": {
+          "type": "string"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "zpotify_apiArtistBase": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiAuthMethods": {
+      "type": "string",
+      "enum": [
+        "AuthMethod_NotSpecified",
+        "AuthMethod_Offline",
+        "AuthMethod_Telegram"
+      ],
+      "default": "AuthMethod_NotSpecified"
+    },
+    "zpotify_apiAuthRequest": {
+      "type": "object",
+      "properties": {
+        "isUsingTelegram": {
+          "type": "boolean"
+        },
+        "logPass": {
+          "$ref": "#/definitions/AuthLogPass"
+        }
+      }
+    },
+    "zpotify_apiAuthResponse": {
+      "type": "object",
+      "properties": {
+        "authUuid": {
+          "type": "string"
+        },
+        "authData": {
+          "$ref": "#/definitions/AuthAuthData"
+        }
+      }
+    },
+    "zpotify_apiCreatePlaylistRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiCreatePlaylistResponse": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiDeleteSongResponse": {
+      "type": "object"
+    },
+    "zpotify_apiGetAuthMethodsResponse": {
+      "type": "object",
+      "properties": {
+        "authMethods": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/zpotify_apiAuthMethods"
+          }
+        }
+      }
+    },
+    "zpotify_apiGetPlaylistResponse": {
+      "type": "object",
+      "properties": {
+        "playlist": {
+          "$ref": "#/definitions/zpotify_apiPlaylist"
+        }
+      }
+    },
+    "zpotify_apiGetUserSettingsResponse": {
+      "type": "object",
+      "properties": {
+        "settings": {
+          "$ref": "#/definitions/zpotify_apiUserSettings"
+        }
+      }
+    },
+    "zpotify_apiHomePageSegment": {
+      "type": "object",
+      "properties": {
+        "playlistSegment": {
+          "$ref": "#/definitions/HomePageSegmentPlaylistSegment"
+        },
+        "managementSegment": {
+          "$ref": "#/definitions/HomePageSegmentManagement"
+        }
+      }
+    },
+    "zpotify_apiListSongsRequest": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/zpotify_apiPaging"
+        },
+        "randomHash": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "playlistId": {
+          "type": "string",
+          "title": "by default returns songs from global queue (last added tracks)"
+        }
+      }
+    },
+    "zpotify_apiListSongsResponse": {
+      "type": "object",
+      "properties": {
+        "songs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiSongBase"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "userCanDelete": {
+          "type": "boolean"
+        }
+      }
+    },
+    "zpotify_apiMeResponse": {
+      "type": "object",
+      "properties": {
+        "userData": {
+          "$ref": "#/definitions/zpotify_apiUserData"
+        },
+        "permissions": {
+          "$ref": "#/definitions/zpotify_apiPermissions"
+        }
+      }
+    },
+    "zpotify_apiPaging": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "offset": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "zpotify_apiPermissions": {
+      "type": "object",
+      "properties": {
+        "canUpload": {
+          "type": "boolean",
+          "title": "User can upload tracks via telegram"
+        },
+        "earlyAccess": {
+          "type": "boolean",
+          "title": "User can interact at all (basically a feature flag)"
+        },
+        "canCreatePlaylist": {
+          "type": "boolean",
+          "title": "User can create playlists"
+        }
+      }
+    },
+    "zpotify_apiPlaylist": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "isPublic": {
+          "type": "boolean"
+        }
+      }
+    },
+    "zpotify_apiRefreshRequest": {
+      "type": "object",
+      "properties": {
+        "refreshToken": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiRefreshResponse": {
+      "type": "object",
+      "properties": {
+        "authData": {
+          "$ref": "#/definitions/AuthAuthData"
+        }
+      }
+    },
+    "zpotify_apiSongBase": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string"
+        },
+        "artists": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiArtistBase"
+          }
+        },
+        "durationSec": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "zpotify_apiUiSettings": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiUserData": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiUserSettings": {
+      "type": "object",
+      "properties": {
+        "homeSegments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiHomePageSegment"
+          }
+        },
+        "ui": {
+          "$ref": "#/definitions/zpotify_apiUiSettings"
+        }
+      }
+    },
+    "zpotify_apiVersionResponse": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "clientTimestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

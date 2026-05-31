@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "zpotify_service_auth.proto",
+    "title": "zpotify_auth_service.proto",
     "version": "version not set"
   },
   "tags": [
@@ -74,38 +74,6 @@
             }
           }
         },
-        "tags": [
-          "AuthAPI"
-        ]
-      }
-    },
-    "/api/auth/logout": {
-      "post": {
-        "operationId": "AuthAPI_Logout",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/zpotify_apiLogoutResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/zpotify_apiLogoutRequest"
-            }
-          }
-        ],
         "tags": [
           "AuthAPI"
         ]
@@ -188,14 +156,6 @@
         }
       }
     },
-    "AuthTelegramOAuth": {
-      "type": "object",
-      "properties": {
-        "idToken": {
-          "type": "string"
-        }
-      }
-    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -257,9 +217,6 @@
       "properties": {
         "logPass": {
           "$ref": "#/definitions/AuthLogPass"
-        },
-        "telegramOauth": {
-          "$ref": "#/definitions/AuthTelegramOAuth"
         }
       }
     },
@@ -296,12 +253,6 @@
           }
         }
       }
-    },
-    "zpotify_apiLogoutRequest": {
-      "type": "object"
-    },
-    "zpotify_apiLogoutResponse": {
-      "type": "object"
     },
     "zpotify_apiRefreshRequest": {
       "type": "object",

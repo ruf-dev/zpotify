@@ -1,6 +1,4 @@
-import {useRef, useEffect} from "react";
-
-import cls from "@/components/auth/TelegramAuth.module.css"
+import {TelegramAuth as TgAuth, TelegramAuthData} from "@vervstack/chures";
 
 import {User} from "@/hooks/user/User.ts";
 import {AuthViaTelegram} from "@/processes/Auth.ts";
@@ -10,39 +8,17 @@ interface TelegramAuthProps {
 }
 
 export default function TelegramAuth({userState}: TelegramAuthProps) {
-    const containerRef = useRef<HTMLDivElement>(null);
+    const botId = import.meta.env.VITE_TELEGRAM_CLIENT_ID ?? "";
 
-    useEffect(function () {
-        if (!containerRef.current) return;
+    function handleSuccess(data: TelegramAuthData) {
+        AuthViaTelegram(data.id_token)
+            .then(function (authData) {
+                userState.Authenticate(authData);
+            })
+            .catch(function (err: unknown) {
+                alert(err instanceof Error ? err.message : "Telegram login failed");
+            });
+    }
 
-        (window as unknown as Record<string, unknown>).onTelegramAuth = function (data: { id_token: string }) {
-            AuthViaTelegram(data.id_token)
-                .then(function (authData) {
-                    userState.Authenticate(authData);
-                })
-                .catch(function (err: unknown) {
-                    alert(err instanceof Error ? err.message : "Telegram login failed");
-                });
-        };
-
-        const script = document.createElement("script");
-        script.src = "https://oauth.telegram.org/js/telegram-login.js?3";
-        script.setAttribute("data-client-id", import.meta.env.VITE_TELEGRAM_CLIENT_ID ?? "");
-        script.setAttribute("data-size", "large");
-        script.setAttribute("data-onauth", "onTelegramAuth(data)");
-        script.setAttribute("data-request-access", "write");
-        script.async = true;
-        containerRef.current.appendChild(script);
-
-        return function () {
-            delete (window as unknown as Record<string, unknown>).onTelegramAuth;
-        };
-    }, []);
-
-    return (
-        <div className={cls.TelegramAuth}>
-            <div ref={containerRef} className={cls.WidgetContainer}/>
-            <button className="tg-auth-button" data-style="shine">Sign In via Telegram</button>
-        </div>
-    );
+    return <TgAuth title="Sign in with Telegram" botId={botId} onSuccess={handleSuccess}/>;
 }

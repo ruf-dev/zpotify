@@ -23,6 +23,7 @@ const (
 	AuthAPI_Auth_FullMethodName           = "/zpotify_api.AuthAPI/Auth"
 	AuthAPI_AuthAsync_FullMethodName      = "/zpotify_api.AuthAPI/AuthAsync"
 	AuthAPI_RefreshToken_FullMethodName   = "/zpotify_api.AuthAPI/RefreshToken"
+	AuthAPI_Logout_FullMethodName         = "/zpotify_api.AuthAPI/Logout"
 )
 
 // AuthAPIClient is the client API for AuthAPI service.
@@ -33,6 +34,7 @@ type AuthAPIClient interface {
 	Auth(ctx context.Context, in *Auth_Request, opts ...grpc.CallOption) (*Auth_Response, error)
 	AuthAsync(ctx context.Context, in *AuthViaAsync_Request, opts ...grpc.CallOption) (grpc.ServerStreamingClient[AuthViaAsync_Response], error)
 	RefreshToken(ctx context.Context, in *Refresh_Request, opts ...grpc.CallOption) (*Refresh_Response, error)
+	Logout(ctx context.Context, in *Logout_Request, opts ...grpc.CallOption) (*Logout_Response, error)
 }
 
 type authAPIClient struct {
@@ -92,6 +94,16 @@ func (c *authAPIClient) RefreshToken(ctx context.Context, in *Refresh_Request, o
 	return out, nil
 }
 
+func (c *authAPIClient) Logout(ctx context.Context, in *Logout_Request, opts ...grpc.CallOption) (*Logout_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Logout_Response)
+	err := c.cc.Invoke(ctx, AuthAPI_Logout_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthAPIServer is the server API for AuthAPI service.
 // All implementations must embed UnimplementedAuthAPIServer
 // for forward compatibility.
@@ -100,6 +112,7 @@ type AuthAPIServer interface {
 	Auth(context.Context, *Auth_Request) (*Auth_Response, error)
 	AuthAsync(*AuthViaAsync_Request, grpc.ServerStreamingServer[AuthViaAsync_Response]) error
 	RefreshToken(context.Context, *Refresh_Request) (*Refresh_Response, error)
+	Logout(context.Context, *Logout_Request) (*Logout_Response, error)
 	mustEmbedUnimplementedAuthAPIServer()
 }
 
@@ -121,6 +134,9 @@ func (UnimplementedAuthAPIServer) AuthAsync(*AuthViaAsync_Request, grpc.ServerSt
 }
 func (UnimplementedAuthAPIServer) RefreshToken(context.Context, *Refresh_Request) (*Refresh_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method RefreshToken not implemented")
+}
+func (UnimplementedAuthAPIServer) Logout(context.Context, *Logout_Request) (*Logout_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method Logout not implemented")
 }
 func (UnimplementedAuthAPIServer) mustEmbedUnimplementedAuthAPIServer() {}
 func (UnimplementedAuthAPIServer) testEmbeddedByValue()                 {}
@@ -208,6 +224,24 @@ func _AuthAPI_RefreshToken_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthAPI_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Logout_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthAPIServer).Logout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthAPI_Logout_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthAPIServer).Logout(ctx, req.(*Logout_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthAPI_ServiceDesc is the grpc.ServiceDesc for AuthAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -226,6 +260,10 @@ var AuthAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RefreshToken",
 			Handler:    _AuthAPI_RefreshToken_Handler,
+		},
+		{
+			MethodName: "Logout",
+			Handler:    _AuthAPI_Logout_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
