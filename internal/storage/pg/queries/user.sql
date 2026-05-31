@@ -1,14 +1,8 @@
--- name: UpsertUser :exec
-INSERT INTO users
-    (username)
+-- name: InsertUser :one
+INSERT INTO users (username)
 VALUES ($1)
-ON CONFLICT (username)
-    DO NOTHING;
-
--- name: UpsertUserByTelegramId :exec
-INSERT INTO users (id, username)
-VALUES ($1, $2)
-ON CONFLICT (id) DO UPDATE SET username = EXCLUDED.username;
+ON CONFLICT (username) DO UPDATE SET username = EXCLUDED.username
+RETURNING id;
 
 -- name: GetUserById :one
 SELECT id,

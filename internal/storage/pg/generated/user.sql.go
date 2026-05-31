@@ -23,6 +23,20 @@ func (q *Queries) GetUserById(ctx context.Context, id int64) (User, error) {
 	return i, err
 }
 
+const insertUser = `-- name: InsertUser :one
+INSERT INTO users (username)
+VALUES ($1)
+ON CONFLICT (username) DO UPDATE SET username = EXCLUDED.username
+RETURNING id
+`
+
+func (q *Queries) InsertUser(ctx context.Context, username string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, insertUser, username)
+	var id int64
+	err := row.Scan(&id)
+	return id, err
+}
+
 const saveUserPermissions = `-- name: SaveUserPermissions :exec
 INSERT INTO user_permissions
     (user_id, can_upload, early_access, can_create_playlist)
@@ -61,34 +75,5 @@ type SaveUserSettingsParams struct {
 
 func (q *Queries) SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error {
 	_, err := q.db.ExecContext(ctx, saveUserSettings, arg.UserID, arg.Locale)
-	return err
-}
-
-const upsertUser = `-- name: UpsertUser :exec
-INSERT INTO users
-    (username)
-VALUES ($1)
-ON CONFLICT (username)
-    DO NOTHING
-`
-
-func (q *Queries) UpsertUser(ctx context.Context, username string) error {
-	_, err := q.db.ExecContext(ctx, upsertUser, username)
-	return err
-}
-
-const upsertUserByTelegramId = `-- name: UpsertUserByTelegramId :exec
-INSERT INTO users (id, username)
-VALUES ($1, $2)
-ON CONFLICT (id) DO UPDATE SET username = EXCLUDED.username
-`
-
-type UpsertUserByTelegramIdParams struct {
-	ID       int64
-	Username string
-}
-
-func (q *Queries) UpsertUserByTelegramId(ctx context.Context, arg UpsertUserByTelegramIdParams) error {
-	_, err := q.db.ExecContext(ctx, upsertUserByTelegramId, arg.ID, arg.Username)
 	return err
 }

@@ -13,47 +13,6 @@ import (
 	"github.com/google/uuid"
 )
 
-type IdentityProvider string
-
-const (
-	IdentityProviderZPOTIFY IdentityProvider = "ZPOTIFY"
-)
-
-func (e *IdentityProvider) Scan(src interface{}) error {
-	switch s := src.(type) {
-	case []byte:
-		*e = IdentityProvider(s)
-	case string:
-		*e = IdentityProvider(s)
-	default:
-		return fmt.Errorf("unsupported scan type for IdentityProvider: %T", src)
-	}
-	return nil
-}
-
-type NullIdentityProvider struct {
-	IdentityProvider IdentityProvider
-	Valid            bool // Valid is true if IdentityProvider is not NULL
-}
-
-// Scan implements the Scanner interface.
-func (ns *NullIdentityProvider) Scan(value interface{}) error {
-	if value == nil {
-		ns.IdentityProvider, ns.Valid = "", false
-		return nil
-	}
-	ns.Valid = true
-	return ns.IdentityProvider.Scan(value)
-}
-
-// Value implements the driver Valuer interface.
-func (ns NullIdentityProvider) Value() (driver.Value, error) {
-	if !ns.Valid {
-		return nil, nil
-	}
-	return string(ns.IdentityProvider), nil
-}
-
 type UserHomeSegmentType string
 
 const (
@@ -107,6 +66,19 @@ type FilesMetum struct {
 	AddedByID   int64
 	SizeBytes   int64
 	Verified    bool
+}
+
+type IdentityTelegram struct {
+	TelegramID   int64
+	UserID       int64
+	Login        string
+	LastLoggedAt time.Time
+}
+
+type IdentityZpotify struct {
+	UserID   int64
+	Login    string
+	Password string
 }
 
 type Locale struct {
@@ -171,13 +143,6 @@ type UserHomeSegment struct {
 	Segment     json.RawMessage
 	Type        UserHomeSegmentType
 	OrderNumber int32
-}
-
-type UserIdentity struct {
-	ID               int64
-	UserID           int64
-	IdentityProvider IdentityProvider
-	Payload          json.RawMessage
 }
 
 type UserPermission struct {

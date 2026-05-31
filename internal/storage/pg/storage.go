@@ -13,7 +13,9 @@ import (
 )
 
 type dataStorage struct {
-	authStorage    *AuthStorage
+	telegramIdentityStorage *TelegramIdentityStorage
+	zpotifyIdentityStorage  *ZpotifyIdentityStorage
+
 	sessionStorage *SessionStorage
 
 	userStorage         *UserStorage
@@ -29,20 +31,25 @@ type dataStorage struct {
 
 func NewStorage(conn *sql.DB) storage.Storage {
 	return &dataStorage{
-		NewAuthStorage(conn),
-		NewSessionStorage(conn),
-		NewUserStorage(conn),
-		NewUserSettingsStorage(conn),
-		NewSongStorage(conn),
-		NewPlaylistStorage(conn),
-		NewArtistsStorage(conn),
-		NewFileMetaStorage(conn),
-		conn,
+		telegramIdentityStorage: NewTelegramIdentityStorage(conn),
+		zpotifyIdentityStorage:  NewZpotifyIdentityStorage(conn),
+		sessionStorage:          NewSessionStorage(conn),
+		userStorage:             NewUserStorage(conn),
+		userSettingsStorage:     NewUserSettingsStorage(conn),
+		songsStorage:            NewSongStorage(conn),
+		playlistStorage:         NewPlaylistStorage(conn),
+		artistStorage:           NewArtistsStorage(conn),
+		fileMetaStorage:         NewFileMetaStorage(conn),
+		conn:                    conn,
 	}
 }
 
-func (d *dataStorage) Auth() storage.AuthStorage {
-	return d.authStorage
+func (d *dataStorage) TelegramIdentity() storage.TelegramIdentityStorage {
+	return d.telegramIdentityStorage
+}
+
+func (d *dataStorage) ZpotifyIdentity() storage.ZpotifyIdentityStorage {
+	return d.zpotifyIdentityStorage
 }
 
 func (d *dataStorage) SessionStorage() storage.SessionStorage {

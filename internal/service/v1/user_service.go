@@ -39,17 +39,17 @@ func (u *UserService) Init(ctx context.Context, user domain.User) error {
 		func(tx *sql.Tx) error {
 			userStorage := u.userStorage.WithTx(tx)
 
-			err := userStorage.Upsert(ctx, user.UserBaseInfo.Username)
+			userId, err := userStorage.Insert(ctx, user.UserBaseInfo.Username)
 			if err != nil {
-				return rerrors.Wrap(err, "error upserting user's info")
+				return rerrors.Wrap(err, "error inserting user")
 			}
 
-			err = userStorage.SaveSettings(ctx, user.Id, user.UserUiSettings)
+			err = userStorage.SaveSettings(ctx, userId, user.UserUiSettings)
 			if err != nil {
 				return rerrors.Wrap(err, "error saving user's settings")
 			}
 
-			err = userStorage.SavePermissions(ctx, user.Id, user.Permissions)
+			err = userStorage.SavePermissions(ctx, userId, user.Permissions)
 			if err != nil {
 				return rerrors.Wrap(err, "error saving user's permissions")
 			}

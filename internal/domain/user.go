@@ -53,6 +53,15 @@ type UserSession struct {
 
 type UserHomeSegment querier.UserHomeSegment
 
+type TelegramIdentity struct {
+	TelegramId   int64
+	UserId       int64
+	Login        string
+	LastLoggedAt time.Time
+}
+
 type ZpotifyIdentity struct {
-	Password string `json:"password"`
+	UserId   int64
+	Login    string
+	Password string
 }

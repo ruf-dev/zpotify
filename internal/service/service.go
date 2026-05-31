@@ -106,6 +106,13 @@ type AuthService interface {
 
 	AuthWithPassword(ctx context.Context, login string, password string) (domain.UserSession, error)
 	AuthWithTelegramOAuth(ctx context.Context, idToken string) (domain.UserSession, error)
+
+	// GetOrCreateTelegramUser finds or creates a user by telegram ID without JWT validation.
+	// Used by the Telegram bot listener.
+	GetOrCreateTelegramUser(ctx context.Context, tgId int64, username string) (internalUserId int64, err error)
+
+	// ResolveTelegramId maps a Telegram ID to the internal users.id.
+	ResolveTelegramId(ctx context.Context, tgId int64) (internalUserId int64, err error)
 }
 
 type PlaylistService interface {

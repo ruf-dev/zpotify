@@ -31,3 +31,6 @@ lint:
 
 reload-webserver:
 	docker compose restart
+
+run-dev-client:
+	cd pkg/web/ZpotifyUI && vite

@@ -7,7 +7,6 @@ import (
 	"github.com/Red-Sock/go_tg/model"
 	"github.com/rs/zerolog/log"
 
-	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/localization"
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/service"
@@ -27,53 +26,25 @@ func NewServer(bot *client.Bot, service service.Service) (s *Server, err error) 
 
 	responsesBuilder := localization.New()
 	s.bot.ExternalContext = func(in *model.MessageIn) context.Context {
-		// TODO Replace onto in-memory cache
-		// it works fine on MVP stage but will struggle
-		// when real load starts
-
-		// Implement following algorithm:
-		// Try lookup in cache
-		// Try lookup in storage
-
-		// If found - extract locale and move on
-
-		// Init in storage
-		// Store in cache
 		ctx := context.Background()
 
-		u, err := service.UserService().Get(ctx, in.From.ID)
-		if err == nil {
-			ctx = localization.LangToCtx(ctx,
-				localization.GetLocaleOrDefault(u.Locale))
-			ctx = user_context.WithUserContext(ctx,
-				user_context.UserContext{
-					UserId:      u.Id,
-					Permissions: u.Permissions,
-				})
+		userId, err := service.AuthService().GetOrCreateTelegramUser(ctx, in.From.ID, in.From.UserName)
+		if err != nil {
+			log.Error().Err(err).Msg("error during telegram user init")
 			return ctx
 		}
 
-		locale := localization.ParseLangFromChatMessage(in)
-		ctx = localization.LangToCtx(ctx, locale)
-
-		user := domain.User{
-			UserBaseInfo: domain.UserBaseInfo{
-				Id:       in.From.ID,
-				Username: in.From.UserName,
-			},
-			UserUiSettings: domain.UserUiSettings{
-				Locale: string(locale),
-			},
-		}
-
-		err = service.UserService().Init(ctx, user)
+		u, err := service.UserService().Get(ctx, userId)
 		if err != nil {
-			log.Error().Err(err).Msg("error during user initialization")
+			log.Error().Err(err).Msg("error getting user after telegram init")
+			return ctx
 		}
 
+		locale := localization.GetLocaleOrDefault(u.Locale)
+		ctx = localization.LangToCtx(ctx, locale)
 		ctx = user_context.WithUserContext(ctx,
 			user_context.UserContext{
-				UserId:      u.Id,
+				UserId:      userId,
 				Permissions: u.Permissions,
 			})
 

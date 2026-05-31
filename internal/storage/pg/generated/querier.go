@@ -23,19 +23,21 @@ type Querier interface {
 	GetHomeSegments(ctx context.Context, userID int64) ([]UserHomeSegment, error)
 	GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error)
 	GetSongById(ctx context.Context, id int64) (Song, error)
+	GetTelegramIdentityByTgId(ctx context.Context, telegramID int64) (IdentityTelegram, error)
 	GetUiSettings(ctx context.Context, userID int64) (UserSetting, error)
 	GetUserById(ctx context.Context, id int64) (User, error)
 	GetUserPermissionsOnPlaylist(ctx context.Context, arg GetUserPermissionsOnPlaylistParams) (GetUserPermissionsOnPlaylistRow, error)
 	GetUserSessionByAccessToken(ctx context.Context, accessToken string) (UserSession, error)
 	GetUserSessionByRefreshToken(ctx context.Context, refreshToken string) (UserSession, error)
+	GetZpotifyIdentityByLogin(ctx context.Context, login string) (IdentityZpotify, error)
+	InsertUser(ctx context.Context, username string) (int64, error)
 	ListSessionsByUserId(ctx context.Context, userID int64) ([]UserSession, error)
 	ListUserPermissionsByUserId(ctx context.Context, userID int64) (UserPermission, error)
 	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error
 	SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error
 	UpdateFile(ctx context.Context, arg UpdateFileParams) error
 	UpsertSongArtist(ctx context.Context, arg UpsertSongArtistParams) error
-	UpsertUser(ctx context.Context, username string) error
-	UpsertUserByTelegramId(ctx context.Context, arg UpsertUserByTelegramIdParams) error
+	UpsertTelegramIdentity(ctx context.Context, arg UpsertTelegramIdentityParams) (int64, error)
 	UpsertUserPlaylist(ctx context.Context, arg UpsertUserPlaylistParams) error
 }
 

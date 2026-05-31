@@ -1,0 +1,4 @@
+service:
+  name: Zpotify
+  description: Self-hosted spotify alternative
+  box: small # small, medium, large

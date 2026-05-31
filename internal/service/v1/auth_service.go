@@ -3,7 +3,6 @@ package v1
 import (
 	"context"
 	"database/sql"
-	"encoding/json"
 	"errors"
 	"strconv"
 	"sync"
@@ -18,7 +17,6 @@ import (
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/storage"
-	auth_q "go.zpotify.ru/zpotify/internal/storage/pg/generated/auth"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 	"go.zpotify.ru/zpotify/internal/user_errors"
 )
@@ -31,9 +29,10 @@ type authData struct {
 type AuthService struct {
 	m sync.Map
 
-	authStorage    storage.AuthStorage
-	sessionStorage storage.SessionStorage
-	userStorage    storage.UserStorage
+	telegramIdentityStorage storage.TelegramIdentityStorage
+	zpotifyIdentityStorage  storage.ZpotifyIdentityStorage
+	sessionStorage          storage.SessionStorage
+	userStorage             storage.UserStorage
 
 	jwksClient keyfunc.Keyfunc
 
@@ -51,9 +50,10 @@ func NewAuthService(data storage.Storage, telegramClientId string) (*AuthService
 	}
 
 	return &AuthService{
-		sessionStorage: data.SessionStorage(),
-		authStorage:    data.Auth(),
-		userStorage:    data.User(),
+		telegramIdentityStorage: data.TelegramIdentity(),
+		zpotifyIdentityStorage:  data.ZpotifyIdentity(),
+		sessionStorage:          data.SessionStorage(),
+		userStorage:             data.User(),
 
 		jwksClient: jwks,
 
@@ -66,27 +66,19 @@ func NewAuthService(data storage.Storage, telegramClientId string) (*AuthService
 }
 
 func (a *AuthService) AuthWithPassword(ctx context.Context, login string, password string) (domain.UserSession, error) {
-	identity, err := a.authStorage.GetIdentitiesByUsernameAndProvider(ctx, login, auth_q.IdentityProviderZPOTIFY)
+	identity, err := a.zpotifyIdentityStorage.GetByLogin(ctx, login)
 	if err != nil {
-		if !errors.Is(err, storage.ErrNotFound) {
-			return domain.UserSession{}, rerrors.Wrap(err)
+		if errors.Is(err, storage.ErrNotFound) {
+			return domain.UserSession{}, rerrors.Wrap(user_errors.ErrUnauthenticated, "no such user or password mismatched")
 		}
-
-		return domain.UserSession{}, rerrors.Wrap(err, "no such user or password mismatched")
-	}
-
-	var zpotifyIdentity domain.ZpotifyIdentity
-
-	err = json.Unmarshal(identity.Payload, &zpotifyIdentity)
-	if err != nil {
 		return domain.UserSession{}, rerrors.Wrap(err)
 	}
 
-	if zpotifyIdentity.Password != password {
+	if identity.Password != password {
 		return domain.UserSession{}, rerrors.Wrap(user_errors.ErrUnauthenticated)
 	}
 
-	session := a.generateSession(int64(identity.ID))
+	session := a.generateSession(identity.UserId)
 
 	err = a.sessionStorage.Upsert(ctx, session)
 	if err != nil {
@@ -139,10 +131,15 @@ func (a *AuthService) AckAsyncAuth(ctx context.Context, authUuid string, tgId in
 
 	defer close(ad.outC)
 
-	newSession := a.generateSession(tgId)
+	internalUserId, err := a.ResolveTelegramId(ctx, tgId)
+	if err != nil {
+		return rerrors.Wrap(err, "resolve telegram id in AckAsyncAuth")
+	}
 
-	err := a.txManager.Execute(func(tx *sql.Tx) error {
-		sessions, err := a.sessionStorage.ListByUserId(ctx, tgId)
+	newSession := a.generateSession(internalUserId)
+
+	err = a.txManager.Execute(func(tx *sql.Tx) error {
+		sessions, err := a.sessionStorage.ListByUserId(ctx, internalUserId)
 		if err != nil {
 			return rerrors.Wrap(err, "error listing user's sessions")
 		}
@@ -230,8 +227,15 @@ func (a *AuthService) Refresh(ctx context.Context, refreshToken string) (domain.
 	return newSession, nil
 }
 
+type telegramClaims struct {
+	jwt.RegisteredClaims
+	Username  string `json:"username"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+}
+
 func (a *AuthService) AuthWithTelegramOAuth(ctx context.Context, idToken string) (domain.UserSession, error) {
-	claims := &jwt.RegisteredClaims{}
+	claims := &telegramClaims{}
 	token, err := jwt.ParseWithClaims(idToken, claims, a.jwksClient.Keyfunc,
 		jwt.WithValidMethods([]string{"RS256", "ES256"}))
 	if err != nil {
@@ -247,12 +251,17 @@ func (a *AuthService) AuthWithTelegramOAuth(ctx context.Context, idToken string)
 		return domain.UserSession{}, rerrors.Wrap(err, "parse telegram id from subject claim")
 	}
 
-	err = a.userStorage.UpsertByTelegramId(ctx, tgId, claims.Subject)
-	if err != nil {
-		return domain.UserSession{}, rerrors.Wrap(err, "upsert telegram user")
+	login := claims.Username
+	if login == "" {
+		login = claims.Subject
 	}
 
-	session := a.generateSession(tgId)
+	internalUserId, err := a.getOrCreateTelegramUser(ctx, tgId, login)
+	if err != nil {
+		return domain.UserSession{}, rerrors.Wrap(err, "get or create telegram user")
+	}
+
+	session := a.generateSession(internalUserId)
 
 	err = a.sessionStorage.Upsert(ctx, session)
 	if err != nil {
@@ -262,8 +271,48 @@ func (a *AuthService) AuthWithTelegramOAuth(ctx context.Context, idToken string)
 	return session, nil
 }
 
+func (a *AuthService) GetOrCreateTelegramUser(ctx context.Context, tgId int64, username string) (int64, error) {
+	return a.getOrCreateTelegramUser(ctx, tgId, username)
+}
+
+func (a *AuthService) ResolveTelegramId(ctx context.Context, tgId int64) (int64, error) {
+	identity, err := a.telegramIdentityStorage.GetByTgId(ctx, tgId)
+	if err != nil {
+		return 0, rerrors.Wrap(err, "resolve telegram id to internal user id")
+	}
+	return identity.UserId, nil
+}
+
 func (a *AuthService) ListAuthMethods(ctx context.Context) error {
 	return rerrors.New("not implemented", codes.Unimplemented)
+}
+
+func (a *AuthService) getOrCreateTelegramUser(ctx context.Context, tgId int64, username string) (int64, error) {
+	existing, err := a.telegramIdentityStorage.GetByTgId(ctx, tgId)
+	if err != nil && !errors.Is(err, storage.ErrNotFound) {
+		return 0, rerrors.Wrap(err, "get telegram identity")
+	}
+
+	if errors.Is(err, storage.ErrNotFound) {
+		newUserId, insertErr := a.userStorage.Insert(ctx, username)
+		if insertErr != nil {
+			return 0, rerrors.Wrap(insertErr, "insert new user for telegram login")
+		}
+
+		_, upsertErr := a.telegramIdentityStorage.Upsert(ctx, tgId, newUserId, username)
+		if upsertErr != nil {
+			return 0, rerrors.Wrap(upsertErr, "insert telegram identity")
+		}
+
+		return newUserId, nil
+	}
+
+	_, upsertErr := a.telegramIdentityStorage.Upsert(ctx, tgId, existing.UserId, username)
+	if upsertErr != nil {
+		return 0, rerrors.Wrap(upsertErr, "update telegram identity last_logged_at")
+	}
+
+	return existing.UserId, nil
 }
 
 func (a *AuthService) generateSession(userId int64) domain.UserSession {

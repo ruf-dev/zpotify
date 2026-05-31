@@ -189,8 +189,13 @@ func (ac *authMiddleware) authWithDebugHeaders(ctx context.Context, md metadata.
 			return nil, rerrors.Wrap(err, "expected telegram id to be an integer", codes.FailedPrecondition)
 		}
 
+		internalUserId, err := ac.authService.ResolveTelegramId(ctx, tgId)
+		if err != nil {
+			return nil, rerrors.Wrap(err, "resolving telegram id in debug auth")
+		}
+
 		return &user_context.UserContext{
-			UserId: tgId,
+			UserId: internalUserId,
 			Permissions: domain.UserPermissions{
 				CanUpload:   true,
 				EarlyAccess: true,

@@ -1,0 +1,15 @@
+- name: postgres
+  db_isolation_level: shared_pool # - one container, multiple db; separate_instance - separate container for this service only
+  box: medium # small, medium, large
+
+- name: storage
+  type: local_volume # forces service to run in sticky mode
+  container_path: /data
+
+- name: webserver
+  type: angie
+  ssl: enabled
+  domain: zpotify.ru
+  port: 443
+  container_port: 80
+  serve_mode: proxy_pass # proxy_pass, redirect

@@ -6,19 +6,14 @@ import (
 	"io"
 
 	"go.zpotify.ru/zpotify/internal/domain"
-	auth_q "go.zpotify.ru/zpotify/internal/storage/pg/generated/auth"
 	"go.zpotify.ru/zpotify/internal/storage/pg/generated/songs_q"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 )
 
 type Storage interface {
+	TelegramIdentity() TelegramIdentityStorage
+	ZpotifyIdentity() ZpotifyIdentityStorage
 
-	//FileMeta() FileMetaStorage
-	//
-	//ArtistStorage() ArtistStorage
-	//
-
-	Auth() AuthStorage
 	SessionStorage() SessionStorage
 
 	User() UserStorage
@@ -32,24 +27,23 @@ type Storage interface {
 	TxManager() *tx_manager.TxManager
 }
 
-type AuthStorage interface {
-	CreateUserIdentity(ctx context.Context, params auth_q.CreateUserIdentityParams) error
-	GetIdentitiesByUsernameAndProvider(ctx context.Context,
-		username string, provider auth_q.IdentityProvider) (auth_q.UserIdentity, error)
+type TelegramIdentityStorage interface {
+	Upsert(ctx context.Context, tgId int64, userId int64, login string) (int64, error)
+	GetByTgId(ctx context.Context, tgId int64) (domain.TelegramIdentity, error)
+}
+
+type ZpotifyIdentityStorage interface {
+	GetByLogin(ctx context.Context, login string) (domain.ZpotifyIdentity, error)
 }
 
 type UserStorage interface {
 	WithTx(tx *sql.Tx) UserStorage
+	Insert(ctx context.Context, username string) (int64, error)
 	GetUserById(ctx context.Context, userId int64) (domain.UserBaseInfo, error)
-
-	//ListUsers(ctx context.Context, filter domain.GetUserFilter) ([]domain.User, error)
-
-	Upsert(ctx context.Context, username string) error
-	UpsertByTelegramId(ctx context.Context, tgId int64, username string) error
 
 	SaveSettings(ctx context.Context, id int64, settings domain.UserUiSettings) error
 	SavePermissions(ctx context.Context, id int64, permissions domain.UserPermissions) error
-	GetPermissionsOnPlaylist(ctx context.Context, userTgId int64, playlistUuid string) (domain.PlaylistPermissions, error)
+	GetPermissionsOnPlaylist(ctx context.Context, userId int64, playlistUuid string) (domain.PlaylistPermissions, error)
 	GetPermissions(ctx context.Context, id int64) (domain.UserPermissions, error)
 }
 

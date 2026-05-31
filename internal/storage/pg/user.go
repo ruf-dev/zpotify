@@ -45,26 +45,12 @@ func (s *UserStorage) GetPermissions(ctx context.Context, id int64) (domain.User
 	return toDomainUserPermissions(permissions), nil
 }
 
-func (s *UserStorage) Upsert(ctx context.Context, username string) error {
-	err := s.querier.UpsertUser(ctx, username)
+func (s *UserStorage) Insert(ctx context.Context, username string) (int64, error) {
+	id, err := s.querier.InsertUser(ctx, username)
 	if err != nil {
-		return rerrors.Wrap(wrapPgErr(err), "error upserting user")
+		return 0, rerrors.Wrap(wrapPgErr(err), "error inserting user")
 	}
-
-	return nil
-}
-
-func (s *UserStorage) UpsertByTelegramId(ctx context.Context, tgId int64, username string) error {
-	params := querier.UpsertUserByTelegramIdParams{
-		ID:       tgId,
-		Username: username,
-	}
-	err := s.querier.UpsertUserByTelegramId(ctx, params)
-	if err != nil {
-		return rerrors.Wrap(wrapPgErr(err), "error upserting user by telegram id")
-	}
-
-	return nil
+	return id, nil
 }
 
 func (s *UserStorage) SaveSettings(ctx context.Context, userId int64, settings domain.UserUiSettings) error {
