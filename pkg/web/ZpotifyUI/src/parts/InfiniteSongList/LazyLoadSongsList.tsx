@@ -4,7 +4,7 @@ import {SongBase} from "@/app/api/zpotify";
 
 import cls from "@/parts/InfiniteSongList/InfiniteSongsList.module.css";
 import {AudioPlayer} from "@/hooks/player/player.ts";
-import {User} from "@/hooks/user/User.ts";
+import useUser from "@/hooks/user/User.ts";
 
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 import SongListWidget from "@/widgets/TrackList/TrackListWidget.tsx";
@@ -12,11 +12,9 @@ import ZButton from "@/components/base/button/ZButton.tsx";
 
 interface InfiniteSongsListProps {
     audioPlayer: AudioPlayer
-    user: User
 
     playlistId: string
 
-    // if true - block becomes scrollable
     fixedSize?: boolean
 
     onTotal?: (total: number) => void
@@ -24,7 +22,7 @@ interface InfiniteSongsListProps {
 
 const songsPerPage = 10;
 
-export default function LazyLoadSongsList({audioPlayer, playlistId, user, fixedSize, onTotal}: InfiniteSongsListProps) {
+export default function LazyLoadSongsList({audioPlayer, playlistId, fixedSize, onTotal}: InfiniteSongsListProps) {
     const [offset, setOffset] = useState(0)
     const [shuffleHash, setShuffleHash] = useState<string | undefined>();
 
@@ -32,7 +30,7 @@ export default function LazyLoadSongsList({audioPlayer, playlistId, user, fixedS
     const [totalSongs, setTotalSongs] = useState(0);
     const [isListEnded, setIsListEnded] = useState(false);
 
-    const playlistService = user.Services().Playlist()
+    const playlistService = useUser(state => state.Services)().Playlist()
 
     const toaster = useToaster();
 

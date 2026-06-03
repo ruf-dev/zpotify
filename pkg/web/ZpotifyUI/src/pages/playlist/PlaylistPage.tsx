@@ -4,7 +4,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import cls from "@/pages/playlist/PlaylistPage.module.css";
 
 import {AudioPlayer} from "@/hooks/player/player.ts";
-import {User} from "@/hooks/user/User.ts";
+import useUser from "@/hooks/user/User.ts";
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 import {Path} from "@/app/routing/Router.tsx";
 
@@ -14,34 +14,37 @@ import MusicPlayerWithLogo from "@/components/player/MusicPlayerWithLogo.tsx";
 
 interface PlaylistPageProps {
     audioPlayer: AudioPlayer
-    user: User
 }
 
-export default function PlaylistPage({audioPlayer, user}: PlaylistPageProps) {
+export default function PlaylistPage({audioPlayer}: PlaylistPageProps) {
     const {id} = useParams<{id: string}>();
     const navigate = useNavigate();
     const toaster = useToaster();
     const [playlistName, setPlaylistName] = useState<string>("");
     const [totalCount, setTotalCount] = useState<number | null>(null);
 
+    const userData = useUser(state => state.userData);
+    const auth = useUser(state => state.auth);
+    const Services = useUser(state => state.Services);
+
     useEffect(() => {
-        if (!user.userData) {
-            if (!user.session) navigate(Path.IntiPage);
+        if (!userData) {
+            if (!auth.session) navigate(Path.IntiPage);
             return;
         }
         if (!id) return;
 
-        user.Services().Playlist().GetPlaylist(id)
+        Services().Playlist().GetPlaylist(id)
             .then(res => setPlaylistName(res.playlist?.name ?? "Playlist"))
             .catch(toaster.catch);
-    }, [id, user.userData, user.session]);
+    }, [id, userData, auth.session]);
 
-    if (!id || !user.userData) return null;
+    if (!id || !userData) return null;
 
     return (
         <div className={cls.PlaylistPageContainer}>
             <div className={cls.Header}>
-                <HeaderPart user={user}/>
+                <HeaderPart/>
             </div>
 
             <div className={cls.Content}>
@@ -56,7 +59,6 @@ export default function PlaylistPage({audioPlayer, user}: PlaylistPageProps) {
                 <div className={cls.TrackList}>
                     <LazyLoadSongsList
                         audioPlayer={audioPlayer}
-                        user={user}
                         playlistId={id}
                         fixedSize
                         onTotal={setTotalCount}

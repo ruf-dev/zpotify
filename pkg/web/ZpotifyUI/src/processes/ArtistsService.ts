@@ -1,5 +1,3 @@
-import { RefObject } from "react";
-
 import {
     ArtistsAPI,
     Paging,
@@ -15,7 +13,7 @@ export interface IArtistsService {
 }
 
 export class ArtistsService extends BaseService implements IArtistsService {
-    constructor(auth: RefObject<AuthMiddleware>) {
+    constructor(auth: AuthMiddleware) {
         super(auth);
     }
 

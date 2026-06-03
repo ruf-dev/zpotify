@@ -1,13 +1,10 @@
-import {User as UserInfo} from "@/hooks/user/User.ts";
+import useUser from "@/hooks/user/User.ts";
 
-interface UserProps {
-    user: UserInfo
-}
-
-export default function User({user}: UserProps) {
+export default function User() {
+    const userData = useUser(state => state.userData);
     return (
         <div>
-            {user.userData?.username}
+            {userData?.username}
         </div>
     )
 }

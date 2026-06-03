@@ -2,28 +2,23 @@ import {useEffect, useRef, useState} from "react";
 
 import cls from "@/widgets/User/UserWidget.module.css";
 
-import {User} from "@/hooks/user/User.ts";
+import useUser from "@/hooks/user/User.ts";
 
 import GeneratedAvatar from "@/components/user/GeneratedAvatar.tsx";
 import Menu from "@/components/menu/Menu.tsx";
 
-interface UserWidgetProps {
-    user: User;
-}
-
-export default function UserWidget({user}: UserWidgetProps) {
+export default function UserWidget() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const widgetRef = useRef<HTMLDivElement>(null);
+
+    const userData = useUser(state => state.userData);
+    const logout = useUser(state => state.logout);
 
     const menuOptions = [
         {label: 'Profile', disabled: true},
         {label: 'Settings', disabled: true},
         {},
-        {
-            label: 'Logout', onClick: () => {
-                user.Logout()
-            }
-        }
+        {label: 'Logout', onClick: logout}
     ]
 
     useEffect(() => {
@@ -37,7 +32,7 @@ export default function UserWidget({user}: UserWidgetProps) {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    if (!user.userData) {
+    if (!userData) {
         return (<></>)
     }
 
@@ -48,9 +43,9 @@ export default function UserWidget({user}: UserWidgetProps) {
                 onClick={() => setIsMenuOpen(o => !o)}
             >
                 <div className={cls.AvatarContainer}>
-                    <GeneratedAvatar username={user.userData.username} pictureUrl={user.userData.pictureUrl}/>
+                    <GeneratedAvatar username={userData.username} pictureUrl={userData.pictureUrl}/>
                 </div>
-                <span className={cls.Username}>{user.userData.username}</span>
+                <span className={cls.Username}>{userData.username}</span>
             </div>
 
             {isMenuOpen && (

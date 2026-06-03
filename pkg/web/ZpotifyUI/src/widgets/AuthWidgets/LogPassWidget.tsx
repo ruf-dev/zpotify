@@ -6,25 +6,26 @@ import cls from "@/widgets/AuthWidgets/LogPassWidget.module.css";
 import Input from "@/components/shared/Input.tsx";
 import Button from "@/components/shared/Button.tsx";
 import Chip from "@/components/shared/Chip.tsx";
-import {User} from "@/hooks/user/User.ts";
+import useUser from "@/hooks/user/User.ts";
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 
 interface LogPassWidgetProps {
-    userState: User;
     previousScreen?: React.JSX.Element;
 }
 
-export default function LogPassWidget({userState, previousScreen}: LogPassWidgetProps) {
+export default function LogPassWidget({previousScreen}: LogPassWidgetProps) {
     const [username, setUsername] = useState("");
     const [pwd, setPwd] = useState("");
 
     const {OpenDialog, CloseDialog} = useDialog()
+    const Services = useUser(state => state.Services);
+    const authenticate = useUser(state => state.authenticate);
 
     function onEnterPressed() {
-        userState.Services()
+        Services()
             .Auth()
             .AuthViaPass(username, pwd)
-            .then(userState.Authenticate)
+            .then(authenticate)
             .then(CloseDialog)
     }
 

@@ -12,7 +12,7 @@ import {Path} from "@/app/routing/Router.tsx";
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 
 import {AudioPlayer} from "@/hooks/player/player.ts";
-import {User} from "@/hooks/user/User.ts";
+import useUser from "@/hooks/user/User.ts";
 
 import lockIcon from "@/assets/icons/lock.svg";
 import googleIcon from "@/assets/icons/google.svg";
@@ -21,28 +21,30 @@ import githubIcon from "@/assets/icons/github.svg";
 
 interface InitPageProps {
     AudioPlayer: AudioPlayer;
-    userState: User;
 }
 
-export default function InitPage({AudioPlayer, userState}: InitPageProps) {
+export default function InitPage({AudioPlayer}: InitPageProps) {
     const navigate = useNavigate();
     const {OpenDialog} = useDialog();
 
+    const userData = useUser(state => state.userData);
+    const earlyAccessDenied = useUser(state => state.earlyAccessDenied);
+
     useEffect(() => {
-        if (userState.userData) {
+        if (userData) {
             navigate(Path.HomePage);
             AudioPlayer.unload();
         }
-    }, [userState.userData]);
+    }, [userData]);
 
     useEffect(() => {
-        if (userState.earlyAccessDenied) {
+        if (earlyAccessDenied) {
             navigate(Path.EarlyAccessPage);
         }
-    }, [userState.earlyAccessDenied]);
+    }, [earlyAccessDenied]);
 
     function openLogoPassDialog() {
-        OpenDialog(<LoginPasswordDialog userState={userState}/>)
+        OpenDialog(<LoginPasswordDialog/>)
     }
 
     return (
@@ -59,7 +61,7 @@ export default function InitPage({AudioPlayer, userState}: InitPageProps) {
             <div className={cls.Divider}/>
 
             <div className={cls.ActiveButtons}>
-                <TelegramAuth userState={userState}/>
+                <TelegramAuth/>
                 <AuthButton
                     icon={<img src={lockIcon} width={16} height={16} alt=""/>}
                     label="Username & Password"

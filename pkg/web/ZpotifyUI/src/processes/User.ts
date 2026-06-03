@@ -1,5 +1,3 @@
-import {RefObject} from "react";
-
 import {
     InitReq,
     MeRequest, MeResponse,
@@ -14,7 +12,7 @@ import {ServiceError, WithTitle} from "@/processes/Errors.ts";
 
 export default class UserService extends BaseService {
 
-    constructor(auth: RefObject<AuthMiddleware>) {
+    constructor(auth: AuthMiddleware) {
         super(auth)
     }
 

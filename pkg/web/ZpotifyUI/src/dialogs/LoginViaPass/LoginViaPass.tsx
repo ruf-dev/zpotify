@@ -4,18 +4,16 @@ import cls from "@/dialogs/LoginViaPass/LoginViaPass.module.css";
 
 import FloatInput from "@/components/shared/FloatInput.tsx";
 
-import {User} from "@/hooks/user/User.ts";
+import useUser from "@/hooks/user/User.ts";
 import {useNavigate} from "react-router-dom";
 import {Path} from "@/app/routing/Router.tsx";
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 
-interface LoginViaPassProps {
-    userState: User;
-}
-
-export default function LoginViaPass({userState}: LoginViaPassProps) {
+export default function LoginViaPass() {
     const navigate = useNavigate();
     const {CloseDialog} = useDialog();
+    const Services = useUser(state => state.Services);
+    const authenticate = useUser(state => state.authenticate);
 
 
     const [username, setUsername] = useState('');
@@ -28,10 +26,10 @@ export default function LoginViaPass({userState}: LoginViaPassProps) {
             return;
         }
         setValidationErr('');
-        userState.Services()
+        Services()
             .Auth()
             .AuthViaPass(username.trim(), password)
-            .then(userState.Authenticate)
+            .then(authenticate)
             .then(() => navigate(Path.HomePage))
             .then(CloseDialog)
     }

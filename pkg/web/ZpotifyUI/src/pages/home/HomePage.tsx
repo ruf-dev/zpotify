@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import cls from "@/pages/home/HomePage.module.css"
 
 import {AudioPlayer} from "@/hooks/player/player.ts";
-import {User} from "@/hooks/user/User.ts";
+import useUser from "@/hooks/user/User.ts";
 import {Path} from "@/app/routing/Router.tsx";
 
 import HeaderPart from "@/parts/header/HeaderPart.tsx";
@@ -16,24 +16,26 @@ import SegmentCarousel from "@/components/carousel/SegmentCarousel.tsx";
 
 interface HomePageProps {
     audioPlayer: AudioPlayer
-    user: User
 }
 
-export default function HomePage({user, audioPlayer}: HomePageProps) {
+export default function HomePage({audioPlayer}: HomePageProps) {
     const navigate = useNavigate();
     const toaster = useToaster();
     const [segments, setSegments] = useState<HomeSegment[]>([]);
     const savedIdx = parseInt(localStorage.getItem('zp_tab_idx') || '0', 10);
     const [activeIdx, setActiveIdx] = useState(!isNaN(savedIdx) ? savedIdx : 0);
 
-    useEffect(() => {
-        if (!user.userData) {
-            navigate(Path.IntiPage);
-        }
-    }, [user.userData]);
+    const userData = useUser(state => state.userData);
+    const Services = useUser(state => state.Services);
 
     useEffect(() => {
-        user.Services().Settings().ListHomeSegments()
+        if (!userData) {
+            navigate(Path.IntiPage);
+        }
+    }, [userData]);
+
+    useEffect(() => {
+        Services().Settings().ListHomeSegments()
             .then(setSegments)
             .catch(toaster.catch);
     }, []);
@@ -44,7 +46,7 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
         }
     }, [segments]);
 
-    if (!user.userData) {
+    if (!userData) {
         return (<div>loading</div>);
     }
 
@@ -63,7 +65,6 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
 
     const homePageProps: HomeSegmentProps = {
         audioPlayer: audioPlayer,
-        user: user,
     };
 
     function renderSlide(idx: number): React.ReactNode {
@@ -91,7 +92,7 @@ export default function HomePage({user, audioPlayer}: HomePageProps) {
             </div>
 
             <div className={cls.Header}>
-                <HeaderPart user={user}/>
+                <HeaderPart/>
             </div>
             <div className={cls.Player}>
                 <MusicPlayerWithLogo audioPlayer={audioPlayer}/>

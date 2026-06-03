@@ -1,12 +1,10 @@
 import React, {JSX} from "react";
 import PlaylistHomeSegment from "@/pages/home/segments/PlaylistHomeSegment.tsx";
 import {AudioPlayer} from "@/hooks/player/player.ts";
-import {User} from "@/hooks/user/User.ts";
 import ManagementHomeSegment from "@/pages/home/segments/ManagementHomeSegment.tsx";
 
 export type HomeSegmentProps = {
     audioPlayer: AudioPlayer;
-    user: User;
 }
 
 export interface HomeSegment {
@@ -25,10 +23,9 @@ export class PlaylistSegmentInfo implements HomeSegment {
         this.id = playlistId;
     }
 
-    buildComponent({audioPlayer, user}: HomeSegmentProps): React.JSX.Element {
+    buildComponent({audioPlayer}: HomeSegmentProps): React.JSX.Element {
         return (<PlaylistHomeSegment
             audioPlayer={audioPlayer}
-            user={user}
             playlistUuid={this.playlistUuid}
         />);
     }
@@ -38,10 +35,7 @@ export class ManagementSegmentInfo implements HomeSegment {
     readonly id = 'management';
     readonly label = 'management';
 
-    buildComponent({audioPlayer, user}: HomeSegmentProps): React.JSX.Element {
-        return (<ManagementHomeSegment
-            audioPlayer={audioPlayer}
-            user={user}
-        />);
+    buildComponent({audioPlayer}: HomeSegmentProps): React.JSX.Element {
+        return (<ManagementHomeSegment audioPlayer={audioPlayer}/>);
     }
 }

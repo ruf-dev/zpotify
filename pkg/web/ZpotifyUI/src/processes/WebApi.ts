@@ -1,5 +1,3 @@
-import {RefObject} from "react";
-
 import {AuthMiddleware} from "@/processes/Auth.ts";
 import {BaseService} from "@/processes/BaseService.ts";
 import {
@@ -17,7 +15,7 @@ enum WebApiUriPath {
 }
 
 export class WebApiImpl extends BaseService implements WebApi {
-    constructor(auth: RefObject<AuthMiddleware>) {
+    constructor(auth: AuthMiddleware) {
         super(auth)
     }
 

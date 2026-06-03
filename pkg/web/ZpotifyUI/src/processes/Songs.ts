@@ -1,5 +1,3 @@
-import {RefObject} from "react";
-
 import {
     InitReq,
     SongAPI,
@@ -17,7 +15,7 @@ export interface ISongsService {
 }
 
 export class SongsService extends BaseService implements ISongsService {
-    constructor(authMiddleware: RefObject<AuthMiddleware>) {
+    constructor(authMiddleware: AuthMiddleware) {
         super(authMiddleware)
     }
 

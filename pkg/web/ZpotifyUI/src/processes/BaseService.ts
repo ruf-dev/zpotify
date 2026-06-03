@@ -1,5 +1,3 @@
-import {RefObject} from "react";
-
 import {AuthMiddleware} from "@/processes/Auth.ts";
 
 import {
@@ -16,9 +14,9 @@ import {
 import {InitReq} from "@/app/api/zpotify";
 
 export class BaseService {
-    private auth: RefObject<AuthMiddleware>
+    private auth: AuthMiddleware
 
-    constructor(auth: RefObject<AuthMiddleware>) {
+    constructor(auth: AuthMiddleware) {
         this.auth = auth
     }
 
@@ -27,7 +25,7 @@ export class BaseService {
     ): Promise<T> {
         return withRetries<T>(
             async (): Promise<T> =>
-                callback(await this.auth.current.GetMetadata())
+                callback(await this.auth.GetMetadata())
                     .catch(async (err: GrpcError | ServiceError) => {
                         if (err instanceof ServiceError) {
                             throw err
@@ -46,7 +44,7 @@ export class BaseService {
                                     WithIsNonRetryable(true));
                             }
                             if (err.message == 'token expired') {
-                                await this.auth.current.RefreshToken()
+                                await this.auth.RefreshToken()
 
                                 throw new ServiceError(
                                     WithTitle('Session expired. Refreshing'),

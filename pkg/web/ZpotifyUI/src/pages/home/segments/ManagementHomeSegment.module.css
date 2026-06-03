@@ -19,13 +19,10 @@
             gap: var(--card-gap);
 
             .Card {
-                width: var(--segment-card-button-size);
-                height: var(--segment-card-button-size);
-
                 border: var(--accent-bg-color) solid 1px;
                 border-radius: var(--border-radius);
 
-                padding: 1em;
+                padding: 1rem;
 
                 display: flex;
                 align-items: center;

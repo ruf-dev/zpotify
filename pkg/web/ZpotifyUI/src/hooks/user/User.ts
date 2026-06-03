@@ -1,131 +1,93 @@
-import {useEffect, useRef, useState} from "react";
-import {AuthData} from "@/app/api/zpotify";
+import {create} from 'zustand'
 
-import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
-import {Errors, ServiceError} from "@/processes/Errors.ts";
-import {UserInfo} from "@/model/User.ts";
-import UserService from "@/processes/User.ts";
-import {ISongsService, SongsService} from "@/processes/Songs.ts";
-import {AuthService, IAuthService, AuthMiddleware} from "@/processes/Auth.ts";
-import {ISettingsService, SettingsService} from "@/processes/HomePage.ts";
-import {IPlaylistService, PlaylistService} from "@/processes/PlaylistService.ts";
-import {IFileService, FileService} from "@/processes/FileService.ts";
-import { IArtistsService, ArtistsService } from "@/processes/ArtistsService.ts";
-import {WebApi, WebApiImpl} from "@/processes/WebApi.ts";
-
-// Todo redo onto UserContext
-export interface User {
-    userData?: UserInfo
-    setUserData: (user: UserInfo) => void;
-
-    session?: AuthData
-    earlyAccessDenied: boolean
-
-    Authenticate(newSession: AuthData): void;
-
-    Logout(): void
-
-    Services(): Services
-}
+import {AuthMiddleware, AuthService, IAuthService} from "@/processes/Auth.ts"
+import {AuthData} from "@/app/api/zpotify"
+import {UserInfo} from "@/model/User.ts"
+import {Errors, ServiceError} from "@/processes/Errors.ts"
+import {useToaster} from "@/hooks/toaster/ToasterZ.ts"
+import UserService from "@/processes/User.ts"
+import {ISongsService, SongsService} from "@/processes/Songs.ts"
+import {ISettingsService, SettingsService} from "@/processes/HomePage.ts"
+import {IPlaylistService, PlaylistService} from "@/processes/PlaylistService.ts"
+import {IFileService, FileService} from "@/processes/FileService.ts"
+import {ArtistsService, IArtistsService} from "@/processes/ArtistsService.ts"
+import {WebApi, WebApiImpl} from "@/processes/WebApi.ts"
 
 export interface Services {
     Songs(): ISongsService
-
     Playlist(): IPlaylistService
-
     File(): IFileService
-
     Settings(): ISettingsService
-
     Auth(): IAuthService
-
     Artists(): IArtistsService
-
     WebApi(): WebApi
 }
 
-//  TODO TOTALY REDO
-export default function useUser(): User {
-    const [userData, setUserData] = useState<UserInfo>();
-    const [earlyAccessDenied, setEarlyAccessDenied] = useState(false);
+export interface User {
+    auth: AuthMiddleware
+    userData?: UserInfo
+    earlyAccessDenied: boolean
 
-    const toaster = useToaster();
+    Services: () => Services
 
-    const authMiddleware = useRef(new AuthMiddleware());
-    const songService = useRef(new SongsService(authMiddleware));
-    const userService = useRef(new UserService(authMiddleware))
-    const settingsService = useRef(new SettingsService(authMiddleware))
-    const playlistService = useRef(new PlaylistService(authMiddleware))
-    const fileService = useRef(new FileService(authMiddleware))
-    const authService = useRef(new AuthService(authMiddleware))
-    const artistsService = useRef(new ArtistsService(authMiddleware))
-    const webApiService = useRef(new WebApiImpl(authMiddleware))
+    fetchUserData: () => Promise<void>
+    authenticate: (session: AuthData) => void
+    logout: () => void
+    setUserData: (user: UserInfo) => void
+}
 
-    useEffect(() => {
-        if (authMiddleware.current.session) {
-            fetchUserData()
-        }
-    }, [authMiddleware]);
-
-
-    function fetchUserData() {
-        userService.current
-            .GetMe()
-            .then(setUserData)
-            .catch(function (err: ServiceError) {
-                if (err instanceof ServiceError && err.code === Errors.UNAVAILABLE) {
-                    setEarlyAccessDenied(true)
-                    return
-                }
-                toaster.catch(err)
-            })
-    }
-
-    function Authenticate(s: AuthData) {
-        authMiddleware.current.login(s)
-        fetchUserData()
-    }
-
-    function Logout() {
-        authMiddleware.current.logout()
-        setUserData(undefined)
-    }
+const useUser = create<User>((set, get) => {
+    const auth = new AuthMiddleware()
+    const userSvc = new UserService(auth)
+    const songs = new SongsService(auth)
+    const settings = new SettingsService(auth)
+    const playlist = new PlaylistService(auth)
+    const file = new FileService(auth)
+    const authSvc = new AuthService(auth)
+    const artists = new ArtistsService(auth)
+    const webApi = new WebApiImpl(auth)
 
     return {
-        userData,
-        setUserData,
+        auth,
+        userData: undefined,
+        earlyAccessDenied: false,
 
-        session: authMiddleware.current.session,
-        earlyAccessDenied,
+        Services: () => ({
+            Songs: () => songs,
+            Settings: () => settings,
+            Playlist: () => playlist,
+            File: () => file,
+            Auth: () => authSvc,
+            Artists: () => artists,
+            WebApi: () => webApi,
+        }),
 
-        Authenticate,
-        Logout,
-
-        Services:
-            () => {
-                return {
-                    Songs(): ISongsService {
-                        return songService.current
-                    },
-                    Settings(): ISettingsService {
-                        return settingsService.current
-                    },
-                    Playlist(): IPlaylistService {
-                        return playlistService.current
-                    },
-                    File(): IFileService {
-                        return fileService.current
-                    },
-                    Auth(): IAuthService {
-                        return authService.current
-                    },
-                    Artists(): IArtistsService {
-                        return artistsService.current
-                    },
-                    WebApi(): WebApi {
-                        return webApiService.current
-                    }
+        fetchUserData: async () => {
+            try {
+                const userData = await userSvc.GetMe()
+                set({userData})
+            } catch (err: unknown) {
+                if (err instanceof ServiceError && err.code === Errors.UNAVAILABLE) {
+                    set({earlyAccessDenied: true})
+                    return
                 }
-            },
+                useToaster.getState().catch(err as ServiceError)
+            }
+        },
+
+        authenticate: (session: AuthData) => {
+            auth.login(session)
+            set({auth})
+            void get().fetchUserData()
+        },
+
+        logout: () => {
+            auth.logout()
+            set({userData: undefined, earlyAccessDenied: false})
+        },
+
+        setUserData: (user: UserInfo) => set({userData: user}),
     }
-}
+})
+
+export default useUser

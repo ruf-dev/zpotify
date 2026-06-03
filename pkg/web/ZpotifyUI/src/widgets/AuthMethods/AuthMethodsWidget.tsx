@@ -1,27 +1,17 @@
 import cls from "@/widgets/AuthMethods/AuthMethods.module.css";
 
-import {User} from "@/hooks/user/User.ts";
-
 import TelegramAuth from "@/components/auth/TelegramAuth.tsx";
 import LogPassAuth from "@/components/auth/LogPassAuth.tsx";
 
-interface AuthMethodsWidgetProps {
-    userState: User
-}
-
-export default function AuthMethodsWidget({userState}: AuthMethodsWidgetProps) {
+export default function AuthMethodsWidget() {
 
     return (
         <div className={cls.AuthMethods}>
             <div className={cls.AuthMethod}>
-                <TelegramAuth
-                    userState={userState}
-                />
+                <TelegramAuth/>
             </div>
             <div className={cls.AuthMethod}>
-                <LogPassAuth
-                    userState={userState}
-                />
+                <LogPassAuth/>
             </div>
         </div>
 

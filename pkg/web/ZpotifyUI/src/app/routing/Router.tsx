@@ -12,6 +12,7 @@ import useAudioPlayer from "@/hooks/player/player.ts";
 import useUser from "@/hooks/user/User.ts";
 import Toaster from "@/components/notifications/Toaster.tsx";
 
+
 import HomePage from "@/pages/home/HomePage.tsx";
 import Coloring from "@/admin-components/coloring/Coloring.tsx";
 
@@ -31,14 +32,23 @@ export function playlistPath(id: string): string {
 
 export default function Router() {
     const audioPlayer = useAudioPlayer();
-    const user = useUser();
     const navigate = useNavigate();
 
+    const earlyAccessDenied = useUser(state => state.earlyAccessDenied);
+    const auth = useUser(state => state.auth);
+    const fetchUserData = useUser(state => state.fetchUserData);
+
     useEffect(() => {
-        if (user.earlyAccessDenied) {
+        if (auth.session) {
+            void fetchUserData();
+        }
+    }, []);
+
+    useEffect(() => {
+        if (earlyAccessDenied) {
             navigate(Path.EarlyAccessPage);
         }
-    }, [user.earlyAccessDenied]);
+    }, [earlyAccessDenied]);
 
     return (
         <div className={cls.Root}>
@@ -46,33 +56,25 @@ export default function Router() {
                 <Routes>
                     <Route
                         path={Path.IntiPage}
-                        element={<InitPage
-                            userState={user}
-                            AudioPlayer={audioPlayer}/>}
+                        element={<InitPage AudioPlayer={audioPlayer}/>}
                         errorElement={<ErrorPage/>}
                     />
 
                     <Route
                         path={Path.HomePage}
-                        element={<HomePage
-                            audioPlayer={audioPlayer}
-                            user={user}/>}
+                        element={<HomePage audioPlayer={audioPlayer}/>}
                         errorElement={<ErrorPage/>}
                     />
 
                     <Route
                         path={Path.PlaylistPage}
-                        element={<PlaylistPage
-                            audioPlayer={audioPlayer}
-                            user={user}/>}
+                        element={<PlaylistPage audioPlayer={audioPlayer}/>}
                         errorElement={<ErrorPage/>}
                     />
 
                     <Route
                         path={Path.EarlyAccessPage}
-                        element={<EarlyAccessPage
-                            user={user}
-                        />}
+                        element={<EarlyAccessPage/>}
                         errorElement={<ErrorPage/>}
                     />
 
