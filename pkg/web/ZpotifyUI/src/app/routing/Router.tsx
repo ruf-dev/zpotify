@@ -1,10 +1,12 @@
 import cls from "@/app/routing/Router.module.css"
 
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 import InitPage from "@/pages/init/InitPage.tsx";
 import ErrorPage from "@/pages/error/ErrorPage.tsx";
 import PlaylistPage from "@/pages/playlist/PlaylistPage.tsx";
+import EarlyAccessPage from "@/pages/early_access/EarlyAccessPage.tsx";
 
 import useAudioPlayer from "@/hooks/player/player.ts";
 import useUser from "@/hooks/user/User.ts";
@@ -20,6 +22,7 @@ export enum Path {
     HomePage = "/",
     IntiPage = "/init",
     PlaylistPage = "/playlist/:id",
+    EarlyAccessPage = "/early_access",
 }
 
 export function playlistPath(id: string): string {
@@ -29,6 +32,13 @@ export function playlistPath(id: string): string {
 export default function Router() {
     const audioPlayer = useAudioPlayer();
     const user = useUser();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user.earlyAccessDenied) {
+            navigate(Path.EarlyAccessPage);
+        }
+    }, [user.earlyAccessDenied]);
 
     return (
         <div className={cls.Root}>
@@ -55,6 +65,14 @@ export default function Router() {
                         element={<PlaylistPage
                             audioPlayer={audioPlayer}
                             user={user}/>}
+                        errorElement={<ErrorPage/>}
+                    />
+
+                    <Route
+                        path={Path.EarlyAccessPage}
+                        element={<EarlyAccessPage
+                            user={user}
+                        />}
                         errorElement={<ErrorPage/>}
                     />
 

@@ -8,6 +8,7 @@ import {
     GrpcError,
     isReason,
     ServiceError,
+    WithCode,
     WithIsNonRetryable,
     WithTitle
 } from "@/processes/Errors.ts";
@@ -53,6 +54,14 @@ export class BaseService {
                                 );
                             }
                         }
+                        if (err.code === Errors.UNAVAILABLE) {
+                            throw new ServiceError(
+                                WithTitle(err.message),
+                                WithCode(Errors.UNAVAILABLE),
+                                WithIsNonRetryable(true),
+                            );
+                        }
+
                         throw new ServiceError(WithTitle(err.message));
                     })
                     .then()

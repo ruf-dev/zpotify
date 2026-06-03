@@ -35,6 +35,12 @@ export default function InitPage({AudioPlayer, userState}: InitPageProps) {
         }
     }, [userState.userData]);
 
+    useEffect(() => {
+        if (userState.earlyAccessDenied) {
+            navigate(Path.EarlyAccessPage);
+        }
+    }, [userState.earlyAccessDenied]);
+
     function openLogoPassDialog() {
         OpenDialog(<LoginPasswordDialog userState={userState}/>)
     }

@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import {AuthData} from "@/app/api/zpotify";
 
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
+import {Errors, ServiceError} from "@/processes/Errors.ts";
 import {UserInfo} from "@/model/User.ts";
 import UserService from "@/processes/User.ts";
 import {ISongsService, SongsService} from "@/processes/Songs.ts";
@@ -18,6 +19,7 @@ export interface User {
     setUserData: (user: UserInfo) => void;
 
     session?: AuthData
+    earlyAccessDenied: boolean
 
     Authenticate(newSession: AuthData): void;
 
@@ -45,6 +47,7 @@ export interface Services {
 //  TODO TOTALY REDO
 export default function useUser(): User {
     const [userData, setUserData] = useState<UserInfo>();
+    const [earlyAccessDenied, setEarlyAccessDenied] = useState(false);
 
     const toaster = useToaster();
 
@@ -69,7 +72,13 @@ export default function useUser(): User {
         userService.current
             .GetMe()
             .then(setUserData)
-            .catch(toaster.catch)
+            .catch(function (err: ServiceError) {
+                if (err instanceof ServiceError && err.code === Errors.UNAVAILABLE) {
+                    setEarlyAccessDenied(true)
+                    return
+                }
+                toaster.catch(err)
+            })
     }
 
     function Authenticate(s: AuthData) {
@@ -87,6 +96,7 @@ export default function useUser(): User {
         setUserData,
 
         session: authMiddleware.current.session,
+        earlyAccessDenied,
 
         Authenticate,
         Logout,

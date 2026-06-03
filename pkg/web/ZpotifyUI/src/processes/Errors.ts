@@ -48,6 +48,7 @@ export class ServiceError {
     details: string = '';
 
     reason?: ErrorReason;
+    code?: Errors;
 
     constructor(...ops: ((e: ServiceError) => void)[]) {
         ops.map(o => o(this))
@@ -83,6 +84,12 @@ export function WithReason(reason?: ErrorReason): (e: ServiceError) => void {
 export function WithDescription(desc: string): (e: ServiceError) => void {
     return (e: ServiceError) => {
         return e.details = desc
+    }
+}
+
+export function WithCode(code: Errors): (e: ServiceError) => void {
+    return (e: ServiceError) => {
+        e.code = code
     }
 }
 
