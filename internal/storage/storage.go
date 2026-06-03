@@ -41,7 +41,8 @@ type ZpotifyIdentityStorage interface {
 
 type UserStorage interface {
 	WithTx(tx *sql.Tx) UserStorage
-	SaveUser(ctx context.Context, username domain.UserBaseInfo) (int64, error)
+
+	CreateUser(ctx context.Context, username domain.UserBaseInfo) (int64, error)
 	GetUserById(ctx context.Context, userId int64) (domain.UserBaseInfo, error)
 
 	SaveSettings(ctx context.Context, id int64, settings domain.UserUiSettings) error

@@ -7,6 +7,7 @@ package querier
 
 import (
 	"context"
+	"database/sql"
 )
 
 const getUserById = `-- name: GetUserById :one
@@ -29,14 +30,18 @@ func (q *Queries) GetUserById(ctx context.Context, id int64) (GetUserByIdRow, er
 }
 
 const insertUser = `-- name: InsertUser :one
-INSERT INTO users (username)
-VALUES ($1)
-ON CONFLICT (username) DO UPDATE SET username = EXCLUDED.username
+INSERT INTO users (username, avatar_link)
+VALUES ($1, $2)
 RETURNING id
 `
 
-func (q *Queries) InsertUser(ctx context.Context, username string) (int64, error) {
-	row := q.db.QueryRowContext(ctx, insertUser, username)
+type InsertUserParams struct {
+	Username   string
+	AvatarLink sql.NullString
+}
+
+func (q *Queries) InsertUser(ctx context.Context, arg InsertUserParams) (int64, error) {
+	row := q.db.QueryRowContext(ctx, insertUser, arg.Username, arg.AvatarLink)
 	var id int64
 	err := row.Scan(&id)
 	return id, err
@@ -83,5 +88,24 @@ type SaveUserSettingsParams struct {
 
 func (q *Queries) SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error {
 	_, err := q.db.ExecContext(ctx, saveUserSettings, arg.UserID, arg.Locale)
+	return err
+}
+
+const upsertUser = `-- name: UpsertUser :exec
+INSERT INTO users (id, username, avatar_link)
+VALUES ($1, $2, $3)
+ON CONFLICT (id)
+    DO UPDATE SET username    = EXCLUDED.username,
+                  avatar_link = EXCLUDED.avatar_link
+`
+
+type UpsertUserParams struct {
+	ID         int64
+	Username   string
+	AvatarLink sql.NullString
+}
+
+func (q *Queries) UpsertUser(ctx context.Context, arg UpsertUserParams) error {
+	_, err := q.db.ExecContext(ctx, upsertUser, arg.ID, arg.Username, arg.AvatarLink)
 	return err
 }

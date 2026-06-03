@@ -1,9 +1,14 @@
 -- name: InsertUser :one
-INSERT INTO users (username)
-VALUES ($1)
-ON CONFLICT (username) DO UPDATE SET username = EXCLUDED.username
+INSERT INTO users (username, avatar_link)
+VALUES ($1, $2)
 RETURNING id;
 
+-- name: UpsertUser :exec
+INSERT INTO users (id, username, avatar_link)
+VALUES ($1, $2, $3)
+ON CONFLICT (id)
+    DO UPDATE SET username    = EXCLUDED.username,
+                  avatar_link = EXCLUDED.avatar_link;
 -- name: GetUserById :one
 SELECT id,
        username

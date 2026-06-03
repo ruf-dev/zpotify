@@ -83,7 +83,7 @@ func (s *Service) initTelegramUser(ctx context.Context, tx *sql.Tx, claims teleg
 
 	var err error
 
-	userBase.Id, err = userStorage.SaveUser(ctx, userBase)
+	userBase.Id, err = userStorage.CreateUser(ctx, userBase)
 	if err != nil {
 		return userBase.Id, rerrors.Wrap(err, "insert new user for telegram login")
 	}

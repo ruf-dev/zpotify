@@ -48,11 +48,19 @@ func (s *UserStorage) GetPermissions(ctx context.Context, id int64) (domain.User
 	return toDomainUserPermissions(permissions), nil
 }
 
-func (s *UserStorage) SaveUser(ctx context.Context, user domain.UserBaseInfo) (int64, error) {
-	id, err := s.querier.InsertUser(ctx, user.Username)
+func (s *UserStorage) CreateUser(ctx context.Context, user domain.UserBaseInfo) (int64, error) {
+	params := querier.InsertUserParams{
+		Username: user.Username,
+		AvatarLink: sql.NullString{
+			String: user.PhotoUrl.V,
+			Valid:  user.PhotoUrl.Valid,
+		},
+	}
+	id, err := s.querier.InsertUser(ctx, params)
 	if err != nil {
 		return 0, rerrors.Wrap(wrapPgErr(err), "error inserting user")
 	}
+
 	return id, nil
 }
 

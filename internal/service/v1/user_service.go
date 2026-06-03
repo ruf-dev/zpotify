@@ -39,7 +39,7 @@ func (u *UserService) Init(ctx context.Context, user domain.User) error {
 		func(tx *sql.Tx) error {
 			userStorage := u.userStorage.WithTx(tx)
 
-			userId, err := userStorage.SaveUser(ctx, user.UserBaseInfo)
+			userId, err := userStorage.CreateUser(ctx, user.UserBaseInfo)
 			if err != nil {
 				return rerrors.Wrap(err, "error inserting user")
 			}

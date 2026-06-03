@@ -32,7 +32,7 @@ type Querier interface {
 	GetUserSessionByRefreshToken(ctx context.Context, refreshToken string) (UserSession, error)
 	GetZpotifyIdentityByLogin(ctx context.Context, login string) (IdentityZpotify, error)
 	InsertHomeSegment(ctx context.Context, arg InsertHomeSegmentParams) error
-	InsertUser(ctx context.Context, username string) (int64, error)
+	InsertUser(ctx context.Context, arg InsertUserParams) (int64, error)
 	ListSessionsByUserId(ctx context.Context, userID int64) ([]UserSession, error)
 	ListUserPermissionsByUserId(ctx context.Context, userID int64) (UserPermission, error)
 	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error
@@ -40,6 +40,7 @@ type Querier interface {
 	UpdateFile(ctx context.Context, arg UpdateFileParams) error
 	UpsertSongArtist(ctx context.Context, arg UpsertSongArtistParams) error
 	UpsertTelegramIdentity(ctx context.Context, arg UpsertTelegramIdentityParams) (int64, error)
+	UpsertUser(ctx context.Context, arg UpsertUserParams) error
 	UpsertUserPlaylist(ctx context.Context, arg UpsertUserPlaylistParams) error
 }
 
