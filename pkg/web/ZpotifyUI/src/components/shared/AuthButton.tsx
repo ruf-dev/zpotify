@@ -8,12 +8,13 @@ interface AuthButtonProps {
     onClick?: () => void;
     disabled?: boolean;
     comingSoon?: boolean;
+    className?: string;
 }
 
-export default function AuthButton({icon, label, onClick, disabled = false, comingSoon = false}: AuthButtonProps) {
+export default function AuthButton({icon, label, onClick, disabled = false, comingSoon = false, className}: AuthButtonProps) {
     return (
         <button
-            className={cn(cls.AuthButton, {[cls.disabled]: disabled})}
+            className={cn(cls.AuthButton, className, {[cls.disabled]: disabled})}
             onClick={disabled ? undefined : onClick}
         >
             {icon && (

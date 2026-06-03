@@ -37,9 +37,8 @@ func (s *TelegramIdentityStorage) GetByTgId(ctx context.Context, tgId int64) (do
 		return domain.TelegramIdentity{}, wrapPgErr(err)
 	}
 	return domain.TelegramIdentity{
-		TelegramId:   row.TelegramID,
-		UserId:       row.UserID,
-		Login:        row.Login,
-		LastLoggedAt: row.LastLoggedAt,
+		TelegramId: row.TelegramID,
+		UserId:     row.UserID,
+		Login:      row.Login,
 	}, nil
 }

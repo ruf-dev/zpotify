@@ -33,7 +33,8 @@ type TelegramIdentityStorage interface {
 }
 
 type ZpotifyIdentityStorage interface {
-	GetByLogin(ctx context.Context, login string) (domain.ZpotifyIdentity, error)
+	WithTx(tx *sql.Tx) ZpotifyIdentityStorage
+	GetByLogoPass(ctx context.Context, login string, password string) (domain.ZpotifyIdentity, error)
 }
 
 type UserStorage interface {

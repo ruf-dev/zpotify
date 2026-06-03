@@ -27,6 +27,9 @@
   --color-warning:        #ffa500;
   --color-info:           #e5f4d5;
 
+  /* Brand */
+  --color-telegram:       #2AABEE;
+
   /* ── Semantic Aliases ───────────────────────────────────── */
   --main-bg-color:              var(--color-bg-base);
   --secondary-bg-color:         var(--color-bg-secondary);

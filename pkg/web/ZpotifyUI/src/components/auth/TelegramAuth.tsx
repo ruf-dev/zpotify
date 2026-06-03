@@ -1,5 +1,8 @@
-import {TelegramAuth as TgAuth, TelegramAuthData} from "@vervstack/chures";
+import {useTelegramLogin, TelegramAuthData} from "@vervstack/chures";
 
+import telegramIcon from "@/assets/icons/telegram.svg";
+import AuthButton from "@/components/shared/AuthButton.tsx";
+import cls from "@/components/auth/TelegramAuth.module.css";
 import {User} from "@/hooks/user/User.ts";
 import {AuthViaTelegram} from "@/processes/Auth.ts";
 
@@ -20,5 +23,16 @@ export default function TelegramAuth({userState}: TelegramAuthProps) {
             });
     }
 
-    return <TgAuth title="Sign in with Telegram" botId={botId} onSuccess={handleSuccess}/>;
+    const {login, isReady, isLoading} = useTelegramLogin({botId, onSuccess: handleSuccess});
+
+    return (
+        <AuthButton
+            icon={<img src={telegramIcon}
+                       className={cls.TelegramIcon} alt=""/>}
+            label="Use Telegram"
+            onClick={login}
+            disabled={!isReady || isLoading}
+            className={cls.TelegramButton}
+        />
+    );
 }

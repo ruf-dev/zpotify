@@ -64,16 +64,19 @@ export default function InitPage({AudioPlayer, userState}: InitPageProps) {
             <div className={cls.ComingSoonButtons}>
                 <AuthButton
                     icon={<img src={googleIcon} width={16} height={16} alt=""/>}
+                    className={cls.NotReadyButton}
                     label="Google"
                     disabled
                     comingSoon/>
                 <AuthButton
                     icon={<img src={appleIcon} width={16} height={16} alt=""/>}
+                    className={cls.NotReadyButton}
                     label="Apple"
                     disabled
                     comingSoon/>
                 <AuthButton
                     icon={<img src={githubIcon} width={16} height={16} alt=""/>}
+                    className={cls.NotReadyButton}
                     label="GitHub"
                     disabled
                     comingSoon/>

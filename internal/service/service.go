@@ -4,6 +4,9 @@ import (
 	"context"
 	"io"
 
+	"go.redsock.ru/rerrors"
+
+	"go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/domain"
 	v1 "go.zpotify.ru/zpotify/internal/service/v1"
 	"go.zpotify.ru/zpotify/internal/service/v1/auth"
@@ -30,9 +33,13 @@ type service struct {
 }
 
 func New(dataStorage storage.Storage, cache files_cache.FilesCache, fileStorage storage.BinaryFileStorage) (Service, error) {
-	authSvc, err := auth.New(dataStorage)
+	tokenParser := telegram.NewTokenParser("https://oauth.telegram.org/.well-known/jwks.json",
+		"https://oauth.telegram.org",
+		"8046808891")
+
+	authSvc, err := auth.New(dataStorage, tokenParser)
 	if err != nil {
-		return nil, err
+		return nil, rerrors.Wrap(err, "error initializing auth service")
 	}
 
 	return &service{

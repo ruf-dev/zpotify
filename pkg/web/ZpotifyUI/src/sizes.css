@@ -50,6 +50,11 @@
     /* Icon circles */
     --icon-circle-sm: 1.25rem;   /* 20px — small icon button circle */
     --icon-circle-md: 2.75rem;   /* 44px — card icon circles */
+
+    /* Auth */
+    --auth-icon-size: 1.5rem;      /* 32px — auth provider icon */
+    --auth-button-width: 10rem;
+    --auth-button-height: 2.5rem;
 }
 
 /*
