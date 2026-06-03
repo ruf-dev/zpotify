@@ -5,7 +5,6 @@ import (
 	"crypto/rand"
 	"database/sql"
 	"encoding/hex"
-	"errors"
 	"time"
 
 	"go.redsock.ru/rerrors"
@@ -133,7 +132,8 @@ func (s *Service) Refresh(ctx context.Context, refreshToken string) (domain.User
 }
 
 func (s *Service) GetOrCreateTelegramUser(ctx context.Context, tgId int64, username string) (int64, error) {
-	return s.getOrCreateTelegramUser(ctx, tgId, username)
+	//TODO remove
+	return 0, nil
 }
 
 func (s *Service) ResolveTelegramId(ctx context.Context, tgId int64) (int64, error) {
@@ -148,18 +148,35 @@ func (s *Service) ListAuthMethods(ctx context.Context) error {
 	return rerrors.New("not implemented", codes.Unimplemented)
 }
 
-func (s *Service) getOrCreateTelegramUser(ctx context.Context, tgId int64, username string) (int64, error) {
-	existing, err := s.telegramIdentityStorage.GetByTgId(ctx, tgId)
-	if err != nil && !errors.Is(err, storage.ErrNotFound) {
-		return 0, rerrors.Wrap(err, "get telegram identity")
+func (s *Service) initTelegramUser(ctx context.Context, tx *sql.Tx, claims telegram.TgClaims) (userId int64, err error) {
+	userStorage := s.userStorage.WithTx(tx)
+	tgStorage := s.telegramIdentityStorage.WithTx(tx)
+
+	userId, err = userStorage.Insert(ctx, claims.Name)
+	if err != nil {
+		return userId, rerrors.Wrap(err, "insert new user for telegram login")
 	}
 
-	_, upsertErr := s.telegramIdentityStorage.Upsert(ctx, tgId, existing.UserId, username)
-	if upsertErr != nil {
-		return 0, rerrors.Wrap(upsertErr, "update telegram identity last_logged_at")
+	defaultSettings := domain.UserUiSettings{
+		Locale: claims.Locale,
+	}
+	err = userStorage.SaveSettings(ctx, userId, defaultSettings)
+	if err != nil {
+		return userId, rerrors.Wrap(err, "save default user settings")
 	}
 
-	return existing.UserId, nil
+	defaultPermissions := domain.UserPermissions{}
+	err = userStorage.SavePermissions(ctx, userId, defaultPermissions)
+	if err != nil {
+		return userId, rerrors.Wrap(err, "save default user permissions")
+	}
+
+	_, err = tgStorage.Upsert(ctx, claims.Id, userId, claims.Login)
+	if err != nil {
+		return userId, rerrors.Wrap(err, "upsert telegram identity")
+	}
+
+	return userId, nil
 }
 
 func generateToken() string {

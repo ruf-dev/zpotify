@@ -13,6 +13,48 @@ import (
 	"github.com/google/uuid"
 )
 
+type Locale string
+
+const (
+	LocaleEn Locale = "en"
+	LocaleRu Locale = "ru"
+)
+
+func (e *Locale) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = Locale(s)
+	case string:
+		*e = Locale(s)
+	default:
+		return fmt.Errorf("unsupported scan type for Locale: %T", src)
+	}
+	return nil
+}
+
+type NullLocale struct {
+	Locale Locale
+	Valid  bool // Valid is true if Locale is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullLocale) Scan(value interface{}) error {
+	if value == nil {
+		ns.Locale, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.Locale.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullLocale) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.Locale), nil
+}
+
 type UserHomeSegmentType string
 
 const (
@@ -79,10 +121,6 @@ type IdentityZpotify struct {
 	UserID   int64
 	Login    string
 	Password string
-}
-
-type Locale struct {
-	ID string
 }
 
 type Playlist struct {
@@ -170,5 +208,5 @@ type UserSession struct {
 
 type UserSetting struct {
 	UserID int64
-	Locale string
+	Locale Locale
 }

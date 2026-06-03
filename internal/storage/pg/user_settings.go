@@ -43,6 +43,6 @@ func (u *UserSettingsStorage) GetUiSettings(ctx context.Context, userId int64) (
 	}
 
 	return domain.UserUiSettings{
-		Locale: uiSettings.Locale,
+		Locale: string(uiSettings.Locale),
 	}, nil
 }

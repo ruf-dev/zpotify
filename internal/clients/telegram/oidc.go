@@ -7,31 +7,20 @@ import (
 	"fmt"
 	"math/big"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"go.redsock.ru/rerrors"
+	"go.redsock.ru/toolbox"
 )
 
-// UserData represents the extracted user information from ID token
-type UserData struct {
-	UserID        string `json:"user_id"`
-	Email         string `json:"email"`
-	EmailVerified bool   `json:"email_verified"`
-	Name          string `json:"name"`
-	GivenName     string `json:"given_name"`
-	FamilyName    string `json:"family_name"`
-	Picture       string `json:"picture"`
-	Locale        string `json:"locale"`
-	Issuer        string `json:"iss"`
-	Audience      string `json:"aud"`
-	ExpiresAt     int64  `json:"exp"`
-	IssuedAt      int64  `json:"iat"`
-}
-
-// CustomClaims defines the structure of your ID token claims
-type CustomClaims struct {
+type TgClaims struct {
 	// Standard JWT claims
 	jwt.RegisteredClaims
+
+	Id    int64  `json:"-"`
+	Login string `json:"-"`
 
 	// OIDC standard claims
 	Email         string `json:"email"`
@@ -41,9 +30,6 @@ type CustomClaims struct {
 	FamilyName    string `json:"family_name"`
 	Picture       string `json:"picture"`
 	Locale        string `json:"locale"`
-
-	// Custom claims from your provider
-	UserID string `json:"user_id"` // Or "sub" for subject
 }
 
 // JWKSResponse represents the JSON Web Key Set response
@@ -80,30 +66,24 @@ func NewTokenParser(jwksURL, issuer, audience string) TokenParser {
 	}
 }
 
-func (tp *TokenParser) ParseAndVerifyIdToken(idToken string) (*UserData, error) {
-	// Parse and verify the token
-	token, err := jwt.ParseWithClaims(idToken, &CustomClaims{}, tp.keyFunc)
+func (tp *TokenParser) ParseAndVerifyIdToken(idToken string) (TgClaims, error) {
+	token, err := jwt.ParseWithClaims(idToken, &TgClaims{}, tp.keyFunc)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse token: %w", err)
+		return TgClaims{}, fmt.Errorf("failed to parse token: %w", err)
 	}
-
-	// Validate the token
 	if !token.Valid {
-		return nil, fmt.Errorf("invalid token")
+		return TgClaims{}, fmt.Errorf("invalid token")
 	}
 
-	// Extract claims
-	claims, ok := token.Claims.(*CustomClaims)
+	claims, ok := token.Claims.(*TgClaims)
 	if !ok {
-		return nil, fmt.Errorf("failed to extract claims")
+		return TgClaims{}, fmt.Errorf("failed to extract claims")
 	}
 
-	// Validate issuer (optional but recommended)
 	if tp.issuer != "" && claims.Issuer != tp.issuer {
-		return nil, fmt.Errorf("invalid issuer: expected %s, got %s", tp.issuer, claims.Issuer)
+		return TgClaims{}, fmt.Errorf("invalid issuer: expected %s, got %s", tp.issuer, claims.Issuer)
 	}
 
-	// Validate audience (optional but recommended)
 	if tp.audience != "" && claims.Audience != nil {
 		audienceFound := false
 		for _, aud := range claims.Audience {
@@ -113,31 +93,18 @@ func (tp *TokenParser) ParseAndVerifyIdToken(idToken string) (*UserData, error) 
 			}
 		}
 		if !audienceFound {
-			return nil, fmt.Errorf("invalid audience: expected %s", tp.audience)
+			return TgClaims{}, fmt.Errorf("invalid audience: expected %s", tp.audience)
 		}
 	}
 
-	// Extract user data
-	userData := &UserData{
-		UserID:        claims.UserID,
-		Email:         claims.Email,
-		EmailVerified: claims.EmailVerified,
-		Name:          claims.Name,
-		GivenName:     claims.GivenName,
-		FamilyName:    claims.FamilyName,
-		Picture:       claims.Picture,
-		Locale:        claims.Locale,
-		Issuer:        claims.Issuer,
-		ExpiresAt:     claims.ExpiresAt.Time.Unix(),
-		IssuedAt:      claims.IssuedAt.Time.Unix(),
+	claims.Login = toolbox.Coalesce(claims.Name, claims.GivenName)
+
+	claims.Id, err = strconv.ParseInt(claims.Subject, 10, 64)
+	if err != nil {
+		return *claims, rerrors.Wrap(err, "parse telegram user id from claims subject")
 	}
 
-	// Fallback to 'sub' claim if user_id is not present
-	if userData.UserID == "" && claims.Subject != "" {
-		userData.UserID = claims.Subject
-	}
-
-	return userData, nil
+	return *claims, nil
 }
 
 // keyFunc provides the public key for token verification
@@ -226,30 +193,4 @@ func (tp *TokenParser) jwkToRSAKey(jwk *JWK) (*rsa.PublicKey, error) {
 	}
 
 	return publicKey, nil
-}
-
-func ParseIDTokenSimple(idToken, secretKey string) (*UserData, error) {
-	token, err := jwt.ParseWithClaims(idToken, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		return []byte(secretKey), nil
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	claims, ok := token.Claims.(*CustomClaims)
-	if !ok || !token.Valid {
-		return nil, fmt.Errorf("invalid token")
-	}
-
-	return &UserData{
-		UserID:    claims.UserID,
-		Email:     claims.Email,
-		Name:      claims.Name,
-		Issuer:    claims.Issuer,
-		ExpiresAt: claims.ExpiresAt.Time.Unix(),
-	}, nil
 }

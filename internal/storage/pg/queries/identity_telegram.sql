@@ -11,3 +11,9 @@ RETURNING user_id;
 SELECT telegram_id, user_id, login, last_logged_at
 FROM identity_telegram
 WHERE telegram_id = $1;
+
+-- name: GetTelegramIdentityByTgIdForUpdate :one
+SELECT telegram_id, user_id, login, last_logged_at
+FROM identity_telegram
+WHERE telegram_id = $1
+FOR UPDATE;

@@ -56,7 +56,7 @@ func (s *UserStorage) Insert(ctx context.Context, username string) (int64, error
 func (s *UserStorage) SaveSettings(ctx context.Context, userId int64, settings domain.UserUiSettings) error {
 	userSettingsParams := querier.SaveUserSettingsParams{
 		UserID: userId,
-		Locale: settings.Locale,
+		Locale: parseLocaleOrUseDefault(settings.Locale),
 	}
 
 	err := s.querier.SaveUserSettings(ctx, userSettingsParams)
@@ -184,5 +184,14 @@ func userToDomain(u querier.User) domain.UserBaseInfo {
 	return domain.UserBaseInfo{
 		Id:       int64(u.ID),
 		Username: u.Username,
+	}
+}
+
+func parseLocaleOrUseDefault(s string) querier.Locale {
+	switch querier.Locale(s) {
+	case querier.LocaleEn, querier.LocaleRu:
+		return querier.Locale(s)
+	default:
+		return querier.LocaleEn
 	}
 }

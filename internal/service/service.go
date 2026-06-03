@@ -33,8 +33,10 @@ type service struct {
 }
 
 func New(dataStorage storage.Storage, cache files_cache.FilesCache, fileStorage storage.BinaryFileStorage) (Service, error) {
-	tokenParser := telegram.NewTokenParser("https://oauth.telegram.org/.well-known/jwks.json",
+	tokenParser := telegram.NewTokenParser(
+		"https://oauth.telegram.org/.well-known/jwks.json",
 		"https://oauth.telegram.org",
+		//TODO change to configurable bot id
 		"8046808891")
 
 	authSvc, err := auth.New(dataStorage, tokenParser)

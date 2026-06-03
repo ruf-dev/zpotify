@@ -28,8 +28,10 @@ type Storage interface {
 }
 
 type TelegramIdentityStorage interface {
+	WithTx(tx *sql.Tx) TelegramIdentityStorage
 	Upsert(ctx context.Context, tgId int64, userId int64, login string) (int64, error)
 	GetByTgId(ctx context.Context, tgId int64) (domain.TelegramIdentity, error)
+	GetByTgIdTx(ctx context.Context, tgId int64) (sql.Null[domain.TelegramIdentity], error)
 }
 
 type ZpotifyIdentityStorage interface {

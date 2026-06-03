@@ -2,11 +2,14 @@ package pg
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/storage"
 	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 )
 
@@ -41,4 +44,24 @@ func (s *TelegramIdentityStorage) GetByTgId(ctx context.Context, tgId int64) (do
 		UserId:     row.UserID,
 		Login:      row.Login,
 	}, nil
+}
+
+func (s *TelegramIdentityStorage) WithTx(tx *sql.Tx) storage.TelegramIdentityStorage {
+	return NewTelegramIdentityStorage(tx)
+}
+
+func (s *TelegramIdentityStorage) GetByTgIdTx(ctx context.Context, tgId int64) (sql.Null[domain.TelegramIdentity], error) {
+	row, err := s.q.GetTelegramIdentityByTgIdForUpdate(ctx, tgId)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return sql.Null[domain.TelegramIdentity]{}, nil
+		}
+		return sql.Null[domain.TelegramIdentity]{}, wrapPgErr(err)
+	}
+	identity := domain.TelegramIdentity{
+		TelegramId: row.TelegramID,
+		UserId:     row.UserID,
+		Login:      row.Login,
+	}
+	return sql.Null[domain.TelegramIdentity]{V: identity, Valid: true}, nil
 }
