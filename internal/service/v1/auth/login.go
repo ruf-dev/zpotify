@@ -6,6 +6,7 @@ import (
 
 	"go.redsock.ru/rerrors"
 
+	"go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/domain"
 )
 
@@ -65,4 +66,35 @@ func (s *Service) LoginViaTelegram(ctx context.Context, idToken string) (domain.
 	}
 
 	return session, nil
+}
+
+func (s *Service) initTelegramUser(ctx context.Context, tx *sql.Tx, claims telegram.TgClaims) (userId int64, err error) {
+	userStorage := s.userStorage.WithTx(tx)
+	tgStorage := s.telegramIdentityStorage.WithTx(tx)
+
+	userId, err = userStorage.Insert(ctx, claims.Name)
+	if err != nil {
+		return userId, rerrors.Wrap(err, "insert new user for telegram login")
+	}
+
+	defaultSettings := domain.UserUiSettings{
+		Locale: claims.Locale,
+	}
+	err = userStorage.SaveSettings(ctx, userId, defaultSettings)
+	if err != nil {
+		return userId, rerrors.Wrap(err, "save default user settings")
+	}
+
+	defaultPermissions := domain.UserPermissions{}
+	err = userStorage.SavePermissions(ctx, userId, defaultPermissions)
+	if err != nil {
+		return userId, rerrors.Wrap(err, "save default user permissions")
+	}
+
+	_, err = tgStorage.Upsert(ctx, claims.Id, userId, claims.Login)
+	if err != nil {
+		return userId, rerrors.Wrap(err, "upsert telegram identity")
+	}
+
+	return userId, nil
 }

@@ -105,10 +105,10 @@ type UserService interface {
 type AuthService interface {
 	Login(ctx context.Context, login string, password string) (domain.UserSession, error)
 	LoginViaTelegram(ctx context.Context, idToken string) (domain.UserSession, error)
-	ValidateToken(ctx context.Context, token string) (userId int64, err error)
+
+	GetUserByToken(ctx context.Context, token string) (domain.User, error)
 	Logout(ctx context.Context, accessToken string) error
 	Refresh(ctx context.Context, refreshToken string) (domain.UserSession, error)
-	GetMe(ctx context.Context, userId int64) (domain.User, domain.UserPermissions, error)
 	ListAuthMethods(ctx context.Context) error
 
 	// GetOrCreateTelegramUser finds or creates a user by telegram ID without JWT validation.

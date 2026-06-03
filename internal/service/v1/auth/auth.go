@@ -2,9 +2,6 @@ package auth
 
 import (
 	"context"
-	"crypto/rand"
-	"database/sql"
-	"encoding/hex"
 	"time"
 
 	"go.redsock.ru/rerrors"
@@ -14,7 +11,6 @@ import (
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
-	"go.zpotify.ru/zpotify/internal/user_errors"
 )
 
 type Service struct {
@@ -66,23 +62,6 @@ func (s *Service) GetMe(ctx context.Context, userId int64) (domain.User, domain.
 	}, permissions, nil
 }
 
-func (s *Service) ValidateToken(ctx context.Context, token string) (int64, error) {
-	accessToken, err := s.sessionStorage.GetByAccessToken(ctx, token)
-	if err != nil {
-		if rerrors.Is(err, storage.ErrNotFound) {
-			return 0, rerrors.Wrap(user_errors.ErrAccessTokenNotFound)
-		}
-
-		return 0, rerrors.Wrap(err, "failed to get access token")
-	}
-
-	if accessToken.AccessExpiresAt.UTC().Before(time.Now().UTC()) {
-		return 0, rerrors.Wrap(user_errors.ErrAccessTokenExpired)
-	}
-
-	return accessToken.UserId, nil
-}
-
 func (s *Service) Logout(ctx context.Context, accessToken string) error {
 	err := s.sessionStorage.Delete(ctx, accessToken)
 	if err != nil {
@@ -90,45 +69,6 @@ func (s *Service) Logout(ctx context.Context, accessToken string) error {
 	}
 
 	return nil
-}
-
-func (s *Service) Refresh(ctx context.Context, refreshToken string) (domain.UserSession, error) {
-	oldSession, err := s.sessionStorage.GetByRefreshToken(ctx, refreshToken)
-	if err != nil {
-		if rerrors.Is(err, storage.ErrNotFound) {
-			return domain.UserSession{}, rerrors.Wrap(user_errors.ErrRefreshTokenNotFound)
-		}
-
-		return domain.UserSession{}, rerrors.Wrap(err, "failed to get access token")
-	}
-
-	if oldSession.RefreshExpiresAt.UTC().Before(time.Now().UTC()) {
-		return domain.UserSession{}, rerrors.Wrap(user_errors.ErrAccessTokenExpired)
-	}
-
-	newSession := s.generateSession(oldSession.UserId)
-
-	err = s.txManager.Execute(
-		func(tx *sql.Tx) error {
-			sessionStorage := s.sessionStorage.WithTx(tx)
-
-			txErr := sessionStorage.Delete(ctx, oldSession.AccessToken)
-			if txErr != nil {
-				return rerrors.Wrap(txErr, "error deleting old session")
-			}
-
-			txErr = sessionStorage.Upsert(ctx, newSession)
-			if txErr != nil {
-				return rerrors.Wrap(err, "failed to upsert new access token")
-			}
-
-			return nil
-		})
-	if err != nil {
-		return domain.UserSession{}, rerrors.Wrap(err, "failed to upsert new access token")
-	}
-
-	return newSession, nil
 }
 
 func (s *Service) GetOrCreateTelegramUser(ctx context.Context, tgId int64, username string) (int64, error) {
@@ -146,53 +86,4 @@ func (s *Service) ResolveTelegramId(ctx context.Context, tgId int64) (int64, err
 
 func (s *Service) ListAuthMethods(ctx context.Context) error {
 	return rerrors.New("not implemented", codes.Unimplemented)
-}
-
-func (s *Service) initTelegramUser(ctx context.Context, tx *sql.Tx, claims telegram.TgClaims) (userId int64, err error) {
-	userStorage := s.userStorage.WithTx(tx)
-	tgStorage := s.telegramIdentityStorage.WithTx(tx)
-
-	userId, err = userStorage.Insert(ctx, claims.Name)
-	if err != nil {
-		return userId, rerrors.Wrap(err, "insert new user for telegram login")
-	}
-
-	defaultSettings := domain.UserUiSettings{
-		Locale: claims.Locale,
-	}
-	err = userStorage.SaveSettings(ctx, userId, defaultSettings)
-	if err != nil {
-		return userId, rerrors.Wrap(err, "save default user settings")
-	}
-
-	defaultPermissions := domain.UserPermissions{}
-	err = userStorage.SavePermissions(ctx, userId, defaultPermissions)
-	if err != nil {
-		return userId, rerrors.Wrap(err, "save default user permissions")
-	}
-
-	_, err = tgStorage.Upsert(ctx, claims.Id, userId, claims.Login)
-	if err != nil {
-		return userId, rerrors.Wrap(err, "upsert telegram identity")
-	}
-
-	return userId, nil
-}
-
-func generateToken() string {
-	b := make([]byte, 32)
-	if _, err := rand.Read(b); err != nil {
-		panic(err)
-	}
-	return hex.EncodeToString(b)
-}
-
-func (s *Service) generateSession(userId int64) domain.UserSession {
-	return domain.UserSession{
-		UserId:           userId,
-		AccessToken:      generateToken(),
-		AccessExpiresAt:  time.Now().Add(s.accessTokenTTL),
-		RefreshToken:     generateToken(),
-		RefreshExpiresAt: time.Now().Add(s.refreshTokenTTL),
-	}
 }
