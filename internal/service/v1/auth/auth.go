@@ -20,6 +20,7 @@ type Service struct {
 	zpotifyIdentityStorage  storage.ZpotifyIdentityStorage
 	sessionStorage          storage.SessionStorage
 	userStorage             storage.UserStorage
+	settingsStorage         storage.UserSettingsStorage
 
 	txManager *tx_manager.TxManager
 
@@ -36,6 +37,7 @@ func New(data storage.Storage, tgJwkParser telegram.TokenParser) (*Service, erro
 		zpotifyIdentityStorage:  data.ZpotifyIdentity(),
 		sessionStorage:          data.SessionStorage(),
 		userStorage:             data.User(),
+		settingsStorage:         data.UserSettings(),
 
 		txManager: data.TxManager(),
 

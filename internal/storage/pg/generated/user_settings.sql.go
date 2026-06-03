@@ -7,6 +7,7 @@ package querier
 
 import (
 	"context"
+	"encoding/json"
 )
 
 const getHomeSegments = `-- name: GetHomeSegments :many
@@ -59,4 +60,26 @@ func (q *Queries) GetUiSettings(ctx context.Context, userID int64) (UserSetting,
 	var i UserSetting
 	err := row.Scan(&i.UserID, &i.Locale)
 	return i, err
+}
+
+const insertHomeSegment = `-- name: InsertHomeSegment :exec
+INSERT INTO user_home_segments (user_id, segment, type, order_number)
+VALUES ($1, $2, $3, $4)
+`
+
+type InsertHomeSegmentParams struct {
+	UserID      int64
+	Segment     json.RawMessage
+	Type        UserHomeSegmentType
+	OrderNumber int32
+}
+
+func (q *Queries) InsertHomeSegment(ctx context.Context, arg InsertHomeSegmentParams) error {
+	_, err := q.db.ExecContext(ctx, insertHomeSegment,
+		arg.UserID,
+		arg.Segment,
+		arg.Type,
+		arg.OrderNumber,
+	)
+	return err
 }

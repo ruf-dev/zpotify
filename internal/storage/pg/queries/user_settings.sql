@@ -13,3 +13,7 @@ SELECT user_id,
        locale
 FROM user_settings
 WHERE user_id = $1;
+
+-- name: InsertHomeSegment :exec
+INSERT INTO user_home_segments (user_id, segment, type, order_number)
+VALUES ($1, $2, $3, $4);

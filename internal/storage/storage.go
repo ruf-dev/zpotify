@@ -41,7 +41,7 @@ type ZpotifyIdentityStorage interface {
 
 type UserStorage interface {
 	WithTx(tx *sql.Tx) UserStorage
-	Insert(ctx context.Context, username string) (int64, error)
+	SaveUser(ctx context.Context, username domain.UserBaseInfo) (int64, error)
 	GetUserById(ctx context.Context, userId int64) (domain.UserBaseInfo, error)
 
 	SaveSettings(ctx context.Context, id int64, settings domain.UserUiSettings) error
@@ -122,8 +122,11 @@ type PlaylistStorage interface {
 }
 
 type UserSettingsStorage interface {
+	WithTx(tx *sql.Tx) UserSettingsStorage
+
 	GetHomeSegments(ctx context.Context, userId int64) ([]domain.UserHomeSegment, error)
 	GetUiSettings(ctx context.Context, userId int64) (domain.UserUiSettings, error)
+	SetHomeSegment(ctx context.Context, userId int64, segment domain.UserHomeSegment) error
 }
 
 // BinaryFileStorage - describes a provider to store / retrieve actual binary file data

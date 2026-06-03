@@ -1,6 +1,8 @@
 package domain
 
 import (
+	"database/sql"
+	"encoding/json"
 	"time"
 
 	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
@@ -22,6 +24,7 @@ type GetUserFilter struct {
 type UserBaseInfo struct {
 	Id       int64
 	Username string
+	PhotoUrl sql.Null[string]
 }
 
 type UserUiSettings struct {
@@ -52,6 +55,24 @@ type UserSession struct {
 }
 
 type UserHomeSegment querier.UserHomeSegment
+
+type PlaylistSegment struct {
+	PlaylistID string `json:"playlist_id"`
+}
+
+func DefaultSegments(userID int64) []UserHomeSegment {
+	defaultPlaylist := PlaylistSegment{PlaylistID: "00000000-0000-0000-0000-000000000000"}
+	segmentJSON, _ := json.Marshal(defaultPlaylist)
+
+	defaultSegment := UserHomeSegment{
+		UserID:      userID,
+		Segment:     segmentJSON,
+		Type:        querier.UserHomeSegmentTypePlaylist,
+		OrderNumber: 1,
+	}
+
+	return []UserHomeSegment{defaultSegment}
+}
 
 type TelegramIdentity struct {
 	UserId int64

@@ -5,6 +5,7 @@
 package file_meta_q
 
 import (
+	"database/sql"
 	"database/sql/driver"
 	"encoding/json"
 	"fmt"
@@ -172,8 +173,9 @@ type SongsArtist struct {
 }
 
 type User struct {
-	ID       int64
-	Username string
+	ID         int64
+	Username   string
+	AvatarLink sql.NullString
 }
 
 type UserHomeSegment struct {

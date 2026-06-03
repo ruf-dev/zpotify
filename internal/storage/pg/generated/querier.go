@@ -26,11 +26,12 @@ type Querier interface {
 	GetTelegramIdentityByTgId(ctx context.Context, telegramID int64) (IdentityTelegram, error)
 	GetTelegramIdentityByTgIdForUpdate(ctx context.Context, telegramID int64) (IdentityTelegram, error)
 	GetUiSettings(ctx context.Context, userID int64) (UserSetting, error)
-	GetUserById(ctx context.Context, id int64) (User, error)
+	GetUserById(ctx context.Context, id int64) (GetUserByIdRow, error)
 	GetUserPermissionsOnPlaylist(ctx context.Context, arg GetUserPermissionsOnPlaylistParams) (GetUserPermissionsOnPlaylistRow, error)
 	GetUserSessionByAccessToken(ctx context.Context, accessToken string) (UserSession, error)
 	GetUserSessionByRefreshToken(ctx context.Context, refreshToken string) (UserSession, error)
 	GetZpotifyIdentityByLogin(ctx context.Context, login string) (IdentityZpotify, error)
+	InsertHomeSegment(ctx context.Context, arg InsertHomeSegmentParams) error
 	InsertUser(ctx context.Context, username string) (int64, error)
 	ListSessionsByUserId(ctx context.Context, userID int64) ([]UserSession, error)
 	ListUserPermissionsByUserId(ctx context.Context, userID int64) (UserPermission, error)

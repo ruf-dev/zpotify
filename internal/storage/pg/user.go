@@ -28,12 +28,15 @@ func NewUserStorage(db sqldb.DB) *UserStorage {
 }
 
 func (s *UserStorage) GetUserById(ctx context.Context, userId int64) (domain.UserBaseInfo, error) {
-	user, err := s.querier.GetUserById(ctx, userId)
+	row, err := s.querier.GetUserById(ctx, userId)
 	if err != nil {
 		return domain.UserBaseInfo{}, wrapPgErr(err)
 	}
 
-	return userToDomain(user), nil
+	return domain.UserBaseInfo{
+		Id:       row.ID,
+		Username: row.Username,
+	}, nil
 }
 
 func (s *UserStorage) GetPermissions(ctx context.Context, id int64) (domain.UserPermissions, error) {
@@ -45,8 +48,8 @@ func (s *UserStorage) GetPermissions(ctx context.Context, id int64) (domain.User
 	return toDomainUserPermissions(permissions), nil
 }
 
-func (s *UserStorage) Insert(ctx context.Context, username string) (int64, error) {
-	id, err := s.querier.InsertUser(ctx, username)
+func (s *UserStorage) SaveUser(ctx context.Context, user domain.UserBaseInfo) (int64, error) {
+	id, err := s.querier.InsertUser(ctx, user.Username)
 	if err != nil {
 		return 0, rerrors.Wrap(wrapPgErr(err), "error inserting user")
 	}
@@ -177,13 +180,6 @@ func toDomainUserPermissions(p querier.UserPermission) domain.UserPermissions {
 		CanUpload:         p.CanUpload,
 		EarlyAccess:       p.EarlyAccess,
 		CanCreatePlaylist: p.CanCreatePlaylist,
-	}
-}
-
-func userToDomain(u querier.User) domain.UserBaseInfo {
-	return domain.UserBaseInfo{
-		Id:       int64(u.ID),
-		Username: u.Username,
 	}
 }
 

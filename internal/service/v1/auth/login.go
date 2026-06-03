@@ -68,33 +68,51 @@ func (s *Service) LoginViaTelegram(ctx context.Context, idToken string) (domain.
 	return session, nil
 }
 
-func (s *Service) initTelegramUser(ctx context.Context, tx *sql.Tx, claims telegram.TgClaims) (userId int64, err error) {
+func (s *Service) initTelegramUser(ctx context.Context, tx *sql.Tx, claims telegram.TgClaims) (int64, error) {
 	userStorage := s.userStorage.WithTx(tx)
 	tgStorage := s.telegramIdentityStorage.WithTx(tx)
+	settingsStorage := s.settingsStorage.WithTx(tx)
 
-	userId, err = userStorage.Insert(ctx, claims.Name)
+	userBase := domain.UserBaseInfo{
+		Username: claims.Name,
+		PhotoUrl: sql.Null[string]{
+			V:     claims.Picture,
+			Valid: true,
+		},
+	}
+
+	var err error
+
+	userBase.Id, err = userStorage.SaveUser(ctx, userBase)
 	if err != nil {
-		return userId, rerrors.Wrap(err, "insert new user for telegram login")
+		return userBase.Id, rerrors.Wrap(err, "insert new user for telegram login")
 	}
 
 	defaultSettings := domain.UserUiSettings{
 		Locale: claims.Locale,
 	}
-	err = userStorage.SaveSettings(ctx, userId, defaultSettings)
+	err = userStorage.SaveSettings(ctx, userBase.Id, defaultSettings)
 	if err != nil {
-		return userId, rerrors.Wrap(err, "save default user settings")
+		return userBase.Id, rerrors.Wrap(err, "save default user settings")
 	}
 
 	defaultPermissions := domain.UserPermissions{}
-	err = userStorage.SavePermissions(ctx, userId, defaultPermissions)
+	err = userStorage.SavePermissions(ctx, userBase.Id, defaultPermissions)
 	if err != nil {
-		return userId, rerrors.Wrap(err, "save default user permissions")
+		return userBase.Id, rerrors.Wrap(err, "save default user permissions")
 	}
 
-	_, err = tgStorage.Upsert(ctx, claims.Id, userId, claims.Login)
+	_, err = tgStorage.Upsert(ctx, claims.Id, userBase.Id, claims.Login)
 	if err != nil {
-		return userId, rerrors.Wrap(err, "upsert telegram identity")
+		return userBase.Id, rerrors.Wrap(err, "upsert telegram identity")
 	}
 
-	return userId, nil
+	for _, seg := range domain.DefaultSegments(userBase.Id) {
+		err = settingsStorage.SetHomeSegment(ctx, userBase.Id, seg)
+		if err != nil {
+			return userBase.Id, rerrors.Wrap(err, "set default home segment")
+		}
+	}
+
+	return userBase.Id, nil
 }

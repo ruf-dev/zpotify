@@ -2,9 +2,13 @@ package pg
 
 import (
 	"context"
+	"database/sql"
+
+	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/storage"
 	querier "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 )
 
@@ -45,4 +49,24 @@ func (u *UserSettingsStorage) GetUiSettings(ctx context.Context, userId int64) (
 	return domain.UserUiSettings{
 		Locale: string(uiSettings.Locale),
 	}, nil
+}
+
+func (u *UserSettingsStorage) SetHomeSegment(ctx context.Context, userId int64, segment domain.UserHomeSegment) error {
+	params := querier.InsertHomeSegmentParams{
+		UserID:      userId,
+		Segment:     segment.Segment,
+		Type:        segment.Type,
+		OrderNumber: segment.OrderNumber,
+	}
+
+	err := u.querier.InsertHomeSegment(ctx, params)
+	if err != nil {
+		return rerrors.Wrap(wrapPgErr(err), "insert home segment")
+	}
+
+	return nil
+}
+
+func (u *UserSettingsStorage) WithTx(tx *sql.Tx) storage.UserSettingsStorage {
+	return NewUserSettingsStorage(tx)
 }
