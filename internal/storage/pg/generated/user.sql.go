@@ -12,20 +12,16 @@ import (
 
 const getUserById = `-- name: GetUserById :one
 SELECT id,
-       username
+       username,
+       avatar_link
 FROM users
 WHERE id = $1
 `
 
-type GetUserByIdRow struct {
-	ID       int64
-	Username string
-}
-
-func (q *Queries) GetUserById(ctx context.Context, id int64) (GetUserByIdRow, error) {
+func (q *Queries) GetUserById(ctx context.Context, id int64) (User, error) {
 	row := q.db.QueryRowContext(ctx, getUserById, id)
-	var i GetUserByIdRow
-	err := row.Scan(&i.ID, &i.Username)
+	var i User
+	err := row.Scan(&i.ID, &i.Username, &i.AvatarLink)
 	return i, err
 }
 

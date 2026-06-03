@@ -33,6 +33,7 @@ export default class UserService extends BaseService {
                 return {
                     username: r.userData.username,
                     permissions: r.permissions,
+                    pictureUrl: r.userData.pictureUrl,
                 } as UserInfo
             })
     }

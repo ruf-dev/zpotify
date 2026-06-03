@@ -3,6 +3,7 @@ import {Permissions} from "@/app/api/zpotify";
 export type UserInfo = {
     username: string
     permissions: UserPermissions
+    pictureUrl?: string
 }
 
 

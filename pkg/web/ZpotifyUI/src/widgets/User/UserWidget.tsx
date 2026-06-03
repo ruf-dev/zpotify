@@ -48,7 +48,7 @@ export default function UserWidget({user}: UserWidgetProps) {
                 onClick={() => setIsMenuOpen(o => !o)}
             >
                 <div className={cls.AvatarContainer}>
-                    <GeneratedAvatar username={user.userData.username}/>
+                    <GeneratedAvatar username={user.userData.username} pictureUrl={user.userData.pictureUrl}/>
                 </div>
                 <span className={cls.Username}>{user.userData.username}</span>
             </div>

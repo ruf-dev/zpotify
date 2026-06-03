@@ -27,6 +27,7 @@ service UserAPI {
 
 message UserData {
   string username = 1;
+  optional string picture_url = 2;
 }
 
 message Me {

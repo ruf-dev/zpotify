@@ -26,7 +26,7 @@ type Querier interface {
 	GetTelegramIdentityByTgId(ctx context.Context, telegramID int64) (IdentityTelegram, error)
 	GetTelegramIdentityByTgIdForUpdate(ctx context.Context, telegramID int64) (IdentityTelegram, error)
 	GetUiSettings(ctx context.Context, userID int64) (UserSetting, error)
-	GetUserById(ctx context.Context, id int64) (GetUserByIdRow, error)
+	GetUserById(ctx context.Context, id int64) (User, error)
 	GetUserPermissionsOnPlaylist(ctx context.Context, arg GetUserPermissionsOnPlaylistParams) (GetUserPermissionsOnPlaylistRow, error)
 	GetUserSessionByAccessToken(ctx context.Context, accessToken string) (UserSession, error)
 	GetUserSessionByRefreshToken(ctx context.Context, refreshToken string) (UserSession, error)

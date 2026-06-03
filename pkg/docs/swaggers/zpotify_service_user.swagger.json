@@ -161,6 +161,9 @@
       "properties": {
         "username": {
           "type": "string"
+        },
+        "pictureUrl": {
+          "type": "string"
         }
       }
     },

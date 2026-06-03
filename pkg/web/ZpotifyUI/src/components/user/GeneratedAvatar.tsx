@@ -2,13 +2,18 @@ import cls from '@/components/user/GeneratedAvatar.module.css'
 
 interface AvatarProps {
     username: string;
+    pictureUrl?: string;
 }
 
 const size = 160
 const cellSize = size / 5;
 
-export default function GeneratedAvatar({username}: AvatarProps) {
+export default function GeneratedAvatar({username, pictureUrl}: AvatarProps) {
     if (!username) return null;
+
+    if (pictureUrl) {
+        return <img src={pictureUrl} className={cls.AvatarSvg} alt={username}/>
+    }
 
     const hash = generateHash(username);
     const color = generateColor(hash);

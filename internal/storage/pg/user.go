@@ -36,6 +36,7 @@ func (s *UserStorage) GetUserById(ctx context.Context, userId int64) (domain.Use
 	return domain.UserBaseInfo{
 		Id:       row.ID,
 		Username: row.Username,
+		PhotoUrl: sql.Null[string]{V: row.AvatarLink.String, Valid: row.AvatarLink.Valid},
 	}, nil
 }
 

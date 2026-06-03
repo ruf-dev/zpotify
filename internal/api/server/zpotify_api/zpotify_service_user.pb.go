@@ -26,6 +26,7 @@ const (
 type UserData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	PictureUrl    *string                `protobuf:"bytes,2,opt,name=picture_url,json=pictureUrl,proto3,oneof" json:"picture_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -63,6 +64,13 @@ func (*UserData) Descriptor() ([]byte, []int) {
 func (x *UserData) GetUsername() string {
 	if x != nil {
 		return x.Username
+	}
+	return ""
+}
+
+func (x *UserData) GetPictureUrl() string {
+	if x != nil && x.PictureUrl != nil {
+		return *x.PictureUrl
 	}
 	return ""
 }
@@ -311,9 +319,12 @@ var File_zpotify_service_user_proto protoreflect.FileDescriptor
 
 const file_zpotify_service_user_proto_rawDesc = "" +
 	"\n" +
-	"\x1azpotify_service_user.proto\x12\vzpotify_api\x1a\tnpm.proto\x1a\x12zpotify_user.proto\x1a\x1bzpotify_user_settings.proto\x1a\x1cgoogle/api/annotations.proto\"&\n" +
+	"\x1azpotify_service_user.proto\x12\vzpotify_api\x1a\tnpm.proto\x1a\x12zpotify_user.proto\x1a\x1bzpotify_user_settings.proto\x1a\x1cgoogle/api/annotations.proto\"\\\n" +
 	"\bUserData\x12\x1a\n" +
-	"\busername\x18\x01 \x01(\tR\busername\"\x8b\x01\n" +
+	"\busername\x18\x01 \x01(\tR\busername\x12$\n" +
+	"\vpicture_url\x18\x02 \x01(\tH\x00R\n" +
+	"pictureUrl\x88\x01\x01B\x0e\n" +
+	"\f_picture_url\"\x8b\x01\n" +
 	"\x02Me\x1a\t\n" +
 	"\aRequest\x1az\n" +
 	"\bResponse\x122\n" +
@@ -373,6 +384,7 @@ func file_zpotify_service_user_proto_init() {
 	}
 	file_zpotify_user_proto_init()
 	file_zpotify_user_settings_proto_init()
+	file_zpotify_service_user_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

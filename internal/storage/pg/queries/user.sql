@@ -11,7 +11,8 @@ ON CONFLICT (id)
                   avatar_link = EXCLUDED.avatar_link;
 -- name: GetUserById :one
 SELECT id,
-       username
+       username,
+       avatar_link
 FROM users
 WHERE id = $1;
 

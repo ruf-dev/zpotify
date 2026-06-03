@@ -12,6 +12,7 @@ import * as ZpotifyApiZpotifyUserSettings from "./zpotify_user_settings.pb";
 
 export type UserData = {
   username?: string;
+  pictureUrl?: string;
 };
 
 export type MeRequest = Record<string, never>;
