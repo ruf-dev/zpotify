@@ -31,6 +31,101 @@ const BACK_STEPS: Partial<Record<ModalStep, ModalStep>> = {
     library: 'choose',
 };
 
+interface PanelHeaderProps {
+    step: ModalStep;
+    backStep: ModalStep | undefined;
+    uploading: boolean;
+    dotIndex: number;
+    onBack: () => void;
+    onClose: () => void;
+}
+
+function PanelHeader({step, backStep, uploading, dotIndex, onBack, onClose}: PanelHeaderProps) {
+    return (
+        <div className={cls.PanelHeader}>
+            <div className={cls.HeaderLeft}>
+                {backStep && !uploading && (
+                    <button className={cls.BackButton} type="button" onClick={onBack}>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M9 2L4 7l5 5"/>
+                        </svg>
+                    </button>
+                )}
+                <span className={cls.PanelTitle}>{STEP_TITLES[step]}</span>
+            </div>
+
+            <div className={cls.HeaderRight}>
+                <div className={cls.StepDots}>
+                    {DOT_STEPS.map((s, i) => (
+                        <span
+                            key={s}
+                            className={
+                                i === dotIndex ? cls.DotActive
+                                : i < dotIndex ? cls.DotPast
+                                : cls.DotFuture
+                            }
+                        />
+                    ))}
+                </div>
+                <button className={cls.CloseButton} type="button" onClick={onClose}>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                        <line x1="3" y1="3" x2="13" y2="13"/>
+                        <line x1="13" y1="3" x2="3" y2="13"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    );
+}
+
+function UploadingSpinner() {
+    return (
+        <div className={cls.UploadingState}>
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <circle cx="16" cy="16" r="12" strokeOpacity="0.2"/>
+                <path d="M16 4a12 12 0 0 1 12 12" className={cls.Spinner}/>
+            </svg>
+            <span>uploading…</span>
+        </div>
+    );
+}
+
+interface MetaStepProps {
+    audioFile: AudioFile;
+    title: string;
+    onTitleChange: (t: string) => void;
+    selectedArtists: string[];
+    onArtistsChange: (a: string[]) => void;
+    playlistId: string;
+    onPlaylistChange: (id: string) => void;
+    submitted: boolean;
+    onSubmit: () => void;
+}
+
+function MetaStep({audioFile, title, onTitleChange, selectedArtists, onArtistsChange, playlistId, onPlaylistChange, submitted, onSubmit}: MetaStepProps) {
+    return (
+        <>
+            <MetaScreen
+                audioFile={audioFile}
+                title={title}
+                onTitleChange={onTitleChange}
+                selectedArtists={selectedArtists}
+                onArtistsChange={onArtistsChange}
+                playlistId={playlistId}
+                onPlaylistChange={onPlaylistChange}
+            />
+            <button
+                className={`${cls.SubmitButton} ${submitted ? cls.ButtonSubmitted : cls.ButtonReady}`}
+                type="button"
+                onClick={onSubmit}
+                disabled={submitted}
+            >
+                {submitted ? '✓ added' : 'add track'}
+            </button>
+        </>
+    );
+}
+
 export default function AddTrackModal() {
     const {CloseDialog} = useDialog();
     const toaster = useToaster();
@@ -82,39 +177,14 @@ export default function AddTrackModal() {
 
     return (
         <div className={cls.Panel}>
-            <div className={cls.PanelHeader}>
-                <div className={cls.HeaderLeft}>
-                    {backStep && !uploading && (
-                        <button className={cls.BackButton} type="button" onClick={() => setStep(backStep)}>
-                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M9 2L4 7l5 5"/>
-                            </svg>
-                        </button>
-                    )}
-                    <span className={cls.PanelTitle}>{STEP_TITLES[step]}</span>
-                </div>
-
-                <div className={cls.HeaderRight}>
-                    <div className={cls.StepDots}>
-                        {DOT_STEPS.map((s, i) => (
-                            <span
-                                key={s}
-                                className={
-                                    i === dotIndex ? cls.DotActive
-                                    : i < dotIndex ? cls.DotPast
-                                    : cls.DotFuture
-                                }
-                            />
-                        ))}
-                    </div>
-                    <button className={cls.CloseButton} type="button" onClick={CloseDialog}>
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                            <line x1="3" y1="3" x2="13" y2="13"/>
-                            <line x1="13" y1="3" x2="3" y2="13"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+            <PanelHeader
+                step={step}
+                backStep={backStep}
+                uploading={uploading}
+                dotIndex={dotIndex}
+                onBack={() => setStep(backStep!)}
+                onClose={CloseDialog}
+            />
 
             <div className={cls.PanelBody}>
                 {step === 'choose' && (
@@ -123,43 +193,27 @@ export default function AddTrackModal() {
                         onFromLibrary={() => setStep('library')}
                     />
                 )}
+
                 {step === 'library' && (
-                    <PendingFilesScreen
-                        onSelect={handleSelectFromLibrary}
-                    />
+                    <PendingFilesScreen onSelect={handleSelectFromLibrary}/>
                 )}
+
                 {step === 'drop' && !uploading && (
                     <DropZoneScreen onFile={handleFile}/>
                 )}
-                {step === 'drop' && uploading && (
-                    <div className={cls.UploadingState}>
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                            <circle cx="16" cy="16" r="12" strokeOpacity="0.2"/>
-                            <path d="M16 4a12 12 0 0 1 12 12" className={cls.Spinner}/>
-                        </svg>
-                        <span>uploading…</span>
-                    </div>
-                )}
+                {step === 'drop' && uploading && <UploadingSpinner/>}
                 {step === 'meta' && audioFile?.fileId && (
-                    <>
-                        <MetaScreen
-                            audioFile={audioFile}
-                            title={title}
-                            onTitleChange={setTitle}
-                            selectedArtists={selectedArtists}
-                            onArtistsChange={setSelectedArtists}
-                            playlistId={playlistId}
-                            onPlaylistChange={setPlaylistId}
-                        />
-                        <button
-                            className={`${cls.SubmitButton} ${submitted ? cls.ButtonSubmitted : cls.ButtonReady}`}
-                            type="button"
-                            onClick={handleSubmit}
-                            disabled={submitted}
-                        >
-                            {submitted ? '✓ added' : 'add track'}
-                        </button>
-                    </>
+                    <MetaStep
+                        audioFile={audioFile}
+                        title={title}
+                        onTitleChange={setTitle}
+                        selectedArtists={selectedArtists}
+                        onArtistsChange={setSelectedArtists}
+                        playlistId={playlistId}
+                        onPlaylistChange={setPlaylistId}
+                        submitted={submitted}
+                        onSubmit={handleSubmit}
+                    />
                 )}
             </div>
         </div>
