@@ -12,6 +12,7 @@ import ChooseScreen from '@/dialogs/AddTrack/screens/ChooseScreen';
 import DropZoneScreen from '@/dialogs/AddTrack/screens/DropZoneScreen';
 import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
 import PendingFilesScreen from '@/dialogs/AddTrack/screens/PendingFilesScreen';
+import {MultitrackUploadModal} from '@/dialogs/MultitrackUpload';
 
 import {AudioFile} from '@/model/AudioFile.ts';
 
@@ -128,7 +129,7 @@ function MetaStep({audioFile, title, onTitleChange, selectedArtists, onArtistsCh
 }
 
 export default function AddTrackModal() {
-    const {CloseDialog} = useDialog();
+    const {CloseDialog, OpenDialog} = useDialog();
     const toaster = useToaster();
     const {Services} = useUser();
 
@@ -141,7 +142,14 @@ export default function AddTrackModal() {
     const [playlistId, setPlaylistId] = useState('');
     const [submitted, setSubmitted] = useState(false);
 
-    function handleFile(f: File) {
+    function handleFiles(files: File[]) {
+        if (files.length > 1) {
+            CloseDialog();
+            OpenDialog(<MultitrackUploadModal files={files}/>);
+            return;
+        }
+
+        const f = files[0];
         setTitle(f.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '));
         setUploadError(null);
         setUploading(true);
@@ -208,7 +216,7 @@ export default function AddTrackModal() {
                 )}
 
                 {step === 'drop' && !uploading && (
-                    <DropZoneScreen onFile={handleFile} uploadError={uploadError}/>
+                    <DropZoneScreen onFiles={handleFiles} uploadError={uploadError}/>
                 )}
                 {step === 'drop' && uploading && <UploadingSpinner/>}
                 {step === 'meta' && audioFile?.fileId && (

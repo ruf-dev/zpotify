@@ -2,7 +2,7 @@ import {useRef, useState, type DragEvent, type ChangeEvent} from 'react';
 import cls from '@/dialogs/AddTrack/screens/DropZoneScreen.module.css';
 
 interface DropZoneScreenProps {
-    onFile: (file: File) => void;
+    onFiles: (files: File[]) => void;
     uploadError?: string | null;
 }
 
@@ -53,21 +53,21 @@ function DropZoneText({dragOver}: {dragOver: boolean}) {
     }
     return (
         <>
-            <span className={cls.TextIdle}>drop your track here</span>
+            <span className={cls.TextIdle}>drop your track(s) here</span>
             <span className={cls.TextSub}>or <u>click to browse</u></span>
         </>
     );
 }
 
-export default function DropZoneScreen({onFile, uploadError}: DropZoneScreenProps) {
+export default function DropZoneScreen({onFiles, uploadError}: DropZoneScreenProps) {
     const [dragOver, setDragOver] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     function handleDrop(e: DragEvent<HTMLDivElement>) {
         e.preventDefault();
         setDragOver(false);
-        const f = e.dataTransfer.files[0];
-        if (f) onFile(f);
+        const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('audio/'));
+        if (files.length > 0) onFiles(files);
     }
 
     function handleDragOver(e: DragEvent<HTMLDivElement>) {
@@ -76,8 +76,8 @@ export default function DropZoneScreen({onFile, uploadError}: DropZoneScreenProp
     }
 
     function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-        const f = e.target.files?.[0];
-        if (f) onFile(f);
+        const files = Array.from(e.target.files ?? []);
+        if (files.length > 0) onFiles(files);
     }
 
     function handleClick() {
@@ -102,6 +102,7 @@ export default function DropZoneScreen({onFile, uploadError}: DropZoneScreenProp
                     ref={inputRef}
                     type="file"
                     accept="audio/*"
+                    multiple
                     className={cls.HiddenInput}
                     onChange={handleInputChange}
                 />

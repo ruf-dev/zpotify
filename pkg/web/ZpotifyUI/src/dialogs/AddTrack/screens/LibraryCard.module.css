@@ -1,0 +1,43 @@
+.LibraryCardContainer {
+    padding: 1.25rem 1rem;
+    border-radius: var(--border-radius-md);
+    background: var(--color-bg-card);
+    border: 0.0625rem solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.LibraryCardContainer:hover {
+    background: var(--color-bg-hover);
+    border-color: var(--color-border-bright);
+}
+
+.IconCircle {
+    width: var(--icon-circle-md);
+    height: var(--icon-circle-md);
+    border-radius: var(--border-radius-circle);
+    background: var(--color-bg-accent);
+    border: 0.0625rem solid var(--color-border-light);
+    color: var(--color-fg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.CardTitle {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-fg-primary);
+}
+
+.CardSubtitle {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+    line-height: 1.4;
+}

@@ -4,6 +4,8 @@ import {
 
     ListSongsResponse, ListSongsRequest,
     GetPlaylistResponse, GetPlaylistRequest,
+    CreatePlaylistResponse, CreatePlaylistRequest,
+    AddSongToPlaylistRequest,
 
 } from "@/app/api/zpotify";
 
@@ -12,6 +14,8 @@ import {BaseService} from "@/processes/BaseService.ts";
 export interface IPlaylistService {
     ListSongs(uuid: string, offset: number, limit: number, shuffleHash: string | undefined): Promise<ListSongsResponse>
     GetPlaylist(uuid: string): Promise<GetPlaylistResponse>
+    CreatePlaylist(name: string): Promise<CreatePlaylistResponse>
+    AddSongToPlaylist(playlistUuid: string, songId: number): Promise<void>
 }
 
 export class PlaylistService extends BaseService implements IPlaylistService {
@@ -36,6 +40,22 @@ export class PlaylistService extends BaseService implements IPlaylistService {
         return this.executeAuthApiCall(
             async (initReq) => {
                 return PlaylistAPI.GetPlaylist(req, initReq)
+            })
+    }
+
+    async CreatePlaylist(name: string): Promise<CreatePlaylistResponse> {
+        const req: CreatePlaylistRequest = { name }
+        return this.executeAuthApiCall(
+            async (initReq) => {
+                return PlaylistAPI.CreatePlaylist(req, initReq)
+            })
+    }
+
+    async AddSongToPlaylist(playlistUuid: string, songId: number): Promise<void> {
+        const req: AddSongToPlaylistRequest = { playlistUuid, songId }
+        return this.executeAuthApiCall(
+            async (initReq) => {
+                return PlaylistAPI.AddSongToPlaylist(req, initReq).then(() => undefined)
             })
     }
 }
