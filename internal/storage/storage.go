@@ -112,9 +112,15 @@ type ArtistStorage interface {
 
 type PlaylistStorage interface {
 	WithTx(tx *sql.Tx) PlaylistStorage
-	//Create(ctx context.Context, req querier.CreatePlaylistParams) (domain.Playlist, error)
 
+	Create(ctx context.Context, params domain.CreatePlaylistParams, userId int64) (string, error)
 	Get(ctx context.Context, userId int64, playlistUuid string) (domain.Playlist, error)
+	Update(ctx context.Context, params domain.UpdatePlaylistParams) error
+
+	GetPlaylistArtists(ctx context.Context, playlistUuid string) ([]domain.ArtistsBase, error)
+	AddPlaylistArtist(ctx context.Context, playlistUuid, artistUuid string, orderId int) error
+	ClearPlaylistArtists(ctx context.Context, playlistUuid string) error
+	UpdateCoverFileId(ctx context.Context, playlistUuid string, coverFileId int64) error
 
 	ListSongs(ctx context.Context, r domain.ListSongs) ([]domain.PlaylistSong, error)
 	CountSongs(ctx context.Context, r domain.ListSongs) (uint16, error)

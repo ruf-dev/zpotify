@@ -31,6 +31,8 @@ message Playlist {
   string name = 2;
   optional string description = 3;
   bool is_public = 4;
+  repeated ArtistBase artists = 5;
+  optional int64 cover_file_id = 6;
 }
 
 message SongFile {

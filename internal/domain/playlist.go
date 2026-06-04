@@ -10,11 +10,25 @@ type Playlist struct {
 	Name        string
 	Description string
 	IsPublic    bool
+	Artists     []ArtistsBase
+	CoverFileId *int64
 }
 
 type CreatePlaylistParams struct {
 	Name        string
 	Description string
+	IsPublic    bool
+	ArtistUuids []string
+	CoverFileId *int64
+}
+
+type UpdatePlaylistParams struct {
+	Uuid        string
+	Name        string
+	Description string
+	IsPublic    *bool
+	ArtistUuids []string
+	CoverFileId *int64
 }
 
 type SongsInPlaylist struct {

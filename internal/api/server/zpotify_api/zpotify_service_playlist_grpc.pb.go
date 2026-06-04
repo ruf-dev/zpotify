@@ -25,6 +25,7 @@ const (
 	PlaylistAPI_ListSongs_FullMethodName         = "/zpotify_api.PlaylistAPI/ListSongs"
 	PlaylistAPI_ChangeSongsOrder_FullMethodName  = "/zpotify_api.PlaylistAPI/ChangeSongsOrder"
 	PlaylistAPI_AddSongToPlaylist_FullMethodName = "/zpotify_api.PlaylistAPI/AddSongToPlaylist"
+	PlaylistAPI_UpdatePlaylist_FullMethodName    = "/zpotify_api.PlaylistAPI/UpdatePlaylist"
 )
 
 // PlaylistAPIClient is the client API for PlaylistAPI service.
@@ -37,6 +38,7 @@ type PlaylistAPIClient interface {
 	ListSongs(ctx context.Context, in *ListSongs_Request, opts ...grpc.CallOption) (*ListSongs_Response, error)
 	ChangeSongsOrder(ctx context.Context, in *ChangeSongsOrder_Request, opts ...grpc.CallOption) (*ChangeSongsOrder_Response, error)
 	AddSongToPlaylist(ctx context.Context, in *AddSongToPlaylist_Request, opts ...grpc.CallOption) (*AddSongToPlaylist_Response, error)
+	UpdatePlaylist(ctx context.Context, in *UpdatePlaylist_Request, opts ...grpc.CallOption) (*UpdatePlaylist_Response, error)
 }
 
 type playlistAPIClient struct {
@@ -107,6 +109,16 @@ func (c *playlistAPIClient) AddSongToPlaylist(ctx context.Context, in *AddSongTo
 	return out, nil
 }
 
+func (c *playlistAPIClient) UpdatePlaylist(ctx context.Context, in *UpdatePlaylist_Request, opts ...grpc.CallOption) (*UpdatePlaylist_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdatePlaylist_Response)
+	err := c.cc.Invoke(ctx, PlaylistAPI_UpdatePlaylist_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PlaylistAPIServer is the server API for PlaylistAPI service.
 // All implementations must embed UnimplementedPlaylistAPIServer
 // for forward compatibility.
@@ -117,6 +129,7 @@ type PlaylistAPIServer interface {
 	ListSongs(context.Context, *ListSongs_Request) (*ListSongs_Response, error)
 	ChangeSongsOrder(context.Context, *ChangeSongsOrder_Request) (*ChangeSongsOrder_Response, error)
 	AddSongToPlaylist(context.Context, *AddSongToPlaylist_Request) (*AddSongToPlaylist_Response, error)
+	UpdatePlaylist(context.Context, *UpdatePlaylist_Request) (*UpdatePlaylist_Response, error)
 	mustEmbedUnimplementedPlaylistAPIServer()
 }
 
@@ -144,6 +157,9 @@ func (UnimplementedPlaylistAPIServer) ChangeSongsOrder(context.Context, *ChangeS
 }
 func (UnimplementedPlaylistAPIServer) AddSongToPlaylist(context.Context, *AddSongToPlaylist_Request) (*AddSongToPlaylist_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method AddSongToPlaylist not implemented")
+}
+func (UnimplementedPlaylistAPIServer) UpdatePlaylist(context.Context, *UpdatePlaylist_Request) (*UpdatePlaylist_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdatePlaylist not implemented")
 }
 func (UnimplementedPlaylistAPIServer) mustEmbedUnimplementedPlaylistAPIServer() {}
 func (UnimplementedPlaylistAPIServer) testEmbeddedByValue()                     {}
@@ -274,6 +290,24 @@ func _PlaylistAPI_AddSongToPlaylist_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PlaylistAPI_UpdatePlaylist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePlaylist_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlaylistAPIServer).UpdatePlaylist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PlaylistAPI_UpdatePlaylist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlaylistAPIServer).UpdatePlaylist(ctx, req.(*UpdatePlaylist_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PlaylistAPI_ServiceDesc is the grpc.ServiceDesc for PlaylistAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -304,6 +338,10 @@ var PlaylistAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddSongToPlaylist",
 			Handler:    _PlaylistAPI_AddSongToPlaylist_Handler,
+		},
+		{
+			MethodName: "UpdatePlaylist",
+			Handler:    _PlaylistAPI_UpdatePlaylist_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -4,59 +4,96 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 import { globalIgnores } from 'eslint/config'
+import react from 'eslint-plugin-react'
+import importPlugin from 'eslint-plugin-import'
+import prettierRecommended from 'eslint-plugin-prettier/recommended'
 
 export default tseslint.config([
-	globalIgnores(['dist']),
-	{
-		files: ['**/*.{ts,tsx}'],
-		extends: [
-			js.configs.recommended,
-			tseslint.configs.recommended,
-			reactHooks.configs['recommended-latest'],
-			reactRefresh.configs.vite,
-			"eslint:recommended",
-			"plugin:react/recommended",
-			"plugin:import/recommended",
-			"plugin:import/typescript",
-			"plugin:prettier/recommended"
-		],
-		plugins: ["import"],
-		languageOptions: {
-			ecmaVersion: 2020,
-			globals: globals.browser,
-		},
-		rules: {
-			"import/order": [
-				"error",
-				{
-					"groups": [
-						["builtin", "external"], // Built-in Node and External libraries
-						["internal"], // Aliased imports (e.g., @/app)
-						["parent", "sibling", "index"], // Relative imports
-						["unknown"] // Unrecognized/Unknown groups
-					],
-					"pathGroups": [
-						// Rule for React base packages group
-						{
-							"pattern": "react|react-dom|react-router-dom",
-							"group": "builtin",
-							"position": "before"
-						},
-						// Rule for CSS style imports
-						{
-							"pattern": "*.css",
-							"group": "index",
-							"position": "before"
-						},
-						// Rule for TSX/Components imports (aliased)
-						{
-							"pattern": "@/**",
-							"group": "internal",
-							"position": "before"
-						}
-					]
-				}
-			]
-		}
-	},
+    globalIgnores(['dist']),
+    {
+        files: ['**/*.{ts,tsx}'],
+        extends: [
+            js.configs.recommended,
+            tseslint.configs.recommended,
+            reactHooks.configs['recommended-latest'],
+            reactRefresh.configs.vite,
+            react.configs.flat.recommended,
+            react.configs.flat['jsx-runtime'],
+            importPlugin.flatConfigs.recommended,
+            importPlugin.flatConfigs.typescript,
+            prettierRecommended,
+        ],
+        settings: {
+            react: { version: 'detect' },
+            'import/resolver': { typescript: { alwaysTryTypes: true } },
+        },
+        languageOptions: {
+            ecmaVersion: 2020,
+            globals: globals.browser,
+        },
+        rules: {
+            'no-console': ['warn', { allow: ['warn', 'error'] }],
+
+            // Named function declarations — no `const fn = () => {}`
+            'func-style': ['warn', 'declaration', { allowArrowFunctions: false }],
+
+            // No inline styles — CSS Modules only
+            'react/forbid-component-props': ['warn', { forbid: ['style'] }],
+
+            // gRPC clients must only be used inside src/processes/
+            'no-restricted-imports': [
+                'error',
+                {
+                    patterns: [
+                        {
+                            group: ['@/app/api/**'],
+                            message:
+                                'gRPC clients must only be called from src/processes/. Use a process function instead.',
+                        },
+                    ],
+                },
+            ],
+
+            // tsc already catches unresolved imports; disabling avoids false positives with path aliases and CSS modules
+            'import/no-unresolved': 'off',
+
+            'import/order': [
+                'error',
+                {
+                    groups: [
+                        ['builtin', 'external'],
+                        ['internal'],
+                        ['parent', 'sibling', 'index'],
+                        ['unknown'],
+                    ],
+                    pathGroups: [
+                        {
+                            pattern: 'react|react-dom|react-router-dom',
+                            group: 'builtin',
+                            position: 'before',
+                        },
+                        {
+                            pattern: '@/**',
+                            group: 'internal',
+                            position: 'before',
+                        },
+                        {
+                            pattern: '*.{css,scss}',
+                            patternOptions: { matchBase: true },
+                            group: 'index',
+                            position: 'after',
+                        },
+                    ],
+                    'newlines-between': 'always',
+                },
+            ],
+        },
+    },
+    // Allow processes to import gRPC clients directly
+    {
+        files: ['src/processes/**/*.{ts,tsx}'],
+        rules: {
+            'no-restricted-imports': 'off',
+        },
+    },
 ])

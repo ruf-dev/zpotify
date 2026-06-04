@@ -176,6 +176,38 @@
         ]
       }
     },
+    "/api/playlist/update": {
+      "post": {
+        "operationId": "PlaylistAPI_UpdatePlaylist",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiUpdatePlaylistResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiUpdatePlaylistRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PlaylistAPI"
+        ]
+      }
+    },
     "/api/playlist/{uuid}": {
       "get": {
         "operationId": "PlaylistAPI_GetPlaylist",
@@ -276,6 +308,19 @@
         },
         "description": {
           "type": "string"
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "artistUuids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "coverFileId": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -369,6 +414,17 @@
         },
         "isPublic": {
           "type": "boolean"
+        },
+        "artists": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiArtistBase"
+          }
+        },
+        "coverFileId": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -401,6 +457,36 @@
           "format": "int64"
         }
       }
+    },
+    "zpotify_apiUpdatePlaylistRequest": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "artistUuids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "coverFileId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "zpotify_apiUpdatePlaylistResponse": {
+      "type": "object"
     }
   }
 }

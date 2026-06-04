@@ -11,7 +11,9 @@ import (
 )
 
 type Querier interface {
+	AddPlaylistArtist(ctx context.Context, arg AddPlaylistArtistParams) error
 	AddSongToPlaylist(ctx context.Context, arg AddSongToPlaylistParams) error
+	ClearPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) error
 	CreateFile(ctx context.Context, arg CreateFileParams) (int64, error)
 	CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error)
 	DeleteExpiredSessions(ctx context.Context) error
@@ -21,6 +23,7 @@ type Querier interface {
 	GetFileByPath(ctx context.Context, filePath string) (FilesMetum, error)
 	GetFileBySongId(ctx context.Context, id int64) (FilesMetum, error)
 	GetHomeSegments(ctx context.Context, userID int64) ([]UserHomeSegment, error)
+	GetPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) ([]Artist, error)
 	GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error)
 	GetSongById(ctx context.Context, id int64) (Song, error)
 	GetTelegramIdentityByTgId(ctx context.Context, telegramID int64) (IdentityTelegram, error)
@@ -38,6 +41,8 @@ type Querier interface {
 	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error
 	SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error
 	UpdateFile(ctx context.Context, arg UpdateFileParams) error
+	UpdatePlaylist(ctx context.Context, arg UpdatePlaylistParams) error
+	UpdatePlaylistCoverFileId(ctx context.Context, arg UpdatePlaylistCoverFileIdParams) error
 	UpsertSongArtist(ctx context.Context, arg UpsertSongArtistParams) error
 	UpsertTelegramIdentity(ctx context.Context, arg UpsertTelegramIdentityParams) (int64, error)
 	UpsertUser(ctx context.Context, arg UpsertUserParams) error

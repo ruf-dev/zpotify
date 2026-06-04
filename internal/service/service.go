@@ -48,7 +48,7 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache, fileStorage 
 		audioService:    v1.NewAudioService(dataStorage, cache, fileStorage),
 		userService:     v1.NewUserService(dataStorage),
 		authService:     authSvc,
-		playlistService: v1.NewPlaylistService(dataStorage),
+		playlistService: v1.NewPlaylistService(dataStorage, fileStorage),
 		artistsService:  v1.NewArtistsService(dataStorage),
 		fileService:     v1.NewFileService(dataStorage, fileStorage),
 	}, nil
@@ -120,9 +120,9 @@ type AuthService interface {
 }
 
 type PlaylistService interface {
-	//Create(context.Context, domain.CreatePlaylistParams) (domain.Playlist, error)
-
+	Create(ctx context.Context, req domain.CreatePlaylistParams) (string, error)
 	Get(ctx context.Context, playlistUuid string) (domain.Playlist, error)
+	Update(ctx context.Context, req domain.UpdatePlaylistParams) error
 
 	ListSongs(ctx context.Context, songs domain.ListSongs) (domain.SongsInPlaylist, error)
 	AddSong(ctx context.Context, req domain.AddSongToPlaylist) error

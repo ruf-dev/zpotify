@@ -12,16 +12,23 @@ import (
 func (impl *Impl) CreatePlaylist(ctx context.Context, req *zpotify_api.CreatePlaylist_Request) (
 	*zpotify_api.CreatePlaylist_Response, error) {
 	params := domain.CreatePlaylistParams{
-		Name:        req.Name,
+		Name:        req.GetName(),
 		Description: req.GetDescription(),
+		IsPublic:    req.GetIsPublic(),
+		ArtistUuids: req.GetArtistUuids(),
 	}
 
-	playlist, err := impl.playlistService.Create(ctx, params)
+	if req.CoverFileId != nil {
+		fileId := req.GetCoverFileId()
+		params.CoverFileId = &fileId
+	}
+
+	playlistUuid, err := impl.playlistService.Create(ctx, params)
 	if err != nil {
 		return nil, rerrors.Wrap(err)
 	}
 
 	return &zpotify_api.CreatePlaylist_Response{
-		Uuid: playlist.Uuid,
+		Uuid: playlistUuid,
 	}, nil
 }

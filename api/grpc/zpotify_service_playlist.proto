@@ -51,6 +51,13 @@ service PlaylistAPI {
       body: "*"
     };
   }
+
+  rpc UpdatePlaylist(UpdatePlaylist.Request) returns (UpdatePlaylist.Response) {
+    option (google.api.http) = {
+      post: "/api/playlist/update",
+      body: "*"
+    };
+  }
 }
 
 
@@ -82,11 +89,27 @@ message CreatePlaylist {
   message Request {
     string name = 1;
     optional string description = 2;
+    bool is_public = 3;
+    repeated string artist_uuids = 4;
+    optional int64 cover_file_id = 5;
   }
 
   message Response {
     string uuid = 1;
   }
+}
+
+message UpdatePlaylist {
+  message Request {
+    string uuid = 1;
+    optional string name = 2;
+    optional string description = 3;
+    optional bool is_public = 4;
+    repeated string artist_uuids = 5;
+    optional int64 cover_file_id = 6;
+  }
+
+  message Response {}
 }
 
 

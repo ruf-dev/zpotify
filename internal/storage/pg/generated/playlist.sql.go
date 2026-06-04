@@ -7,9 +7,27 @@ package querier
 
 import (
 	"context"
+	"database/sql"
 
 	"github.com/google/uuid"
 )
+
+const addPlaylistArtist = `-- name: AddPlaylistArtist :exec
+INSERT INTO playlists_artists (playlist_uuid, artist_uuid, order_id)
+VALUES ($1, $2, $3)
+ON CONFLICT (playlist_uuid, artist_uuid) DO UPDATE SET order_id = EXCLUDED.order_id
+`
+
+type AddPlaylistArtistParams struct {
+	PlaylistUuid uuid.UUID
+	ArtistUuid   uuid.UUID
+	OrderID      int64
+}
+
+func (q *Queries) AddPlaylistArtist(ctx context.Context, arg AddPlaylistArtistParams) error {
+	_, err := q.db.ExecContext(ctx, addPlaylistArtist, arg.PlaylistUuid, arg.ArtistUuid, arg.OrderID)
+	return err
+}
 
 const addSongToPlaylist = `-- name: AddSongToPlaylist :exec
 INSERT INTO playlist_songs (playlist_uuid, song_id, order_number)
@@ -26,35 +44,82 @@ func (q *Queries) AddSongToPlaylist(ctx context.Context, arg AddSongToPlaylistPa
 	return err
 }
 
+const clearPlaylistArtists = `-- name: ClearPlaylistArtists :exec
+DELETE FROM playlists_artists WHERE playlist_uuid = $1
+`
+
+func (q *Queries) ClearPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) error {
+	_, err := q.db.ExecContext(ctx, clearPlaylistArtists, playlistUuid)
+	return err
+}
+
 const createPlaylist = `-- name: CreatePlaylist :one
 WITH created_playlist AS (
-    INSERT INTO playlists (name, description, owner_id)
-        VALUES ($1, $2, $3)
+    INSERT INTO playlists (name, description, is_public, owner_id)
+        VALUES ($1, $2, $3, $4)
         RETURNING uuid)
 INSERT
 INTO user_playlists (user_id, playlist_id)
-VALUES ($3, (SELECT uuid FROM created_playlist))
+VALUES ($4, (SELECT uuid FROM created_playlist))
 RETURNING playlist_id
 `
 
 type CreatePlaylistParams struct {
 	Name        string
 	Description string
+	IsPublic    bool
 	UserID      int64
 }
 
 func (q *Queries) CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error) {
-	row := q.db.QueryRowContext(ctx, createPlaylist, arg.Name, arg.Description, arg.UserID)
+	row := q.db.QueryRowContext(ctx, createPlaylist,
+		arg.Name,
+		arg.Description,
+		arg.IsPublic,
+		arg.UserID,
+	)
 	var playlist_id uuid.UUID
 	err := row.Scan(&playlist_id)
 	return playlist_id, err
+}
+
+const getPlaylistArtists = `-- name: GetPlaylistArtists :many
+SELECT a.uuid, a.name
+FROM artists a
+         JOIN playlists_artists pa ON pa.artist_uuid = a.uuid
+WHERE pa.playlist_uuid = $1
+ORDER BY pa.order_id
+`
+
+func (q *Queries) GetPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) ([]Artist, error) {
+	rows, err := q.db.QueryContext(ctx, getPlaylistArtists, playlistUuid)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Artist{}
+	for rows.Next() {
+		var i Artist
+		if err := rows.Scan(&i.Uuid, &i.Name); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const getPlaylistWithAuth = `-- name: GetPlaylistWithAuth :one
 SELECT uuid,
        name,
        description,
-       is_public
+       is_public,
+       cover_file_id
 FROM playlists
          LEFT JOIN user_playlists AS up
                    ON up.playlist_id = playlists.uuid
@@ -76,6 +141,7 @@ type GetPlaylistWithAuthRow struct {
 	Name        string
 	Description string
 	IsPublic    bool
+	CoverFileID sql.NullInt64
 }
 
 func (q *Queries) GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error) {
@@ -86,6 +152,46 @@ func (q *Queries) GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAu
 		&i.Name,
 		&i.Description,
 		&i.IsPublic,
+		&i.CoverFileID,
 	)
 	return i, err
+}
+
+const updatePlaylist = `-- name: UpdatePlaylist :exec
+UPDATE playlists
+SET name        = CASE WHEN $2::text != '' THEN $2::text ELSE name END,
+    description = CASE WHEN $3::text != '' THEN $3::text ELSE description END,
+    is_public   = CASE WHEN $4 THEN $4 ELSE is_public END
+WHERE uuid = $1
+`
+
+type UpdatePlaylistParams struct {
+	Uuid     uuid.UUID
+	Column2  string
+	Column3  string
+	IsPublic bool
+}
+
+func (q *Queries) UpdatePlaylist(ctx context.Context, arg UpdatePlaylistParams) error {
+	_, err := q.db.ExecContext(ctx, updatePlaylist,
+		arg.Uuid,
+		arg.Column2,
+		arg.Column3,
+		arg.IsPublic,
+	)
+	return err
+}
+
+const updatePlaylistCoverFileId = `-- name: UpdatePlaylistCoverFileId :exec
+UPDATE playlists SET cover_file_id = $2 WHERE uuid = $1
+`
+
+type UpdatePlaylistCoverFileIdParams struct {
+	Uuid        uuid.UUID
+	CoverFileID sql.NullInt64
+}
+
+func (q *Queries) UpdatePlaylistCoverFileId(ctx context.Context, arg UpdatePlaylistCoverFileIdParams) error {
+	_, err := q.db.ExecContext(ctx, updatePlaylistCoverFileId, arg.Uuid, arg.CoverFileID)
+	return err
 }

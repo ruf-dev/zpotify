@@ -207,20 +207,140 @@ func (p *PlaylistStorage) Get(ctx context.Context, userId int64, playlistUuid st
 		IsPublic:    row.IsPublic,
 	}
 
+	if row.CoverFileID.Valid {
+		playlist.CoverFileId = &row.CoverFileID.Int64
+	}
+
+	artists, err := p.GetPlaylistArtists(ctx, playlistUuid)
+	if err != nil {
+		return domain.Playlist{}, rerrors.Wrap(err, "error getting playlist artists")
+	}
+	playlist.Artists = artists
+
 	return playlist, nil
 }
 
-func (p *PlaylistStorage) Create(ctx context.Context, params generated.CreatePlaylistParams) (domain.Playlist, error) {
-	playlistUuid, err := p.querier.CreatePlaylist(ctx, params)
-	if err != nil {
-		return domain.Playlist{}, rerrors.Wrap(err, "error saving playlist to storage")
-	}
-
-	return domain.Playlist{
-		Uuid:        playlistUuid.String(),
+func (p *PlaylistStorage) Create(ctx context.Context, params domain.CreatePlaylistParams, userId int64) (string, error) {
+	createParams := generated.CreatePlaylistParams{
 		Name:        params.Name,
 		Description: params.Description,
-	}, nil
+		IsPublic:    params.IsPublic,
+		UserID:      userId,
+	}
+
+	playlistUuid, err := p.querier.CreatePlaylist(ctx, createParams)
+	if err != nil {
+		return "", rerrors.Wrap(err, "error saving playlist to storage")
+	}
+
+	return playlistUuid.String(), nil
+}
+
+func (p *PlaylistStorage) Update(ctx context.Context, params domain.UpdatePlaylistParams) error {
+	parsedUuid, err := uuid.Parse(params.Uuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+
+	isPublic := false
+	if params.IsPublic != nil {
+		isPublic = *params.IsPublic
+	}
+
+	updateParams := generated.UpdatePlaylistParams{
+		Uuid:     parsedUuid,
+		Column2:  params.Name,
+		Column3:  params.Description,
+		IsPublic: isPublic,
+	}
+
+	err = p.querier.UpdatePlaylist(ctx, updateParams)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
+func (p *PlaylistStorage) GetPlaylistArtists(ctx context.Context, playlistUuid string) ([]domain.ArtistsBase, error) {
+	parsedUuid, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+
+	rows, err := p.querier.GetPlaylistArtists(ctx, parsedUuid)
+	if err != nil {
+		return nil, wrapPgErr(err)
+	}
+
+	artists := make([]domain.ArtistsBase, 0, len(rows))
+	for _, row := range rows {
+		artist := domain.ArtistsBase{
+			Uuid: row.Uuid.String(),
+			Name: row.Name,
+		}
+		artists = append(artists, artist)
+	}
+
+	return artists, nil
+}
+
+func (p *PlaylistStorage) AddPlaylistArtist(ctx context.Context, playlistUuid, artistUuid string, orderId int) error {
+	pUuid, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+
+	aUuid, err := uuid.Parse(artistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing artist uuid")
+	}
+
+	addParams := generated.AddPlaylistArtistParams{
+		PlaylistUuid: pUuid,
+		ArtistUuid:   aUuid,
+		OrderID:      int64(orderId),
+	}
+
+	err = p.querier.AddPlaylistArtist(ctx, addParams)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
+func (p *PlaylistStorage) ClearPlaylistArtists(ctx context.Context, playlistUuid string) error {
+	parsedUuid, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+
+	err = p.querier.ClearPlaylistArtists(ctx, parsedUuid)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
+func (p *PlaylistStorage) UpdateCoverFileId(ctx context.Context, playlistUuid string, coverFileId int64) error {
+	parsedUuid, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+
+	updateParams := generated.UpdatePlaylistCoverFileIdParams{
+		Uuid:        parsedUuid,
+		CoverFileID: sql.NullInt64{Int64: coverFileId, Valid: true},
+	}
+
+	err = p.querier.UpdatePlaylistCoverFileId(ctx, updateParams)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
 }
 
 func (p *PlaylistStorage) AddSong(ctx context.Context, playlistUuid string, songId int32) error {

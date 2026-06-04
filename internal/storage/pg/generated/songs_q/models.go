@@ -130,12 +130,19 @@ type Playlist struct {
 	Description string
 	IsPublic    bool
 	OwnerID     int64
+	CoverFileID sql.NullInt64
 }
 
 type PlaylistSong struct {
 	PlaylistUuid uuid.UUID
 	SongID       int64
 	OrderNumber  int64
+}
+
+type PlaylistsArtist struct {
+	PlaylistUuid uuid.UUID
+	ArtistUuid   uuid.UUID
+	OrderID      int64
 }
 
 type PlaylistsSongsV1 struct {
