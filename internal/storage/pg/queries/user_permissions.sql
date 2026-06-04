@@ -2,6 +2,7 @@
 SELECT user_id,
        can_upload,
        early_access,
-       can_create_playlist
+       can_create_playlist,
+       max_pending_tracks
 FROM user_permissions
 WHERE user_id = $1;

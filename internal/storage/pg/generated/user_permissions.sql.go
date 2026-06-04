@@ -13,7 +13,8 @@ const listUserPermissionsByUserId = `-- name: ListUserPermissionsByUserId :one
 SELECT user_id,
        can_upload,
        early_access,
-       can_create_playlist
+       can_create_playlist,
+       max_pending_tracks
 FROM user_permissions
 WHERE user_id = $1
 `
@@ -26,6 +27,7 @@ func (q *Queries) ListUserPermissionsByUserId(ctx context.Context, userID int64)
 		&i.CanUpload,
 		&i.EarlyAccess,
 		&i.CanCreatePlaylist,
+		&i.MaxPendingTracks,
 	)
 	return i, err
 }

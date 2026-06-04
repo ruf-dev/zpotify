@@ -5,6 +5,7 @@ import cls from '@/dialogs/AddTrack/AddTrackModal.module.css';
 
 import {useDialog} from '@/app/hooks/Dialog.tsx';
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
+import {ServiceError} from "@/processes/Errors.ts";
 import useUser from '@/hooks/user/User.ts';
 
 import ChooseScreen from '@/dialogs/AddTrack/screens/ChooseScreen';
@@ -134,6 +135,7 @@ export default function AddTrackModal() {
     const [step, setStep] = useState<ModalStep>('choose');
     const [audioFile, setAudioFile] = useState<AudioFile | null>(null);
     const [uploading, setUploading] = useState(false);
+    const [uploadError, setUploadError] = useState<string | null>(null);
     const [title, setTitle] = useState('');
     const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
     const [playlistId, setPlaylistId] = useState('');
@@ -141,6 +143,7 @@ export default function AddTrackModal() {
 
     function handleFile(f: File) {
         setTitle(f.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '));
+        setUploadError(null);
         setUploading(true);
         Services().WebApi()
             .UploadFile(f)
@@ -148,7 +151,13 @@ export default function AddTrackModal() {
                 setAudioFile(new AudioFile(id));
                 setStep('meta');
             })
-            .catch(toaster.catch)
+            .catch((err: unknown) => {
+                if (err instanceof ServiceError && err.statusCode === 429) {
+                    setUploadError('upload limit reached — remove a pending track first');
+                } else {
+                    toaster.catch(err as ServiceError);
+                }
+            })
             .finally(() => setUploading(false));
     }
 
@@ -199,7 +208,7 @@ export default function AddTrackModal() {
                 )}
 
                 {step === 'drop' && !uploading && (
-                    <DropZoneScreen onFile={handleFile}/>
+                    <DropZoneScreen onFile={handleFile} uploadError={uploadError}/>
                 )}
                 {step === 'drop' && uploading && <UploadingSpinner/>}
                 {step === 'meta' && audioFile?.fileId && (

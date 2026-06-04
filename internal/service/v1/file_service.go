@@ -9,6 +9,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/audio_parsers"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
+	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/user_errors"
 	"go.zpotify.ru/zpotify/internal/utils"
@@ -35,6 +36,14 @@ func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, cont
 
 	if !uCtx.Permissions.CanUpload {
 		return 0, rerrors.Wrap(user_errors.ErrPermissionDenied, "not allowed to upload file")
+	}
+
+	files, err := s.binaryStorage.ListFiles(ctx, uCtx.UserId)
+	if err != nil {
+		return 0, rerrors.Wrap(err, "error listing temp files for limit check")
+	}
+	if int64(len(files)) >= uCtx.Permissions.MaxPendingTracks {
+		return 0, service_errors.ErrPendingTrackLimitReached
 	}
 
 	tmpFilePath, err := s.binaryStorage.SaveToTempFolder(ctx, uCtx.UserId, fileNameWithExt, content)

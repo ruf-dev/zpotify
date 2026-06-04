@@ -42,6 +42,8 @@ type UserPermissions struct {
 	EarlyAccess bool
 
 	CanCreatePlaylist bool
+
+	MaxPendingTracks int64
 }
 
 type UserSession struct {

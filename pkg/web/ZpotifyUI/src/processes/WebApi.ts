@@ -3,6 +3,7 @@ import {BaseService} from "@/processes/BaseService.ts";
 import {
     ServiceError, WithDescription,
     WithHttpStatus,
+    WithStatusCode,
     WithTitle
 } from "@/processes/Errors.ts";
 
@@ -51,6 +52,7 @@ export class WebApiImpl extends BaseService implements WebApi {
 async function ServiceErrorFromHttp(r: Response): Promise<ServiceError> {
     return new ServiceError(
         WithHttpStatus(r.status),
+        WithStatusCode(r.status),
         WithTitle("Error calling WebApi"),
         WithDescription(await r.text())
     )

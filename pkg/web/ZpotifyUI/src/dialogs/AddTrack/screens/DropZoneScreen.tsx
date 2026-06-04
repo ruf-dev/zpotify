@@ -3,6 +3,7 @@ import cls from '@/dialogs/AddTrack/screens/DropZoneScreen.module.css';
 
 interface DropZoneScreenProps {
     onFile: (file: File) => void;
+    uploadError?: string | null;
 }
 
 function IdleDecoration() {
@@ -58,7 +59,7 @@ function DropZoneText({dragOver}: {dragOver: boolean}) {
     );
 }
 
-export default function DropZoneScreen({onFile}: DropZoneScreenProps) {
+export default function DropZoneScreen({onFile, uploadError}: DropZoneScreenProps) {
     const [dragOver, setDragOver] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -114,8 +115,10 @@ export default function DropZoneScreen({onFile}: DropZoneScreenProps) {
                     </div>
                 </div>
 
-                {!dragOver && <span className={cls.BottomHint}>mp3</span>}
+                {!dragOver && <span className={cls.BottomHint}>mp3 · flac · aac</span>}
             </div>
+
+            {uploadError && <span className={cls.UploadError}>{uploadError}</span>}
         </div>
     );
 }

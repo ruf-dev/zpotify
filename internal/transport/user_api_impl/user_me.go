@@ -39,5 +39,6 @@ func toPbPermissions(permissions domain.UserPermissions) *zpotify_api.Permission
 		CanUpload:         permissions.CanUpload,
 		EarlyAccess:       permissions.EarlyAccess,
 		CanCreatePlaylist: permissions.CanCreatePlaylist,
+		MaxPendingTracks:  permissions.MaxPendingTracks,
 	}
 }

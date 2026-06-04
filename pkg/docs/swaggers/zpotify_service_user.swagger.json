@@ -145,6 +145,11 @@
         "canCreatePlaylist": {
           "type": "boolean",
           "title": "User can create playlists"
+        },
+        "maxPendingTracks": {
+          "type": "string",
+          "format": "int64",
+          "title": "Max number of tracks allowed in temp storage; 0 = no uploads allowed"
         }
       }
     },

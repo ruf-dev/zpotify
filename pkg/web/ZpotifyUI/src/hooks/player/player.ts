@@ -180,7 +180,8 @@ class AudioPlayerImpl implements AudioPlayer {
     }
 
     preload(trackPath: string): void {
-        const trackUrl = import.meta.env.VITE_ZPOTIFY_API+trackPath
+        const base = import.meta.env.VITE_ZPOTIFY_WEBSERVER as string
+        const trackUrl = base + (trackPath.startsWith('/') ? trackPath : '/' + trackPath)
         if (this.audio.src === trackUrl) return;
 
         this.audio.src = trackUrl;

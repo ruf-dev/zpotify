@@ -45,11 +45,12 @@ func (q *Queries) InsertUser(ctx context.Context, arg InsertUserParams) (int64, 
 
 const saveUserPermissions = `-- name: SaveUserPermissions :exec
 INSERT INTO user_permissions
-    (user_id, can_upload, early_access, can_create_playlist)
-VALUES ($1, $2, $3, $4)
+    (user_id, can_upload, early_access, can_create_playlist, max_pending_tracks)
+VALUES ($1, $2, $3, $4, $5)
 ON CONFLICT (user_id) DO UPDATE SET can_upload          = EXCLUDED.can_upload,
                                     early_access        = EXCLUDED.early_access,
-                                    can_create_playlist = EXCLUDED.can_create_playlist
+                                    can_create_playlist = EXCLUDED.can_create_playlist,
+                                    max_pending_tracks  = EXCLUDED.max_pending_tracks
 `
 
 type SaveUserPermissionsParams struct {
@@ -57,6 +58,7 @@ type SaveUserPermissionsParams struct {
 	CanUpload         bool
 	EarlyAccess       bool
 	CanCreatePlaylist bool
+	MaxPendingTracks  int64
 }
 
 func (q *Queries) SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error {
@@ -65,6 +67,7 @@ func (q *Queries) SaveUserPermissions(ctx context.Context, arg SaveUserPermissio
 		arg.CanUpload,
 		arg.EarlyAccess,
 		arg.CanCreatePlaylist,
+		arg.MaxPendingTracks,
 	)
 	return err
 }

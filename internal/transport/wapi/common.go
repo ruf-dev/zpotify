@@ -28,6 +28,12 @@ func unwrapError(w http.ResponseWriter, err error) {
 		return
 	}
 
+	if stderrs.Is(err, service_errors.ErrPendingTrackLimitReached) {
+		w.WriteHeader(http.StatusTooManyRequests)
+		_, _ = w.Write([]byte(err.Error()))
+		return
+	}
+
 	log.Err(err).
 		Msg("unhandled error in wapi unwrapError")
 

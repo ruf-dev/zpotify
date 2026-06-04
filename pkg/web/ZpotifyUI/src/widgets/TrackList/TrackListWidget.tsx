@@ -62,6 +62,8 @@ export default function SongListWidget({songs, audioPlayer}: SongListWidgetProps
 
     function playSongAtIndex(idx: number) {
         const song = songs[idx];
+        console.log(`Start new song play ${song}`)
+
         if (!song) return;
 
         if (!song.filePath) throw "No song url path";

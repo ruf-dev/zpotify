@@ -85,6 +85,7 @@ func (s *UserStorage) SavePermissions(ctx context.Context, userId int64, permiss
 		CanUpload:         permissions.CanUpload,
 		EarlyAccess:       permissions.EarlyAccess,
 		CanCreatePlaylist: permissions.CanCreatePlaylist,
+		MaxPendingTracks:  permissions.MaxPendingTracks,
 	}
 
 	err := s.querier.SaveUserPermissions(ctx, params)
@@ -189,6 +190,7 @@ func toDomainUserPermissions(p querier.UserPermission) domain.UserPermissions {
 		CanUpload:         p.CanUpload,
 		EarlyAccess:       p.EarlyAccess,
 		CanCreatePlaylist: p.CanCreatePlaylist,
+		MaxPendingTracks:  p.MaxPendingTracks,
 	}
 }
 

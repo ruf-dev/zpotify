@@ -149,3 +149,11 @@
     color: var(--color-fg-disabled);
     letter-spacing: 0.06em;
 }
+
+.UploadError {
+    display: block;
+    margin-top: 0.75rem;
+    font-size: var(--font-size-sm);
+    color: var(--color-error);
+    text-align: center;
+}

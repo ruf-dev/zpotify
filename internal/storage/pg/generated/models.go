@@ -190,6 +190,7 @@ type UserPermission struct {
 	CanUpload         bool
 	EarlyAccess       bool
 	CanCreatePlaylist bool
+	MaxPendingTracks  int64
 }
 
 type UserPlaylist struct {
