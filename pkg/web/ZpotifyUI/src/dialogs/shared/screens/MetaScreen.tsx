@@ -20,13 +20,14 @@ interface MetaScreenProps {
     initialArtistOptions?: Option[];
 }
 
-export default function MetaScreen({
-                                       audioFile,
-                                       title, onTitleChange,
-                                       selectedArtists, onArtistsChange,
-                                       playlistId, onPlaylistChange,
-                                       initialArtistOptions,
-                                   }: MetaScreenProps) {
+export default function MetaScreen(
+    {
+        audioFile,
+        title, onTitleChange,
+        selectedArtists, onArtistsChange,
+        playlistId, onPlaylistChange,
+        initialArtistOptions,
+    }: MetaScreenProps) {
     const {Services} = useUser();
     const fileService = Services().File();
     const artistsService = Services().Artists();

@@ -1,3 +1,4 @@
+import React from "react";
 import cls from "@/pages/segments/Dialog.module.css";
 
 import {useDialog} from "@/app/hooks/Dialog.tsx";
@@ -15,15 +16,16 @@ export default function Dialog() {
             }}
         >
             <div
+                className={cls.ChildrenWrapper}
                 onMouseDown={(e) => {
                     e.stopPropagation();
                 }}
             >
                 {
                     children.map((v, idx) => {
-                        return (<div key={idx}>
+                        return (<React.Fragment key={idx}>
                             {v}
-                        </div>)
+                        </React.Fragment>)
                     })
                 }
             </div>

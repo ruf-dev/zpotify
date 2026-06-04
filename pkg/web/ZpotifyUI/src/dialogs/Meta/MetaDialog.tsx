@@ -34,7 +34,7 @@ export default function MetaDialog({audioFile, initialTitle}: MetaDialogProps) {
     }
 
     return (
-        <div className={cls.Panel}>
+        <div className={cls.MetaDialogContainer}>
             <div className={cls.PanelHeader}>
                 <span className={cls.PanelTitle}>track details</span>
                 <button className={cls.CloseButton} type="button" onClick={CloseDialog}>

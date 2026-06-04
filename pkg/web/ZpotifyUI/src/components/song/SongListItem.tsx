@@ -26,13 +26,13 @@ type SongItemProp = {
     permissions?: SongListPermissions
 }
 
-export default function SongItem({
-                                     song,
-                                     num,
-                                     isPlaying, isSelected,
-                                     onMenuOpened, onMenuClosed,
-                                     isInteractionDisabled,
-                                 }: SongItemProp) {
+export default function SongItem(
+    {
+        song, num,
+        isPlaying, isSelected,
+        onMenuOpened, onMenuClosed,
+        isInteractionDisabled,
+    }: SongItemProp) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const {OpenDialog} = useDialog();
 
@@ -62,10 +62,12 @@ export default function SongItem({
 
     return (
         <div
-            className={cn(cls.SongItemContainer, {
-                [cls.isPlaying]: active,
-                [cls.menuOpen]: isMenuOpen,
-            })}
+            className={
+                cn(cls.SongItemContainer,
+                    {
+                        [cls.isPlaying]: active,
+                        [cls.menuOpen]: isMenuOpen,
+                    })}
         >
             <div className={cls.NumColumn}>
                 {isPlaying && active ? (

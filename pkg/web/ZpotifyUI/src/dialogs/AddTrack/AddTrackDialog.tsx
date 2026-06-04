@@ -105,7 +105,7 @@ export default function AddTrackDialog() {
     const Screen = SCREENS[step];
 
     return (
-        <div className={cls.Panel}>
+        <div className={cls.AddTrackContainer}>
             <PanelHeader
                 step={step}
                 backStep={backStep}

@@ -3,10 +3,10 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-}
 
-.Song {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+    .Song {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+    }
 }

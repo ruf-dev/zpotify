@@ -5,6 +5,8 @@
 
 .ChooseScreenContainer {
     animation: slideIn 0.2s ease both;
+
+    width: 40vw;
 }
 
 .GridWrapper {

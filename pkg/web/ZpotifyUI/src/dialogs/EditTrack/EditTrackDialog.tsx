@@ -56,7 +56,7 @@ export default function EditTrackDialog({song}: EditTrackDialogProps) {
     }
 
     return (
-        <div className={cls.Panel}>
+        <div className={cls.EditTrackContainer}>
             <div className={cls.PanelHeader}>
                 <span className={cls.PanelTitle}>edit track</span>
                 <button className={cls.CloseButton} type="button" onClick={CloseDialog}>

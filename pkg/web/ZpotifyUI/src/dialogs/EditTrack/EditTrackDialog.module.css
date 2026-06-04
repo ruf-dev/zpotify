@@ -3,7 +3,7 @@
     to   { transform: scale(1) translateY(0); opacity: 1; }
 }
 
-.Panel {
+.EditTrackContainer {
     width: 50vw;
     min-width: 22rem;
     max-width: 56rem;
@@ -85,7 +85,7 @@
 }
 
 @media (max-width: 600px) {
-    .Panel {
+    .EditTrackContainer {
         width: 94vw;
         min-width: unset;
     }
