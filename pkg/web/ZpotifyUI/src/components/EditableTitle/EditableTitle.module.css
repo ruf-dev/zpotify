@@ -1,0 +1,39 @@
+.Display {
+    display: inline-block;
+    padding: 0.25rem 0.4375rem;
+    margin-left: -0.4375rem;
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    color: var(--color-fg-primary);
+    cursor: text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    border-bottom: 1px dashed transparent;
+    transition: background 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+        background: var(--color-bg-hover);
+        border-bottom-color: var(--color-border-light);
+    }
+}
+
+.Empty {
+    color: var(--color-fg-tertiary);
+}
+
+.Input {
+    width: 100%;
+    background: var(--color-bg-base);
+    border: 1px solid var(--color-accent-border);
+    border-radius: var(--border-radius-sm);
+    padding: 0.25rem 0.4375rem;
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    color: var(--color-fg-primary);
+    font-family: 'Comfortaa', sans-serif;
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-accent-shadow);
+}

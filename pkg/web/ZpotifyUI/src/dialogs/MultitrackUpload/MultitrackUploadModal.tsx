@@ -1,0 +1,265 @@
+import {useCallback, useEffect, useRef, useState} from 'react';
+import {parseBlob} from 'music-metadata-browser';
+import cls from './MultitrackUploadModal.module.css';
+import {useDialog} from '@/app/hooks/Dialog.tsx';
+import {useToaster} from '@/hooks/toaster/ToasterZ.ts';
+import useUser from '@/hooks/user/User.ts';
+import TrackList from './TrackList';
+import PlaylistDetailsPanel from './PlaylistDetailsPanel';
+import type {TrackDraft} from './TrackRow';
+import type {ArtistItem} from '@/components/ArtistChipsField/ArtistChipsField';
+
+interface MultitrackUploadModalProps {
+    files: File[];
+}
+
+function cleanTitle(filename: string): string {
+    return filename.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ').trim();
+}
+
+function formatBytes(bytes: number): string {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function formatTotalSize(files: File[]): string {
+    const total = files.reduce((s, f) => s + f.size, 0);
+    return formatBytes(total);
+}
+
+function CheckIcon() {
+    return (
+        <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline className={cls.CheckPath} points="4 10 8 14 16 6"/>
+        </svg>
+    );
+}
+
+function ChevronIcon() {
+    return (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="9 6 15 12 9 18"/>
+        </svg>
+    );
+}
+
+interface PlaylistToggleRowProps {
+    checked: boolean;
+    onChange: (checked: boolean) => void;
+}
+
+function PlaylistToggleRow({checked, onChange}: PlaylistToggleRowProps) {
+    return (
+        <div className={`${cls.ToggleContainer} ${checked ? cls.ToggleChecked : ''}`}>
+            <label className={cls.ToggleLabel} onClick={() => onChange(!checked)}>
+                <div className={`${cls.Checkbox} ${checked ? cls.CheckboxChecked : ''}`}>
+                    {checked && <CheckIcon/>}
+                </div>
+                <div className={cls.ToggleTextStack}>
+                    <span className={cls.ToggleMain}>create playlist from these tracks</span>
+                    <span className={cls.ToggleSub}>group them as an album with shared cover, name, and artists</span>
+                </div>
+            </label>
+        </div>
+    );
+}
+
+export default function MultitrackUploadModal({files}: MultitrackUploadModalProps) {
+    const {CloseDialog, LockClosing, UnlockClosing} = useDialog();
+    const toaster = useToaster();
+    const {Services} = useUser();
+
+    const [tracks, setTracks] = useState<TrackDraft[]>(() =>
+        files.map(f => ({
+            id: crypto.randomUUID(),
+            file: f,
+            title: cleanTitle(f.name),
+            artists: [] as ArtistItem[],
+            duration: 0,
+            size: f.size,
+        }))
+    );
+    const [playlistMode, setPlaylistMode] = useState(true);
+    const [playlistName, setPlaylistName] = useState('');
+    const [albumArtists, setAlbumArtists] = useState<ArtistItem[]>([]);
+    const [cover, setCover] = useState<File | undefined>();
+    const [submitting, setSubmitting] = useState(false);
+
+    const tracksRef = useRef(tracks);
+    tracksRef.current = tracks;
+
+    useEffect(() => {
+        const initialTracks = tracksRef.current;
+        initialTracks.forEach(async (t) => {
+            try {
+                const meta = await parseBlob(t.file);
+                const dur = meta.format.duration ?? 0;
+                setTracks(prev => prev.map(p => p.id === t.id ? {...p, duration: dur} : p));
+            } catch {
+                // duration stays 0, badge shows "—"
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        function handleKeyDown(e: KeyboardEvent) {
+            if (e.key === 'Escape' && !submitting) CloseDialog();
+        }
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [submitting, CloseDialog]);
+
+    const loadArtistOptions = useCallback(
+        (query: string): Promise<ArtistItem[]> =>
+            Services().Artists().ListArtist(query, 0, 8)
+                .then(res => (res.artists ?? [])
+                    .filter(a => a.name && a.uuid)
+                    .map(a => ({id: a.uuid!, name: a.name!}))),
+        [Services]
+    );
+
+    const handleCreateArtist = useCallback(
+        async (name: string): Promise<ArtistItem> => ({id: name, name}),
+        []
+    );
+
+    function handleTitleChange(id: string, title: string) {
+        setTracks(prev => prev.map(t => t.id === id ? {...t, title} : t));
+    }
+
+    function handleArtistsChange(id: string, artists: ArtistItem[]) {
+        setTracks(prev => prev.map(t => t.id === id ? {...t, artists} : t));
+    }
+
+    function handleRemove(id: string) {
+        setTracks(prev => prev.filter(t => t.id !== id));
+    }
+
+    function handleReorder(fromIdx: number, toIdx: number) {
+        setTracks(prev => {
+            const next = [...prev];
+            const [moved] = next.splice(fromIdx, 1);
+            next.splice(toIdx, 0, moved);
+            return next;
+        });
+    }
+
+    async function handleSubmit() {
+        if (submitting || tracks.length === 0) return;
+        if (playlistMode && !playlistName.trim()) return;
+
+        setSubmitting(true);
+        LockClosing();
+
+        try {
+            const songIds: string[] = [];
+
+            for (const track of tracks) {
+                const fileId = await Services().WebApi().UploadFile(track.file);
+                const artistUuids = track.artists.map(a => a.id);
+                const songId = await Services().Songs().CreateSong(track.title || track.file.name, artistUuids, fileId);
+                songIds.push(songId);
+            }
+
+            if (playlistMode) {
+                // TODO: pass albumArtists to CreatePlaylist once backend supports it
+                // TODO: upload cover image and attach to playlist once backend supports it
+                const playlist = await Services().Playlist().CreatePlaylist(playlistName.trim());
+                const playlistUuid = playlist.uuid ?? '';
+
+                await Promise.all(
+                    songIds.map(id => Services().Playlist().AddSongToPlaylist(playlistUuid, parseInt(id, 10)))
+                );
+            }
+
+            setTimeout(() => { CloseDialog(); window.location.reload(); }, 800);
+        } catch (e) {
+            setSubmitting(false);
+            UnlockClosing();
+            toaster.catch(e as never);
+        }
+    }
+
+    const totalDuration = tracks.reduce((s, t) => s + t.duration, 0);
+    const isValid = tracks.length > 0 && (!playlistMode || playlistName.trim().length > 0);
+    const titleText = playlistMode ? 'new playlist' : 'upload tracks';
+    const submitLabel = playlistMode ? 'create playlist' : 'upload tracks';
+
+    return (
+        <div
+            className={cls.PanelContainer}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="multitrack-title"
+        >
+            <div className={cls.PanelHeader}>
+                <div className={cls.HeaderLeft}>
+                    <span id="multitrack-title" className={cls.PanelTitle}>{titleText}</span>
+                    <span className={cls.PanelMeta}>{files.length} files · {formatTotalSize(files)}</span>
+                </div>
+                <button
+                    type="button"
+                    className={cls.CloseButton}
+                    onClick={CloseDialog}
+                    disabled={submitting}
+                    aria-label="close"
+                >
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+                        <line x1="1" y1="1" x2="12" y2="12"/>
+                        <line x1="12" y1="1" x2="1" y2="12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div className={cls.PanelBody}>
+                <PlaylistToggleRow checked={playlistMode} onChange={setPlaylistMode}/>
+
+                {playlistMode && (
+                    <PlaylistDetailsPanel
+                        cover={cover}
+                        onCoverChange={setCover}
+                        playlistName={playlistName}
+                        onNameChange={setPlaylistName}
+                        albumArtists={albumArtists}
+                        onAlbumArtistsChange={setAlbumArtists}
+                        totalDurationSec={totalDuration}
+                        trackCount={tracks.length}
+                        loadArtistOptions={loadArtistOptions}
+                        onCreateArtist={handleCreateArtist}
+                    />
+                )}
+
+                <TrackList
+                    tracks={tracks}
+                    albumArtists={playlistMode ? albumArtists : []}
+                    onTitleChange={handleTitleChange}
+                    onArtistsChange={handleArtistsChange}
+                    onRemove={handleRemove}
+                    onReorder={handleReorder}
+                    loadArtistOptions={loadArtistOptions}
+                    onCreateArtist={handleCreateArtist}
+                />
+            </div>
+
+            <div className={cls.PanelFooter}>
+                <span className={cls.ValidationHint}>
+                    {!isValid && playlistMode && !playlistName.trim() && tracks.length > 0
+                        ? 'name the playlist to continue'
+                        : tracks.length === 0
+                            ? 'add at least one track'
+                            : ''}
+                </span>
+                <button
+                    type="button"
+                    className={`${cls.SubmitButton} ${isValid && !submitting ? cls.SubmitReady : cls.SubmitDisabled}`}
+                    onClick={handleSubmit}
+                    disabled={!isValid || submitting}
+                >
+                    {submitting ? 'uploading…' : submitLabel}
+                    {!submitting && <ChevronIcon/>}
+                </button>
+            </div>
+        </div>
+    );
+}

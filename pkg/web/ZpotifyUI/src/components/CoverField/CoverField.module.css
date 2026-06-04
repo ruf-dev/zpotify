@@ -1,0 +1,66 @@
+.CoverFieldContainer {
+    width: 5.25rem;
+    height: 5.25rem;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+
+.NoImage {
+    border-radius: 50%;
+    background: var(--color-fg-accent);
+    border: none;
+    box-shadow: 0 0 16px var(--color-accent-shadow);
+
+    &:hover {
+        box-shadow: 0 0 24px var(--color-accent-glow);
+    }
+}
+
+.HasImage {
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--color-border-light);
+    box-shadow: none;
+}
+
+.CoverImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.HiddenInput {
+    display: none;
+}
+
+.HoverOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    color: var(--color-fg-white);
+}
+
+.OverlayCircle {
+    border-radius: 50%;
+}
+
+.OverlayRounded {
+    border-radius: var(--border-radius-md);
+}
+
+.OverlayLabel {
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}

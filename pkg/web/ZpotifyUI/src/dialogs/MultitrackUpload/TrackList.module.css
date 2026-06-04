@@ -1,0 +1,41 @@
+.TrackListContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.ListHeader {
+    padding: 0 0.375rem 0.5rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.HeaderLabel {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-fg-tertiary);
+}
+
+.HeaderHint {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-disabled);
+    font-style: italic;
+}
+
+.RowsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.EmptyState {
+    padding: 2rem;
+    text-align: center;
+    background: var(--color-bg-card);
+    border: 1px dashed var(--color-border-light);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-tertiary);
+}
