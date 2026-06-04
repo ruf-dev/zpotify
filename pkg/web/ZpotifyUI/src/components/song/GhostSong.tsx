@@ -2,14 +2,14 @@ import cls from "@/components/song/GhostSong.module.css";
 
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 
-import AddTrackModal from "@/dialogs/AddTrack/AddTrackModal.tsx";
+import AddTrackDialog from "../../dialogs/AddTrack/AddTrackDialog.tsx";
 
 export default function GhostSong() {
     const {OpenDialog} = useDialog();
 
     function handleOnClick(e: React.MouseEvent) {
         e.stopPropagation();
-        OpenDialog(<AddTrackModal/>);
+        OpenDialog(<AddTrackDialog/>);
     }
 
     return (

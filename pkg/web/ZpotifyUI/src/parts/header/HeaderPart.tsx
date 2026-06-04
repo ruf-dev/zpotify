@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {Path} from "@/app/routing/Router.tsx";
 import UserWidget from "@/widgets/User/UserWidget.tsx";
 import AddTrackButton from "@/components/AddTrackButton/AddTrackButton.tsx";
-import AddTrackModal from "@/dialogs/AddTrack/AddTrackModal.tsx";
+import AddTrackDialog from "../../dialogs/AddTrack/AddTrackDialog.tsx";
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 
 export default function HeaderPart() {
@@ -13,7 +13,7 @@ export default function HeaderPart() {
     const {OpenDialog} = useDialog();
 
     function handleAddTrack() {
-        OpenDialog(<AddTrackModal/>);
+        OpenDialog(<AddTrackDialog/>);
     }
 
     return (

@@ -58,6 +58,7 @@ function UploadCard({atLimit, loading, pendingCount, maxPendingTracks, onClick}:
 
 export default function ChooseScreen({onUploadNew, onFromLibrary}: ChooseScreenProps) {
     const {Services, userData} = useUser();
+
     const [pendingCount, setPendingCount] = useState(0);
     const [loading, setLoading] = useState(true);
 
@@ -73,7 +74,9 @@ export default function ChooseScreen({onUploadNew, onFromLibrary}: ChooseScreenP
     return (
         <div className={cls.ChooseScreenContainer}>
             <div className={cls.GridWrapper}>
-                <LibraryCard onClick={onFromLibrary} disabled={pendingCount === 0}/>
+                <LibraryCard
+                    onClick={onFromLibrary}
+                    disabled={pendingCount === 0}/>
                 <UploadCard
                     atLimit={atLimit}
                     loading={loading}
