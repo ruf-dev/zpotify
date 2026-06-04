@@ -2,10 +2,7 @@ import {useEffect, useState} from 'react';
 import cls from '@/dialogs/AddTrack/screens/PendingFilesScreen.module.css';
 import {SongFile} from '@/app/api/zpotify';
 import useUser from '@/hooks/user/User.ts';
-
-interface PendingFilesScreenProps {
-    onSelect: (file: SongFile) => void;
-}
+import {AddTrackContext} from '@/dialogs/AddTrack/AddTrackDialog';
 
 function FileItem({file, onSelect}: {file: SongFile, onSelect: (f: SongFile) => void}) {
     const name = file.path?.split('/').pop() ?? 'unknown file';
@@ -28,7 +25,7 @@ function FileItem({file, onSelect}: {file: SongFile, onSelect: (f: SongFile) => 
     );
 }
 
-export default function PendingFilesScreen({onSelect}: PendingFilesScreenProps) {
+export default function PendingFilesScreen({handleSelectFromLibrary}: AddTrackContext) {
     const {Services} = useUser();
     const [files, setFiles] = useState<SongFile[]>([]);
     const [loading, setLoading] = useState(true);
@@ -54,7 +51,7 @@ export default function PendingFilesScreen({onSelect}: PendingFilesScreenProps) 
             ) : (
                 <div className={cls.FileList}>
                     {files.map(file => (
-                        <FileItem key={file.id} file={file} onSelect={onSelect}/>
+                        <FileItem key={file.id} file={file} onSelect={handleSelectFromLibrary}/>
                     ))}
                 </div>
             )}

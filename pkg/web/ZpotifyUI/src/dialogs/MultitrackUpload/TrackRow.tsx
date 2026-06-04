@@ -17,15 +17,14 @@ interface TrackRowProps {
     track: TrackDraft;
     index: number;
     albumArtists: ArtistItem[];
+    rowRef: (el: HTMLElement | null) => void;
+    onHandlePointerDown: (e: React.PointerEvent) => void;
+    dragStyle: React.CSSProperties | null;
     isDragging: boolean;
-    isDragOver: boolean;
+    anyDragging: boolean;
     onTitleChange: (id: string, title: string) => void;
     onArtistsChange: (id: string, artists: ArtistItem[]) => void;
     onRemove: (id: string) => void;
-    onDragStart: (idx: number) => void;
-    onDragOver: (idx: number) => void;
-    onDrop: (idx: number) => void;
-    onDragEnd: () => void;
     loadArtistOptions: (query: string) => Promise<ArtistItem[]>;
     onCreateArtist: (name: string) => Promise<ArtistItem>;
 }
@@ -56,41 +55,28 @@ export default function TrackRow({
     track,
     index,
     albumArtists,
+    rowRef,
+    onHandlePointerDown,
+    dragStyle,
     isDragging,
-    isDragOver,
+    anyDragging,
     onTitleChange,
     onArtistsChange,
     onRemove,
-    onDragStart,
-    onDragOver,
-    onDrop,
-    onDragEnd,
     loadArtistOptions,
     onCreateArtist,
 }: TrackRowProps) {
     const durationLabel = track.duration > 0 ? formatDuration(Math.round(track.duration)) : '—';
 
-    function handleDragOver(e: React.DragEvent) {
-        e.preventDefault();
-        onDragOver(index);
-    }
-
-    function handleDrop(e: React.DragEvent) {
-        e.preventDefault();
-        onDrop(index);
-    }
-
     return (
         <div
-            className={`${cls.TrackRowContainer} ${isDragging ? cls.Dragging : ''} ${isDragOver ? cls.DragOver : ''}`}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
+            ref={rowRef}
+            className={`${cls.TrackRowContainer} ${isDragging ? cls.IsDragging : ''} ${anyDragging ? cls.AnyDragging : ''}`}
+            style={dragStyle ?? undefined}
         >
             <span
                 className={cls.DragHandle}
-                draggable
-                onDragStart={() => onDragStart(index)}
-                onDragEnd={onDragEnd}
+                onPointerDown={onHandlePointerDown}
                 aria-label="drag to reorder"
             >
                 <DragHandleIcon/>

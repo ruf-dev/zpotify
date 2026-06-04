@@ -1,11 +1,7 @@
 import {useEffect, useState} from 'react';
 import cls from '@/dialogs/AddTrack/screens/ChooseScreen.module.css';
 import useUser from '@/hooks/user/User.ts';
-
-interface ChooseScreenProps {
-    onUploadNew: () => void;
-    onFromLibrary: () => void;
-}
+import {AddTrackContext} from '@/dialogs/AddTrack/AddTrackDialog';
 
 function LibraryCard({onClick, disabled}: {onClick: () => void; disabled: boolean}) {
     return (
@@ -56,7 +52,7 @@ function UploadCard({atLimit, loading, pendingCount, maxPendingTracks, onClick}:
     );
 }
 
-export default function ChooseScreen({onUploadNew, onFromLibrary}: ChooseScreenProps) {
+export default function ChooseScreen({goTo}: AddTrackContext) {
     const {Services, userData} = useUser();
 
     const [pendingCount, setPendingCount] = useState(0);
@@ -75,14 +71,14 @@ export default function ChooseScreen({onUploadNew, onFromLibrary}: ChooseScreenP
         <div className={cls.ChooseScreenContainer}>
             <div className={cls.GridWrapper}>
                 <LibraryCard
-                    onClick={onFromLibrary}
+                    onClick={() => goTo('pending')}
                     disabled={pendingCount === 0}/>
                 <UploadCard
                     atLimit={atLimit}
                     loading={loading}
                     pendingCount={pendingCount}
                     maxPendingTracks={maxPendingTracks}
-                    onClick={onUploadNew}
+                    onClick={() => goTo('drop')}
                 />
             </div>
         </div>

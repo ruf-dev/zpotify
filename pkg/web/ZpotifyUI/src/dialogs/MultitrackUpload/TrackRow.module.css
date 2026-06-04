@@ -6,27 +6,22 @@
     padding: 0.625rem 0.625rem 0.625rem 0.375rem;
     border-radius: var(--border-radius-md);
     border: 1px solid var(--color-border);
-    background: transparent;
+    background: var(--color-bg-card);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.18);
     transition: background 0.15s ease, border-color 0.15s ease;
+}
 
-    &:hover {
-        background: var(--color-bg-hover);
-        border-color: var(--color-border-light);
+.TrackRowContainer:not(.AnyDragging):hover {
+    background: var(--color-bg-hover);
+    border-color: var(--color-border-light);
 
-        & .RemoveButton {
-            opacity: 1;
-        }
+    & .RemoveButton {
+        opacity: 1;
     }
 }
 
-.Dragging {
-    opacity: 0.4;
-}
-
-.DragOver {
-    background: var(--color-accent-dim);
-    border-color: var(--color-accent-border);
-}
+.IsDragging {}
+.AnyDragging {}
 
 .DragHandle {
     display: flex;
@@ -35,12 +30,13 @@
     cursor: grab;
     color: var(--color-fg-tertiary);
     padding-top: 0.25rem;
+    touch-action: none;
     transition: color 0.15s ease;
+}
 
-    &:active {
-        cursor: grabbing;
-        color: var(--color-fg-accent);
-    }
+.IsDragging .DragHandle {
+    cursor: grabbing;
+    color: var(--color-fg-accent);
 }
 
 .TrackNumber {

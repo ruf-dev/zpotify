@@ -1,8 +1,17 @@
-import {useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import cls from './TrackList.module.css';
 import TrackRow from './TrackRow';
 import type {TrackDraft} from './TrackRow';
 import type {ArtistItem} from '@/components/ArtistChipsField/ArtistChipsField';
+
+type Drag = {
+    id: string;
+    fromIdx: number;
+    startY: number;
+    dy: number;
+    height: number;
+    settling: boolean;
+} | null;
 
 interface TrackListProps {
     tracks: TrackDraft[];
@@ -25,28 +34,92 @@ export default function TrackList({
     loadArtistOptions,
     onCreateArtist,
 }: TrackListProps) {
-    const [dragIdx, setDragIdx] = useState<number | null>(null);
-    const [overIdx, setOverIdx] = useState<number | null>(null);
+    const [drag, setDrag] = useState<Drag>(null);
+    const [dropIdx, setDropIdx] = useState<number | null>(null);
+    const dropIdxRef = useRef<number | null>(null);
+    const rowRefs = useRef<Record<string, HTMLElement>>({});
 
-    function handleDragStart(idx: number) {
-        setDragIdx(idx);
+    useEffect(() => {
+        dropIdxRef.current = dropIdx;
+    }, [dropIdx]);
+
+    function startDrag(id: string, idx: number, e: React.PointerEvent) {
+        if (drag !== null) return;
+        e.preventDefault();
+        const el = rowRefs.current[id];
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const height = rect.height + 6;
+        setDrag({id, fromIdx: idx, startY: e.clientY, dy: 0, height, settling: false});
+        setDropIdx(idx);
     }
 
-    function handleDragOver(idx: number) {
-        if (overIdx !== idx) setOverIdx(idx);
-    }
+    useEffect(() => {
+        if (!drag || drag.settling) return;
+        const {fromIdx, startY, height} = drag;
 
-    function handleDrop(idx: number) {
-        if (dragIdx != null && dragIdx !== idx) {
-            onReorder(dragIdx, idx);
+        function handleMove(e: PointerEvent) {
+            const dy = e.clientY - startY;
+            const delta = Math.round(dy / height);
+            const next = Math.max(0, Math.min(tracks.length - 1, fromIdx + delta));
+            setDrag(d => d ? {...d, dy} : d);
+            setDropIdx(next);
         }
-        setDragIdx(null);
-        setOverIdx(null);
-    }
 
-    function handleDragEnd() {
-        setDragIdx(null);
-        setOverIdx(null);
+        window.addEventListener('pointermove', handleMove);
+        return () => window.removeEventListener('pointermove', handleMove);
+    }, [drag?.id, drag?.settling, tracks.length]);
+
+    useEffect(() => {
+        if (!drag || drag.settling) return;
+        const {fromIdx, height} = drag;
+
+        function handleUp() {
+            const finalDrop = dropIdxRef.current ?? fromIdx;
+            const targetDy = (finalDrop - fromIdx) * height;
+            setDrag(d => d ? {...d, dy: targetDy, settling: true} : d);
+            setTimeout(() => {
+                setDrag(null);
+                setDropIdx(null);
+                onReorder(fromIdx, finalDrop);
+            }, 230);
+        }
+
+        window.addEventListener('pointerup', handleUp);
+        window.addEventListener('pointercancel', handleUp);
+        return () => {
+            window.removeEventListener('pointerup', handleUp);
+            window.removeEventListener('pointercancel', handleUp);
+        };
+    }, [drag?.id, drag?.settling]);
+
+    function getRowDragStyle(idx: number): React.CSSProperties {
+        if (!drag) return {};
+        const {fromIdx, dy, height, settling} = drag;
+        const drop = dropIdx ?? fromIdx;
+
+        if (idx === fromIdx) {
+            return {
+                transform: `translateY(${dy}px) rotate(2.2deg) scale(1.025)`,
+                boxShadow: '0 18px 40px rgba(0,0,0,0.7), 0 0 0 1px var(--color-accent-border), 0 0 32px var(--color-accent-shadow)',
+                background: 'var(--color-bg-secondary)',
+                borderColor: 'var(--color-accent-border)',
+                zIndex: 20,
+                cursor: 'grabbing',
+                willChange: 'transform',
+                userSelect: 'none',
+                transition: settling
+                    ? 'transform 0.23s cubic-bezier(0.2, 0.9, 0.3, 1.2), box-shadow 0.23s ease, border-color 0.23s ease'
+                    : 'box-shadow 0.15s ease, border-color 0.15s ease',
+            };
+        }
+        if (fromIdx < drop && idx > fromIdx && idx <= drop) {
+            return {transform: `translateY(-${height}px)`, transition: 'transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1)', willChange: 'transform'};
+        }
+        if (fromIdx > drop && idx >= drop && idx < fromIdx) {
+            return {transform: `translateY(${height}px)`, transition: 'transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1)', willChange: 'transform'};
+        }
+        return {};
     }
 
     const count = tracks.length;
@@ -71,15 +144,17 @@ export default function TrackList({
                             track={track}
                             index={idx}
                             albumArtists={albumArtists}
-                            isDragging={dragIdx === idx}
-                            isDragOver={overIdx === idx}
+                            rowRef={el => {
+                                if (el) rowRefs.current[track.id] = el;
+                                else delete rowRefs.current[track.id];
+                            }}
+                            onHandlePointerDown={e => startDrag(track.id, idx, e)}
+                            dragStyle={getRowDragStyle(idx)}
+                            isDragging={drag !== null && drag.fromIdx === idx}
+                            anyDragging={drag !== null}
                             onTitleChange={onTitleChange}
                             onArtistsChange={onArtistsChange}
                             onRemove={onRemove}
-                            onDragStart={handleDragStart}
-                            onDragOver={handleDragOver}
-                            onDrop={handleDrop}
-                            onDragEnd={handleDragEnd}
                             loadArtistOptions={loadArtistOptions}
                             onCreateArtist={onCreateArtist}
                         />

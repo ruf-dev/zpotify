@@ -1,10 +1,6 @@
 import {useRef, useState, type DragEvent, type ChangeEvent} from 'react';
 import cls from '@/dialogs/AddTrack/screens/DropZoneScreen.module.css';
-
-interface DropZoneScreenProps {
-    onFiles: (files: File[]) => void;
-    uploadError?: string | null;
-}
+import {AddTrackContext} from '@/dialogs/AddTrack/AddTrackDialog';
 
 function IdleDecoration() {
     return (
@@ -59,15 +55,31 @@ function DropZoneText({dragOver}: {dragOver: boolean}) {
     );
 }
 
-export default function DropZoneScreen({onFiles, uploadError}: DropZoneScreenProps) {
+function UploadingSpinner() {
+    return (
+        <div className={cls.UploadingState}>
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <circle cx="16" cy="16" r="12" strokeOpacity="0.2"/>
+                <path d="M16 4a12 12 0 0 1 12 12" className={cls.Spinner}/>
+            </svg>
+            <span>uploading…</span>
+        </div>
+    );
+}
+
+export default function DropZoneScreen({handleFiles, uploadError, uploading}: AddTrackContext) {
     const [dragOver, setDragOver] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+
+    if (uploading) {
+        return <UploadingSpinner/>;
+    }
 
     function handleDrop(e: DragEvent<HTMLDivElement>) {
         e.preventDefault();
         setDragOver(false);
         const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('audio/'));
-        if (files.length > 0) onFiles(files);
+        if (files.length > 0) handleFiles(files);
     }
 
     function handleDragOver(e: DragEvent<HTMLDivElement>) {
@@ -77,7 +89,7 @@ export default function DropZoneScreen({onFiles, uploadError}: DropZoneScreenPro
 
     function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
         const files = Array.from(e.target.files ?? []);
-        if (files.length > 0) onFiles(files);
+        if (files.length > 0) handleFiles(files);
     }
 
     function handleClick() {
