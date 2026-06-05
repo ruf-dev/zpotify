@@ -3,7 +3,7 @@ import {useTelegramLogin, TelegramAuthData} from "@vervstack/chures";
 import telegramIcon from "@/assets/icons/telegram.svg";
 import AuthButton from "@/shared/ui/AuthButton.tsx";
 import cls from "@/components/auth/TelegramAuth.module.css";
-import useUser from "@/hooks/user/User.ts";
+import useUser from "@/entities/user/useUser.ts";
 import {AuthViaTelegram} from "@/shared/api/Auth.ts";
 
 export default function TelegramAuth() {

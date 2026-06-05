@@ -1,4 +1,4 @@
-import cls from "@/components/player/buttons/TrackRewindButton.module.scss";
+import cls from "@/widgets/MusicPlayer/buttons/TrackRewindButton.module.scss";
 import cn from "classnames";
 
 

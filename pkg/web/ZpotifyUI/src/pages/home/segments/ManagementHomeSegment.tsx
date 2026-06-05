@@ -1,6 +1,6 @@
 import cls from "@/pages/home/segments/ManagementHomeSegment.module.css"
 
-import {AudioPlayer} from "@/hooks/player/player.ts";
+import {AudioPlayer} from "@/widgets/MusicPlayer/usePlayer.ts";
 import cn from "classnames";
 
 interface ManagementHomeSegmentProps {

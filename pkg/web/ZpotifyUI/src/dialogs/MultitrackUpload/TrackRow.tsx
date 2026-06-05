@@ -1,8 +1,8 @@
 import cn from 'classnames';
 import cls from './TrackRow.module.css';
 import EditableTitle from '@/components/EditableTitle/EditableTitle';
-import ArtistChipsField from '@/components/ArtistChipsField/ArtistChipsField';
-import type {ArtistItem} from '@/components/ArtistChipsField/ArtistChipsField';
+import ArtistChipsField from '@/widgets/ArtistField/ArtistChipsField';
+import type {ArtistItem} from '@/widgets/ArtistField/ArtistChipsField';
 import {formatDuration} from '@/shared/lib/time';
 
 export interface TrackDraft {

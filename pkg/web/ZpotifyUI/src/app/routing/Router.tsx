@@ -8,8 +8,8 @@ import ErrorPage from "@/pages/error/ErrorPage.tsx";
 import PlaylistPage from "@/pages/playlist/PlaylistPage.tsx";
 import EarlyAccessPage from "@/pages/early_access/EarlyAccessPage.tsx";
 
-import useAudioPlayer from "@/hooks/player/player.ts";
-import useUser from "@/hooks/user/User.ts";
+import useAudioPlayer from "@/widgets/MusicPlayer/usePlayer.ts";
+import useUser from "@/entities/user/useUser.ts";
 import Toaster from "@/components/notifications/Toaster.tsx";
 
 

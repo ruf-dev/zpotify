@@ -3,12 +3,12 @@ import {useNavigate} from "react-router-dom";
 
 import cls from "@/pages/home/HomePage.module.css"
 
-import {AudioPlayer} from "@/hooks/player/player.ts";
-import useUser from "@/hooks/user/User.ts";
+import {AudioPlayer} from "@/widgets/MusicPlayer/usePlayer.ts";
+import useUser from "@/entities/user/useUser.ts";
 import {Path} from "@/app/routing/Router.tsx";
 
 import HeaderPart from "@/widgets/Header/HeaderPart.tsx";
-import MusicPlayerWithLogo from "@/components/player/MusicPlayerWithLogo.tsx";
+import MusicPlayerWithLogo from "@/widgets/MusicPlayer/MusicPlayerWithLogo.tsx";
 import {HomeSegment, HomeSegmentProps} from "@/shared/model/HomeSegments.tsx";
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 import SegmentTabBar, {Tab} from "@/components/tabs/SegmentTabBar.tsx";

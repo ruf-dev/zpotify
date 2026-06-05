@@ -11,8 +11,8 @@ import TelegramAuth from "@/components/auth/TelegramAuth.tsx";
 import {Path} from "@/app/routing/Router.tsx";
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 
-import {AudioPlayer} from "@/hooks/player/player.ts";
-import useUser from "@/hooks/user/User.ts";
+import {AudioPlayer} from "@/widgets/MusicPlayer/usePlayer.ts";
+import useUser from "@/entities/user/useUser.ts";
 
 import lockIcon from "@/assets/icons/lock.svg";
 import googleIcon from "@/assets/icons/google.svg";

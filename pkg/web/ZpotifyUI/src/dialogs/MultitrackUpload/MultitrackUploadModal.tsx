@@ -3,11 +3,11 @@ import {parseBlob} from 'music-metadata-browser';
 import cls from './MultitrackUploadModal.module.css';
 import {useDialog} from '@/app/hooks/Dialog.tsx';
 import {useToaster} from '@/hooks/toaster/ToasterZ.ts';
-import useUser from '@/hooks/user/User.ts';
+import useUser from '@/entities/user/useUser.ts';
 import TrackList from './TrackList';
 import PlaylistDetailsPanel from './PlaylistDetailsPanel';
 import type {TrackDraft} from './TrackRow';
-import type {ArtistItem} from '@/components/ArtistChipsField/ArtistChipsField';
+import type {ArtistItem} from '@/widgets/ArtistField/ArtistChipsField';
 
 interface MultitrackUploadModalProps {
     files: File[];

@@ -1,6 +1,6 @@
-import cls from "@/components/player/buttons/ShuffleTracksButton.module.scss";
+import cls from "@/widgets/MusicPlayer/buttons/ShuffleTracksButton.module.scss";
 import ShuffleArrowSVG from "@/assets/player/ShuffleArrows.tsx";
-import {AudioPlayer} from "@/hooks/player/player.ts";
+import {AudioPlayer} from "@/widgets/MusicPlayer/usePlayer.ts";
 
 interface ShuffleTracksButtonProps {
     audioPlayer: AudioPlayer;

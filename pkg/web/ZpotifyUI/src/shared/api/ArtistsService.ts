@@ -7,7 +7,7 @@ import {
 
 import { BaseService } from "@/shared/api/BaseService.ts";
 import { AuthMiddleware } from "@/shared/api/Auth.ts";
-import type { ArtistItem } from "@/components/ArtistChipsField/ArtistChipsField";
+import type { ArtistItem } from "@/widgets/ArtistField/ArtistChipsField";
 
 export interface IArtistsService {
     ListArtist(search: string, offset: number, limit: number): Promise<ListArtistResponse>

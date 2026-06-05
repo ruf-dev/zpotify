@@ -2,7 +2,7 @@ import {useState} from 'react';
 import cls from '@/dialogs/Meta/MetaDialog.module.css';
 import {useDialog} from '@/app/hooks/Dialog.tsx';
 import {useToaster} from '@/hooks/toaster/ToasterZ.ts';
-import useUser from '@/hooks/user/User.ts';
+import useUser from '@/entities/user/useUser.ts';
 import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
 import {AudioFile} from '@/shared/model/AudioFile.ts';
 

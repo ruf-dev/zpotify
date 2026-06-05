@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import cls from '@/dialogs/AddTrack/screens/ChooseScreen.module.css';
-import useUser from '@/hooks/user/User.ts';
+import useUser from '@/entities/user/useUser.ts';
 import {AddTrackContext} from '@/dialogs/AddTrack/AddTrackDialog';
 
 function LibraryCard({onClick, disabled}: {onClick: () => void; disabled: boolean}) {

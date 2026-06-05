@@ -1,4 +1,4 @@
-import cls from '@/components/user/GeneratedAvatar.module.css'
+import cls from '@/entities/user/GeneratedAvatar.module.css'
 
 interface AvatarProps {
     username: string;

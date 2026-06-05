@@ -4,7 +4,7 @@ import cls from "@/dialogs/LoginViaPass/LoginViaPass.module.css";
 
 import FloatInput from "@/shared/ui/FloatInput.tsx";
 
-import useUser from "@/hooks/user/User.ts";
+import useUser from "@/entities/user/useUser.ts";
 import {useNavigate} from "react-router-dom";
 import {Path} from "@/app/routing/Router.tsx";
 import {useDialog} from "@/app/hooks/Dialog.tsx";

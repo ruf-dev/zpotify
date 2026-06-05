@@ -6,7 +6,7 @@ import cls from "@/widgets/AuthWidgets/LogPassWidget.module.css";
 import Input from "@/shared/ui/Input.tsx";
 import Button from "@/shared/ui/Button.tsx";
 import Chip from "@/shared/ui/Chip.tsx";
-import useUser from "@/hooks/user/User.ts";
+import useUser from "@/entities/user/useUser.ts";
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 
 interface LogPassWidgetProps {

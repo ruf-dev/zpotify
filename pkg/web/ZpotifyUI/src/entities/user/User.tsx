@@ -1,4 +1,4 @@
-import useUser from "@/hooks/user/User.ts";
+import useUser from "@/entities/user/useUser.ts";
 
 export default function User() {
     const userData = useUser(state => state.userData);

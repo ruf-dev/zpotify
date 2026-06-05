@@ -7,7 +7,7 @@ import {FileInfo} from '@/app/api/zpotify';
 import {formatFileDuration, formatFileBytes} from '@/shared/lib/files.ts';
 import {formatDuration} from '@/shared/lib/time.ts';
 import {AudioFile} from '@/shared/model/AudioFile.ts';
-import useUser from '@/hooks/user/User.ts';
+import useUser from '@/entities/user/useUser.ts';
 
 interface MetaScreenProps {
     audioFile?: AudioFile;

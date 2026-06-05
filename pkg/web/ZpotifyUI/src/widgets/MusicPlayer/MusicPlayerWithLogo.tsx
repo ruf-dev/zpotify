@@ -1,14 +1,14 @@
 import cn from "classnames";
 import {useEffect, useState} from "react";
 
-import cls from "@/components/player/MusicPlayerWithLogo.module.scss";
+import cls from "@/widgets/MusicPlayer/MusicPlayerWithLogo.module.scss";
 
-import PlayerControls from "@/components/player/PlayerControls.tsx";
+import PlayerControls from "@/widgets/MusicPlayer/PlayerControls.tsx";
 import AnimatedZ from "@/assets/AnimatedZ.tsx";
 
-import {AudioPlayer} from "@/hooks/player/player.ts";
-import TrackProgressControls from "@/components/player/buttons/TrackProgressControls.tsx";
-import ShuffleTracksButton from "@/components/player/buttons/ShuffleTracksButton.tsx";
+import {AudioPlayer} from "@/widgets/MusicPlayer/usePlayer.ts";
+import TrackProgressControls from "@/widgets/MusicPlayer/buttons/TrackProgressControls.tsx";
+import ShuffleTracksButton from "@/widgets/MusicPlayer/buttons/ShuffleTracksButton.tsx";
 
 interface MusicPlayerProps {
     audioPlayer: AudioPlayer

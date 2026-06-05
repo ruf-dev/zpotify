@@ -4,7 +4,7 @@ import React from "react";
 import cls from "@/dialogs/SongEdit/SongEditDialog.module.css";
 
 import {useDialog} from "@/app/hooks/Dialog.tsx";
-import useUser from "@/hooks/user/User.ts";
+import useUser from "@/entities/user/useUser.ts";
 import {Toast, useToaster} from "@/hooks/toaster/ToasterZ.ts";
 
 import Button from "@/shared/ui/Button.tsx";

@@ -3,8 +3,8 @@ import {useEffect, useState} from "react";
 import {SongBase} from "@/app/api/zpotify";
 
 import cls from "@/widgets/TrackList/InfiniteSongsList.module.css";
-import {AudioPlayer} from "@/hooks/player/player.ts";
-import useUser from "@/hooks/user/User.ts";
+import {AudioPlayer} from "@/widgets/MusicPlayer/usePlayer.ts";
+import useUser from "@/entities/user/useUser.ts";
 
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 import SongListWidget from "@/widgets/TrackList/TrackListWidget.tsx";

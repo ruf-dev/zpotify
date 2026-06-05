@@ -1,8 +1,8 @@
 import cn from "classnames";
 
-import cls from "@/components/player/buttons/TrackProgressControls.module.scss"
+import cls from "@/widgets/MusicPlayer/buttons/TrackProgressControls.module.scss"
 
-import { AudioPlayer } from "@/hooks/player/player.ts";
+import { AudioPlayer } from "@/widgets/MusicPlayer/usePlayer.ts";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface TrackProgressControlsProps {

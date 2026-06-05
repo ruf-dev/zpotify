@@ -1,4 +1,4 @@
-import cls from "@/components/song/GhostSong.module.css";
+import cls from "@/entities/song/GhostSong.module.css";
 
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 

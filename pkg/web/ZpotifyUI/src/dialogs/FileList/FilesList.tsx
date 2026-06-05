@@ -5,7 +5,7 @@ import cls from "@/dialogs/FileList/FilesList.module.css";
 
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 
-import {User} from "@/hooks/user/User.ts";
+import {User} from "@/entities/user/useUser.ts";
 import {SongFile} from "@/app/api/zpotify";
 
 import Button from "@/shared/ui/Button.tsx";

@@ -4,7 +4,7 @@ import {SongBase} from '@/app/api/zpotify';
 import cls from '@/dialogs/EditTrack/EditTrackDialog.module.css';
 
 import {useDialog} from '@/app/hooks/Dialog.tsx';
-import useUser from '@/hooks/user/User.ts';
+import useUser from '@/entities/user/useUser.ts';
 
 import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";

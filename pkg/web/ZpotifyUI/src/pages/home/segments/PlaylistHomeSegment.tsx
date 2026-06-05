@@ -5,12 +5,12 @@ import {useNavigate} from "react-router-dom";
 import cls from "@/pages/home/segments/PlaylistHomeSegment.module.css";
 import Pen from "@/assets/pen.svg";
 
-import {AudioPlayer} from "@/hooks/player/player.ts";
+import {AudioPlayer} from "@/widgets/MusicPlayer/usePlayer.ts";
 import {playlistPath} from "@/app/routing/Router.tsx";
 
 import LazyLoadSongsList from "@/widgets/TrackList/LazyLoadSongsList.tsx";
 import IconButton from "@/shared/ui/IconButton.tsx";
-import GhostSong from "@/components/song/GhostSong.tsx";
+import GhostSong from "@/entities/song/GhostSong.tsx";
 
 interface DisplayPlaylistSegmentProps {
     audioPlayer: AudioPlayer;

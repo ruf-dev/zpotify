@@ -1,8 +1,8 @@
 import cls from './PlaylistDetailsPanel.module.css';
 import CoverField from '@/components/CoverField/CoverField';
-import ArtistChipsField from '@/components/ArtistChipsField/ArtistChipsField';
+import ArtistChipsField from '@/widgets/ArtistField/ArtistChipsField';
 import DisabledChip from '@/components/DisabledChip/DisabledChip';
-import type {ArtistItem} from '@/components/ArtistChipsField/ArtistChipsField';
+import type {ArtistItem} from '@/widgets/ArtistField/ArtistChipsField';
 import {formatDuration} from '@/shared/lib/time';
 
 interface PlaylistDetailsPanelProps {

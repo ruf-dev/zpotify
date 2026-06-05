@@ -9,7 +9,7 @@ import BackButton from '@/shared/ui/BackButton';
 import {useDialog} from '@/app/hooks/Dialog.tsx';
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 import {ServiceError} from "@/shared/api/Errors.ts";
-import useUser from '@/hooks/user/User.ts';
+import useUser from '@/entities/user/useUser.ts';
 
 import ChooseScreen from '@/dialogs/AddTrack/screens/ChooseScreen';
 import DropZoneScreen from '@/dialogs/AddTrack/screens/DropZoneScreen';

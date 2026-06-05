@@ -1,4 +1,4 @@
-import cls from "@/components/song/more/MoreButton.module.scss"
+import cls from "@/entities/song/more/MoreButton.module.scss"
 
 import MoreDots from "@/assets/MoreDots.tsx";
 import {MouseEvent as ReactMouseEvent, useEffect, useRef, useState} from "react";

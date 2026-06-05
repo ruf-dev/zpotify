@@ -1,10 +1,10 @@
 import {JSX} from "react";
 
-import PlayPauseButton from "@/components/player/buttons/PlayPauseButton.tsx";
-import TrackRewindButton from "@/components/player/buttons/TrackRewindButton.tsx";
+import PlayPauseButton from "@/widgets/MusicPlayer/buttons/PlayPauseButton.tsx";
+import TrackRewindButton from "@/widgets/MusicPlayer/buttons/TrackRewindButton.tsx";
 
-import cls from "@/components/player/PlayerControls.module.css"
-import {AudioPlayer} from "@/hooks/player/player.ts";
+import cls from "@/widgets/MusicPlayer/PlayerControls.module.css"
+import {AudioPlayer} from "@/widgets/MusicPlayer/usePlayer.ts";
 
 export interface PlayerProps {
     audioPlayer: AudioPlayer

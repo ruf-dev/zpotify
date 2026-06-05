@@ -2,11 +2,11 @@ import cn from "classnames";
 import {useState} from "react";
 import {SongBase} from "@/app/api/zpotify";
 
-import cls from "@/components/song/SongListItem.module.scss";
+import cls from "@/entities/song/SongListItem.module.scss";
 
 import {SongListPermissions} from "@/shared/model/User.ts";
 
-import MoreButton from "@/components/song/more/MoreButton.tsx";
+import MoreButton from "@/entities/song/more/MoreButton.tsx";
 import {formatDuration} from "@/shared/lib/time.ts";
 import NowPlayingBars from "@/assets/icons/NowPlayingBars.tsx";
 import {useDialog} from "@/app/hooks/Dialog.tsx";

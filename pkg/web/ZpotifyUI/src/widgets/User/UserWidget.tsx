@@ -2,9 +2,9 @@ import {useEffect, useRef, useState} from "react";
 
 import cls from "@/widgets/User/UserWidget.module.css";
 
-import useUser from "@/hooks/user/User.ts";
+import useUser from "@/entities/user/useUser.ts";
 
-import GeneratedAvatar from "@/components/user/GeneratedAvatar.tsx";
+import GeneratedAvatar from "@/entities/user/GeneratedAvatar.tsx";
 import Menu from "@/components/menu/Menu.tsx";
 
 export default function UserWidget() {
