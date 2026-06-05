@@ -87,6 +87,7 @@ type SongStorage interface {
 	GetById(ctx context.Context, songId int64) (domain.Song, error)
 
 	Create(ctx context.Context, song songs_q.CreateSongParams) (int64, error)
+	CreateBatch(ctx context.Context, songs []songs_q.CreateSongParams) ([]int64, error)
 	UpdateTitle(ctx context.Context, songId int64, title string) error
 	ClearArtists(ctx context.Context, songId int64) error
 

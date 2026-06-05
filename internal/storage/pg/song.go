@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"time"
 
+	sq "github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
 
@@ -66,6 +67,45 @@ func (s *SongsStorage) Create(ctx context.Context, params songs_q.CreateSongPara
 	}
 
 	return id, nil
+}
+
+func (s *SongsStorage) CreateBatch(ctx context.Context, songs []songs_q.CreateSongParams) ([]int64, error) {
+	builder := sq.Insert("songs").
+		Columns("file_id", "title").
+		Suffix("RETURNING id").
+		PlaceholderFormat(sq.Dollar)
+
+	for _, p := range songs {
+		builder = builder.Values(p.FileID, p.Title)
+	}
+
+	query, args, err := builder.ToSql()
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error building batch insert query")
+	}
+
+	rows, err := s.db.QueryContext(ctx, query, args...)
+	if err != nil {
+		return nil, wrapPgErr(err)
+	}
+	defer rows.Close()
+
+	ids := make([]int64, 0, len(songs))
+	for rows.Next() {
+		var id int64
+		err = rows.Scan(&id)
+		if err != nil {
+			return nil, rerrors.Wrap(err, "error scanning song id")
+		}
+		ids = append(ids, id)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error iterating song rows")
+	}
+
+	return ids, nil
 }
 
 func (s *SongsStorage) UpdateTitle(ctx context.Context, songId int64, title string) error {

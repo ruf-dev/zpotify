@@ -158,9 +158,16 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
             }
 
             if (playlistMode) {
-                // TODO: pass albumArtists to CreatePlaylist once backend supports it
-                // TODO: upload cover image and attach to playlist once backend supports it
-                const playlist = await Services().Playlist().CreatePlaylist(playlistName.trim());
+                let coverFileId: string | undefined;
+                if (cover) {
+                    coverFileId = await Services().WebApi().UploadFile(cover);
+                }
+                const albumArtistUuids = albumArtists.map(a => a.id);
+                const playlist = await Services().Playlist().CreatePlaylist(
+                    playlistName.trim(),
+                    albumArtistUuids.length > 0 ? albumArtistUuids : undefined,
+                    coverFileId,
+                );
                 const playlistUuid = playlist.uuid ?? '';
 
                 await Promise.all(

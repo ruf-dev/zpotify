@@ -14,7 +14,7 @@ import {BaseService} from "@/processes/BaseService.ts";
 export interface IPlaylistService {
     ListSongs(uuid: string, offset: number, limit: number, shuffleHash: string | undefined): Promise<ListSongsResponse>
     GetPlaylist(uuid: string): Promise<GetPlaylistResponse>
-    CreatePlaylist(name: string): Promise<CreatePlaylistResponse>
+    CreatePlaylist(name: string, artistUuids?: string[], coverFileId?: string): Promise<CreatePlaylistResponse>
     AddSongToPlaylist(playlistUuid: string, songId: number): Promise<void>
 }
 
@@ -43,8 +43,8 @@ export class PlaylistService extends BaseService implements IPlaylistService {
             })
     }
 
-    async CreatePlaylist(name: string): Promise<CreatePlaylistResponse> {
-        const req: CreatePlaylistRequest = { name }
+    async CreatePlaylist(name: string, artistUuids?: string[], coverFileId?: string): Promise<CreatePlaylistResponse> {
+        const req: CreatePlaylistRequest = { name, artistUuids, coverFileId }
         return this.executeAuthApiCall(
             async (initReq) => {
                 return PlaylistAPI.CreatePlaylist(req, initReq)

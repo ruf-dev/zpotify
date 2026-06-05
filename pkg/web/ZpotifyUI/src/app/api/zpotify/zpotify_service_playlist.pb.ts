@@ -34,6 +34,9 @@ export type DeleteSong = Record<string, never>;
 export type CreatePlaylistRequest = {
   name?: string;
   description?: string;
+  isPublic?: boolean;
+  artistUuids?: string[];
+  coverFileId?: string;
 };
 
 export type CreatePlaylistResponse = {
@@ -41,6 +44,19 @@ export type CreatePlaylistResponse = {
 };
 
 export type CreatePlaylist = Record<string, never>;
+
+export type UpdatePlaylistRequest = {
+  uuid?: string;
+  name?: string;
+  description?: string;
+  isPublic?: boolean;
+  artistUuids?: string[];
+  coverFileId?: string;
+};
+
+export type UpdatePlaylistResponse = Record<string, never>;
+
+export type UpdatePlaylist = Record<string, never>;
 
 export type GetPlaylistRequest = {
   uuid?: string;
@@ -85,5 +101,8 @@ export class PlaylistAPI {
   }
   static AddSongToPlaylist(this:void, req: AddSongToPlaylistRequest, initReq?: fm.InitReq): Promise<AddSongToPlaylistResponse> {
     return fm.fetchRequest<AddSongToPlaylistResponse>(`/api/playlist/add_song`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static UpdatePlaylist(this:void, req: UpdatePlaylistRequest, initReq?: fm.InitReq): Promise<UpdatePlaylistResponse> {
+    return fm.fetchRequest<UpdatePlaylistResponse>(`/api/playlist/update`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }

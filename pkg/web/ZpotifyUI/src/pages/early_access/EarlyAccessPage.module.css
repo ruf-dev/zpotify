@@ -13,6 +13,25 @@
     padding: 1.5rem;
 }
 
+.LogoutButton {
+    display: block;
+    width: 100%;
+    margin-top: 0.75rem;
+    padding: 0.6rem 1rem;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-bg-secondary);
+    color: var(--color-fg-secondary);
+    font-size: var(--font-size-md);
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+
+    &:hover {
+        background-color: var(--color-bg-accent);
+        color: var(--color-fg-primary);
+    }
+}
+
 .InfoBox {
     padding: 1rem 1.25rem;
     border-radius: var(--border-radius-sm);

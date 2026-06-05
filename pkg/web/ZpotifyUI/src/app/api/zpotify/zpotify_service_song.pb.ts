@@ -21,6 +21,16 @@ export type CreateSongResponse = {
 
 export type CreateSong = Record<string, never>;
 
+export type BatchCreateSongRequest = {
+  songs?: CreateSongRequest[];
+};
+
+export type BatchCreateSongResponse = {
+  ids?: string[];
+};
+
+export type BatchCreateSong = Record<string, never>;
+
 export type UpdateSongRequest = {
   id?: string;
   title?: string;
@@ -44,6 +54,9 @@ export type GetSong = Record<string, never>;
 export class SongAPI {
   static CreateSong(this:void, req: CreateSongRequest, initReq?: fm.InitReq): Promise<CreateSongResponse> {
     return fm.fetchRequest<CreateSongResponse>(`/api/song/create`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static BatchCreateSong(this:void, req: BatchCreateSongRequest, initReq?: fm.InitReq): Promise<BatchCreateSongResponse> {
+    return fm.fetchRequest<BatchCreateSongResponse>(`/api/song/batch_create`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
   static UpdateSong(this:void, req: UpdateSongRequest, initReq?: fm.InitReq): Promise<UpdateSongResponse> {
     return fm.fetchRequest<UpdateSongResponse>(`/api/song/update`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});

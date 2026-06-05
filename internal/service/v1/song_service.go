@@ -13,6 +13,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
+	"go.zpotify.ru/zpotify/internal/storage/pg/generated/songs_q"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 )
 
@@ -51,51 +52,22 @@ func (s *AudioService) Create(ctx context.Context, req domain.CreateSong) (int64
 
 	var songId int64
 
-	err := s.txManager.Execute(
-		func(tx *sql.Tx) error {
+	err := s.txManager.Execute(func(tx *sql.Tx) error {
+		songsStorage := s.songsStorage.WithTx(tx)
 
-			songsStorage := s.songsStorage.WithTx(tx)
-			fileMetaStorage := s.fileMetaStorage.WithTx(tx)
-			playlistStorage := s.playlistStorage.WithTx(tx)
+		var err error
+		songId, err = songsStorage.Create(ctx, req.CreateSongParams)
+		if err != nil {
+			return rerrors.Wrap(err, "error creating song in storage")
+		}
 
-			fileMeta, err := fileMetaStorage.Get(ctx, req.FileID)
-			if err != nil {
-				return rerrors.Wrap(err, "error getting file meta")
-			}
+		err = s.finalizeSong(ctx, req, songId, tx)
+		if err != nil {
+			return rerrors.Wrap(err, "error during song finalization")
+		}
 
-			songId, err = songsStorage.Create(ctx, req.CreateSongParams)
-			if err != nil {
-				return rerrors.Wrap(err, "error creating song in storage")
-			}
-
-			ext := path.Ext(fileMeta.FilePath)
-			newPath := fmt.Sprintf("%s/%d%s", req.ArtistUuids[0], songId, ext)
-
-			err = s.binaryStorage.Move(ctx, fileMeta.FilePath, newPath)
-			if err != nil {
-				return rerrors.Wrap(err, "error moving file to permanent storage")
-			}
-
-			fileMeta.FilePath = newPath
-			err = fileMetaStorage.Update(ctx, req.FileID, fileMeta.File)
-			if err != nil {
-				return rerrors.Wrap(err, "error updating file meta with new path")
-			}
-
-			for i, artistUuid := range req.ArtistUuids {
-				err = songsStorage.AddArtist(ctx, songId, artistUuid, i)
-				if err != nil {
-					return rerrors.Wrap(err, "error adding artist to song", artistUuid)
-				}
-			}
-
-			err = playlistStorage.AddSong(ctx, domain.GlobalPlaylistUuid, int32(songId))
-			if err != nil {
-				return rerrors.Wrap(err, "error adding song to global playlist")
-			}
-
-			return nil
-		})
+		return nil
+	})
 	if err != nil {
 		return 0, err
 	}
@@ -115,48 +87,25 @@ func (s *AudioService) CreateBatch(ctx context.Context, reqs []domain.CreateSong
 	err := s.txManager.Execute(
 		func(tx *sql.Tx) error {
 			songsStorage := s.songsStorage.WithTx(tx)
-			fileMetaStorage := s.fileMetaStorage.WithTx(tx)
-			playlistStorage := s.playlistStorage.WithTx(tx)
 
-			for _, req := range reqs {
-				fileMeta, err := fileMetaStorage.Get(ctx, req.FileID)
-				if err != nil {
-					return rerrors.Wrap(err, "error getting file meta")
-				}
-
-				songId, err := songsStorage.Create(ctx, req.CreateSongParams)
-				if err != nil {
-					return rerrors.Wrap(err, "error creating song in storage")
-				}
-
-				ext := path.Ext(fileMeta.FilePath)
-				newPath := fmt.Sprintf("%s/%d%s", req.ArtistUuids[0], songId, ext)
-
-				err = s.binaryStorage.Move(ctx, fileMeta.FilePath, newPath)
-				if err != nil {
-					return rerrors.Wrap(err, "error moving file to permanent storage")
-				}
-
-				fileMeta.FilePath = newPath
-				err = fileMetaStorage.Update(ctx, req.FileID, fileMeta.File)
-				if err != nil {
-					return rerrors.Wrap(err, "error updating file meta with new path")
-				}
-
-				for i, artistUuid := range req.ArtistUuids {
-					err = songsStorage.AddArtist(ctx, songId, artistUuid, i)
-					if err != nil {
-						return rerrors.Wrap(err, "error adding artist to song", artistUuid)
-					}
-				}
-
-				err = playlistStorage.AddSong(ctx, domain.GlobalPlaylistUuid, int32(songId))
-				if err != nil {
-					return rerrors.Wrap(err, "error adding song to global playlist")
-				}
-
-				ids = append(ids, songId)
+			params := make([]songs_q.CreateSongParams, len(reqs))
+			for i, req := range reqs {
+				params[i] = req.CreateSongParams
 			}
+
+			songIds, err := songsStorage.CreateBatch(ctx, params)
+			if err != nil {
+				return rerrors.Wrap(err, "error creating one of the songs in storage")
+			}
+
+			for i, req := range reqs {
+				err = s.finalizeSong(ctx, req, songIds[i], tx)
+				if err != nil {
+					return rerrors.Wrap(err, "error finalizing one of the songs")
+				}
+			}
+
+			ids = append(ids, songIds...)
 
 			return nil
 		})
@@ -165,6 +114,50 @@ func (s *AudioService) CreateBatch(ctx context.Context, reqs []domain.CreateSong
 	}
 
 	return ids, nil
+}
+
+func (s *AudioService) finalizeSong(
+	ctx context.Context,
+	req domain.CreateSong,
+	songId int64,
+	tx *sql.Tx,
+) error {
+	songsStorage := s.songsStorage.WithTx(tx)
+	fileMetaStorage := s.fileMetaStorage.WithTx(tx)
+	playlistStorage := s.playlistStorage.WithTx(tx)
+
+	fileMeta, err := fileMetaStorage.Get(ctx, req.FileID)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting file meta")
+	}
+
+	ext := path.Ext(fileMeta.FilePath)
+	newPath := fmt.Sprintf("%s/%d%s", req.ArtistUuids[0], songId, ext)
+
+	err = s.binaryStorage.Move(ctx, fileMeta.FilePath, newPath)
+	if err != nil {
+		return rerrors.Wrap(err, "error moving file to permanent storage")
+	}
+
+	fileMeta.FilePath = newPath
+	err = fileMetaStorage.Update(ctx, req.FileID, fileMeta.File)
+	if err != nil {
+		return rerrors.Wrap(err, "error updating file meta with new path")
+	}
+
+	for i, artistUuid := range req.ArtistUuids {
+		err = songsStorage.AddArtist(ctx, songId, artistUuid, i)
+		if err != nil {
+			return rerrors.Wrap(err, "error adding artist to song", artistUuid)
+		}
+	}
+
+	err = playlistStorage.AddSong(ctx, domain.GlobalPlaylistUuid, int32(songId))
+	if err != nil {
+		return rerrors.Wrap(err, "error adding song to global playlist")
+	}
+
+	return nil
 }
 
 func (s *AudioService) Update(ctx context.Context, req domain.UpdateSong) error {

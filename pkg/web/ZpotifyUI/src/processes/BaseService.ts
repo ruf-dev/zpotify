@@ -32,7 +32,10 @@ export class BaseService {
                         }
 
                         if (err.message === "Failed to fetch") {
-                            throw new ServiceError(WithTitle("Server is not available. Try again later"));
+                            throw new ServiceError(
+                                WithTitle("Server is not available. Try again later"),
+                                WithIsNonRetryable(true),
+                            );
                         }
 
                         if (err.code == Errors.UNAUTHENTICATED) {
@@ -41,6 +44,7 @@ export class BaseService {
                                     WithTitle('Session expired. Login again'),
                                     WithIsNonRetryable(true));
                             }
+
                             if (err.message == 'token expired') {
                                 await this.auth.RefreshToken()
 

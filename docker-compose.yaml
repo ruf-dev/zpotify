@@ -1,6 +1,7 @@
 services:
   db:
-    image: postgres:17
+    image: postgres:18
+    container_name: zpotify_db
     environment:
       POSTGRES_USER: zpotify
       POSTGRES_PASSWORD:
@@ -9,11 +10,11 @@ services:
     ports:
       - '15432:5432'
     volumes:
-      - ./data/pg:/var/lib/postgresql/data
+      - ./data/pg:/var/lib/postgresql
 
   nginx:
     image: nginx:alpine
-    container_name: zpotify-webserver
+    container_name: zpotify_webserver
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:

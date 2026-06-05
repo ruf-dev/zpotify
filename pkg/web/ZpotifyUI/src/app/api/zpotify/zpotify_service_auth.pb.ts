@@ -81,6 +81,12 @@ export type AuthData = {
   refreshExpiresAt?: GoogleProtobufTimestamp.Timestamp;
 };
 
+export type LogoutRequest = Record<string, never>;
+
+export type LogoutResponse = Record<string, never>;
+
+export type Logout = Record<string, never>;
+
 export class AuthAPI {
   static GetAuthMethods(this:void, req: GetAuthMethodsRequest, initReq?: fm.InitReq): Promise<GetAuthMethodsResponse> {
     return fm.fetchRequest<GetAuthMethodsResponse>(`/api/auth/auth_methods?${fm.renderURLSearchParams(req, [])}`, {...initReq, method: "GET"});
@@ -93,5 +99,8 @@ export class AuthAPI {
   }
   static RefreshToken(this:void, req: RefreshRequest, initReq?: fm.InitReq): Promise<RefreshResponse> {
     return fm.fetchRequest<RefreshResponse>(`/api/auth/refresh_token`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static Logout(this:void, req: LogoutRequest, initReq?: fm.InitReq): Promise<LogoutResponse> {
+    return fm.fetchRequest<LogoutResponse>(`/api/auth/logout`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }

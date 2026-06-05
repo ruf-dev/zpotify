@@ -11,8 +11,10 @@ export default function TelegramAuth() {
     const authenticate = useUser(state => state.authenticate);
 
     function handleSuccess(data: TelegramAuthData) {
+        console.log('handleSuccess is called')
         AuthViaTelegram(data.id_token)
             .then(function (authData) {
+                console.log('AuthViaTelegram done - calling authenticate with data')
                 authenticate(authData);
             })
             .catch(function (err: unknown) {
