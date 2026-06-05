@@ -6,7 +6,7 @@ import {
     ListUploadedFilesResponse,
 } from "@/app/api/zpotify";
 
-import {BaseService} from "@/processes/BaseService.ts";
+import {BaseService} from "@/shared/api/BaseService.ts";
 
 export interface IFileService {
     ListUploadedFiles(req: ListUploadedFilesRequest): Promise<ListUploadedFilesResponse>

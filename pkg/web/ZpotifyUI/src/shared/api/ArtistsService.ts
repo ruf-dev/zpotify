@@ -5,8 +5,8 @@ import {
     ListArtistResponse,
 } from "@/app/api/zpotify";
 
-import { BaseService } from "@/processes/BaseService.ts";
-import { AuthMiddleware } from "@/processes/Auth.ts";
+import { BaseService } from "@/shared/api/BaseService.ts";
+import { AuthMiddleware } from "@/shared/api/Auth.ts";
 import type { ArtistItem } from "@/components/ArtistChipsField/ArtistChipsField";
 
 export interface IArtistsService {

@@ -1,4 +1,4 @@
-import {AuthMiddleware} from "@/processes/Auth.ts";
+import {AuthMiddleware} from "@/shared/api/Auth.ts";
 
 import {
     ErrorReason,
@@ -9,7 +9,7 @@ import {
     WithCode,
     WithIsNonRetryable,
     WithTitle
-} from "@/processes/Errors.ts";
+} from "@/shared/api/Errors.ts";
 
 import {InitReq} from "@/app/api/zpotify";
 

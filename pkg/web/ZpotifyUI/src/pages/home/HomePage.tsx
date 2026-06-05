@@ -7,7 +7,7 @@ import {AudioPlayer} from "@/hooks/player/player.ts";
 import useUser from "@/hooks/user/User.ts";
 import {Path} from "@/app/routing/Router.tsx";
 
-import HeaderPart from "@/parts/header/HeaderPart.tsx";
+import HeaderPart from "@/widgets/Header/HeaderPart.tsx";
 import MusicPlayerWithLogo from "@/components/player/MusicPlayerWithLogo.tsx";
 import {HomeSegment, HomeSegmentProps} from "@/shared/model/HomeSegments.tsx";
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";

@@ -4,7 +4,7 @@ import telegramIcon from "@/assets/icons/telegram.svg";
 import AuthButton from "@/shared/ui/AuthButton.tsx";
 import cls from "@/components/auth/TelegramAuth.module.css";
 import useUser from "@/hooks/user/User.ts";
-import {AuthViaTelegram} from "@/processes/Auth.ts";
+import {AuthViaTelegram} from "@/shared/api/Auth.ts";
 
 export default function TelegramAuth() {
     const botId = import.meta.env.VITE_TELEGRAM_CLIENT_ID ?? "";

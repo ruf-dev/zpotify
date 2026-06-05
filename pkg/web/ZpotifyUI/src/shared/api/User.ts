@@ -6,9 +6,9 @@ import {
 
 import {UserInfo} from "@/shared/model/User.ts";
 
-import {AuthMiddleware} from "@/processes/Auth.ts";
-import {BaseService} from "@/processes/BaseService.ts";
-import {ServiceError, WithTitle} from "@/processes/Errors.ts";
+import {AuthMiddleware} from "@/shared/api/Auth.ts";
+import {BaseService} from "@/shared/api/BaseService.ts";
+import {ServiceError, WithTitle} from "@/shared/api/Errors.ts";
 
 export default class UserService extends BaseService {
 

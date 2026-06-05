@@ -8,8 +8,8 @@ import useUser from "@/hooks/user/User.ts";
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 import {Path} from "@/app/routing/Router.tsx";
 
-import LazyLoadSongsList from "@/parts/InfiniteSongList/LazyLoadSongsList.tsx";
-import HeaderPart from "@/parts/header/HeaderPart.tsx";
+import LazyLoadSongsList from "@/widgets/TrackList/LazyLoadSongsList.tsx";
+import HeaderPart from "@/widgets/Header/HeaderPart.tsx";
 import MusicPlayerWithLogo from "@/components/player/MusicPlayerWithLogo.tsx";
 
 interface PlaylistPageProps {

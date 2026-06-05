@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import {ErrorReason, ServiceError} from "@/processes/Errors.ts";
+import {ErrorReason, ServiceError} from "@/shared/api/Errors.ts";
 
 export interface Toast {
     title: string;

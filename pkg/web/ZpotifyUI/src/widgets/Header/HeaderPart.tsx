@@ -1,4 +1,4 @@
-import cls from "@/parts/header/HeaderPart.module.css";
+import cls from "@/widgets/Header/HeaderPart.module.css";
 
 import AnimatedZ from "@/assets/AnimatedZ.tsx";
 import {useNavigate} from "react-router-dom";

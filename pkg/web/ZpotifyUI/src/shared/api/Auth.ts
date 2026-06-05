@@ -1,4 +1,4 @@
-import {BaseService} from "@/processes/BaseService.ts";
+import {BaseService} from "@/shared/api/BaseService.ts";
 
 import {
     AuthAPI,
@@ -7,8 +7,8 @@ import {
     RefreshRequest, InitReq
 } from "@/app/api/zpotify";
 
-import {ErrorReason, GrpcError, ServiceError, WithIsNonRetryable, WithReason, WithTitle} from "@/processes/Errors.ts";
-import {apiPrefix} from "@/processes/Api.ts";
+import {ErrorReason, GrpcError, ServiceError, WithIsNonRetryable, WithReason, WithTitle} from "@/shared/api/Errors.ts";
+import {apiPrefix} from "@/shared/api/Api.ts";
 
 export interface IAuthService {
     AuthViaPass: (login: string, password: string) => Promise<AuthData>

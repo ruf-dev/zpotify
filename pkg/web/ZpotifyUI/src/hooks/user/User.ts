@@ -1,17 +1,17 @@
 import {create} from 'zustand'
 
-import {AuthMiddleware, AuthService, IAuthService} from "@/processes/Auth.ts"
+import {AuthMiddleware, AuthService, IAuthService} from "@/shared/api/Auth.ts"
 import {AuthData} from "@/app/api/zpotify"
 import {UserInfo} from "@/shared/model/User.ts"
-import {Errors, ServiceError} from "@/processes/Errors.ts"
+import {Errors, ServiceError} from "@/shared/api/Errors.ts"
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts"
-import UserService from "@/processes/User.ts"
-import {ISongsService, SongsService} from "@/processes/Songs.ts"
-import {ISettingsService, SettingsService} from "@/processes/HomePage.ts"
-import {IPlaylistService, PlaylistService} from "@/processes/PlaylistService.ts"
-import {IFileService, FileService} from "@/processes/FileService.ts"
-import {ArtistsService, IArtistsService} from "@/processes/ArtistsService.ts"
-import {WebApi, WebApiImpl} from "@/processes/WebApi.ts"
+import UserService from "@/shared/api/User.ts"
+import {ISongsService, SongsService} from "@/shared/api/Songs.ts"
+import {ISettingsService, SettingsService} from "@/shared/api/HomePage.ts"
+import {IPlaylistService, PlaylistService} from "@/shared/api/PlaylistService.ts"
+import {IFileService, FileService} from "@/shared/api/FileService.ts"
+import {ArtistsService, IArtistsService} from "@/shared/api/ArtistsService.ts"
+import {WebApi, WebApiImpl} from "@/shared/api/WebApi.ts"
 
 export interface Services {
     Songs(): ISongsService

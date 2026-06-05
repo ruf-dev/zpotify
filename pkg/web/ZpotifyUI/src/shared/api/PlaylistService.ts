@@ -9,7 +9,7 @@ import {
 
 } from "@/app/api/zpotify";
 
-import {BaseService} from "@/processes/BaseService.ts";
+import {BaseService} from "@/shared/api/BaseService.ts";
 
 export interface IPlaylistService {
     ListSongs(uuid: string, offset: number, limit: number, shuffleHash: string | undefined): Promise<ListSongsResponse>

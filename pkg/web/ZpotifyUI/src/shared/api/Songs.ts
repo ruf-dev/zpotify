@@ -4,9 +4,9 @@ import {
     SongBase,
 } from "@/app/api/zpotify";
 
-import {AuthMiddleware} from "@/processes/Auth.ts";
+import {AuthMiddleware} from "@/shared/api/Auth.ts";
 
-import {BaseService} from "@/processes/BaseService.ts";
+import {BaseService} from "@/shared/api/BaseService.ts";
 
 export interface ISongsService {
     CreateSong: (title: string, artistUuids: string[], fileId: string) => Promise<string>

@@ -8,7 +8,7 @@ import BackButton from '@/shared/ui/BackButton';
 
 import {useDialog} from '@/app/hooks/Dialog.tsx';
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
-import {ServiceError} from "@/processes/Errors.ts";
+import {ServiceError} from "@/shared/api/Errors.ts";
 import useUser from '@/hooks/user/User.ts';
 
 import ChooseScreen from '@/dialogs/AddTrack/screens/ChooseScreen';

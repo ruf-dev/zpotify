@@ -1,11 +1,11 @@
-import {AuthMiddleware} from "@/processes/Auth.ts";
-import {BaseService} from "@/processes/BaseService.ts";
+import {AuthMiddleware} from "@/shared/api/Auth.ts";
+import {BaseService} from "@/shared/api/BaseService.ts";
 import {
     ServiceError, WithDescription,
     WithHttpStatus,
     WithStatusCode,
     WithTitle
-} from "@/processes/Errors.ts";
+} from "@/shared/api/Errors.ts";
 
 export interface WebApi {
     UploadFile(file: File): Promise<string>
