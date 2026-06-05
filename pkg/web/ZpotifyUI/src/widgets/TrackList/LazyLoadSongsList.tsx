@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { useEffect, useState } from 'react';
 
-import { SongBase } from '@/app/api/zpotify';
+import type { SongBase } from '@/app/api/zpotify';
 import cls from '@/widgets/TrackList/InfiniteSongsList.module.css';
 import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
 import useUser from '@/entities/user/useUser.ts';

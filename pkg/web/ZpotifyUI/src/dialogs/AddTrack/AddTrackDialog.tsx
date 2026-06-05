@@ -1,6 +1,6 @@
 import { useState, type ComponentType } from 'react';
 
-import { SongFile } from '@/app/api/zpotify';
+import type { SongFile } from '@/app/api/zpotify';
 import cls from '@/dialogs/AddTrack/AddTrackDialog.module.css';
 import CloseButton from '@/shared/ui/CloseButton';
 import StepDots from '@/shared/ui/StepDots';

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import { AuthMiddleware, AuthService, IAuthService } from '@/shared/api/Auth.ts';
-import { AuthData } from '@/app/api/zpotify';
+import type { AuthData } from '@/app/api/zpotify';
 import { UserInfo } from '@/shared/model/User.ts';
 import { Errors, ServiceError } from '@/shared/api/Errors.ts';
 import { useToaster } from '@/hooks/toaster/ToasterZ.ts';

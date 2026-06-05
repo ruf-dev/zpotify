@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { SongBase } from '@/app/api/zpotify';
+import type { SongBase } from '@/app/api/zpotify';
 import cls from '@/dialogs/EditTrack/EditTrackDialog.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import useUser from '@/entities/user/useUser.ts';

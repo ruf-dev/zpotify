@@ -49,8 +49,8 @@ export default tseslint.config([
             // No inline styles — CSS Modules only
             'react/forbid-component-props': ['warn', { forbid: ['style'] }],
 
-            // gRPC clients must only be used inside src/processes/
-            'no-restricted-imports': [
+            // gRPC clients must only be used inside src/processes/ (type-only imports are allowed anywhere)
+            '@typescript-eslint/no-restricted-imports': [
                 'error',
                 {
                     patterns: [
@@ -58,6 +58,7 @@ export default tseslint.config([
                             group: ['@/app/api/**'],
                             message:
                                 'gRPC clients must only be called from src/processes/. Use a process function instead.',
+                            allowTypeImports: true,
                         },
                     ],
                 },
@@ -98,11 +99,11 @@ export default tseslint.config([
             ],
         },
     },
-    // Allow processes to import gRPC clients directly
+    // Allow processes and shared/api to import gRPC clients directly
     {
-        files: ['src/processes/**/*.{ts,tsx}'],
+        files: ['src/processes/**/*.{ts,tsx}', 'src/shared/api/**/*.{ts,tsx}'],
         rules: {
-            'no-restricted-imports': 'off',
+            '@typescript-eslint/no-restricted-imports': 'off',
         },
     },
 ])

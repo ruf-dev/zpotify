@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { SongBase } from '@/app/api/zpotify';
+import type { SongBase } from '@/app/api/zpotify';
 import cls from '@/widgets/TrackList/TrackListWidget.module.css';
 import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
 import { SongListPermissions } from '@/shared/model/User.ts';

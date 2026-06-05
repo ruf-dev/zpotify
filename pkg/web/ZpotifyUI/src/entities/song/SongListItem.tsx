@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { useState } from 'react';
 
-import { SongBase } from '@/app/api/zpotify';
+import type { SongBase } from '@/app/api/zpotify';
 import cls from '@/entities/song/SongListItem.module.scss';
 import { SongListPermissions } from '@/shared/model/User.ts';
 import MoreButton from '@/entities/song/more/MoreButton.tsx';

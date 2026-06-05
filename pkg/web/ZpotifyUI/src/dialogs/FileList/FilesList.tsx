@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import cls from '@/dialogs/FileList/FilesList.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { User } from '@/entities/user/useUser.ts';
-import { SongFile } from '@/app/api/zpotify';
+import type { SongFile } from '@/app/api/zpotify';
 import Button from '@/shared/ui/Button.tsx';
 import Chip from '@/shared/ui/Chip.tsx';
 import SongEditDialog from '@/dialogs/SongEdit/SongEditDialog.tsx';

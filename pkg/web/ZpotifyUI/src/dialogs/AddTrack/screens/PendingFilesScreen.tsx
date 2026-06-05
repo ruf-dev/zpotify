@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import cls from '@/dialogs/AddTrack/screens/PendingFilesScreen.module.css';
-import { SongFile } from '@/app/api/zpotify';
+import type { SongFile } from '@/app/api/zpotify';
 import useUser from '@/entities/user/useUser.ts';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 
