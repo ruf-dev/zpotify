@@ -4,27 +4,24 @@ import {
     GetFileResponse,
     ListUploadedFilesRequest,
     ListUploadedFilesResponse,
-} from "@/app/api/zpotify";
-
-import {BaseService} from "@/shared/api/BaseService.ts";
+} from '@/app/api/zpotify';
+import { BaseService } from '@/shared/api/BaseService.ts';
 
 export interface IFileService {
-    ListUploadedFiles(req: ListUploadedFilesRequest): Promise<ListUploadedFilesResponse>
-    GetFile(req: GetFileRequest): Promise<GetFileResponse>
+    ListUploadedFiles(req: ListUploadedFilesRequest): Promise<ListUploadedFilesResponse>;
+    GetFile(req: GetFileRequest): Promise<GetFileResponse>;
 }
 
 export class FileService extends BaseService implements IFileService {
     async ListUploadedFiles(req: ListUploadedFilesRequest): Promise<ListUploadedFilesResponse> {
-        return this.executeAuthApiCall(
-            async (initReq) => {
-                return FileMetaAPI.ListUploadedFiles(req, initReq)
-            })
+        return this.executeAuthApiCall(async (initReq) => {
+            return FileMetaAPI.ListUploadedFiles(req, initReq);
+        });
     }
 
     async GetFile(req: GetFileRequest): Promise<GetFileResponse> {
-        return this.executeAuthApiCall(
-            async (initReq) => {
-                return FileMetaAPI.GetFile(req, initReq)
-            })
+        return this.executeAuthApiCall(async (initReq) => {
+            return FileMetaAPI.GetFile(req, initReq);
+        });
     }
 }

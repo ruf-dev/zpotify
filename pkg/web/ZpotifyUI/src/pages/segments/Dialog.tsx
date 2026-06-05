@@ -1,10 +1,10 @@
-import React from "react";
-import cls from "@/pages/segments/Dialog.module.css";
+import React from 'react';
 
-import {useDialog} from "@/app/hooks/Dialog.tsx";
+import cls from '@/pages/segments/Dialog.module.css';
+import { useDialog } from '@/app/hooks/Dialog.tsx';
 
 export default function Dialog() {
-    const {children, CloseDialog} = useDialog();
+    const { children, CloseDialog } = useDialog();
 
     if (!children) return null;
 
@@ -21,13 +21,9 @@ export default function Dialog() {
                     e.stopPropagation();
                 }}
             >
-                {
-                    children.map((v, idx) => {
-                        return (<React.Fragment key={idx}>
-                            {v}
-                        </React.Fragment>)
-                    })
-                }
+                {children.map((v, idx) => {
+                    return <React.Fragment key={idx}>{v}</React.Fragment>;
+                })}
             </div>
         </div>
     );

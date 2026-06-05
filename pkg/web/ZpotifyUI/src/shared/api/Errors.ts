@@ -15,32 +15,31 @@ export enum Errors {
     INTERNAL = 13,
     UNAVAILABLE = 14,
     DATA_LOSS = 15,
-    UNAUTHENTICATED = 16
+    UNAUTHENTICATED = 16,
 }
 
 export enum ErrorReason {
     REFRESH_TOKEN_NOT_FOUND = 'REFRESH_TOKEN_NOT_FOUND',
     ACCESS_TOKEN_NOT_FOUND = 'ACCESS_TOKEN_NOT_FOUND',
-    ACCESS_TOKEN_EXPIRED = 'ACCESS_TOKEN_EXPIRED'
+    ACCESS_TOKEN_EXPIRED = 'ACCESS_TOKEN_EXPIRED',
 }
 
 export function isReason(det: GrpcErrorDetails[], ...res: ErrorReason[]): boolean {
-    return det.find(d => res.includes(d.reason)) !== undefined
+    return det.find((d) => res.includes(d.reason)) !== undefined;
 }
 
 export type GrpcError = {
-    message: string
-    code: Errors
+    message: string;
+    code: Errors;
 
-    details: GrpcErrorDetails[]
-}
-
+    details: GrpcErrorDetails[];
+};
 
 export type GrpcErrorDetails = {
-    reason: ErrorReason
-    domain: string
-    metadata: Record<string, string>
-}
+    reason: ErrorReason;
+    domain: string;
+    metadata: Record<string, string>;
+};
 
 export class ServiceError {
     isNonRetryable: boolean = false;
@@ -52,58 +51,56 @@ export class ServiceError {
     statusCode?: number;
 
     constructor(...ops: ((e: ServiceError) => void)[]) {
-        ops.map(o => o(this))
+        ops.map((o) => o(this));
     }
-
 }
 
 export function WithIsNonRetryable(isNonRetryable: boolean): (e: ServiceError) => void {
     return (e: ServiceError) => {
-        return e.isNonRetryable = isNonRetryable
-    }
+        return (e.isNonRetryable = isNonRetryable);
+    };
 }
-
 
 export function WithHttpStatus(code: number): (e: ServiceError) => void {
     return (e: ServiceError) => {
-        return e.isNonRetryable = !isHttpCodeRetryable(code)
-    }
+        return (e.isNonRetryable = !isHttpCodeRetryable(code));
+    };
 }
 
 export function WithTitle(title: string): (e: ServiceError) => void {
     return (e: ServiceError) => {
-        return e.title = title
-    }
+        return (e.title = title);
+    };
 }
 
 export function WithReason(reason?: ErrorReason): (e: ServiceError) => void {
     return (e: ServiceError) => {
-        return e.reason = reason
-    }
+        return (e.reason = reason);
+    };
 }
 
 export function WithDescription(desc: string): (e: ServiceError) => void {
     return (e: ServiceError) => {
-        return e.details = desc
-    }
+        return (e.details = desc);
+    };
 }
 
 export function WithCode(code: Errors): (e: ServiceError) => void {
     return (e: ServiceError) => {
-        e.code = code
-    }
+        e.code = code;
+    };
 }
 
 export function WithStatusCode(statusCode: number): (e: ServiceError) => void {
     return (e: ServiceError) => {
-        e.statusCode = statusCode
-    }
+        e.statusCode = statusCode;
+    };
 }
 
 function isHttpCodeRetryable(code: number): boolean {
     if (code >= 500) {
-        return false
+        return false;
     }
 
-    return false
+    return false;
 }

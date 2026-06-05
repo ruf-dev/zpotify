@@ -1,1 +1,1 @@
-export {default as MultitrackUploadDialog} from './MultitrackUploadModal';
+export { default as MultitrackUploadDialog } from './MultitrackUploadModal';

@@ -1,9 +1,10 @@
-import cls from './PlaylistDetailsPanel.module.css';
 import CoverField from '@/components/CoverField/CoverField';
 import ArtistChipsField from '@/widgets/ArtistField/ArtistChipsField';
 import DisabledChip from '@/shared/ui/DisabledChip';
-import type {ArtistItem} from '@/widgets/ArtistField/ArtistChipsField';
-import {formatDuration} from '@/shared/lib/time';
+import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
+import { formatDuration } from '@/shared/lib/time';
+
+import cls from './PlaylistDetailsPanel.module.css';
 
 interface PlaylistDetailsPanelProps {
     cover?: File;
@@ -20,18 +21,35 @@ interface PlaylistDetailsPanelProps {
 
 function ClockIcon() {
     return (
-        <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="5.5" cy="5.5" r="4.5"/>
-            <path d="M5.5 3v2.5l1.5 1.5"/>
+        <svg
+            width="11"
+            height="11"
+            viewBox="0 0 11 11"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <circle cx="5.5" cy="5.5" r="4.5" />
+            <path d="M5.5 3v2.5l1.5 1.5" />
         </svg>
     );
 }
 
 function DiscIcon() {
     return (
-        <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-            <circle cx="5.5" cy="5.5" r="4.5"/>
-            <circle cx="5.5" cy="5.5" r="1.5"/>
+        <svg
+            width="11"
+            height="11"
+            viewBox="0 0 11 11"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+        >
+            <circle cx="5.5" cy="5.5" r="4.5" />
+            <circle cx="5.5" cy="5.5" r="1.5" />
         </svg>
     );
 }
@@ -55,7 +73,7 @@ export default function PlaylistDetailsPanel({
 }: PlaylistDetailsPanelProps) {
     return (
         <div className={cls.PlaylistDetailsPanelContainer}>
-            <CoverField cover={cover} onChange={onCoverChange}/>
+            <CoverField cover={cover} onChange={onCoverChange} />
 
             <div className={cls.FieldsStack}>
                 <div className={cls.FieldGroup}>
@@ -68,7 +86,7 @@ export default function PlaylistDetailsPanel({
                         className={cls.NameInput}
                         type="text"
                         value={playlistName}
-                        onChange={e => onNameChange(e.target.value)}
+                        onChange={(e) => onNameChange(e.target.value)}
                         placeholder="untitled playlist"
                     />
                 </div>
@@ -88,16 +106,8 @@ export default function PlaylistDetailsPanel({
                 </div>
 
                 <div className={cls.MetaChipsRow}>
-                    <DisabledChip
-                        icon={<ClockIcon/>}
-                        label="total"
-                        value={formatTotalDuration(totalDurationSec)}
-                    />
-                    <DisabledChip
-                        icon={<DiscIcon/>}
-                        label="tracks"
-                        value={String(trackCount)}
-                    />
+                    <DisabledChip icon={<ClockIcon />} label="total" value={formatTotalDuration(totalDurationSec)} />
+                    <DisabledChip icon={<DiscIcon />} label="tracks" value={String(trackCount)} />
                 </div>
             </div>
         </div>

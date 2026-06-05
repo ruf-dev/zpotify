@@ -1,37 +1,32 @@
-import cn from "classnames";
+import cn from 'classnames';
+import { useState } from 'react';
 
-import cls from "@/components/menu/Menu.module.css"
-import {useState} from "react";
+import cls from '@/components/menu/Menu.module.css';
 
 interface MenuProps {
-    options: MenuOption[]
+    options: MenuOption[];
 }
 
 export interface MenuOption {
-    label?: string
-    onClick?: () => void
-    disabled?: boolean
+    label?: string;
+    onClick?: () => void;
+    disabled?: boolean;
 }
 
-export default function Menu({options}: MenuProps) {
+export default function Menu({ options }: MenuProps) {
     return (
         <div className={cls.MenuContainer}>
             {options.map((op, index) => {
-                    return (
-                        <div key={index}>
-                            {op.label ?
-                                <MenuOption props={op}/> :
-                                <div className={cls.Separator}/>}
-                        </div>
-                    )
-                })
-            }
+                return (
+                    <div key={index}>{op.label ? <MenuOption props={op} /> : <div className={cls.Separator} />}</div>
+                );
+            })}
         </div>
-    )
+    );
 }
 
-function MenuOption({props}: { props: MenuOption }) {
-    const [isSelected, setIsSelected] = useState<boolean>(false)
+function MenuOption({ props }: { props: MenuOption }) {
+    const [isSelected, setIsSelected] = useState<boolean>(false);
 
     return (
         <div
@@ -45,5 +40,5 @@ function MenuOption({props}: { props: MenuOption }) {
         >
             {props.label}
         </div>
-    )
+    );
 }

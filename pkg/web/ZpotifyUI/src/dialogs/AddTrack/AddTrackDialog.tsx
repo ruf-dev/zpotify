@@ -1,23 +1,20 @@
-import {useState, type ComponentType} from 'react';
-import {SongFile} from '@/app/api/zpotify';
+import { useState, type ComponentType } from 'react';
 
+import { SongFile } from '@/app/api/zpotify';
 import cls from '@/dialogs/AddTrack/AddTrackDialog.module.css';
 import CloseButton from '@/shared/ui/CloseButton';
 import StepDots from '@/shared/ui/StepDots';
 import BackButton from '@/shared/ui/BackButton';
-
-import {useDialog} from '@/app/hooks/Dialog.tsx';
-import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
-import {ServiceError} from "@/shared/api/Errors.ts";
+import { useDialog } from '@/app/hooks/Dialog.tsx';
+import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
+import { ServiceError } from '@/shared/api/Errors.ts';
 import useUser from '@/entities/user/useUser.ts';
-
 import ChooseScreen from '@/dialogs/AddTrack/screens/ChooseScreen';
 import DropZoneScreen from '@/dialogs/AddTrack/screens/DropZoneScreen';
 import PendingFilesScreen from '@/dialogs/AddTrack/screens/PendingFilesScreen';
-import {MultitrackUploadDialog} from '@/dialogs/MultitrackUpload';
+import { MultitrackUploadDialog } from '@/dialogs/MultitrackUpload';
 import MetaDialog from '@/dialogs/Meta/MetaDialog';
-
-import {AudioFile} from '@/shared/model/AudioFile.ts';
+import { AudioFile } from '@/shared/model/AudioFile.ts';
 
 export type ModalStep = 'choose' | 'drop' | 'pending';
 
@@ -49,9 +46,9 @@ const SCREENS: Record<ModalStep, ComponentType<AddTrackContext>> = {
 };
 
 export default function AddTrackDialog() {
-    const {CloseDialog, OpenDialog} = useDialog();
+    const { CloseDialog, OpenDialog } = useDialog();
     const toaster = useToaster();
-    const {Services} = useUser();
+    const { Services } = useUser();
 
     const [step, setStep] = useState<ModalStep>('choose');
     const [uploading, setUploading] = useState(false);
@@ -60,7 +57,7 @@ export default function AddTrackDialog() {
     function handleFiles(files: File[]) {
         if (files.length > 1) {
             CloseDialog();
-            OpenDialog(<MultitrackUploadDialog files={files}/>);
+            OpenDialog(<MultitrackUploadDialog files={files} />);
             return;
         }
 
@@ -68,11 +65,12 @@ export default function AddTrackDialog() {
         const initialTitle = f.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
         setUploadError(null);
         setUploading(true);
-        Services().WebApi()
+        Services()
+            .WebApi()
             .UploadFile(f)
             .then((id) => {
                 CloseDialog();
-                OpenDialog(<MetaDialog audioFile={new AudioFile(id)} initialTitle={initialTitle}/>);
+                OpenDialog(<MetaDialog audioFile={new AudioFile(id)} initialTitle={initialTitle} />);
             })
             .catch((err: unknown) => {
                 if (err instanceof ServiceError && err.statusCode === 429) {
@@ -89,7 +87,7 @@ export default function AddTrackDialog() {
         const name = songFile.path?.split('/').pop() ?? '';
         const initialTitle = name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
         CloseDialog();
-        OpenDialog(<MetaDialog audioFile={new AudioFile(id)} initialTitle={initialTitle}/>);
+        OpenDialog(<MetaDialog audioFile={new AudioFile(id)} initialTitle={initialTitle} />);
     }
 
     const backStep = BACK_STEPS[step];
@@ -115,7 +113,7 @@ export default function AddTrackDialog() {
             />
 
             <div className={cls.PanelBody}>
-                <Screen {...ctx}/>
+                <Screen {...ctx} />
             </div>
         </div>
     );
@@ -129,18 +127,11 @@ interface PanelHeaderProps {
     onClose: () => void;
 }
 
-function PanelHeader(
-    {
-        step, backStep,
-        uploading,
-        onBack, onClose
-    }: PanelHeaderProps) {
+function PanelHeader({ step, backStep, uploading, onBack, onClose }: PanelHeaderProps) {
     return (
         <div className={cls.PanelHeader}>
             <div className={cls.HeaderLeft}>
-                {backStep && !uploading && (
-                    <BackButton onClick={onBack} />
-                )}
+                {backStep && !uploading && <BackButton onClick={onBack} />}
                 <span className={cls.PanelTitle}>{STEP_TITLES[step]}</span>
             </div>
 

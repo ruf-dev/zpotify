@@ -1,11 +1,12 @@
-import React, {JSX} from "react";
-import PlaylistHomeSegment from "@/widgets/PlaylistHomeSegment/PlaylistHomeSegment.tsx";
-import {AudioPlayer} from "@/widgets/MusicPlayer/usePlayer.ts";
-import ManagementHomeSegment from "@/widgets/ManagementHomeSegment/ManagementHomeSegment.tsx";
+import React, { JSX } from 'react';
+
+import PlaylistHomeSegment from '@/widgets/PlaylistHomeSegment/PlaylistHomeSegment.tsx';
+import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
+import ManagementHomeSegment from '@/widgets/ManagementHomeSegment/ManagementHomeSegment.tsx';
 
 export type HomeSegmentProps = {
     audioPlayer: AudioPlayer;
-}
+};
 
 export interface HomeSegment {
     id: string;
@@ -23,11 +24,8 @@ export class PlaylistSegmentInfo implements HomeSegment {
         this.id = playlistId;
     }
 
-    buildComponent({audioPlayer}: HomeSegmentProps): React.JSX.Element {
-        return (<PlaylistHomeSegment
-            audioPlayer={audioPlayer}
-            playlistUuid={this.playlistUuid}
-        />);
+    buildComponent({ audioPlayer }: HomeSegmentProps): React.JSX.Element {
+        return <PlaylistHomeSegment audioPlayer={audioPlayer} playlistUuid={this.playlistUuid} />;
     }
 }
 
@@ -35,7 +33,7 @@ export class ManagementSegmentInfo implements HomeSegment {
     readonly id = 'management';
     readonly label = 'management';
 
-    buildComponent({audioPlayer}: HomeSegmentProps): React.JSX.Element {
-        return (<ManagementHomeSegment audioPlayer={audioPlayer}/>);
+    buildComponent({ audioPlayer }: HomeSegmentProps): React.JSX.Element {
+        return <ManagementHomeSegment audioPlayer={audioPlayer} />;
     }
 }

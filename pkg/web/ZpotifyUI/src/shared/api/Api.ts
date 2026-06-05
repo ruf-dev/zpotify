@@ -1,22 +1,21 @@
-export const GrpcAuthHeader = "Grpc-Metadata-Authorization"
+export const GrpcAuthHeader = 'Grpc-Metadata-Authorization';
 
 export interface InitReq {
-    pathPrefix: string,
+    pathPrefix: string;
     headers: {
-        "Grpc-Metadata-Authorization": string,
-    },
+        'Grpc-Metadata-Authorization': string;
+    };
 }
 
 export function apiPrefix(opts?: options): InitReq {
     return {
         pathPrefix: import.meta.env.VITE_ZPOTIFY_API,
         headers: {
-            "Grpc-Metadata-Authorization": opts ? opts.accessToken : "",
-        }
-    }
+            'Grpc-Metadata-Authorization': opts ? opts.accessToken : '',
+        },
+    };
 }
 
 export type options = {
-    accessToken: string
-}
-
+    accessToken: string;
+};

@@ -1,6 +1,5 @@
-import {create} from "zustand";
-import React from "react";
-
+import { create } from 'zustand';
+import React from 'react';
 
 export interface DialogManager {
     children: React.JSX.Element[] | null;
@@ -16,27 +15,25 @@ export interface DialogManager {
     CloseDialog(): void;
 }
 
+export const useDialog = create<DialogManager>((set, get) => ({
+    children: null,
+    IsClickOffClosesDialog: true,
 
-export const useDialog =
-    create<DialogManager>((set, get) => ({
-        children: null,
-        IsClickOffClosesDialog: true,
+    LockClosing() {
+        set({ IsClickOffClosesDialog: false });
+    },
+    UnlockClosing() {
+        set({ IsClickOffClosesDialog: true });
+    },
 
-        LockClosing() {
-            set({IsClickOffClosesDialog: false})
-        },
-        UnlockClosing() {
-            set({IsClickOffClosesDialog: true})
-        },
+    OpenDialog(...children: React.JSX.Element[]) {
+        set({ children: children });
+    },
 
-        OpenDialog(...children: React.JSX.Element[] ) {
-            set({children: children});
-        },
-
-        CloseDialog() {
-            const {IsClickOffClosesDialog} = get()
-            if (IsClickOffClosesDialog) {
-                set({children: null})
-            }
+    CloseDialog() {
+        const { IsClickOffClosesDialog } = get();
+        if (IsClickOffClosesDialog) {
+            set({ children: null });
         }
-    }))
+    },
+}));

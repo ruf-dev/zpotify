@@ -1,5 +1,5 @@
-import cls from '@/pages/TestingPage/TestingPage.module.css'
-import Carousel from "@/components/carousel/Carousel.tsx";
+import cls from '@/pages/TestingPage/TestingPage.module.css';
+import Carousel from '@/components/carousel/Carousel.tsx';
 
 export default function TestingPage() {
     return (

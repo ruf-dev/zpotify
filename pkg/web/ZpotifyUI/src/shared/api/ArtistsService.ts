@@ -1,17 +1,11 @@
-import {
-    ArtistsAPI,
-    Paging,
-    ListArtistRequest,
-    ListArtistResponse,
-} from "@/app/api/zpotify";
-
-import { BaseService } from "@/shared/api/BaseService.ts";
-import { AuthMiddleware } from "@/shared/api/Auth.ts";
-import type { ArtistItem } from "@/widgets/ArtistField/ArtistChipsField";
+import { ArtistsAPI, Paging, ListArtistRequest, ListArtistResponse } from '@/app/api/zpotify';
+import { BaseService } from '@/shared/api/BaseService.ts';
+import { AuthMiddleware } from '@/shared/api/Auth.ts';
+import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 
 export interface IArtistsService {
-    ListArtist(search: string, offset: number, limit: number): Promise<ListArtistResponse>
-    CreateArtist(name: string): Promise<ArtistItem>
+    ListArtist(search: string, offset: number, limit: number): Promise<ListArtistResponse>;
+    CreateArtist(name: string): Promise<ArtistItem>;
 }
 
 export class ArtistsService extends BaseService implements IArtistsService {
@@ -37,8 +31,8 @@ export class ArtistsService extends BaseService implements IArtistsService {
 
     async CreateArtist(name: string): Promise<ArtistItem> {
         const res = await this.executeAuthApiCall(async (initReq) => {
-            return ArtistsAPI.CreateArtist({name}, initReq);
+            return ArtistsAPI.CreateArtist({ name }, initReq);
         });
-        return {id: res.artist!.uuid!, name: res.artist!.name!};
+        return { id: res.artist!.uuid!, name: res.artist!.name! };
     }
 }

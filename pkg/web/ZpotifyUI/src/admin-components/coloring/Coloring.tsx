@@ -1,10 +1,5 @@
-interface ColoringProps {
-}
+interface ColoringProps {}
 
 export default function Coloring({}: ColoringProps) {
-    return (
-        <div>
-            132
-        </div>
-    )
+    return <div>132</div>;
 }

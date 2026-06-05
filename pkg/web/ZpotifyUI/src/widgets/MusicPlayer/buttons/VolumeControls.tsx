@@ -1,37 +1,34 @@
-import cn from "classnames";
+import cn from 'classnames';
+import { useState } from 'react';
 
 import cls from '@/widgets/MusicPlayer/buttons/VolumeControls.module.scss';
-import {AudioPlayer} from "@/widgets/MusicPlayer/usePlayer.ts";
-import {useState} from "react";
+import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
 
 interface VolumeControlsProps {
-    audioPlayer: AudioPlayer
+    audioPlayer: AudioPlayer;
 }
 
-export default function VolumeControls({audioPlayer}: VolumeControlsProps) {
+export default function VolumeControls({ audioPlayer }: VolumeControlsProps) {
     const [isSliderOpened, setIsSliderOpened] = useState(false);
 
     return (
-        <div className={cls.VolumeControlContainer}
-             onMouseEnter={() => setIsSliderOpened(true)}
-             onMouseLeave={() => setIsSliderOpened(false)}
+        <div
+            className={cls.VolumeControlContainer}
+            onMouseEnter={() => setIsSliderOpened(true)}
+            onMouseLeave={() => setIsSliderOpened(false)}
         >
             <div className={cls.VolumeControl}>
                 <div className={cls.Display}>
-                    <VolumeDisplay
-                        audioPlayer={audioPlayer}
-                    />
+                    <VolumeDisplay audioPlayer={audioPlayer} />
                 </div>
 
-                {isSliderOpened && (<VolumeBar audioPlayer={audioPlayer}/>)}
-
+                {isSliderOpened && <VolumeBar audioPlayer={audioPlayer} />}
             </div>
         </div>
     );
 }
 
-
-function VolumeBar({audioPlayer}: { audioPlayer: AudioPlayer }) {
+function VolumeBar({ audioPlayer }: { audioPlayer: AudioPlayer }) {
     const [hover, setHover] = useState(false);
     const [lineY, setLineY] = useState<number | null>(null);
     const [dragging, setDragging] = useState(false);
@@ -39,12 +36,9 @@ function VolumeBar({audioPlayer}: { audioPlayer: AudioPlayer }) {
     function handleVolumeChange(e: React.MouseEvent<HTMLDivElement>) {
         const rect = e.currentTarget.getBoundingClientRect();
         const y = e.clientY - rect.top;
-        const newVolume = Math.min(
-            100,
-            Math.max(0, 100 - (y / rect.height) * 100)
-        );
+        const newVolume = Math.min(100, Math.max(0, 100 - (y / rect.height) * 100));
 
-        audioPlayer.setVolume(newVolume)
+        audioPlayer.setVolume(newVolume);
     }
 
     return (
@@ -75,7 +69,7 @@ function VolumeBar({audioPlayer}: { audioPlayer: AudioPlayer }) {
                     [cls.isMuted]: audioPlayer.isMuted,
                 })}
                 style={{
-                    height: `${audioPlayer.volume}%`
+                    height: `${audioPlayer.volume}%`,
                 }}
             />
 
@@ -85,17 +79,19 @@ function VolumeBar({audioPlayer}: { audioPlayer: AudioPlayer }) {
                     style={{
                         top: `${lineY}px`,
                     }}
-                />)}
-        </div>);
+                />
+            )}
+        </div>
+    );
 }
 
-function VolumeDisplay({audioPlayer}: { audioPlayer: AudioPlayer }) {
+function VolumeDisplay({ audioPlayer }: { audioPlayer: AudioPlayer }) {
     return (
         <div
             className={cls.Display}
             style={{
                 background: `
-                    conic-gradient(${audioPlayer.isMuted ? "" : "var(--accent-fg-color) " + audioPlayer.volume + "%,"}
+                    conic-gradient(${audioPlayer.isMuted ? '' : 'var(--accent-fg-color) ' + audioPlayer.volume + '%,'}
                      var(--disabled-fg-color) ${audioPlayer.volume}% 100%)`,
             }}
             onClick={audioPlayer.toggleMute}
@@ -103,13 +99,14 @@ function VolumeDisplay({audioPlayer}: { audioPlayer: AudioPlayer }) {
             <div className={cls.InnerRadius}>
                 <div
                     style={{
-                        fontSize: "70%",
-                        color: "#333",
-                        transition: "all 0.5s ease",
+                        fontSize: '70%',
+                        color: '#333',
+                        transition: 'all 0.5s ease',
                     }}
                 >
-                    {audioPlayer.isMuted ? "M" : Math.round(audioPlayer.volume) + "%"}
+                    {audioPlayer.isMuted ? 'M' : Math.round(audioPlayer.volume) + '%'}
                 </div>
             </div>
-        </div>)
+        </div>
+    );
 }

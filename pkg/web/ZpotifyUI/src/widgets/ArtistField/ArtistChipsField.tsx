@@ -1,12 +1,13 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import cn from 'classnames';
 
-import cls from './ArtistChipsField.module.css';
-import {ArtistChip, LockedArtistChip} from './ArtistChip';
+import { ArtistChip, LockedArtistChip } from './ArtistChip';
 import ArtistDropdown from './ArtistDropdown';
-import type {ArtistItem} from './ArtistChip';
+import type { ArtistItem } from './ArtistChip';
 
-export type {ArtistItem};
+import cls from './ArtistChipsField.module.css';
+
+export type { ArtistItem };
 
 interface ArtistChipsFieldProps {
     artists: ArtistItem[];
@@ -18,18 +19,26 @@ interface ArtistChipsFieldProps {
     onCreateArtist: (name: string) => Promise<ArtistItem>;
 }
 
-function PlusIcon({open}: {open: boolean}) {
+function PlusIcon({ open }: { open: boolean }) {
     return (
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+        <svg
+            width="10"
+            height="10"
+            viewBox="0 0 10 10"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+        >
             {open ? (
                 <>
-                    <line x1="1" y1="1" x2="9" y2="9"/>
-                    <line x1="9" y1="1" x2="1" y2="9"/>
+                    <line x1="1" y1="1" x2="9" y2="9" />
+                    <line x1="9" y1="1" x2="1" y2="9" />
                 </>
             ) : (
                 <>
-                    <line x1="5" y1="1" x2="5" y2="9"/>
-                    <line x1="1" y1="5" x2="9" y2="5"/>
+                    <line x1="5" y1="1" x2="5" y2="9" />
+                    <line x1="1" y1="5" x2="9" y2="5" />
                 </>
             )}
         </svg>
@@ -50,18 +59,18 @@ export default function ArtistChipsField({
     const [overIdx, setOverIdx] = useState<number | null>(null);
 
     function handleRemove(id: string) {
-        onChange(artists.filter(a => a.id !== id));
+        onChange(artists.filter((a) => a.id !== id));
     }
 
     function handlePick(artist: ArtistItem) {
-        if (!artists.some(a => a.id === artist.id) && !lockedArtists.some(a => a.id === artist.id)) {
+        if (!artists.some((a) => a.id === artist.id) && !lockedArtists.some((a) => a.id === artist.id)) {
             onChange([...artists, artist]);
         }
         setDropdownOpen(false);
     }
 
     function handleCreate(name: string): Promise<ArtistItem> {
-        return onCreateArtist(name).then(artist => {
+        return onCreateArtist(name).then((artist) => {
             onChange([...artists, artist]);
             return artist;
         });
@@ -102,9 +111,9 @@ export default function ArtistChipsField({
 
     return (
         <div className={cn(cls.FieldContainer, dense ? cls.Dense : cls.Default)} role="list">
-            {lockedArtists.map(a => (
+            {lockedArtists.map((a) => (
                 <span key={a.id} role="listitem">
-                    <LockedArtistChip artist={a}/>
+                    <LockedArtistChip artist={a} />
                 </span>
             ))}
 
@@ -120,26 +129,21 @@ export default function ArtistChipsField({
                 </span>
             ))}
 
-            {showPlaceholder && (
-                <span className={cls.Placeholder}>{placeholder}</span>
-            )}
+            {showPlaceholder && <span className={cls.Placeholder}>{placeholder}</span>}
 
             <div className={cls.AddButtonWrapper}>
                 <button
                     type="button"
                     className={`${cls.AddButton} ${dropdownOpen ? cls.AddButtonOpen : ''}`}
-                    onClick={() => setDropdownOpen(o => !o)}
+                    onClick={() => setDropdownOpen((o) => !o)}
                     aria-label="add artist"
                 >
-                    <PlusIcon open={dropdownOpen}/>
+                    <PlusIcon open={dropdownOpen} />
                 </button>
 
                 {dropdownOpen && (
                     <ArtistDropdown
-                        excluded={[
-                            ...lockedArtists.map(a => a.id),
-                            ...artists.map(a => a.id),
-                        ]}
+                        excluded={[...lockedArtists.map((a) => a.id), ...artists.map((a) => a.id)]}
                         loadOptions={loadOptions}
                         onCreateArtist={handleCreate}
                         onPick={handlePick}

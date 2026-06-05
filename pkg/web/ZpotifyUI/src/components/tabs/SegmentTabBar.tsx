@@ -1,4 +1,5 @@
 import cn from 'classnames';
+
 import cls from '@/components/tabs/SegmentTabBar.module.css';
 
 export interface Tab {
@@ -12,13 +13,13 @@ interface SegmentTabBarProps {
     onChange: (id: string) => void;
 }
 
-export default function SegmentTabBar({tabs, activeId, onChange}: SegmentTabBarProps) {
+export default function SegmentTabBar({ tabs, activeId, onChange }: SegmentTabBarProps) {
     return (
         <div className={cls.SegmentTabBarContainer}>
-            {tabs.map(tab => (
+            {tabs.map((tab) => (
                 <button
                     key={tab.id}
-                    className={cn(cls.Tab, {[cls.Active]: tab.id === activeId})}
+                    className={cn(cls.Tab, { [cls.Active]: tab.id === activeId })}
                     onClick={() => onChange(tab.id)}
                 >
                     {tab.label}

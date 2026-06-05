@@ -1,0 +1,33 @@
+.DropZoneContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.DragOver {
+    outline: 1.5px dashed var(--color-fg-accent);
+    outline-offset: -2px;
+    border-radius: var(--border-radius-md);
+}
+
+.HiddenInput {
+    display: none;
+}
+
+.DragOverlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, var(--color-fg-accent) 8%, transparent);
+    border-radius: var(--border-radius-md);
+    pointer-events: none;
+}
+
+.DragOverlayLabel {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-fg-accent);
+}

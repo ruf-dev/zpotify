@@ -1,29 +1,24 @@
-import cls from "@/app/routing/Router.module.css"
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Tooltip } from 'react-tooltip';
 
-import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
-import {useEffect} from "react";
-
-import InitPage from "@/pages/init/InitPage.tsx";
-import ErrorPage from "@/pages/error/ErrorPage.tsx";
-import PlaylistPage from "@/pages/playlist/PlaylistPage.tsx";
-import EarlyAccessPage from "@/pages/early_access/EarlyAccessPage.tsx";
-
-import useAudioPlayer from "@/widgets/MusicPlayer/usePlayer.ts";
-import useUser from "@/entities/user/useUser.ts";
-import Toaster from "@/components/notifications/Toaster.tsx";
-
-
-import HomePage from "@/pages/home/HomePage.tsx";
-import Coloring from "@/admin-components/coloring/Coloring.tsx";
-
-import {Tooltip} from "react-tooltip";
-import Dialog from "@/pages/segments/Dialog.tsx";
+import cls from '@/app/routing/Router.module.css';
+import InitPage from '@/pages/init/InitPage.tsx';
+import ErrorPage from '@/pages/error/ErrorPage.tsx';
+import PlaylistPage from '@/pages/playlist/PlaylistPage.tsx';
+import EarlyAccessPage from '@/pages/early_access/EarlyAccessPage.tsx';
+import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
+import useUser from '@/entities/user/useUser.ts';
+import Toaster from '@/components/notifications/Toaster.tsx';
+import HomePage from '@/pages/home/HomePage.tsx';
+import Coloring from '@/admin-components/coloring/Coloring.tsx';
+import Dialog from '@/pages/segments/Dialog.tsx';
 
 export enum Path {
-    HomePage = "/",
-    IntiPage = "/init",
-    PlaylistPage = "/playlist/:id",
-    EarlyAccessPage = "/early_access",
+    HomePage = '/',
+    IntiPage = '/init',
+    PlaylistPage = '/playlist/:id',
+    EarlyAccessPage = '/early_access',
 }
 
 export function playlistPath(id: string): string {
@@ -34,9 +29,9 @@ export default function Router() {
     const audioPlayer = useAudioPlayer();
     const navigate = useNavigate();
 
-    const earlyAccessDenied = useUser(state => state.earlyAccessDenied);
-    const auth = useUser(state => state.auth);
-    const fetchUserData = useUser(state => state.fetchUserData);
+    const earlyAccessDenied = useUser((state) => state.earlyAccessDenied);
+    const auth = useUser((state) => state.auth);
+    const fetchUserData = useUser((state) => state.fetchUserData);
 
     useEffect(() => {
         if (auth.session) {
@@ -56,48 +51,35 @@ export default function Router() {
                 <Routes>
                     <Route
                         path={Path.IntiPage}
-                        element={<InitPage AudioPlayer={audioPlayer}/>}
-                        errorElement={<ErrorPage/>}
+                        element={<InitPage AudioPlayer={audioPlayer} />}
+                        errorElement={<ErrorPage />}
                     />
 
                     <Route
                         path={Path.HomePage}
-                        element={<HomePage audioPlayer={audioPlayer}/>}
-                        errorElement={<ErrorPage/>}
+                        element={<HomePage audioPlayer={audioPlayer} />}
+                        errorElement={<ErrorPage />}
                     />
 
                     <Route
                         path={Path.PlaylistPage}
-                        element={<PlaylistPage audioPlayer={audioPlayer}/>}
-                        errorElement={<ErrorPage/>}
+                        element={<PlaylistPage audioPlayer={audioPlayer} />}
+                        errorElement={<ErrorPage />}
                     />
 
-                    <Route
-                        path={Path.EarlyAccessPage}
-                        element={<EarlyAccessPage/>}
-                        errorElement={<ErrorPage/>}
-                    />
+                    <Route path={Path.EarlyAccessPage} element={<EarlyAccessPage />} errorElement={<ErrorPage />} />
 
-                    <Route
-                        path={"*"}
-                        element={<Navigate to={"/"} replace/>}
-                        errorElement={<ErrorPage/>}
-                    />
-
+                    <Route path={'*'} element={<Navigate to={'/'} replace />} errorElement={<ErrorPage />} />
                 </Routes>
 
-
-                <Dialog/>
-                <Tooltip
-                    id="root-tooltip"
-                    variant={"light"}
-                />
-                <Toaster/>
+                <Dialog />
+                <Tooltip id="root-tooltip" variant={'light'} />
+                <Toaster />
             </div>
 
             <div className={cls.Admins}>
-                <Coloring/>
+                <Coloring />
             </div>
         </div>
-    )
+    );
 }

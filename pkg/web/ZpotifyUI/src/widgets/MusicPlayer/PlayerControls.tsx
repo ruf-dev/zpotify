@@ -1,16 +1,15 @@
-import {JSX} from "react";
+import { JSX } from 'react';
 
-import PlayPauseButton from "@/widgets/MusicPlayer/buttons/PlayPauseButton.tsx";
-import TrackRewindButton from "@/widgets/MusicPlayer/buttons/TrackRewindButton.tsx";
-
-import cls from "@/widgets/MusicPlayer/PlayerControls.module.css"
-import {AudioPlayer} from "@/widgets/MusicPlayer/usePlayer.ts";
+import PlayPauseButton from '@/widgets/MusicPlayer/buttons/PlayPauseButton.tsx';
+import TrackRewindButton from '@/widgets/MusicPlayer/buttons/TrackRewindButton.tsx';
+import cls from '@/widgets/MusicPlayer/PlayerControls.module.css';
+import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
 
 export interface PlayerProps {
-    audioPlayer: AudioPlayer
+    audioPlayer: AudioPlayer;
 }
 
-export default function PlayerControls({audioPlayer}: PlayerProps): JSX.Element {
+export default function PlayerControls({ audioPlayer }: PlayerProps): JSX.Element {
     return (
         <div className={cls.PlayerControlsContainer}>
             <TrackRewindButton
@@ -23,11 +22,7 @@ export default function PlayerControls({audioPlayer}: PlayerProps): JSX.Element 
                 isDisabled={audioPlayer.trackPath == null}
                 onClick={() => audioPlayer.togglePlay()}
             />
-            <TrackRewindButton
-                onClick={() => audioPlayer.playNext()}
-                isDisabled={audioPlayer.trackPath == null}
-                next
-            />
+            <TrackRewindButton onClick={() => audioPlayer.playNext()} isDisabled={audioPlayer.trackPath == null} next />
         </div>
-    )
+    );
 }

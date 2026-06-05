@@ -1,5 +1,4 @@
-import {AuthMiddleware} from "@/shared/api/Auth.ts";
-
+import { AuthMiddleware } from '@/shared/api/Auth.ts';
 import {
     ErrorReason,
     Errors,
@@ -8,32 +7,29 @@ import {
     ServiceError,
     WithCode,
     WithIsNonRetryable,
-    WithTitle
-} from "@/shared/api/Errors.ts";
-
-import {InitReq} from "@/app/api/zpotify";
+    WithTitle,
+} from '@/shared/api/Errors.ts';
+import { InitReq } from '@/app/api/zpotify';
 
 export class BaseService {
-    private auth: AuthMiddleware
+    private auth: AuthMiddleware;
 
     constructor(auth: AuthMiddleware) {
-        this.auth = auth
+        this.auth = auth;
     }
 
-    protected async executeAuthApiCall<T>(
-        callback: (initReq: InitReq) => Promise<T>,
-    ): Promise<T> {
+    protected async executeAuthApiCall<T>(callback: (initReq: InitReq) => Promise<T>): Promise<T> {
         return withRetries<T>(
             async (): Promise<T> =>
                 callback(await this.auth.GetMetadata())
                     .catch(async (err: GrpcError | ServiceError) => {
                         if (err instanceof ServiceError) {
-                            throw err
+                            throw err;
                         }
 
-                        if (err.message === "Failed to fetch") {
+                        if (err.message === 'Failed to fetch') {
                             throw new ServiceError(
-                                WithTitle("Server is not available. Try again later"),
+                                WithTitle('Server is not available. Try again later'),
                                 WithIsNonRetryable(true),
                             );
                         }
@@ -42,11 +38,12 @@ export class BaseService {
                             if (isReason(err.details, ErrorReason.ACCESS_TOKEN_NOT_FOUND)) {
                                 throw new ServiceError(
                                     WithTitle('Session expired. Login again'),
-                                    WithIsNonRetryable(true));
+                                    WithIsNonRetryable(true),
+                                );
                             }
 
                             if (err.message == 'token expired') {
-                                await this.auth.RefreshToken()
+                                await this.auth.RefreshToken();
 
                                 throw new ServiceError(
                                     WithTitle('Session expired. Refreshing'),
@@ -79,33 +76,29 @@ export class BaseService {
                             );
                         }
 
-
                         throw new ServiceError(WithTitle(err.message));
                     })
-                    .then()
-            , 1)
+                    .then(),
+            1,
+        );
     }
 }
 
-
 function withRetries<T>(callback: () => Promise<T>, retries: number): Promise<T> {
-
-    return callback()
-        .catch((err) => {
-            if (err.isNonRetryable) {
-                throw err
-            }
-
-            if (retries > 0) {
-                return withRetries(callback, retries - 1);
-            }
-
+    return callback().catch((err) => {
+        if (err.isNonRetryable) {
             throw err;
-        });
+        }
+
+        if (retries > 0) {
+            return withRetries(callback, retries - 1);
+        }
+
+        throw err;
+    });
 }
 
-
 export interface WebApiParams {
-    targetUrl: string
-    authHeaderValue: string
+    targetUrl: string;
+    authHeaderValue: string;
 }

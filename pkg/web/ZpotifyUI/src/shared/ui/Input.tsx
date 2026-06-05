@@ -1,10 +1,10 @@
-import {FocusEventHandler, useState} from "react";
-import cn from "classnames";
+import { FocusEventHandler, useState } from 'react';
+import cn from 'classnames';
 
-import cls from "@/shared/ui/Input.module.css";
+import cls from '@/shared/ui/Input.module.css';
 
 export interface StyleProps {
-    borderless?: boolean
+    borderless?: boolean;
 }
 
 export interface InputProps {
@@ -12,16 +12,16 @@ export interface InputProps {
     inputValue: string | null;
     onChange: (v: string) => void;
 
-    onLeave?: (val: string) => void
+    onLeave?: (val: string) => void;
 
-    style?: StyleProps
+    style?: StyleProps;
 
-    disabled?: boolean
+    disabled?: boolean;
 
-    hint?: string
+    hint?: string;
 }
 
-export default function Input({label, onChange, inputValue, style, onLeave, disabled, hint}: InputProps) {
+export default function Input({ label, onChange, inputValue, style, onLeave, disabled, hint }: InputProps) {
     const [isFocused, setIsFocused] = useState(false);
 
     const hasValue = inputValue !== undefined && inputValue !== null && inputValue.toString().length > 0;
@@ -29,14 +29,14 @@ export default function Input({label, onChange, inputValue, style, onLeave, disa
 
     const handleFocus: FocusEventHandler<HTMLInputElement> = () => {
         if (disabled) {
-            return
+            return;
         }
         setIsFocused(true);
     };
 
     const handleBlur: FocusEventHandler<HTMLInputElement> = () => {
         setIsFocused(false);
-        if (onLeave) onLeave(inputValue || '')
+        if (onLeave) onLeave(inputValue || '');
     };
 
     return (
@@ -50,31 +50,24 @@ export default function Input({label, onChange, inputValue, style, onLeave, disa
                 className={cn(cls.input, {
                     [cls.Disabled]: disabled,
                 })}
-
                 disabled={(onChange === undefined && onLeave == undefined) || disabled}
                 onChange={(e) => {
-                    if (onChange) onChange(e.target.value)
+                    if (onChange) onChange(e.target.value);
                 }}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 value={inputValue || ''}
             />
-            {label && (
-                <label className={`${cls.Label} ${showFloatingLabel ? cls.Floating : ''}`}>
-                    {label}
-                </label>
+            {label && <label className={`${cls.Label} ${showFloatingLabel ? cls.Floating : ''}`}>{label}</label>}
+            {hint && (
+                <img
+                    className={cls.Hint}
+                    alt={'?'}
+                    data-tooltip-id={'tooltip'}
+                    data-tooltip-content={hint}
+                    data-tooltip-place="top"
+                />
             )}
-            {
-                hint && (
-                    <img
-                        className={cls.Hint}
-                        alt={'?'}
-                        data-tooltip-id={"tooltip"}
-                        data-tooltip-content={hint}
-                        data-tooltip-place="top"
-                    />
-                )
-            }
         </div>
     );
 }

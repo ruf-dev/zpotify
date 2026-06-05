@@ -1,8 +1,9 @@
-import React, {useRef, useState, useEffect, ReactNode} from "react";
-import {motion} from "framer-motion";
-import cls from "@/components/carousel/Carousel.module.css";
-import cn from "classnames";
-import {flushSync} from "react-dom";
+import React, { useRef, useState, useEffect, ReactNode } from 'react';
+import { motion } from 'framer-motion';
+import cn from 'classnames';
+import { flushSync } from 'react-dom';
+
+import cls from '@/components/carousel/Carousel.module.css';
 
 interface CarouselProps {
     children: ReactNode[];
@@ -10,7 +11,7 @@ interface CarouselProps {
     width?: string;
 }
 
-const Carousel: React.FC<CarouselProps> = ({children, visibleItems = 3, width = '100vw'}) => {
+const Carousel: React.FC<CarouselProps> = ({ children, visibleItems = 3, width = '100vw' }) => {
     const scrollRef = useRef<HTMLDivElement>(null);
     const itemRefs = useRef<HTMLDivElement[]>([]);
     const [centerIndex, setCenterIndex] = useState(0);
@@ -58,7 +59,7 @@ const Carousel: React.FC<CarouselProps> = ({children, visibleItems = 3, width = 
 
         container.scrollTo({
             left: targetScrollLeft,
-            behavior: "smooth",
+            behavior: 'smooth',
         });
 
         setTimeout(() => setIsScrollingProgrammatically(false), 150);
@@ -105,7 +106,6 @@ const Carousel: React.FC<CarouselProps> = ({children, visibleItems = 3, width = 
     // Dynamic scaling based on overlap with center frame
     // -------------------------
     const calculateScale = (index: number) => {
-
         const container = scrollRef.current;
         const item = itemRefs.current[index];
 
@@ -155,12 +155,12 @@ const Carousel: React.FC<CarouselProps> = ({children, visibleItems = 3, width = 
                         onClick={() => onChildClick(i)}
                     >
                         <motion.div
-                            className={cn(cls.CarouselItemContent, {[cls.centered]: i === centerIndex})}
+                            className={cn(cls.CarouselItemContent, { [cls.centered]: i === centerIndex })}
                             animate={{
                                 scale: calculateScale(i),
                                 opacity: calculateScale(i), // optional: scale opacity proportionally
                             }}
-                            transition={{type: "spring", stiffness: 500, damping: 35}}
+                            transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                         >
                             {child}
                         </motion.div>

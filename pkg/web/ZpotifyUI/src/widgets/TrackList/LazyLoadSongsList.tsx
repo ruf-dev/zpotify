@@ -1,36 +1,35 @@
-import cn from "classnames";
-import {useEffect, useState} from "react";
-import {SongBase} from "@/app/api/zpotify";
+import cn from 'classnames';
+import { useEffect, useState } from 'react';
 
-import cls from "@/widgets/TrackList/InfiniteSongsList.module.css";
-import {AudioPlayer} from "@/widgets/MusicPlayer/usePlayer.ts";
-import useUser from "@/entities/user/useUser.ts";
-
-import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
-import SongListWidget from "@/widgets/TrackList/TrackListWidget.tsx";
-import ZButton from "@/shared/ui/ZButton/ZButton.tsx";
+import { SongBase } from '@/app/api/zpotify';
+import cls from '@/widgets/TrackList/InfiniteSongsList.module.css';
+import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
+import useUser from '@/entities/user/useUser.ts';
+import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
+import SongListWidget from '@/widgets/TrackList/TrackListWidget.tsx';
+import ZButton from '@/shared/ui/ZButton/ZButton.tsx';
 
 interface InfiniteSongsListProps {
-    audioPlayer: AudioPlayer
+    audioPlayer: AudioPlayer;
 
-    playlistId: string
+    playlistId: string;
 
-    fixedSize?: boolean
+    fixedSize?: boolean;
 
-    onTotal?: (total: number) => void
+    onTotal?: (total: number) => void;
 }
 
 const songsPerPage = 10;
 
-export default function LazyLoadSongsList({audioPlayer, playlistId, fixedSize, onTotal}: InfiniteSongsListProps) {
-    const [offset, setOffset] = useState(0)
+export default function LazyLoadSongsList({ audioPlayer, playlistId, fixedSize, onTotal }: InfiniteSongsListProps) {
+    const [offset, setOffset] = useState(0);
     const [shuffleHash, setShuffleHash] = useState<string | undefined>();
 
     const [songs, setSongs] = useState<SongBase[]>([]);
     const [totalSongs, setTotalSongs] = useState(0);
     const [isListEnded, setIsListEnded] = useState(false);
 
-    const playlistService = useUser(state => state.Services)().Playlist()
+    const playlistService = useUser((state) => state.Services)().Playlist();
 
     const toaster = useToaster();
 
@@ -40,70 +39,68 @@ export default function LazyLoadSongsList({audioPlayer, playlistId, fixedSize, o
             .then((resp) => {
                 resp.songs = resp.songs || [];
 
-                setSongs(prev => [...prev, ...(resp.songs || []).filter((newSong) => {
-                    return !prev.some(old => old.id == newSong.id)
-                })]);
+                setSongs((prev) => [
+                    ...prev,
+                    ...(resp.songs || []).filter((newSong) => {
+                        return !prev.some((old) => old.id == newSong.id);
+                    }),
+                ]);
 
                 setTotalSongs(resp.total || 0);
 
-                if (onTotal != null && resp.total != null) onTotal(resp.total)
+                if (onTotal != null && resp.total != null) onTotal(resp.total);
             })
-            .catch(toaster.catch)
+            .catch(toaster.catch);
     }
 
     async function loadTracksShuffled(hash: string): Promise<string> {
-        return playlistService.ListSongs(playlistId, 0, songs.length, hash)
+        return playlistService
+            .ListSongs(playlistId, 0, songs.length, hash)
             .then((resp) => {
-                if (!resp.songs) return
+                if (!resp.songs) return;
 
-                setSongs(resp.songs)
-                setIsListEnded(resp.total == resp.songs?.length)
+                setSongs(resp.songs);
+                setIsListEnded(resp.total == resp.songs?.length);
 
-                return resp.songs[0].id
+                return resp.songs[0].id;
             })
             .catch(toaster.catch)
-            .then()
+            .then();
     }
 
-
     useEffect(() => {
-        loadTracksPage()
+        loadTracksPage();
     }, [offset]);
 
     useEffect(() => {
-        setIsListEnded(totalSongs == songs.length)
+        setIsListEnded(totalSongs == songs.length);
     }, [songs, totalSongs]);
 
     useEffect(() => {
-        if (!shuffleHash) return
+        if (!shuffleHash) return;
 
-        loadTracksShuffled(shuffleHash)
-            .then((firstSongId) => {
-                audioPlayer.play(firstSongId)
-            })
+        loadTracksShuffled(shuffleHash).then((firstSongId) => {
+            audioPlayer.play(firstSongId);
+        });
     }, [shuffleHash]);
 
     useEffect(() => {
-        setShuffleHash(audioPlayer.shuffleHash?.toString())
+        setShuffleHash(audioPlayer.shuffleHash?.toString());
     }, [audioPlayer.shuffleHash]);
 
     function loadMore() {
-        setOffset(offset + songsPerPage)
+        setOffset(offset + songsPerPage);
     }
 
     return (
-        <div className={cn(cls.InfiniteSongsListContainer, {
-            [cls.scrollable]: fixedSize,
-        })}>
-            <SongListWidget
-                songs={songs}
-                audioPlayer={audioPlayer}
-            />
+        <div
+            className={cn(cls.InfiniteSongsListContainer, {
+                [cls.scrollable]: fixedSize,
+            })}
+        >
+            <SongListWidget songs={songs} audioPlayer={audioPlayer} />
 
-            {isListEnded ? null : <ZButton
-                title={"Load more"}
-                onClick={loadMore}
-            />}
+            {isListEnded ? null : <ZButton title={'Load more'} onClick={loadMore} />}
         </div>
-    )
+    );
 }

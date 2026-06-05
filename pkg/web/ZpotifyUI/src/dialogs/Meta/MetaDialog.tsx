@@ -1,20 +1,21 @@
-import {useState} from 'react';
+import { useState } from 'react';
+
 import cls from '@/dialogs/Meta/MetaDialog.module.css';
-import {useDialog} from '@/app/hooks/Dialog.tsx';
-import {useToaster} from '@/hooks/toaster/ToasterZ.ts';
+import { useDialog } from '@/app/hooks/Dialog.tsx';
+import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
 import useUser from '@/entities/user/useUser.ts';
 import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
-import {AudioFile} from '@/shared/model/AudioFile.ts';
+import { AudioFile } from '@/shared/model/AudioFile.ts';
 
 interface MetaDialogProps {
     audioFile: AudioFile;
     initialTitle: string;
 }
 
-export default function MetaDialog({audioFile, initialTitle}: MetaDialogProps) {
-    const {CloseDialog} = useDialog();
+export default function MetaDialog({ audioFile, initialTitle }: MetaDialogProps) {
+    const { CloseDialog } = useDialog();
     const toaster = useToaster();
-    const {Services} = useUser();
+    const { Services } = useUser();
 
     const [title, setTitle] = useState(initialTitle);
     const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
@@ -24,9 +25,15 @@ export default function MetaDialog({audioFile, initialTitle}: MetaDialogProps) {
     function handleSubmit() {
         if (submitted || !audioFile.fileId) return;
         setSubmitted(true);
-        Services().Songs()
+        Services()
+            .Songs()
             .CreateSong(title, selectedArtists, audioFile.fileId)
-            .then(() => setTimeout(() => { CloseDialog(); window.location.reload(); }, 1100))
+            .then(() =>
+                setTimeout(() => {
+                    CloseDialog();
+                    window.location.reload();
+                }, 1100),
+            )
             .catch((e) => {
                 setSubmitted(false);
                 toaster.catch(e);
@@ -38,9 +45,17 @@ export default function MetaDialog({audioFile, initialTitle}: MetaDialogProps) {
             <div className={cls.PanelHeader}>
                 <span className={cls.PanelTitle}>track details</span>
                 <button className={cls.CloseButton} type="button" onClick={CloseDialog}>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                        <line x1="3" y1="3" x2="13" y2="13"/>
-                        <line x1="13" y1="3" x2="3" y2="13"/>
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                    >
+                        <line x1="3" y1="3" x2="13" y2="13" />
+                        <line x1="13" y1="3" x2="3" y2="13" />
                     </svg>
                 </button>
             </div>

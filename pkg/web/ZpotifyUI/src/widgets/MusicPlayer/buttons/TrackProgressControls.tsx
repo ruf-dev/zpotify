@@ -1,13 +1,12 @@
-import cn from "classnames";
+import cn from 'classnames';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import cls from "@/widgets/MusicPlayer/buttons/TrackProgressControls.module.scss"
-
-import { AudioPlayer } from "@/widgets/MusicPlayer/usePlayer.ts";
-import { useCallback, useEffect, useRef, useState } from "react";
+import cls from '@/widgets/MusicPlayer/buttons/TrackProgressControls.module.scss';
+import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
 
 interface TrackProgressControlsProps {
-    audioPlayer: AudioPlayer
-    isHovered?: boolean
+    audioPlayer: AudioPlayer;
+    isHovered?: boolean;
 }
 
 export default function TrackProgressControls({ audioPlayer, isHovered }: TrackProgressControlsProps) {
@@ -19,7 +18,6 @@ export default function TrackProgressControls({ audioPlayer, isHovered }: TrackP
     useEffect(() => {
         if (!isDragging) {
             setProgress(audioPlayer.progress);
-
         }
     }, [audioPlayer.progress, isDragging]);
 
@@ -30,51 +28,49 @@ export default function TrackProgressControls({ audioPlayer, isHovered }: TrackP
         return Math.round(position * 100);
     }, []);
 
-    const handleMouseDown = useCallback((e: React.MouseEvent) => {
-        e.preventDefault();
-        setIsDragging(true);
-        const newProgress = calculateProgress(e.clientX);
-        setProgress(newProgress);
-    }, [calculateProgress]);
+    const handleMouseDown = useCallback(
+        (e: React.MouseEvent) => {
+            e.preventDefault();
+            setIsDragging(true);
+            const newProgress = calculateProgress(e.clientX);
+            setProgress(newProgress);
+        },
+        [calculateProgress],
+    );
 
-    const handleMouseMove = useCallback((e: MouseEvent) => {
-        if (!isDragging) return;
-        const newProgress = calculateProgress(e.clientX);
-        setProgress(newProgress);
-    }, [isDragging, calculateProgress]);
+    const handleMouseMove = useCallback(
+        (e: MouseEvent) => {
+            if (!isDragging) return;
+            const newProgress = calculateProgress(e.clientX);
+            setProgress(newProgress);
+        },
+        [isDragging, calculateProgress],
+    );
 
     const handleMouseUp = useCallback(() => {
         if (isDragging) {
             setIsDragging(false);
-            audioPlayer.setProgress(progress)
+            audioPlayer.setProgress(progress);
         }
     }, [isDragging, progress, audioPlayer]);
 
     // Global listeners for dragging
     useEffect(() => {
         if (isDragging) {
-            document.addEventListener("mousemove", handleMouseMove);
-            document.addEventListener("mouseup", handleMouseUp);
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
         }
         return () => {
-            document.removeEventListener("mousemove", handleMouseMove);
-            document.removeEventListener("mouseup", handleMouseUp);
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
         };
     }, [isDragging, handleMouseMove, handleMouseUp]);
 
     return (
         <div className={cn(cls.TrackProgressControlsContainer, { [cls.hovered]: isHovered })}>
-            <div
-                ref={trackLineRef}
-                className={cls.TrackLine}
-                onMouseDown={handleMouseDown}
-            >
+            <div ref={trackLineRef} className={cls.TrackLine} onMouseDown={handleMouseDown}>
                 <div className={cls.TrackFill} style={{ width: `${progress}%` }} />
-                <div
-                    className={cls.TrackBall}
-                    style={{ left: `${progress}%` }}
-                    onMouseDown={handleMouseDown}
-                />
+                <div className={cls.TrackBall} style={{ left: `${progress}%` }} onMouseDown={handleMouseDown} />
             </div>
         </div>
     );

@@ -1,10 +1,11 @@
-import {useEffect, useState} from 'react';
-import cls from '@/dialogs/AddTrack/screens/PendingFilesScreen.module.css';
-import {SongFile} from '@/app/api/zpotify';
-import useUser from '@/entities/user/useUser.ts';
-import {AddTrackContext} from '@/dialogs/AddTrack/AddTrackDialog';
+import { useEffect, useState } from 'react';
 
-function FileItem({file, onSelect}: {file: SongFile, onSelect: (f: SongFile) => void}) {
+import cls from '@/dialogs/AddTrack/screens/PendingFilesScreen.module.css';
+import { SongFile } from '@/app/api/zpotify';
+import useUser from '@/entities/user/useUser.ts';
+import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
+
+function FileItem({ file, onSelect }: { file: SongFile; onSelect: (f: SongFile) => void }) {
     const name = file.path?.split('/').pop() ?? 'unknown file';
 
     function handleClick() {
@@ -14,10 +15,19 @@ function FileItem({file, onSelect}: {file: SongFile, onSelect: (f: SongFile) => 
     return (
         <div className={cls.FileItem} onClick={handleClick}>
             <div className={cls.FileIcon}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M9 18V5l12-2v13"/>
-                    <circle cx="6" cy="18" r="3"/>
-                    <circle cx="18" cy="16" r="3"/>
+                <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                >
+                    <path d="M9 18V5l12-2v13" />
+                    <circle cx="6" cy="18" r="3" />
+                    <circle cx="18" cy="16" r="3" />
                 </svg>
             </div>
             <span className={cls.FileName}>{name}</span>
@@ -25,14 +35,16 @@ function FileItem({file, onSelect}: {file: SongFile, onSelect: (f: SongFile) => 
     );
 }
 
-export default function PendingFilesScreen({handleSelectFromLibrary}: AddTrackContext) {
-    const {Services} = useUser();
+export default function PendingFilesScreen({ handleSelectFromLibrary }: AddTrackContext) {
+    const { Services } = useUser();
     const [files, setFiles] = useState<SongFile[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        Services().File().ListUploadedFiles({temporaryOnly: true})
-            .then(res => setFiles(res.files || []))
+        Services()
+            .File()
+            .ListUploadedFiles({ temporaryOnly: true })
+            .then((res) => setFiles(res.files || []))
             .finally(() => setLoading(false));
     }, []);
 
@@ -50,8 +62,8 @@ export default function PendingFilesScreen({handleSelectFromLibrary}: AddTrackCo
                 <div className={cls.Empty}>no pending uploads found</div>
             ) : (
                 <div className={cls.FileList}>
-                    {files.map(file => (
-                        <FileItem key={file.id} file={file} onSelect={handleSelectFromLibrary}/>
+                    {files.map((file) => (
+                        <FileItem key={file.id} file={file} onSelect={handleSelectFromLibrary} />
                     ))}
                 </div>
             )}

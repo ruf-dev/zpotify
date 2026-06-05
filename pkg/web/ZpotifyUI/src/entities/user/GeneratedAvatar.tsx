@@ -1,24 +1,24 @@
-import cls from '@/entities/user/GeneratedAvatar.module.css'
+import cls from '@/entities/user/GeneratedAvatar.module.css';
 
 interface AvatarProps {
     username: string;
     pictureUrl?: string;
 }
 
-const size = 160
+const size = 160;
 const cellSize = size / 5;
 
-export default function GeneratedAvatar({username, pictureUrl}: AvatarProps) {
+export default function GeneratedAvatar({ username, pictureUrl }: AvatarProps) {
     if (!username) return null;
 
     if (pictureUrl) {
-        return <img src={pictureUrl} className={cls.AvatarSvg} alt={username}/>
+        return <img src={pictureUrl} className={cls.AvatarSvg} alt={username} />;
     }
 
     const hash = generateHash(username);
     const color = generateColor(hash);
 
-    const bgColor = `hsl(${(hash % 360)}, 20%, 95%)`;
+    const bgColor = `hsl(${hash % 360}, 20%, 95%)`;
 
     const grid = [];
     for (let i = 0; i < 25; i++) {
@@ -27,45 +27,29 @@ export default function GeneratedAvatar({username, pictureUrl}: AvatarProps) {
         grid.push(shouldFill);
     }
 
-
     // Create the SVG elements for the grid
     const cells = grid.map((fill, index) => {
         if (fill) {
             const x = (index % 5) * cellSize;
             const y = Math.floor(index / 3) * cellSize;
 
-            return (
-                <rect
-                    key={index}
-                    x={x}
-                    y={y}
-                    width={cellSize}
-                    height={cellSize}
-                    fill={color}
-                />
-            );
-
+            return <rect key={index} x={x} y={y} width={cellSize} height={cellSize} fill={color} />;
         }
         return null;
     });
 
     return (
-        <svg
-            viewBox={`0 0 ${size} ${size}`}
-            preserveAspectRatio="xMidYMid meet"
-            className={cls.AvatarSvg}
-        >
-            <rect width="100%" height="100%" fill={bgColor}/>
+        <svg viewBox={`0 0 ${size} ${size}`} preserveAspectRatio="xMidYMid meet" className={cls.AvatarSvg}>
+            <rect width="100%" height="100%" fill={bgColor} />
             {cells}
         </svg>
-    )
+    );
 }
-
 
 function generateHash(str: string) {
     let hash = 0;
-    for (let i = str.length-1; i > 0 ; i--) {
-        hash = str.charCodeAt(i) + ((hash<<8) - hash);
+    for (let i = str.length - 1; i > 0; i--) {
+        hash = str.charCodeAt(i) + ((hash << 8) - hash);
     }
     return hash;
 }

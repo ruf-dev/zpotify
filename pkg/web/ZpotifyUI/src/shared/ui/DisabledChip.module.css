@@ -1,0 +1,32 @@
+.DisabledChipContainer {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.3125rem 0.625rem 0.3125rem 0.5rem;
+    background: var(--color-bg-base);
+    border: 1px dashed var(--color-border-light);
+    border-radius: var(--border-radius-pill);
+    cursor: not-allowed;
+    user-select: none;
+    font-variant-numeric: tabular-nums;
+}
+
+.Icon {
+    display: flex;
+    align-items: center;
+    color: var(--color-fg-disabled);
+}
+
+.Label {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-fg-disabled);
+}
+
+.Value {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--color-fg-secondary);
+}

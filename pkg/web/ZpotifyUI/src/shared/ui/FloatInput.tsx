@@ -1,6 +1,7 @@
-import {useState} from "react";
-import cn from "classnames";
-import cls from "@/shared/ui/FloatInput.module.css";
+import { useState } from 'react';
+import cn from 'classnames';
+
+import cls from '@/shared/ui/FloatInput.module.css';
 
 interface FloatInputProps {
     value: string;
@@ -10,7 +11,7 @@ interface FloatInputProps {
     autoFocus?: boolean;
 }
 
-export default function FloatInput({value, onChange, type = 'text', label, autoFocus}: FloatInputProps) {
+export default function FloatInput({ value, onChange, type = 'text', label, autoFocus }: FloatInputProps) {
     const [focused, setFocused] = useState(false);
     const lifted = focused || value.length > 0;
 
@@ -20,14 +21,12 @@ export default function FloatInput({value, onChange, type = 'text', label, autoF
                 className={cls.Input}
                 type={type}
                 value={value}
-                onChange={e => onChange(e.target.value)}
+                onChange={(e) => onChange(e.target.value)}
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
                 autoFocus={autoFocus}
             />
-            <label className={cn(cls.Label, {[cls.lifted]: lifted})}>
-                {label}
-            </label>
+            <label className={cn(cls.Label, { [cls.lifted]: lifted })}>{label}</label>
         </div>
     );
 }

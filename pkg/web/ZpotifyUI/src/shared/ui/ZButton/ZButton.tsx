@@ -1,17 +1,14 @@
-import cls from "@/shared/ui/ZButton/ZButton.module.css"
+import cls from '@/shared/ui/ZButton/ZButton.module.css';
 
 interface ZButtonProps {
     title: string;
     onClick: () => void;
 }
 
-export default function ZButton({title, onClick}: ZButtonProps) {
+export default function ZButton({ title, onClick }: ZButtonProps) {
     return (
-        <div
-            className={cls.ZButton}
-            onClick={onClick}
-        >
+        <div className={cls.ZButton} onClick={onClick}>
             {title}
         </div>
-    )
+    );
 }

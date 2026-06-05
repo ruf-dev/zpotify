@@ -1,16 +1,26 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
+
 import cls from '@/dialogs/AddTrack/screens/ChooseScreen.module.css';
 import useUser from '@/entities/user/useUser.ts';
-import {AddTrackContext} from '@/dialogs/AddTrack/AddTrackDialog';
+import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 
-function LibraryCard({onClick, disabled}: {onClick: () => void; disabled: boolean}) {
+function LibraryCard({ onClick, disabled }: { onClick: () => void; disabled: boolean }) {
     return (
         <div className={`${cls.Card} ${disabled ? cls.CardDisabled : ''}`} onClick={disabled ? undefined : onClick}>
             <div className={cls.IconCircle}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M9 18V5l12-2v13"/>
-                    <circle cx="6" cy="18" r="3"/>
-                    <circle cx="18" cy="16" r="3"/>
+                <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                >
+                    <path d="M9 18V5l12-2v13" />
+                    <circle cx="6" cy="18" r="3" />
+                    <circle cx="18" cy="16" r="3" />
                 </svg>
             </div>
             <span className={cls.CardTitle}>pending uploads</span>
@@ -27,16 +37,25 @@ interface UploadCardProps {
     onClick: () => void;
 }
 
-function UploadCard({atLimit, loading, pendingCount, maxPendingTracks, onClick}: UploadCardProps) {
+function UploadCard({ atLimit, loading, pendingCount, maxPendingTracks, onClick }: UploadCardProps) {
     return (
         <div
             className={`${cls.Card} ${cls.CardAccent} ${atLimit ? cls.CardDisabled : ''}`}
             onClick={atLimit ? undefined : onClick}
         >
             <div className={cls.IconCircleAccent}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 16V4M8 8l4-4 4 4"/>
-                    <path d="M4 20h16"/>
+                <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                >
+                    <path d="M12 16V4M8 8l4-4 4 4" />
+                    <path d="M4 20h16" />
                 </svg>
             </div>
             <span className={cls.CardTitle}>upload new</span>
@@ -52,15 +71,17 @@ function UploadCard({atLimit, loading, pendingCount, maxPendingTracks, onClick}:
     );
 }
 
-export default function ChooseScreen({goTo}: AddTrackContext) {
-    const {Services, userData} = useUser();
+export default function ChooseScreen({ goTo }: AddTrackContext) {
+    const { Services, userData } = useUser();
 
     const [pendingCount, setPendingCount] = useState(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        Services().File().ListUploadedFiles({temporaryOnly: true})
-            .then(res => setPendingCount((res.files || []).length))
+        Services()
+            .File()
+            .ListUploadedFiles({ temporaryOnly: true })
+            .then((res) => setPendingCount((res.files || []).length))
             .finally(() => setLoading(false));
     }, []);
 
@@ -70,9 +91,7 @@ export default function ChooseScreen({goTo}: AddTrackContext) {
     return (
         <div className={cls.ChooseScreenContainer}>
             <div className={cls.GridWrapper}>
-                <LibraryCard
-                    onClick={() => goTo('pending')}
-                    disabled={pendingCount === 0}/>
+                <LibraryCard onClick={() => goTo('pending')} disabled={pendingCount === 0} />
                 <UploadCard
                     atLimit={atLimit}
                     loading={loading}

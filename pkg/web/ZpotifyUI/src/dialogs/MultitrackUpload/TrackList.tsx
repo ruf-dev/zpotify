@@ -1,9 +1,12 @@
-import {useEffect, useRef, useState} from 'react';
-import cls from './TrackList.module.css';
-import TrackRow from './TrackRow';
-import type {TrackDraft} from './TrackRow';
-import type {ArtistItem} from '@/widgets/ArtistField/ArtistChipsField';
+import { useEffect, useRef, useState } from 'react';
+
+import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import DropZone from '@/features/upload/DropZone';
+
+import TrackRow from './TrackRow';
+import type { TrackDraft } from './TrackRow';
+
+import cls from './TrackList.module.css';
 
 type Drag = {
     id: string;
@@ -26,14 +29,17 @@ interface TrackListProps {
     onCreateArtist: (name: string) => Promise<ArtistItem>;
 }
 
-export default function TrackList(
-    {
-        tracks, albumArtists,
-        onTitleChange, onArtistsChange,
-        onRemove, onReorder,
-        onAddFiles, loadArtistOptions,
-        onCreateArtist,
-    }: TrackListProps) {
+export default function TrackList({
+    tracks,
+    albumArtists,
+    onTitleChange,
+    onArtistsChange,
+    onRemove,
+    onReorder,
+    onAddFiles,
+    loadArtistOptions,
+    onCreateArtist,
+}: TrackListProps) {
     const [drag, setDrag] = useState<Drag>(null);
     const [dropIdx, setDropIdx] = useState<number | null>(null);
     const dropIdxRef = useRef<number | null>(null);
@@ -50,19 +56,19 @@ export default function TrackList(
         if (!el) return;
         const rect = el.getBoundingClientRect();
         const height = rect.height + 6;
-        setDrag({id, fromIdx: idx, startY: e.clientY, dy: 0, height, settling: false});
+        setDrag({ id, fromIdx: idx, startY: e.clientY, dy: 0, height, settling: false });
         setDropIdx(idx);
     }
 
     useEffect(() => {
         if (!drag || drag.settling) return;
-        const {fromIdx, startY, height} = drag;
+        const { fromIdx, startY, height } = drag;
 
         function handleMove(e: PointerEvent) {
             const dy = e.clientY - startY;
             const delta = Math.round(dy / height);
             const next = Math.max(0, Math.min(tracks.length - 1, fromIdx + delta));
-            setDrag(d => d ? {...d, dy} : d);
+            setDrag((d) => (d ? { ...d, dy } : d));
             setDropIdx(next);
         }
 
@@ -72,12 +78,12 @@ export default function TrackList(
 
     useEffect(() => {
         if (!drag || drag.settling) return;
-        const {fromIdx, height} = drag;
+        const { fromIdx, height } = drag;
 
         function handleUp() {
             const finalDrop = dropIdxRef.current ?? fromIdx;
             const targetDy = (finalDrop - fromIdx) * height;
-            setDrag(d => d ? {...d, dy: targetDy, settling: true} : d);
+            setDrag((d) => (d ? { ...d, dy: targetDy, settling: true } : d));
             setTimeout(() => {
                 setDrag(null);
                 setDropIdx(null);
@@ -95,13 +101,14 @@ export default function TrackList(
 
     function getRowDragStyle(idx: number): React.CSSProperties {
         if (!drag) return {};
-        const {fromIdx, dy, height, settling} = drag;
+        const { fromIdx, dy, height, settling } = drag;
         const drop = dropIdx ?? fromIdx;
 
         if (idx === fromIdx) {
             return {
                 transform: `translateY(${dy}px) rotate(2.2deg) scale(1.025)`,
-                boxShadow: '0 18px 40px rgba(0,0,0,0.7), 0 0 0 1px var(--color-accent-border), 0 0 32px var(--color-accent-shadow)',
+                boxShadow:
+                    '0 18px 40px rgba(0,0,0,0.7), 0 0 0 1px var(--color-accent-border), 0 0 32px var(--color-accent-shadow)',
                 background: 'var(--color-bg-secondary)',
                 borderColor: 'var(--color-accent-border)',
                 zIndex: 20,
@@ -117,14 +124,14 @@ export default function TrackList(
             return {
                 transform: `translateY(-${height}px)`,
                 transition: 'transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1)',
-                willChange: 'transform'
+                willChange: 'transform',
             };
         }
         if (fromIdx > drop && idx >= drop && idx < fromIdx) {
             return {
                 transform: `translateY(${height}px)`,
                 transition: 'transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1)',
-                willChange: 'transform'
+                willChange: 'transform',
             };
         }
         return {};
@@ -140,7 +147,6 @@ export default function TrackList(
                 <span className={cls.HeaderHint}>drag rows to reorder · click name to rename</span>
             </div>
 
-
             <div className={cls.RowsWrapper}>
                 {tracks.map((track, idx) => (
                     <TrackRow
@@ -148,11 +154,11 @@ export default function TrackList(
                         track={track}
                         index={idx}
                         albumArtists={albumArtists}
-                        rowRef={el => {
+                        rowRef={(el) => {
                             if (el) rowRefs.current[track.id] = el;
                             else delete rowRefs.current[track.id];
                         }}
-                        onHandlePointerDown={e => startDrag(track.id, idx, e)}
+                        onHandlePointerDown={(e) => startDrag(track.id, idx, e)}
                         dragStyle={getRowDragStyle(idx)}
                         isDragging={drag !== null && drag.fromIdx === idx}
                         anyDragging={drag !== null}
@@ -164,16 +170,9 @@ export default function TrackList(
                     />
                 ))}
             </div>
-            <DropZone
-                onFiles={onAddFiles}
-                className={cls.EmptyStateWrapper}>
+            <DropZone onFiles={onAddFiles} className={cls.EmptyStateWrapper}>
                 <div className={cls.EmptyStateContent}>
-                    {
-                        count == 0 ?
-                            'no tracks left — drop more files or close'
-                            :
-                            'drop more tracks here'
-                    }
+                    {count == 0 ? 'no tracks left — drop more files or close' : 'drop more tracks here'}
                 </div>
             </DropZone>
         </div>

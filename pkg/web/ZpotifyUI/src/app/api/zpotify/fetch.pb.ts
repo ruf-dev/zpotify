@@ -106,7 +106,7 @@ export function b64Decode(s: string): Uint8Array {
   return new Uint8Array(buffer);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 function b64Test(s: string): boolean {
   return /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(
     s

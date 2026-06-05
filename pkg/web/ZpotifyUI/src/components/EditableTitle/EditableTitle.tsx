@@ -1,4 +1,5 @@
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
+
 import cls from './EditableTitle.module.css';
 
 interface EditableTitleProps {
@@ -7,7 +8,7 @@ interface EditableTitleProps {
     placeholder?: string;
 }
 
-export default function EditableTitle({value, onChange, placeholder = 'untitled'}: EditableTitleProps) {
+export default function EditableTitle({ value, onChange, placeholder = 'untitled' }: EditableTitleProps) {
     const [editing, setEditing] = useState(false);
     const [draft, setDraft] = useState(value);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -45,7 +46,7 @@ export default function EditableTitle({value, onChange, placeholder = 'untitled'
                 ref={inputRef}
                 className={cls.Input}
                 value={draft}
-                onChange={e => setDraft(e.target.value)}
+                onChange={(e) => setDraft(e.target.value)}
                 onBlur={commit}
                 onKeyDown={handleKeyDown}
                 aria-label="rename track"
@@ -54,11 +55,7 @@ export default function EditableTitle({value, onChange, placeholder = 'untitled'
     }
 
     return (
-        <span
-            className={`${cls.Display} ${!value ? cls.Empty : ''}`}
-            onClick={handleClick}
-            title="click to rename"
-        >
+        <span className={`${cls.Display} ${!value ? cls.Empty : ''}`} onClick={handleClick} title="click to rename">
             {value || placeholder}
         </span>
     );

@@ -1,23 +1,18 @@
-import cls from "@/entities/song/GhostSong.module.css";
-
-import {useDialog} from "@/app/hooks/Dialog.tsx";
-
-import AddTrackDialog from "@/dialogs/AddTrack/AddTrackDialog.tsx";
+import cls from '@/entities/song/GhostSong.module.css';
+import { useDialog } from '@/app/hooks/Dialog.tsx';
+import AddTrackDialog from '@/dialogs/AddTrack/AddTrackDialog.tsx';
 
 export default function GhostSong() {
-    const {OpenDialog} = useDialog();
+    const { OpenDialog } = useDialog();
 
     function handleOnClick(e: React.MouseEvent) {
         e.stopPropagation();
-        OpenDialog(<AddTrackDialog/>);
+        OpenDialog(<AddTrackDialog />);
     }
 
     return (
-        <div
-            className={cls.GhostSong}
-            onClick={handleOnClick}
-        >
+        <div className={cls.GhostSong} onClick={handleOnClick}>
             + Add song
         </div>
-    )
+    );
 }

@@ -1,9 +1,9 @@
-import cls from "@/entities/song/more/MoreButton.module.scss"
+import { MouseEvent as ReactMouseEvent, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
-import MoreDots from "@/assets/MoreDots.tsx";
-import {MouseEvent as ReactMouseEvent, useEffect, useRef, useState} from "react";
-import {createPortal} from "react-dom";
-import Menu, {MenuOption} from "@/components/menu/Menu.tsx";
+import cls from '@/entities/song/more/MoreButton.module.scss';
+import MoreDots from '@/assets/MoreDots.tsx';
+import Menu, { MenuOption } from '@/components/menu/Menu.tsx';
 
 interface MoreButtonProps {
     ops: MenuOption[];
@@ -12,7 +12,7 @@ interface MoreButtonProps {
     onClose?: () => void;
 }
 
-export default function MoreButton({onOpen, onClose, ops}: MoreButtonProps) {
+export default function MoreButton({ onOpen, onClose, ops }: MoreButtonProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [menuRect, setMenuRect] = useState<DOMRect | null>(null);
 
@@ -30,33 +30,35 @@ export default function MoreButton({onOpen, onClose, ops}: MoreButtonProps) {
             if (buttonRef.current?.contains(target)) return;
             if (!dropdownRef.current?.contains(target)) setIsMenuOpen(false);
         }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
     function handleToggle(event: ReactMouseEvent) {
         event.stopPropagation();
         if (!isMenuOpen) setMenuRect(buttonRef.current?.getBoundingClientRect() ?? null);
-        setIsMenuOpen(prev => !prev);
+        setIsMenuOpen((prev) => !prev);
     }
 
     return (
         <div ref={buttonRef} className={cls.MoreButtonContainer} onClick={handleToggle}>
-            <MoreDots/>
-            {isMenuOpen && menuRect && createPortal(
-                <div
-                    ref={dropdownRef}
-                    className={cls.DropdownMenu}
-                    style={{
-                        position: 'fixed',
-                        top: menuRect.bottom + 4,
-                        right: window.innerWidth - menuRect.right,
-                    }}
-                >
-                    <Menu options={ops}/>
-                </div>,
-                document.body
-            )}
+            <MoreDots />
+            {isMenuOpen &&
+                menuRect &&
+                createPortal(
+                    <div
+                        ref={dropdownRef}
+                        className={cls.DropdownMenu}
+                        style={{
+                            position: 'fixed',
+                            top: menuRect.bottom + 4,
+                            right: window.innerWidth - menuRect.right,
+                        }}
+                    >
+                        <Menu options={ops} />
+                    </div>,
+                    document.body,
+                )}
         </div>
     );
 }

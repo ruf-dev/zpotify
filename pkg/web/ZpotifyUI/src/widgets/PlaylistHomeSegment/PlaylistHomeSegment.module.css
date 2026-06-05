@@ -1,0 +1,59 @@
+.PlaylistSegmentContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.Header {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: var(--space-4);
+    flex-shrink: 0;
+}
+
+.Title {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-fg-tertiary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:hover {
+        color: var(--color-fg-secondary);
+    }
+}
+
+.HeaderRight {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.TrackCount {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-disabled);
+}
+
+.GhostButtonWrapper {
+    display: grid;
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out, grid-template-rows 0.3s ease-out, visibility 0s 0s;
+
+    & > div {
+        overflow: hidden;
+    }
+
+    &.hidden {
+        opacity: 0;
+        transform: translateY(-20px);
+        grid-template-rows: 0fr;
+        visibility: hidden;
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out, grid-template-rows 0.3s ease-out, visibility 0s 0.3s;
+    }
+}

@@ -1,31 +1,25 @@
-import React from "react";
-import cn from "classnames";
+import React from 'react';
+import cn from 'classnames';
 
-import cls from "@/shared/ui/Chip.module.css";
+import cls from '@/shared/ui/Chip.module.css';
 
 interface ChipProps {
     value: React.ReactNode;
     label?: string;
     className?: string;
-    onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
+    onClick?: React.MouseEventHandler<HTMLDivElement> | undefined;
 }
 
 export default function Chip({ value, label, className, onClick }: ChipProps) {
     return (
         <div
             className={cn(cls.ChipContainer, {
-                [cls.Clickable]: !!onClick
+                [cls.Clickable]: !!onClick,
             })}
             onClick={onClick}
         >
-            <div className={cn(cls.Chip, className)}>
-                {value}
-            </div>
-            {label && (
-                <div className={cls.Label}>
-                    {label}
-                </div>
-            )}
+            <div className={cn(cls.Chip, className)}>{value}</div>
+            {label && <div className={cls.Label}>{label}</div>}
         </div>
     );
 }
