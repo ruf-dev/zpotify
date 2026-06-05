@@ -33,6 +33,7 @@ func (s *FileMetaStorage) Add(ctx context.Context, req domain.FileMeta) (int64, 
 		AddedByID:   req.AddedById,
 		SizeBytes:   req.SizeBytes,
 		Verified:    req.Verified,
+		ContentHash: req.ContentHash,
 	}
 
 	id, err := s.q.CreateFile(ctx, params)
@@ -155,13 +156,28 @@ func toFileDomain(f querier.FilesMetum) domain.FileMeta {
 	return domain.FileMeta{
 		Id: f.ID,
 		File: domain.File{
-			FilePath:  f.FilePath,
-			SizeBytes: int64(f.SizeBytes),
-			Duration:  time.Duration(f.DurationSec) * time.Second,
-			Verified:  f.Verified,
+			FilePath:    f.FilePath,
+			SizeBytes:   int64(f.SizeBytes),
+			Duration:    time.Duration(f.DurationSec) * time.Second,
+			Verified:    f.Verified,
+			ContentHash: f.ContentHash,
 		},
 		AddedById: int64(f.AddedByID),
 	}
+}
+
+func (s *FileMetaStorage) GetByHash(ctx context.Context, hash string, userId int64) (domain.FileMeta, error) {
+	params := querier.GetFileByHashParams{
+		ContentHash: hash,
+		AddedByID:   userId,
+	}
+
+	fileDb, err := s.q.GetFileByHash(ctx, params)
+	if err != nil {
+		return domain.FileMeta{}, wrapPgErr(err)
+	}
+
+	return toFileDomain(fileDb), nil
 }
 
 func (s *FileMetaStorage) WithTx(tx *sql.Tx) storage.FileMetaStorage {

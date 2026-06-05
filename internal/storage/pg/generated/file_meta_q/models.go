@@ -109,6 +109,7 @@ type FilesMetum struct {
 	AddedByID   int64
 	SizeBytes   int64
 	Verified    bool
+	ContentHash string
 }
 
 type IdentityTelegram struct {

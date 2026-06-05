@@ -199,7 +199,7 @@ func (p *PlaylistService) AddSong(ctx context.Context, req domain.AddSongToPlayl
 	}
 
 	if !permissions.CanAddSongs {
-		return rerrors.Wrap(service_errors.ErrUnauthorized, "user is missing can_add_song permission")
+		return rerrors.Wrap(service_errors.ErrUnauthorized, "user is missing can_add_song permission on playlist")
 	}
 
 	songFile, err := p.fileMetaStorage.GetBySongId(ctx, req.SongId)

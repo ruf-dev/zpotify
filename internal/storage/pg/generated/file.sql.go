@@ -10,8 +10,8 @@ import (
 )
 
 const createFile = `-- name: CreateFile :one
-INSERT INTO files_meta (file_path, duration_sec, added_by_id, size_bytes, verified)
-VALUES ($1, $2, $3, $4, $5)
+INSERT INTO files_meta (file_path, duration_sec, added_by_id, size_bytes, verified, content_hash)
+VALUES ($1, $2, $3, $4, $5, $6)
 RETURNING id
 `
 
@@ -21,6 +21,7 @@ type CreateFileParams struct {
 	AddedByID   int64
 	SizeBytes   int64
 	Verified    bool
+	ContentHash string
 }
 
 func (q *Queries) CreateFile(ctx context.Context, arg CreateFileParams) (int64, error) {
@@ -30,6 +31,7 @@ func (q *Queries) CreateFile(ctx context.Context, arg CreateFileParams) (int64, 
 		arg.AddedByID,
 		arg.SizeBytes,
 		arg.Verified,
+		arg.ContentHash,
 	)
 	var id int64
 	err := row.Scan(&id)
@@ -46,13 +48,47 @@ func (q *Queries) DeleteFileById(ctx context.Context, id int64) error {
 	return err
 }
 
+const getFileByHash = `-- name: GetFileByHash :one
+SELECT id,
+       file_path,
+       duration_sec,
+       added_by_id,
+       size_bytes,
+       verified,
+       content_hash
+FROM files_meta
+WHERE content_hash = $1
+  AND added_by_id = $2
+`
+
+type GetFileByHashParams struct {
+	ContentHash string
+	AddedByID   int64
+}
+
+func (q *Queries) GetFileByHash(ctx context.Context, arg GetFileByHashParams) (FilesMetum, error) {
+	row := q.db.QueryRowContext(ctx, getFileByHash, arg.ContentHash, arg.AddedByID)
+	var i FilesMetum
+	err := row.Scan(
+		&i.ID,
+		&i.FilePath,
+		&i.DurationSec,
+		&i.AddedByID,
+		&i.SizeBytes,
+		&i.Verified,
+		&i.ContentHash,
+	)
+	return i, err
+}
+
 const getFileById = `-- name: GetFileById :one
 SELECT id,
        file_path,
        duration_sec,
        added_by_id,
        size_bytes,
-       verified
+       verified,
+       content_hash
 FROM files_meta
 WHERE id = $1
 `
@@ -67,6 +103,7 @@ func (q *Queries) GetFileById(ctx context.Context, id int64) (FilesMetum, error)
 		&i.AddedByID,
 		&i.SizeBytes,
 		&i.Verified,
+		&i.ContentHash,
 	)
 	return i, err
 }
@@ -77,7 +114,8 @@ SELECT id,
        duration_sec,
        added_by_id,
        size_bytes,
-       verified
+       verified,
+       content_hash
 FROM files_meta
 WHERE file_path = $1
 `
@@ -92,6 +130,7 @@ func (q *Queries) GetFileByPath(ctx context.Context, filePath string) (FilesMetu
 		&i.AddedByID,
 		&i.SizeBytes,
 		&i.Verified,
+		&i.ContentHash,
 	)
 	return i, err
 }
@@ -102,7 +141,8 @@ SELECT fm.id,
        fm.duration_sec,
        fm.added_by_id,
        fm.size_bytes,
-       fm.verified
+       fm.verified,
+       fm.content_hash
 FROM files_meta fm
 JOIN songs s ON s.file_id = fm.id
 WHERE s.id = $1
@@ -118,6 +158,7 @@ func (q *Queries) GetFileBySongId(ctx context.Context, id int64) (FilesMetum, er
 		&i.AddedByID,
 		&i.SizeBytes,
 		&i.Verified,
+		&i.ContentHash,
 	)
 	return i, err
 }

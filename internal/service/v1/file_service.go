@@ -1,7 +1,11 @@
 package v1
 
 import (
+	"bytes"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"errors"
 	"io"
 
 	"github.com/rs/zerolog/log"
@@ -47,14 +51,33 @@ func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, cont
 		return 0, service_errors.ErrPendingTrackLimitReached
 	}
 
-	tmpFilePath, err := s.binaryStorage.SaveToTempFolder(ctx, uCtx.UserId, fileNameWithExt, content)
+	rawBytes, err := io.ReadAll(content)
+	if err != nil {
+		return 0, rerrors.Wrap(err, "error reading file content")
+	}
+
+	hashBytes := sha256.Sum256(rawBytes)
+	contentHash := hex.EncodeToString(hashBytes[:])
+
+	existingFile, err := s.storage.GetByHash(ctx, contentHash, uCtx.UserId)
+	if err != nil && !errors.Is(err, storage.ErrNotFound) {
+		return 0, rerrors.Wrap(err, "error checking for duplicate file")
+	}
+	if err == nil {
+		return existingFile.Id, nil
+	}
+
+	fileReader := bytes.NewReader(rawBytes)
+
+	tmpFilePath, err := s.binaryStorage.SaveToTempFolder(ctx, uCtx.UserId, fileNameWithExt, fileReader)
 	if err != nil {
 		return 0, rerrors.Wrap(err, "error storing to temporary folder")
 	}
 
 	fileMetaUpdate := domain.FileMeta{
 		File: domain.File{
-			FilePath: tmpFilePath,
+			FilePath:    tmpFilePath,
+			ContentHash: contentHash,
 		},
 		AddedById: uCtx.UserId,
 	}

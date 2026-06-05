@@ -42,10 +42,11 @@ type TgFile struct {
 }
 
 type File struct {
-	FilePath  string
-	SizeBytes int64
-	Duration  time.Duration
-	Verified  bool
+	FilePath    string
+	SizeBytes   int64
+	Duration    time.Duration
+	Verified    bool
+	ContentHash string
 }
 
 const GlobalPlaylistUuid = "00000000-0000-0000-0000-000000000000"

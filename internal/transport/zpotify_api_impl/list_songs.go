@@ -28,11 +28,11 @@ func (impl *Impl) ListSongs(ctx context.Context, req *zpotify_api.ListSongs_Requ
 
 	return &zpotify_api.ListSongs_Response{
 		Songs: toSongs(list.Songs),
-		Total: list.Total,
+		Total: uint32(list.Total),
 	}, nil
 }
 
-func toSongs(base []domain.SongBase) []*zpotify_api.SongBase {
+func toSongs(base []domain.Song) []*zpotify_api.SongBase {
 	out := make([]*zpotify_api.SongBase, 0, len(base))
 
 	for _, b := range base {
@@ -42,7 +42,7 @@ func toSongs(base []domain.SongBase) []*zpotify_api.SongBase {
 	return out
 }
 
-func toSong(base domain.SongBase) *zpotify_api.SongBase {
+func toSong(base domain.Song) *zpotify_api.SongBase {
 	return &zpotify_api.SongBase{
 		//UniqueId: base.FileId,
 		//Title:    base.Title,

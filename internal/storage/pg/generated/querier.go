@@ -19,6 +19,7 @@ type Querier interface {
 	DeleteExpiredSessions(ctx context.Context) error
 	DeleteFileById(ctx context.Context, id int64) error
 	DeleteSongById(ctx context.Context, id int64) error
+	GetFileByHash(ctx context.Context, arg GetFileByHashParams) (FilesMetum, error)
 	GetFileById(ctx context.Context, id int64) (FilesMetum, error)
 	GetFileByPath(ctx context.Context, filePath string) (FilesMetum, error)
 	GetFileBySongId(ctx context.Context, id int64) (FilesMetum, error)

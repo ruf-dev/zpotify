@@ -60,6 +60,7 @@ type FileMetaStorage interface {
 	Get(ctx context.Context, fileId int64) (domain.FileMeta, error)
 	GetBySongId(ctx context.Context, songId int32) (domain.FileMeta, error)
 	GetByPath(ctx context.Context, path string) (domain.FileMeta, error)
+	GetByHash(ctx context.Context, hash string, userId int64) (domain.FileMeta, error)
 
 	Update(ctx context.Context, fileId int64, file domain.File) error
 
