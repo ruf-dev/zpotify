@@ -36,8 +36,6 @@ export class BaseService {
                         }
 
                         if (err.code == Errors.UNAUTHENTICATED) {
-                            console.log(err)
-
                             if (isReason(err.details, ErrorReason.ACCESS_TOKEN_NOT_FOUND)) {
                                 throw new ServiceError(
                                     WithTitle('Session expired. Login again'),
@@ -52,6 +50,7 @@ export class BaseService {
                                 );
                             }
                         }
+
                         if (err.code === Errors.UNAVAILABLE) {
                             throw new ServiceError(
                                 WithTitle(err.message),
@@ -59,6 +58,23 @@ export class BaseService {
                                 WithIsNonRetryable(true),
                             );
                         }
+
+                        if (err.code == Errors.INVALID_ARGUMENT) {
+                            throw new ServiceError(
+                                WithTitle(err.message),
+                                WithCode(Errors.INVALID_ARGUMENT),
+                                WithIsNonRetryable(true),
+                            );
+                        }
+
+                        if (err.code == Errors.ALREADY_EXISTS) {
+                            throw new ServiceError(
+                                WithTitle(err.message),
+                                WithCode(Errors.ALREADY_EXISTS),
+                                WithIsNonRetryable(true),
+                            );
+                        }
+
 
                         throw new ServiceError(WithTitle(err.message));
                     })

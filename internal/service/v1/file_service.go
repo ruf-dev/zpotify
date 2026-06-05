@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 
+	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/audio_parsers"
@@ -83,10 +84,16 @@ func (s *FileService) ListUploadedFiles(ctx context.Context, req domain.ListUplo
 			Path: f,
 		}
 
-		meta, err := s.storage.GetByPath(ctx, f)
-		if err == nil {
-			sf.Id = meta.Id
+		var meta domain.FileMeta
+		meta, err = s.storage.GetByPath(ctx, f)
+		if err != nil {
+			log.Info().
+				Str("path", f).
+				Err(err).Msg("error getting file meta")
+			continue
 		}
+
+		sf.Id = meta.Id
 
 		res = append(res, sf)
 	}

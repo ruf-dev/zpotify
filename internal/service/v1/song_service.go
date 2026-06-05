@@ -10,6 +10,7 @@ import (
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
@@ -45,7 +46,7 @@ func NewAudioService(
 
 func (s *AudioService) Create(ctx context.Context, req domain.CreateSong) (int64, error) {
 	if len(req.ArtistUuids) == 0 {
-		return 0, rerrors.New("at least one artist is required")
+		return 0, rerrors.Wrap(service_errors.ErrTrackMustHaveOneArtist)
 	}
 
 	var songId int64

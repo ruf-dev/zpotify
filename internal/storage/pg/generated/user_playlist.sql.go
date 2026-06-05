@@ -39,8 +39,8 @@ func (q *Queries) GetUserPermissionsOnPlaylist(ctx context.Context, arg GetUserP
 
 const upsertUserPlaylist = `-- name: UpsertUserPlaylist :exec
 INSERT INTO user_playlists (user_id, playlist_id, order_id, can_delete_songs, can_add_songs)
-VALUES ($1, $2, $3, $4, $5)
-ON CONFLICT (user_id, playlist_id, order_id)
+VALUES ($1, $2, (SELECT COALESCE(MAX(order_id), 0) + 1 FROM user_playlists WHERE user_id = $1), $3, $4)
+ON CONFLICT (user_id, playlist_id)
     DO UPDATE SET can_delete_songs = excluded.can_delete_songs,
                   can_add_songs    = excluded.can_add_songs
 `
@@ -48,7 +48,6 @@ ON CONFLICT (user_id, playlist_id, order_id)
 type UpsertUserPlaylistParams struct {
 	UserID         int64
 	PlaylistID     uuid.UUID
-	OrderID        int64
 	CanDeleteSongs bool
 	CanAddSongs    bool
 }
@@ -57,7 +56,6 @@ func (q *Queries) UpsertUserPlaylist(ctx context.Context, arg UpsertUserPlaylist
 	_, err := q.db.ExecContext(ctx, upsertUserPlaylist,
 		arg.UserID,
 		arg.PlaylistID,
-		arg.OrderID,
 		arg.CanDeleteSongs,
 		arg.CanAddSongs,
 	)

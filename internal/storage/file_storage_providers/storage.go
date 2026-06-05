@@ -6,7 +6,6 @@ import (
 	"os"
 	"path"
 	"strconv"
-	"strings"
 
 	"go.redsock.ru/rerrors"
 
@@ -34,9 +33,9 @@ func NewLocalStorageProvider(rootPath string) (storage.BinaryFileStorage, error)
 }
 
 func (l LocalStorageProvider) SaveToTempFolder(ctx context.Context, userId int64, filePath string, content io.Reader) (string, error) {
-	tempPath := path.Join(l.root, tmpFolder, strconv.FormatInt(userId, 10), filePath)
+	tempPath := path.Join(tmpFolder, strconv.FormatInt(userId, 10), filePath)
 
-	f, err := l.openFile(tempPath)
+	f, err := l.openFile(path.Join(l.root, tempPath))
 	if err != nil {
 		return "", rerrors.Wrap(err, `error opening file to write to`)
 	}
@@ -48,13 +47,13 @@ func (l LocalStorageProvider) SaveToTempFolder(ctx context.Context, userId int64
 		return "", rerrors.Wrap(err, "error writing file to temp folder")
 	}
 
-	return strings.TrimPrefix(tempPath, l.root), nil
+	return tempPath, nil
 }
 
 func (l LocalStorageProvider) ListFiles(_ context.Context, userId int64) ([]string, error) {
-	userTmpDir := path.Join(l.root, tmpFolder, strconv.FormatInt(userId, 10))
+	userTmpDir := path.Join(tmpFolder, strconv.FormatInt(userId, 10))
 
-	entries, err := os.ReadDir(userTmpDir)
+	entries, err := os.ReadDir(path.Join(l.root, userTmpDir))
 	if err != nil {
 		if os.IsNotExist(err) {
 			return nil, nil
@@ -65,7 +64,8 @@ func (l LocalStorageProvider) ListFiles(_ context.Context, userId int64) ([]stri
 	var files []string
 	for _, entry := range entries {
 		if !entry.IsDir() {
-			files = append(files, path.Join(userTmpDir, entry.Name()))
+			filePath := path.Join(userTmpDir, entry.Name())
+			files = append(files, filePath)
 		}
 	}
 

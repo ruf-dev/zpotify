@@ -63,7 +63,7 @@ func (s *FileMetaStorage) GetBySongId(ctx context.Context, songId int32) (domain
 func (s *FileMetaStorage) GetByPath(ctx context.Context, path string) (domain.FileMeta, error) {
 	fileDb, err := s.q.GetFileByPath(ctx, path)
 	if err != nil {
-		return domain.FileMeta{}, err
+		return domain.FileMeta{}, wrapPgErr(err)
 	}
 
 	return toFileDomain(fileDb), nil

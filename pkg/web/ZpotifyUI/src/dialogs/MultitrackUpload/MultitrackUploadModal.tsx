@@ -102,14 +102,6 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
         });
     }, []);
 
-    useEffect(() => {
-        function handleKeyDown(e: KeyboardEvent) {
-            if (e.key === 'Escape' && !submitting) CloseDialog();
-        }
-        document.addEventListener('keydown', handleKeyDown);
-        return () => document.removeEventListener('keydown', handleKeyDown);
-    }, [submitting, CloseDialog]);
-
     const loadArtistOptions = useCallback(
         (query: string): Promise<ArtistItem[]> =>
             Services().Artists().ListArtist(query, 0, 8)
@@ -157,7 +149,10 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
 
             for (const track of tracks) {
                 const fileId = await Services().WebApi().UploadFile(track.file);
-                const artistUuids = track.artists.map(a => a.id);
+                const seen = new Set<string>();
+                const artistUuids = [...albumArtists, ...track.artists]
+                    .filter(a => !seen.has(a.id) && seen.add(a.id))
+                    .map(a => a.id);
                 const songId = await Services().Songs().CreateSong(track.title || track.file.name, artistUuids, fileId);
                 songIds.push(songId);
             }

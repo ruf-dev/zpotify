@@ -348,11 +348,11 @@ func (p *PlaylistStorage) AddSong(ctx context.Context, playlistUuid string, song
 	if err != nil {
 		return rerrors.Wrap(err, "error parsing playlist uuid")
 	}
-
-	err = p.querier.AddSongToPlaylist(ctx, generated.AddSongToPlaylistParams{
+	params := generated.AddSongToPlaylistParams{
 		PlaylistUuid: pUuid,
 		SongID:       int64(songId),
-	})
+	}
+	err = p.querier.AddSongToPlaylist(ctx, params)
 	if err != nil {
 		return wrapPgErr(err)
 	}

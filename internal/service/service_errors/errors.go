@@ -15,4 +15,6 @@ var (
 	ErrFileNotVerified = rerrors.New("file not verified", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusBadRequest))
 
 	ErrPendingTrackLimitReached = rerrors.New("pending track limit reached", codes.ResourceExhausted, rerrors.WithHttpStatus(http.StatusTooManyRequests))
+
+	ErrTrackMustHaveOneArtist = rerrors.New("at least one artist is required", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
 )

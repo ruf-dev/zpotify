@@ -48,32 +48,34 @@ func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistP
 
 	var playlistUuid string
 
-	err := p.txManager.Execute(func(tx *sql.Tx) error {
-		playlistStorage := p.playlistStorage.WithTx(tx)
-		fileMetaStorage := p.fileMetaStorage.WithTx(tx)
+	err := p.txManager.Execute(
+		func(tx *sql.Tx) error {
+			playlistStorage := p.playlistStorage.WithTx(tx)
+			fileMetaStorage := p.fileMetaStorage.WithTx(tx)
 
-		var createErr error
-		playlistUuid, createErr = playlistStorage.Create(ctx, req, userCtx.UserId)
-		if createErr != nil {
-			return rerrors.Wrap(createErr, "error creating playlist in storage")
-		}
-
-		for i, artistUuid := range req.ArtistUuids {
-			createErr = playlistStorage.AddPlaylistArtist(ctx, playlistUuid, artistUuid, i)
+			var createErr error
+			playlistUuid, createErr = playlistStorage.Create(ctx, req, userCtx.UserId)
 			if createErr != nil {
-				return rerrors.Wrap(createErr, "error adding artist to playlist")
+				return rerrors.Wrap(createErr, "error creating playlist in storage")
 			}
-		}
 
-		if req.CoverFileId != nil {
-			createErr = p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, playlistUuid, *req.CoverFileId, req.ArtistUuids, userCtx.UserId)
-			if createErr != nil {
-				return rerrors.Wrap(createErr, "error handling cover file")
+			for i, artistUuid := range req.ArtistUuids {
+				//TODO make bath insert of artists into playlist
+				createErr = playlistStorage.AddPlaylistArtist(ctx, playlistUuid, artistUuid, i)
+				if createErr != nil {
+					return rerrors.Wrap(createErr, "error adding artist to playlist")
+				}
 			}
-		}
 
-		return nil
-	})
+			if req.CoverFileId != nil {
+				createErr = p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, playlistUuid, *req.CoverFileId, req.ArtistUuids, userCtx.UserId)
+				if createErr != nil {
+					return rerrors.Wrap(createErr, "error handling cover file")
+				}
+			}
+
+			return nil
+		})
 	if err != nil {
 		return "", err
 	}
@@ -197,7 +199,7 @@ func (p *PlaylistService) AddSong(ctx context.Context, req domain.AddSongToPlayl
 	}
 
 	if !permissions.CanAddSongs {
-		return rerrors.Wrap(service_errors.ErrUnauthorized)
+		return rerrors.Wrap(service_errors.ErrUnauthorized, "user is missing can_add_song permission")
 	}
 
 	songFile, err := p.fileMetaStorage.GetBySongId(ctx, req.SongId)
@@ -236,7 +238,7 @@ func (p *PlaylistService) AddSong(ctx context.Context, req domain.AddSongToPlayl
 
 	err = p.playlistStorage.AddSong(ctx, req.PlaylistUuid, req.SongId)
 	if err != nil {
-		return rerrors.Wrap(err, "error adding song to playlist")
+		return rerrors.Wrap(err, "error saving song to playlist")
 	}
 
 	return nil

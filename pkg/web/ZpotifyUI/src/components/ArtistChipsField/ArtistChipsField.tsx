@@ -1,4 +1,6 @@
 import {useState} from 'react';
+import cn from 'classnames';
+
 import cls from './ArtistChipsField.module.css';
 import {ArtistChip, LockedArtistChip} from './ArtistChip';
 import ArtistDropdown from './ArtistDropdown';
@@ -99,7 +101,7 @@ export default function ArtistChipsField({
     const showPlaceholder = lockedArtists.length === 0 && artists.length === 0;
 
     return (
-        <div className={`${cls.FieldContainer} ${dense ? cls.Dense : cls.Default}`} role="list">
+        <div className={cn(cls.FieldContainer, dense ? cls.Dense : cls.Default)} role="list">
             {lockedArtists.map(a => (
                 <span key={a.id} role="listitem">
                     <LockedArtistChip artist={a}/>

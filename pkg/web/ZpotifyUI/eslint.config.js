@@ -34,6 +34,15 @@ export default tseslint.config([
         rules: {
             'no-console': ['warn', { allow: ['warn', 'error'] }],
 
+            // Use cn() from classnames instead of template literals for className
+            'no-restricted-syntax': [
+                'warn',
+                {
+                    selector: 'JSXAttribute[name.name="className"] > JSXExpressionContainer > TemplateLiteral',
+                    message: "Use cn() from 'classnames' instead of template literals for className.",
+                },
+            ],
+
             // Named function declarations — no `const fn = () => {}`
             'func-style': ['warn', 'declaration', { allowArrowFunctions: false }],
 

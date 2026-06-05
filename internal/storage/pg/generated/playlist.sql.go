@@ -58,9 +58,10 @@ WITH created_playlist AS (
     INSERT INTO playlists (name, description, is_public, owner_id)
         VALUES ($1, $2, $3, $4)
         RETURNING uuid)
-INSERT
-INTO user_playlists (user_id, playlist_id)
-VALUES ($4, (SELECT uuid FROM created_playlist))
+INSERT INTO user_playlists (user_id, playlist_id, order_id)
+VALUES ($4,
+        (SELECT uuid FROM created_playlist),
+        (SELECT COALESCE(MAX(order_id), 0) + 1 FROM user_playlists WHERE user_id = $4))
 RETURNING playlist_id
 `
 
