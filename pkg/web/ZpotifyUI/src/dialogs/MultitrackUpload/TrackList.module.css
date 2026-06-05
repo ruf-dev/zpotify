@@ -30,12 +30,24 @@
     gap: 0.375rem;
 }
 
-.EmptyState {
-    padding: 2rem;
-    text-align: center;
-    background: var(--color-bg-card);
+.EmptyStateWrapper {
     border: 1px dashed var(--color-border-light);
     border-radius: var(--border-radius-md);
+    background: var(--color-bg-card);
+    transition: border-color 0.15s ease, background 0.15s ease;
+
+    &:hover {
+        border-color: var(--color-border);
+    }
+}
+
+.EmptyStateContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
     font-size: var(--font-size-sm);
     color: var(--color-fg-tertiary);
+    text-align: center;
+    pointer-events: none;
 }

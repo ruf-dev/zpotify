@@ -3,6 +3,7 @@ import cls from './TrackList.module.css';
 import TrackRow from './TrackRow';
 import type {TrackDraft} from './TrackRow';
 import type {ArtistItem} from '@/components/ArtistChipsField/ArtistChipsField';
+import DropZone from '@/components/DropZone/DropZone';
 
 type Drag = {
     id: string;
@@ -20,20 +21,19 @@ interface TrackListProps {
     onArtistsChange: (id: string, artists: ArtistItem[]) => void;
     onRemove: (id: string) => void;
     onReorder: (fromIdx: number, toIdx: number) => void;
+    onAddFiles: (files: File[]) => void;
     loadArtistOptions: (query: string) => Promise<ArtistItem[]>;
     onCreateArtist: (name: string) => Promise<ArtistItem>;
 }
 
-export default function TrackList({
-    tracks,
-    albumArtists,
-    onTitleChange,
-    onArtistsChange,
-    onRemove,
-    onReorder,
-    loadArtistOptions,
-    onCreateArtist,
-}: TrackListProps) {
+export default function TrackList(
+    {
+        tracks, albumArtists,
+        onTitleChange, onArtistsChange,
+        onRemove, onReorder,
+        onAddFiles, loadArtistOptions,
+        onCreateArtist,
+    }: TrackListProps) {
     const [drag, setDrag] = useState<Drag>(null);
     const [dropIdx, setDropIdx] = useState<number | null>(null);
     const dropIdxRef = useRef<number | null>(null);
@@ -114,10 +114,18 @@ export default function TrackList({
             };
         }
         if (fromIdx < drop && idx > fromIdx && idx <= drop) {
-            return {transform: `translateY(-${height}px)`, transition: 'transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1)', willChange: 'transform'};
+            return {
+                transform: `translateY(-${height}px)`,
+                transition: 'transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1)',
+                willChange: 'transform'
+            };
         }
         if (fromIdx > drop && idx >= drop && idx < fromIdx) {
-            return {transform: `translateY(${height}px)`, transition: 'transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1)', willChange: 'transform'};
+            return {
+                transform: `translateY(${height}px)`,
+                transition: 'transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1)',
+                willChange: 'transform'
+            };
         }
         return {};
     }
@@ -132,35 +140,42 @@ export default function TrackList({
                 <span className={cls.HeaderHint}>drag rows to reorder · click name to rename</span>
             </div>
 
-            {count === 0 ? (
-                <div className={cls.EmptyState}>
-                    no tracks left — drop more files or close
+
+            <div className={cls.RowsWrapper}>
+                {tracks.map((track, idx) => (
+                    <TrackRow
+                        key={track.id}
+                        track={track}
+                        index={idx}
+                        albumArtists={albumArtists}
+                        rowRef={el => {
+                            if (el) rowRefs.current[track.id] = el;
+                            else delete rowRefs.current[track.id];
+                        }}
+                        onHandlePointerDown={e => startDrag(track.id, idx, e)}
+                        dragStyle={getRowDragStyle(idx)}
+                        isDragging={drag !== null && drag.fromIdx === idx}
+                        anyDragging={drag !== null}
+                        onTitleChange={onTitleChange}
+                        onArtistsChange={onArtistsChange}
+                        onRemove={onRemove}
+                        loadArtistOptions={loadArtistOptions}
+                        onCreateArtist={onCreateArtist}
+                    />
+                ))}
+            </div>
+            <DropZone
+                onFiles={onAddFiles}
+                className={cls.EmptyStateWrapper}>
+                <div className={cls.EmptyStateContent}>
+                    {
+                        count == 0 ?
+                            'no tracks left — drop more files or close'
+                            :
+                            'drop more tracks here'
+                    }
                 </div>
-            ) : (
-                <div className={cls.RowsWrapper}>
-                    {tracks.map((track, idx) => (
-                        <TrackRow
-                            key={track.id}
-                            track={track}
-                            index={idx}
-                            albumArtists={albumArtists}
-                            rowRef={el => {
-                                if (el) rowRefs.current[track.id] = el;
-                                else delete rowRefs.current[track.id];
-                            }}
-                            onHandlePointerDown={e => startDrag(track.id, idx, e)}
-                            dragStyle={getRowDragStyle(idx)}
-                            isDragging={drag !== null && drag.fromIdx === idx}
-                            anyDragging={drag !== null}
-                            onTitleChange={onTitleChange}
-                            onArtistsChange={onArtistsChange}
-                            onRemove={onRemove}
-                            loadArtistOptions={loadArtistOptions}
-                            onCreateArtist={onCreateArtist}
-                        />
-                    ))}
-                </div>
-            )}
+            </DropZone>
         </div>
     );
 }

@@ -168,6 +168,46 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
         });
     }
 
+    function handleAddFiles(newFiles: File[]) {
+        const newTracks: TrackDraft[] = newFiles.map(f => ({
+            id: crypto.randomUUID(),
+            file: f,
+            title: cleanTitle(f.name),
+            artists: [] as ArtistItem[],
+            duration: 0,
+            size: f.size,
+            uploadStatus: 'uploading' as const,
+            uploadProgress: 0,
+        }));
+
+        setTracks(prev => [...prev, ...newTracks]);
+
+        newTracks.forEach(function processNewTrack(t) {
+            parseBlob(t.file)
+                .then(meta => {
+                    const dur = meta.format.duration ?? 0;
+                    setTracks(prev => prev.map(p => p.id === t.id ? {...p, duration: dur} : p));
+                })
+                .catch(() => {});
+
+            Services()
+                .WebApi()
+                .UploadFileWithProgress(t.file,
+                    (pct) => {
+                        setTracks(prev => prev.map(p => p.id === t.id ? {...p, uploadProgress: pct} : p));
+                    })
+                .then((fileId) => {
+                    setTracks(prev => prev.map(p => p.id === t.id
+                        ? {...p, fileId, uploadProgress: 100, uploadStatus: 'done'}
+                        : p
+                    ));
+                })
+                .catch(() => {
+                    setTracks(prev => prev.map(p => p.id === t.id ? {...p, uploadStatus: 'error'} : p));
+                });
+        });
+    }
+
     async function handleSubmit() {
         if (submitting || tracks.length === 0) return;
         if (playlistMode && !playlistName.trim()) return;
@@ -277,6 +317,7 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
                     onArtistsChange={handleArtistsChange}
                     onRemove={handleRemove}
                     onReorder={handleReorder}
+                    onAddFiles={handleAddFiles}
                     loadArtistOptions={loadArtistOptions}
                     onCreateArtist={handleCreateArtist}
                 />

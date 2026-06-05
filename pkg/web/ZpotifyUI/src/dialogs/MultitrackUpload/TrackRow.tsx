@@ -55,6 +55,33 @@ function RemoveTrackIcon() {
     );
 }
 
+function UploadArrowIcon() {
+    return (
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="9" x2="5" y2="1"/>
+            <polyline points="2,4 5,1 8,4"/>
+        </svg>
+    );
+}
+
+function UploadDoneIcon() {
+    return (
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="1.5,5.5 4,8 8.5,2"/>
+        </svg>
+    );
+}
+
+function UploadStatusChip({ uploadStatus }: { uploadStatus: TrackDraft['uploadStatus'] }) {
+    if (uploadStatus === 'error') return null;
+    const isUploading = uploadStatus === 'uploading' || uploadStatus === 'pending';
+    return (
+        <span className={cn(cls.StatusChip, isUploading ? cls.StatusChipUploading : cls.StatusChipDone)}>
+            {isUploading ? <UploadArrowIcon /> : <UploadDoneIcon />}
+        </span>
+    );
+}
+
 export default function TrackRow({
     track,
     index,
@@ -115,6 +142,8 @@ export default function TrackRow({
             </div>
 
             <span className={cls.DurationBadge}>{durationLabel}</span>
+
+            <UploadStatusChip uploadStatus={track.uploadStatus} />
 
             <button
                 type="button"
