@@ -5,7 +5,7 @@ import cls from '@/pages/init/InitPage.module.css';
 
 import ZLogoLanding from "@/pages/init/ZLogoLanding.tsx";
 import LoginPasswordDialog from "@/dialogs/LoginViaPass/LoginViaPass.tsx";
-import AuthButton from "@/components/shared/AuthButton.tsx";
+import AuthButton from "@/shared/ui/AuthButton.tsx";
 import TelegramAuth from "@/components/auth/TelegramAuth.tsx";
 
 import {Path} from "@/app/routing/Router.tsx";

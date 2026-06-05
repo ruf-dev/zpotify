@@ -2,7 +2,7 @@ import cls from "@/pages/early_access/EarlyAccessPage.module.css";
 import useUser from "@/hooks/user/User.ts";
 import {useNavigate} from "react-router-dom";
 import {Path} from "@/app/routing/Router.tsx";
-import Button from "@/components/shared/Button";
+import Button from "@/shared/ui/Button";
 
 export default function EarlyAccessPage() {
     const navigate = useNavigate();

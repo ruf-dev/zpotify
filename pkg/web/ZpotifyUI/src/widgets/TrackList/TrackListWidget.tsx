@@ -4,7 +4,7 @@ import {SongBase} from "@/app/api/zpotify";
 import cls from "@/widgets/TrackList/TrackListWidget.module.css"
 
 import {AudioPlayer} from "@/hooks/player/player.ts";
-import {SongListPermissions} from "@/model/User.ts";
+import {SongListPermissions} from "@/shared/model/User.ts";
 
 import SongListItem from "@/components/song/SongListItem.tsx";
 

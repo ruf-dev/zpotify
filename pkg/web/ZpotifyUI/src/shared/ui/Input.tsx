@@ -1,7 +1,7 @@
 import {FocusEventHandler, useState} from "react";
 import cn from "classnames";
 
-import cls from "@/components/shared/Input.module.css";
+import cls from "@/shared/ui/Input.module.css";
 
 export interface StyleProps {
     borderless?: boolean

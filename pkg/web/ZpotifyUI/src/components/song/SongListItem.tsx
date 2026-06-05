@@ -4,10 +4,10 @@ import {SongBase} from "@/app/api/zpotify";
 
 import cls from "@/components/song/SongListItem.module.scss";
 
-import {SongListPermissions} from "@/model/User.ts";
+import {SongListPermissions} from "@/shared/model/User.ts";
 
 import MoreButton from "@/components/song/more/MoreButton.tsx";
-import {formatDuration} from "@/utils/time.ts";
+import {formatDuration} from "@/shared/lib/time.ts";
 import NowPlayingBars from "@/assets/icons/NowPlayingBars.tsx";
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 import EditTrackDialog from "@/dialogs/EditTrack/EditTrackDialog.tsx";

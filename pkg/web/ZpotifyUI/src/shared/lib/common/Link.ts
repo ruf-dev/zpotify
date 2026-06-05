@@ -1,4 +1,4 @@
-import {isIosSafari} from "@/common/Platform.ts";
+import {isIosSafari} from "@/shared/lib/common/Platform.ts";
 
 export function TgDeeplink(url: string): string {
     if (isIosSafari()) {

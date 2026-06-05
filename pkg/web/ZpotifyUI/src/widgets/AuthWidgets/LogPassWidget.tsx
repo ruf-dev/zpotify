@@ -3,9 +3,9 @@ import React from "react";
 
 import cls from "@/widgets/AuthWidgets/LogPassWidget.module.css";
 
-import Input from "@/components/shared/Input.tsx";
-import Button from "@/components/shared/Button.tsx";
-import Chip from "@/components/shared/Chip.tsx";
+import Input from "@/shared/ui/Input.tsx";
+import Button from "@/shared/ui/Button.tsx";
+import Chip from "@/shared/ui/Chip.tsx";
 import useUser from "@/hooks/user/User.ts";
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 

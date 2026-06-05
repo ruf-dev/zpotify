@@ -9,7 +9,7 @@ import {Path} from "@/app/routing/Router.tsx";
 
 import HeaderPart from "@/parts/header/HeaderPart.tsx";
 import MusicPlayerWithLogo from "@/components/player/MusicPlayerWithLogo.tsx";
-import {HomeSegment, HomeSegmentProps} from "@/model/HomeSegments.tsx";
+import {HomeSegment, HomeSegmentProps} from "@/shared/model/HomeSegments.tsx";
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 import SegmentTabBar, {Tab} from "@/components/tabs/SegmentTabBar.tsx";
 import SegmentCarousel from "@/components/carousel/SegmentCarousel.tsx";

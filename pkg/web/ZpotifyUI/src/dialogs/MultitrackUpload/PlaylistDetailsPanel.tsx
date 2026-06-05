@@ -3,7 +3,7 @@ import CoverField from '@/components/CoverField/CoverField';
 import ArtistChipsField from '@/components/ArtistChipsField/ArtistChipsField';
 import DisabledChip from '@/components/DisabledChip/DisabledChip';
 import type {ArtistItem} from '@/components/ArtistChipsField/ArtistChipsField';
-import {formatDuration} from '@/utils/time';
+import {formatDuration} from '@/shared/lib/time';
 
 interface PlaylistDetailsPanelProps {
     cover?: File;

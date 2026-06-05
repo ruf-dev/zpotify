@@ -1,4 +1,4 @@
-import {formatDuration} from '@/utils/time.ts';
+import {formatDuration} from '@/shared/lib/time.ts';
 
 export function formatFileSize(bytes: number): string {
     if (bytes >= 1024 * 1024) {

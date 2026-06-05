@@ -1,6 +1,6 @@
 import React from "react";
 import cn from "classnames";
-import cls from "@/components/shared/AuthButton.module.css";
+import cls from "@/shared/ui/AuthButton.module.css";
 
 interface AuthButtonProps {
     icon?: React.ReactNode;

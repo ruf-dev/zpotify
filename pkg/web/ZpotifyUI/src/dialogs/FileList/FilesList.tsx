@@ -8,8 +8,8 @@ import {useDialog} from "@/app/hooks/Dialog.tsx";
 import {User} from "@/hooks/user/User.ts";
 import {SongFile} from "@/app/api/zpotify";
 
-import Button from "@/components/shared/Button.tsx";
-import Chip from "@/components/shared/Chip.tsx";
+import Button from "@/shared/ui/Button.tsx";
+import Chip from "@/shared/ui/Chip.tsx";
 import SongEditDialog from "@/dialogs/SongEdit/SongEditDialog.tsx";
 
 

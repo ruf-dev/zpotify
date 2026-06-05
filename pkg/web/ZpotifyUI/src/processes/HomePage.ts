@@ -1,4 +1,4 @@
-import {HomeSegment, ManagementSegmentInfo, PlaylistSegmentInfo} from "@/model/HomeSegments.tsx";
+import {HomeSegment, ManagementSegmentInfo, PlaylistSegmentInfo} from "@/shared/model/HomeSegments.tsx";
 import {BaseService} from "@/processes/BaseService.ts";
 
 import {HomePageSegment, InitReq, UserAPI} from "@/app/api/zpotify";

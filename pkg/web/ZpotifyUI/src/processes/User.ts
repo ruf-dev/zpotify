@@ -4,7 +4,7 @@ import {
     UserAPI,
 } from "@/app/api/zpotify";
 
-import {UserInfo} from "@/model/User.ts";
+import {UserInfo} from "@/shared/model/User.ts";
 
 import {AuthMiddleware} from "@/processes/Auth.ts";
 import {BaseService} from "@/processes/BaseService.ts";

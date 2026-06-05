@@ -2,9 +2,9 @@ import {useState, type ComponentType} from 'react';
 import {SongFile} from '@/app/api/zpotify';
 
 import cls from '@/dialogs/AddTrack/AddTrackDialog.module.css';
-import CloseButton from '@/components/shared/CloseButton';
-import StepDots from '@/components/shared/StepDots';
-import BackButton from '@/components/shared/BackButton';
+import CloseButton from '@/shared/ui/CloseButton';
+import StepDots from '@/shared/ui/StepDots';
+import BackButton from '@/shared/ui/BackButton';
 
 import {useDialog} from '@/app/hooks/Dialog.tsx';
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
@@ -17,7 +17,7 @@ import PendingFilesScreen from '@/dialogs/AddTrack/screens/PendingFilesScreen';
 import {MultitrackUploadDialog} from '@/dialogs/MultitrackUpload';
 import MetaDialog from '@/dialogs/Meta/MetaDialog';
 
-import {AudioFile} from '@/model/AudioFile.ts';
+import {AudioFile} from '@/shared/model/AudioFile.ts';
 
 export type ModalStep = 'choose' | 'drop' | 'pending';
 

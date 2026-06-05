@@ -1,4 +1,4 @@
-import cls from "@/components/shared/BackButton.module.css";
+import cls from "@/shared/ui/BackButton.module.css";
 
 interface BackButtonProps {
     onClick: () => void;

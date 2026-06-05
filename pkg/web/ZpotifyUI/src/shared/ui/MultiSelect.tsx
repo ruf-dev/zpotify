@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import {createPortal} from "react-dom";
 import cn from "classnames";
 
-import cls from "@/components/shared/MultiSelect.module.css";
+import cls from "@/shared/ui/MultiSelect.module.css";
 
 export interface Option {
     id: string;

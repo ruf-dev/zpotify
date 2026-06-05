@@ -1,4 +1,4 @@
-import cls from "@/components/shared/CloseButton.module.css";
+import cls from "@/shared/ui/CloseButton.module.css";
 
 interface CloseButtonProps {
     onClick: () => void;

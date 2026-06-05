@@ -1,7 +1,7 @@
 import React from "react";
 import cn from "classnames";
 
-import cls from "@/components/shared/Chip.module.css";
+import cls from "@/shared/ui/Chip.module.css";
 
 interface ChipProps {
     value: React.ReactNode;

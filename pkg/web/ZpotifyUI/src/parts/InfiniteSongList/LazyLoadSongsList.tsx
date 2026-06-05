@@ -8,7 +8,7 @@ import useUser from "@/hooks/user/User.ts";
 
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 import SongListWidget from "@/widgets/TrackList/TrackListWidget.tsx";
-import ZButton from "@/components/base/button/ZButton.tsx";
+import ZButton from "@/shared/ui/ZButton/ZButton.tsx";
 
 interface InfiniteSongsListProps {
     audioPlayer: AudioPlayer

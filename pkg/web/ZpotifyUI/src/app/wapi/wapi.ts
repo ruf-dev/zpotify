@@ -1,4 +1,4 @@
-import {AudioFile} from "@/model/AudioFile.ts";
+import {AudioFile} from "@/shared/model/AudioFile.ts";
 
 enum UriPath {
     Upload = '/wapi/files/upload'

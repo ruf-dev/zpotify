@@ -3,7 +3,7 @@ import cls from './TrackRow.module.css';
 import EditableTitle from '@/components/EditableTitle/EditableTitle';
 import ArtistChipsField from '@/components/ArtistChipsField/ArtistChipsField';
 import type {ArtistItem} from '@/components/ArtistChipsField/ArtistChipsField';
-import {formatDuration} from '@/utils/time';
+import {formatDuration} from '@/shared/lib/time';
 
 export interface TrackDraft {
     id: string;

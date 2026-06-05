@@ -2,7 +2,7 @@ import {create} from 'zustand'
 
 import {AuthMiddleware, AuthService, IAuthService} from "@/processes/Auth.ts"
 import {AuthData} from "@/app/api/zpotify"
-import {UserInfo} from "@/model/User.ts"
+import {UserInfo} from "@/shared/model/User.ts"
 import {Errors, ServiceError} from "@/processes/Errors.ts"
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts"
 import UserService from "@/processes/User.ts"

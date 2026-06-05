@@ -1,4 +1,4 @@
-import cls from "@/components/shared/Button.module.css";
+import cls from "@/shared/ui/Button.module.css";
 import cn from "classnames";
 
 interface ButtonProps {

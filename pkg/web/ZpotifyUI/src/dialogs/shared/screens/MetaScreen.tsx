@@ -2,11 +2,11 @@ import {useCallback, useEffect, useState} from 'react';
 import cls from '@/dialogs/shared/screens/MetaScreen.module.css';
 import MusicFileIcon from '@/assets/icons/MusicFileIcon.tsx';
 
-import MultiSelect, {Option} from '@/components/shared/MultiSelect.tsx';
+import MultiSelect, {Option} from '@/shared/ui/MultiSelect.tsx';
 import {FileInfo} from '@/app/api/zpotify';
-import {formatFileDuration, formatFileBytes} from '@/utils/files.ts';
-import {formatDuration} from '@/utils/time.ts';
-import {AudioFile} from '@/model/AudioFile.ts';
+import {formatFileDuration, formatFileBytes} from '@/shared/lib/files.ts';
+import {formatDuration} from '@/shared/lib/time.ts';
+import {AudioFile} from '@/shared/model/AudioFile.ts';
 import useUser from '@/hooks/user/User.ts';
 
 interface MetaScreenProps {

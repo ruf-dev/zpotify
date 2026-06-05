@@ -1,4 +1,4 @@
-import cls from "@/components/base/button/ZButton.module.css"
+import cls from "@/shared/ui/ZButton/ZButton.module.css"
 
 interface ZButtonProps {
     title: string;

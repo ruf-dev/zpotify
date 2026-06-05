@@ -1,6 +1,6 @@
 import {useState} from "react";
 import cn from "classnames";
-import cls from "@/components/shared/FloatInput.module.css";
+import cls from "@/shared/ui/FloatInput.module.css";
 
 interface FloatInputProps {
     value: string;

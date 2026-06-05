@@ -9,7 +9,7 @@ import {AudioPlayer} from "@/hooks/player/player.ts";
 import {playlistPath} from "@/app/routing/Router.tsx";
 
 import LazyLoadSongsList from "@/parts/InfiniteSongList/LazyLoadSongsList.tsx";
-import IconButton from "@/components/shared/IconButton.tsx";
+import IconButton from "@/shared/ui/IconButton.tsx";
 import GhostSong from "@/components/song/GhostSong.tsx";
 
 interface DisplayPlaylistSegmentProps {

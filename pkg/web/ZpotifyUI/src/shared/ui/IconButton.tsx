@@ -1,4 +1,4 @@
-import cls from "@/components/shared/IconButton.module.css";
+import cls from "@/shared/ui/IconButton.module.css";
 
 interface ActionButtonProps {
     iconPath: string

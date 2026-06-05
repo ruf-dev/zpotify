@@ -8,8 +8,8 @@ import useUser from '@/hooks/user/User.ts';
 
 import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
 import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
-import {Option} from "@/components/shared/MultiSelect.tsx";
-import {AudioFile} from "@/model/AudioFile.ts";
+import {Option} from "@/shared/ui/MultiSelect.tsx";
+import {AudioFile} from "@/shared/model/AudioFile.ts";
 
 interface EditTrackDialogProps {
     song: SongBase;

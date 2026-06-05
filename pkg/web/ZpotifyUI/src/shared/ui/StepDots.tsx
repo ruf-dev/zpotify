@@ -1,5 +1,5 @@
 import cn from "classnames";
-import cls from "@/components/shared/StepDots.module.css";
+import cls from "@/shared/ui/StepDots.module.css";
 
 interface StepDotsProps<T> {
     steps: T[];

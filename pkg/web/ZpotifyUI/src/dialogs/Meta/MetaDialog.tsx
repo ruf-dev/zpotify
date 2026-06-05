@@ -4,7 +4,7 @@ import {useDialog} from '@/app/hooks/Dialog.tsx';
 import {useToaster} from '@/hooks/toaster/ToasterZ.ts';
 import useUser from '@/hooks/user/User.ts';
 import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
-import {AudioFile} from '@/model/AudioFile.ts';
+import {AudioFile} from '@/shared/model/AudioFile.ts';
 
 interface MetaDialogProps {
     audioFile: AudioFile;

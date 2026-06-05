@@ -2,7 +2,7 @@ import {KeyboardEvent, useState} from "react";
 
 import cls from "@/dialogs/LoginViaPass/LoginViaPass.module.css";
 
-import FloatInput from "@/components/shared/FloatInput.tsx";
+import FloatInput from "@/shared/ui/FloatInput.tsx";
 
 import useUser from "@/hooks/user/User.ts";
 import {useNavigate} from "react-router-dom";
