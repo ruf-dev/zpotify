@@ -3,7 +3,7 @@ import cls from './TrackList.module.css';
 import TrackRow from './TrackRow';
 import type {TrackDraft} from './TrackRow';
 import type {ArtistItem} from '@/widgets/ArtistField/ArtistChipsField';
-import DropZone from '@/components/DropZone/DropZone';
+import DropZone from '@/features/upload/DropZone';
 
 type Drag = {
     id: string;

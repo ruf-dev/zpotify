@@ -1,7 +1,7 @@
 import cls from "@/widgets/AuthMethods/AuthMethods.module.css";
 
-import TelegramAuth from "@/components/auth/TelegramAuth.tsx";
-import LogPassAuth from "@/components/auth/LogPassAuth.tsx";
+import TelegramAuth from "@/features/auth/TelegramAuth.tsx";
+import LogPassAuth from "@/features/auth/LogPassAuth.tsx";
 
 export default function AuthMethodsWidget() {
 

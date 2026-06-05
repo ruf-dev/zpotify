@@ -1,7 +1,7 @@
 import React, {JSX} from "react";
-import PlaylistHomeSegment from "@/pages/home/segments/PlaylistHomeSegment.tsx";
+import PlaylistHomeSegment from "@/widgets/PlaylistHomeSegment/PlaylistHomeSegment.tsx";
 import {AudioPlayer} from "@/widgets/MusicPlayer/usePlayer.ts";
-import ManagementHomeSegment from "@/pages/home/segments/ManagementHomeSegment.tsx";
+import ManagementHomeSegment from "@/widgets/ManagementHomeSegment/ManagementHomeSegment.tsx";
 
 export type HomeSegmentProps = {
     audioPlayer: AudioPlayer;

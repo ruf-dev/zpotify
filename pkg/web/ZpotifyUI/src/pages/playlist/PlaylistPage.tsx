@@ -5,12 +5,12 @@ import cls from "@/pages/playlist/PlaylistPage.module.css";
 
 import {AudioPlayer} from "@/widgets/MusicPlayer/usePlayer.ts";
 import useUser from "@/entities/user/useUser.ts";
-import {useToaster} from "@/hooks/toaster/ToasterZ.ts";
 import {Path} from "@/app/routing/Router.tsx";
 
 import LazyLoadSongsList from "@/widgets/TrackList/LazyLoadSongsList.tsx";
 import HeaderPart from "@/widgets/Header/HeaderPart.tsx";
 import MusicPlayerWithLogo from "@/widgets/MusicPlayer/MusicPlayerWithLogo.tsx";
+import {usePlaylist} from "@/pages/playlist/usePlaylist.ts";
 
 interface PlaylistPageProps {
     audioPlayer: AudioPlayer
@@ -19,25 +19,17 @@ interface PlaylistPageProps {
 export default function PlaylistPage({audioPlayer}: PlaylistPageProps) {
     const {id} = useParams<{id: string}>();
     const navigate = useNavigate();
-    const toaster = useToaster();
-    const [playlistName, setPlaylistName] = useState<string>("");
     const [totalCount, setTotalCount] = useState<number | null>(null);
 
     const userData = useUser(state => state.userData);
     const auth = useUser(state => state.auth);
-    const Services = useUser(state => state.Services);
+    const {playlistName} = usePlaylist(id);
 
     useEffect(() => {
         if (!userData) {
             if (!auth.session) navigate(Path.IntiPage);
-            return;
         }
-        if (!id) return;
-
-        Services().Playlist().GetPlaylist(id)
-            .then(res => setPlaylistName(res.playlist?.name ?? "Playlist"))
-            .catch(toaster.catch);
-    }, [id, userData, auth.session]);
+    }, [userData, auth.session]);
 
     if (!id || !userData) return null;
 

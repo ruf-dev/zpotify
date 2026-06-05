@@ -4,7 +4,7 @@ import AnimatedZ from "@/assets/AnimatedZ.tsx";
 import {useNavigate} from "react-router-dom";
 import {Path} from "@/app/routing/Router.tsx";
 import UserWidget from "@/widgets/User/UserWidget.tsx";
-import AddTrackButton from "@/components/AddTrackButton/AddTrackButton.tsx";
+import AddTrackButton from "@/features/upload/AddTrackButton.tsx";
 import AddTrackDialog from "@/dialogs/AddTrack/AddTrackDialog.tsx";
 import {useDialog} from "@/app/hooks/Dialog.tsx";
 
