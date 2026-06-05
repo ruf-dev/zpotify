@@ -103,6 +103,70 @@ func (s *AudioService) Create(ctx context.Context, req domain.CreateSong) (int64
 	return songId, nil
 }
 
+func (s *AudioService) CreateBatch(ctx context.Context, reqs []domain.CreateSong) ([]int64, error) {
+	for _, req := range reqs {
+		if len(req.ArtistUuids) == 0 {
+			return nil, rerrors.Wrap(service_errors.ErrTrackMustHaveOneArtist)
+		}
+	}
+
+	ids := make([]int64, 0, len(reqs))
+
+	err := s.txManager.Execute(
+		func(tx *sql.Tx) error {
+			songsStorage := s.songsStorage.WithTx(tx)
+			fileMetaStorage := s.fileMetaStorage.WithTx(tx)
+			playlistStorage := s.playlistStorage.WithTx(tx)
+
+			for _, req := range reqs {
+				fileMeta, err := fileMetaStorage.Get(ctx, req.FileID)
+				if err != nil {
+					return rerrors.Wrap(err, "error getting file meta")
+				}
+
+				songId, err := songsStorage.Create(ctx, req.CreateSongParams)
+				if err != nil {
+					return rerrors.Wrap(err, "error creating song in storage")
+				}
+
+				ext := path.Ext(fileMeta.FilePath)
+				newPath := fmt.Sprintf("%s/%d%s", req.ArtistUuids[0], songId, ext)
+
+				err = s.binaryStorage.Move(ctx, fileMeta.FilePath, newPath)
+				if err != nil {
+					return rerrors.Wrap(err, "error moving file to permanent storage")
+				}
+
+				fileMeta.FilePath = newPath
+				err = fileMetaStorage.Update(ctx, req.FileID, fileMeta.File)
+				if err != nil {
+					return rerrors.Wrap(err, "error updating file meta with new path")
+				}
+
+				for i, artistUuid := range req.ArtistUuids {
+					err = songsStorage.AddArtist(ctx, songId, artistUuid, i)
+					if err != nil {
+						return rerrors.Wrap(err, "error adding artist to song", artistUuid)
+					}
+				}
+
+				err = playlistStorage.AddSong(ctx, domain.GlobalPlaylistUuid, int32(songId))
+				if err != nil {
+					return rerrors.Wrap(err, "error adding song to global playlist")
+				}
+
+				ids = append(ids, songId)
+			}
+
+			return nil
+		})
+	if err != nil {
+		return nil, err
+	}
+
+	return ids, nil
+}
+
 func (s *AudioService) Update(ctx context.Context, req domain.UpdateSong) error {
 	err := s.txManager.Execute(
 		func(tx *sql.Tx) error {

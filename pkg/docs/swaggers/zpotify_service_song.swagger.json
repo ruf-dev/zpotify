@@ -16,6 +16,38 @@
     "application/json"
   ],
   "paths": {
+    "/api/song/batch_create": {
+      "post": {
+        "operationId": "SongAPI_BatchCreateSong",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiBatchCreateSongResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiBatchCreateSongRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SongAPI"
+        ]
+      }
+    },
     "/api/song/create": {
       "post": {
         "operationId": "SongAPI_CreateSong",
@@ -149,6 +181,30 @@
         },
         "name": {
           "type": "string"
+        }
+      }
+    },
+    "zpotify_apiBatchCreateSongRequest": {
+      "type": "object",
+      "properties": {
+        "songs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiCreateSongRequest"
+          }
+        }
+      }
+    },
+    "zpotify_apiBatchCreateSongResponse": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
         }
       }
     },

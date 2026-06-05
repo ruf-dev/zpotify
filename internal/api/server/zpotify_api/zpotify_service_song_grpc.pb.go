@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SongAPI_CreateSong_FullMethodName = "/zpotify_api.SongAPI/CreateSong"
-	SongAPI_UpdateSong_FullMethodName = "/zpotify_api.SongAPI/UpdateSong"
-	SongAPI_GetSong_FullMethodName    = "/zpotify_api.SongAPI/GetSong"
+	SongAPI_CreateSong_FullMethodName      = "/zpotify_api.SongAPI/CreateSong"
+	SongAPI_BatchCreateSong_FullMethodName = "/zpotify_api.SongAPI/BatchCreateSong"
+	SongAPI_UpdateSong_FullMethodName      = "/zpotify_api.SongAPI/UpdateSong"
+	SongAPI_GetSong_FullMethodName         = "/zpotify_api.SongAPI/GetSong"
 )
 
 // SongAPIClient is the client API for SongAPI service.
@@ -29,6 +30,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SongAPIClient interface {
 	CreateSong(ctx context.Context, in *CreateSong_Request, opts ...grpc.CallOption) (*CreateSong_Response, error)
+	BatchCreateSong(ctx context.Context, in *BatchCreateSong_Request, opts ...grpc.CallOption) (*BatchCreateSong_Response, error)
 	UpdateSong(ctx context.Context, in *UpdateSong_Request, opts ...grpc.CallOption) (*UpdateSong_Response, error)
 	GetSong(ctx context.Context, in *GetSong_Request, opts ...grpc.CallOption) (*GetSong_Response, error)
 }
@@ -45,6 +47,16 @@ func (c *songAPIClient) CreateSong(ctx context.Context, in *CreateSong_Request, 
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateSong_Response)
 	err := c.cc.Invoke(ctx, SongAPI_CreateSong_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *songAPIClient) BatchCreateSong(ctx context.Context, in *BatchCreateSong_Request, opts ...grpc.CallOption) (*BatchCreateSong_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BatchCreateSong_Response)
+	err := c.cc.Invoke(ctx, SongAPI_BatchCreateSong_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,6 +88,7 @@ func (c *songAPIClient) GetSong(ctx context.Context, in *GetSong_Request, opts .
 // for forward compatibility.
 type SongAPIServer interface {
 	CreateSong(context.Context, *CreateSong_Request) (*CreateSong_Response, error)
+	BatchCreateSong(context.Context, *BatchCreateSong_Request) (*BatchCreateSong_Response, error)
 	UpdateSong(context.Context, *UpdateSong_Request) (*UpdateSong_Response, error)
 	GetSong(context.Context, *GetSong_Request) (*GetSong_Response, error)
 	mustEmbedUnimplementedSongAPIServer()
@@ -90,6 +103,9 @@ type UnimplementedSongAPIServer struct{}
 
 func (UnimplementedSongAPIServer) CreateSong(context.Context, *CreateSong_Request) (*CreateSong_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateSong not implemented")
+}
+func (UnimplementedSongAPIServer) BatchCreateSong(context.Context, *BatchCreateSong_Request) (*BatchCreateSong_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method BatchCreateSong not implemented")
 }
 func (UnimplementedSongAPIServer) UpdateSong(context.Context, *UpdateSong_Request) (*UpdateSong_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateSong not implemented")
@@ -132,6 +148,24 @@ func _SongAPI_CreateSong_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SongAPIServer).CreateSong(ctx, req.(*CreateSong_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SongAPI_BatchCreateSong_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchCreateSong_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SongAPIServer).BatchCreateSong(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SongAPI_BatchCreateSong_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SongAPIServer).BatchCreateSong(ctx, req.(*BatchCreateSong_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -182,6 +216,10 @@ var SongAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateSong",
 			Handler:    _SongAPI_CreateSong_Handler,
+		},
+		{
+			MethodName: "BatchCreateSong",
+			Handler:    _SongAPI_BatchCreateSong_Handler,
 		},
 		{
 			MethodName: "UpdateSong",

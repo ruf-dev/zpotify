@@ -89,6 +89,7 @@ type AudioService interface {
 	Get(fileId int64, start, end int64) (domain.Song, io.ReadCloser, error)
 
 	Create(ctx context.Context, req domain.CreateSong) (int64, error)
+	CreateBatch(ctx context.Context, req []domain.CreateSong) ([]int64, error)
 	Update(ctx context.Context, req domain.UpdateSong) error
 
 	Delete(ctx context.Context, id int64) error

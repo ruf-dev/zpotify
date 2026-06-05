@@ -17,6 +17,13 @@ service SongAPI {
     };
   };
 
+  rpc BatchCreateSong(BatchCreateSong.Request) returns (BatchCreateSong.Response) {
+    option (google.api.http) = {
+      post: "/api/song/batch_create",
+      body: "*"
+    };
+  };
+
   rpc UpdateSong(UpdateSong.Request) returns (UpdateSong.Response) {
     option (google.api.http) = {
       post: "/api/song/update",
@@ -40,6 +47,16 @@ message CreateSong {
 
   message Response {
     int64 id = 1;
+  }
+}
+
+message BatchCreateSong {
+  message Request {
+    repeated CreateSong.Request songs = 1;
+  }
+
+  message Response {
+    repeated int64 ids = 1;
   }
 }
 
