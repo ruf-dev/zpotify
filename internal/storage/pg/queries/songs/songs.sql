@@ -3,16 +3,15 @@ INSERT INTO songs
     (file_id, title)
 VALUES ($1, $2) RETURNING id;
 
--- name: GetSongByFileHash :one
-SELECT s.id,
-       s.title,
-       s.created_at,
-       fm.duration_sec,
-       fm.file_path,
-       s.file_id
-FROM songs s
-         JOIN files_meta fm ON fm.id = s.file_id
-WHERE fm.content_hash = $1;
+-- name: GetSongByFileId :one
+SELECT id,
+       title,
+       created_at,
+       duration_sec,
+       file_path,
+       file_id
+FROM song_base_view_v1 s
+WHERE s.file_id = $1;
 
 -- name: UpdateSongTitle :exec
 UPDATE songs SET title = $1 WHERE id = $2;
@@ -21,14 +20,13 @@ UPDATE songs SET title = $1 WHERE id = $2;
 DELETE FROM songs_artists WHERE song_id = $1;
 
 -- name: GetSongById :one
-SELECT s.id,
-       s.title,
-       s.created_at,
-       fm.duration_sec,
-       fm.file_path,
-       s.file_id
-FROM songs s
-         JOIN files_meta fm ON fm.id = s.file_id
+SELECT id,
+       title,
+       created_at,
+       duration_sec,
+       file_path,
+       file_id
+FROM song_base_view_v1 s
 WHERE s.id = $1;
 
 -- name: GetArtistsBySongId :many

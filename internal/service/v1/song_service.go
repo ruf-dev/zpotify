@@ -3,6 +3,7 @@ package v1
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"io"
 	"path"
@@ -69,7 +70,17 @@ func (s *AudioService) Create(ctx context.Context, req domain.CreateSong) (int64
 		return nil
 	})
 	if err != nil {
-		return 0, rerrors.Wrap(err)
+		if !errors.Is(err, storage.ErrAlreadyExists) {
+			return 0, rerrors.Wrap(err)
+		}
+
+		var song domain.Song
+		song, err = s.songsStorage.GetByFileId(ctx, req.FileID)
+		if err != nil {
+			return 0, rerrors.Wrap(err)
+		}
+
+		songId = song.SongBase.Id
 	}
 
 	return songId, nil

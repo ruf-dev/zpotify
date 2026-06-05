@@ -83,7 +83,7 @@ export class BaseService {
                         throw new ServiceError(WithTitle(err.message));
                     })
                     .then()
-            , 3)
+            , 1)
     }
 }
 

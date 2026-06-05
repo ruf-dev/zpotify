@@ -7,7 +7,6 @@ package songs_q
 
 import (
 	"context"
-	"time"
 )
 
 const clearSongArtists = `-- name: ClearSongArtists :exec
@@ -69,30 +68,20 @@ func (q *Queries) GetArtistsBySongId(ctx context.Context, songID int64) ([]Artis
 	return items, nil
 }
 
-const getSongByFileHash = `-- name: GetSongByFileHash :one
-SELECT s.id,
-       s.title,
-       s.created_at,
-       fm.duration_sec,
-       fm.file_path,
-       s.file_id
-FROM songs s
-         JOIN files_meta fm ON fm.id = s.file_id
-WHERE fm.content_hash = $1
+const getSongByFileId = `-- name: GetSongByFileId :one
+SELECT id,
+       title,
+       created_at,
+       duration_sec,
+       file_path,
+       file_id
+FROM song_base_view_v1 s
+WHERE s.file_id = $1
 `
 
-type GetSongByFileHashRow struct {
-	ID          int64
-	Title       string
-	CreatedAt   time.Time
-	DurationSec int64
-	FilePath    string
-	FileID      int64
-}
-
-func (q *Queries) GetSongByFileHash(ctx context.Context, contentHash string) (GetSongByFileHashRow, error) {
-	row := q.db.QueryRowContext(ctx, getSongByFileHash, contentHash)
-	var i GetSongByFileHashRow
+func (q *Queries) GetSongByFileId(ctx context.Context, fileID int64) (SongBaseViewV1, error) {
+	row := q.db.QueryRowContext(ctx, getSongByFileId, fileID)
+	var i SongBaseViewV1
 	err := row.Scan(
 		&i.ID,
 		&i.Title,
@@ -105,29 +94,19 @@ func (q *Queries) GetSongByFileHash(ctx context.Context, contentHash string) (Ge
 }
 
 const getSongById = `-- name: GetSongById :one
-SELECT s.id,
-       s.title,
-       s.created_at,
-       fm.duration_sec,
-       fm.file_path,
-       s.file_id
-FROM songs s
-         JOIN files_meta fm ON fm.id = s.file_id
+SELECT id,
+       title,
+       created_at,
+       duration_sec,
+       file_path,
+       file_id
+FROM song_base_view_v1 s
 WHERE s.id = $1
 `
 
-type GetSongByIdRow struct {
-	ID          int64
-	Title       string
-	CreatedAt   time.Time
-	DurationSec int64
-	FilePath    string
-	FileID      int64
-}
-
-func (q *Queries) GetSongById(ctx context.Context, id int64) (GetSongByIdRow, error) {
+func (q *Queries) GetSongById(ctx context.Context, id int64) (SongBaseViewV1, error) {
 	row := q.db.QueryRowContext(ctx, getSongById, id)
-	var i GetSongByIdRow
+	var i SongBaseViewV1
 	err := row.Scan(
 		&i.ID,
 		&i.Title,

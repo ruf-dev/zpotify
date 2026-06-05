@@ -28,6 +28,14 @@ function formatTotalSize(files: File[]): string {
     return formatBytes(total);
 }
 
+async function computeHash(file: File): Promise<string> {
+    const buffer = await file.arrayBuffer();
+    const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+    return Array.from(new Uint8Array(hashBuffer))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+}
+
 function CheckIcon() {
     return (
         <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="white" strokeWidth="2.5"
@@ -92,12 +100,16 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
 
     const tracksRef = useRef(tracks);
     tracksRef.current = tracks;
+    const hashSetRef = useRef<Set<string>>(new Set());
+    const hashedFilesRef = useRef<WeakSet<File>>(new WeakSet());
 
     useEffect(() => {
         const initialTracks = tracksRef.current;
         initialTracks.forEach(async (t) => {
             try {
-                const meta = await parseBlob(t.file);
+                const [meta, hash] = await Promise.all([parseBlob(t.file), computeHash(t.file)]);
+                hashSetRef.current.add(hash);
+                hashedFilesRef.current.add(t.file);
                 const dur = meta.format.duration ?? 0;
                 setTracks(prev => prev.map(p => p.id === t.id ? {...p, duration: dur} : p));
             } catch {
@@ -168,8 +180,41 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
         });
     }
 
-    function handleAddFiles(newFiles: File[]) {
-        const newTracks: TrackDraft[] = newFiles.map(f => ({
+    async function handleAddFiles(newFiles: File[]) {
+        const unhashed = tracksRef.current.filter(t => !hashedFilesRef.current.has(t.file));
+        if (unhashed.length > 0) {
+            const pendingHashes = await Promise.all(unhashed.map(t => computeHash(t.file)));
+            unhashed.forEach(function registerHash(t, i) {
+                hashSetRef.current.add(pendingHashes[i]);
+                hashedFilesRef.current.add(t.file);
+            });
+        }
+
+        const hashes = await Promise.all(newFiles.map(computeHash));
+
+        const fresh: File[] = [];
+        const dupeNames: string[] = [];
+        newFiles.forEach(function classifyFile(file, i) {
+            if (hashSetRef.current.has(hashes[i])) {
+                dupeNames.push(file.name);
+            } else {
+                fresh.push(file);
+                hashSetRef.current.add(hashes[i]);
+            }
+        });
+
+        if (dupeNames.length > 0) {
+            toaster.bake({
+                title: 'duplicate file',
+                description: `already added: ${dupeNames.join(', ')}`,
+                level: 'Warn',
+                isDismissable: true,
+            });
+        }
+
+        if (fresh.length === 0) return;
+
+        const newTracks: TrackDraft[] = fresh.map(f => ({
             id: crypto.randomUUID(),
             file: f,
             title: cleanTitle(f.name),

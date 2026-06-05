@@ -1,12 +1,4 @@
 
--- name: GetSongById :one
-SELECT id,
-       file_id,
-       title,
-       created_at
-FROM songs
-WHERE id = $1;
-
 -- name: DeleteSongById :exec
 DELETE
 FROM files_meta

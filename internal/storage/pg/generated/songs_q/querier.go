@@ -12,8 +12,8 @@ type Querier interface {
 	ClearSongArtists(ctx context.Context, songID int64) error
 	CreateSong(ctx context.Context, arg CreateSongParams) (int64, error)
 	GetArtistsBySongId(ctx context.Context, songID int64) ([]Artist, error)
-	GetSongByFileHash(ctx context.Context, contentHash string) (GetSongByFileHashRow, error)
-	GetSongById(ctx context.Context, id int64) (GetSongByIdRow, error)
+	GetSongByFileId(ctx context.Context, fileID int64) (SongBaseViewV1, error)
+	GetSongById(ctx context.Context, id int64) (SongBaseViewV1, error)
 	UpdateSongTitle(ctx context.Context, arg UpdateSongTitleParams) error
 }
 

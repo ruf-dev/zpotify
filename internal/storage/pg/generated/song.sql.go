@@ -22,27 +22,6 @@ func (q *Queries) DeleteSongById(ctx context.Context, id int64) error {
 	return err
 }
 
-const getSongById = `-- name: GetSongById :one
-SELECT id,
-       file_id,
-       title,
-       created_at
-FROM songs
-WHERE id = $1
-`
-
-func (q *Queries) GetSongById(ctx context.Context, id int64) (Song, error) {
-	row := q.db.QueryRowContext(ctx, getSongById, id)
-	var i Song
-	err := row.Scan(
-		&i.ID,
-		&i.FileID,
-		&i.Title,
-		&i.CreatedAt,
-	)
-	return i, err
-}
-
 const upsertSongArtist = `-- name: UpsertSongArtist :exec
 INSERT INTO songs_artists
     (song_id, artist_uuid, order_id)

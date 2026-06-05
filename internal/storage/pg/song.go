@@ -33,28 +33,33 @@ func (s *SongsStorage) GetById(ctx context.Context, songId int64) (domain.Song, 
 		return domain.Song{}, wrapPgErr(err)
 	}
 
-	artists, err := s.querier.GetArtistsBySongId(ctx, songId)
+	domainArtists, err := s.listArtists(ctx, songId)
 	if err != nil {
-		return domain.Song{}, wrapPgErr(err)
-	}
-
-	domainArtists := make([]domain.ArtistsBase, len(artists))
-	for i, a := range artists {
-		domainArtists[i] = domain.ArtistsBase{
-			Uuid: a.Uuid.String(),
-			Name: a.Name,
-		}
+		return domain.Song{}, rerrors.Wrap(err, "error listing artists")
 	}
 
 	song := domain.Song{
-		SongBase: domain.SongBase{
-			Id:       int32(row.ID),
-			Title:    row.Title,
-			Duration: time.Duration(row.DurationSec) * time.Second,
-			FilePath: row.FilePath,
-			FileId:   row.FileID,
-		},
-		Artists: domainArtists,
+		SongBase: toSongBase(row),
+		Artists:  domainArtists,
+	}
+
+	return song, nil
+}
+
+func (s *SongsStorage) GetByFileId(ctx context.Context, fileId int64) (domain.Song, error) {
+	row, err := s.querier.GetSongByFileId(ctx, fileId)
+	if err != nil {
+		return domain.Song{}, wrapPgErr(err, withEntityInfo("file_id", fileId))
+	}
+
+	domainArtists, err := s.listArtists(ctx, row.ID)
+	if err != nil {
+		return domain.Song{}, rerrors.Wrap(err, "error listing artists")
+	}
+
+	song := domain.Song{
+		SongBase: toSongBase(row),
+		Artists:  domainArtists,
 	}
 
 	return song, nil
@@ -67,39 +72,6 @@ func (s *SongsStorage) Create(ctx context.Context, params songs_q.CreateSongPara
 	}
 
 	return id, nil
-}
-
-func (s *SongsStorage) GetByFileHash(ctx context.Context, hash string) (domain.Song, error) {
-	row, err := s.querier.GetSongByFileHash(ctx, hash)
-	if err != nil {
-		return domain.Song{}, wrapPgErr(err)
-	}
-
-	artists, err := s.querier.GetArtistsBySongId(ctx, row.ID)
-	if err != nil {
-		return domain.Song{}, wrapPgErr(err)
-	}
-
-	domainArtists := make([]domain.ArtistsBase, len(artists))
-	for i, a := range artists {
-		domainArtists[i] = domain.ArtistsBase{
-			Uuid: a.Uuid.String(),
-			Name: a.Name,
-		}
-	}
-
-	song := domain.Song{
-		SongBase: domain.SongBase{
-			Id:       int32(row.ID),
-			Title:    row.Title,
-			Duration: time.Duration(row.DurationSec) * time.Second,
-			FilePath: row.FilePath,
-			FileId:   row.FileID,
-		},
-		Artists: domainArtists,
-	}
-
-	return song, nil
 }
 
 func (s *SongsStorage) CreateBatch(ctx context.Context, songs []songs_q.CreateSongParams) ([]int64, error) {
@@ -181,28 +153,35 @@ func (s *SongsStorage) AddArtist(ctx context.Context, songId int64, artistUuid s
 	return nil
 }
 
-//func (s *SongsStorage) AddSongsToPlaylist(ctx context.Context, playlistUuid string, songIds ...int32) error {
-//	_, err := s.db.ExecContext(ctx, `
-//		 INSERT INTO playlist_songs (playlist_uuid, file_id, order_number)
-//       	SELECT
-//       	    $1,
-//       	    unnest($2::text[]),
-//              (
-//              	SELECT
-//                   COALESCE(MAX(order_number), 0) + 1
-//               FROM playlist_songs
-//               WHERE playlist_uuid = $1) + generate_series(0, array_length($2::text[], 1) - 1)
-//`, playlistUuid, pq.Int32Array(songIds))
-//	if err != nil {
-//		return wrapPgErr(err)
-//	}
-//
-//	return nil
-//}
+func (s *SongsStorage) listArtists(ctx context.Context, songId int64) ([]domain.ArtistsBase, error) {
+	artists, err := s.querier.GetArtistsBySongId(ctx, songId)
+	if err != nil {
+		return nil, wrapPgErr(err)
+	}
 
+	domainArtists := make([]domain.ArtistsBase, len(artists))
+	for i, a := range artists {
+		domainArtists[i] = domain.ArtistsBase{
+			Uuid: a.Uuid.String(),
+			Name: a.Name,
+		}
+	}
+
+	return domainArtists, nil
+}
 func (s *SongsStorage) WithTx(tx *sql.Tx) storage.SongStorage {
 	return &SongsStorage{
 		db:      &txWrapper{tx},
 		querier: songs_q.New(tx),
+	}
+}
+
+func toSongBase(song songs_q.SongBaseViewV1) domain.SongBase {
+	return domain.SongBase{
+		Id:       song.ID,
+		Title:    song.Title,
+		Duration: time.Duration(song.DurationSec) * time.Second,
+		FilePath: song.FilePath,
+		FileId:   song.FileID,
 	}
 }

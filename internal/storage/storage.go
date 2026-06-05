@@ -85,7 +85,7 @@ type SongStorage interface {
 	WithTx(tx *sql.Tx) SongStorage
 
 	GetById(ctx context.Context, songId int64) (domain.Song, error)
-	GetByFileHash(ctx context.Context, hash string) (domain.Song, error)
+	GetByFileId(ctx context.Context, fileId int64) (domain.Song, error)
 
 	Create(ctx context.Context, song songs_q.CreateSongParams) (int64, error)
 	CreateBatch(ctx context.Context, songs []songs_q.CreateSongParams) ([]int64, error)

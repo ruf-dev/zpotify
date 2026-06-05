@@ -81,7 +81,7 @@ const (
 )
 
 type SongBase struct {
-	Id       int32
+	Id       int64
 	Title    string
 	Duration time.Duration
 	FilePath string

@@ -174,6 +174,15 @@ type Song struct {
 	CreatedAt time.Time
 }
 
+type SongBaseViewV1 struct {
+	ID          int64
+	Title       string
+	CreatedAt   time.Time
+	DurationSec int64
+	FilePath    string
+	FileID      int64
+}
+
 type SongsArtist struct {
 	SongID     int64
 	ArtistUuid uuid.UUID

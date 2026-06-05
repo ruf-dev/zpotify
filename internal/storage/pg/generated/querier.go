@@ -26,7 +26,6 @@ type Querier interface {
 	GetHomeSegments(ctx context.Context, userID int64) ([]UserHomeSegment, error)
 	GetPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) ([]Artist, error)
 	GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error)
-	GetSongById(ctx context.Context, id int64) (Song, error)
 	GetTelegramIdentityByTgId(ctx context.Context, telegramID int64) (IdentityTelegram, error)
 	GetTelegramIdentityByTgIdForUpdate(ctx context.Context, telegramID int64) (IdentityTelegram, error)
 	GetUiSettings(ctx context.Context, userID int64) (UserSetting, error)
