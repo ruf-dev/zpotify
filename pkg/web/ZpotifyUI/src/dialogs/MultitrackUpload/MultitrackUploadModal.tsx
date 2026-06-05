@@ -112,8 +112,10 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
     );
 
     const handleCreateArtist = useCallback(
-        async (name: string): Promise<ArtistItem> => ({id: name, name}),
-        []
+        async function handleCreateArtist(name: string): Promise<ArtistItem> {
+            return Services().Artists().CreateArtist(name);
+        },
+        [Services]
     );
 
     function handleTitleChange(id: string, title: string) {
@@ -185,8 +187,9 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
 
     const totalDuration = tracks.reduce((s, t) => s + t.duration, 0);
     const isValid = tracks.length > 0 && (!playlistMode || playlistName.trim().length > 0);
-    const titleText = playlistMode ? 'new playlist' : 'upload tracks';
-    const submitLabel = playlistMode ? 'create playlist' : 'upload tracks';
+    const isAlbum = playlistMode && albumArtists.length > 0;
+    const titleText = playlistMode ? (isAlbum ? 'new album' : 'new playlist') : 'upload tracks';
+    const submitLabel = playlistMode ? (isAlbum ? 'create album' : 'create playlist') : 'upload tracks';
 
     return (
         <div

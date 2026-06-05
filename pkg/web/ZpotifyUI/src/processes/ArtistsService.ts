@@ -7,9 +7,11 @@ import {
 
 import { BaseService } from "@/processes/BaseService.ts";
 import { AuthMiddleware } from "@/processes/Auth.ts";
+import type { ArtistItem } from "@/components/ArtistChipsField/ArtistChipsField";
 
 export interface IArtistsService {
     ListArtist(search: string, offset: number, limit: number): Promise<ListArtistResponse>
+    CreateArtist(name: string): Promise<ArtistItem>
 }
 
 export class ArtistsService extends BaseService implements IArtistsService {
@@ -31,5 +33,12 @@ export class ArtistsService extends BaseService implements IArtistsService {
         return this.executeAuthApiCall(async (initReq) => {
             return ArtistsAPI.ListArtist(req, initReq);
         });
+    }
+
+    async CreateArtist(name: string): Promise<ArtistItem> {
+        const res = await this.executeAuthApiCall(async (initReq) => {
+            return ArtistsAPI.CreateArtist({name}, initReq);
+        });
+        return {id: res.artist!.uuid!, name: res.artist!.name!};
     }
 }

@@ -131,6 +131,7 @@ type PlaylistService interface {
 
 type ArtistsService interface {
 	List(ctx context.Context, req domain.ListArtists) ([]domain.ArtistsBase, error)
+	Create(ctx context.Context, name string) (domain.ArtistsBase, error)
 }
 
 type FileService interface {

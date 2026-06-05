@@ -24,8 +24,21 @@ export type ListArtistFilters = {
 
 export type ListArtist = Record<string, never>;
 
+export type CreateArtistRequest = {
+  name?: string;
+};
+
+export type CreateArtistResponse = {
+  artist?: ZpotifyApiZpotifyCommon.ArtistBase;
+};
+
+export type CreateArtist = Record<string, never>;
+
 export class ArtistsAPI {
   static ListArtist(this:void, req: ListArtistRequest, initReq?: fm.InitReq): Promise<ListArtistResponse> {
     return fm.fetchRequest<ListArtistResponse>(`/api/artists/list`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static CreateArtist(this:void, req: CreateArtistRequest, initReq?: fm.InitReq): Promise<CreateArtistResponse> {
+    return fm.fetchRequest<CreateArtistResponse>(`/api/artists/create`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }

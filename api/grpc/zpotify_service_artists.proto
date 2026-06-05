@@ -18,6 +18,13 @@ service ArtistsAPI {
     };
   };
 
+  rpc CreateArtist(CreateArtist.Request) returns (CreateArtist.Response) {
+    option (google.api.http) = {
+      post: "/api/artists/create"
+      body: "*",
+    };
+  };
+
 }
 
 message ListArtist {
@@ -32,5 +39,15 @@ message ListArtist {
 
   message Filters {
     optional string search = 1;
+  }
+}
+
+message CreateArtist {
+  message Request {
+    string name = 1;
+  }
+
+  message Response {
+    ArtistBase artist = 1;
   }
 }

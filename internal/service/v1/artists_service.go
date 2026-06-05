@@ -27,3 +27,12 @@ func (s *ArtistsService) List(ctx context.Context, req domain.ListArtists) ([]do
 
 	return artists, nil
 }
+
+func (s *ArtistsService) Create(ctx context.Context, name string) (domain.ArtistsBase, error) {
+	artists, err := s.storage.ArtistStorage().Return(ctx, []string{name})
+	if err != nil {
+		return domain.ArtistsBase{}, rerrors.Wrap(err, "error creating artist")
+	}
+
+	return artists[0], nil
+}

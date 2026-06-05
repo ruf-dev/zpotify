@@ -68,4 +68,5 @@ components; nothing imports from pages.
 npm run dev          # Vite dev server
 npm run build:ui     # tsc + vite build
 npm run lint         # ESLint
+bun gen # Generate proto contract 
 ```

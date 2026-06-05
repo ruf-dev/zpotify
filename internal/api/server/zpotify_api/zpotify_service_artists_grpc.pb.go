@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ArtistsAPI_ListArtist_FullMethodName = "/zpotify_api.ArtistsAPI/ListArtist"
+	ArtistsAPI_ListArtist_FullMethodName   = "/zpotify_api.ArtistsAPI/ListArtist"
+	ArtistsAPI_CreateArtist_FullMethodName = "/zpotify_api.ArtistsAPI/CreateArtist"
 )
 
 // ArtistsAPIClient is the client API for ArtistsAPI service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ArtistsAPIClient interface {
 	ListArtist(ctx context.Context, in *ListArtist_Request, opts ...grpc.CallOption) (*ListArtist_Response, error)
+	CreateArtist(ctx context.Context, in *CreateArtist_Request, opts ...grpc.CallOption) (*CreateArtist_Response, error)
 }
 
 type artistsAPIClient struct {
@@ -47,11 +49,22 @@ func (c *artistsAPIClient) ListArtist(ctx context.Context, in *ListArtist_Reques
 	return out, nil
 }
 
+func (c *artistsAPIClient) CreateArtist(ctx context.Context, in *CreateArtist_Request, opts ...grpc.CallOption) (*CreateArtist_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateArtist_Response)
+	err := c.cc.Invoke(ctx, ArtistsAPI_CreateArtist_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ArtistsAPIServer is the server API for ArtistsAPI service.
 // All implementations must embed UnimplementedArtistsAPIServer
 // for forward compatibility.
 type ArtistsAPIServer interface {
 	ListArtist(context.Context, *ListArtist_Request) (*ListArtist_Response, error)
+	CreateArtist(context.Context, *CreateArtist_Request) (*CreateArtist_Response, error)
 	mustEmbedUnimplementedArtistsAPIServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedArtistsAPIServer struct{}
 
 func (UnimplementedArtistsAPIServer) ListArtist(context.Context, *ListArtist_Request) (*ListArtist_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListArtist not implemented")
+}
+func (UnimplementedArtistsAPIServer) CreateArtist(context.Context, *CreateArtist_Request) (*CreateArtist_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateArtist not implemented")
 }
 func (UnimplementedArtistsAPIServer) mustEmbedUnimplementedArtistsAPIServer() {}
 func (UnimplementedArtistsAPIServer) testEmbeddedByValue()                    {}
@@ -104,6 +120,24 @@ func _ArtistsAPI_ListArtist_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ArtistsAPI_CreateArtist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateArtist_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtistsAPIServer).CreateArtist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ArtistsAPI_CreateArtist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtistsAPIServer).CreateArtist(ctx, req.(*CreateArtist_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ArtistsAPI_ServiceDesc is the grpc.ServiceDesc for ArtistsAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var ArtistsAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListArtist",
 			Handler:    _ArtistsAPI_ListArtist_Handler,
+		},
+		{
+			MethodName: "CreateArtist",
+			Handler:    _ArtistsAPI_CreateArtist_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -16,6 +16,38 @@
     "application/json"
   ],
   "paths": {
+    "/api/artists/create": {
+      "post": {
+        "operationId": "ArtistsAPI_CreateArtist",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiCreateArtistResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiCreateArtistRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ArtistsAPI"
+        ]
+      }
+    },
     "/api/artists/list": {
       "post": {
         "operationId": "ArtistsAPI_ListArtist",
@@ -94,6 +126,22 @@
         },
         "name": {
           "type": "string"
+        }
+      }
+    },
+    "zpotify_apiCreateArtistRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiCreateArtistResponse": {
+      "type": "object",
+      "properties": {
+        "artist": {
+          "$ref": "#/definitions/zpotify_apiArtistBase"
         }
       }
     },
