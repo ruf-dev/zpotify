@@ -69,6 +69,41 @@ func (q *Queries) GetArtistsBySongId(ctx context.Context, songID int64) ([]Artis
 	return items, nil
 }
 
+const getSongByFileHash = `-- name: GetSongByFileHash :one
+SELECT s.id,
+       s.title,
+       s.created_at,
+       fm.duration_sec,
+       fm.file_path,
+       s.file_id
+FROM songs s
+         JOIN files_meta fm ON fm.id = s.file_id
+WHERE fm.content_hash = $1
+`
+
+type GetSongByFileHashRow struct {
+	ID          int64
+	Title       string
+	CreatedAt   time.Time
+	DurationSec int64
+	FilePath    string
+	FileID      int64
+}
+
+func (q *Queries) GetSongByFileHash(ctx context.Context, contentHash string) (GetSongByFileHashRow, error) {
+	row := q.db.QueryRowContext(ctx, getSongByFileHash, contentHash)
+	var i GetSongByFileHashRow
+	err := row.Scan(
+		&i.ID,
+		&i.Title,
+		&i.CreatedAt,
+		&i.DurationSec,
+		&i.FilePath,
+		&i.FileID,
+	)
+	return i, err
+}
+
 const getSongById = `-- name: GetSongById :one
 SELECT s.id,
        s.title,

@@ -30,7 +30,8 @@ function formatTotalSize(files: File[]): string {
 
 function CheckIcon() {
     return (
-        <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="white" strokeWidth="2.5"
+             strokeLinecap="round" strokeLinejoin="round">
             <polyline className={cls.CheckPath} points="4 10 8 14 16 6"/>
         </svg>
     );
@@ -38,7 +39,8 @@ function CheckIcon() {
 
 function ChevronIcon() {
     return (
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"
+             strokeLinecap="round" strokeLinejoin="round">
             <polyline points="9 6 15 12 9 18"/>
         </svg>
     );
@@ -78,6 +80,8 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
             artists: [] as ArtistItem[],
             duration: 0,
             size: f.size,
+            uploadStatus: 'pending' as const,
+            uploadProgress: 0,
         }))
     );
     const [playlistMode, setPlaylistMode] = useState(true);
@@ -100,6 +104,31 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
                 // duration stays 0, badge shows "—"
             }
         });
+    }, []);
+
+    useEffect(() => {
+        const initialTracks = tracksRef.current;
+        initialTracks.forEach((t) => {
+            setTracks(prev => prev.map(p => p.id === t.id ? {...p, uploadStatus: 'uploading'} : p));
+            Services()
+                .WebApi()
+                .UploadFileWithProgress(t.file,
+                    (pct) => {
+                        setTracks(prev => prev
+                            .map(p => p.id === t.id ? {...p, uploadProgress: pct} : p));
+                    })
+                .then((fileId) => {
+                    setTracks(prev => prev.map(p => p.id === t.id
+                        ? {...p, fileId, uploadProgress: 100, uploadStatus: 'done'}
+                        : p
+                    ));
+                })
+                .catch(() => {
+                    setTracks(prev => prev
+                        .map(p => p.id === t.id ? {...p, uploadStatus: 'error'} : p));
+                });
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const loadArtistOptions = useCallback(
@@ -150,12 +179,11 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
             const songIds: string[] = [];
 
             for (const track of tracks) {
-                const fileId = await Services().WebApi().UploadFile(track.file);
                 const seen = new Set<string>();
                 const artistUuids = [...albumArtists, ...track.artists]
                     .filter(a => !seen.has(a.id) && seen.add(a.id))
                     .map(a => a.id);
-                const songId = await Services().Songs().CreateSong(track.title || track.file.name, artistUuids, fileId);
+                const songId = await Services().Songs().CreateSong(track.title || track.file.name, artistUuids, track.fileId!);
                 songIds.push(songId);
             }
 
@@ -177,7 +205,10 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
                 );
             }
 
-            setTimeout(() => { CloseDialog(); window.location.reload(); }, 800);
+            setTimeout(() => {
+                CloseDialog();
+                window.location.reload();
+            }, 800);
         } catch (e) {
             setSubmitting(false);
             UnlockClosing();
@@ -186,7 +217,10 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
     }
 
     const totalDuration = tracks.reduce((s, t) => s + t.duration, 0);
-    const isValid = tracks.length > 0 && (!playlistMode || playlistName.trim().length > 0);
+    const allUploaded = tracks.length > 0 && tracks.every(t => t.uploadStatus === 'done');
+    const hasUploadError = tracks.some(t => t.uploadStatus === 'error');
+    const isUploading = !hasUploadError && tracks.some(t => t.uploadStatus === 'pending' || t.uploadStatus === 'uploading');
+    const isValid = tracks.length > 0 && (!playlistMode || playlistName.trim().length > 0) && allUploaded;
     const isAlbum = playlistMode && albumArtists.length > 0;
     const titleText = playlistMode ? (isAlbum ? 'new album' : 'new playlist') : 'upload tracks';
     const submitLabel = playlistMode ? (isAlbum ? 'create album' : 'create playlist') : 'upload tracks';
@@ -210,7 +244,8 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
                     disabled={submitting}
                     aria-label="close"
                 >
-                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="2.2"
+                         strokeLinecap="round">
                         <line x1="1" y1="1" x2="12" y2="12"/>
                         <line x1="12" y1="1" x2="1" y2="12"/>
                     </svg>
@@ -249,11 +284,15 @@ export default function MultitrackUploadModal({files}: MultitrackUploadModalProp
 
             <div className={cls.PanelFooter}>
                 <span className={cls.ValidationHint}>
-                    {!isValid && playlistMode && !playlistName.trim() && tracks.length > 0
-                        ? 'name the playlist to continue'
-                        : tracks.length === 0
-                            ? 'add at least one track'
-                            : ''}
+                    {hasUploadError
+                        ? 'some files failed to upload'
+                        : isUploading
+                            ? 'uploading files…'
+                            : !isValid && playlistMode && !playlistName.trim() && tracks.length > 0
+                                ? 'name the playlist to continue'
+                                : tracks.length === 0
+                                    ? 'add at least one track'
+                                    : ''}
                 </span>
                 <button
                     type="button"

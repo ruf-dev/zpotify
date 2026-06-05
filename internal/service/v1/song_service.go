@@ -69,7 +69,7 @@ func (s *AudioService) Create(ctx context.Context, req domain.CreateSong) (int64
 		return nil
 	})
 	if err != nil {
-		return 0, err
+		return 0, rerrors.Wrap(err)
 	}
 
 	return songId, nil

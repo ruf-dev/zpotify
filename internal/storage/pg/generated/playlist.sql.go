@@ -61,7 +61,9 @@ WITH created_playlist AS (
 INSERT INTO user_playlists (user_id, playlist_id, order_id, can_add_songs, can_delete_songs)
 VALUES ($4,
         (SELECT uuid FROM created_playlist),
-        (SELECT COALESCE(MAX(order_id), 0) + 1 FROM user_playlists WHERE user_id = $4),
+        (SELECT
+             COALESCE(MAX(order_id), 0) + 1
+         FROM user_playlists WHERE user_id = $4),
         true, true)
 RETURNING playlist_id
 `

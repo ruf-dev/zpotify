@@ -9,6 +9,7 @@ import {
 
 export interface WebApi {
     UploadFile(file: File): Promise<string>
+    UploadFileWithProgress(file: File, onProgress: (pct: number) => void): Promise<string>
 }
 
 enum WebApiUriPath {
@@ -30,7 +31,6 @@ export class WebApiImpl extends BaseService implements WebApi {
 
                 const url = `${initReq.pathPrefix ?? ''}${WebApiUriPath.Upload}`
 
-
                 const response = await fetch(url, {
                     method: 'POST',
                     headers,
@@ -45,6 +45,50 @@ export class WebApiImpl extends BaseService implements WebApi {
                 throw await ServiceErrorFromHttp(response)
             }
         )
+    }
+
+    UploadFileWithProgress(file: File, onProgress: (pct: number) => void): Promise<string> {
+        return this.executeAuthApiCall((initReq) => {
+            return new Promise<string>((resolve, reject) => {
+                const formData = new FormData()
+                formData.append('file', file, file.name)
+
+                const headers = new Headers(initReq.headers as HeadersInit)
+                headers.delete('Content-Type')
+
+                const url = `${initReq.pathPrefix ?? ''}${WebApiUriPath.Upload}`
+
+                const xhr = new XMLHttpRequest()
+                xhr.open('POST', url)
+                headers.forEach((value, key) => { xhr.setRequestHeader(key, value) })
+
+                xhr.upload.onprogress = (e) => {
+                    if (e.lengthComputable) {
+                        onProgress(Math.round((e.loaded / e.total) * 100))
+                    }
+                }
+
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        const body = JSON.parse(xhr.responseText) as { id: number }
+                        resolve(String(body.id))
+                    } else {
+                        reject(new ServiceError(
+                            WithHttpStatus(xhr.status),
+                            WithStatusCode(xhr.status),
+                            WithTitle('Error calling WebApi'),
+                            WithDescription(xhr.responseText),
+                        ))
+                    }
+                }
+
+                xhr.onerror = () => {
+                    reject(new ServiceError(WithTitle('Server is not available. Try again later')))
+                }
+
+                xhr.send(formData)
+            })
+        })
     }
 }
 

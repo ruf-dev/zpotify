@@ -3,6 +3,17 @@ INSERT INTO songs
     (file_id, title)
 VALUES ($1, $2) RETURNING id;
 
+-- name: GetSongByFileHash :one
+SELECT s.id,
+       s.title,
+       s.created_at,
+       fm.duration_sec,
+       fm.file_path,
+       s.file_id
+FROM songs s
+         JOIN files_meta fm ON fm.id = s.file_id
+WHERE fm.content_hash = $1;
+
 -- name: UpdateSongTitle :exec
 UPDATE songs SET title = $1 WHERE id = $2;
 

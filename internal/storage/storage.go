@@ -85,6 +85,7 @@ type SongStorage interface {
 	WithTx(tx *sql.Tx) SongStorage
 
 	GetById(ctx context.Context, songId int64) (domain.Song, error)
+	GetByFileHash(ctx context.Context, hash string) (domain.Song, error)
 
 	Create(ctx context.Context, song songs_q.CreateSongParams) (int64, error)
 	CreateBatch(ctx context.Context, songs []songs_q.CreateSongParams) ([]int64, error)
@@ -92,17 +93,6 @@ type SongStorage interface {
 	ClearArtists(ctx context.Context, songId int64) error
 
 	AddArtist(ctx context.Context, songId int64, artistUuid string, order int) error
-
-	//Save(ctx context.Context, song domain.SongBase) error
-	//SaveSongsArtists(ctx context.Context, songId int64, artist uuid.UUID, orderId int16) error
-
-	//AddSongsToPlaylist(ctx context.Context, playlistUuid string, songIds ...int32) error
-
-	//Count(ctx context.Context, r domain.ListSongsInPlaylist) (uint64, error)
-
-	//Get(ctx context.Context, id int64) (domain.SongBase, error)
-	//GetByFileId(ctx context.Context, id int64) (domain.SongBase, error)
-	//Delete(ctx context.Context, id int64) error
 }
 
 type ArtistStorage interface {

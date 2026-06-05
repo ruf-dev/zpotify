@@ -3,10 +3,13 @@ package pg
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 
 	"github.com/lib/pq"
 	"github.com/rs/zerolog/log"
+	"go.redsock.ru/rerrors"
 	"go.redsock.ru/toolbox/closer"
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
 
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
@@ -84,7 +87,12 @@ func (d *dataStorage) TxManager() *tx_manager.TxManager {
 	return tx_manager.New(d.conn)
 }
 
-func wrapPgErr(err error) error {
+type errInfo struct {
+}
+
+type wrapperOpt func(e error) error
+
+func wrapPgErr(err error, opt ...wrapperOpt) error {
 	if errors.Is(err, sql.ErrNoRows) {
 		return storage.ErrNotFound
 	}
@@ -96,10 +104,14 @@ func wrapPgErr(err error) error {
 
 	switch pgErr.Code {
 	case "23505":
-		return storage.ErrAlreadyExists
-	default:
-		return err
+		err = storage.ErrAlreadyExists
 	}
+
+	for _, o := range opt {
+		err = o(err)
+	}
+
+	return err
 }
 
 type scanner interface {
@@ -111,5 +123,18 @@ func closeRowScanner(s closer.Closable) {
 	if err != nil {
 		log.Err(err).
 			Msg("error closing row scanner")
+	}
+}
+
+func withEntityInfo(entityType string, entityIdentifier any) wrapperOpt {
+	return func(e error) error {
+		return rerrors.Wrap(e, &errdetails.ErrorInfo{
+			Reason: e.Error(),
+			Domain: "storage",
+			Metadata: map[string]string{
+				"entity_type": entityType,
+				"entity_id":   fmt.Sprint(entityIdentifier),
+			},
+		})
 	}
 }

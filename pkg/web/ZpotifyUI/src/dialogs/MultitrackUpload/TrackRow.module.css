@@ -1,4 +1,6 @@
 .TrackRowContainer {
+    position: relative;
+    overflow: hidden;
     display: grid;
     grid-template-columns: 1.5rem 1.5rem 1fr auto auto;
     align-items: start;
@@ -9,6 +11,25 @@
     background: var(--color-bg-card);
     box-shadow: 0 1px 0 rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.18);
     transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.ProgressFill {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: rgba(217, 0, 127, 0.09);
+    transform: scaleX(var(--upload-pct, 0));
+    transform-origin: left;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.ProgressFill.UploadDone {
+    background: rgba(217, 0, 127, 0.09);
+}
+
+.ProgressFill.UploadError {
+    background: rgba(193, 37, 61, 0.12);
+    transform: scaleX(1);
 }
 
 .TrackRowContainer:not(.AnyDragging):hover {

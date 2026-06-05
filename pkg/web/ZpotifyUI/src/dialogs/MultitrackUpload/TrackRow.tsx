@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import cls from './TrackRow.module.css';
 import EditableTitle from '@/components/EditableTitle/EditableTitle';
 import ArtistChipsField from '@/components/ArtistChipsField/ArtistChipsField';
@@ -11,6 +12,9 @@ export interface TrackDraft {
     artists: ArtistItem[];
     duration: number;
     size: number;
+    uploadStatus: 'pending' | 'uploading' | 'done' | 'error';
+    uploadProgress: number;
+    fileId?: string;
 }
 
 interface TrackRowProps {
@@ -71,9 +75,17 @@ export default function TrackRow({
     return (
         <div
             ref={rowRef}
-            className={`${cls.TrackRowContainer} ${isDragging ? cls.IsDragging : ''} ${anyDragging ? cls.AnyDragging : ''}`}
-            style={dragStyle ?? undefined}
+            className={cn(cls.TrackRowContainer, isDragging && cls.IsDragging, anyDragging && cls.AnyDragging)}
+            style={{
+                ...(dragStyle ?? {}),
+                '--upload-pct': String(track.uploadProgress / 100),
+            } as React.CSSProperties}
         >
+            <div className={cn(
+                cls.ProgressFill,
+                track.uploadStatus === 'done' && cls.UploadDone,
+                track.uploadStatus === 'error' && cls.UploadError,
+            )}/>
             <span
                 className={cls.DragHandle}
                 onPointerDown={onHandlePointerDown}

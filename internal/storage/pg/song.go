@@ -63,10 +63,43 @@ func (s *SongsStorage) GetById(ctx context.Context, songId int64) (domain.Song, 
 func (s *SongsStorage) Create(ctx context.Context, params songs_q.CreateSongParams) (int64, error) {
 	id, err := s.querier.CreateSong(ctx, params)
 	if err != nil {
-		return 0, wrapPgErr(err)
+		return 0, wrapPgErr(err, withEntityInfo("song", params.FileID))
 	}
 
 	return id, nil
+}
+
+func (s *SongsStorage) GetByFileHash(ctx context.Context, hash string) (domain.Song, error) {
+	row, err := s.querier.GetSongByFileHash(ctx, hash)
+	if err != nil {
+		return domain.Song{}, wrapPgErr(err)
+	}
+
+	artists, err := s.querier.GetArtistsBySongId(ctx, row.ID)
+	if err != nil {
+		return domain.Song{}, wrapPgErr(err)
+	}
+
+	domainArtists := make([]domain.ArtistsBase, len(artists))
+	for i, a := range artists {
+		domainArtists[i] = domain.ArtistsBase{
+			Uuid: a.Uuid.String(),
+			Name: a.Name,
+		}
+	}
+
+	song := domain.Song{
+		SongBase: domain.SongBase{
+			Id:       int32(row.ID),
+			Title:    row.Title,
+			Duration: time.Duration(row.DurationSec) * time.Second,
+			FilePath: row.FilePath,
+			FileId:   row.FileID,
+		},
+		Artists: domainArtists,
+	}
+
+	return song, nil
 }
 
 func (s *SongsStorage) CreateBatch(ctx context.Context, songs []songs_q.CreateSongParams) ([]int64, error) {
