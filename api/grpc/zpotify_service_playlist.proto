@@ -58,6 +58,14 @@ service PlaylistAPI {
       body: "*"
     };
   }
+
+  // TODO: Implement
+  rpc ListPlaylists(ListPlaylists.Request) returns (ListPlaylists.Response) {
+    option (google.api.http) = {
+      post: "/api/playlist/list",
+      body: "*"
+    };
+  }
 }
 
 
@@ -134,4 +142,15 @@ message AddSongToPlaylist {
     int32 song_id = 2;
   }
   message Response {}
+}
+
+message ListPlaylists {
+  message Request {
+    Paging paging = 1;
+  }
+
+  message Response {
+    repeated Playlist playlists = 1;
+    uint32 total = 2;
+  }
 }

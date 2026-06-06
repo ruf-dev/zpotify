@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import cls from '@/pages/home/HomePage.module.css';
 import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
 import useUser from '@/entities/user/useUser.ts';
-import { Path } from '@/app/routing/Router.tsx';
+import { Path } from '@/app/routing/paths.ts';
 import HeaderPart from '@/widgets/Header/HeaderPart.tsx';
 import MusicPlayerWithLogo from '@/widgets/MusicPlayer/MusicPlayerWithLogo.tsx';
 import { HomeSegmentProps } from '@/shared/model/HomeSegments.tsx';

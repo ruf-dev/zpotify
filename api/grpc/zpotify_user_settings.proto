@@ -16,6 +16,8 @@ message HomePageSegment {
   oneof segment {
     PlaylistSegment playlist_segment = 1;
     Management management_segment = 2;
+    // TODO: Implement — include LibrarySegment in GetUserSettings response
+    LibrarySegment library_segment = 3;
   }
 
   message PlaylistSegment {
@@ -23,6 +25,10 @@ message HomePageSegment {
   }
 
   message Management {
+
+  }
+
+  message LibrarySegment {
 
   }
 }

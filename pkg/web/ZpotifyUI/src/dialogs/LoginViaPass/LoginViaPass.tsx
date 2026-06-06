@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import cls from '@/dialogs/LoginViaPass/LoginViaPass.module.css';
 import FloatInput from '@/shared/ui/FloatInput.tsx';
 import useUser from '@/entities/user/useUser.ts';
-import { Path } from '@/app/routing/Router.tsx';
+import { Path } from '@/app/routing/paths';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 
 export default function LoginViaPass() {

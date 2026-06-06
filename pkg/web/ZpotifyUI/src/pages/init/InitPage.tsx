@@ -6,7 +6,7 @@ import ZLogoLanding from '@/pages/init/ZLogoLanding.tsx';
 import LoginPasswordDialog from '@/dialogs/LoginViaPass/LoginViaPass.tsx';
 import AuthButton from '@/shared/ui/AuthButton.tsx';
 import TelegramAuth from '@/features/auth/TelegramAuth.tsx';
-import { Path } from '@/app/routing/Router.tsx';
+import { Path } from '@/app/routing/paths.ts';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
 import useUser from '@/entities/user/useUser.ts';

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import cls from '@/widgets/PlaylistHomeSegment/PlaylistHomeSegment.module.css';
 import Pen from '@/assets/pen.svg';
 import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
-import { playlistPath } from '@/app/routing/Router.tsx';
+import { playlistPath } from '@/app/routing/paths.ts';
 import LazyLoadSongsList from '@/widgets/TrackList/LazyLoadSongsList.tsx';
 import IconButton from '@/shared/ui/IconButton.tsx';
 import GhostSong from '@/entities/song/GhostSong.tsx';

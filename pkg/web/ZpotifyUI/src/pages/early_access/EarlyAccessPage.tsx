@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import cls from '@/pages/early_access/EarlyAccessPage.module.css';
 import useUser from '@/entities/user/useUser.ts';
-import { Path } from '@/app/routing/Router.tsx';
+import { Path } from '@/app/routing/paths.ts';
 import Button from '@/shared/ui/Button';
 
 export default function EarlyAccessPage() {

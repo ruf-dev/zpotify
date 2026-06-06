@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import cls from '@/widgets/Header/HeaderPart.module.css';
 import AnimatedZ from '@/assets/AnimatedZ.tsx';
-import { Path } from '@/app/routing/Router.tsx';
+import { Path } from '@/app/routing/paths';
 import UserWidget from '@/widgets/User/UserWidget.tsx';
 import AddTrackButton from '@/features/upload/AddTrackButton.tsx';
 import AddTrackDialog from '@/dialogs/AddTrack/AddTrackDialog.tsx';

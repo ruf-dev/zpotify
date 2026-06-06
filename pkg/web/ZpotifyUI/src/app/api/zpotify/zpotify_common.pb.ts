@@ -32,6 +32,7 @@ export type Playlist = {
   isPublic?: boolean;
   artists?: ArtistBase[];
   coverFileId?: string;
+  songCount?: number;
 };
 
 export type SongFile = {

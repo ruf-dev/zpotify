@@ -15,20 +15,47 @@
 
 ## Architecture — Feature Slice Design
 
-Layer hierarchy (lower = more primitive, cannot import from higher):
+Layers ordered high → low. A layer may only import from layers **below** it — never upward.
 
-| Layer               | Path                         | Rule                                                                                                               |
-|---------------------|------------------------------|--------------------------------------------------------------------------------------------------------------------|
-| **pages / dialogs** | `src/pages/`, `src/dialogs/` | Top-level route targets and modal screens. No reuse expected.                                                      |
-| **widgets**         | `src/widgets/`               | Self-contained units with business logic (e.g. login widget, player bar). Can be composed into pages.              |
-| **components**      | `src/components/`            | Pure UI atoms — buttons, inputs, cards. No business logic, no direct store access.                                 |
-| **processes**       | `src/processes/`             | All backend communication. Every gRPC call must go through here, never called directly from components or widgets. |
-| **hooks**           | `src/hooks/`                 | Shared React hooks.                                                                                                |
-| **model**           | `src/model/`                 | Shared TypeScript types and domain models.                                                                         |
-| **app**             | `src/app/`                   | App wiring: routing, generated API clients (`src/app/api/`), layouts.                                              |
+```
+pages / dialogs  →  widgets  →  features  →  entities  →  components  →  shared  →  app
+```
 
-**Bigger component = higher in the hierarchy.** A widget can import components; a page can import widgets and
-components; nothing imports from pages.
+| Layer | Path | Description |
+|---|---|---|
+| **pages / dialogs** | `src/pages/`, `src/dialogs/` | Route targets and modal screens. No reuse expected. |
+| **widgets** | `src/widgets/` | Self-contained units with business logic. Composed into pages. |
+| **features** | `src/features/` | User-facing feature slices (e.g. `auth`, `upload`). |
+| **entities** | `src/entities/` | Domain objects and their state (e.g. `song`, `user`). |
+| **components** | `src/components/` | Pure UI atoms — no business logic, no store access. |
+| **shared** | `src/shared/` | Cross-cutting code: `ui/`, `model/`, `lib/`, `api/`. Importable from any layer. |
+| **app** | `src/app/` | App wiring: routing, layouts, generated gRPC clients (`src/app/api/`), global hooks. Importable from any layer. |
+
+### Naming conventions
+
+- `entities/{name}/` — lowercase singular (`song`, `user`)
+- `features/{name}/` — lowercase (`auth`, `upload`)
+- `widgets/{Name}/` — PascalCase (`MusicPlayer`, `Header`)
+- `pages/{name}/` — lowercase route name (`home`, `playlist`)
+- `dialogs/{Name}/` — PascalCase (`EditTrack`, `MultitrackUpload`)
+- `shared/` segments are fixed: `ui/`, `model/`, `lib/`, `api/`
+
+### Internal slice structure
+
+- Pair each component file with its `.module.css`/`.module.scss` in the same folder.
+- Place hooks in the same folder as the entity/widget they belong to (e.g. `entities/user/useUser.ts`).
+- Group tightly-coupled subcomponents into named subfolders (e.g. `widgets/MusicPlayer/buttons/`).
+- No mandatory `ui/`, `model/`, `lib/` segments inside a slice — add them only when grouping is needed.
+
+### Barrel / index.ts
+
+- Do **not** create `index.ts` barrel files for slices. Always import by full file path.
+- Barrel files are allowed only at `src/app/api/` (generated gRPC client re-exports).
+
+### Export conventions
+
+- Components: **default export**
+- Utilities, types, hooks: **named exports**
 
 ## Styling Rules
 

@@ -3,6 +3,7 @@ import React, { JSX } from 'react';
 import PlaylistHomeSegment from '@/widgets/PlaylistHomeSegment/PlaylistHomeSegment.tsx';
 import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
 import ManagementHomeSegment from '@/widgets/ManagementHomeSegment/ManagementHomeSegment.tsx';
+import PlaylistsLibrarySegment from '@/widgets/PlaylistsLibrarySegment/PlaylistsLibrarySegment.tsx';
 
 export type HomeSegmentProps = {
     audioPlayer: AudioPlayer;
@@ -35,5 +36,14 @@ export class ManagementSegmentInfo implements HomeSegment {
 
     buildComponent({ audioPlayer }: HomeSegmentProps): React.JSX.Element {
         return <ManagementHomeSegment audioPlayer={audioPlayer} />;
+    }
+}
+
+export class LibrarySegmentInfo implements HomeSegment {
+    readonly id = 'library';
+    readonly label = 'playlists';
+
+    buildComponent({ audioPlayer }: HomeSegmentProps): React.JSX.Element {
+        return <PlaylistsLibrarySegment audioPlayer={audioPlayer} />;
     }
 }

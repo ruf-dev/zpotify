@@ -33,6 +33,8 @@ message Playlist {
   bool is_public = 4;
   repeated ArtistBase artists = 5;
   optional int64 cover_file_id = 6;
+  // TODO: Implement — populate song count when returning playlists
+  optional int32 song_count = 7;
 }
 
 message SongFile {

@@ -83,6 +83,17 @@ export type AddSongToPlaylistResponse = Record<string, never>;
 
 export type AddSongToPlaylist = Record<string, never>;
 
+export type ListPlaylistsRequest = {
+  paging?: ZpotifyApiZpotifyCommon.Paging;
+};
+
+export type ListPlaylistsResponse = {
+  playlists?: ZpotifyApiZpotifyCommon.Playlist[];
+  total?: number;
+};
+
+export type ListPlaylists = Record<string, never>;
+
 export class PlaylistAPI {
   static CreatePlaylist(this:void, req: CreatePlaylistRequest, initReq?: fm.InitReq): Promise<CreatePlaylistResponse> {
     return fm.fetchRequest<CreatePlaylistResponse>(`/api/playlist/create`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
@@ -104,5 +115,8 @@ export class PlaylistAPI {
   }
   static UpdatePlaylist(this:void, req: UpdatePlaylistRequest, initReq?: fm.InitReq): Promise<UpdatePlaylistResponse> {
     return fm.fetchRequest<UpdatePlaylistResponse>(`/api/playlist/update`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static ListPlaylists(this:void, req: ListPlaylistsRequest, initReq?: fm.InitReq): Promise<ListPlaylistsResponse> {
+    return fm.fetchRequest<ListPlaylistsResponse>(`/api/playlist/list`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }

@@ -26,6 +26,8 @@ export type HomePageSegmentPlaylistSegment = {
 
 export type HomePageSegmentManagement = Record<string, never>;
 
+export type HomePageSegmentLibrarySegment = Record<string, never>;
+
 type BaseHomePageSegment = {
 };
 
@@ -33,6 +35,7 @@ export type HomePageSegment = BaseHomePageSegment &
   OneOf<{
     playlistSegment: HomePageSegmentPlaylistSegment;
     managementSegment: HomePageSegmentManagement;
+    librarySegment: HomePageSegmentLibrarySegment;
   }>;
 
 export type UiSettings = {
