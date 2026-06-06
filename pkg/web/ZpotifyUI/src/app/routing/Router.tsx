@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Tooltip } from 'react-tooltip';
 
 import cls from '@/app/routing/Router.module.css';
+import { Path } from '@/app/routing/paths.ts';
 import InitPage from '@/pages/init/InitPage.tsx';
 import ErrorPage from '@/pages/error/ErrorPage.tsx';
 import PlaylistPage from '@/pages/playlist/PlaylistPage.tsx';
@@ -13,17 +14,6 @@ import Toaster from '@/components/notifications/Toaster.tsx';
 import HomePage from '@/pages/home/HomePage.tsx';
 import Coloring from '@/admin-components/coloring/Coloring.tsx';
 import Dialog from '@/pages/segments/Dialog.tsx';
-
-export enum Path {
-    HomePage = '/',
-    IntiPage = '/init',
-    PlaylistPage = '/playlist/:id',
-    EarlyAccessPage = '/early_access',
-}
-
-export function playlistPath(id: string): string {
-    return `/playlist/${id}`;
-}
 
 export default function Router() {
     const audioPlayer = useAudioPlayer();

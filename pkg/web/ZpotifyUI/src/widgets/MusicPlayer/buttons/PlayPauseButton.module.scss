@@ -17,7 +17,7 @@
   }
 
   &.Disabled {
-    background: rgba(217, 0, 127, 0.4);
+    background: rgb(217 0 127 / 40%);
     cursor: not-allowed;
 
     &:hover {

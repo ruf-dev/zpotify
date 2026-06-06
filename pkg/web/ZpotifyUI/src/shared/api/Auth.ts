@@ -121,7 +121,9 @@ export class AuthMiddleware {
             );
         });
 
-        newSession.authData && this.login(newSession.authData);
+        if (newSession.authData) {
+            this.login(newSession.authData);
+        }
     }
 
     login(s: AuthData) {

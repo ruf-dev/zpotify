@@ -9,7 +9,7 @@
     border-radius: 15em;
     border: 1px solid #3d1a5a;
     color: var(--secondary-fg-color);
-    font-size: 0.9375em;
+    font-size: 0.9375rem;
     font-weight: 500;
     white-space: nowrap;
     transition: transform 0.1s ease-in-out;

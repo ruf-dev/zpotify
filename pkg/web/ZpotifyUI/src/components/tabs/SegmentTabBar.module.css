@@ -20,7 +20,7 @@
     border: 0.0625rem solid var(--color-border);
     background: transparent;
     color: var(--color-fg-tertiary);
-    font-family: 'Comfortaa', sans-serif;
+    font-family: Comfortaa, sans-serif;
     font-size: var(--font-size-base);
     font-weight: 400;
     cursor: pointer;

@@ -11,20 +11,20 @@
     background: #141414;
     border-radius: 15em;
     padding: 5px 12px 5px 5px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgb(255 255 255 / 6%);
     cursor: pointer;
     transition: border-color 0.15s ease;
 }
 
 .Pill:hover {
-    border-color: rgba(255, 255, 255, 0.11);
+    border-color: rgb(255 255 255 / 11%);
 }
 
 .AvatarContainer {
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.22);
+    background: rgb(255 255 255 / 22%);
     overflow: hidden;
     flex-shrink: 0;
     display: flex;
@@ -33,7 +33,7 @@
 }
 
 .Username {
-    color: rgba(255, 255, 255, 0.50);
+    color: rgb(255 255 255 / 50%);
     font-size: var(--font-size-sm);
 }
 

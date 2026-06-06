@@ -9,7 +9,7 @@ import importPlugin from 'eslint-plugin-import'
 import prettierRecommended from 'eslint-plugin-prettier/recommended'
 
 export default tseslint.config([
-    globalIgnores(['dist']),
+    globalIgnores(['dist', 'src/app/api/zpotify/index.ts']),
     {
         files: ['**/*.{ts,tsx}'],
         extends: [
@@ -32,6 +32,10 @@ export default tseslint.config([
             globals: globals.browser,
         },
         rules: {
+            'react/prop-types': 'off',
+
+            '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+
             'no-console': ['warn', { allow: ['warn', 'error'] }],
 
             // Use cn() from classnames instead of template literals for className

@@ -1,7 +1,7 @@
 @keyframes logoPulse {
-    0%   { filter: drop-shadow(0 0 0px rgba(217, 0, 127, 0.9)); }
-    60%  { filter: drop-shadow(0 0 22px rgba(217, 0, 127, 0)); }
-    100% { filter: drop-shadow(0 0 0px rgba(217, 0, 127, 0.9)); }
+    0%   { filter: drop-shadow(0 0 0 rgb(217 0 127 / 90%)); }
+    60%  { filter: drop-shadow(0 0 22px rgb(217 0 127 / 0%)); }
+    100% { filter: drop-shadow(0 0 0 rgb(217 0 127 / 90%)); }
 }
 
 @keyframes logoSpin {

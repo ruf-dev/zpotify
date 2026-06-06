@@ -57,7 +57,7 @@
     font-size: var(--font-size-base);
     font-weight: 700;
     letter-spacing: 0.02em;
-    font-family: 'Comfortaa', sans-serif;
+    font-family: Comfortaa, sans-serif;
     border: 0.0625rem solid transparent;
     transition: all 0.22s ease;
 }

@@ -7,7 +7,7 @@ interface ManagementHomeSegmentProps {
     audioPlayer: AudioPlayer;
 }
 
-export default function ManagementHomeSegment({}: ManagementHomeSegmentProps) {
+export default function ManagementHomeSegment(_: ManagementHomeSegmentProps) {
     return (
         <div className={cls.ManagementHomeSegmentContainer}>
             <DisplayKeys />

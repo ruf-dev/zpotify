@@ -18,13 +18,13 @@
     cursor: pointer;
     color: var(--disabled-fg-color);
     font-weight: bolder;
-    font-size: 1.2em;
+    font-size: 1.2rem;
     margin-top: 0.5em;
     min-height: 4em;
 }
 
 .GhostSong:hover {
-    background: rgba(119, 137, 145, 0.1);
+    background: rgb(119 137 145 / 10%);
     border-color: var(--main-fg-color);
     color: var(--main-fg-color);
 }

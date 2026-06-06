@@ -11,7 +11,7 @@
 .Card {
     width: 340px;
     background: #0d0d0d;
-    border: 1px solid rgba(255, 255, 255, 0.13);
+    border: 1px solid rgb(255 255 255 / 13%);
     border-radius: 1.25em;
     padding: 32px 28px;
     display: flex;
@@ -21,8 +21,8 @@
 }
 
 .Title {
-    color: rgba(255, 255, 255, 0.88);
-    font-family: 'Comfortaa', sans-serif;
+    color: rgb(255 255 255 / 88%);
+    font-family: Comfortaa, sans-serif;
     font-size: var(--font-size-lg);
     font-weight: 700;
     margin-bottom: 4px;
@@ -30,7 +30,7 @@
 
 .Error {
     color: #c1253d;
-    font-family: 'Comfortaa', sans-serif;
+    font-family: Comfortaa, sans-serif;
     font-size: var(--font-size-sm);
     margin-top: -4px;
 }
@@ -43,7 +43,7 @@
     color: #fff;
     border: none;
     border-radius: 0.75em;
-    font-family: 'Comfortaa', sans-serif;
+    font-family: Comfortaa, sans-serif;
     font-size: var(--font-size-md);
     font-weight: 700;
     cursor: pointer;
@@ -57,8 +57,8 @@
 .CancelButton {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.22);
-    font-family: 'Comfortaa', sans-serif;
+    color: rgb(255 255 255 / 22%);
+    font-family: Comfortaa, sans-serif;
     font-size: var(--font-size-sm);
     cursor: pointer;
     padding: 0;
@@ -67,5 +67,5 @@
 }
 
 .CancelButton:hover {
-    color: rgba(255, 255, 255, 0.45);
+    color: rgb(255 255 255 / 45%);
 }

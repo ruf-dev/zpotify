@@ -258,7 +258,11 @@ export default function MultiSelect({
 
                         {canCreate && (
                             <div className={cn(cls.Option, cls.CreateOption)} onClick={handleAdd}>
-                                <span className={cls.CreateLabel}>create "{trimmed}"</span>
+                                <span className={cls.CreateLabel}>
+                                    create {'"'}
+                                    {trimmed}
+                                    {'"'}
+                                </span>
                             </div>
                         )}
                     </div>,

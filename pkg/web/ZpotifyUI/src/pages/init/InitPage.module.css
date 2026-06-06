@@ -7,13 +7,13 @@
     position: relative;
     width: 100vw;
     height: 100vh;
-    background: #000000;
+    background: #000;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    font-family: 'Comfortaa', sans-serif;
+    font-family: Comfortaa, sans-serif;
 }
 
 .Glow {
@@ -21,7 +21,7 @@
     width: 420px;
     height: 420px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(217, 0, 127, 0.07) 0%, transparent 70%);
+    background: radial-gradient(circle, rgb(217 0 127 / 7%) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -36,7 +36,7 @@
     margin-top: 24px;
     font-size: var(--font-size-3xl);
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.88);
+    color: rgb(255 255 255 / 88%);
     letter-spacing: -0.02em;
     animation: fadeUp 0.6s ease both;
     animation-delay: 0.2s;
@@ -47,7 +47,7 @@
     margin-top: 8px;
     font-size: var(--font-size-sm);
     font-weight: 300;
-    color: rgba(255, 255, 255, 0.45);
+    color: rgb(255 255 255 / 45%);
     animation: fadeUp 0.6s ease both;
     animation-delay: 0.28s;
 }
@@ -56,7 +56,7 @@
     position: relative;
     width: 1px;
     height: 32px;
-    background: rgba(255, 255, 255, 0.07);
+    background: rgb(255 255 255 / 7%);
     margin-top: 36px;
     animation: fadeUp 0.5s ease both;
     animation-delay: 0.34s;
@@ -91,7 +91,7 @@
     position: absolute;
     bottom: 28px;
     font-size: var(--font-size-xs);
-    color: rgba(255, 255, 255, 0.22);
+    color: rgb(255 255 255 / 22%);
     animation: fadeUp 0.6s ease both;
     animation-delay: 0.54s;
 }

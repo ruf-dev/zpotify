@@ -15,12 +15,12 @@
   --color-fg-secondary:   #a0a0a0;   /* Mid-gray — secondary text */
   --color-fg-tertiary:    #686868;   /* Dim gray — tertiary text */
   --color-fg-accent:      #d9007f;   /* Pink — accent/highlight only */
-  --color-fg-disabled:    #555555;   /* Disabled / muted state */
+  --color-fg-disabled:    #555;   /* Disabled / muted state */
 
   /* Borders */
-  --color-border:         rgba(255,255,255,0.06);
-  --color-border-light:   rgba(255,255,255,0.11);
-  --color-border-bright:  rgba(255,255,255,0.22);
+  --color-border:         rgb(255 255 255 / 6%);
+  --color-border-light:   rgb(255 255 255 / 11%);
+  --color-border-bright:  rgb(255 255 255 / 22%);
 
   /* Status */
   --color-error:          #c1253d;
@@ -62,27 +62,27 @@
   --space-8:  3em;
 
   /* ── Elevation / Shadow ─────────────────────────────────── */
-  --shadow-glow-pink:  0 0 0 15px rgba(217, 0, 127, 0);
-  --shadow-glow-ring:  0 0 0 0 rgba(217, 0, 127, 0.7);
+  --shadow-glow-pink:  0 0 0 15px rgb(217 0 127 / 0%);
+  --shadow-glow-ring:  0 0 0 0 rgb(217 0 127 / 70%);
 
   /* ── Accent / Glow Variants ─────────────────────────────── */
-  --color-accent-glow:      rgba(217,0,127,0.35);
-  --color-accent-dim:       rgba(217,0,127,0.12);
-  --color-accent-dim-hover: rgba(217,0,127,0.18);
-  --color-accent-surface:   rgba(217,0,127,0.07);
-  --color-accent-border:    rgba(217,0,127,0.30);
-  --color-accent-shadow:    rgba(217,0,127,0.20);
+  --color-accent-glow:      rgb(217 0 127 / 35%);
+  --color-accent-dim:       rgb(217 0 127 / 12%);
+  --color-accent-dim-hover: rgb(217 0 127 / 18%);
+  --color-accent-surface:   rgb(217 0 127 / 7%);
+  --color-accent-border:    rgb(217 0 127 / 30%);
+  --color-accent-shadow:    rgb(217 0 127 / 20%);
 
   /* ── Surface Variants ───────────────────────────────────── */
   --color-bg-card:       #0d0d0d;
-  --color-bg-hover:      rgba(255,255,255,0.04);
-  --color-bg-hover-mid:  rgba(255,255,255,0.07);
-  --color-bg-submitted:  rgba(255,255,255,0.08);
-  --color-shadow-deep:   rgba(0,0,0,0.80);
-  --color-shadow-drop:   rgba(0,0,0,0.70);
+  --color-bg-hover:      rgb(255 255 255 / 4%);
+  --color-bg-hover-mid:  rgb(255 255 255 / 7%);
+  --color-bg-submitted:  rgb(255 255 255 / 8%);
+  --color-shadow-deep:   rgb(0 0 0 / 80%);
+  --color-shadow-drop:   rgb(0 0 0 / 70%);
 
   /* ── Misc ───────────────────────────────────────────────── */
-  --color-fg-white: #ffffff;
+  --color-fg-white: #fff;
 
   /* ── Animation Timing ───────────────────────────────────── */
   --ease-quick:   0.125s ease-in-out;
@@ -94,12 +94,12 @@
 
 /* Font Stack */
 * {
-  font-family: 'Comfortaa', sans-serif;
+  font-family: Comfortaa, sans-serif;
 }
 
 /* Display */
 .t-display {
-  font-family: 'Comfortaa', sans-serif;
+  font-family: Comfortaa, sans-serif;
   font-size: 2.5em;
   font-weight: 700;
   color: var(--color-fg-primary);
@@ -108,7 +108,7 @@
 
 /* Heading 1 */
 h1, .t-h1 {
-  font-family: 'Comfortaa', sans-serif;
+  font-family: Comfortaa, sans-serif;
   font-size: 2em;
   font-weight: 700;
   color: var(--color-fg-primary);
@@ -117,7 +117,7 @@ h1, .t-h1 {
 
 /* Heading 2 */
 h2, .t-h2 {
-  font-family: 'Comfortaa', sans-serif;
+  font-family: Comfortaa, sans-serif;
   font-size: 1.5em;
   font-weight: 600;
   color: var(--color-fg-primary);
@@ -131,7 +131,7 @@ h2, .t-h2 {
 
 /* Body */
 p, .t-body {
-  font-family: 'Comfortaa', sans-serif;
+  font-family: Comfortaa, sans-serif;
   font-size: 1em;
   font-weight: 400;
   color: var(--color-fg-secondary);
@@ -140,7 +140,7 @@ p, .t-body {
 
 /* Small / Caption */
 .t-caption {
-  font-family: 'Comfortaa', sans-serif;
+  font-family: Comfortaa, sans-serif;
   font-size: 0.75em;
   font-weight: 400;
   color: var(--color-fg-tertiary);
@@ -149,7 +149,7 @@ p, .t-body {
 
 /* Label */
 .t-label {
-  font-family: 'Comfortaa', sans-serif;
+  font-family: Comfortaa, sans-serif;
   font-size: 0.875em;
   font-weight: 500;
   color: var(--color-fg-secondary);

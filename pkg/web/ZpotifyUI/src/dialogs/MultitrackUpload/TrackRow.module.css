@@ -9,7 +9,7 @@
     border-radius: var(--border-radius-md);
     border: 1px solid var(--color-border);
     background: var(--color-bg-card);
-    box-shadow: 0 1px 0 rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.18);
+    box-shadow: 0 1px 0 rgb(0 0 0 / 35%), 0 1px 2px rgb(0 0 0 / 18%);
     transition: background 0.15s ease, border-color 0.15s ease;
 }
 
@@ -17,18 +17,18 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: rgba(217, 0, 127, 0.09);
+    background: rgb(217 0 127 / 9%);
     transform: scaleX(var(--upload-pct, 0));
     transform-origin: left;
     transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .ProgressFill.UploadDone {
-    background: rgba(56, 189, 248, 0.09);
+    background: rgb(56 189 248 / 9%);
 }
 
 .ProgressFill.UploadError {
-    background: rgba(193, 37, 61, 0.12);
+    background: rgb(193 37 61 / 12%);
     transform: scaleX(1);
 }
 
@@ -65,7 +65,7 @@
 .StatusChipDone {
     color: var(--color-info);
     border-color: var(--color-info);
-    background: rgba(56, 189, 248, 0.08);
+    background: rgb(56 189 248 / 8%);
 }
 
 .TrackRowContainer:not(.AnyDragging):hover {
@@ -76,9 +76,6 @@
         opacity: 1;
     }
 }
-
-.IsDragging {}
-.AnyDragging {}
 
 .DragHandle {
     display: flex;
@@ -140,7 +137,7 @@
     margin-top: 0.125rem;
 
     &:hover {
-        background: rgba(193, 37, 61, 0.12);
+        background: rgb(193 37 61 / 12%);
         color: var(--color-error);
         opacity: 1;
     }

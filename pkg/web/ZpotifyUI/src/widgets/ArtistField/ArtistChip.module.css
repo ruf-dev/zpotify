@@ -11,7 +11,7 @@
     padding: 0.1875rem 0.3125rem 0.1875rem 0.5625rem;
     border-radius: var(--border-radius-pill);
     background: var(--color-accent-dim);
-    border: 1px solid rgba(217, 0, 127, 0.22);
+    border: 1px solid rgb(217 0 127 / 22%);
     font-size: var(--font-size-xs);
     color: var(--color-fg-primary);
     font-weight: 600;
@@ -49,7 +49,7 @@
     transition: background 0.15s ease, color 0.15s ease;
 
     &:hover {
-        background: rgba(0, 0, 0, 0.35);
+        background: rgb(0 0 0 / 35%);
         color: var(--color-fg-primary);
     }
 }
@@ -60,7 +60,7 @@
     gap: 0.3125rem;
     padding: 0.1875rem 0.5625rem 0.1875rem 0.40625rem;
     border-radius: var(--border-radius-pill);
-    background: rgba(217, 0, 127, 0.18);
+    background: rgb(217 0 127 / 18%);
     border: 1px solid var(--color-accent-border);
     font-size: var(--font-size-xs);
     color: var(--color-fg-primary);

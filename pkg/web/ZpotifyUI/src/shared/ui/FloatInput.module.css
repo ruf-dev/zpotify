@@ -7,11 +7,11 @@
 .Input {
     width: 100%;
     height: 100%;
-    background: #111111;
-    border: 1px solid rgba(255, 255, 255, 0.13);
+    background: #111;
+    border: 1px solid rgb(255 255 255 / 13%);
     border-radius: 1em;
-    color: rgba(255, 255, 255, 0.88);
-    font-family: 'Comfortaa', sans-serif;
+    color: rgb(255 255 255 / 88%);
+    font-family: Comfortaa, sans-serif;
     font-size: var(--font-size-md);
     padding: 0 14px;
     outline: none;
@@ -20,7 +20,7 @@
 }
 
 .Input:focus {
-    border-color: rgba(255, 255, 255, 0.35);
+    border-color: rgb(255 255 255 / 35%);
 }
 
 .Label {
@@ -29,8 +29,8 @@
     top: 50%;
     transform: translateY(-50%);
     transform-origin: left center;
-    color: rgba(255, 255, 255, 0.45);
-    font-family: 'Comfortaa', sans-serif;
+    color: rgb(255 255 255 / 45%);
+    font-family: Comfortaa, sans-serif;
     font-size: var(--font-size-md);
     pointer-events: none;
     transition: all 0.18s ease;
@@ -43,5 +43,5 @@
     top: 0;
     transform: translateY(-50%) scale(0.82);
     background: #0d0d0d;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgb(255 255 255 / 55%);
 }

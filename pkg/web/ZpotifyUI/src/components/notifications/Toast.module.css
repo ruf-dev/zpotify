@@ -18,7 +18,7 @@
     box-sizing: border-box;
     position: relative;
 
-    background: black;
+    background: var(--color-bg-base);
 
     display: flex;
     flex-direction: column;
@@ -70,6 +70,6 @@
 
         cursor: pointer;
 
-        font-size: 2em;
+        font-size: 2rem;
     }
 }

@@ -12,10 +12,11 @@ svg {
 
 @keyframes circleAnim {
     from {
-
+        transform: rotate(0deg);
     }
-    to {
 
+    to {
+        transform: rotate(360deg);
     }
 }
 
@@ -37,12 +38,15 @@ svg {
     0% {
         width: 0;
     }
+
     25% {
         width: 914px;
     }
+
     80% {
         width: 914px;
     }
+
     100% {
         width: 0
     }
@@ -53,14 +57,17 @@ svg {
         x: 914;
         width: 0;
     }
+
     30% {
         x: 0;
         width: 914px;
     }
+
     60% {
         x: 0;
         width: 914px;
     }
+
     100% {
         x: 914;
         width: 0;
@@ -71,12 +78,15 @@ svg {
     0% {
         width: 0;
     }
+
     25% {
         width: 914px;
     }
+
     50% {
         width: 914px;
     }
+
     100% {
         width: 0
     }

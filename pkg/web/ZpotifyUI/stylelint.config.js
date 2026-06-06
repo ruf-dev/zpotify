@@ -1,4 +1,5 @@
 export default {
+    ignoreFiles: ['dist/**'],
     extends: [
         'stylelint-config-standard',
         'stylelint-config-standard-scss',
@@ -41,6 +42,13 @@ export default {
 
                 // PascalCase or camelCase class names (matches CSS Modules usage)
                 'selector-class-pattern': '^[A-Za-z][a-zA-Z0-9]*$',
+            },
+        },
+        // AnimatedZ targets SVG element IDs — camelCase IDs are defined in the SVG markup
+        {
+            files: ['src/assets/AnimatedZ.css'],
+            rules: {
+                'selector-id-pattern': null,
             },
         },
         // Global token files: hex color definitions are the source of truth here

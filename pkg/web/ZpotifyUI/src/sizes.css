@@ -51,7 +51,7 @@
  * max-width: 1024px excludes tall-but-wide desktop windows.
  * max-aspect-ratio: 1/1 means height ≥ width (true portrait ratio).
  */
-@media (max-width: 1024px) and (max-aspect-ratio: 1/1) {
+@media (width <= 1024px) and (aspect-ratio <= 1/1) {
     :root {
         --carousel-card-width:      85vw;
         --segment-card-button-size: 38vw;

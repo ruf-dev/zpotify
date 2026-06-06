@@ -12,7 +12,7 @@
     background: color-mix(in srgb, var(--main-bg-color) 70%, transparent);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgb(255 255 255 / 20%);
     position: relative;
 }
 

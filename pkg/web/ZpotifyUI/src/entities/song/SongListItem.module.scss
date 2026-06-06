@@ -12,12 +12,12 @@
   transition: background 0.12s ease, border-left-color 0.12s ease;
 
   &.isPlaying {
-    background: rgba(217, 0, 127, 0.12);
+    background: rgb(217 0 127 / 12%);
     border-left-color: var(--color-fg-accent);
   }
 
   &:hover:not(.isPlaying) {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgb(255 255 255 / 8%);
   }
 
   &:hover .MoreDotsWrapper,
@@ -36,10 +36,10 @@
 
 .TrackNum {
   font-size: var(--font-size-sm);
-  color: rgba(255, 255, 255, 0.25);
+  color: rgb(255 255 255 / 25%);
 
   .SongItemContainer:hover & {
-    color: rgba(255, 255, 255, 0.50);
+    color: rgb(255 255 255 / 50%);
   }
 }
 
@@ -51,7 +51,7 @@
   font-size: var(--font-size-md);
 
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgb(255 255 255 / 88%);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -64,7 +64,7 @@
 
 .Artists {
   font-size: var(--font-size-sm);
-  color: rgba(255, 255, 255, 0.25);
+  color: rgb(255 255 255 / 25%);
   margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
@@ -73,7 +73,7 @@
 
 .Duration {
   font-size: var(--font-size-sm);
-  color: rgba(255, 255, 255, 0.25);
+  color: rgb(255 255 255 / 25%);
   flex-shrink: 0;
 }
 
@@ -87,7 +87,7 @@
 }
 
 @keyframes songGlow {
-  0%   { text-shadow: 0 0 4px rgba(217, 0, 127, 0.5); }
-  50%  { text-shadow: 0 0 14px rgba(217, 0, 127, 0.9); }
-  100% { text-shadow: 0 0 4px rgba(217, 0, 127, 0.5); }
+  0%   { text-shadow: 0 0 4px rgb(217 0 127 / 50%); }
+  50%  { text-shadow: 0 0 14px rgb(217 0 127 / 90%); }
+  100% { text-shadow: 0 0 4px rgb(217 0 127 / 50%); }
 }

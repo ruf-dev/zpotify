@@ -60,10 +60,10 @@
 .AddButtonOpen {
     border-color: var(--color-fg-accent);
     background: var(--color-fg-accent);
-    color: white;
+    color: var(--color-fg-white);
 
     &:hover {
         background: var(--color-fg-accent);
-        color: white;
+        color: var(--color-fg-white);
     }
 }

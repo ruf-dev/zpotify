@@ -18,7 +18,7 @@ const Carousel: React.FC<CarouselProps> = ({ children, visibleItems = 3, width =
     const [containerWidth, setContainerWidth] = useState(0);
 
     const [isScrollingProgrammatically, setIsScrollingProgrammatically] = useState(false);
-    const [_, setIsUserScrolling] = useState(false);
+    const [, setIsUserScrolling] = useState(false);
 
     let scrollTimeout: number | undefined;
 
