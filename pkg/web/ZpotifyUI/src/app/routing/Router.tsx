@@ -7,6 +7,7 @@ import { Path } from '@/app/routing/paths.ts';
 import InitPage from '@/pages/init/InitPage.tsx';
 import ErrorPage from '@/pages/error/ErrorPage.tsx';
 import PlaylistPage from '@/pages/playlist/PlaylistPage.tsx';
+import AlbumPage from '@/pages/album/AlbumPage.tsx';
 import EarlyAccessPage from '@/pages/early_access/EarlyAccessPage.tsx';
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
 import useUser from '@/entities/user/useUser.ts';
@@ -54,6 +55,12 @@ export default function Router() {
                     <Route
                         path={Path.PlaylistPage}
                         element={<PlaylistPage audioPlayer={audioPlayer} />}
+                        errorElement={<ErrorPage />}
+                    />
+
+                    <Route
+                        path={Path.AlbumPage}
+                        element={<AlbumPage audioPlayer={audioPlayer} />}
                         errorElement={<ErrorPage />}
                     />
 

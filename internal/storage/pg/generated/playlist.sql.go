@@ -53,6 +53,19 @@ func (q *Queries) ClearPlaylistArtists(ctx context.Context, playlistUuid uuid.UU
 	return err
 }
 
+const countUserPlaylists = `-- name: CountUserPlaylists :one
+SELECT COUNT(v.uuid) FROM playlists_v1 v
+JOIN user_playlists up ON up.playlist_id = v.uuid
+WHERE up.user_id = $1
+`
+
+func (q *Queries) CountUserPlaylists(ctx context.Context, userID int64) (int64, error) {
+	row := q.db.QueryRowContext(ctx, countUserPlaylists, userID)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const createPlaylist = `-- name: CreatePlaylist :one
 WITH created_playlist AS (
     INSERT INTO playlists (name, description, is_public, owner_id)
@@ -159,6 +172,51 @@ func (q *Queries) GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAu
 		&i.CoverFileID,
 	)
 	return i, err
+}
+
+const listUserPlaylists = `-- name: ListUserPlaylists :many
+SELECT v.uuid, v.name, v.description, v.is_public, v.cover_file_id, v.song_count
+FROM playlists_v1 v
+JOIN user_playlists up ON up.playlist_id = v.uuid
+WHERE up.user_id = $1
+ORDER BY up.order_id
+LIMIT $2 OFFSET $3
+`
+
+type ListUserPlaylistsParams struct {
+	UserID int64
+	Limit  int32
+	Offset int32
+}
+
+func (q *Queries) ListUserPlaylists(ctx context.Context, arg ListUserPlaylistsParams) ([]PlaylistsV1, error) {
+	rows, err := q.db.QueryContext(ctx, listUserPlaylists, arg.UserID, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []PlaylistsV1{}
+	for rows.Next() {
+		var i PlaylistsV1
+		if err := rows.Scan(
+			&i.Uuid,
+			&i.Name,
+			&i.Description,
+			&i.IsPublic,
+			&i.CoverFileID,
+			&i.SongCount,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const updatePlaylist = `-- name: UpdatePlaylist :exec

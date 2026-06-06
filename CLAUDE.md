@@ -14,6 +14,8 @@ go build -v ./...          # Build all packages
 go test ./...              # Run all tests
 golangci-lint run ./...    # Lint (uses .golangci.yaml)
 go mod tidy                # Tidy dependencies
+moti g # generate contracts
+rscli-dev project tidy # generate configs
 ```
 
 ### Code Generation

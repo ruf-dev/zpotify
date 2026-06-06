@@ -167,6 +167,15 @@ type PlaylistsSongsV2 struct {
 	OrderNumber  int64
 }
 
+type PlaylistsV1 struct {
+	Uuid        uuid.UUID
+	Name        string
+	Description string
+	IsPublic    bool
+	CoverFileID sql.NullInt64
+	SongCount   int64
+}
+
 type Song struct {
 	ID        int64
 	FileID    int64

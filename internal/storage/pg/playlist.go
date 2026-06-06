@@ -359,3 +359,52 @@ func (p *PlaylistStorage) AddSong(ctx context.Context, playlistUuid string, song
 
 	return nil
 }
+
+func (p *PlaylistStorage) List(ctx context.Context, userId int64, req domain.ListPlaylists) ([]domain.Playlist, error) {
+	params := generated.ListUserPlaylistsParams{
+		UserID: userId,
+		Limit:  int32(req.Limit),
+		Offset: int32(req.Offset),
+	}
+
+	rows, err := p.querier.ListUserPlaylists(ctx, params)
+	if err != nil {
+		return nil, wrapPgErr(err)
+	}
+
+	playlists := make([]domain.Playlist, 0, len(rows))
+	for _, row := range rows {
+		playlist := domain.Playlist{
+			Uuid:        row.Uuid.String(),
+			Name:        row.Name,
+			Description: row.Description,
+			IsPublic:    row.IsPublic,
+		}
+
+		if row.CoverFileID.Valid {
+			playlist.CoverFileId = &row.CoverFileID.Int64
+		}
+
+		songCount := int32(row.SongCount)
+		playlist.SongCount = &songCount
+
+		artists, err := p.GetPlaylistArtists(ctx, row.Uuid.String())
+		if err != nil {
+			return nil, rerrors.Wrap(err, "error getting playlist artists")
+		}
+		playlist.Artists = artists
+
+		playlists = append(playlists, playlist)
+	}
+
+	return playlists, nil
+}
+
+func (p *PlaylistStorage) CountPlaylists(ctx context.Context, userId int64) (uint32, error) {
+	count, err := p.querier.CountUserPlaylists(ctx, userId)
+	if err != nil {
+		return 0, wrapPgErr(err)
+	}
+
+	return uint32(count), nil
+}

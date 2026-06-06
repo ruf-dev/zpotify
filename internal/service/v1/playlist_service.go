@@ -244,6 +244,30 @@ func (p *PlaylistService) AddSong(ctx context.Context, req domain.AddSongToPlayl
 	return nil
 }
 
+func (p *PlaylistService) List(ctx context.Context, req domain.ListPlaylists) (domain.ListPlaylistsResult, error) {
+	userCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return domain.ListPlaylistsResult{}, rerrors.Wrap(service_errors.ErrUnauthenticated)
+	}
+
+	playlists, err := p.playlistStorage.List(ctx, userCtx.UserId, req)
+	if err != nil {
+		return domain.ListPlaylistsResult{}, rerrors.Wrap(err, "error listing playlists from storage")
+	}
+
+	total, err := p.playlistStorage.CountPlaylists(ctx, userCtx.UserId)
+	if err != nil {
+		return domain.ListPlaylistsResult{}, rerrors.Wrap(err, "error counting playlists from storage")
+	}
+
+	result := domain.ListPlaylistsResult{
+		Playlists: playlists,
+		Total:     total,
+	}
+
+	return result, nil
+}
+
 func (p *PlaylistService) moveCoverFile(
 	ctx context.Context,
 	fileMetaStorage storage.FileMetaStorage,

@@ -17,11 +17,13 @@ interface InfiniteSongsListProps {
     fixedSize?: boolean;
 
     onTotal?: (total: number) => void;
+
+    autoLoadAll?: boolean;
 }
 
-const songsPerPage = 10;
+const songsPerPage = 25;
 
-export default function LazyLoadSongsList({ audioPlayer, playlistId, fixedSize, onTotal }: InfiniteSongsListProps) {
+export default function LazyLoadSongsList({ audioPlayer, playlistId, fixedSize, onTotal, autoLoadAll }: InfiniteSongsListProps) {
     const [offset, setOffset] = useState(0);
     const [shuffleHash, setShuffleHash] = useState<string | undefined>();
 
@@ -46,9 +48,14 @@ export default function LazyLoadSongsList({ audioPlayer, playlistId, fixedSize, 
                     }),
                 ]);
 
-                setTotalSongs(resp.total || 0);
+                const total = resp.total || 0;
+                setTotalSongs(total);
 
                 if (onTotal != null && resp.total != null) onTotal(resp.total);
+
+                if (autoLoadAll && offset + songsPerPage < total) {
+                    setOffset((prev) => prev + songsPerPage);
+                }
             })
             .catch(toaster.catch);
     }
@@ -100,7 +107,7 @@ export default function LazyLoadSongsList({ audioPlayer, playlistId, fixedSize, 
         >
             <SongListWidget songs={songs} audioPlayer={audioPlayer} />
 
-            {isListEnded ? null : <ZButton title={'Load more'} onClick={loadMore} />}
+            {!autoLoadAll && !isListEnded ? <ZButton title={'Load more'} onClick={loadMore} /> : null}
         </div>
     );
 }

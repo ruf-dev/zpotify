@@ -62,6 +62,9 @@
     }
   },
   "definitions": {
+    "HomePageSegmentLibrarySegment": {
+      "type": "object"
+    },
     "HomePageSegmentManagement": {
       "type": "object"
     },
@@ -117,6 +120,10 @@
         },
         "managementSegment": {
           "$ref": "#/definitions/HomePageSegmentManagement"
+        },
+        "librarySegment": {
+          "$ref": "#/definitions/HomePageSegmentLibrarySegment",
+          "title": "TODO: Implement — include LibrarySegment in GetUserSettings response"
         }
       }
     },

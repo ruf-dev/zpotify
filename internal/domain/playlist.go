@@ -12,6 +12,7 @@ type Playlist struct {
 	IsPublic    bool
 	Artists     []ArtistsBase
 	CoverFileId *int64
+	SongCount   *int32
 }
 
 type CreatePlaylistParams struct {
@@ -44,4 +45,14 @@ type PlaylistSong struct {
 type AddSongToPlaylist struct {
 	PlaylistUuid string
 	SongId       int32
+}
+
+type ListPlaylists struct {
+	Limit  uint64
+	Offset uint64
+}
+
+type ListPlaylistsResult struct {
+	Playlists []Playlist
+	Total     uint32
 }

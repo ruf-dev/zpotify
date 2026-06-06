@@ -112,6 +112,39 @@
         ]
       }
     },
+    "/api/playlist/list": {
+      "post": {
+        "summary": "TODO: Implement",
+        "operationId": "PlaylistAPI_ListPlaylists",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiListPlaylistsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiListPlaylistsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PlaylistAPI"
+        ]
+      }
+    },
     "/api/playlist/songs": {
       "post": {
         "operationId": "PlaylistAPI_ListSongs",
@@ -355,6 +388,30 @@
         }
       }
     },
+    "zpotify_apiListPlaylistsRequest": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/zpotify_apiPaging"
+        }
+      }
+    },
+    "zpotify_apiListPlaylistsResponse": {
+      "type": "object",
+      "properties": {
+        "playlists": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiPlaylist"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
     "zpotify_apiListSongsRequest": {
       "type": "object",
       "properties": {
@@ -425,6 +482,11 @@
         "coverFileId": {
           "type": "string",
           "format": "int64"
+        },
+        "songCount": {
+          "type": "integer",
+          "format": "int32",
+          "title": "TODO: Implement — populate song count when returning playlists"
         }
       }
     },

@@ -211,13 +211,15 @@ func (x *SongBase) GetFileId() int64 {
 }
 
 type Playlist struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Description   *string                `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
-	IsPublic      bool                   `protobuf:"varint,4,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"`
-	Artists       []*ArtistBase          `protobuf:"bytes,5,rep,name=artists,proto3" json:"artists,omitempty"`
-	CoverFileId   *int64                 `protobuf:"varint,6,opt,name=cover_file_id,json=coverFileId,proto3,oneof" json:"cover_file_id,omitempty"`
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	Uuid        string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Name        string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description *string                `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	IsPublic    bool                   `protobuf:"varint,4,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"`
+	Artists     []*ArtistBase          `protobuf:"bytes,5,rep,name=artists,proto3" json:"artists,omitempty"`
+	CoverFileId *int64                 `protobuf:"varint,6,opt,name=cover_file_id,json=coverFileId,proto3,oneof" json:"cover_file_id,omitempty"`
+	// TODO: Implement — populate song count when returning playlists
+	SongCount     *int32 `protobuf:"varint,7,opt,name=song_count,json=songCount,proto3,oneof" json:"song_count,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -294,6 +296,13 @@ func (x *Playlist) GetCoverFileId() int64 {
 	return 0
 }
 
+func (x *Playlist) GetSongCount() int32 {
+	if x != nil && x.SongCount != nil {
+		return *x.SongCount
+	}
+	return 0
+}
+
 type SongFile struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -364,16 +373,19 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\aartists\x18\x03 \x03(\v2\x17.zpotify_api.ArtistBaseR\aartists\x12!\n" +
 	"\fduration_sec\x18\x04 \x01(\x05R\vdurationSec\x12\x1b\n" +
 	"\tfile_path\x18\x05 \x01(\tR\bfilePath\x12\x17\n" +
-	"\afile_id\x18\x06 \x01(\x03R\x06fileId\"\xf4\x01\n" +
+	"\afile_id\x18\x06 \x01(\x03R\x06fileId\"\xa7\x02\n" +
 	"\bPlaylist\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x00R\vdescription\x88\x01\x01\x12\x1b\n" +
 	"\tis_public\x18\x04 \x01(\bR\bisPublic\x121\n" +
 	"\aartists\x18\x05 \x03(\v2\x17.zpotify_api.ArtistBaseR\aartists\x12'\n" +
-	"\rcover_file_id\x18\x06 \x01(\x03H\x01R\vcoverFileId\x88\x01\x01B\x0e\n" +
+	"\rcover_file_id\x18\x06 \x01(\x03H\x01R\vcoverFileId\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"song_count\x18\a \x01(\x05H\x02R\tsongCount\x88\x01\x01B\x0e\n" +
 	"\f_descriptionB\x10\n" +
-	"\x0e_cover_file_id\".\n" +
+	"\x0e_cover_file_idB\r\n" +
+	"\v_song_count\".\n" +
 	"\bSongFile\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04path\x18\x02 \x01(\tR\x04pathB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"

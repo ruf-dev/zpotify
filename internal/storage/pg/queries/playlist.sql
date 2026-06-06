@@ -57,3 +57,16 @@ SET name        = CASE WHEN $2::text != '' THEN $2::text ELSE name END,
     description = CASE WHEN $3::text != '' THEN $3::text ELSE description END,
     is_public   = CASE WHEN $4 THEN $4 ELSE is_public END
 WHERE uuid = $1;
+
+-- name: ListUserPlaylists :many
+SELECT v.uuid, v.name, v.description, v.is_public, v.cover_file_id, v.song_count
+FROM playlists_v1 v
+JOIN user_playlists up ON up.playlist_id = v.uuid
+WHERE up.user_id = $1
+ORDER BY up.order_id
+LIMIT $2 OFFSET $3;
+
+-- name: CountUserPlaylists :one
+SELECT COUNT(v.uuid) FROM playlists_v1 v
+JOIN user_playlists up ON up.playlist_id = v.uuid
+WHERE up.user_id = $1;
