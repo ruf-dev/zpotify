@@ -1,9 +1,9 @@
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import { Tooltip } from 'react-tooltip';
+import {Navigate, Route, Routes, useNavigate} from 'react-router-dom';
+import {useEffect} from 'react';
+import {Tooltip} from 'react-tooltip';
 
 import cls from '@/app/routing/Router.module.css';
-import { Path } from '@/app/routing/paths.ts';
+import {Path} from '@/app/routing/paths.ts';
 import InitPage from '@/pages/init/InitPage.tsx';
 import ErrorPage from '@/pages/error/ErrorPage.tsx';
 import PlaylistPage from '@/pages/playlist/PlaylistPage.tsx';
@@ -15,6 +15,7 @@ import Toaster from '@/components/notifications/Toaster.tsx';
 import HomePage from '@/pages/home/HomePage.tsx';
 import Coloring from '@/admin-components/coloring/Coloring.tsx';
 import Dialog from '@/pages/segments/Dialog.tsx';
+import MainLayout from "@/app/layouts/MainLayout.tsx";
 
 export default function Router() {
     const audioPlayer = useAudioPlayer();
@@ -42,40 +43,51 @@ export default function Router() {
                 <Routes>
                     <Route
                         path={Path.IntiPage}
-                        element={<InitPage AudioPlayer={audioPlayer} />}
-                        errorElement={<ErrorPage />}
+                        element={<InitPage AudioPlayer={audioPlayer}/>}
+                        errorElement={<ErrorPage/>}
                     />
 
                     <Route
-                        path={Path.HomePage}
-                        element={<HomePage audioPlayer={audioPlayer} />}
-                        errorElement={<ErrorPage />}
-                    />
+                        element={<MainLayout/>}
+                        errorElement={<ErrorPage/>}
+                    >
+                        <Route
+                            path={Path.HomePage}
+                            element={<HomePage audioPlayer={audioPlayer}/>}
+                            errorElement={<ErrorPage/>}
+                        />
+                        <Route
+                            path={Path.PlaylistPage}
+                            element={<PlaylistPage audioPlayer={audioPlayer}/>}
+                            errorElement={<ErrorPage/>}
+                        />
+
+                        <Route
+                            path={Path.AlbumPage}
+                            element={<AlbumPage audioPlayer={audioPlayer}/>}
+                            errorElement={<ErrorPage/>}
+                        />
+                    </Route>
+
 
                     <Route
-                        path={Path.PlaylistPage}
-                        element={<PlaylistPage audioPlayer={audioPlayer} />}
-                        errorElement={<ErrorPage />}
-                    />
+                        path={Path.EarlyAccessPage}
+                        element={<EarlyAccessPage/>}
+                        errorElement={<ErrorPage/>}/>
 
                     <Route
-                        path={Path.AlbumPage}
-                        element={<AlbumPage audioPlayer={audioPlayer} />}
-                        errorElement={<ErrorPage />}
-                    />
-
-                    <Route path={Path.EarlyAccessPage} element={<EarlyAccessPage />} errorElement={<ErrorPage />} />
-
-                    <Route path={'*'} element={<Navigate to={'/'} replace />} errorElement={<ErrorPage />} />
+                        path={'*'}
+                        element={<Navigate to={'/'} replace/>}
+                        errorElement={<ErrorPage/>}/>
                 </Routes>
 
-                <Dialog />
-                <Tooltip id="root-tooltip" variant={'light'} />
-                <Toaster />
+                <Dialog/>
+                <Tooltip id="root-tooltip" variant={'light'}/>
+                <Toaster/>
             </div>
 
             <div className={cls.Admins}>
-                <Coloring />
+                <Coloring/>
             </div>
         </div>
     );

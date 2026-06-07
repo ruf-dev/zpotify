@@ -1,17 +1,15 @@
 import cn from 'classnames';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 
-import type { SongBase } from '@/app/api/zpotify';
+import type {SongBase} from '@/app/api/zpotify';
 import cls from '@/widgets/TrackList/InfiniteSongsList.module.css';
-import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
+import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
 import useUser from '@/entities/user/useUser.ts';
-import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
+import {useToaster} from '@/hooks/toaster/ToasterZ.ts';
 import SongListWidget from '@/widgets/TrackList/TrackListWidget.tsx';
 import ZButton from '@/shared/ui/ZButton/ZButton.tsx';
 
 interface InfiniteSongsListProps {
-    audioPlayer: AudioPlayer;
-
     playlistId: string;
 
     fixedSize?: boolean;
@@ -23,7 +21,9 @@ interface InfiniteSongsListProps {
 
 const songsPerPage = 25;
 
-export default function LazyLoadSongsList({ audioPlayer, playlistId, fixedSize, onTotal, autoLoadAll }: InfiniteSongsListProps) {
+export default function LazyLoadSongsList({playlistId, fixedSize, onTotal, autoLoadAll}: InfiniteSongsListProps) {
+    const audioPlayer = useAudioPlayer();
+
     const [offset, setOffset] = useState(0);
     const [shuffleHash, setShuffleHash] = useState<string | undefined>();
 
@@ -101,13 +101,14 @@ export default function LazyLoadSongsList({ audioPlayer, playlistId, fixedSize, 
 
     return (
         <div
-            className={cn(cls.InfiniteSongsListContainer, {
-                [cls.scrollable]: fixedSize,
-            })}
+            className={
+                cn(cls.InfiniteSongsListContainer, {
+                    [cls.scrollable]: fixedSize,
+                })}
         >
-            <SongListWidget songs={songs} audioPlayer={audioPlayer} />
+            <SongListWidget songs={songs} audioPlayer={audioPlayer}/>
 
-            {!autoLoadAll && !isListEnded ? <ZButton title={'Load more'} onClick={loadMore} /> : null}
+            {!autoLoadAll && !isListEnded ? <ZButton title={'Load more'} onClick={loadMore}/> : null}
         </div>
     );
 }

@@ -2,17 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import cls from '@/widgets/PlaylistsLibrarySegment/PlaylistsLibrarySegment.module.css';
-import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
+
 import useUser from '@/entities/user/useUser.ts';
 import { playlistPath } from '@/app/routing/paths.ts';
 import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
 import { ServiceError } from '@/shared/api/Errors.ts';
 import AlbumCard from '@/widgets/PlaylistsLibrarySegment/AlbumCard.tsx';
 import PlaylistCardWide from '@/widgets/PlaylistsLibrarySegment/PlaylistCardWide.tsx';
-
-interface PlaylistsLibrarySegmentProps {
-    audioPlayer: AudioPlayer;
-}
 
 type TrackPreview = { title: string; artist: string };
 
@@ -60,7 +56,7 @@ function interleave(
     return result;
 }
 
-export default function PlaylistsLibrarySegment({ audioPlayer: _audioPlayer }: PlaylistsLibrarySegmentProps) {
+export default function PlaylistsLibrarySegment() {
     const navigate = useNavigate();
     const toaster = useToaster();
     const Services = useUser((state) => state.Services);

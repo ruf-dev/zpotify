@@ -1,17 +1,15 @@
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import cls from '@/pages/playlist/PlaylistPage.module.css';
 import type { Playlist } from '@/app/api/zpotify';
 import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
 import useUser from '@/entities/user/useUser.ts';
-import { Path } from '@/app/routing/paths.ts';
 import LazyLoadSongsList from '@/widgets/TrackList/LazyLoadSongsList.tsx';
 import HeaderPart from '@/widgets/Header/HeaderPart.tsx';
 import MusicPlayerWithLogo from '@/widgets/MusicPlayer/MusicPlayerWithLogo.tsx';
 import { usePlaylist } from '@/pages/playlist/usePlaylist.ts';
 import GenerativeCover from '@/components/GenerativeCover/GenerativeCover.tsx';
-import BackButton from '@/shared/ui/BackButton.tsx';
+
 import RandomArrows from '@/assets/player/ShuffleArrows.tsx';
 import PlayIcon from '@/assets/icons/PlayIcon.tsx';
 
@@ -32,16 +30,13 @@ function resolveCoverSeed(playlist: Playlist): number {
 interface PlaylistSidebarProps {
     playlist: Playlist;
     username: string;
-    onBack: () => void;
 }
 
-function PlaylistSidebar({ playlist, username, onBack }: PlaylistSidebarProps) {
+function PlaylistSidebar({ playlist, username }: PlaylistSidebarProps) {
     const seed = resolveCoverSeed(playlist);
 
     return (
         <div className={cls.Sidebar}>
-            <BackButton onClick={onBack} />
-
             <div className={cls.CoverWrapper}>
                 <GenerativeCover seed={seed} size={220} borderRadius="0" />
             </div>
@@ -92,20 +87,9 @@ function PlaylistMainContent({ playlistId, audioPlayer }: PlaylistMainContentPro
 
 export default function PlaylistPage({ audioPlayer }: PlaylistPageProps) {
     const { id } = useParams<{ id: string }>();
-    const navigate = useNavigate();
     const userData = useUser((state) => state.userData);
-    const auth = useUser((state) => state.auth);
     const { playlist } = usePlaylist(id);
 
-    function handleBack() {
-        navigate(Path.HomePage);
-    }
-
-    useEffect(() => {
-        if (!userData) {
-            if (!auth.session) navigate(Path.IntiPage);
-        }
-    }, [userData, auth.session]);
 
     if (!id || !userData) return null;
 
@@ -116,7 +100,7 @@ export default function PlaylistPage({ audioPlayer }: PlaylistPageProps) {
             </div>
 
             <div className={cls.Body}>
-                {playlist && <PlaylistSidebar playlist={playlist} username={userData.username} onBack={handleBack} />}
+                {playlist && <PlaylistSidebar playlist={playlist} username={userData.username}/>}
                 <PlaylistMainContent playlistId={id} audioPlayer={audioPlayer} />
             </div>
 

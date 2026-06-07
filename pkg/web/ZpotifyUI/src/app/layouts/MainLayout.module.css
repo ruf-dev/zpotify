@@ -1,0 +1,12 @@
+.MainLayoutContainer {
+    display: flex;
+    flex-direction: column-reverse;
+
+    .Header {
+        position: fixed;
+        top: 0;
+        width: 100vw;
+        height: var(--header-height);
+    }
+
+}

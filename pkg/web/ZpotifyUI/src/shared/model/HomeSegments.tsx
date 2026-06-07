@@ -1,18 +1,14 @@
 import React, { JSX } from 'react';
 
 import PlaylistHomeSegment from '@/widgets/PlaylistHomeSegment/PlaylistHomeSegment.tsx';
-import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
+
 import ManagementHomeSegment from '@/widgets/ManagementHomeSegment/ManagementHomeSegment.tsx';
 import PlaylistsLibrarySegment from '@/widgets/PlaylistsLibrarySegment/PlaylistsLibrarySegment.tsx';
-
-export type HomeSegmentProps = {
-    audioPlayer: AudioPlayer;
-};
 
 export interface HomeSegment {
     id: string;
     label: string;
-    buildComponent(props: HomeSegmentProps): JSX.Element;
+    buildComponent(): JSX.Element;
 }
 
 export class PlaylistSegmentInfo implements HomeSegment {
@@ -25,8 +21,8 @@ export class PlaylistSegmentInfo implements HomeSegment {
         this.id = playlistId;
     }
 
-    buildComponent({ audioPlayer }: HomeSegmentProps): React.JSX.Element {
-        return <PlaylistHomeSegment audioPlayer={audioPlayer} playlistUuid={this.playlistUuid} />;
+    buildComponent(): React.JSX.Element {
+        return <PlaylistHomeSegment playlistUuid={this.playlistUuid} />;
     }
 }
 
@@ -34,8 +30,8 @@ export class ManagementSegmentInfo implements HomeSegment {
     readonly id = 'management';
     readonly label = 'management';
 
-    buildComponent({ audioPlayer }: HomeSegmentProps): React.JSX.Element {
-        return <ManagementHomeSegment audioPlayer={audioPlayer} />;
+    buildComponent(): React.JSX.Element {
+        return <ManagementHomeSegment />;
     }
 }
 
@@ -43,7 +39,7 @@ export class LibrarySegmentInfo implements HomeSegment {
     readonly id = 'library';
     readonly label = 'playlists';
 
-    buildComponent({ audioPlayer }: HomeSegmentProps): React.JSX.Element {
-        return <PlaylistsLibrarySegment audioPlayer={audioPlayer} />;
+    buildComponent(): React.JSX.Element {
+        return <PlaylistsLibrarySegment/>;
     }
 }

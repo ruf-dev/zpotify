@@ -1,13 +1,9 @@
 import cn from 'classnames';
 
 import cls from '@/widgets/ManagementHomeSegment/ManagementHomeSegment.module.css';
-import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
 
-interface ManagementHomeSegmentProps {
-    audioPlayer: AudioPlayer;
-}
 
-export default function ManagementHomeSegment(_: ManagementHomeSegmentProps) {
+export default function ManagementHomeSegment() {
     return (
         <div className={cls.ManagementHomeSegmentContainer}>
             <DisplayKeys />

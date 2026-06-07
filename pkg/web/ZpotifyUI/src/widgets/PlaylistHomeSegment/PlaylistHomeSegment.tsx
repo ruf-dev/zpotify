@@ -1,21 +1,19 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import cn from 'classnames';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 import cls from '@/widgets/PlaylistHomeSegment/PlaylistHomeSegment.module.css';
 import Pen from '@/assets/pen.svg';
-import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
-import { playlistPath } from '@/app/routing/paths.ts';
+import {playlistPath} from '@/app/routing/paths.ts';
 import LazyLoadSongsList from '@/widgets/TrackList/LazyLoadSongsList.tsx';
 import IconButton from '@/shared/ui/IconButton.tsx';
 import GhostSong from '@/entities/song/GhostSong.tsx';
 
 interface DisplayPlaylistSegmentProps {
-    audioPlayer: AudioPlayer;
     playlistUuid: string;
 }
 
-export default function PlaylistHomeSegment({ audioPlayer, playlistUuid }: DisplayPlaylistSegmentProps) {
+export default function PlaylistHomeSegment({playlistUuid}: DisplayPlaylistSegmentProps) {
     const navigate = useNavigate();
     const [isEditing, setEditing] = useState(false);
     const [totalCount, setTotalCount] = useState<number | null>(null);
@@ -28,18 +26,20 @@ export default function PlaylistHomeSegment({ audioPlayer, playlistUuid }: Displ
                 </span>
                 <div className={cls.HeaderRight}>
                     {totalCount !== null && <span className={cls.TrackCount}>{totalCount} tracks</span>}
-                    <IconButton onClick={() => setEditing(!isEditing)} iconPath={Pen} />
+                    <IconButton onClick={() => setEditing(!isEditing)} iconPath={Pen}/>
                 </div>
             </div>
 
-            <LazyLoadSongsList audioPlayer={audioPlayer} playlistId={playlistUuid} onTotal={setTotalCount} />
+            <LazyLoadSongsList
+                playlistId={playlistUuid}
+                onTotal={setTotalCount}/>
 
             <div
                 className={cn(cls.GhostButtonWrapper, {
                     [cls.hidden]: !isEditing,
                 })}
             >
-                <GhostSong />
+                <GhostSong/>
             </div>
         </div>
     );
