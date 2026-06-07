@@ -7,14 +7,6 @@
         var(--color-bg-base);
 }
 
-.Header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--header-height);
-}
-
 .Body {
     position: fixed;
     top: var(--header-height);
@@ -23,15 +15,6 @@
     bottom: 0;
     display: flex;
     overflow: hidden;
-}
-
-.Player {
-    position: fixed;
-    bottom: var(--player-bottom);
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 /* ── Sidebar ─────────────────────────────────────────────── */

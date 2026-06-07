@@ -3,26 +3,20 @@ import { useNavigate, useParams } from 'react-router-dom';
 import cn from 'classnames';
 
 import cls from '@/pages/main/album/AlbumPage.module.css';
-import type { Playlist } from '@/app/api/zpotify';
+import type { Playlist, SongBase } from '@/app/api/zpotify';
 
 import useUser from '@/entities/user/useUser.ts';
 import { Path } from '@/app/routing/paths.ts';
 import { usePlaylist } from '@/pages/main/playlist/usePlaylist.ts';
+import { useAlbumSongs } from '@/pages/main/album/useAlbumSongs.ts';
+import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
 import GenerativeCover from '@/components/GenerativeCover/GenerativeCover.tsx';
 import BackButton from '@/shared/ui/BackButton.tsx';
 import RandomArrows from '@/assets/player/ShuffleArrows.tsx';
 import PlayIcon from '@/assets/icons/PlayIcon.tsx';
 import NowPlayingBars from '@/assets/icons/NowPlayingBars.tsx';
 
-/* ── Mock data (replace when album API is available) ──────── */
-
-interface MockTrack {
-    id: number;
-    title: string;
-    artist: string;
-    duration: string;
-    liked: boolean;
-}
+/* ── Mock data (replace when album entity is added to backend) ── */
 
 interface MockComment {
     id: number;
@@ -33,17 +27,17 @@ interface MockComment {
     likes: number;
 }
 
-const MOCK_TRACKS: MockTrack[] = [
-    { id: 1, title: 'Neon Drift', artist: 'Various', duration: '3:42', liked: false },
-    { id: 2, title: 'Hollow Signal', artist: 'Various', duration: '4:15', liked: true },
-    { id: 3, title: 'Glass Shore', artist: 'Various', duration: '5:08', liked: false },
-    { id: 4, title: 'Blue Static', artist: 'Various', duration: '3:55', liked: false },
-    { id: 5, title: 'Remnants', artist: 'Various', duration: '4:33', liked: true },
-    { id: 6, title: 'Slow Cascade', artist: 'Various', duration: '6:01', liked: false },
-    { id: 7, title: 'Pale Circuit', artist: 'Various', duration: '3:27', liked: false },
-    { id: 8, title: 'Overture', artist: 'Various', duration: '7:19', liked: false },
+// TODO: implement album metadata endpoint (GetAlbum) — album entity not yet in backend
+const MOCK_GENRES = ['Electronic', 'Ambient', 'Experimental'];
+const MOCK_YEAR = 2024;
+const MOCK_CREDITS = [
+    { role: 'Producer', name: 'Lena Kovacs' },
+    { role: 'Mastering', name: 'Studio Ariel' },
+    { role: 'Artwork', name: 'M. Frost' },
 ];
+const MOCK_LABEL = 'Zpotify Records';
 
+// TODO: implement comments API — no backend endpoint exists yet
 const MOCK_COMMENTS: MockComment[] = [
     {
         id: 1,
@@ -71,16 +65,6 @@ const MOCK_COMMENTS: MockComment[] = [
     },
 ];
 
-const MOCK_GENRES = ['Electronic', 'Ambient', 'Experimental'];
-const MOCK_YEAR = 2024;
-const MOCK_DURATION = '42 min';
-const MOCK_CREDITS = [
-    { role: 'Producer', name: 'Lena Kovacs' },
-    { role: 'Mastering', name: 'Studio Ariel' },
-    { role: 'Artwork', name: 'M. Frost' },
-];
-const MOCK_LABEL = 'Zpotify Records';
-
 /* ── Helpers ─────────────────────────────────────────────── */
 
 function resolveCoverSeed(playlist: Playlist): number {
@@ -91,6 +75,18 @@ function resolveCoverSeed(playlist: Playlist): number {
     }
     const uuid = playlist.uuid ?? '0';
     return (uuid.charCodeAt(0) % 7) + 1;
+}
+
+function formatDuration(sec: number): string {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+function computeTotalDuration(songs: SongBase[]): string {
+    const totalSec = songs.reduce((acc, s) => acc + (s.durationSec ?? 0), 0);
+    const m = Math.floor(totalSec / 60);
+    return `${m} min`;
 }
 
 /* ── Inline SVG icons ────────────────────────────────────── */
@@ -163,13 +159,14 @@ function PlayTriangleSvg() {
 
 interface AlbumSidebarProps {
     playlist: Playlist;
+    totalDuration: string;
     saved: boolean;
     onToggleSave: () => void;
     onBack: () => void;
     onPlay: () => void;
 }
 
-function AlbumSidebar({ playlist, saved, onToggleSave, onBack, onPlay }: AlbumSidebarProps) {
+function AlbumSidebar({ playlist, totalDuration, saved, onToggleSave, onBack, onPlay }: AlbumSidebarProps) {
     const seed = resolveCoverSeed(playlist);
     const artistName = playlist.artists?.[0]?.name ?? 'Unknown Artist';
     const [aboutExpanded, setAboutExpanded] = useState(false);
@@ -191,15 +188,17 @@ function AlbumSidebar({ playlist, saved, onToggleSave, onBack, onPlay }: AlbumSi
                 <h1 className={cls.AlbumName}>{playlist.name}</h1>
                 <span className={cls.ArtistName}>{artistName}</span>
                 <div className={cls.MetaRow}>
+                    {/* TODO: implement album metadata endpoint (GetAlbum) — album entity not yet in backend */}
                     <span>{MOCK_YEAR}</span>
                     <span>·</span>
                     <span>{playlist.songCount ?? 0} tracks</span>
                     <span>·</span>
-                    <span>{MOCK_DURATION}</span>
+                    <span>{totalDuration}</span>
                 </div>
             </div>
 
             <div className={cls.GenreChipsRow}>
+                {/* TODO: implement album metadata endpoint (GetAlbum) — album entity not yet in backend */}
                 {MOCK_GENRES.map((genre) => (
                     <span key={genre} className={cls.GenreChip}>
                         {genre}
@@ -239,6 +238,7 @@ function AlbumSidebar({ playlist, saved, onToggleSave, onBack, onPlay }: AlbumSi
 
             <div>
                 <span className={cls.SectionLabel}>credits</span>
+                {/* TODO: implement album metadata endpoint (GetAlbum) — album entity not yet in backend */}
                 <div className={cls.CreditsSection}>
                     {MOCK_CREDITS.map((credit) => (
                         <div key={credit.role} className={cls.CreditEntry}>
@@ -250,6 +250,7 @@ function AlbumSidebar({ playlist, saved, onToggleSave, onBack, onPlay }: AlbumSi
             </div>
 
             <div className={cls.LabelPill}>
+                {/* TODO: implement album metadata endpoint (GetAlbum) — album entity not yet in backend */}
                 <span className={cls.LabelPillLabel}>label</span>
                 <span className={cls.LabelPillName}>{MOCK_LABEL}</span>
             </div>
@@ -260,7 +261,7 @@ function AlbumSidebar({ playlist, saved, onToggleSave, onBack, onPlay }: AlbumSi
 /* ── AlbumTrackRow ───────────────────────────────────────── */
 
 interface AlbumTrackRowProps {
-    track: MockTrack;
+    song: SongBase;
     index: number;
     isPlaying: boolean;
     isLiked: boolean;
@@ -270,7 +271,7 @@ interface AlbumTrackRowProps {
 }
 
 function AlbumTrackRow({
-    track,
+    song,
     index,
     isPlaying,
     isLiked,
@@ -291,6 +292,9 @@ function AlbumTrackRow({
         e.stopPropagation();
     }
 
+    const artistName = song.artists?.[0]?.name ?? 'Unknown';
+    const duration = formatDuration(song.durationSec ?? 0);
+
     return (
         <div className={cn(cls.TrackRow, isPlaying && cls.TrackRowPlaying)} onClick={handleRowClick} role="row">
             <div className={cls.TrackNumCell}>
@@ -307,8 +311,8 @@ function AlbumTrackRow({
             </div>
 
             <div className={cls.TrackTitleCell}>
-                <span className={cn(cls.TrackTitle, isPlaying && cls.TrackTitlePlaying)}>{track.title}</span>
-                <span className={cls.TrackArtist}>{track.artist}</span>
+                <span className={cn(cls.TrackTitle, isPlaying && cls.TrackTitlePlaying)}>{song.title}</span>
+                <span className={cls.TrackArtist}>{artistName}</span>
             </div>
 
             <button
@@ -320,7 +324,7 @@ function AlbumTrackRow({
                 <HeartSvg filled={isLiked} />
             </button>
 
-            <span className={cls.TrackDuration}>{track.duration}</span>
+            <span className={cls.TrackDuration}>{duration}</span>
 
             <button type="button" className={cls.OverflowBtn} onClick={handleOverflowClick} aria-label="More options">
                 ···
@@ -348,6 +352,7 @@ function CommentsSection({ username }: CommentsSectionProps) {
 
     function handleSubmitComment() {
         if (!commentText.trim()) return;
+        // TODO: implement comments API — no backend endpoint exists yet
         setCommentText('');
     }
 
@@ -434,33 +439,28 @@ function CommentsSection({ username }: CommentsSectionProps) {
 /* ── AlbumMainContent ────────────────────────────────────── */
 
 interface AlbumMainContentProps {
-    playingId: number | null;
-    onSetPlayingId: (id: number | null) => void;
+    songs: SongBase[];
+    currentTrackPath: string | null;
+    onPlaySong: (song: SongBase) => void;
     username: string;
 }
 
-function AlbumMainContent({ playingId, onSetPlayingId, username }: AlbumMainContentProps) {
-    const [likedTracks, setLikedTracks] = useState<Set<number>>(
-        () => new Set(MOCK_TRACKS.filter((t) => t.liked).map((t) => t.id)),
-    );
-    const [animatingHeartId, setAnimatingHeartId] = useState<number | null>(null);
+function AlbumMainContent({ songs, currentTrackPath, onPlaySong, username }: AlbumMainContentProps) {
+    const [likedSongIds, setLikedSongIds] = useState<Set<string>>(new Set());
+    const [animatingHeartId, setAnimatingHeartId] = useState<string | null>(null);
 
-    function handleToggleLike(trackId: number) {
-        setLikedTracks((prev) => {
+    function handleToggleLike(songId: string) {
+        setLikedSongIds((prev) => {
             const next = new Set(prev);
-            if (next.has(trackId)) {
-                next.delete(trackId);
+            if (next.has(songId)) {
+                next.delete(songId);
             } else {
-                next.add(trackId);
+                next.add(songId);
             }
             return next;
         });
-        setAnimatingHeartId(trackId);
+        setAnimatingHeartId(songId);
         setTimeout(() => setAnimatingHeartId(null), 350);
-    }
-
-    function handleTogglePlay(trackId: number) {
-        onSetPlayingId(playingId === trackId ? null : trackId);
     }
 
     return (
@@ -476,16 +476,16 @@ function AlbumMainContent({ playingId, onSetPlayingId, username }: AlbumMainCont
             </div>
 
             <div className={cls.TrackList}>
-                {MOCK_TRACKS.map((track, i) => (
+                {songs.map((song, i) => (
                     <AlbumTrackRow
-                        key={track.id}
-                        track={track}
+                        key={song.id}
+                        song={song}
                         index={i + 1}
-                        isPlaying={playingId === track.id}
-                        isLiked={likedTracks.has(track.id)}
-                        isHeartAnimating={animatingHeartId === track.id}
-                        onPlay={() => handleTogglePlay(track.id)}
-                        onToggleLike={() => handleToggleLike(track.id)}
+                        isPlaying={currentTrackPath === song.id}
+                        isLiked={likedSongIds.has(song.id ?? '')}
+                        isHeartAnimating={animatingHeartId === song.id}
+                        onPlay={() => onPlaySong(song)}
+                        onToggleLike={() => handleToggleLike(song.id ?? '')}
                     />
                 ))}
             </div>
@@ -503,20 +503,10 @@ export default function AlbumPage() {
     const userData = useUser((state) => state.userData);
     const auth = useUser((state) => state.auth);
     const { playlist } = usePlaylist(id);
+    const { songs } = useAlbumSongs(id);
+    const audioPlayer = useAudioPlayer();
 
-    const [playingId, setPlayingId] = useState<number | null>(() => {
-        try {
-            const raw = localStorage.getItem('zp_album_page');
-            return raw ? (JSON.parse(raw).playingId ?? null) : null;
-        } catch {
-            return null;
-        }
-    });
     const [saved, setSaved] = useState(false);
-
-    useEffect(() => {
-        localStorage.setItem('zp_album_page', JSON.stringify({ playingId }));
-    }, [playingId]);
 
     useEffect(() => {
         if (!userData) {
@@ -533,9 +523,21 @@ export default function AlbumPage() {
     }
 
     function handlePlay() {
-        const firstId = MOCK_TRACKS[0]?.id ?? null;
-        setPlayingId((prev) => (prev !== null ? null : firstId));
+        const first = songs[0];
+        if (!first?.id) return;
+        const artistName = first.artists?.[0]?.name ?? null;
+        audioPlayer.setSongInfo(first.title ?? null, artistName);
+        audioPlayer.play(first.id);
     }
+
+    function handlePlaySong(song: SongBase) {
+        if (!song.id) return;
+        const artistName = song.artists?.[0]?.name ?? null;
+        audioPlayer.setSongInfo(song.title ?? null, artistName);
+        audioPlayer.play(song.id);
+    }
+
+    const totalDuration = computeTotalDuration(songs);
 
     if (!id || !userData) return null;
 
@@ -547,13 +549,19 @@ export default function AlbumPage() {
                 {playlist && (
                     <AlbumSidebar
                         playlist={playlist}
+                        totalDuration={totalDuration}
                         saved={saved}
                         onToggleSave={handleToggleSave}
                         onBack={handleBack}
                         onPlay={handlePlay}
                     />
                 )}
-                <AlbumMainContent playingId={playingId} onSetPlayingId={setPlayingId} username={userData.username} />
+                <AlbumMainContent
+                    songs={songs}
+                    currentTrackPath={audioPlayer.trackPath}
+                    onPlaySong={handlePlaySong}
+                    username={userData.username}
+                />
             </div>
         </div>
     );

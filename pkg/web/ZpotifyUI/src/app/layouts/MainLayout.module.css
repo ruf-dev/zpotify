@@ -9,4 +9,13 @@
         height: var(--header-height);
     }
 
+
+    .Player {
+        position: fixed;
+        bottom: var(--player-bottom);
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
