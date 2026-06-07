@@ -1,6 +1,6 @@
 import React from 'react';
 
-import cls from '@/pages/home/HomePage.module.css';
+import cls from '@/pages/main/home/HomePage.module.css';
 import SegmentTabBar from '@/components/tabs/SegmentTabBar.tsx';
 import SegmentCarousel from '@/components/carousel/SegmentCarousel.tsx';
 import { useHomeSegments } from '@/widgets/HomeSegments/useHomeSegments.ts';

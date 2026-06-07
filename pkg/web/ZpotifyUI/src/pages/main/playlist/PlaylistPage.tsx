@@ -1,21 +1,16 @@
 import { useParams } from 'react-router-dom';
 
-import cls from '@/pages/playlist/PlaylistPage.module.css';
+import cls from '@/pages/main/playlist/PlaylistPage.module.css';
 import type { Playlist } from '@/app/api/zpotify';
-import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
+
 import useUser from '@/entities/user/useUser.ts';
 import LazyLoadSongsList from '@/widgets/TrackList/LazyLoadSongsList.tsx';
-import HeaderPart from '@/widgets/Header/HeaderPart.tsx';
-import MusicPlayerWithLogo from '@/widgets/MusicPlayer/MusicPlayerWithLogo.tsx';
-import { usePlaylist } from '@/pages/playlist/usePlaylist.ts';
+import { usePlaylist } from '@/pages//main/playlist/usePlaylist.ts';
 import GenerativeCover from '@/components/GenerativeCover/GenerativeCover.tsx';
 
 import RandomArrows from '@/assets/player/ShuffleArrows.tsx';
 import PlayIcon from '@/assets/icons/PlayIcon.tsx';
 
-interface PlaylistPageProps {
-    audioPlayer: AudioPlayer;
-}
 
 function resolveCoverSeed(playlist: Playlist): number {
     const fileId = playlist.coverFileId ?? '';
@@ -69,10 +64,9 @@ function PlaylistSidebar({ playlist, username }: PlaylistSidebarProps) {
 
 interface PlaylistMainContentProps {
     playlistId: string;
-    audioPlayer: AudioPlayer;
 }
 
-function PlaylistMainContent({ playlistId, audioPlayer }: PlaylistMainContentProps) {
+function PlaylistMainContent({ playlistId }: PlaylistMainContentProps) {
     return (
         <div className={cls.MainContent}>
             <div className={cls.TrackListHeader}>
@@ -80,12 +74,12 @@ function PlaylistMainContent({ playlistId, audioPlayer }: PlaylistMainContentPro
                 <span className={cls.ColTitle}>title</span>
                 <span className={cls.ColArtist}>artist</span>
             </div>
-            <LazyLoadSongsList audioPlayer={audioPlayer} playlistId={playlistId} fixedSize />
+            <LazyLoadSongsList playlistId={playlistId} fixedSize />
         </div>
     );
 }
 
-export default function PlaylistPage({ audioPlayer }: PlaylistPageProps) {
+export default function PlaylistPage() {
     const { id } = useParams<{ id: string }>();
     const userData = useUser((state) => state.userData);
     const { playlist } = usePlaylist(id);
@@ -95,17 +89,9 @@ export default function PlaylistPage({ audioPlayer }: PlaylistPageProps) {
 
     return (
         <div className={cls.PlaylistPageContainer}>
-            <div className={cls.Header}>
-                <HeaderPart />
-            </div>
-
             <div className={cls.Body}>
                 {playlist && <PlaylistSidebar playlist={playlist} username={userData.username}/>}
-                <PlaylistMainContent playlistId={id} audioPlayer={audioPlayer} />
-            </div>
-
-            <div className={cls.Player}>
-                <MusicPlayerWithLogo audioPlayer={audioPlayer} />
+                <PlaylistMainContent playlistId={id}/>
             </div>
         </div>
     );

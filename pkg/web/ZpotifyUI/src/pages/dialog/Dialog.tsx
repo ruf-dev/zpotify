@@ -1,6 +1,6 @@
 import React from 'react';
 
-import cls from '@/pages/segments/Dialog.module.css';
+import cls from '@/pages/dialog/Dialog.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 
 export default function Dialog() {

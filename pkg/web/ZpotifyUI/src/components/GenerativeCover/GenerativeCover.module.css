@@ -1,0 +1,7 @@
+.GenerativeCoverContainer {
+    width: var(--gc-size, 4rem);
+    height: var(--gc-size, 4rem);
+    border-radius: var(--gc-radius, var(--border-radius-md));
+    overflow: hidden;
+    flex-shrink: 0;
+}

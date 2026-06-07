@@ -6,15 +6,15 @@ import cls from '@/app/routing/Router.module.css';
 import {Path} from '@/app/routing/paths.ts';
 import InitPage from '@/pages/init/InitPage.tsx';
 import ErrorPage from '@/pages/error/ErrorPage.tsx';
-import PlaylistPage from '@/pages/playlist/PlaylistPage.tsx';
-import AlbumPage from '@/pages/album/AlbumPage.tsx';
+import PlaylistPage from '@/pages/main/playlist/PlaylistPage.tsx';
+import AlbumPage from '@/pages/main/album/AlbumPage.tsx';
 import EarlyAccessPage from '@/pages/early_access/EarlyAccessPage.tsx';
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
 import useUser from '@/entities/user/useUser.ts';
 import Toaster from '@/components/notifications/Toaster.tsx';
-import HomePage from '@/pages/home/HomePage.tsx';
+import HomePage from '@/pages/main/home/HomePage.tsx';
 import Coloring from '@/admin-components/coloring/Coloring.tsx';
-import Dialog from '@/pages/segments/Dialog.tsx';
+import Dialog from '@/pages/dialog/Dialog.tsx';
 import MainLayout from "@/app/layouts/MainLayout.tsx";
 
 export default function Router() {
@@ -53,18 +53,18 @@ export default function Router() {
                     >
                         <Route
                             path={Path.HomePage}
-                            element={<HomePage audioPlayer={audioPlayer}/>}
+                            element={<HomePage/>}
                             errorElement={<ErrorPage/>}
                         />
                         <Route
                             path={Path.PlaylistPage}
-                            element={<PlaylistPage audioPlayer={audioPlayer}/>}
+                            element={<PlaylistPage/>}
                             errorElement={<ErrorPage/>}
                         />
 
                         <Route
                             path={Path.AlbumPage}
-                            element={<AlbumPage audioPlayer={audioPlayer}/>}
+                            element={<AlbumPage/>}
                             errorElement={<ErrorPage/>}
                         />
                     </Route>
