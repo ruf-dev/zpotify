@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import cls from '@/widgets/PlaylistsLibrarySegment/PlaylistsLibrarySegment.module.css';
 
 import useUser from '@/entities/user/useUser.ts';
-import { playlistPath } from '@/app/routing/paths.ts';
-import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
-import { ServiceError } from '@/shared/api/Errors.ts';
+import {playlistPath, albumPath} from '@/app/routing/paths.ts';
+import {useToaster} from '@/hooks/toaster/ToasterZ.ts';
+import {ServiceError} from '@/shared/api/Errors.ts';
 import AlbumCard from '@/widgets/PlaylistsLibrarySegment/AlbumCard.tsx';
 import PlaylistCardWide from '@/widgets/PlaylistsLibrarySegment/PlaylistCardWide.tsx';
 
@@ -47,10 +47,10 @@ function interleave(
             });
         }
         if (ai < albums.length) {
-            result.push({ kind: 'album', playlist: albums[ai++] });
+            result.push({kind: 'album', playlist: albums[ai++]});
         }
         if (ai < albums.length) {
-            result.push({ kind: 'album', playlist: albums[ai++] });
+            result.push({kind: 'album', playlist: albums[ai++]});
         }
     }
     return result;
@@ -105,7 +105,7 @@ export default function PlaylistsLibrarySegment() {
     }, []);
 
     if (loading) {
-        return <div className={cls.PlaylistsLibrarySegmentContainer} />;
+        return <div className={cls.PlaylistsLibrarySegmentContainer}/>;
     }
 
     if (items.length === 0) {
@@ -120,7 +120,7 @@ export default function PlaylistsLibrarySegment() {
         <div className={cls.PlaylistsLibrarySegmentContainer}>
             <div className={cls.Grid}>
                 {items.map((item) => {
-                    const { playlist } = item;
+                    const {playlist} = item;
                     const uuid = playlist.uuid ?? '';
                     const seed = uuidToSeed(uuid);
 
@@ -134,7 +134,7 @@ export default function PlaylistsLibrarySegment() {
                                 artistNames={artistNames}
                                 seed={seed}
                                 onClick={function handleAlbumClick() {
-                                    navigate(playlistPath(uuid));
+                                    navigate(albumPath(uuid));
                                 }}
                                 onArtistClick={function handleArtistClick(e) {
                                     e.stopPropagation();
