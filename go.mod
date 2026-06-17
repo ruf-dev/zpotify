@@ -20,7 +20,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	github.com/tcolgate/mp3 v0.0.0-20170426193717-e79c5a46d300
 	go.redsock.ru/protoc-gen-npm v0.0.12
-	go.redsock.ru/rerrors v0.0.13
+	go.redsock.ru/rerrors v0.0.15
 	go.redsock.ru/toolbox v0.0.11
 	go.vervstack.ru/matreshka v1.0.95
 	golang.org/x/sync v0.20.0
@@ -48,5 +48,3 @@ require (
 	golang.org/x/text v0.37.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace go.redsock.ru/rerrors v0.0.13 => /Users/alexbukov/redsock/rerrors
