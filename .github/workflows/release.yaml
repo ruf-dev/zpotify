@@ -58,7 +58,7 @@ jobs:
     needs:
       - tag-release
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
@@ -76,38 +76,8 @@ jobs:
       - name: Release image
         uses: RedSockActions/release_image@v1.0.39
         with:
-          REGISTRY_USER: oauth
+          REGISTRY_USER: redsockruf
           REGISTRY_PWD: ${{ secrets.REGISTRY_PWD }}
           DISABLE_CHECKOUT: true
           REGISTRY_URL: ${{ vars.REGISTRY_URL }}
           IMAGE_NAME: ${{ vars.IMAGE_NAME }}
-
-  ui-release:
-    if: ${{ needs.tag-release.outputs.tag != '' }}
-    runs-on: ${{ vars.UBUNTU_IMAGE }}
-    needs:
-      - tag-release
-      - docker-registry-release
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Restore UI cache
-        uses: actions/cache@v4
-        with:
-          path: pkg/web/ZpotifyUI/dist
-          key: ${{ runner.os }}-uibuild-${{ github.ref_name }}-${{ hashFiles('pkg/web/ZpotifyUI/bun.lock', 'pkg/web/ZpotifyUI/**.[jt]s', 'pkg/web/ZpotifyUI/**.[jt]sx') }}
-          restore-keys: |
-            ${{ runner.os }}-uibuild-${{ github.ref_name }}-
-            ${{ runner.os }}-uibuild-
-
-      - name: Minio Deploy
-        uses: marverlous811/minio-upload@v1.2.0
-        with:
-          endpoint: ${{ secrets.MINIO_ENDPOINT }}
-          access_key: ${{ secrets.MINIO_ACCESS_KEY }}
-          secret_key: ${{ secrets.MINIO_SECRET_KEY }}
-          bucket: 'zpotify-ru'
-          local_path: './pkg/web/ZpotifyUI/dist/*'
-          remote_path: '/'
-          recursive: true
