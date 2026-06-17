@@ -32,7 +32,7 @@ export default function SegmentCarousel({ activeIdx, count, onChange, renderSlid
         setTimeout(() => {
             isProgrammatic.current = false;
         }, 450);
-    }, [activeIdx]);
+    }, [activeIdx, count]);
 
     const handleScroll = () => {
         if (isProgrammatic.current) return;
