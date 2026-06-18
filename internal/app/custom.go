@@ -25,6 +25,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/transport/playlist_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/song_api_impl"
 	telegramtransport "go.zpotify.ru/zpotify/internal/transport/telegram"
+	"go.zpotify.ru/zpotify/internal/transport/ui"
 	"go.zpotify.ru/zpotify/internal/transport/user_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/wapi"
 	"go.zpotify.ru/zpotify/pkg/docs"
@@ -122,6 +123,7 @@ func (c *Custom) Init(a *App) (err error) {
 	wapiHandler = middleware.LogWebMiddleware(wapiHandler)
 
 	c.ServerManager.AddHttpHandler("/wapi/", wapiHandler)
+	c.ServerManager.AddHttpHandler("/", ui.NewHandler())
 
 	c.telegramServer, err = telegramtransport.NewServer(a.Telegram, c.Service)
 	if err != nil {

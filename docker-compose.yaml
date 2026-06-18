@@ -13,7 +13,7 @@ services:
       - ./data/pg:/var/lib/postgresql
 
   nginx:
-    image: nginx:alpine
+    image: nginx:1.31.2
     container_name: zpotify_webserver
     extra_hosts:
       - "host.docker.internal:host-gateway"

@@ -9,8 +9,7 @@ build-ui: codegen .build-ui
 
 .build-ui:
 	cd pkg/web/@zpotify/api && npm link
-	cd pkg/web/ZpotifyUI && npm link @zpotify/api
-	cp -r pkg/web/ZpotifyUI/dist internal/transport/web
+	cd pkg/web/ZpotifyUI && npm link @zpotify/api && npm run build:ui
 
 link:
 	cd pkg/web/@zpotify/api && npm link

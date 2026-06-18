@@ -7,6 +7,10 @@ export default ({ mode }: { mode: string }) => {
 
     const uc = defineConfig({
         base: '/',
+        build: {
+            outDir: '../../../internal/transport/ui/dist',
+            emptyOutDir: true,
+        },
         plugins: [react()],
 
         resolve: {

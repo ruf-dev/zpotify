@@ -5,9 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build:ui": "tsc -b && vite build",
     "gen": "moti g && mv src/app/api/zpotify/@zpotify/api/index.ts src/app/api/zpotify/index.ts && rm -rf src/app/api/zpotify/@zpotify&& rm -rf src/app/api/artel/*.json",
-    "build": "bun run build:api && bun run link && bun run build:ui",
+    "build": "tsc -b && vite build",
     "lint": "eslint . && stylelint '**/*.{css,scss}'",
     "lint:js": "eslint .",
     "lint:css": "stylelint '**/*.{css,scss}'",
