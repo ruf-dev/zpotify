@@ -10,10 +10,10 @@ jobs:
     runs-on: ${{ vars.UBUNTU_IMAGE }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Restore cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.ref_name }}-${{ hashFiles('**/Dockerfile', '**/go.sum', '**/bun.lock') }}
@@ -22,7 +22,7 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: build
-        uses: RedSockActions/release_image@v1.0.39
+        uses: RedSockActions/release_image@v1.0.40
         with:
           DRYRUN: true
           REGISTRY_USER: redsockruf
@@ -74,7 +74,7 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Release image
-        uses: RedSockActions/release_image@v1.0.39
+        uses: RedSockActions/release_image@v1.0.40
         with:
           REGISTRY_USER: redsockruf
           REGISTRY_PWD: ${{ secrets.REGISTRY_PWD }}
