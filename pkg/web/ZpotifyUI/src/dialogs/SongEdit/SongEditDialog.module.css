@@ -1,8 +1,8 @@
 .SongEditDialog {
-    padding: 24px;
+    padding: var(--space-2xl);
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: var(--space-xl);
     min-width: 400px;
     position: relative;
 }
@@ -16,7 +16,7 @@
 .Header {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--space-md);
 
     .BackButton {
         width: 1em;
@@ -26,22 +26,22 @@
 
 .PathContainer {
     font-size: var(--font-size-sm);
-    color: var(--secondary-fg-color, #b3b3b3);
+    color: var(--secondary-fg-color);
     word-break: break-all;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-sm);
 }
 
 .Form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--space-lg);
 }
 
 .Chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
 }
 
 .Footer {

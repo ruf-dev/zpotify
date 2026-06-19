@@ -3,13 +3,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: var(--space-10);
 
     padding: 1rem 2rem;
     width: var(--auth-button-width);
     height: var(--auth-button-height);
 
-    background: #161616;
+    background: var(--color-bg-secondary);
     border: 1px solid rgb(255 255 255 / 7%);
     border-radius: 15em;
 
@@ -60,6 +60,6 @@
     background: rgb(255 255 255 / 8%);
     border: 1px solid rgb(255 255 255 / 10%);
     border-radius: 8em;
-    padding: 2px 6px;
+    padding: var(--space-xs) 0.375rem;
     color: rgb(255 255 255 / 30%);
 }

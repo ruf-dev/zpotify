@@ -18,7 +18,7 @@
     cursor: pointer;
     color: var(--disabled-fg-color);
     font-weight: bolder;
-    font-size: 1.2rem;
+    font-size: var(--font-size-3xl);
     margin-top: 0.5em;
     min-height: 4em;
 }

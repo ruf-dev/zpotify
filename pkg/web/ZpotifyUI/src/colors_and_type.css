@@ -84,6 +84,11 @@
   /* ── Misc ───────────────────────────────────────────────── */
   --color-fg-white: #fff;
 
+  /* ── Auth / Feature-specific ─────────────────────────────── */
+  --color-bg-logpass:     #2f1542;  /* Log-in-with-password button background */
+  --color-border-logpass: #3d1a5a;  /* Log-in-with-password button border */
+  --color-bg-player:      #1a001a;  /* Music player pill dark-purple tint */
+
   /* ── Animation Timing ───────────────────────────────────── */
   --ease-quick:   0.125s ease-in-out;
   --ease-default: 0.2s ease;
