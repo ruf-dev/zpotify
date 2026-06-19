@@ -102,6 +102,7 @@ func (c *Custom) Init(a *App) (err error) {
 	otelServerHandler := otelgrpc.NewServerHandler()
 	c.ServerManager.AddServerOption(
 		middleware.PanicInterceptor(),
+		middleware.TraceInterceptor(),
 		middleware.LogInterceptor(),
 		grpc.StatsHandler(otelServerHandler),
 		middleware.GrpcAuthInterceptor(

@@ -45,16 +45,17 @@ func LogInterceptor() grpc.ServerOption {
 				Str("method", info.FullMethod).
 				Any("request", req)
 
-			defer func() {
-				logBase.Msg("incoming GRPC request")
-			}()
-
 			resp, err = handler(ctx, req)
 			if err != nil {
 				logBase = logBase.Err(err)
 			}
 
 			logBase = logBase.Any("response", resp)
+			logBase = withTraceFields(ctx, logBase)
+
+			defer func() {
+				logBase.Msg("incoming GRPC request")
+			}()
 
 			return resp, err
 		})
@@ -70,13 +71,14 @@ func LogWebMiddleware(next http.Handler) http.Handler {
 
 		next.ServeHTTP(rw, r)
 
-		logEvent := log.Ctx(ctx).Debug().
+		logEvent := log.Debug().
 			Str("method", r.Method).
 			Str("path", r.URL.Path).
 			Str("remote", r.RemoteAddr).
 			Int("status", rw.status).
 			Dur("duration", time.Since(start))
 
+		logEvent = withTraceFields(ctx, logEvent)
 		logEvent = applyLogFields(ctx, logEvent)
 		logEvent.Msg("incoming HTTP request")
 	})
