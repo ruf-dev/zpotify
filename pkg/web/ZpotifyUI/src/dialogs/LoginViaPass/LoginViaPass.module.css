@@ -10,13 +10,13 @@
 
 .Card {
     width: 340px;
-    background: #0d0d0d;
+    background: var(--color-bg-card);
     border: 1px solid rgb(255 255 255 / 13%);
     border-radius: 1.25em;
-    padding: 32px 28px;
+    padding: var(--space-4xl) var(--space-3xl);
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--space-lg);
     animation: modalIn 0.25s ease;
 }
 
@@ -29,7 +29,7 @@
 }
 
 .Error {
-    color: #c1253d;
+    color: var(--color-error);
     font-family: Comfortaa, sans-serif;
     font-size: var(--font-size-sm);
     margin-top: -4px;
@@ -40,7 +40,7 @@
     height: 46px;
     width: 100%;
     background: var(--color-fg-accent);
-    color: #fff;
+    color: var(--color-fg-white);
     border: none;
     border-radius: 0.75em;
     font-family: Comfortaa, sans-serif;

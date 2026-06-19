@@ -2,7 +2,7 @@
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: var(--space-xs);
 }
 
 .Clickable {
@@ -10,19 +10,19 @@
 }
 
 .Clickable:hover .Chip {
-    background-color: var(--secondary-bg-color, #444);
+    background-color: var(--secondary-bg-color);
 }
 
 .Chip {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 4px 12px;
+    padding: var(--space-xs) var(--space-md);
     min-width: 32px;
     height: 32px;
     border-radius: 16px;
-    background-color: var(--secondary-bg-color, #333);
-    color: var(--main-fg-color, #fff);
+    background-color: var(--secondary-bg-color);
+    color: var(--main-fg-color);
     font-size: var(--font-size-base);
     font-weight: 500;
     box-sizing: border-box;
@@ -30,6 +30,6 @@
 
 .Label {
     font-size: var(--font-size-xs);
-    color: var(--secondary-fg-color, #b3b3b3);
+    color: var(--secondary-fg-color);
     text-transform: lowercase;
 }

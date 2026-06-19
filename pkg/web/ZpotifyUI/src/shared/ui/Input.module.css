@@ -11,7 +11,7 @@
     height: 100%;
     width: 100%;
 
-    padding: 0.75em 12px;
+    padding: 0.75em var(--space-md);
 
     box-sizing: border-box;
 
@@ -45,18 +45,18 @@
 .Label {
     position: absolute;
     top: 50%;
-    left: 12px;
+    left: var(--space-md);
     margin-right: 2px;
 
     transform: translateY(-50%);
 
     background: var(--main-bg-color);
-    color: #999;
+    color: var(--color-fg-tertiary);
 
     pointer-events: none;
 
     transition: all 0.2s ease;
-    padding: 0 4px;
+    padding: 0 var(--space-xs);
     font-size: var(--font-size-base);
 
     box-sizing: border-box;
@@ -68,7 +68,7 @@
     top: 0;
     transform: translateY(-50%) scale(0.85);
     color: var(--main-fg-color);
-    left: 8px;
+    left: var(--space-sm);
 }
 
 

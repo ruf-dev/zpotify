@@ -70,6 +70,6 @@
 
         cursor: pointer;
 
-        font-size: 2rem;
+        font-size: var(--font-size-dismiss);
     }
 }

@@ -15,8 +15,8 @@
 
 .CarouselTrack {
     display: flex;
-    gap: 24px;
-    padding: 16px 0;
+    gap: var(--space-2xl);
+    padding: var(--space-lg) 0;
     position: relative;
 }
 

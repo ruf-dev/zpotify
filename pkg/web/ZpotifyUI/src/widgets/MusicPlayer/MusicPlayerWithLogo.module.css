@@ -29,7 +29,7 @@
 
   transition: width 0.34s cubic-bezier(0.4, 0, 0.2, 1);
 
-  background: #1a001a;
+  background: var(--color-bg-player);
   border-radius: var(--border-radius-pill);
   border: 1px solid rgb(217 0 127 / 30%);
   position: relative;

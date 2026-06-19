@@ -3,11 +3,11 @@
     flex-direction: column;
     width: 25vw;
     max-height: 50vh;
-    background: var(--primary-bg-color, #121212);
+    background: var(--color-bg-secondary);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 8px 32px rgb(0 0 0 / 50%);
-    color: var(--primary-fg-color, #fff);
+    color: var(--color-fg-primary);
     position: relative;
 }
 
@@ -18,14 +18,14 @@
 }
 
 .Header {
-    font-size: 1.2rem;
+    font-size: var(--font-size-3xl);
     font-weight: bold;
     margin-bottom: 1rem;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: var(--space-md);
 }
 
 .List {
@@ -56,7 +56,7 @@
 }
 
 .FilePath {
-    font-size: 0.8rem;
+    font-size: var(--font-size-md);
     opacity: 0.6;
     white-space: nowrap;
     overflow: hidden;

@@ -7,10 +7,10 @@
 .Pill {
     display: flex;
     align-items: center;
-    gap: 10px;
-    background: #141414;
+    gap: var(--space-10);
+    background: var(--color-bg-secondary);
     border-radius: 15em;
-    padding: 5px 12px 5px 5px;
+    padding: 0.3125rem var(--space-md) 0.3125rem 0.3125rem;
     border: 1px solid rgb(255 255 255 / 6%);
     cursor: pointer;
     transition: border-color 0.15s ease;

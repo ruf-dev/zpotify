@@ -44,6 +44,21 @@
     --auth-icon-size: 1.5rem;      /* 32px — auth provider icon */
     --auth-button-width: 10rem;
     --auth-button-height: 2.5rem;
+
+    /* Spacing scale (rem-based) */
+    --space-xs:  0.25rem;   /* 4px  */
+    --space-sm:  0.5rem;    /* 8px  */
+    --space-md:  0.75rem;   /* 12px */
+    --space-10:  0.625rem;  /* 10px */
+    --space-lg:  1rem;      /* 16px */
+    --space-xl:  1.25rem;   /* 20px */
+    --space-2xl: 1.5rem;    /* 24px */
+    --space-3xl: 1.75rem;   /* 28px */
+    --space-4xl: 2rem;      /* 32px */
+
+    /* Font sizes (extended) */
+    --font-size-4xl:     1.25rem;   /* 20px */
+    --font-size-dismiss: 1.25rem;   /* dismiss/close × icon */
 }
 
 /*
