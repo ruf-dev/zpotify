@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { parseBlob } from 'music-metadata-browser';
 
 import { useDialog } from '@/app/hooks/Dialog.tsx';
-import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { webApiService } from '@/shared/api/WebApi.ts';
 import { artistsService } from '@/shared/api/ArtistsService.ts';
 import { songsService } from '@/shared/api/Songs.ts';

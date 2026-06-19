@@ -6,7 +6,7 @@ import CloseButton from '@/shared/ui/CloseButton';
 import StepDots from '@/shared/ui/StepDots';
 import BackButton from '@/shared/ui/BackButton';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
-import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { ServiceError } from '@/shared/api/Errors.ts';
 import { webApiService } from '@/shared/api/WebApi.ts';
 import ChooseScreen from '@/dialogs/AddTrack/screens/ChooseScreen';

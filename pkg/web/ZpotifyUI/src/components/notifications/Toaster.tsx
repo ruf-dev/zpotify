@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 import cls from '@/components/notifications/Toast.module.css';
-import { Toast as ToastProp, useToaster } from '@/hooks/toaster/ToasterZ.ts';
+import { Toast as ToastProp, useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 export default function Toaster() {
     const { toasts } = useToaster();

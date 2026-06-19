@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom';
 import cls from '@/widgets/PlaylistsLibrarySegment/PlaylistsLibrarySegment.module.css';
 
 import {playlistPath, albumPath} from '@/app/routing/paths.ts';
-import {useToaster} from '@/hooks/toaster/ToasterZ.ts';
+import {useToaster} from '@/shared/lib/toaster/ToasterZ.ts';
 import {ServiceError} from '@/shared/api/Errors.ts';
 import {playlistService} from '@/shared/api/PlaylistService.ts';
 import AlbumCard from '@/widgets/PlaylistsLibrarySegment/AlbumCard.tsx';

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { HomeSegment } from '@/shared/model/HomeSegments.tsx';
 import type { Tab } from '@/components/tabs/SegmentTabBar.tsx';
 import { settingsService } from '@/shared/api/HomePage.ts';

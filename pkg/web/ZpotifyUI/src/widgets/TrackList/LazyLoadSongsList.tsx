@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react';
 import type {SongBase} from '@/app/api/zpotify';
 import cls from '@/widgets/TrackList/InfiniteSongsList.module.css';
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
-import {useToaster} from '@/hooks/toaster/ToasterZ.ts';
+import {useToaster} from '@/shared/lib/toaster/ToasterZ.ts';
 import {playlistService} from '@/shared/api/PlaylistService.ts';
 import SongListWidget from '@/widgets/TrackList/TrackListWidget.tsx';
 import ZButton from '@/shared/ui/ZButton/ZButton.tsx';

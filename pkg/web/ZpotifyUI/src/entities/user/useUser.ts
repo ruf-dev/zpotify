@@ -5,7 +5,7 @@ import { setAuthMiddleware } from '@/shared/api/BaseService.ts';
 import type { AuthData } from '@/app/api/zpotify';
 import { UserInfo } from '@/shared/model/User.ts';
 import { Errors, ServiceError } from '@/shared/api/Errors.ts';
-import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { userService } from '@/shared/api/User.ts';
 
 export interface User {
