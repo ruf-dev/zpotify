@@ -20,6 +20,8 @@ RUN --mount=type=cache,target=/go/pkg go mod download
 COPY . .
 COPY --from=ui-builder /ui/dist ./internal/transport/ui/dist
 
+ARG TARGETOS
+ARG TARGETARCH
 RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg \
     GOOS=$TARGETOS GOARCH=$TARGETARCH CGO_ENABLED=0 \
