@@ -5,9 +5,38 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 )
+
+type logContextKey struct{}
+
+type LogFieldFn func(*zerolog.Event) *zerolog.Event
+
+func AddLogField(ctx context.Context, fn LogFieldFn) {
+	ptr, ok := ctx.Value(logContextKey{}).(*[]LogFieldFn)
+	if !ok || ptr == nil {
+		return
+	}
+	*ptr = append(*ptr, fn)
+}
+
+func withLogFields(ctx context.Context) context.Context {
+	fns := make([]LogFieldFn, 0)
+	return context.WithValue(ctx, logContextKey{}, &fns)
+}
+
+func applyLogFields(ctx context.Context, e *zerolog.Event) *zerolog.Event {
+	ptr, ok := ctx.Value(logContextKey{}).(*[]LogFieldFn)
+	if !ok || ptr == nil {
+		return e
+	}
+	for _, fn := range *ptr {
+		e = fn(e)
+	}
+	return e
+}
 
 func LogInterceptor() grpc.ServerOption {
 	return grpc.ChainUnaryInterceptor(
@@ -36,15 +65,20 @@ func LogWebMiddleware(next http.Handler) http.Handler {
 		start := time.Now()
 		rw := &loggingResponseWriter{ResponseWriter: w, status: http.StatusOK}
 
+		ctx := withLogFields(r.Context())
+		r = r.WithContext(ctx)
+
 		next.ServeHTTP(rw, r)
 
-		log.Debug().
+		logEvent := log.Ctx(ctx).Debug().
 			Str("method", r.Method).
 			Str("path", r.URL.Path).
 			Str("remote", r.RemoteAddr).
 			Int("status", rw.status).
-			Dur("duration", time.Since(start)).
-			Msg("incoming HTTP request")
+			Dur("duration", time.Since(start))
+
+		logEvent = applyLogFields(ctx, logEvent)
+		logEvent.Msg("incoming HTTP request")
 	})
 }
 

@@ -34,9 +34,6 @@ func unwrapError(w http.ResponseWriter, err error) {
 		return
 	}
 
-	log.Err(err).
-		Msg("unhandled error in wapi unwrapError")
-
 	w.WriteHeader(http.StatusInternalServerError)
 	_, _ = w.Write([]byte(err.Error()))
 }

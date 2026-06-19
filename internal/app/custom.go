@@ -8,6 +8,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.redsock.ru/rerrors"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
@@ -137,6 +138,7 @@ func (c *Custom) Init(a *App) (err error) {
 	wapiHandler = middleware.CorsMiddleware(a.Cfg.Environment.CorsAllowedOrigins)(wapiHandler)
 	wapiHandler = middleware.LogWebMiddleware(wapiHandler)
 
+	wapiHandler = otelhttp.NewHandler(wapiHandler, "/wapi")
 	c.ServerManager.AddHttpHandler("/wapi/", wapiHandler)
 	c.ServerManager.AddHttpHandler("/", ui.NewHandler())
 

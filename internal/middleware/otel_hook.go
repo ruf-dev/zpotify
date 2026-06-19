@@ -4,6 +4,7 @@ import (
 	"github.com/rs/zerolog"
 	otellog "go.opentelemetry.io/otel/log"
 	otellogGlobal "go.opentelemetry.io/otel/log/global"
+	"go.opentelemetry.io/otel/trace"
 )
 
 type otelLogHook struct {
@@ -24,6 +25,15 @@ func (o *otelLogHook) Run(e *zerolog.Event, level zerolog.Level, message string)
 	rec.SetBody(otellog.StringValue(message))
 	rec.SetSeverity(zerologToOtelSeverity(level))
 	rec.SetSeverityText(level.String())
+
+	spanCtx := trace.SpanFromContext(ctx).SpanContext()
+	if spanCtx.IsValid() {
+		rec.AddAttributes(
+			otellog.String("trace_id", spanCtx.TraceID().String()),
+			otellog.String("span_id", spanCtx.SpanID().String()),
+		)
+	}
+
 	o.logger.Emit(ctx, rec)
 }
 
