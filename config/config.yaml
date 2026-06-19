@@ -17,6 +17,9 @@ servers:
             module: go.zpotify.ru/zpotify
             gateway: /api
 environment:
+    - name: cors_allowed_origins
+      type: string
+      value: '*'
     - name: debug_auth
       type: bool
       value: false
@@ -31,9 +34,9 @@ environment:
       type: string
       enum: [Trace, Debug, Info, Warn, Error, Fatal, Panic]
       value: Info
+    - name: otel_endpoint
+      type: string
+      value: ""
     - name: telegram_client_id
       type: string
       value: ""
-    - name: cors_allowed_origins
-      type: string
-      value: "*"

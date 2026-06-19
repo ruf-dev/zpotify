@@ -6,8 +6,11 @@ package app
 import (
 	"context"
 
+	"github.com/rs/zerolog/log"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.redsock.ru/rerrors"
 	"golang.org/x/sync/errgroup"
+	"google.golang.org/grpc"
 
 	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/background"
@@ -53,6 +56,15 @@ type Custom struct {
 func (c *Custom) Init(a *App) (err error) {
 	rerrors.SetSeparator(':')
 
+	err = a.initOTel()
+	if err != nil {
+		return rerrors.Wrap(err, "init otel")
+	}
+	if a.Cfg.Environment.OtelEndpoint != "" {
+		hook := middleware.NewOtelLogHook("zpotify")
+		log.Logger = log.Logger.Hook(hook)
+	}
+
 	c.dataStorage = pg.NewStorage(a.Postgres)
 
 	c.binaryStorage, err = file_storage_providers.NewLocalStorageProvider(a.Cfg.Environment.LocalStoragePath)
@@ -86,9 +98,11 @@ func (c *Custom) Init(a *App) (err error) {
 		return rerrors.Wrap(err, "error creating server manager")
 	}
 
+	otelServerHandler := otelgrpc.NewServerHandler()
 	c.ServerManager.AddServerOption(
 		middleware.PanicInterceptor(),
 		middleware.LogInterceptor(),
+		grpc.StatsHandler(otelServerHandler),
 		middleware.GrpcAuthInterceptor(
 			c.Service,
 			middleware.WithIgnoredPathAuthOption(

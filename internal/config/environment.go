@@ -8,6 +8,7 @@ type EnvironmentConfig struct {
 	LocalStoragePath   string
 	LogFormat          string
 	LogLevel           string
+	OtelEndpoint       string
 	TelegramClientID   string
 }
 
