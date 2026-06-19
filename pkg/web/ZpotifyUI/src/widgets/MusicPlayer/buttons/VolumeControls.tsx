@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { useState } from 'react';
 
-import cls from '@/widgets/MusicPlayer/buttons/VolumeControls.module.scss';
+import cls from '@/widgets/MusicPlayer/buttons/VolumeControls.module.css';
 import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
 
 interface VolumeControlsProps {

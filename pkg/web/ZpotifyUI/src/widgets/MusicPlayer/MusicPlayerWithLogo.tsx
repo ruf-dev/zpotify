@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { useEffect, useState } from 'react';
 
-import cls from '@/widgets/MusicPlayer/MusicPlayerWithLogo.module.scss';
+import cls from '@/widgets/MusicPlayer/MusicPlayerWithLogo.module.css';
 import PlayerControls from '@/widgets/MusicPlayer/PlayerControls.tsx';
 import AnimatedZ from '@/assets/AnimatedZ.tsx';
 import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';

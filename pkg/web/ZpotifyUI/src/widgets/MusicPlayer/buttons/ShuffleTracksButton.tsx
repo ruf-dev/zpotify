@@ -1,4 +1,4 @@
-import cls from '@/widgets/MusicPlayer/buttons/ShuffleTracksButton.module.scss';
+import cls from '@/widgets/MusicPlayer/buttons/ShuffleTracksButton.module.css';
 import ShuffleArrowSVG from '@/assets/player/ShuffleArrows.tsx';
 import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
 

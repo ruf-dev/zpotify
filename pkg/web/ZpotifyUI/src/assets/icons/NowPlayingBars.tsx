@@ -1,6 +1,6 @@
 import cn from 'classnames';
 
-import cls from '@/assets/icons/NowPlayingBars.module.scss';
+import cls from '@/assets/icons/NowPlayingBars.module.css';
 
 export default function NowPlayingBars() {
     return (

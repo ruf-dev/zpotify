@@ -1,6 +1,6 @@
 import cn from 'classnames';
 
-import cls from '@/widgets/MusicPlayer/buttons/TrackRewindButton.module.scss';
+import cls from '@/widgets/MusicPlayer/buttons/TrackRewindButton.module.css';
 
 export interface TrackRewindButton {
     next?: boolean;

@@ -1,7 +1,7 @@
 import { MouseEvent as ReactMouseEvent, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import cls from '@/entities/song/more/MoreButton.module.scss';
+import cls from '@/entities/song/more/MoreButton.module.css';
 import MoreDots from '@/assets/MoreDots.tsx';
 import Menu, { MenuOption } from '@/components/menu/Menu.tsx';
 

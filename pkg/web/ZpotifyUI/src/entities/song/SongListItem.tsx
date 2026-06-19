@@ -2,7 +2,7 @@ import cn from 'classnames';
 import { useState } from 'react';
 
 import type { SongBase } from '@/app/api/zpotify';
-import cls from '@/entities/song/SongListItem.module.scss';
+import cls from '@/entities/song/SongListItem.module.css';
 import { SongListPermissions } from '@/shared/model/User.ts';
 import MoreButton from '@/entities/song/more/MoreButton.tsx';
 import { formatDuration } from '@/shared/lib/time.ts';

@@ -1,6 +1,6 @@
 import cn from 'classnames';
 
-import cls from '@/widgets/MusicPlayer/buttons/PlayPauseButton.module.scss';
+import cls from '@/widgets/MusicPlayer/buttons/PlayPauseButton.module.css';
 
 export interface PlayPauseButtonProps {
     isPlaying: boolean;
