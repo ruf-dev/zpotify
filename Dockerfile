@@ -18,7 +18,7 @@ COPY go.mod go.sum ./
 RUN --mount=type=cache,target=/go/pkg go mod download
 
 COPY . .
-COPY --from=ui-builder /ui/dist ./internal/transport/ui/dist
+COPY --from=ui-builder /internal/transport/ui/dist ./internal/transport/ui/dist
 
 ARG TARGETOS
 ARG TARGETARCH
