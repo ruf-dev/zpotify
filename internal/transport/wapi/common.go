@@ -5,19 +5,20 @@ import (
 	stderrs "errors"
 	"net/http"
 
-	"github.com/rs/zerolog/log"
+	"github.com/rs/zerolog"
 	"go.redsock.ru/rerrors"
 
+	"go.zpotify.ru/zpotify/internal/log"
 	"go.zpotify.ru/zpotify/internal/service/service_errors"
 )
 
-func unwrapError(w http.ResponseWriter, err error) {
+func unwrapError(ctx context.Context, w http.ResponseWriter, err error) {
 	if err == nil {
-		log.Err(rerrors.New("wrapped nil error")).
-			Msg("nil error passed to unwrapError function")
 		return
 	}
-
+	log.AddField(ctx, func(e *zerolog.Event) *zerolog.Event {
+		return e.Err(err)
+	})
 	if rerrors.Is(err, context.Canceled) {
 		return
 	}

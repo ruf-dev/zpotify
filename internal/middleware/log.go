@@ -16,7 +16,7 @@ func LogInterceptor() grpc.ServerOption {
 			resp, err = handler(ctx, req)
 
 			logBase := log.Debug(ctx).
-				Str("method", info.FullMethod).
+				Str("path", info.FullMethod).
 				Any("request", req).
 				Any("response", resp)
 

@@ -23,21 +23,23 @@ type GetAudioReq struct {
 func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
 	fileIdStr := r.URL.Query().Get("fileId")
 
+	ctx := r.Context()
+
 	start, end, err := extractStartEnd(r)
 	if err != nil {
-		unwrapError(w, err)
+		unwrapError(ctx, w, err)
 		return
 	}
 
 	fileId, err := strconv.Atoi(fileIdStr)
 	if err != nil {
-		unwrapError(w, err)
+		unwrapError(ctx, w, err)
 		return
 	}
 
 	track, stream, err := s.audioService.Get(int64(fileId), start, end)
 	if err != nil {
-		unwrapError(w, err)
+		unwrapError(ctx, w, err)
 		return
 	}
 

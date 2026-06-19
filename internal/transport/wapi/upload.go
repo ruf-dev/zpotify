@@ -7,7 +7,7 @@ import (
 	"github.com/rs/zerolog"
 	"go.redsock.ru/rerrors"
 
-	ilog "go.zpotify.ru/zpotify/internal/log"
+	"go.zpotify.ru/zpotify/internal/log"
 	"go.zpotify.ru/zpotify/internal/utils"
 )
 
@@ -23,6 +23,9 @@ func (s *Server) Upload(w http.ResponseWriter, r *http.Request) {
 	file, header, err := r.FormFile("file")
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		log.AddField(ctx, func(e *zerolog.Event) *zerolog.Event {
+			return e.Err(err)
+		})
 		_, _ = w.Write([]byte("error getting file from form: " + err.Error()))
 		return
 	}
@@ -30,11 +33,11 @@ func (s *Server) Upload(w http.ResponseWriter, r *http.Request) {
 
 	id, err := s.fileService.SaveFile(ctx, header.Filename, file)
 	if err != nil {
-		unwrapError(w, rerrors.Wrap(err, "error in file service StoreToLocalStorage"))
+		unwrapError(ctx, w, rerrors.Wrap(err, "error in file service StoreToLocalStorage"))
 		return
 	}
 
-	ilog.AddField(ctx, func(e *zerolog.Event) *zerolog.Event {
+	log.AddField(ctx, func(e *zerolog.Event) *zerolog.Event {
 		return e.
 			Str("filename", header.Filename).
 			Int64("size_bytes", header.Size).
