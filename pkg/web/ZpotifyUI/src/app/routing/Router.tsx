@@ -13,7 +13,7 @@ import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
 import useUser from '@/entities/user/useUser.ts';
 import Toaster from '@/components/notifications/Toaster.tsx';
 import HomePage from '@/pages/main/home/HomePage.tsx';
-import Coloring from '@/admin-components/coloring/Coloring.tsx';
+import Coloring from '@/widgets/admin/coloring/Coloring.tsx';
 import Dialog from '@/pages/dialog/Dialog.tsx';
 import MainLayout from "@/app/layouts/MainLayout.tsx";
 

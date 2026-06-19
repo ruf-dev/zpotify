@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import cls from '@/dialogs/SongEdit/SongEditDialog.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import useUser from '@/entities/user/useUser.ts';
-import { Toast, useToaster } from '@/hooks/toaster/ToasterZ.ts';
+import { Toast, useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import Button from '@/shared/ui/Button.tsx';
 import Input from '@/shared/ui/Input.tsx';
 import Chip from '@/shared/ui/Chip.tsx';

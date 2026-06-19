@@ -5,7 +5,7 @@ import type {SongBase} from '@/app/api/zpotify';
 import cls from '@/widgets/TrackList/InfiniteSongsList.module.css';
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
 import useUser from '@/entities/user/useUser.ts';
-import {useToaster} from '@/hooks/toaster/ToasterZ.ts';
+import {useToaster} from '@/shared/lib/toaster/ToasterZ.ts';
 import SongListWidget from '@/widgets/TrackList/TrackListWidget.tsx';
 import ZButton from '@/shared/ui/ZButton/ZButton.tsx';
 

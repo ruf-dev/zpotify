@@ -5,7 +5,7 @@ import cls from '@/widgets/PlaylistsLibrarySegment/PlaylistsLibrarySegment.modul
 
 import useUser from '@/entities/user/useUser.ts';
 import {playlistPath, albumPath} from '@/app/routing/paths.ts';
-import {useToaster} from '@/hooks/toaster/ToasterZ.ts';
+import {useToaster} from '@/shared/lib/toaster/ToasterZ.ts';
 import {ServiceError} from '@/shared/api/Errors.ts';
 import AlbumCard from '@/widgets/PlaylistsLibrarySegment/AlbumCard.tsx';
 import PlaylistCardWide from '@/widgets/PlaylistsLibrarySegment/PlaylistCardWide.tsx';

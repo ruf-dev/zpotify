@@ -5,7 +5,7 @@ import cls from '@/dialogs/EditTrack/EditTrackDialog.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import useUser from '@/entities/user/useUser.ts';
 import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
-import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { Option } from '@/shared/ui/MultiSelect.tsx';
 import { AudioFile } from '@/shared/model/AudioFile.ts';
 

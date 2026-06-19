@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import type { SongBase } from '@/app/api/zpotify';
 import useUser from '@/entities/user/useUser.ts';
-import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 export function useAlbumSongs(id: string | undefined) {
     const toaster = useToaster();

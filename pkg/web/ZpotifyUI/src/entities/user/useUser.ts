@@ -4,7 +4,7 @@ import { AuthMiddleware, AuthService, IAuthService } from '@/shared/api/Auth.ts'
 import type { AuthData } from '@/app/api/zpotify';
 import { UserInfo } from '@/shared/model/User.ts';
 import { Errors, ServiceError } from '@/shared/api/Errors.ts';
-import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import UserService from '@/shared/api/User.ts';
 import { ISongsService, SongsService } from '@/shared/api/Songs.ts';
 import { ISettingsService, SettingsService } from '@/shared/api/HomePage.ts';
