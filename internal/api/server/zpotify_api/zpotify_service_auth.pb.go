@@ -311,6 +311,7 @@ func (*GetAuthMethods_Request) Descriptor() ([]byte, []int) {
 type GetAuthMethods_Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	AuthMethods   []AuthMethods          `protobuf:"varint,1,rep,packed,name=auth_methods,json=authMethods,proto3,enum=zpotify_api.AuthMethods" json:"auth_methods,omitempty"`
+	TelegramBotId string                 `protobuf:"bytes,2,opt,name=telegram_bot_id,json=telegramBotId,proto3" json:"telegram_bot_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -350,6 +351,13 @@ func (x *GetAuthMethods_Response) GetAuthMethods() []AuthMethods {
 		return x.AuthMethods
 	}
 	return nil
+}
+
+func (x *GetAuthMethods_Response) GetTelegramBotId() string {
+	if x != nil {
+		return x.TelegramBotId
+	}
+	return ""
 }
 
 type AuthViaAsync_Request struct {
@@ -856,11 +864,12 @@ var File_zpotify_service_auth_proto protoreflect.FileDescriptor
 
 const file_zpotify_service_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x1azpotify_service_auth.proto\x12\vzpotify_api\x1a\tnpm.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x12zpotify_user.proto\"d\n" +
+	"\x1azpotify_service_auth.proto\x12\vzpotify_api\x1a\tnpm.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x12zpotify_user.proto\"\x8c\x01\n" +
 	"\x0eGetAuthMethods\x1a\t\n" +
-	"\aRequest\x1aG\n" +
+	"\aRequest\x1ao\n" +
 	"\bResponse\x12;\n" +
-	"\fauth_methods\x18\x01 \x03(\x0e2\x18.zpotify_api.AuthMethodsR\vauthMethods\"\x85\x01\n" +
+	"\fauth_methods\x18\x01 \x03(\x0e2\x18.zpotify_api.AuthMethodsR\vauthMethods\x12&\n" +
+	"\x0ftelegram_bot_id\x18\x02 \x01(\tR\rtelegramBotId\"\x85\x01\n" +
 	"\fAuthViaAsync\x1a\t\n" +
 	"\aRequest\x1aj\n" +
 	"\bResponse\x12\x1d\n" +

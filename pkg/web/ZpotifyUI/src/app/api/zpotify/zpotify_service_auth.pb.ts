@@ -23,6 +23,7 @@ export type GetAuthMethodsRequest = Record<string, never>;
 
 export type GetAuthMethodsResponse = {
   authMethods?: ZpotifyApiZpotifyUser.AuthMethods[];
+  telegramBotId?: string;
 };
 
 export type GetAuthMethods = Record<string, never>;

@@ -15,12 +15,14 @@ import (
 type Impl struct {
 	zpotify_api.UnimplementedAuthAPIServer
 
-	authService service.AuthService
+	authService   service.AuthService
+	telegramBotID string
 }
 
-func New(srv service.Service) *Impl {
+func New(srv service.Service, telegramBotID string) *Impl {
 	return &Impl{
-		authService: srv.AuthService(),
+		authService:   srv.AuthService(),
+		telegramBotID: telegramBotID,
 	}
 }
 

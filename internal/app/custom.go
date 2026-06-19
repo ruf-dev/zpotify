@@ -75,7 +75,7 @@ func (c *Custom) Init(a *App) (err error) {
 	)
 
 	c.ArtistsApiImpl = artists_api_impl.New(c.Service)
-	c.AuthApiImpl = auth_api_impl.New(c.Service)
+	c.AuthApiImpl = auth_api_impl.New(c.Service, a.Cfg.Environment.TelegramClientID)
 	c.FileApiImpl = file_api_impl.New(c.Service)
 	c.UserApiImpl = user_api_impl.New(c.Service)
 	c.PlaylistApiImpl = playlist_api_impl.New(c.Service)
@@ -95,6 +95,7 @@ func (c *Custom) Init(a *App) (err error) {
 				zpotify_api.AuthAPI_Auth_FullMethodName,
 				zpotify_api.AuthAPI_RefreshToken_FullMethodName,
 				zpotify_api.AuthAPI_AuthAsync_FullMethodName,
+				zpotify_api.AuthAPI_GetAuthMethods_FullMethodName,
 			),
 			middleware.WithDebug(a.Cfg.Environment.DebugAuth),
 		),

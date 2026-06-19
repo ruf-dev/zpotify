@@ -294,6 +294,9 @@
           "items": {
             "$ref": "#/definitions/zpotify_apiAuthMethods"
           }
+        },
+        "telegramBotId": {
+          "type": "string"
         }
       }
     },

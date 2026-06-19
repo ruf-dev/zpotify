@@ -52,6 +52,7 @@ message GetAuthMethods {
 
   message Response {
     repeated AuthMethods auth_methods = 1;
+    string telegram_bot_id = 2;
   }
 }
 message AuthViaAsync {
