@@ -30,14 +30,14 @@ jobs:
           REGISTRY_URL: ${{ vars.REGISTRY_URL }}
           IMAGE_NAME: ${{ vars.IMAGE_NAME }}
 
-      - name: Move new cache
-        run: |
-          if [ -d "/tmp/.buildx-cache-new" ]; then
-            rm -rf /tmp/.buildx-cache
-            mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-          else
-            echo "No new buildx cache generated."
-          fi
+#      - name: Move new cache
+#        run: |
+#          if [ -d "/tmp/.buildx-cache-new" ]; then
+#            rm -rf /tmp/.buildx-cache
+#            mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+#          else
+#            echo "No new buildx cache generated."
+#          fi
 
   tag-release:
     runs-on: ${{ vars.UBUNTU_IMAGE }}
@@ -52,7 +52,7 @@ jobs:
     outputs:
       tag: ${{ steps.release.outputs.tag }}
 
-  docker-registry-release:
+  docker-registry-release-x86:
     if: ${{ needs.tag-release.outputs.tag != '' }}
     runs-on: ${{ vars.UBUNTU_IMAGE }}
     needs:
@@ -64,14 +64,14 @@ jobs:
           ref: ${{ github.ref }}
           fetch-depth: 0
 
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.ref_name }}-${{ hashFiles('**/Dockerfile', '**/go.sum', '**/bun.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-${{ github.ref_name }}-
-            ${{ runner.os }}-buildx-
+#      - name: Restore cache
+#        uses: actions/cache@v4
+#        with:
+#          path: /tmp/.buildx-cache
+#          key: ${{ runner.os }}-buildx-${{ github.ref_name }}-${{ hashFiles('**/Dockerfile', '**/go.sum', '**/bun.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-buildx-${{ github.ref_name }}-
+#            ${{ runner.os }}-buildx-
 
       - name: Release image x86
         uses: RedSockActions/release_image@v1.0.39
@@ -82,6 +82,18 @@ jobs:
           REGISTRY_URL: ${{ vars.REGISTRY_URL }}
           IMAGE_NAME: ${{ vars.IMAGE_NAME }}
           PLATFORMS: linux/amd86
+
+  docker-registry-release-arm:
+    if: ${{ needs.tag-release.outputs.tag != '' }}
+    runs-on: ${{ vars.UBUNTU_IMAGE }}
+    needs:
+      - tag-release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
 
       - name: Release image Arm
         uses: RedSockActions/release_image@v1.0.39
