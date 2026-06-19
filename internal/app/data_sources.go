@@ -5,15 +5,9 @@ package app
 import (
 	"go.redsock.ru/rerrors"
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
-	"go.zpotify.ru/zpotify/internal/clients/telegram"
 )
 
 func (a *App) InitDataSources() (err error) {
-	a.Telegram, err = telegram.New(a.Cfg.DataSources.Telegram)
-	if err != nil {
-		return rerrors.Wrap(err, "error during telegram bot initialization")
-	}
-
 	a.Postgres, err = sqldb.New(a.Cfg.DataSources.Postgres)
 	if err != nil {
 		return rerrors.Wrap(err, "error during sql connection initialization")
