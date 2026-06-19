@@ -13,7 +13,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
 
-	"go.zpotify.ru/zpotify/internal/middleware"
+	ilog "go.zpotify.ru/zpotify/internal/log"
 )
 
 type GetAudioReq struct {
@@ -74,7 +74,7 @@ func (s *Server) GetAudio(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	middleware.AddLogField(r.Context(), func(e *zerolog.Event) *zerolog.Event {
+	ilog.AddField(r.Context(), func(e *zerolog.Event) *zerolog.Event {
 		return e.
 			Str("file_id", fileIdStr).
 			Int64("range_start", start).

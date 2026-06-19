@@ -7,7 +7,7 @@ import (
 	"github.com/rs/zerolog"
 	"go.redsock.ru/rerrors"
 
-	"go.zpotify.ru/zpotify/internal/middleware"
+	ilog "go.zpotify.ru/zpotify/internal/log"
 	"go.zpotify.ru/zpotify/internal/utils"
 )
 
@@ -34,7 +34,7 @@ func (s *Server) Upload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	middleware.AddLogField(ctx, func(e *zerolog.Event) *zerolog.Event {
+	ilog.AddField(ctx, func(e *zerolog.Event) *zerolog.Event {
 		return e.
 			Str("filename", header.Filename).
 			Int64("size_bytes", header.Size).

@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/rs/zerolog"
 	"go.redsock.ru/rerrors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -14,6 +15,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/log"
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/service"
 )
@@ -86,7 +88,12 @@ func GrpcAuthInterceptor(srv service.Service, opts ...authOption) grpc.ServerOpt
 			}
 
 			if userCtx != nil {
-				return handler(user_context.WithUserContext(ctx, *userCtx), req)
+				ctx = user_context.WithUserContext(ctx, *userCtx)
+				log.AddField(ctx, func(e *zerolog.Event) *zerolog.Event {
+					return e.Int64("user_id", userCtx.UserId)
+				})
+
+				return handler(ctx, req)
 			}
 		}
 
@@ -126,7 +133,11 @@ func HttpAuthMiddleware(srv service.Service, opts ...authOption) func(http.Handl
 			if ac.isDebugEnabled {
 				userCtx, debugErr := ac.authWithDebugHeaders(ctx, md)
 				if debugErr == nil && userCtx != nil {
-					next.ServeHTTP(w, r.WithContext(user_context.WithUserContext(ctx, *userCtx)))
+					ctx = user_context.WithUserContext(ctx, *userCtx)
+					log.AddField(ctx, func(e *zerolog.Event) *zerolog.Event {
+						return e.Int64("user_id", userCtx.UserId)
+					})
+					next.ServeHTTP(w, r.WithContext(ctx))
 					return
 				}
 			}
@@ -171,7 +182,11 @@ func (ac *authMiddleware) authWithSession(ctx context.Context, md metadata.MD) (
 		Permissions: user.Permissions,
 	}
 
-	return user_context.WithUserContext(ctx, uc), nil
+	ctx = user_context.WithUserContext(ctx, uc)
+	log.AddField(ctx, func(e *zerolog.Event) *zerolog.Event {
+		return e.Int64("user_id", uc.UserId)
+	})
+	return ctx, nil
 }
 
 func (ac *authMiddleware) authWithDebugHeaders(ctx context.Context, md metadata.MD) (*user_context.UserContext, error) {
