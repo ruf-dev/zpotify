@@ -72,3 +72,5 @@ export class PlaylistService extends BaseService implements IPlaylistService {
         });
     }
 }
+
+export const playlistService = new PlaylistService();

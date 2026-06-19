@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import cls from '@/dialogs/LoginViaPass/LoginViaPass.module.css';
 import FloatInput from '@/shared/ui/FloatInput.tsx';
 import useUser from '@/entities/user/useUser.ts';
+import { authService } from '@/shared/api/Auth.ts';
 import { Path } from '@/app/routing/paths';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 
 export default function LoginViaPass() {
     const navigate = useNavigate();
     const { CloseDialog } = useDialog();
-    const Services = useUser((state) => state.Services);
     const authenticate = useUser((state) => state.authenticate);
 
     const [username, setUsername] = useState('');
@@ -23,8 +23,7 @@ export default function LoginViaPass() {
             return;
         }
         setValidationErr('');
-        Services()
-            .Auth()
+        authService
             .AuthViaPass(username.trim(), password)
             .then(authenticate)
             .then(() => navigate(Path.HomePage))

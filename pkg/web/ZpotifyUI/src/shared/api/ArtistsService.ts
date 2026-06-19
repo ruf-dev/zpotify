@@ -1,6 +1,5 @@
 import { ArtistsAPI, Paging, ListArtistRequest, ListArtistResponse } from '@/app/api/zpotify';
 import { BaseService } from '@/shared/api/BaseService.ts';
-import { AuthMiddleware } from '@/shared/api/Auth.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 
 export interface IArtistsService {
@@ -9,10 +8,6 @@ export interface IArtistsService {
 }
 
 export class ArtistsService extends BaseService implements IArtistsService {
-    constructor(auth: AuthMiddleware) {
-        super(auth);
-    }
-
     async ListArtist(search: string, offset: number, limit: number): Promise<ListArtistResponse> {
         const req: ListArtistRequest = {
             paging: {
@@ -36,3 +31,5 @@ export class ArtistsService extends BaseService implements IArtistsService {
         return { id: res.artist!.uuid!, name: res.artist!.name! };
     }
 }
+
+export const artistsService = new ArtistsService();

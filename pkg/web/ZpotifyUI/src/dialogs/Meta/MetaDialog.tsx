@@ -3,7 +3,7 @@ import { useState } from 'react';
 import cls from '@/dialogs/Meta/MetaDialog.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
-import useUser from '@/entities/user/useUser.ts';
+import { songsService } from '@/shared/api/Songs.ts';
 import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
 import { AudioFile } from '@/shared/model/AudioFile.ts';
 
@@ -15,7 +15,6 @@ interface MetaDialogProps {
 export default function MetaDialog({ audioFile, initialTitle }: MetaDialogProps) {
     const { CloseDialog } = useDialog();
     const toaster = useToaster();
-    const { Services } = useUser();
 
     const [title, setTitle] = useState(initialTitle);
     const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
@@ -25,8 +24,7 @@ export default function MetaDialog({ audioFile, initialTitle }: MetaDialogProps)
     function handleSubmit() {
         if (submitted || !audioFile.fileId) return;
         setSubmitted(true);
-        Services()
-            .Songs()
+        songsService
             .CreateSong(title, selectedArtists, audioFile.fileId)
             .then(() =>
                 setTimeout(() => {

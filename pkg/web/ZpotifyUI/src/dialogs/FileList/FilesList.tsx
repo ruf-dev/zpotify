@@ -2,25 +2,23 @@ import React, { useEffect, useState } from 'react';
 
 import cls from '@/dialogs/FileList/FilesList.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
-import { User } from '@/entities/user/useUser.ts';
 import type { SongFile } from '@/app/api/zpotify';
 import Button from '@/shared/ui/Button.tsx';
 import Chip from '@/shared/ui/Chip.tsx';
 import SongEditDialog from '@/dialogs/SongEdit/SongEditDialog.tsx';
+import { fileService } from '@/shared/api/FileService.ts';
 
 interface FilesListProps {
-    user: User;
     previousScreen?: React.JSX.Element;
 }
 
-export default function FilesList({ user, previousScreen }: FilesListProps) {
+export default function FilesList({ previousScreen }: FilesListProps) {
     const { OpenDialog, CloseDialog } = useDialog();
     const [files, setFiles] = useState<SongFile[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        user.Services()
-            .File()
+        fileService
             .ListUploadedFiles({})
             .then((res) => {
                 setFiles(res.files || []);
@@ -56,7 +54,7 @@ export default function FilesList({ user, previousScreen }: FilesListProps) {
                                     <SongEditDialog
                                         fileId={file.id || ''}
                                         path={file.path || ''}
-                                        previousScreen={<FilesList user={user} previousScreen={previousScreen} />}
+                                        previousScreen={<FilesList previousScreen={previousScreen} />}
                                     />,
                                 )
                             }

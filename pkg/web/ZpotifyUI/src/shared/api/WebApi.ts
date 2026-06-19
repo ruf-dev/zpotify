@@ -1,4 +1,3 @@
-import { AuthMiddleware } from '@/shared/api/Auth.ts';
 import { BaseService } from '@/shared/api/BaseService.ts';
 import { ServiceError, WithDescription, WithHttpStatus, WithStatusCode, WithTitle } from '@/shared/api/Errors.ts';
 
@@ -12,10 +11,6 @@ enum WebApiUriPath {
 }
 
 export class WebApiImpl extends BaseService implements WebApi {
-    constructor(auth: AuthMiddleware) {
-        super(auth);
-    }
-
     UploadFile(file: File): Promise<string> {
         return this.executeAuthApiCall(async (initReq) => {
             const formData = new FormData();
@@ -98,3 +93,5 @@ async function ServiceErrorFromHttp(r: Response): Promise<ServiceError> {
         WithDescription(await r.text()),
     );
 }
+
+export const webApiService = new WebApiImpl();

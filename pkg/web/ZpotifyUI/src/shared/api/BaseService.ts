@@ -11,17 +11,22 @@ import {
 } from '@/shared/api/Errors.ts';
 import { InitReq } from '@/app/api/zpotify';
 
+let _auth: AuthMiddleware | null = null;
+
+export function setAuthMiddleware(auth: AuthMiddleware) {
+    _auth = auth;
+}
+
+function getAuth(): AuthMiddleware {
+    if (!_auth) throw new Error('AuthMiddleware not initialized');
+    return _auth;
+}
+
 export class BaseService {
-    private auth: AuthMiddleware;
-
-    constructor(auth: AuthMiddleware) {
-        this.auth = auth;
-    }
-
     protected async executeAuthApiCall<T>(callback: (initReq: InitReq) => Promise<T>): Promise<T> {
         return withRetries<T>(
             async (): Promise<T> =>
-                callback(await this.auth.GetMetadata())
+                callback(await getAuth().GetMetadata())
                     .catch(async (err: GrpcError | ServiceError) => {
                         if (err instanceof ServiceError) {
                             throw err;
@@ -43,7 +48,7 @@ export class BaseService {
                             }
 
                             if (err.message == 'token expired') {
-                                await this.auth.RefreshToken();
+                                await getAuth().RefreshToken();
 
                                 throw new ServiceError(
                                     WithTitle('Session expired. Refreshing'),

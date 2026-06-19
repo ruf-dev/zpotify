@@ -43,3 +43,5 @@ function parseHomePageSegment(seg: HomePageSegment): HomeSegment | undefined {
 
     return;
 }
+
+export const settingsService = new SettingsService();

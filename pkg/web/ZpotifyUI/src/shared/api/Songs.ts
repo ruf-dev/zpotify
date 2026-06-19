@@ -1,5 +1,4 @@
 import { InitReq, SongAPI, SongBase } from '@/app/api/zpotify';
-import { AuthMiddleware } from '@/shared/api/Auth.ts';
 import { BaseService } from '@/shared/api/BaseService.ts';
 
 export interface ISongsService {
@@ -9,10 +8,6 @@ export interface ISongsService {
 }
 
 export class SongsService extends BaseService implements ISongsService {
-    constructor(authMiddleware: AuthMiddleware) {
-        super(authMiddleware);
-    }
-
     async CreateSong(title: string, artistUuids: string[], fileId: string): Promise<string> {
         return this.executeAuthApiCall((initReq: InitReq) => {
             return SongAPI.CreateSong({ title, artistUuids, fileId }, initReq).then((resp) => resp.id || '');
@@ -31,3 +26,5 @@ export class SongsService extends BaseService implements ISongsService {
         });
     }
 }
+
+export const songsService = new SongsService();

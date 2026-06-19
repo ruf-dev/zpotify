@@ -4,8 +4,8 @@ import {useEffect, useState} from 'react';
 import type {SongBase} from '@/app/api/zpotify';
 import cls from '@/widgets/TrackList/InfiniteSongsList.module.css';
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
-import useUser from '@/entities/user/useUser.ts';
 import {useToaster} from '@/hooks/toaster/ToasterZ.ts';
+import {playlistService} from '@/shared/api/PlaylistService.ts';
 import SongListWidget from '@/widgets/TrackList/TrackListWidget.tsx';
 import ZButton from '@/shared/ui/ZButton/ZButton.tsx';
 
@@ -30,8 +30,6 @@ export default function LazyLoadSongsList({playlistId, fixedSize, onTotal, autoL
     const [songs, setSongs] = useState<SongBase[]>([]);
     const [totalSongs, setTotalSongs] = useState(0);
     const [isListEnded, setIsListEnded] = useState(false);
-
-    const playlistService = useUser((state) => state.Services)().Playlist();
 
     const toaster = useToaster();
 

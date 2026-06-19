@@ -25,3 +25,5 @@ export class FileService extends BaseService implements IFileService {
         });
     }
 }
+
+export const fileService = new FileService();

@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 
 import cls from '@/dialogs/SongEdit/SongEditDialog.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
-import useUser from '@/entities/user/useUser.ts';
 import { Toast, useToaster } from '@/hooks/toaster/ToasterZ.ts';
 import Button from '@/shared/ui/Button.tsx';
 import Input from '@/shared/ui/Input.tsx';
 import Chip from '@/shared/ui/Chip.tsx';
 import MultiSelect, { Option } from '@/shared/ui/MultiSelect.tsx';
+import { artistsService } from '@/shared/api/ArtistsService.ts';
+import { songsService } from '@/shared/api/Songs.ts';
 
 interface SongEditDialogProps {
     fileId: string;
@@ -27,20 +28,29 @@ export default function SongEditDialog({
     previousScreen,
 }: SongEditDialogProps) {
     const { OpenDialog, CloseDialog } = useDialog();
-    const user = useUser();
     const toaster = useToaster();
 
     const [title, setTitle] = useState(initialTitle);
     const [selectedArtistIds, setSelectedArtistIds] = useState<string[]>([]);
 
-    const doListArtists = async (query: string): Promise<Option[]> => {
-        const resp = await user.Services().Artists().ListArtist(query, 0, 20);
+    async function doListArtists(query: string): Promise<Option[]> {
+        const resp = await artistsService.ListArtist(query, 0, 20);
 
         const artists = resp.artists || [];
         return artists
             .filter((a) => !!a.uuid && !!a.name)
             .map((a) => ({ id: a.uuid as string, label: a.name as string }));
-    };
+    }
+
+    function handleSave() {
+        songsService
+            .CreateSong(title, selectedArtistIds, fileId)
+            .then(() => {
+                toaster.bake({ title: 'Song created successfully' } as Toast);
+                CloseDialog();
+            })
+            .catch(toaster.catch);
+    }
 
     return (
         <div className={cls.SongEditDialog}>
@@ -70,19 +80,7 @@ export default function SongEditDialog({
             </div>
 
             <div className={cls.Footer}>
-                <Button
-                    title="Save"
-                    onClick={() => {
-                        user.Services()
-                            .Songs()
-                            .CreateSong(title, selectedArtistIds, fileId)
-                            .then(() => {
-                                toaster.bake({ title: 'Song created successfully' } as Toast);
-                                CloseDialog();
-                            })
-                            .catch(toaster.catch);
-                    }}
-                />
+                <Button title="Save" onClick={handleSave} />
             </div>
         </div>
     );

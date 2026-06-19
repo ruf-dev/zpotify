@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import cls from '@/dialogs/AddTrack/screens/ChooseScreen.module.css';
 import useUser from '@/entities/user/useUser.ts';
+import { fileService } from '@/shared/api/FileService.ts';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 
 function LibraryCard({ onClick, disabled }: { onClick: () => void; disabled: boolean }) {
@@ -72,14 +73,13 @@ function UploadCard({ atLimit, loading, pendingCount, maxPendingTracks, onClick 
 }
 
 export default function ChooseScreen({ goTo }: AddTrackContext) {
-    const { Services, userData } = useUser();
+    const { userData } = useUser();
 
     const [pendingCount, setPendingCount] = useState(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        Services()
-            .File()
+        fileService
             .ListUploadedFiles({ temporaryOnly: true })
             .then((res) => setPendingCount((res.files || []).length))
             .finally(() => setLoading(false));

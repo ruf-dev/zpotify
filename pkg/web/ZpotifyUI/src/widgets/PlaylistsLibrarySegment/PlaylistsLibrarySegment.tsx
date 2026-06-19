@@ -3,10 +3,10 @@ import {useNavigate} from 'react-router-dom';
 
 import cls from '@/widgets/PlaylistsLibrarySegment/PlaylistsLibrarySegment.module.css';
 
-import useUser from '@/entities/user/useUser.ts';
 import {playlistPath, albumPath} from '@/app/routing/paths.ts';
 import {useToaster} from '@/hooks/toaster/ToasterZ.ts';
 import {ServiceError} from '@/shared/api/Errors.ts';
+import {playlistService} from '@/shared/api/PlaylistService.ts';
 import AlbumCard from '@/widgets/PlaylistsLibrarySegment/AlbumCard.tsx';
 import PlaylistCardWide from '@/widgets/PlaylistsLibrarySegment/PlaylistCardWide.tsx';
 
@@ -59,7 +59,6 @@ function interleave(
 export default function PlaylistsLibrarySegment() {
     const navigate = useNavigate();
     const toaster = useToaster();
-    const Services = useUser((state) => state.Services);
 
     const [items, setItems] = useState<LibraryItem[]>([]);
     const [loading, setLoading] = useState(true);
@@ -69,7 +68,7 @@ export default function PlaylistsLibrarySegment() {
 
         async function load() {
             try {
-                const resp = await Services().Playlist().ListUserPlaylists(50, 0);
+                const resp = await playlistService.ListUserPlaylists(50, 0);
                 if (cancelled) return;
 
                 const all = resp.playlists ?? [];
@@ -79,7 +78,7 @@ export default function PlaylistsLibrarySegment() {
                 const trackResults = await Promise.all(
                     playlists.map(async (p) => {
                         const uuid = p.uuid ?? '';
-                        const songsResp = await Services().Playlist().ListSongs(uuid, 0, 5, undefined);
+                        const songsResp = await playlistService.ListSongs(uuid, 0, 5, undefined);
                         const tracks: TrackPreview[] = (songsResp.songs ?? []).map((s) => ({
                             title: s.title ?? '',
                             artist: (s.artists ?? []).map((a) => a.name ?? '').join(', '),
