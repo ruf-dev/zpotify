@@ -125,11 +125,6 @@ func (c *Custom) Init(a *App) (err error) {
 	c.ServerManager.AddHttpHandler("/wapi/", wapiHandler)
 	c.ServerManager.AddHttpHandler("/", ui.NewHandler())
 
-	c.telegramServer, err = telegramtransport.NewServer(a.Telegram, c.Service)
-	if err != nil {
-		return rerrors.Wrap(err, "error creating telegram server")
-	}
-
 	return nil
 }
 
@@ -141,10 +136,6 @@ func (c *Custom) Start(ctx context.Context) error {
 	eg.Go(c.BackgroundWorker.Start)
 
 	eg.Go(c.ServerManager.Start)
-
-	eg.Go(func() error {
-		return c.telegramServer.Start(ctx)
-	})
 
 	err := eg.Wait()
 	if err != nil {
@@ -158,8 +149,6 @@ func (c *Custom) Start(ctx context.Context) error {
 // Even if you won't use it keep it for proper work
 func (c *Custom) Stop() error {
 	eg := errgroup.Group{}
-
-	eg.Go(c.telegramServer.Stop)
 
 	eg.Go(func() error {
 		return c.BackgroundWorker.Stop()
