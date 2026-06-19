@@ -142,4 +142,7 @@ type BinaryFileStorage interface {
 
 	// GetFile - returns file content
 	GetFile(ctx context.Context, path string) (io.ReadCloser, error)
+
+	// DeleteTempFile - removes a file from the temporary folder
+	DeleteTempFile(ctx context.Context, path string) error
 }

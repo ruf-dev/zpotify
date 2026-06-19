@@ -106,6 +106,15 @@ func (l LocalStorageProvider) Move(_ context.Context, fromPath, newPath string) 
 	return nil
 }
 
+func (l LocalStorageProvider) DeleteTempFile(_ context.Context, filePath string) error {
+	fullPath := path.Join(l.root, filePath)
+	err := os.Remove(fullPath)
+	if err != nil && !os.IsNotExist(err) {
+		return rerrors.Wrap(err, "error deleting temp file")
+	}
+	return nil
+}
+
 func (l LocalStorageProvider) GetFile(_ context.Context, filePath string) (io.ReadCloser, error) {
 	filePath = path.Join(l.root, filePath)
 
@@ -120,7 +129,7 @@ func (l LocalStorageProvider) GetFile(_ context.Context, filePath string) (io.Re
 func (l LocalStorageProvider) openFile(fullPath string) (*os.File, error) {
 	err := verifyFolderExists(path.Dir(fullPath))
 	if err != nil {
-		return nil, rerrors.Wrap(err, "error verifying folder exists")
+		return nil, rerrors.Wrap(err, "error verifying folder exists before open file")
 	}
 
 	f, err := os.Create(fullPath)

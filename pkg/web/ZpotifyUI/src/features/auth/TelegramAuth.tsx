@@ -5,26 +5,19 @@ import telegramIcon from '@/assets/icons/telegram.svg';
 import AuthButton from '@/shared/ui/AuthButton.tsx';
 import cls from '@/features/auth/TelegramAuth.module.css';
 import useUser from '@/entities/user/useUser.ts';
-import { AuthViaTelegram } from '@/shared/api/Auth.ts';
-import { AuthAPI } from '@/app/api/zpotify/zpotify_service_auth.pb';
+import { AuthViaTelegram, GetTelegramBotId } from '@/shared/api/Auth.ts';
 
 export default function TelegramAuth() {
     const [botId, setBotId] = useState('');
     const authenticate = useUser((state) => state.authenticate);
 
     useEffect(function fetchBotId() {
-        AuthAPI.GetAuthMethods({}).then(function (resp) {
-            if (resp.telegramBotId) {
-                setBotId(resp.telegramBotId);
-            }
-        });
+        GetTelegramBotId().then(setBotId);
     }, []);
 
     function handleSuccess(data: TelegramAuthData) {
-        console.log('handleSuccess is called');
         AuthViaTelegram(data.id_token)
             .then(function (authData) {
-                console.log('AuthViaTelegram done - calling authenticate with data');
                 authenticate(authData);
             })
             .catch(function (err: unknown) {

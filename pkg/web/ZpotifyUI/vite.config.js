@@ -18,6 +18,13 @@ export default (function (_a) {
     var uc = defineConfig({
         base: '/',
         plugins: [react()],
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    api: 'modern-compiler',
+                },
+            },
+        },
         resolve: {
             alias: {
                 '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -26,7 +33,7 @@ export default (function (_a) {
     });
     uc.server = {
         host: true, // allows access from network IPs
-        allowedHosts: ['.loca.lt', 'localhost', '127.0.0.1', 'alexskilled.zpotify.ru']
+        allowedHosts: ['.loca.lt', 'localhost', '127.0.0.1'],
     };
     return uc;
 });

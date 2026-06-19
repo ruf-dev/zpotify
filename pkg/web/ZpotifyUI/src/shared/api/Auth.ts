@@ -1,5 +1,6 @@
 import { BaseService } from '@/shared/api/BaseService.ts';
 import { AuthAPI, AuthRequest, AuthData, RefreshRequest, InitReq } from '@/app/api/zpotify';
+import { GetAuthMethodsRequest } from '@/app/api/zpotify/zpotify_service_auth.pb';
 import {
     ErrorReason,
     GrpcError,
@@ -33,6 +34,18 @@ export class AuthService extends BaseService implements IAuthService {
             return r.authData;
         });
     }
+}
+
+export async function GetTelegramBotId(): Promise<string> {
+    const req = {} as GetAuthMethodsRequest;
+
+    return AuthAPI.GetAuthMethods(req, apiPrefix()).then((r) => {
+        if (!r.telegramBotId) {
+            throw new Error('telegramBotId is empty');
+        }
+
+        return r.telegramBotId;
+    });
 }
 
 export async function AuthViaTelegram(idToken: string): Promise<AuthData> {

@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
@@ -51,27 +50,22 @@ func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, cont
 		return 0, service_errors.ErrPendingTrackLimitReached
 	}
 
-	rawBytes, err := io.ReadAll(content)
+	hashWriter := sha256.New()
+	tmpFilePath, err := s.binaryStorage.SaveToTempFolder(ctx, uCtx.UserId, fileNameWithExt, io.TeeReader(content, hashWriter))
 	if err != nil {
-		return 0, rerrors.Wrap(err, "error reading file content")
+		return 0, rerrors.Wrap(err, "error storing to temporary folder")
 	}
 
-	hashBytes := sha256.Sum256(rawBytes)
-	contentHash := hex.EncodeToString(hashBytes[:])
+	contentHash := hex.EncodeToString(hashWriter.Sum(nil))
 
 	existingFile, err := s.storage.GetByHash(ctx, contentHash, uCtx.UserId)
 	if err != nil && !errors.Is(err, storage.ErrNotFound) {
+		_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
 		return 0, rerrors.Wrap(err, "error checking for duplicate file")
 	}
 	if err == nil {
+		_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
 		return existingFile.Id, nil
-	}
-
-	fileReader := bytes.NewReader(rawBytes)
-
-	tmpFilePath, err := s.binaryStorage.SaveToTempFolder(ctx, uCtx.UserId, fileNameWithExt, fileReader)
-	if err != nil {
-		return 0, rerrors.Wrap(err, "error storing to temporary folder")
 	}
 
 	fileMetaUpdate := domain.FileMeta{
