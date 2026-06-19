@@ -5,6 +5,7 @@ import Input from '@/shared/ui/Input.tsx';
 import Button from '@/shared/ui/Button.tsx';
 import Chip from '@/shared/ui/Chip.tsx';
 import useUser from '@/entities/user/useUser.ts';
+import { authService } from '@/shared/api/Auth.ts';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 
 interface LogPassWidgetProps {
@@ -16,11 +17,10 @@ export default function LogPassWidget({ previousScreen }: LogPassWidgetProps) {
     const [pwd, setPwd] = useState('');
 
     const { OpenDialog, CloseDialog } = useDialog();
-    const Services = useUser((state) => state.Services);
     const authenticate = useUser((state) => state.authenticate);
 
     function onEnterPressed() {
-        Services().Auth().AuthViaPass(username, pwd).then(authenticate).then(CloseDialog);
+        authService.AuthViaPass(username, pwd).then(authenticate).then(CloseDialog);
     }
 
     return (

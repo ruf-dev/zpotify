@@ -1,20 +1,18 @@
 import { useState, useEffect } from 'react';
 
-import useUser from '@/entities/user/useUser.ts';
 import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
 import { HomeSegment } from '@/shared/model/HomeSegments.tsx';
 import type { Tab } from '@/components/tabs/SegmentTabBar.tsx';
+import { settingsService } from '@/shared/api/HomePage.ts';
 
 export function useHomeSegments() {
     const toaster = useToaster();
-    const Services = useUser((state) => state.Services);
     const savedIdx = parseInt(localStorage.getItem('zp_tab_idx') || '0', 10);
     const [segments, setSegments] = useState<HomeSegment[]>([]);
     const [activeIdx, setActiveIdx] = useState(!isNaN(savedIdx) ? savedIdx : 0);
 
     useEffect(() => {
-        Services()
-            .Settings()
+        settingsService
             .ListHomeSegments()
             .then(setSegments)
             .catch(toaster.catch);

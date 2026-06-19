@@ -7,7 +7,8 @@ import type { FileInfo } from '@/app/api/zpotify';
 import { formatFileDuration, formatFileBytes } from '@/shared/lib/files.ts';
 import { formatDuration } from '@/shared/lib/time.ts';
 import { AudioFile } from '@/shared/model/AudioFile.ts';
-import useUser from '@/entities/user/useUser.ts';
+import { fileService } from '@/shared/api/FileService.ts';
+import { artistsService } from '@/shared/api/ArtistsService.ts';
 
 interface MetaScreenProps {
     audioFile?: AudioFile;
@@ -30,10 +31,6 @@ export default function MetaScreen({
     onPlaylistChange,
     initialArtistOptions,
 }: MetaScreenProps) {
-    const { Services } = useUser();
-    const fileService = Services().File();
-    const artistsService = Services().Artists();
-
     const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
     const [playlistOptions, setPlaylistOptions] = useState<Option[]>([]);
 
@@ -52,7 +49,7 @@ export default function MetaScreen({
                 .then((res) =>
                     (res.artists ?? []).filter((a) => a.name && a.uuid).map((a) => ({ id: a.uuid!, label: a.name! })),
                 ),
-        [artistsService],
+        [],
     );
 
     const createArtist = useCallback(async (name: string): Promise<Option> => ({ id: name, label: name }), []);

@@ -169,3 +169,5 @@ function clearLocalStorage() {
 function getLocalStorageAuthInfoKey(): string {
     return 'user_session';
 }
+
+export const authService = new AuthService();

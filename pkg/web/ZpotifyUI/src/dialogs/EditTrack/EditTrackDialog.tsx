@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import type { SongBase } from '@/app/api/zpotify';
 import cls from '@/dialogs/EditTrack/EditTrackDialog.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
-import useUser from '@/entities/user/useUser.ts';
+import { songsService } from '@/shared/api/Songs.ts';
 import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
 import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
 import { Option } from '@/shared/ui/MultiSelect.tsx';
@@ -16,7 +16,6 @@ interface EditTrackDialogProps {
 export default function EditTrackDialog({ song }: EditTrackDialogProps) {
     const { CloseDialog } = useDialog();
     const toaster = useToaster();
-    const { Services } = useUser();
 
     const [title, setTitle] = useState(song.title ?? '');
     const [selectedArtists, setSelectedArtists] = useState<string[]>(
@@ -29,8 +28,7 @@ export default function EditTrackDialog({ song }: EditTrackDialogProps) {
     const [audioFile, setAudioFile] = useState(new AudioFile(undefined, song.durationSec));
 
     useEffect(() => {
-        Services()
-            .Songs()
+        songsService
             .GetSong(song.id ?? '')
             .then((s) => {
                 const opts = (s.artists ?? [])
@@ -44,8 +42,7 @@ export default function EditTrackDialog({ song }: EditTrackDialogProps) {
     }, []);
 
     function handleSave() {
-        Services()
-            .Songs()
+        songsService
             .UpdateSong(song.id ?? '', title, selectedArtists)
             .then(() => {
                 CloseDialog();

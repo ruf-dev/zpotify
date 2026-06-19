@@ -3,7 +3,10 @@ import { parseBlob } from 'music-metadata-browser';
 
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
-import useUser from '@/entities/user/useUser.ts';
+import { webApiService } from '@/shared/api/WebApi.ts';
+import { artistsService } from '@/shared/api/ArtistsService.ts';
+import { songsService } from '@/shared/api/Songs.ts';
+import { playlistService } from '@/shared/api/PlaylistService.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 
 import TrackList from './TrackList';
@@ -100,7 +103,6 @@ function PlaylistToggleRow({ checked, onChange }: PlaylistToggleRowProps) {
 export default function MultitrackUploadModal({ files }: MultitrackUploadModalProps) {
     const { CloseDialog, LockClosing, UnlockClosing } = useDialog();
     const toaster = useToaster();
-    const { Services } = useUser();
 
     const [tracks, setTracks] = useState<TrackDraft[]>(() =>
         files.map((f) => ({
@@ -144,8 +146,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
         const initialTracks = tracksRef.current;
         initialTracks.forEach((t) => {
             setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadStatus: 'uploading' } : p)));
-            Services()
-                .WebApi()
+            webApiService
                 .UploadFileWithProgress(t.file, (pct) => {
                     setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadProgress: pct } : p)));
                 })
@@ -165,20 +166,19 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
 
     const loadArtistOptions = useCallback(
         (query: string): Promise<ArtistItem[]> =>
-            Services()
-                .Artists()
+            artistsService
                 .ListArtist(query, 0, 8)
                 .then((res) =>
                     (res.artists ?? []).filter((a) => a.name && a.uuid).map((a) => ({ id: a.uuid!, name: a.name! })),
                 ),
-        [Services],
+        [],
     );
 
     const handleCreateArtist = useCallback(
         async function handleCreateArtist(name: string): Promise<ArtistItem> {
-            return Services().Artists().CreateArtist(name);
+            return artistsService.CreateArtist(name);
         },
-        [Services],
+        [],
     );
 
     function handleTitleChange(id: string, title: string) {
@@ -257,8 +257,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                 })
                 .catch(() => {});
 
-            Services()
-                .WebApi()
+            webApiService
                 .UploadFileWithProgress(t.file, (pct) => {
                     setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadProgress: pct } : p)));
                 })
@@ -290,29 +289,25 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                 const artistUuids = [...albumArtists, ...track.artists]
                     .filter((a) => !seen.has(a.id) && seen.add(a.id))
                     .map((a) => a.id);
-                const songId = await Services()
-                    .Songs()
-                    .CreateSong(track.title || track.file.name, artistUuids, track.fileId!);
+                const songId = await songsService.CreateSong(track.title || track.file.name, artistUuids, track.fileId!);
                 songIds.push(songId);
             }
 
             if (playlistMode) {
                 let coverFileId: string | undefined;
                 if (cover) {
-                    coverFileId = await Services().WebApi().UploadFile(cover);
+                    coverFileId = await webApiService.UploadFile(cover);
                 }
                 const albumArtistUuids = albumArtists.map((a) => a.id);
-                const playlist = await Services()
-                    .Playlist()
-                    .CreatePlaylist(
-                        playlistName.trim(),
-                        albumArtistUuids.length > 0 ? albumArtistUuids : undefined,
-                        coverFileId,
-                    );
+                const playlist = await playlistService.CreatePlaylist(
+                    playlistName.trim(),
+                    albumArtistUuids.length > 0 ? albumArtistUuids : undefined,
+                    coverFileId,
+                );
                 const playlistUuid = playlist.uuid ?? '';
 
                 await Promise.all(
-                    songIds.map((id) => Services().Playlist().AddSongToPlaylist(playlistUuid, parseInt(id, 10))),
+                    songIds.map((id) => playlistService.AddSongToPlaylist(playlistUuid, parseInt(id, 10))),
                 );
             }
 

@@ -1,14 +1,9 @@
 import { InitReq, MeRequest, MeResponse, UserAPI } from '@/app/api/zpotify';
 import { UserInfo } from '@/shared/model/User.ts';
-import { AuthMiddleware } from '@/shared/api/Auth.ts';
 import { BaseService } from '@/shared/api/BaseService.ts';
 import { ServiceError, WithTitle } from '@/shared/api/Errors.ts';
 
 export default class UserService extends BaseService {
-    constructor(auth: AuthMiddleware) {
-        super(auth);
-    }
-
     public async GetMe(): Promise<UserInfo> {
         const req: MeRequest = {};
 
@@ -27,3 +22,5 @@ export default class UserService extends BaseService {
         });
     }
 }
+
+export const userService = new UserService();

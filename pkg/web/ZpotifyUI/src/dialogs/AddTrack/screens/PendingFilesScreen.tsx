@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import cls from '@/dialogs/AddTrack/screens/PendingFilesScreen.module.css';
 import type { SongFile } from '@/app/api/zpotify';
-import useUser from '@/entities/user/useUser.ts';
+import { fileService } from '@/shared/api/FileService.ts';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 
 function FileItem({ file, onSelect }: { file: SongFile; onSelect: (f: SongFile) => void }) {
@@ -36,13 +36,11 @@ function FileItem({ file, onSelect }: { file: SongFile; onSelect: (f: SongFile) 
 }
 
 export default function PendingFilesScreen({ handleSelectFromLibrary }: AddTrackContext) {
-    const { Services } = useUser();
     const [files, setFiles] = useState<SongFile[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        Services()
-            .File()
+        fileService
             .ListUploadedFiles({ temporaryOnly: true })
             .then((res) => setFiles(res.files || []))
             .finally(() => setLoading(false));

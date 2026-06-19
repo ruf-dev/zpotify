@@ -8,7 +8,7 @@ import BackButton from '@/shared/ui/BackButton';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
 import { ServiceError } from '@/shared/api/Errors.ts';
-import useUser from '@/entities/user/useUser.ts';
+import { webApiService } from '@/shared/api/WebApi.ts';
 import ChooseScreen from '@/dialogs/AddTrack/screens/ChooseScreen';
 import DropZoneScreen from '@/dialogs/AddTrack/screens/DropZoneScreen';
 import PendingFilesScreen from '@/dialogs/AddTrack/screens/PendingFilesScreen';
@@ -48,7 +48,6 @@ const SCREENS: Record<ModalStep, ComponentType<AddTrackContext>> = {
 export default function AddTrackDialog() {
     const { CloseDialog, OpenDialog } = useDialog();
     const toaster = useToaster();
-    const { Services } = useUser();
 
     const [step, setStep] = useState<ModalStep>('choose');
     const [uploading, setUploading] = useState(false);
@@ -65,8 +64,7 @@ export default function AddTrackDialog() {
         const initialTitle = f.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
         setUploadError(null);
         setUploading(true);
-        Services()
-            .WebApi()
+        webApiService
             .UploadFile(f)
             .then((id) => {
                 CloseDialog();

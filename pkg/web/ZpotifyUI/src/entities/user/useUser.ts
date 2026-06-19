@@ -1,34 +1,17 @@
 import { create } from 'zustand';
 
-import { AuthMiddleware, AuthService, IAuthService } from '@/shared/api/Auth.ts';
+import { AuthMiddleware } from '@/shared/api/Auth.ts';
+import { setAuthMiddleware } from '@/shared/api/BaseService.ts';
 import type { AuthData } from '@/app/api/zpotify';
 import { UserInfo } from '@/shared/model/User.ts';
 import { Errors, ServiceError } from '@/shared/api/Errors.ts';
 import { useToaster } from '@/hooks/toaster/ToasterZ.ts';
-import UserService from '@/shared/api/User.ts';
-import { ISongsService, SongsService } from '@/shared/api/Songs.ts';
-import { ISettingsService, SettingsService } from '@/shared/api/HomePage.ts';
-import { IPlaylistService, PlaylistService } from '@/shared/api/PlaylistService.ts';
-import { IFileService, FileService } from '@/shared/api/FileService.ts';
-import { ArtistsService, IArtistsService } from '@/shared/api/ArtistsService.ts';
-import { WebApi, WebApiImpl } from '@/shared/api/WebApi.ts';
-
-export interface Services {
-    Songs(): ISongsService;
-    Playlist(): IPlaylistService;
-    File(): IFileService;
-    Settings(): ISettingsService;
-    Auth(): IAuthService;
-    Artists(): IArtistsService;
-    WebApi(): WebApi;
-}
+import { userService } from '@/shared/api/User.ts';
 
 export interface User {
     auth: AuthMiddleware;
     userData?: UserInfo;
     earlyAccessDenied: boolean;
-
-    Services: () => Services;
 
     fetchUserData: () => Promise<void>;
     authenticate: (session: AuthData) => void;
@@ -38,33 +21,16 @@ export interface User {
 
 const useUser = create<User>((set, get) => {
     const auth = new AuthMiddleware();
-    const userSvc = new UserService(auth);
-    const songs = new SongsService(auth);
-    const settings = new SettingsService(auth);
-    const playlist = new PlaylistService(auth);
-    const file = new FileService(auth);
-    const authSvc = new AuthService(auth);
-    const artists = new ArtistsService(auth);
-    const webApi = new WebApiImpl(auth);
+    setAuthMiddleware(auth);
 
     return {
         auth,
         userData: undefined,
         earlyAccessDenied: false,
 
-        Services: () => ({
-            Songs: () => songs,
-            Settings: () => settings,
-            Playlist: () => playlist,
-            File: () => file,
-            Auth: () => authSvc,
-            Artists: () => artists,
-            WebApi: () => webApi,
-        }),
-
         fetchUserData: async () => {
             try {
-                const userData = await userSvc.GetMe();
+                const userData = await userService.GetMe();
                 set({ userData });
             } catch (err: unknown) {
                 if (err instanceof ServiceError && err.code === Errors.UNAVAILABLE) {
