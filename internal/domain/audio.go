@@ -105,6 +105,7 @@ type SongsList struct {
 }
 
 type ListArtists struct {
+	Uuid   []string
 	Name   []string
 	Search *string
 	Limit  uint64

@@ -149,6 +149,10 @@ func (a *ArtistsStorage) List(ctx context.Context, req domain.ListArtists) ([]do
 }
 
 func (a *ArtistsStorage) applyListQueryFilters(builder sq.SelectBuilder, listReq domain.ListArtists) sq.SelectBuilder {
+	if len(listReq.Uuid) > 0 {
+		builder = builder.Where(sq.Eq{"uuid": listReq.Uuid})
+	}
+
 	if len(listReq.Name) > 0 {
 		builder = builder.Where(sq.Eq{"name": listReq.Name})
 	}

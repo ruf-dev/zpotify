@@ -24,6 +24,7 @@ type AudioService struct {
 	songsStorage    storage.SongStorage
 	fileMetaStorage storage.FileMetaStorage
 	playlistStorage storage.PlaylistStorage
+	artistStorage   storage.ArtistStorage
 	binaryStorage   storage.BinaryFileStorage
 
 	filesCache files_cache.FilesCache
@@ -40,6 +41,7 @@ func NewAudioService(
 		songsStorage:    dataStorage.SongsStorage(),
 		fileMetaStorage: dataStorage.FileMeta(),
 		playlistStorage: dataStorage.PlaylistStorage(),
+		artistStorage:   dataStorage.ArtistStorage(),
 		binaryStorage:   binaryStorage,
 
 		filesCache: filesCache,
@@ -143,8 +145,20 @@ func (s *AudioService) finalizeSong(
 		return rerrors.Wrap(err, "error getting file meta")
 	}
 
+	listReq := domain.ListArtists{
+		Uuid:  []string{req.ArtistUuids[0]},
+		Limit: 1,
+	}
+	artists, err := s.artistStorage.List(ctx, listReq)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting artist for path")
+	}
+	if len(artists) == 0 {
+		return rerrors.Wrap(fmt.Errorf("artist not found: %s", req.ArtistUuids[0]))
+	}
+
 	ext := path.Ext(fileMeta.FilePath)
-	newPath := fmt.Sprintf("%s/%d%s", req.ArtistUuids[0], songId, ext)
+	newPath := fmt.Sprintf("%s/%s%s", artists[0].Name, req.Title, ext)
 
 	oldPath := fileMeta.FilePath
 	fileMeta.FilePath = newPath
