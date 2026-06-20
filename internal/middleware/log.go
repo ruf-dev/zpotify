@@ -1,8 +1,11 @@
 package middleware
 
 import (
+	"bytes"
 	"context"
+	"io"
 	"net/http"
+	"strings"
 	"time"
 
 	"google.golang.org/grpc"
@@ -40,24 +43,56 @@ func LogWebMiddleware(next http.Handler) http.Handler {
 		ctx := log.WithContext(r.Context())
 		r = r.WithContext(ctx)
 
+		path := r.URL.Path
+		logReqBody := !strings.Contains(path, "/upload")
+		logRespBody := !strings.Contains(path, "/audio")
+
+		rw.captureBody = logRespBody
+
+		var reqBody []byte
+		if logReqBody && r.Body != nil {
+			body, err := io.ReadAll(r.Body)
+			if err == nil {
+				reqBody = body
+				r.Body = io.NopCloser(bytes.NewReader(body))
+			}
+		}
+
 		next.ServeHTTP(rw, r)
 
-		log.Debug(ctx).
+		event := log.Debug(ctx).
 			Str("method", r.Method).
-			Str("path", r.URL.Path).
+			Str("path", path).
 			Str("remote", r.RemoteAddr).
 			Int("status", rw.status).
-			Dur("duration", time.Since(start)).
-			Msg("incoming HTTP request")
+			Dur("duration", time.Since(start))
+
+		if logReqBody && len(reqBody) > 0 {
+			event = event.Bytes("request_body", reqBody)
+		}
+		if logRespBody && rw.body.Len() > 0 {
+			event = event.Bytes("response_body", rw.body.Bytes())
+		}
+
+		event.Msg("incoming HTTP request")
 	})
 }
 
 type loggingResponseWriter struct {
 	http.ResponseWriter
-	status int
+	status      int
+	body        bytes.Buffer
+	captureBody bool
 }
 
 func (rw *loggingResponseWriter) WriteHeader(code int) {
 	rw.status = code
 	rw.ResponseWriter.WriteHeader(code)
+}
+
+func (rw *loggingResponseWriter) Write(b []byte) (int, error) {
+	if rw.captureBody {
+		rw.body.Write(b)
+	}
+	return rw.ResponseWriter.Write(b)
 }
