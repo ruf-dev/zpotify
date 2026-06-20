@@ -52,7 +52,10 @@ export default function MetaScreen({
         [],
     );
 
-    const createArtist = useCallback(async (name: string): Promise<Option> => ({ id: name, label: name }), []);
+    const createArtist = useCallback(async function createArtist(name: string): Promise<Option> {
+        const artist = await artistsService.CreateArtist(name);
+        return { id: artist.id, label: artist.name };
+    }, []);
 
     const listPlaylists = useCallback(
         (query: string): Promise<Option[]> => {
