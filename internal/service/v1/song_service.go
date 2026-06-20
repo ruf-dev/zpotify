@@ -51,6 +51,7 @@ func (s *AudioService) Create(ctx context.Context, req domain.CreateSong) (int64
 		return 0, rerrors.Wrap(service_errors.ErrTrackMustHaveOneArtist)
 	}
 
+	// TODO If song is already uploaded need to highlight to user somehow that song already there
 	var songId int64
 
 	err := s.txManager.Execute(func(tx *sql.Tx) error {
@@ -145,12 +146,9 @@ func (s *AudioService) finalizeSong(
 	ext := path.Ext(fileMeta.FilePath)
 	newPath := fmt.Sprintf("%s/%d%s", req.ArtistUuids[0], songId, ext)
 
-	err = s.binaryStorage.Move(ctx, fileMeta.FilePath, newPath)
-	if err != nil {
-		return rerrors.Wrap(err, "error moving file to permanent storage")
-	}
-
+	oldPath := fileMeta.FilePath
 	fileMeta.FilePath = newPath
+
 	err = fileMetaStorage.Update(ctx, req.FileID, fileMeta.File)
 	if err != nil {
 		return rerrors.Wrap(err, "error updating file meta with new path")
@@ -166,6 +164,12 @@ func (s *AudioService) finalizeSong(
 	err = playlistStorage.AddSong(ctx, domain.GlobalPlaylistUuid, int32(songId))
 	if err != nil {
 		return rerrors.Wrap(err, "error adding song to global playlist")
+	}
+
+	//TODO do copy and delete in case tx fails
+	err = s.binaryStorage.Move(ctx, oldPath, newPath)
+	if err != nil {
+		return rerrors.Wrap(err, "error moving file to permanent storage")
 	}
 
 	return nil
