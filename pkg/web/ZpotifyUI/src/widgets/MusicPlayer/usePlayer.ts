@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { create } from 'zustand';
+import {useMemo} from 'react';
+import {create} from 'zustand';
 
 export interface AudioPlayer {
     isPlaying: boolean;
@@ -85,14 +85,14 @@ class AudioPlayerImpl implements AudioPlayer {
         });
 
         this.audio.addEventListener('play', () => {
-            useAudioStore.setState({ isPlaying: true });
+            useAudioStore.setState({isPlaying: true});
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.playbackState = 'playing';
             }
         });
 
         this.audio.addEventListener('pause', () => {
-            useAudioStore.setState({ isPlaying: false });
+            useAudioStore.setState({isPlaying: false});
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.playbackState = 'paused';
             }
@@ -115,7 +115,7 @@ class AudioPlayerImpl implements AudioPlayer {
         navigator.mediaSession.setActionHandler('play', () => this.startPlay());
         navigator.mediaSession.setActionHandler('pause', () => {
             this.audio.pause();
-            useAudioStore.setState({ isPlaying: false });
+            useAudioStore.setState({isPlaying: false});
         });
         navigator.mediaSession.setActionHandler('previoustrack', () => this.playPrev());
         navigator.mediaSession.setActionHandler('nexttrack', () => this.playNext());
@@ -146,7 +146,7 @@ class AudioPlayerImpl implements AudioPlayer {
     }
 
     setSongInfo(title: string | null, artist: string | null): void {
-        useAudioStore.setState({ songTitle: title, songArtist: artist });
+        useAudioStore.setState({songTitle: title, songArtist: artist});
     }
 
     get progress() {
@@ -161,18 +161,18 @@ class AudioPlayerImpl implements AudioPlayer {
         this.audio
             .play()
             .then(() => {
-                useAudioStore.setState({ isPlaying: true });
+                useAudioStore.setState({isPlaying: true});
             })
             .catch((r) => console.error(`Error during playing!!!!!!`, r));
     }
 
     togglePlay(): boolean {
-        const { trackPath, isPlaying } = useAudioStore.getState();
+        const {trackPath, isPlaying} = useAudioStore.getState();
         if (trackPath == null) return false;
-
+        console.debug(`Toggled ${trackPath}`)
         if (isPlaying) {
             this.audio.pause();
-            useAudioStore.setState({ isPlaying: false });
+            useAudioStore.setState({isPlaying: false});
         } else {
             this.startPlay();
         }
@@ -181,13 +181,13 @@ class AudioPlayerImpl implements AudioPlayer {
     }
 
     preload(trackPath: string): void {
-        const base = import.meta.env.VITE_ZPOTIFY_WEBSERVER as string;
+        const base = import.meta.env.VITE_ZPOTIFY_WEBSERVER as string || "";
         const trackUrl = base + (trackPath.startsWith('/') ? trackPath : '/' + trackPath);
         if (this.audio.src === trackUrl) return;
 
         this.audio.src = trackUrl;
         this.audio.load();
-        useAudioStore.setState({ trackPath: trackPath });
+        useAudioStore.setState({trackPath: trackPath});
 
         if ('mediaSession' in navigator) {
             // Ideally we should set metadata here, but we only have trackUrl
@@ -202,7 +202,7 @@ class AudioPlayerImpl implements AudioPlayer {
 
     unload(): void {
         this.audio.src = '';
-        useAudioStore.setState({ trackPath: null, isPlaying: false });
+        useAudioStore.setState({trackPath: null, isPlaying: false});
     }
 
     play(trackUrl: string): void {
@@ -212,13 +212,13 @@ class AudioPlayerImpl implements AudioPlayer {
 
     setVolume(volume: number): void {
         this.audio.volume = volume / 100;
-        useAudioStore.setState({ volume });
+        useAudioStore.setState({volume});
     }
 
     toggleMute(): void {
         const isMuted = !this.audio.muted;
         this.audio.muted = isMuted;
-        useAudioStore.setState({ isMuted });
+        useAudioStore.setState({isMuted});
     }
 
     onEnd(callback: () => void): void {
@@ -232,29 +232,29 @@ class AudioPlayerImpl implements AudioPlayer {
     }
 
     playNext(): void {
-        const { nextTrackUrl } = useAudioStore.getState();
+        const {nextTrackUrl} = useAudioStore.getState();
         if (nextTrackUrl) {
             this.play(nextTrackUrl);
         }
     }
 
     playPrev(): void {
-        const { prevTrackUrl } = useAudioStore.getState();
+        const {prevTrackUrl} = useAudioStore.getState();
         if (prevTrackUrl) {
             this.play(prevTrackUrl);
         }
     }
 
     setNext(val: string | undefined): void {
-        useAudioStore.setState({ nextTrackUrl: val });
+        useAudioStore.setState({nextTrackUrl: val});
     }
 
     setPrev(val: string | undefined): void {
-        useAudioStore.setState({ prevTrackUrl: val });
+        useAudioStore.setState({prevTrackUrl: val});
     }
 
     setShuffleHash(hash: number | null): void {
-        useAudioStore.setState({ shuffleHash: hash });
+        useAudioStore.setState({shuffleHash: hash});
     }
 }
 

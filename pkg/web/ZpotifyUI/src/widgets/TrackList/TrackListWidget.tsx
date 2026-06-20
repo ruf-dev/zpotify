@@ -58,7 +58,6 @@ export default function SongListWidget({ songs, audioPlayer }: SongListWidgetPro
 
     function playSongAtIndex(idx: number) {
         const song = songs[idx];
-        console.log(`Start new song play ${song}`);
 
         if (!song) return;
 
