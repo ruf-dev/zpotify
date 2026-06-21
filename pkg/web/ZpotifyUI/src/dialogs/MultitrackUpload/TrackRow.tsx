@@ -17,6 +17,7 @@ export interface TrackDraft {
     uploadStatus: 'pending' | 'uploading' | 'done' | 'error';
     uploadProgress: number;
     fileId?: string;
+    isExisting?: boolean;
 }
 
 interface TrackRowProps {
@@ -100,11 +101,24 @@ function UploadDoneIcon() {
     );
 }
 
-function UploadStatusChip({ uploadStatus }: { uploadStatus: TrackDraft['uploadStatus'] }) {
+function UploadStatusChip({
+    uploadStatus,
+    isExisting,
+}: {
+    uploadStatus: TrackDraft['uploadStatus'];
+    isExisting?: boolean;
+}) {
     if (uploadStatus === 'error') return null;
     const isUploading = uploadStatus === 'uploading' || uploadStatus === 'pending';
     return (
-        <span className={cn(cls.StatusChip, isUploading ? cls.StatusChipUploading : cls.StatusChipDone)}>
+        <span
+            className={cn(
+                cls.StatusChip,
+                isUploading ? cls.StatusChipUploading : cls.StatusChipDone,
+                isExisting && cls.StatusChipExisting,
+            )}
+            title={isExisting ? 'already on server' : undefined}
+        >
             {isUploading ? <UploadArrowIcon /> : <UploadDoneIcon />}
         </span>
     );
@@ -166,7 +180,7 @@ export default function TrackRow({
 
             <span className={cls.DurationBadge}>{durationLabel}</span>
 
-            <UploadStatusChip uploadStatus={track.uploadStatus} />
+            <UploadStatusChip uploadStatus={track.uploadStatus} isExisting={track.isExisting} />
 
             <button
                 type="button"

@@ -16,6 +16,38 @@
     "application/json"
   ],
   "paths": {
+    "/api/file_meta/check_hashes": {
+      "post": {
+        "operationId": "FileMetaAPI_CheckFilesByHashes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiCheckFilesByHashesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiCheckFilesByHashesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FileMetaAPI"
+        ]
+      }
+    },
     "/api/file_meta/list": {
       "post": {
         "operationId": "FileMetaAPI_ListUploadedFiles",
@@ -81,6 +113,22 @@
     }
   },
   "definitions": {
+    "CheckFilesByHashesFoundFileByHash": {
+      "type": "object",
+      "properties": {
+        "hash": {
+          "type": "string"
+        },
+        "fileId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "songId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -105,6 +153,29 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "zpotify_apiCheckFilesByHashesRequest": {
+      "type": "object",
+      "properties": {
+        "hashes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "zpotify_apiCheckFilesByHashesResponse": {
+      "type": "object",
+      "properties": {
+        "found": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CheckFilesByHashesFoundFileByHash"
           }
         }
       }

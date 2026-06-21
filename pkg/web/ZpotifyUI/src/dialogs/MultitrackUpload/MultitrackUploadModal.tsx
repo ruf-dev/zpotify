@@ -7,6 +7,7 @@ import { webApiService } from '@/shared/api/WebApi.ts';
 import { artistsService } from '@/shared/api/ArtistsService.ts';
 import { songsService } from '@/shared/api/Songs.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
+import { fileService } from '@/shared/api/FileService.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
 
@@ -126,43 +127,65 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
 
     const tracksRef = useRef(tracks);
     tracksRef.current = tracks;
-    const hashSetRef = useRef<Set<string>>(new Set());
-    const hashedFilesRef = useRef<WeakSet<File>>(new WeakSet());
+
+    // hash → trackId; used to de-dup files added in the same session
+    const knownHashesRef = useRef<Map<string, string>>(new Map());
+
+    function startUpload(t: TrackDraft) {
+        setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadStatus: 'uploading' } : p)));
+        webApiService
+            .UploadFileWithProgress(t.file, (pct) => {
+                setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadProgress: pct } : p)));
+            })
+            .then((fileId) => {
+                setTracks((prev) =>
+                    prev.map((p) =>
+                        p.id === t.id ? { ...p, fileId, uploadProgress: 100, uploadStatus: 'done' } : p,
+                    ),
+                );
+            })
+            .catch(() => {
+                setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadStatus: 'error' } : p)));
+            });
+    }
 
     useEffect(() => {
-        const initialTracks = tracksRef.current;
-        initialTracks.forEach(async (t) => {
-            try {
-                const [meta, hash] = await Promise.all([parseBlob(t.file), computeHash(t.file)]);
-                hashSetRef.current.add(hash);
-                hashedFilesRef.current.add(t.file);
-                const dur = meta.format.duration ?? 0;
-                setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, duration: dur } : p)));
-            } catch {
-                // duration stays 0, badge shows "—"
-            }
-        });
-    }, []);
+        async function processInitialTracks() {
+            const initial = tracksRef.current;
+            const [hashes, metas] = await Promise.all([
+                Promise.all(initial.map((t) => computeHash(t.file))),
+                Promise.allSettled(initial.map((t) => parseBlob(t.file))),
+            ]);
 
-    useEffect(() => {
-        const initialTracks = tracksRef.current;
-        initialTracks.forEach((t) => {
-            setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadStatus: 'uploading' } : p)));
-            webApiService
-                .UploadFileWithProgress(t.file, (pct) => {
-                    setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadProgress: pct } : p)));
-                })
-                .then((fileId) => {
-                    setTracks((prev) =>
-                        prev.map((p) =>
-                            p.id === t.id ? { ...p, fileId, uploadProgress: 100, uploadStatus: 'done' } : p,
-                        ),
-                    );
-                })
-                .catch(() => {
-                    setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadStatus: 'error' } : p)));
-                });
-        });
+            hashes.forEach((h, i) => knownHashesRef.current.set(h, initial[i].id));
+
+            const existingMap = await fileService.checkByHashes(hashes);
+
+            setTracks((prev) =>
+                prev.map((p, i) => {
+                    const dur =
+                        metas[i].status === 'fulfilled' ? (metas[i].value.format.duration ?? 0) : 0;
+                    const existingFileId = existingMap.get(hashes[i]);
+                    if (existingFileId) {
+                        return {
+                            ...p,
+                            duration: dur,
+                            fileId: existingFileId,
+                            uploadStatus: 'done',
+                            uploadProgress: 100,
+                            isExisting: true,
+                        };
+                    }
+                    return { ...p, duration: dur };
+                }),
+            );
+
+            initial.forEach((t, i) => {
+                if (!existingMap.has(hashes[i])) startUpload(t);
+            });
+        }
+
+        processInitialTracks().catch(() => {});
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -205,25 +228,15 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
     }
 
     async function handleAddFiles(newFiles: File[]) {
-        const unhashed = tracksRef.current.filter((t) => !hashedFilesRef.current.has(t.file));
-        if (unhashed.length > 0) {
-            const pendingHashes = await Promise.all(unhashed.map((t) => computeHash(t.file)));
-            unhashed.forEach(function registerHash(t, i) {
-                hashSetRef.current.add(pendingHashes[i]);
-                hashedFilesRef.current.add(t.file);
-            });
-        }
-
         const hashes = await Promise.all(newFiles.map(computeHash));
 
-        const fresh: File[] = [];
+        const fresh: Array<{ file: File; hash: string }> = [];
         const dupeNames: string[] = [];
         newFiles.forEach(function classifyFile(file, i) {
-            if (hashSetRef.current.has(hashes[i])) {
+            if (knownHashesRef.current.has(hashes[i])) {
                 dupeNames.push(file.name);
             } else {
-                fresh.push(file);
-                hashSetRef.current.add(hashes[i]);
+                fresh.push({ file, hash: hashes[i] });
             }
         });
 
@@ -238,20 +251,27 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
 
         if (fresh.length === 0) return;
 
-        const newTracks: TrackDraft[] = fresh.map((f) => ({
+        const existingMap = await fileService.checkByHashes(fresh.map((f) => f.hash));
+
+        const newTracks: TrackDraft[] = fresh.map(({ file }) => ({
             id: crypto.randomUUID(),
-            file: f,
-            title: cleanTitle(f.name),
+            file,
+            title: cleanTitle(file.name),
             artists: [] as ArtistItem[],
             duration: 0,
-            size: f.size,
-            uploadStatus: 'uploading' as const,
+            size: file.size,
+            uploadStatus: 'pending' as const,
             uploadProgress: 0,
         }));
 
+        fresh.forEach(({ hash }, i) => knownHashesRef.current.set(hash, newTracks[i].id));
+
         setTracks((prev) => [...prev, ...newTracks]);
 
-        newTracks.forEach(function processNewTrack(t) {
+        newTracks.forEach(function processAddedTrack(t, i) {
+            const { hash } = fresh[i];
+            const existingFileId = existingMap.get(hash);
+
             parseBlob(t.file)
                 .then((meta) => {
                     const dur = meta.format.duration ?? 0;
@@ -259,20 +279,17 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                 })
                 .catch(() => {});
 
-            webApiService
-                .UploadFileWithProgress(t.file, (pct) => {
-                    setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadProgress: pct } : p)));
-                })
-                .then((fileId) => {
-                    setTracks((prev) =>
-                        prev.map((p) =>
-                            p.id === t.id ? { ...p, fileId, uploadProgress: 100, uploadStatus: 'done' } : p,
-                        ),
-                    );
-                })
-                .catch(() => {
-                    setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadStatus: 'error' } : p)));
-                });
+            if (existingFileId) {
+                setTracks((prev) =>
+                    prev.map((p) =>
+                        p.id === t.id
+                            ? { ...p, fileId: existingFileId, uploadStatus: 'done', uploadProgress: 100, isExisting: true }
+                            : p,
+                    ),
+                );
+            } else {
+                startUpload(t);
+            }
         });
     }
 
@@ -284,16 +301,15 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
         LockClosing();
 
         try {
-            const songIds: string[] = [];
-
-            for (const track of tracks) {
+            const songDrafts = tracks.map((track) => {
                 const seen = new Set<string>();
                 const artistUuids = [...albumArtists, ...track.artists]
                     .filter((a) => !seen.has(a.id) && seen.add(a.id))
                     .map((a) => a.id);
-                const songId = await songsService.CreateSong(track.title || track.file.name, artistUuids, track.fileId!);
-                songIds.push(songId);
-            }
+                return { title: track.title || track.file.name, artistUuids, fileId: track.fileId! };
+            });
+
+            const songIds = await songsService.BatchCreateSong(songDrafts);
 
             if (playlistMode) {
                 let coverFileId: string | undefined;

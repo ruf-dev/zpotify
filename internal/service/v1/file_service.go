@@ -19,8 +19,43 @@ import (
 	"go.zpotify.ru/zpotify/internal/utils"
 )
 
+func (s *FileService) CheckFilesByHashes(ctx context.Context, hashes []string) ([]domain.FoundFileByHash, error) {
+	uCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return nil, rerrors.Wrap(user_errors.ErrUnauthenticated)
+	}
+
+	result := make([]domain.FoundFileByHash, 0, len(hashes))
+	for _, hash := range hashes {
+		file, err := s.storage.GetByHash(ctx, hash, uCtx.UserId)
+		if err != nil {
+			if errors.Is(err, storage.ErrNotFound) {
+				continue
+			}
+			return nil, rerrors.Wrap(err, "error checking hash")
+		}
+		found := domain.FoundFileByHash{
+			Hash:   hash,
+			FileId: file.Id,
+		}
+
+		song, songErr := s.songStorage.GetByFileId(ctx, file.Id)
+		if songErr != nil && !errors.Is(songErr, storage.ErrNotFound) {
+			return nil, rerrors.Wrap(songErr, "error getting song for file")
+		}
+		if songErr == nil {
+			found.SongId = &song.SongBase.Id
+		}
+
+		result = append(result, found)
+	}
+
+	return result, nil
+}
+
 type FileService struct {
-	storage storage.FileMetaStorage
+	storage     storage.FileMetaStorage
+	songStorage storage.SongStorage
 
 	binaryStorage storage.BinaryFileStorage
 }
@@ -28,6 +63,7 @@ type FileService struct {
 func NewFileService(s storage.Storage, binaryStorage storage.BinaryFileStorage) *FileService {
 	return &FileService{
 		storage:       s.FileMeta(),
+		songStorage:   s.SongsStorage(),
 		binaryStorage: binaryStorage,
 	}
 }

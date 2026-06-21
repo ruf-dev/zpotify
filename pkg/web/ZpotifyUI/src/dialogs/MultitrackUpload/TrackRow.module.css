@@ -68,6 +68,13 @@
     background: rgb(56 189 248 / 8%);
 }
 
+.StatusChipExisting {
+    color: var(--color-fg-secondary);
+    border-color: var(--color-border);
+    border-style: dashed;
+    background: transparent;
+}
+
 .TrackRowContainer:not(.AnyDragging):hover {
     background: var(--color-bg-hover);
     border-color: var(--color-border-light);

@@ -137,3 +137,9 @@ type SongFile struct {
 	Id   int64
 	Path string
 }
+
+type FoundFileByHash struct {
+	Hash   string
+	FileId int64
+	SongId *int64
+}

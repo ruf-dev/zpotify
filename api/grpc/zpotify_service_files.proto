@@ -25,6 +25,13 @@ service FileMetaAPI {
       get: "/api/file_meta/{file_id}"
     };
   }
+
+  rpc CheckFilesByHashes(CheckFilesByHashes.Request) returns (CheckFilesByHashes.Response) {
+    option (google.api.http) = {
+      post: "/api/file_meta/check_hashes"
+      body: "*",
+    };
+  }
 }
 
 message ListUploadedFiles {
@@ -52,4 +59,20 @@ message FileInfo {
   string path = 2;
   int64 size_bytes = 3;
   int64 duration_sec = 4;
+}
+
+message CheckFilesByHashes {
+  message Request {
+    repeated string hashes = 1;
+  }
+
+  message FoundFileByHash {
+    string hash = 1;
+    int64 file_id = 2;
+    optional int64 song_id = 3;
+  }
+
+  message Response {
+    repeated FoundFileByHash found = 1;
+  }
 }

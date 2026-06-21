@@ -139,4 +139,5 @@ type FileService interface {
 	SaveFile(ctx context.Context, fileNameWithExt string, content io.Reader) (int64, error)
 	ListUploadedFiles(ctx context.Context, req domain.ListUploadedFiles) ([]domain.SongFile, error)
 	GetFile(ctx context.Context, fileId int64) (domain.FileMeta, error)
+	CheckFilesByHashes(ctx context.Context, hashes []string) ([]domain.FoundFileByHash, error)
 }
