@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { parseBlob } from 'music-metadata-browser';
+import cn from 'classnames';
 
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
@@ -11,96 +12,18 @@ import { fileService } from '@/shared/api/FileService.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
 import type { SongBase } from '@/app/api/zpotify';
+import ChevronRightIcon from '@/assets/icons/ChevronRightIcon.tsx';
 
 import TrackList from './TrackList';
 import PlaylistDetailsPanel from './PlaylistDetailsPanel';
+import PlaylistToggleRow from './PlaylistToggleRow';
 import type { TrackDraft } from './TrackRow';
+import { cleanTitle, formatTotalSize, computeHash } from './utils';
 
 import cls from './MultitrackUploadModal.module.css';
 
 interface MultitrackUploadModalProps {
     files: File[];
-}
-
-function cleanTitle(filename: string): string {
-    return filename
-        .replace(/\.[^/.]+$/, '')
-        .replace(/[-_]/g, ' ')
-        .trim();
-}
-
-function formatBytes(bytes: number): string {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
-function formatTotalSize(files: File[]): string {
-    const total = files.reduce((s, f) => s + f.size, 0);
-    return formatBytes(total);
-}
-
-async function computeHash(file: File): Promise<string> {
-    const buffer = await file.arrayBuffer();
-    const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
-    return Array.from(new Uint8Array(hashBuffer))
-        .map((b) => b.toString(16).padStart(2, '0'))
-        .join('');
-}
-
-function CheckIcon() {
-    return (
-        <svg
-            width="12"
-            height="12"
-            viewBox="0 0 20 20"
-            fill="none"
-            stroke="white"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <polyline className={cls.CheckPath} points="4 10 8 14 16 6" />
-        </svg>
-    );
-}
-
-function ChevronIcon() {
-    return (
-        <svg
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <polyline points="9 6 15 12 9 18" />
-        </svg>
-    );
-}
-
-interface PlaylistToggleRowProps {
-    checked: boolean;
-    onChange: (checked: boolean) => void;
-}
-
-function PlaylistToggleRow({ checked, onChange }: PlaylistToggleRowProps) {
-    return (
-        <div className={`${cls.ToggleContainer} ${checked ? cls.ToggleChecked : ''}`}>
-            <label className={cls.ToggleLabel} onClick={() => onChange(!checked)}>
-                <div className={`${cls.Checkbox} ${checked ? cls.CheckboxChecked : ''}`}>
-                    {checked && <CheckIcon />}
-                </div>
-                <div className={cls.ToggleTextStack}>
-                    <span className={cls.ToggleMain}>create playlist from these tracks</span>
-                    <span className={cls.ToggleSub}>group them as an album with shared cover, name, and artists</span>
-                </div>
-            </label>
-        </div>
-    );
 }
 
 export default function MultitrackUploadModal({ files }: MultitrackUploadModalProps) {
@@ -467,12 +390,12 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                 </span>
                 <button
                     type="button"
-                    className={`${cls.SubmitButton} ${isValid && !submitting ? cls.SubmitReady : cls.SubmitDisabled}`}
+                    className={cn(cls.SubmitButton, isValid && !submitting ? cls.SubmitReady : cls.SubmitDisabled)}
                     onClick={handleSubmit}
                     disabled={!isValid || submitting}
                 >
                     {submitting ? 'uploading…' : submitLabel}
-                    {!submitting && <ChevronIcon />}
+                    {!submitting && <ChevronRightIcon />}
                 </button>
             </div>
         </div>

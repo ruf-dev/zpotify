@@ -92,8 +92,7 @@ pages / dialogs  →  widgets  →  features  →  entities  →  components  �
 ## Commands
 
 ```bash
-npm run dev          # Vite dev server
-npm run build:ui     # tsc + vite build
-npm run lint         # ESLint
+bun run build     # tsc + vite build
+bun lint         # ESLint
 bun gen # Generate proto contract 
 ```

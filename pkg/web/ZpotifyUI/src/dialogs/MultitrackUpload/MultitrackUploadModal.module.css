@@ -3,11 +3,6 @@
     to   { opacity: 1; transform: none; }
 }
 
-@keyframes checkIn {
-    from { stroke-dashoffset: 20; }
-    to   { stroke-dashoffset: 0; }
-}
-
 :root {
     --dur-fast: 0.15s;
     --dur-mid: 0.22s;
@@ -89,80 +84,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.875rem;
-}
-
-/* ── Playlist Toggle Row ─────────────────────────────────── */
-
-.ToggleContainer {
-    border: 1px solid var(--color-border);
-    background: var(--color-bg-card);
-    border-radius: var(--border-radius-md);
-    transition: border-color var(--dur-fast) ease, background var(--dur-fast) ease;
-}
-
-.ToggleChecked {
-    border-color: var(--color-accent-border);
-    background: rgb(217 0 127 / 5%);
-}
-
-.ToggleLabel {
-    padding: 0.5rem 0.625rem;
-    display: flex;
-    align-items: flex-start;
-    gap: 0.625rem;
-    cursor: pointer;
-    user-select: none;
-    border-radius: var(--border-radius-sm);
-    transition: background var(--dur-fast) ease;
-
-    &:hover {
-        background: var(--color-bg-hover);
-    }
-}
-
-.Checkbox {
-    width: 1.125rem;
-    height: 1.125rem;
-    border-radius: 0.3125rem;
-    border: 1.5px solid var(--color-border-light);
-    flex-shrink: 0;
-    margin-top: 0.0625rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background var(--dur-fast) ease, border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
-
-    &:hover {
-        border-color: var(--color-border-bright);
-    }
-}
-
-.CheckboxChecked {
-    background: var(--color-fg-accent);
-    border-color: var(--color-fg-accent);
-    box-shadow: 0 0 12px var(--color-accent-shadow);
-}
-
-.CheckPath {
-    stroke-dasharray: 20;
-    animation: checkIn 0.2s ease forwards;
-}
-
-.ToggleTextStack {
-    display: flex;
-    flex-direction: column;
-    gap: 0.125rem;
-}
-
-.ToggleMain {
-    font-size: var(--font-size-md);
-    font-weight: 600;
-    color: var(--color-fg-primary);
-}
-
-.ToggleSub {
-    font-size: var(--font-size-xs);
-    color: var(--color-fg-tertiary);
 }
 
 /* ── Footer ─────────────────────────────────────────────── */
