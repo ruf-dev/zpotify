@@ -2,7 +2,7 @@
 // versions:
 //   sqlc v1.30.0
 
-package garbage_collector_q
+package jobs_q
 
 import (
 	"context"

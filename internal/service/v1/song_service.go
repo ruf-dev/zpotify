@@ -27,7 +27,7 @@ type AudioService struct {
 	playlistStorage storage.PlaylistStorage
 	artistStorage   storage.ArtistStorage
 	binaryStorage   storage.BinaryFileStorage
-	gcStorage       storage.GarbageCollectorStorage
+	jobStorage      storage.JobStorage
 
 	filesCache files_cache.FilesCache
 }
@@ -45,7 +45,7 @@ func NewAudioService(
 		playlistStorage: dataStorage.PlaylistStorage(),
 		artistStorage:   dataStorage.ArtistStorage(),
 		binaryStorage:   binaryStorage,
-		gcStorage:       dataStorage.GarbageCollector(),
+		jobStorage:      dataStorage.Jobs(),
 
 		filesCache: filesCache,
 	}
@@ -189,10 +189,10 @@ func (s *AudioService) finalizeSong(
 		return rerrors.Wrap(err, "error adding song to global playlist")
 	}
 
-	gcStorage := s.gcStorage.WithTx(tx)
-	err = gcStorage.Add(ctx, oldPath)
+	jobStorage := s.jobStorage.WithTx(tx)
+	err = jobStorage.EnqueueGarbageFile(ctx, oldPath)
 	if err != nil {
-		return rerrors.Wrap(err, "error registering old file path in garbage collector")
+		return rerrors.Wrap(err, "error enqueueing old file path for deletion")
 	}
 
 	return nil

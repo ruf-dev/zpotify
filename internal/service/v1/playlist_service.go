@@ -23,7 +23,7 @@ type PlaylistService struct {
 	userStorage     storage.UserStorage
 	fileMetaStorage storage.FileMetaStorage
 	binaryStorage   storage.BinaryFileStorage
-	gcStorage       storage.GarbageCollectorStorage
+	jobStorage      storage.JobStorage
 }
 
 func NewPlaylistService(data storage.Storage, binaryStorage storage.BinaryFileStorage) *PlaylistService {
@@ -34,7 +34,7 @@ func NewPlaylistService(data storage.Storage, binaryStorage storage.BinaryFileSt
 		userStorage:     data.User(),
 		fileMetaStorage: data.FileMeta(),
 		binaryStorage:   binaryStorage,
-		gcStorage:       data.GarbageCollector(),
+		jobStorage:      data.Jobs(),
 	}
 }
 
@@ -70,8 +70,8 @@ func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistP
 			}
 
 			if req.CoverFileId != nil {
-				gcStorage := p.gcStorage.WithTx(tx)
-				createErr = p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, gcStorage, playlistUuid, *req.CoverFileId, req.ArtistUuids, userCtx.UserId)
+				jobStorage := p.jobStorage.WithTx(tx)
+				createErr = p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, jobStorage, playlistUuid, *req.CoverFileId, req.ArtistUuids, userCtx.UserId)
 				if createErr != nil {
 					return rerrors.Wrap(createErr, "error handling cover file")
 				}
@@ -153,8 +153,8 @@ func (p *PlaylistService) Update(ctx context.Context, req domain.UpdatePlaylistP
 				}
 			}
 
-			gcStorage := p.gcStorage.WithTx(tx)
-			coverErr := p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, gcStorage, req.Uuid, *req.CoverFileId, updatedArtists, userCtx.UserId)
+			jobStorage := p.jobStorage.WithTx(tx)
+			coverErr := p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, jobStorage, req.Uuid, *req.CoverFileId, updatedArtists, userCtx.UserId)
 			if coverErr != nil {
 				return rerrors.Wrap(coverErr, "error handling cover file")
 			}
@@ -252,7 +252,7 @@ func (p *PlaylistService) moveCoverFile(
 	ctx context.Context,
 	fileMetaStorage storage.FileMetaStorage,
 	playlistStorage storage.PlaylistStorage,
-	gcStorage storage.GarbageCollectorStorage,
+	jobStorage storage.JobStorage,
 	playlistUuid string,
 	coverFileId int64,
 	artistUuids []string,
@@ -285,9 +285,9 @@ func (p *PlaylistService) moveCoverFile(
 		return rerrors.Wrap(err, "error updating cover file meta")
 	}
 
-	err = gcStorage.Add(ctx, oldPath)
+	err = jobStorage.EnqueueGarbageFile(ctx, oldPath)
 	if err != nil {
-		return rerrors.Wrap(err, "error registering old cover file path in garbage collector")
+		return rerrors.Wrap(err, "error enqueueing old cover file for deletion")
 	}
 
 	err = playlistStorage.UpdateCoverFileId(ctx, playlistUuid, coverFileId)

@@ -5,7 +5,6 @@ package app
 
 import (
 	"context"
-	"database/sql"
 	"time"
 
 	"github.com/rs/zerolog/log"
@@ -21,7 +20,6 @@ import (
 	"go.zpotify.ru/zpotify/internal/async/provider/pgqueue"
 	"go.zpotify.ru/zpotify/internal/background"
 	"go.zpotify.ru/zpotify/internal/background/sessions_gc"
-	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/middleware"
 	"go.zpotify.ru/zpotify/internal/service"
 	"go.zpotify.ru/zpotify/internal/storage"
@@ -94,14 +92,13 @@ func (c *Custom) Init(a *App) (err error) {
 		sessions_gc.New(c.dataStorage),
 	)
 
-	gcHandler := gc_handler.New(c.dataStorage.GarbageCollector(), c.binaryStorage)
-	gcProvider := pgqueue.New(
-		a.Postgres,
-		func(ctx context.Context, tx *sql.Tx) ([]domain.GarbageFile, error) {
-			return c.dataStorage.GarbageCollector().WithTx(tx).Claim(ctx, 10)
-		},
+	gcHandler := gc_handler.New(c.binaryStorage)
+	gcProvider := pgqueue.New[storage.GarbageFilePayload](
+		a.Cfg.DataSources.Postgres.ConnectionString(),
+		c.dataStorage.Jobs(),
+		storage.QueueNameGarbageCollector,
 		gcHandler.Handle,
-		30*time.Second,
+		60*time.Second,
 	)
 	c.AsyncPool = async.New(gcProvider)
 

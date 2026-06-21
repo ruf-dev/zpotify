@@ -14,6 +14,50 @@ import (
 	"github.com/google/uuid"
 )
 
+type JobStatus string
+
+const (
+	JobStatusPending    JobStatus = "pending"
+	JobStatusProcessing JobStatus = "processing"
+	JobStatusCompleted  JobStatus = "completed"
+	JobStatusFailed     JobStatus = "failed"
+)
+
+func (e *JobStatus) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = JobStatus(s)
+	case string:
+		*e = JobStatus(s)
+	default:
+		return fmt.Errorf("unsupported scan type for JobStatus: %T", src)
+	}
+	return nil
+}
+
+type NullJobStatus struct {
+	JobStatus JobStatus
+	Valid     bool // Valid is true if JobStatus is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullJobStatus) Scan(value interface{}) error {
+	if value == nil {
+		ns.JobStatus, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.JobStatus.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullJobStatus) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.JobStatus), nil
+}
+
 type Locale string
 
 const (
@@ -112,13 +156,6 @@ type FilesMetum struct {
 	ContentHash string
 }
 
-type GarbageCollector struct {
-	ID        int64
-	FilePath  string
-	AddedAt   time.Time
-	DeletedAt sql.NullTime
-}
-
 type IdentityTelegram struct {
 	TelegramID   int64
 	UserID       int64
@@ -130,6 +167,19 @@ type IdentityZpotify struct {
 	UserID   int64
 	Login    string
 	Password string
+}
+
+type Job struct {
+	ID              int64
+	QueueName       string
+	Payload         json.RawMessage
+	Status          JobStatus
+	Attempts        int32
+	MaxAttempts     int32
+	CreatedAt       time.Time
+	ScheduledAt     time.Time
+	ProcessingUntil sql.NullTime
+	LastError       sql.NullString
 }
 
 type Playlist struct {

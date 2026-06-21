@@ -23,7 +23,7 @@ type Storage interface {
 	PlaylistStorage() PlaylistStorage
 	ArtistStorage() ArtistStorage
 	FileMeta() FileMetaStorage
-	GarbageCollector() GarbageCollectorStorage
+	Jobs() JobStorage
 
 	TxManager() *tx_manager.TxManager
 }
@@ -154,12 +154,30 @@ type BinaryFileStorage interface {
 	DeleteTempFile(ctx context.Context, path string) error
 }
 
-// GarbageCollectorStorage - tracks old file paths scheduled for async deletion
-type GarbageCollectorStorage interface {
-	WithTx(tx *sql.Tx) GarbageCollectorStorage
+const QueueNameGarbageCollector = "garbage_collector"
 
-	Add(ctx context.Context, filePath string) error
-	Claim(ctx context.Context, limit int32) ([]domain.GarbageFile, error)
-	List(ctx context.Context) ([]domain.GarbageFile, error)
-	MarkDeleted(ctx context.Context, id int64) error
+// GarbageFilePayload is the JSONB payload for garbage_collector queue jobs.
+type GarbageFilePayload struct {
+	FilePath string `json:"file_path"`
+}
+
+// Job is the domain representation of a claimed job row.
+type Job struct {
+	ID          int64
+	QueueName   string
+	Payload     []byte
+	Attempts    int32
+	MaxAttempts int32
+}
+
+// JobStorage manages the generic jobs queue.
+type JobStorage interface {
+	WithTx(tx *sql.Tx) JobStorage
+
+	Enqueue(ctx context.Context, queueName string, payload any, maxAttempts int32) error
+	EnqueueGarbageFile(ctx context.Context, filePath string) error
+	Claim(ctx context.Context, queueName string, limit int32) ([]Job, error)
+	Complete(ctx context.Context, jobID int64) error
+	Fail(ctx context.Context, jobID int64, lastError string, backoffSeconds int32) error
+	RequeueStalled(ctx context.Context) error
 }

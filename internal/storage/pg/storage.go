@@ -24,11 +24,11 @@ type dataStorage struct {
 	userStorage         *UserStorage
 	userSettingsStorage *UserSettingsStorage
 
-	songsStorage            *SongsStorage
-	playlistStorage         *PlaylistStorage
-	artistStorage           *ArtistsStorage
-	fileMetaStorage         *FileMetaStorage
-	garbageCollectorStorage *GarbageCollectorStorage
+	songsStorage    *SongsStorage
+	playlistStorage *PlaylistStorage
+	artistStorage   *ArtistsStorage
+	fileMetaStorage *FileMetaStorage
+	jobsStorage     *jobsStorage
 
 	conn *sql.DB
 }
@@ -44,7 +44,7 @@ func NewStorage(conn *sql.DB) storage.Storage {
 		playlistStorage:         NewPlaylistStorage(conn),
 		artistStorage:           NewArtistsStorage(conn),
 		fileMetaStorage:         NewFileMetaStorage(conn),
-		garbageCollectorStorage: NewGarbageCollectorStorage(conn),
+		jobsStorage:             newJobsStorage(conn),
 		conn:                    conn,
 	}
 }
@@ -85,8 +85,8 @@ func (d *dataStorage) FileMeta() storage.FileMetaStorage {
 	return d.fileMetaStorage
 }
 
-func (d *dataStorage) GarbageCollector() storage.GarbageCollectorStorage {
-	return d.garbageCollectorStorage
+func (d *dataStorage) Jobs() storage.JobStorage {
+	return d.jobsStorage
 }
 
 func (d *dataStorage) TxManager() *tx_manager.TxManager {
