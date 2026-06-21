@@ -8,6 +8,27 @@ import react from 'eslint-plugin-react'
 import importPlugin from 'eslint-plugin-import'
 import prettierRecommended from 'eslint-plugin-prettier/recommended'
 
+const localPlugin = {
+    rules: {
+        'no-relative-imports': {
+            meta: { type: 'suggestion' },
+            create(context) {
+                return {
+                    ImportDeclaration(node) {
+                        const src = node.source.value;
+                        if (src.startsWith('./') || src.startsWith('../')) {
+                            context.report({
+                                node,
+                                message: "Use '@/' path alias instead of relative imports.",
+                            });
+                        }
+                    },
+                };
+            },
+        },
+    },
+};
+
 export default tseslint.config([
     globalIgnores(['dist', 'src/app/api/zpotify/index.ts']),
     {
@@ -31,8 +52,15 @@ export default tseslint.config([
             ecmaVersion: 2020,
             globals: globals.browser,
         },
+        plugins: { local: localPlugin },
         rules: {
             'react/prop-types': 'off',
+
+            // One React component per file
+            'react/no-multi-comp': ['warn', { ignoreStateless: false }],
+
+            // All imports must use the '@/' alias — no relative paths
+            'local/no-relative-imports': 'error',
 
             '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
 

@@ -1,4 +1,4 @@
-import cls from './ArtistChip.module.css';
+import cls from '@/widgets/ArtistField/ArtistChip.module.css';
 
 export interface ArtistItem {
     id: string;

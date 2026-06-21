@@ -1,4 +1,4 @@
-import cls from './DisabledChip.module.css';
+import cls from '@/shared/ui/DisabledChip.module.css';
 
 interface DisabledChipProps {
     icon: React.ReactNode;

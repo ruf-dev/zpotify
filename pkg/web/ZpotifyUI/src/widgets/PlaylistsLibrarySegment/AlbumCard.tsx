@@ -2,7 +2,7 @@ import cn from 'classnames';
 
 import GenerativeCover from '@/shared/ui/GenerativeCover.tsx';
 
-import cls from './AlbumCard.module.css';
+import cls from '@/widgets/PlaylistsLibrarySegment/AlbumCard.module.css';
 
 interface AlbumCardProps {
     uuid: string;

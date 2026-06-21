@@ -2,7 +2,7 @@ import cn from 'classnames';
 
 import CheckIcon from '@/assets/icons/CheckIcon.tsx';
 
-import cls from './PlaylistToggleRow.module.css';
+import cls from '@/dialogs/MultitrackUpload/PlaylistToggleRow.module.css';
 
 interface PlaylistToggleRowProps {
     checked: boolean;

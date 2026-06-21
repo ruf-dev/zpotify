@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 
-import cls from './EditableTitle.module.css';
+import cls from '@/components/EditableTitle/EditableTitle.module.css';
 
 interface EditableTitleProps {
     value: string;

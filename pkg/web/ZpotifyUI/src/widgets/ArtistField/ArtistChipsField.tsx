@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import cn from 'classnames';
 
-import { ArtistChip, LockedArtistChip } from './ArtistChip';
-import ArtistDropdown from './ArtistDropdown';
-import type { ArtistItem } from './ArtistChip';
+import { ArtistChip, LockedArtistChip } from '@/widgets/ArtistField/ArtistChip';
+import ArtistDropdown from '@/widgets/ArtistField/ArtistDropdown';
+import type { ArtistItem } from '@/widgets/ArtistField/ArtistChip';
 
-import cls from './ArtistChipsField.module.css';
+import cls from '@/widgets/ArtistField/ArtistChipsField.module.css';
 
 export type { ArtistItem };
 

@@ -12,7 +12,7 @@ import { webApiService } from '@/shared/api/WebApi.ts';
 import ChooseScreen from '@/dialogs/AddTrack/screens/ChooseScreen';
 import DropZoneScreen from '@/dialogs/AddTrack/screens/DropZoneScreen';
 import PendingFilesScreen from '@/dialogs/AddTrack/screens/PendingFilesScreen';
-import { MultitrackUploadDialog } from '@/dialogs/MultitrackUpload';
+import MultitrackUploadModal from '@/dialogs/MultitrackUpload/MultitrackUploadModal';
 import MetaDialog from '@/dialogs/Meta/MetaDialog';
 import { AudioFile } from '@/shared/model/AudioFile.ts';
 
@@ -56,7 +56,7 @@ export default function AddTrackDialog() {
     function handleFiles(files: File[]) {
         if (files.length > 1) {
             CloseDialog();
-            OpenDialog(<MultitrackUploadDialog files={files} />);
+            OpenDialog(<MultitrackUploadModal files={files} />);
             return;
         }
 

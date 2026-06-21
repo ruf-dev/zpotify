@@ -14,13 +14,13 @@ import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
 import type { SongBase } from '@/app/api/zpotify';
 import ChevronRightIcon from '@/assets/icons/ChevronRightIcon.tsx';
 
-import TrackList from './TrackList';
-import PlaylistDetailsPanel from './PlaylistDetailsPanel';
-import PlaylistToggleRow from './PlaylistToggleRow';
-import type { TrackDraft } from './TrackRow';
-import { cleanTitle, formatTotalSize, computeHash } from './utils';
+import TrackList from '@/dialogs/MultitrackUpload/TrackList';
+import PlaylistDetailsPanel from '@/dialogs/MultitrackUpload/PlaylistDetailsPanel';
+import PlaylistToggleRow from '@/dialogs/MultitrackUpload/PlaylistToggleRow';
+import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
+import { cleanTitle, formatTotalSize, computeHash } from '@/dialogs/MultitrackUpload/utils';
 
-import cls from './MultitrackUploadModal.module.css';
+import cls from '@/dialogs/MultitrackUpload/MultitrackUploadModal.module.css';
 
 interface MultitrackUploadModalProps {
     files: File[];

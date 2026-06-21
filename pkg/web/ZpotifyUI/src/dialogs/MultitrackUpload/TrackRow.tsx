@@ -5,7 +5,7 @@ import ArtistChipsField from '@/widgets/ArtistField/ArtistChipsField';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import { formatDuration } from '@/shared/lib/time';
 
-import cls from './TrackRow.module.css';
+import cls from '@/dialogs/MultitrackUpload/TrackRow.module.css';
 
 export interface TrackDraft {
     id: string;

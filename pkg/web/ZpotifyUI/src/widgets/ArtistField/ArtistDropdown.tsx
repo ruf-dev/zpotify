@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 
-import type { ArtistItem } from './ArtistChip';
+import type { ArtistItem } from '@/widgets/ArtistField/ArtistChip';
 
-import cls from './ArtistDropdown.module.css';
+import cls from '@/widgets/ArtistField/ArtistDropdown.module.css';
 
 interface ArtistDropdownProps {
     excluded: string[];

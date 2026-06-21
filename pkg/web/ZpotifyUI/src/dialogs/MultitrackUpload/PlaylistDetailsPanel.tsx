@@ -4,7 +4,7 @@ import DisabledChip from '@/shared/ui/DisabledChip';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import { formatDuration } from '@/shared/lib/time';
 
-import cls from './PlaylistDetailsPanel.module.css';
+import cls from '@/dialogs/MultitrackUpload/PlaylistDetailsPanel.module.css';
 
 interface PlaylistDetailsPanelProps {
     cover?: File;

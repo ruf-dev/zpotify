@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import cls from './CoverField.module.css';
+import cls from '@/components/CoverField/CoverField.module.css';
 
 interface CoverFieldProps {
     cover?: File;

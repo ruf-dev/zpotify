@@ -1,7 +1,7 @@
 import { useRef, useState, type DragEvent, type ChangeEvent } from 'react';
 import cn from 'classnames';
 
-import cls from './DropZone.module.css';
+import cls from '@/features/upload/DropZone.module.css';
 
 interface DropZoneProps {
     onFiles: (files: File[]) => void;

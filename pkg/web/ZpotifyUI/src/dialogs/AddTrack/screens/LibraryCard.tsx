@@ -1,4 +1,4 @@
-import cls from './LibraryCard.module.css';
+import cls from '@/dialogs/AddTrack/screens/LibraryCard.module.css';
 
 interface LibraryCardProps {
     onClick: () => void;

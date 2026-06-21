@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 import GenerativeCover from '@/shared/ui/GenerativeCover.tsx';
 
-import cls from './PlaylistCardWide.module.css';
+import cls from '@/widgets/PlaylistsLibrarySegment/PlaylistCardWide.module.css';
 
 interface PlaylistCardWideProps {
     uuid: string;

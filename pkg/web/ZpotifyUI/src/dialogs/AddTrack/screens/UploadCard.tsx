@@ -1,4 +1,4 @@
-import cls from './UploadCard.module.css';
+import cls from '@/dialogs/AddTrack/screens/UploadCard.module.css';
 
 interface UploadCardProps {
     atLimit: boolean;
