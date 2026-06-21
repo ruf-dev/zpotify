@@ -131,6 +131,8 @@ func (s *FileMetaStorage) Update(ctx context.Context, fileId int64, file domain.
 		FilePath:    file.FilePath,
 		DurationSec: int64(file.Duration.Seconds()),
 		SizeBytes:   file.SizeBytes,
+		Verified:    file.Verified,
+		ContentHash: file.ContentHash,
 		ID:          fileId,
 	}
 

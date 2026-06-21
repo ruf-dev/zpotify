@@ -13,14 +13,18 @@ const updateFileMeta = `-- name: UpdateFileMeta :exec
 UPDATE files_meta
 SET file_path    = $1,
     duration_sec = $2,
-    size_bytes   = $3
-WHERE id = $4
+    size_bytes   = $3,
+    verified     = $4,
+    content_hash = $5
+WHERE id = $6
 `
 
 type UpdateFileMetaParams struct {
 	FilePath    string
 	DurationSec int64
 	SizeBytes   int64
+	Verified    bool
+	ContentHash string
 	ID          int64
 }
 
@@ -29,6 +33,8 @@ func (q *Queries) UpdateFileMeta(ctx context.Context, arg UpdateFileMetaParams) 
 		arg.FilePath,
 		arg.DurationSec,
 		arg.SizeBytes,
+		arg.Verified,
+		arg.ContentHash,
 		arg.ID,
 	)
 	return err
