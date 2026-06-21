@@ -14,3 +14,14 @@ WHERE deleted_at IS NULL;
 UPDATE garbage_collector
 SET deleted_at = NOW()
 WHERE id = $1;
+
+-- name: ClaimGarbageFiles :many
+SELECT id,
+       file_path,
+       added_at,
+       deleted_at
+FROM garbage_collector
+WHERE deleted_at IS NULL
+ORDER BY added_at
+FOR UPDATE SKIP LOCKED
+LIMIT $1;

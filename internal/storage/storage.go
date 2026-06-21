@@ -159,6 +159,7 @@ type GarbageCollectorStorage interface {
 	WithTx(tx *sql.Tx) GarbageCollectorStorage
 
 	Add(ctx context.Context, filePath string) error
+	Claim(ctx context.Context, limit int32) ([]domain.GarbageFile, error)
 	List(ctx context.Context) ([]domain.GarbageFile, error)
 	MarkDeleted(ctx context.Context, id int64) error
 }

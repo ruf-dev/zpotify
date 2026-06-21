@@ -5,6 +5,8 @@ package app
 
 import (
 	"context"
+	"database/sql"
+	"time"
 
 	"github.com/rs/zerolog/log"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
@@ -14,8 +16,12 @@ import (
 	"google.golang.org/grpc"
 
 	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
+	"go.zpotify.ru/zpotify/internal/async"
+	gc_handler "go.zpotify.ru/zpotify/internal/async/handlers/garbage_collector"
+	"go.zpotify.ru/zpotify/internal/async/provider/pgqueue"
 	"go.zpotify.ru/zpotify/internal/background"
 	"go.zpotify.ru/zpotify/internal/background/sessions_gc"
+	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/middleware"
 	"go.zpotify.ru/zpotify/internal/service"
 	"go.zpotify.ru/zpotify/internal/storage"
@@ -42,6 +48,7 @@ type Custom struct {
 	Service service.Service
 
 	BackgroundWorker *background.Worker
+	AsyncPool        *async.Pool
 
 	ArtistsApiImpl  *artists_api_impl.Impl
 	AuthApiImpl     *auth_api_impl.Impl
@@ -86,6 +93,17 @@ func (c *Custom) Init(a *App) (err error) {
 	c.BackgroundWorker = background.New(
 		sessions_gc.New(c.dataStorage),
 	)
+
+	gcHandler := gc_handler.New(c.dataStorage.GarbageCollector(), c.binaryStorage)
+	gcProvider := pgqueue.New(
+		a.Postgres,
+		func(ctx context.Context, tx *sql.Tx) ([]domain.GarbageFile, error) {
+			return c.dataStorage.GarbageCollector().WithTx(tx).Claim(ctx, 10)
+		},
+		gcHandler.Handle,
+		30*time.Second,
+	)
+	c.AsyncPool = async.New(gcProvider)
 
 	c.ArtistsApiImpl = artists_api_impl.New(c.Service)
 	c.AuthApiImpl = auth_api_impl.New(c.Service, a.Cfg.Environment.TelegramClientID)
@@ -152,6 +170,7 @@ func (c *Custom) Start(ctx context.Context) error {
 	eg, ctx := errgroup.WithContext(ctx)
 
 	eg.Go(c.BackgroundWorker.Start)
+	eg.Go(c.AsyncPool.Start)
 
 	eg.Go(c.ServerManager.Start)
 
@@ -170,6 +189,9 @@ func (c *Custom) Stop() error {
 
 	eg.Go(func() error {
 		return c.BackgroundWorker.Stop()
+	})
+	eg.Go(func() error {
+		return c.AsyncPool.Stop()
 	})
 	eg.Go(c.ServerManager.Stop)
 

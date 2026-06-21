@@ -19,6 +19,46 @@ func (q *Queries) AddGarbageFile(ctx context.Context, filePath string) error {
 	return err
 }
 
+const claimGarbageFiles = `-- name: ClaimGarbageFiles :many
+SELECT id,
+       file_path,
+       added_at,
+       deleted_at
+FROM garbage_collector
+WHERE deleted_at IS NULL
+ORDER BY added_at
+FOR UPDATE SKIP LOCKED
+LIMIT $1
+`
+
+func (q *Queries) ClaimGarbageFiles(ctx context.Context, limit int32) ([]GarbageCollector, error) {
+	rows, err := q.db.QueryContext(ctx, claimGarbageFiles, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GarbageCollector{}
+	for rows.Next() {
+		var i GarbageCollector
+		if err := rows.Scan(
+			&i.ID,
+			&i.FilePath,
+			&i.AddedAt,
+			&i.DeletedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listGarbageFiles = `-- name: ListGarbageFiles :many
 SELECT id,
        file_path,

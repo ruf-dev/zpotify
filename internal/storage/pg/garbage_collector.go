@@ -39,6 +39,28 @@ func (s *GarbageCollectorStorage) Add(ctx context.Context, filePath string) erro
 	return nil
 }
 
+func (s *GarbageCollectorStorage) Claim(ctx context.Context, limit int32) ([]domain.GarbageFile, error) {
+	rows, err := s.q.ClaimGarbageFiles(ctx, limit)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error claiming garbage files")
+	}
+
+	files := make([]domain.GarbageFile, 0, len(rows))
+	for _, row := range rows {
+		file := domain.GarbageFile{
+			Id:       row.ID,
+			FilePath: row.FilePath,
+			AddedAt:  row.AddedAt,
+		}
+		if row.DeletedAt.Valid {
+			file.DeletedAt = &row.DeletedAt.Time
+		}
+		files = append(files, file)
+	}
+
+	return files, nil
+}
+
 func (s *GarbageCollectorStorage) List(ctx context.Context) ([]domain.GarbageFile, error) {
 	rows, err := s.q.ListGarbageFiles(ctx)
 	if err != nil {

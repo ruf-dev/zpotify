@@ -10,6 +10,7 @@ import (
 
 type Querier interface {
 	AddGarbageFile(ctx context.Context, filePath string) error
+	ClaimGarbageFiles(ctx context.Context, limit int32) ([]GarbageCollector, error)
 	ListGarbageFiles(ctx context.Context) ([]GarbageCollector, error)
 	MarkGarbageFileDeleted(ctx context.Context, id int64) error
 }
