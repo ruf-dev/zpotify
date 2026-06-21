@@ -24,6 +24,16 @@
     color: var(--color-fg-tertiary);
 }
 
+.ReadOnly {
+    cursor: default;
+    color: var(--color-fg-secondary);
+
+    &:hover {
+        background: transparent;
+        border-bottom-color: transparent;
+    }
+}
+
 .Input {
     width: 100%;
     background: var(--color-bg-base);

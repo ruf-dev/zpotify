@@ -43,6 +43,7 @@ export type CheckFilesByHashesRequest = {
 export type CheckFilesByHashesFoundFileByHash = {
   hash?: string;
   fileId?: string;
+  songId?: string;
 };
 
 export type CheckFilesByHashesResponse = {

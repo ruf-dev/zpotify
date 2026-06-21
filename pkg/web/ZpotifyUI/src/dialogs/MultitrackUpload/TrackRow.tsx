@@ -18,6 +18,7 @@ export interface TrackDraft {
     uploadProgress: number;
     fileId?: string;
     isExisting?: boolean;
+    linkedSongId?: string;
 }
 
 interface TrackRowProps {
@@ -140,6 +141,8 @@ export default function TrackRow({
     onCreateArtist,
 }: TrackRowProps) {
     const durationLabel = track.duration > 0 ? formatDuration(Math.round(track.duration)) : '—';
+    // TODO: Make editable here and send update name for such files if changed
+    const isLinked = !!track.linkedSongId;
 
     return (
         <div
@@ -166,7 +169,11 @@ export default function TrackRow({
             <span className={cls.TrackNumber}>{String(index + 1).padStart(2, '0')}</span>
 
             <div className={cls.TitleArtistCell}>
-                <EditableTitle value={track.title} onChange={(title) => onTitleChange(track.id, title)} />
+                <EditableTitle
+                    value={track.title}
+                    onChange={(title) => onTitleChange(track.id, title)}
+                    readOnly={isLinked}
+                />
                 <ArtistChipsField
                     artists={track.artists}
                     onChange={(artists) => onArtistsChange(track.id, artists)}
@@ -175,6 +182,7 @@ export default function TrackRow({
                     placeholder="add artist…"
                     loadOptions={loadArtistOptions}
                     onCreateArtist={onCreateArtist}
+                    readOnly={isLinked}
                 />
             </div>
 

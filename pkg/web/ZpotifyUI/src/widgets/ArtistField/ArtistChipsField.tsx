@@ -17,6 +17,7 @@ interface ArtistChipsFieldProps {
     placeholder?: string;
     loadOptions: (query: string) => Promise<ArtistItem[]>;
     onCreateArtist: (name: string) => Promise<ArtistItem>;
+    readOnly?: boolean;
 }
 
 function PlusIcon({ open }: { open: boolean }) {
@@ -53,6 +54,7 @@ export default function ArtistChipsField({
     placeholder = 'add artist…',
     loadOptions,
     onCreateArtist,
+    readOnly,
 }: ArtistChipsFieldProps) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [dragIdx, setDragIdx] = useState<number | null>(null);
@@ -119,38 +121,44 @@ export default function ArtistChipsField({
 
             {artists.map((a, idx) => (
                 <span key={a.id} role="listitem">
-                    <ArtistChip
-                        artist={a}
-                        onRemove={handleRemove}
-                        isDragging={dragIdx === idx}
-                        isDragOver={overIdx === idx}
-                        dragHandlers={chipDragHandlers(idx)}
-                    />
+                    {readOnly ? (
+                        <LockedArtistChip artist={a} />
+                    ) : (
+                        <ArtistChip
+                            artist={a}
+                            onRemove={handleRemove}
+                            isDragging={dragIdx === idx}
+                            isDragOver={overIdx === idx}
+                            dragHandlers={chipDragHandlers(idx)}
+                        />
+                    )}
                 </span>
             ))}
 
             {showPlaceholder && <span className={cls.Placeholder}>{placeholder}</span>}
 
-            <div className={cls.AddButtonWrapper}>
-                <button
-                    type="button"
-                    className={`${cls.AddButton} ${dropdownOpen ? cls.AddButtonOpen : ''}`}
-                    onClick={() => setDropdownOpen((o) => !o)}
-                    aria-label="add artist"
-                >
-                    <PlusIcon open={dropdownOpen} />
-                </button>
+            {!readOnly && (
+                <div className={cls.AddButtonWrapper}>
+                    <button
+                        type="button"
+                        className={`${cls.AddButton} ${dropdownOpen ? cls.AddButtonOpen : ''}`}
+                        onClick={() => setDropdownOpen((o) => !o)}
+                        aria-label="add artist"
+                    >
+                        <PlusIcon open={dropdownOpen} />
+                    </button>
 
-                {dropdownOpen && (
-                    <ArtistDropdown
-                        excluded={[...lockedArtists.map((a) => a.id), ...artists.map((a) => a.id)]}
-                        loadOptions={loadOptions}
-                        onCreateArtist={handleCreate}
-                        onPick={handlePick}
-                        onClose={() => setDropdownOpen(false)}
-                    />
-                )}
-            </div>
+                    {dropdownOpen && (
+                        <ArtistDropdown
+                            excluded={[...lockedArtists.map((a) => a.id), ...artists.map((a) => a.id)]}
+                            loadOptions={loadOptions}
+                            onCreateArtist={handleCreate}
+                            onPick={handlePick}
+                            onClose={() => setDropdownOpen(false)}
+                        />
+                    )}
+                </div>
+            )}
         </div>
     );
 }

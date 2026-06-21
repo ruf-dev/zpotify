@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import cn from 'classnames';
 
 import cls from './EditableTitle.module.css';
 
@@ -6,9 +7,10 @@ interface EditableTitleProps {
     value: string;
     onChange: (value: string) => void;
     placeholder?: string;
+    readOnly?: boolean;
 }
 
-export default function EditableTitle({ value, onChange, placeholder = 'untitled' }: EditableTitleProps) {
+export default function EditableTitle({ value, onChange, placeholder = 'untitled', readOnly }: EditableTitleProps) {
     const [editing, setEditing] = useState(false);
     const [draft, setDraft] = useState(value);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -20,6 +22,7 @@ export default function EditableTitle({ value, onChange, placeholder = 'untitled
     }, [editing]);
 
     function handleClick() {
+        if (readOnly) return;
         setDraft(value);
         setEditing(true);
     }
@@ -55,7 +58,11 @@ export default function EditableTitle({ value, onChange, placeholder = 'untitled
     }
 
     return (
-        <span className={`${cls.Display} ${!value ? cls.Empty : ''}`} onClick={handleClick} title="click to rename">
+        <span
+            className={cn(cls.Display, !value && cls.Empty, readOnly && cls.ReadOnly)}
+            onClick={handleClick}
+            title={readOnly ? undefined : 'click to rename'}
+        >
             {value || placeholder}
         </span>
     );

@@ -10,6 +10,7 @@ import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { fileService } from '@/shared/api/FileService.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
+import type { SongBase } from '@/app/api/zpotify';
 
 import TrackList from './TrackList';
 import PlaylistDetailsPanel from './PlaylistDetailsPanel';
@@ -161,19 +162,37 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
 
             const existingMap = await fileService.checkByHashes(hashes);
 
+            const songMetaMap = new Map<string, SongBase>();
+            await Promise.all(
+                hashes
+                    .filter((h) => existingMap.get(h)?.songId)
+                    .map(async (h) => {
+                        const song = await songsService.GetSong(existingMap.get(h)!.songId!);
+                        songMetaMap.set(h, song);
+                    }),
+            );
+
             setTracks((prev) =>
                 prev.map((p, i) => {
                     const dur =
                         metas[i].status === 'fulfilled' ? (metas[i].value.format.duration ?? 0) : 0;
-                    const existingFileId = existingMap.get(hashes[i]);
-                    if (existingFileId) {
+                    const existing = existingMap.get(hashes[i]);
+                    const song = songMetaMap.get(hashes[i]);
+                    if (existing) {
                         return {
                             ...p,
                             duration: dur,
-                            fileId: existingFileId,
-                            uploadStatus: 'done',
+                            fileId: existing.fileId,
+                            uploadStatus: 'done' as const,
                             uploadProgress: 100,
                             isExisting: true,
+                            linkedSongId: existing.songId,
+                            ...(song && {
+                                title: song.title ?? p.title,
+                                artists: (song.artists ?? [])
+                                    .filter((a) => a.uuid && a.name)
+                                    .map((a) => ({ id: a.uuid!, name: a.name! })),
+                            }),
                         };
                     }
                     return { ...p, duration: dur };
@@ -253,25 +272,41 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
 
         const existingMap = await fileService.checkByHashes(fresh.map((f) => f.hash));
 
-        const newTracks: TrackDraft[] = fresh.map(({ file }) => ({
-            id: crypto.randomUUID(),
-            file,
-            title: cleanTitle(file.name),
-            artists: [] as ArtistItem[],
-            duration: 0,
-            size: file.size,
-            uploadStatus: 'pending' as const,
-            uploadProgress: 0,
-        }));
+        const songMetaMap = new Map<string, SongBase>();
+        await Promise.all(
+            fresh
+                .filter(({ hash }) => existingMap.get(hash)?.songId)
+                .map(async ({ hash }) => {
+                    const song = await songsService.GetSong(existingMap.get(hash)!.songId!);
+                    songMetaMap.set(hash, song);
+                }),
+        );
+
+        const newTracks: TrackDraft[] = fresh.map(({ file, hash }) => {
+            const existing = existingMap.get(hash);
+            const song = songMetaMap.get(hash);
+            return {
+                id: crypto.randomUUID(),
+                file,
+                title: song?.title ?? cleanTitle(file.name),
+                artists: song
+                    ? (song.artists ?? []).filter((a) => a.uuid && a.name).map((a) => ({ id: a.uuid!, name: a.name! }))
+                    : ([] as ArtistItem[]),
+                duration: song?.durationSec ?? 0,
+                size: file.size,
+                uploadStatus: existing ? ('done' as const) : ('pending' as const),
+                uploadProgress: existing ? 100 : 0,
+                fileId: existing?.fileId,
+                isExisting: !!existing,
+                linkedSongId: existing?.songId,
+            };
+        });
 
         fresh.forEach(({ hash }, i) => knownHashesRef.current.set(hash, newTracks[i].id));
 
         setTracks((prev) => [...prev, ...newTracks]);
 
         newTracks.forEach(function processAddedTrack(t, i) {
-            const { hash } = fresh[i];
-            const existingFileId = existingMap.get(hash);
-
             parseBlob(t.file)
                 .then((meta) => {
                     const dur = meta.format.duration ?? 0;
@@ -279,15 +314,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                 })
                 .catch(() => {});
 
-            if (existingFileId) {
-                setTracks((prev) =>
-                    prev.map((p) =>
-                        p.id === t.id
-                            ? { ...p, fileId: existingFileId, uploadStatus: 'done', uploadProgress: 100, isExisting: true }
-                            : p,
-                    ),
-                );
-            } else {
+            if (!existingMap.has(fresh[i].hash)) {
                 startUpload(t);
             }
         });
@@ -301,15 +328,27 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
         LockClosing();
 
         try {
-            const songDrafts = tracks.map((track) => {
-                const seen = new Set<string>();
-                const artistUuids = [...albumArtists, ...track.artists]
-                    .filter((a) => !seen.has(a.id) && seen.add(a.id))
-                    .map((a) => a.id);
-                return { title: track.title || track.file.name, artistUuids, fileId: track.fileId! };
+            type ToCreate = { idx: number; draft: { title: string; artistUuids: string[]; fileId: string } };
+            const toCreate: ToCreate[] = [];
+            tracks.forEach((track, idx) => {
+                if (!track.linkedSongId) {
+                    const seen = new Set<string>();
+                    const artistUuids = [...albumArtists, ...track.artists]
+                        .filter((a) => !seen.has(a.id) && seen.add(a.id))
+                        .map((a) => a.id);
+                    toCreate.push({ idx, draft: { title: track.title || track.file.name, artistUuids, fileId: track.fileId! } });
+                }
             });
 
-            const songIds = await songsService.BatchCreateSong(songDrafts);
+            const createdIds = toCreate.length > 0
+                ? await songsService.BatchCreateSong(toCreate.map((t) => t.draft))
+                : [];
+
+            const songIds = tracks.map((track, i) => {
+                if (track.linkedSongId) return track.linkedSongId;
+                const pos = toCreate.findIndex((t) => t.idx === i);
+                return createdIds[pos];
+            });
 
             if (playlistMode) {
                 let coverFileId: string | undefined;
