@@ -175,7 +175,7 @@ export default function TrackRow({
                     readOnly={isLinked}
                 />
                 <ArtistChipsField
-                    artists={track.artists}
+                    artists={track.artists.filter((a) => !albumArtists.some((la) => la.id === a.id))}
                     onChange={(artists) => onArtistsChange(track.id, artists)}
                     lockedArtists={albumArtists}
                     dense
