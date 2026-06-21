@@ -6,6 +6,7 @@ import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { songsService } from '@/shared/api/Songs.ts';
 import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
 import { AudioFile } from '@/shared/model/AudioFile.ts';
+import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
 
 interface MetaDialogProps {
     audioFile: AudioFile;
@@ -15,6 +16,7 @@ interface MetaDialogProps {
 export default function MetaDialog({ audioFile, initialTitle }: MetaDialogProps) {
     const { CloseDialog } = useDialog();
     const toaster = useToaster();
+    const refreshActive = useSongListRefresh((s) => s.refreshActive);
 
     const [title, setTitle] = useState(initialTitle);
     const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
@@ -29,7 +31,7 @@ export default function MetaDialog({ audioFile, initialTitle }: MetaDialogProps)
             .then(() =>
                 setTimeout(() => {
                     CloseDialog();
-                    window.location.reload();
+                    refreshActive();
                 }, 1100),
             )
             .catch((e) => {

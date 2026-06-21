@@ -8,6 +8,7 @@ import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { Option } from '@/shared/ui/MultiSelect.tsx';
 import { AudioFile } from '@/shared/model/AudioFile.ts';
+import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
 
 interface EditTrackDialogProps {
     song: SongBase;
@@ -16,6 +17,7 @@ interface EditTrackDialogProps {
 export default function EditTrackDialog({ song }: EditTrackDialogProps) {
     const { CloseDialog } = useDialog();
     const toaster = useToaster();
+    const refreshActive = useSongListRefresh((s) => s.refreshActive);
 
     const [title, setTitle] = useState(song.title ?? '');
     const [selectedArtists, setSelectedArtists] = useState<string[]>(
@@ -46,8 +48,7 @@ export default function EditTrackDialog({ song }: EditTrackDialogProps) {
             .UpdateSong(song.id ?? '', title, selectedArtists)
             .then(() => {
                 CloseDialog();
-                // TODO Make reloading component not page
-                window.location.reload();
+                refreshActive();
             })
             .catch(toaster.catch);
     }

@@ -8,6 +8,7 @@ import { artistsService } from '@/shared/api/ArtistsService.ts';
 import { songsService } from '@/shared/api/Songs.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
+import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
 
 import TrackList from './TrackList';
 import PlaylistDetailsPanel from './PlaylistDetailsPanel';
@@ -103,6 +104,7 @@ function PlaylistToggleRow({ checked, onChange }: PlaylistToggleRowProps) {
 export default function MultitrackUploadModal({ files }: MultitrackUploadModalProps) {
     const { CloseDialog, LockClosing, UnlockClosing } = useDialog();
     const toaster = useToaster();
+    const refreshActive = useSongListRefresh((s) => s.refreshActive);
 
     const [tracks, setTracks] = useState<TrackDraft[]>(() =>
         files.map((f) => ({
@@ -313,7 +315,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
 
             setTimeout(() => {
                 CloseDialog();
-                window.location.reload();
+                refreshActive();
             }, 800);
         } catch (e) {
             setSubmitting(false);
