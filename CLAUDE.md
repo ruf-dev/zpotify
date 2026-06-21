@@ -77,9 +77,15 @@ Proto generation is configured in **`moti.yaml`** and run via `make gen`. This p
 - `*.pb.gw.go` — grpc-gateway REST bridge
 - `*.swagger.json` — OpenAPI v2 docs
 
-SQL queries are in `internal/storage/pg/queries/*.sql`; SQLC regenerates Go from these.
+SQL queries are in `internal/storage/pg/queries/*.sql`; SQLC regenerates Go from these. Each domain area gets its own subdirectory and `sqlc.yaml` entry (e.g. `queries/garbage_collector/` → package `garbage_collector_q`).
 
 **Never hand-edit generated files** (`*.pb.go`, `*.pb.gw.go`, `*_grpc.pb.go`, SQLC output). Regenerate instead.
+
+### SQL Query Rules
+
+- **Always use SQLC for simple queries** — fixed SELECT/INSERT/UPDATE/DELETE with no optional clauses. Write the SQL in `internal/storage/pg/queries/<domain>/<domain>.sql`, add a `sqlc.yaml` section, run `sqlc generate`, and use the generated querier in the storage struct. Never write raw `db.QueryContext` / `db.ExecContext` calls for simple queries.
+- **Use versioned DB views for multi-table reads** — when a query JOINs multiple tables, create a view migration named `<name>_v1` (e.g. `song_base_view_v1`) and query the view via SQLC. Bump the version number (`_v2`, `_v3`, …) instead of altering the existing view, so existing queries remain stable.
+- **Use `github.com/Masterminds/squirrel` for complex queries with optional fields** — when clauses are built dynamically (optional filters, variable ORDER BY, pagination with optional limits), use squirrel's builder with `.PlaceholderFormat(sq.Dollar)` and pass the resulting SQL + args to `db.QueryContext`. Never hand-concatenate SQL strings with optional fragments.
 
 ### Configuration
 

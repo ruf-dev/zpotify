@@ -119,7 +119,7 @@ export default function DropZoneScreen({ handleFiles, uploadError, uploading }: 
     const inputRef = useRef<HTMLInputElement>(null);
 
     if (uploading) {
-        return <UploadingSpinner />;
+        return <UploadingSpinner/>;
     }
 
     function handleDrop(e: DragEvent<HTMLDivElement>) {

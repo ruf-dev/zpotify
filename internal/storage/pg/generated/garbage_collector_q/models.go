@@ -2,7 +2,7 @@
 // versions:
 //   sqlc v1.30.0
 
-package file_meta_q
+package garbage_collector_q
 
 import (
 	"database/sql"

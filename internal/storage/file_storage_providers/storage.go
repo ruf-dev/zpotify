@@ -106,6 +106,43 @@ func (l LocalStorageProvider) Move(_ context.Context, fromPath, newPath string) 
 	return nil
 }
 
+func (l LocalStorageProvider) Copy(_ context.Context, fromPath, toPath string) error {
+	fullFromPath := path.Join(l.root, fromPath)
+	fullToPath := path.Join(l.root, toPath)
+
+	err := verifyFolderExists(path.Dir(fullToPath))
+	if err != nil {
+		return rerrors.Wrap(err, "error verifying destination folder exists")
+	}
+
+	src, err := os.Open(fullFromPath)
+	if err != nil {
+		return rerrors.Wrap(err, "error opening source file: "+fullFromPath)
+	}
+	defer utils.CloseWithLog(src, "source file in Copy")
+
+	dst, err := os.Create(fullToPath)
+	if err != nil {
+		return rerrors.Wrap(err, "error creating destination file: "+fullToPath)
+	}
+	defer utils.CloseWithLog(dst, "destination file in Copy")
+
+	_, err = io.Copy(dst, src)
+	if err != nil {
+		return rerrors.Wrap(err, "error copying file content")
+	}
+
+	return nil
+}
+
+func (l LocalStorageProvider) Delete(_ context.Context, filePath string) error {
+	err := os.Remove(path.Join(l.root, filePath))
+	if err != nil && !os.IsNotExist(err) {
+		return rerrors.Wrap(err, "error deleting file")
+	}
+	return nil
+}
+
 func (l LocalStorageProvider) DeleteTempFile(_ context.Context, filePath string) error {
 	fullPath := path.Join(l.root, filePath)
 	err := os.Remove(fullPath)

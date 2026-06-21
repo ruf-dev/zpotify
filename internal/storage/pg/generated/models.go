@@ -112,6 +112,13 @@ type FilesMetum struct {
 	ContentHash string
 }
 
+type GarbageCollector struct {
+	ID        int64
+	FilePath  string
+	AddedAt   time.Time
+	DeletedAt sql.NullTime
+}
+
 type IdentityTelegram struct {
 	TelegramID   int64
 	UserID       int64

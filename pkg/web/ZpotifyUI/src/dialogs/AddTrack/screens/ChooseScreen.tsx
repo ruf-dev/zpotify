@@ -91,7 +91,10 @@ export default function ChooseScreen({ goTo }: AddTrackContext) {
     return (
         <div className={cls.ChooseScreenContainer}>
             <div className={cls.GridWrapper}>
-                <LibraryCard onClick={() => goTo('pending')} disabled={pendingCount === 0} />
+                <LibraryCard
+                    onClick={() => goTo('pending')}
+                    disabled={pendingCount === 0}
+                />
                 <UploadCard
                     atLimit={atLimit}
                     loading={loading}

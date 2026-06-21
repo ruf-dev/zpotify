@@ -137,3 +137,10 @@ type SongFile struct {
 	Id   int64
 	Path string
 }
+
+type GarbageFile struct {
+	Id        int64
+	FilePath  string
+	AddedAt   time.Time
+	DeletedAt *time.Time
+}

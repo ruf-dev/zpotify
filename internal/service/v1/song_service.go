@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"path"
+	"strings"
 
 	"go.redsock.ru/rerrors"
 
@@ -26,6 +27,7 @@ type AudioService struct {
 	playlistStorage storage.PlaylistStorage
 	artistStorage   storage.ArtistStorage
 	binaryStorage   storage.BinaryFileStorage
+	gcStorage       storage.GarbageCollectorStorage
 
 	filesCache files_cache.FilesCache
 }
@@ -43,6 +45,7 @@ func NewAudioService(
 		playlistStorage: dataStorage.PlaylistStorage(),
 		artistStorage:   dataStorage.ArtistStorage(),
 		binaryStorage:   binaryStorage,
+		gcStorage:       dataStorage.GarbageCollector(),
 
 		filesCache: filesCache,
 	}
@@ -159,9 +162,15 @@ func (s *AudioService) finalizeSong(
 
 	ext := path.Ext(fileMeta.FilePath)
 	newPath := fmt.Sprintf("%s/%s%s", artists[0].Name, req.Title, ext)
-
+	newPath = strings.ReplaceAll(newPath, " ", "_")
 	oldPath := fileMeta.FilePath
 	fileMeta.FilePath = newPath
+	fileMeta.Verified = true
+
+	err = s.binaryStorage.Copy(ctx, oldPath, newPath)
+	if err != nil {
+		return rerrors.Wrap(err, "error copying file to permanent storage")
+	}
 
 	err = fileMetaStorage.Update(ctx, req.FileID, fileMeta.File)
 	if err != nil {
@@ -180,10 +189,10 @@ func (s *AudioService) finalizeSong(
 		return rerrors.Wrap(err, "error adding song to global playlist")
 	}
 
-	//TODO do copy and delete in case tx fails
-	err = s.binaryStorage.Move(ctx, oldPath, newPath)
+	gcStorage := s.gcStorage.WithTx(tx)
+	err = gcStorage.Add(ctx, oldPath)
 	if err != nil {
-		return rerrors.Wrap(err, "error moving file to permanent storage")
+		return rerrors.Wrap(err, "error registering old file path in garbage collector")
 	}
 
 	return nil

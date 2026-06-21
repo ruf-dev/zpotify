@@ -23,6 +23,7 @@ type Storage interface {
 	PlaylistStorage() PlaylistStorage
 	ArtistStorage() ArtistStorage
 	FileMeta() FileMetaStorage
+	GarbageCollector() GarbageCollectorStorage
 
 	TxManager() *tx_manager.TxManager
 }
@@ -140,9 +141,24 @@ type BinaryFileStorage interface {
 	// Move - moves file from one place to another
 	Move(ctx context.Context, fromPath string, newPath string) error
 
+	// Copy - copies file from fromPath to toPath; idempotent (overwrites dst if exists)
+	Copy(ctx context.Context, fromPath string, toPath string) error
+
+	// Delete - removes a file; idempotent (no error if file does not exist)
+	Delete(ctx context.Context, path string) error
+
 	// GetFile - returns file content
 	GetFile(ctx context.Context, path string) (io.ReadCloser, error)
 
 	// DeleteTempFile - removes a file from the temporary folder
 	DeleteTempFile(ctx context.Context, path string) error
+}
+
+// GarbageCollectorStorage - tracks old file paths scheduled for async deletion
+type GarbageCollectorStorage interface {
+	WithTx(tx *sql.Tx) GarbageCollectorStorage
+
+	Add(ctx context.Context, filePath string) error
+	List(ctx context.Context) ([]domain.GarbageFile, error)
+	MarkDeleted(ctx context.Context, id int64) error
 }

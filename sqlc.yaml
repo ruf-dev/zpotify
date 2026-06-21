@@ -42,3 +42,17 @@ sql:
         emit_interface: true
         emit_exact_table_names: false
         emit_empty_slices: true
+  - engine: "postgresql"
+    queries:
+      - "internal/storage/pg/queries/garbage_collector/*.sql"
+    schema:
+      - "migrations/*.sql"
+    gen:
+      go:
+        package: "garbage_collector_q"
+        out: "internal/storage/pg/generated/garbage_collector_q"
+        sql_package: "database/sql"
+        emit_prepared_queries: false
+        emit_interface: true
+        emit_exact_table_names: false
+        emit_empty_slices: true

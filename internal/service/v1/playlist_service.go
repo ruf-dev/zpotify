@@ -23,6 +23,7 @@ type PlaylistService struct {
 	userStorage     storage.UserStorage
 	fileMetaStorage storage.FileMetaStorage
 	binaryStorage   storage.BinaryFileStorage
+	gcStorage       storage.GarbageCollectorStorage
 }
 
 func NewPlaylistService(data storage.Storage, binaryStorage storage.BinaryFileStorage) *PlaylistService {
@@ -33,6 +34,7 @@ func NewPlaylistService(data storage.Storage, binaryStorage storage.BinaryFileSt
 		userStorage:     data.User(),
 		fileMetaStorage: data.FileMeta(),
 		binaryStorage:   binaryStorage,
+		gcStorage:       data.GarbageCollector(),
 	}
 }
 
@@ -68,7 +70,8 @@ func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistP
 			}
 
 			if req.CoverFileId != nil {
-				createErr = p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, playlistUuid, *req.CoverFileId, req.ArtistUuids, userCtx.UserId)
+				gcStorage := p.gcStorage.WithTx(tx)
+				createErr = p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, gcStorage, playlistUuid, *req.CoverFileId, req.ArtistUuids, userCtx.UserId)
 				if createErr != nil {
 					return rerrors.Wrap(createErr, "error handling cover file")
 				}
@@ -150,7 +153,8 @@ func (p *PlaylistService) Update(ctx context.Context, req domain.UpdatePlaylistP
 				}
 			}
 
-			coverErr := p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, req.Uuid, *req.CoverFileId, updatedArtists, userCtx.UserId)
+			gcStorage := p.gcStorage.WithTx(tx)
+			coverErr := p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, gcStorage, req.Uuid, *req.CoverFileId, updatedArtists, userCtx.UserId)
 			if coverErr != nil {
 				return rerrors.Wrap(coverErr, "error handling cover file")
 			}
@@ -207,33 +211,9 @@ func (p *PlaylistService) AddSong(ctx context.Context, req domain.AddSongToPlayl
 		return rerrors.Wrap(err, "error getting song file from storage")
 	}
 
-	artists, err := p.playlistStorage.GetPlaylistArtists(ctx, req.PlaylistUuid)
-	if err != nil {
-		return rerrors.Wrap(err, "error getting playlist artists")
-	}
-
-	if len(artists) > 0 {
-		if !songFile.Verified {
-			ext := path.Ext(songFile.FilePath)
-			newPath := fmt.Sprintf("%s/%s/%d%s", artists[0].Uuid, req.PlaylistUuid, req.SongId, ext)
-
-			err = p.binaryStorage.Move(ctx, songFile.FilePath, newPath)
-			if err != nil {
-				return rerrors.Wrap(err, "error moving song file to album folder")
-			}
-
-			songFile.FilePath = newPath
-			songFile.Verified = true
-			err = p.fileMetaStorage.Update(ctx, songFile.Id, songFile.File)
-			if err != nil {
-				return rerrors.Wrap(err, "error updating song file meta after move")
-			}
-		}
-	} else {
-		if !songFile.Verified {
-			return rerrors.Wrap(service_errors.ErrFileNotVerified,
-				"file you are trying to add as a song to playlist is not verified")
-		}
+	if !songFile.Verified {
+		return rerrors.Wrap(service_errors.ErrFileNotVerified,
+			"file you are trying to add as a song to playlist is not verified")
 	}
 
 	err = p.playlistStorage.AddSong(ctx, req.PlaylistUuid, req.SongId)
@@ -272,6 +252,7 @@ func (p *PlaylistService) moveCoverFile(
 	ctx context.Context,
 	fileMetaStorage storage.FileMetaStorage,
 	playlistStorage storage.PlaylistStorage,
+	gcStorage storage.GarbageCollectorStorage,
 	playlistUuid string,
 	coverFileId int64,
 	artistUuids []string,
@@ -287,18 +268,26 @@ func (p *PlaylistService) moveCoverFile(
 	if len(artistUuids) > 0 {
 		newPath = fmt.Sprintf("%s/%s/cover%s", artistUuids[0], playlistUuid, ext)
 	} else {
+		//should use playlist uuid for this
 		newPath = fmt.Sprintf("%d/%s/cover%s", userId, playlistUuid, ext)
 	}
 
-	err = p.binaryStorage.Move(ctx, coverMeta.FilePath, newPath)
+	oldPath := coverMeta.FilePath
+
+	err = p.binaryStorage.Copy(ctx, oldPath, newPath)
 	if err != nil {
-		return rerrors.Wrap(err, "error moving cover file")
+		return rerrors.Wrap(err, "error copying cover file")
 	}
 
 	coverMeta.FilePath = newPath
 	err = fileMetaStorage.Update(ctx, coverFileId, coverMeta.File)
 	if err != nil {
 		return rerrors.Wrap(err, "error updating cover file meta")
+	}
+
+	err = gcStorage.Add(ctx, oldPath)
+	if err != nil {
+		return rerrors.Wrap(err, "error registering old cover file path in garbage collector")
 	}
 
 	err = playlistStorage.UpdateCoverFileId(ctx, playlistUuid, coverFileId)
