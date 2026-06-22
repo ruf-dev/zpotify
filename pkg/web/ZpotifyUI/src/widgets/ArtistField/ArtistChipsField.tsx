@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import cn from 'classnames';
 
 import { ArtistChip, LockedArtistChip } from '@/widgets/ArtistField/ArtistChip';
 import ArtistDropdown from '@/widgets/ArtistField/ArtistDropdown';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChip';
+import { PlusIcon } from '@/assets/icons/PlusIcon';
 
 import cls from '@/widgets/ArtistField/ArtistChipsField.module.css';
 
@@ -20,32 +21,6 @@ interface ArtistChipsFieldProps {
     readOnly?: boolean;
 }
 
-function PlusIcon({ open }: { open: boolean }) {
-    return (
-        <svg
-            width="10"
-            height="10"
-            viewBox="0 0 10 10"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-        >
-            {open ? (
-                <>
-                    <line x1="1" y1="1" x2="9" y2="9" />
-                    <line x1="9" y1="1" x2="1" y2="9" />
-                </>
-            ) : (
-                <>
-                    <line x1="5" y1="1" x2="5" y2="9" />
-                    <line x1="1" y1="5" x2="9" y2="5" />
-                </>
-            )}
-        </svg>
-    );
-}
-
 export default function ArtistChipsField({
     artists,
     onChange,
@@ -57,6 +32,7 @@ export default function ArtistChipsField({
     readOnly,
 }: ArtistChipsFieldProps) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const handleClose = useCallback(() => setDropdownOpen(false), []);
     const [dragIdx, setDragIdx] = useState<number | null>(null);
     const [overIdx, setOverIdx] = useState<number | null>(null);
 
@@ -109,10 +85,23 @@ export default function ArtistChipsField({
         };
     }
 
+    function handleFieldMouseDown() {
+        if (dropdownOpen) return;
+        setDropdownOpen(true);
+    }
+
+    function handleAddClick() {
+        setDropdownOpen((o) => !o);
+    }
+
     const showPlaceholder = lockedArtists.length === 0 && artists.length === 0;
 
     return (
-        <div className={cn(cls.FieldContainer, dense ? cls.Dense : cls.Default)} role="list">
+        <div
+            className={cn(cls.FieldContainer, dense ? cls.Dense : cls.Default, showPlaceholder && !readOnly && cls.FieldClickable)}
+            role="list"
+            onMouseDown={showPlaceholder && !readOnly ? handleFieldMouseDown : undefined}
+        >
             {lockedArtists.map((a) => (
                 <span key={a.id} role="listitem">
                     <LockedArtistChip artist={a} />
@@ -139,25 +128,28 @@ export default function ArtistChipsField({
 
             {!readOnly && (
                 <div className={cls.AddButtonWrapper}>
-                    <button
-                        type="button"
-                        className={`${cls.AddButton} ${dropdownOpen ? cls.AddButtonOpen : ''}`}
-                        onClick={() => setDropdownOpen((o) => !o)}
-                        aria-label="add artist"
-                    >
-                        <PlusIcon open={dropdownOpen} />
-                    </button>
-
-                    {dropdownOpen && (
-                        <ArtistDropdown
-                            excluded={[...lockedArtists.map((a) => a.id), ...artists.map((a) => a.id)]}
-                            loadOptions={loadOptions}
-                            onCreateArtist={handleCreate}
-                            onPick={handlePick}
-                            onClose={() => setDropdownOpen(false)}
-                        />
+                    {!showPlaceholder && (
+                        <span
+                            className={cn(cls.AddButton, dropdownOpen && cls.AddButtonOpen)}
+                            onMouseDown={(e) => e.nativeEvent.stopPropagation()}
+                            onClick={handleAddClick}
+                            role="button"
+                            aria-label="add artist"
+                        >
+                            <PlusIcon open={dropdownOpen} />
+                        </span>
                     )}
                 </div>
+            )}
+
+            {!readOnly && dropdownOpen && (
+                <ArtistDropdown
+                    excluded={[...lockedArtists.map((a) => a.id), ...artists.map((a) => a.id)]}
+                    loadOptions={loadOptions}
+                    onCreateArtist={handleCreate}
+                    onPick={handlePick}
+                    onClose={handleClose}
+                />
             )}
         </div>
     );

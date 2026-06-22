@@ -81,8 +81,17 @@ export default function ArtistDropdown({
                 onClose();
             }
         }
-        document.addEventListener('mousedown', handleMousedown);
-        return () => document.removeEventListener('mousedown', handleMousedown);
+        function handleKeyDown(e: KeyboardEvent) {
+            if (e.key === 'Escape') {
+                onClose();
+            }
+        }
+        document.addEventListener('mousedown', handleMousedown, true);
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('mousedown', handleMousedown, true);
+            document.removeEventListener('keydown', handleKeyDown);
+        };
     }, [onClose]);
 
     const trimmedQuery = query.trim();
@@ -108,8 +117,6 @@ export default function ArtistDropdown({
             } else if (showCreate) {
                 handleCreate();
             }
-        } else if (e.key === 'Escape') {
-            onClose();
         }
     }
 

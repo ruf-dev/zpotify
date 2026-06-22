@@ -34,7 +34,10 @@
 
 .AddButtonWrapper {
     position: relative;
-    margin-left: auto;
+}
+
+.FieldClickable {
+    cursor: pointer;
 }
 
 .AddButton {

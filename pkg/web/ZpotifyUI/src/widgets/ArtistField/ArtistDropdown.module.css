@@ -6,8 +6,8 @@
 .DropdownContainer {
     position: absolute;
     top: calc(100% + 0.375rem);
+    left: 0;
     right: 0;
-    width: 18rem;
     /* z-index: required — dropdown popover must layer above adjacent form fields */
     z-index: 600;
     background: var(--color-bg-secondary);
