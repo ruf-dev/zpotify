@@ -75,12 +75,26 @@ pages / dialogs  →  widgets  →  features  →  entities  →  components  �
 - Do NOT use `!important` `z-index`
 - Use rem units for font sizes and spacing
 
+## Where things live
+
+| What | Path | Rule |
+|---|---|---|
+| SVG icons (React components) | `src/assets/icons/` | One file per icon, named export, no business logic. Never inline SVG in a component file. |
+| Static assets (`.svg`, `.png`, brand logos) | `src/assets/` | Raw files only — no `.tsx` here unless it's an icon component in `icons/`. |
+| Pure UI atoms | `src/components/` | No store access, no API calls. Each in its own named subdirectory with paired `.module.css`. |
+| Domain objects + state | `src/entities/` | Zustand stores, types, and hooks scoped to one domain entity. |
+| User-facing feature slices | `src/features/` | Encapsulates one user action end-to-end (e.g. `auth`, `upload`). |
+| Composed business widgets | `src/widgets/` | Combines components + entities + features. No page-routing logic. |
+| Route screens | `src/pages/` | One file per route. Composes widgets; no raw UI atoms. |
+| Modal flows | `src/dialogs/` | Multi-step dialogs only. Each screen in a `screens/` subfolder. |
+| Cross-cutting utilities | `src/shared/` | `ui/`, `model/`, `lib/`, `api/` segments only. No domain knowledge. |
+| App wiring | `src/app/` | Routing, layouts, generated gRPC clients, global hooks. |
+
 ## Coding rules
 - Components should be a named functions - not a const arrow functions
 - All functions inside components (handlers, helpers) must also be named function declarations — never `const fn = () => {}`
 - One file – one component.
 - Always use `cn()` from `classnames` for combining CSS class names — never template literals (e.g. `cn(cls.Foo, isActive && cls.Active)`, not `` `${cls.Foo} ${cls.Active}` ``).
-- Icons and minor components should be located at `src/assets/icons`
 - For dialog should only use global Dialog via useDialog hook. Import it from `@/app/hooks/Dialog.tsx`
 - Dialog screens (multi-step modal views) must live in a `screens/` subfolder inside the dialog directory (e.g. `src/dialogs/AddTrack/screens/ChooseScreen.tsx`). The root dialog file imports from `screens/`.
 

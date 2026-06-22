@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 import cn from 'classnames';
 
-import { ArtistChip, LockedArtistChip } from '@/widgets/ArtistField/ArtistChip';
-import ArtistDropdown from '@/widgets/ArtistField/ArtistDropdown';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChip';
+import Chip from '@/components/Chip/Chip';
+import Dropdown, { type DropdownOption } from '@/components/Dropdown/Dropdown';
 import { PlusIcon } from '@/assets/icons/PlusIcon';
 
 import cls from '@/widgets/ArtistField/ArtistChipsField.module.css';
@@ -40,17 +40,23 @@ export default function ArtistChipsField({
         onChange(artists.filter((a) => a.id !== id));
     }
 
-    function handlePick(artist: ArtistItem) {
-        if (!artists.some((a) => a.id === artist.id) && !lockedArtists.some((a) => a.id === artist.id)) {
-            onChange([...artists, artist]);
+    function wrappedSearch(query: string): Promise<DropdownOption[]> {
+        return loadOptions(query).then((items) => items.map((a) => ({ id: a.id, name: a.name })));
+    }
+
+    function handlePick(option: DropdownOption) {
+        const id = typeof option === 'string' ? option : option.id;
+        const name = typeof option === 'string' ? option : option.name;
+        if (!artists.some((a) => a.id === id) && !lockedArtists.some((a) => a.id === id)) {
+            onChange([...artists, { id, name }]);
         }
         setDropdownOpen(false);
     }
 
-    function handleCreate(name: string): Promise<ArtistItem> {
+    function handleCreate(name: string): Promise<DropdownOption> {
         return onCreateArtist(name).then((artist) => {
             onChange([...artists, artist]);
-            return artist;
+            return { id: artist.id, name: artist.name };
         });
     }
 
@@ -104,18 +110,18 @@ export default function ArtistChipsField({
         >
             {lockedArtists.map((a) => (
                 <span key={a.id} role="listitem">
-                    <LockedArtistChip artist={a} />
+                    <Chip label={a.name} locked />
                 </span>
             ))}
 
             {artists.map((a, idx) => (
                 <span key={a.id} role="listitem">
                     {readOnly ? (
-                        <LockedArtistChip artist={a} />
+                        <Chip label={a.name} locked />
                     ) : (
-                        <ArtistChip
-                            artist={a}
-                            onRemove={handleRemove}
+                        <Chip
+                            label={a.name}
+                            onRemove={() => handleRemove(a.id)}
                             isDragging={dragIdx === idx}
                             isDragOver={overIdx === idx}
                             dragHandlers={chipDragHandlers(idx)}
@@ -143,10 +149,10 @@ export default function ArtistChipsField({
             )}
 
             {!readOnly && dropdownOpen && (
-                <ArtistDropdown
+                <Dropdown
                     excluded={[...lockedArtists.map((a) => a.id), ...artists.map((a) => a.id)]}
-                    loadOptions={loadOptions}
-                    onCreateArtist={handleCreate}
+                    onSearch={wrappedSearch}
+                    onCreate={handleCreate}
                     onPick={handlePick}
                     onClose={handleClose}
                 />
