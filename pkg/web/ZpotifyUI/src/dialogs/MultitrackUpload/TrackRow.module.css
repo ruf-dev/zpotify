@@ -1,6 +1,5 @@
 .TrackRowContainer {
     position: relative;
-    overflow: hidden;
     display: grid;
     grid-template-columns: 1.5rem 1.5rem 1fr auto auto auto;
     align-items: start;
