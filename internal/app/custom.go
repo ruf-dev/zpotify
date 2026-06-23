@@ -177,6 +177,18 @@ func (c *Custom) Init(a *App) (err error) {
 	c.ServerManager.AddHttpHandler("/wapi/", wapiHandler)
 	c.ServerManager.AddHttpHandler("/", ui.NewHandler())
 
+	if a.Cfg.Environment.TelegramNotificationsChatID != 0 {
+		startMessage := &response.MessageOut{
+			ChatId: int64(a.Cfg.Environment.TelegramNotificationsChatID),
+			Text:   "Application started",
+		}
+
+		err = c.tgConn.Send(startMessage)
+		if err != nil {
+			log.Err(err).Msg("error sending start pod message")
+		}
+	}
+
 	return nil
 }
 
@@ -189,20 +201,6 @@ func (c *Custom) Start(ctx context.Context) error {
 	eg.Go(c.AsyncPool.Start)
 
 	eg.Go(c.ServerManager.Start)
-
-	eg.Go(func() error {
-		startMessage := &response.MessageOut{
-			ChatId: 743523416,
-			Text:   "Application started",
-		}
-
-		err := c.tgConn.Send(startMessage)
-		if err != nil {
-			log.Err(err).Msg("error sending start pod message")
-		}
-
-		return nil
-	})
 
 	err := eg.Wait()
 	if err != nil {
