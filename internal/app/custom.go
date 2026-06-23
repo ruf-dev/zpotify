@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Red-Sock/go_tg"
+	"github.com/Red-Sock/go_tg/model/response"
 	"github.com/rs/zerolog/log"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
@@ -79,8 +80,9 @@ func (c *Custom) Init(a *App) (err error) {
 	if err != nil {
 		return rerrors.Wrap(err, "error creating local file storage provider")
 	}
-	c.tgConn, err = go_tg.NewBot("",
-		go_tg.WithProxy(""))
+
+	c.tgConn, err = go_tg.NewBot(a.Cfg.Environment.TelegramToken,
+		go_tg.WithProxy(a.Cfg.Environment.TelegramProxyURL))
 	if err != nil {
 		return rerrors.Wrap(err, "")
 	}
@@ -187,6 +189,20 @@ func (c *Custom) Start(ctx context.Context) error {
 	eg.Go(c.AsyncPool.Start)
 
 	eg.Go(c.ServerManager.Start)
+
+	eg.Go(func() error {
+		startMessage := &response.MessageOut{
+			ChatId: 743523416,
+			Text:   "Application started",
+		}
+
+		err := c.tgConn.Send(startMessage)
+		if err != nil {
+			log.Err(err).Msg("error sending start pod message")
+		}
+
+		return nil
+	})
 
 	err := eg.Wait()
 	if err != nil {

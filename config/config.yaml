@@ -46,3 +46,6 @@ environment:
     - name: telegram_proxy_url
       type: string
       value: ""
+    - name: telegram_notifications_chat_id
+      type: int
+      value: 0
