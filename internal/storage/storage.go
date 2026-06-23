@@ -161,6 +161,14 @@ type GarbageFilePayload struct {
 	FilePath string `json:"file_path"`
 }
 
+const QueueNameAudioParser = "audio_parser"
+
+// AudioParsePayload is the JSONB payload for audio_parser queue jobs.
+type AudioParsePayload struct {
+	FileId   int64  `json:"file_id"`
+	FilePath string `json:"file_path"`
+}
+
 // Job is the domain representation of a claimed job row.
 type Job struct {
 	ID          int64
@@ -176,6 +184,7 @@ type JobStorage interface {
 
 	Enqueue(ctx context.Context, queueName string, payload any, maxAttempts int32) error
 	EnqueueGarbageFile(ctx context.Context, filePath string) error
+	EnqueueAudioParseJob(ctx context.Context, fileId int64, filePath string) error
 	Claim(ctx context.Context, queueName string, limit int32) ([]Job, error)
 	Complete(ctx context.Context, jobID int64) error
 	Fail(ctx context.Context, jobID int64, lastError string, backoffSeconds int32) error

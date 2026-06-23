@@ -58,6 +58,7 @@ type FileService struct {
 	songStorage storage.SongStorage
 
 	binaryStorage storage.BinaryFileStorage
+	jobs          storage.JobStorage
 }
 
 func NewFileService(s storage.Storage, binaryStorage storage.BinaryFileStorage) *FileService {
@@ -65,6 +66,7 @@ func NewFileService(s storage.Storage, binaryStorage storage.BinaryFileStorage) 
 		storage:       s.FileMeta(),
 		songStorage:   s.SongsStorage(),
 		binaryStorage: binaryStorage,
+		jobs:          s.Jobs(),
 	}
 }
 
@@ -115,6 +117,11 @@ func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, cont
 	id, err := s.storage.Add(ctx, fileMetaUpdate)
 	if err != nil {
 		return 0, rerrors.Wrap(err, "error saving file meta")
+	}
+
+	enqErr := s.jobs.EnqueueAudioParseJob(ctx, id, tmpFilePath)
+	if enqErr != nil {
+		log.Warn().Err(enqErr).Int64("file_id", id).Msg("failed to enqueue audio parse job")
 	}
 
 	return id, nil

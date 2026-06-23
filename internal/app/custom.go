@@ -16,6 +16,7 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/async"
+	ap_handler "go.zpotify.ru/zpotify/internal/async/handlers/audio_parser"
 	gc_handler "go.zpotify.ru/zpotify/internal/async/handlers/garbage_collector"
 	"go.zpotify.ru/zpotify/internal/async/provider/pgqueue"
 	"go.zpotify.ru/zpotify/internal/background"
@@ -100,7 +101,17 @@ func (c *Custom) Init(a *App) (err error) {
 		gcHandler.Handle,
 		60*time.Second,
 	)
-	c.AsyncPool = async.New(gcProvider)
+
+	apHandler := ap_handler.New(c.dataStorage.FileMeta(), c.binaryStorage)
+	apProvider := pgqueue.New[storage.AudioParsePayload](
+		a.Cfg.DataSources.Postgres.ConnectionString(),
+		c.dataStorage.Jobs(),
+		storage.QueueNameAudioParser,
+		apHandler.Handle,
+		60*time.Second,
+	)
+
+	c.AsyncPool = async.New(gcProvider, apProvider)
 
 	c.ArtistsApiImpl = artists_api_impl.New(c.Service)
 	c.AuthApiImpl = auth_api_impl.New(c.Service, a.Cfg.Environment.TelegramClientID)

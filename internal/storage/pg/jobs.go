@@ -57,6 +57,15 @@ func (s *jobsStorage) EnqueueGarbageFile(ctx context.Context, filePath string) e
 	return nil
 }
 
+func (s *jobsStorage) EnqueueAudioParseJob(ctx context.Context, fileId int64, filePath string) error {
+	p := storage.AudioParsePayload{FileId: fileId, FilePath: filePath}
+	err := s.Enqueue(ctx, storage.QueueNameAudioParser, p, 3)
+	if err != nil {
+		return rerrors.Wrap(err)
+	}
+	return nil
+}
+
 func (s *jobsStorage) Claim(ctx context.Context, queueName string, limit int32) ([]storage.Job, error) {
 	params := jobs_q.ClaimJobsParams{
 		QueueName: queueName,
