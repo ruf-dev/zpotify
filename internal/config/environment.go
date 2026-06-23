@@ -10,6 +10,8 @@ type EnvironmentConfig struct {
 	LogLevel           string
 	OtelEndpoint       string
 	TelegramClientID   string
+	TelegramProxyURL   string
+	TelegramToken      string
 }
 
 const (

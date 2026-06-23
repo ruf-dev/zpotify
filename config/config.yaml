@@ -40,3 +40,9 @@ environment:
     - name: telegram_client_id
       type: string
       value: ""
+    - name: telegram_token
+      type: string
+      value: ""
+    - name: telegram_proxy_url
+      type: string
+      value: ""

@@ -7,6 +7,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/Red-Sock/go_tg"
 	"github.com/rs/zerolog/log"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
@@ -43,6 +44,7 @@ import (
 type Custom struct {
 	dataStorage   storage.Storage
 	binaryStorage storage.BinaryFileStorage
+	tgConn        go_tg.TgApi
 
 	Service service.Service
 
@@ -73,10 +75,14 @@ func (c *Custom) Init(a *App) (err error) {
 	}
 
 	c.dataStorage = pg.NewStorage(a.Postgres)
-
 	c.binaryStorage, err = file_storage_providers.NewLocalStorageProvider(a.Cfg.Environment.LocalStoragePath)
 	if err != nil {
 		return rerrors.Wrap(err, "error creating local file storage provider")
+	}
+	c.tgConn, err = go_tg.NewBot("",
+		go_tg.WithProxy(""))
+	if err != nil {
+		return rerrors.Wrap(err, "")
 	}
 
 	fc, err := files_cache.New()

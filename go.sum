@@ -2,8 +2,8 @@ github.com/Masterminds/squirrel v1.5.4 h1:uUcX/aBc8O7Fg9kaISIUsHXdKuqehiXAMQTYX8
 github.com/Masterminds/squirrel v1.5.4/go.mod h1:NNaOrjSoIDfDA40n7sr2tPNZRfjzjA400rg+riTZj10=
 github.com/Red-Sock/go-swagger-ui v0.0.2 h1:3JbNnyNQ25rwzyBN46mYEBXZZ5RhcijbDwS7g60dz3Y=
 github.com/Red-Sock/go-swagger-ui v0.0.2/go.mod h1:8F1CRKxVIKTTX7YWGn7OXmJUx9c6fM8AfxQlc9XWUMo=
-github.com/Red-Sock/go_tg v0.0.32 h1:RRumPk04XE8Ju17gSDzDrKlOior0dSycqwm2pjG83xk=
-github.com/Red-Sock/go_tg v0.0.32/go.mod h1:zOQ7l6ymmkFEKMVADRTYF7Ed0oGnlBUsH3MDZmnbeH8=
+github.com/Red-Sock/go_tg v0.0.33 h1:KY9FXnxSD3VJDu6oZha/xssfDREUxkuQH6gr7QxtPM8=
+github.com/Red-Sock/go_tg v0.0.33/go.mod h1:zOQ7l6ymmkFEKMVADRTYF7Ed0oGnlBUsH3MDZmnbeH8=
 github.com/XSAM/otelsql v0.42.0 h1:Li0xF4eJUxG2e0x3D4rvRlys1f27yJKvjTh7ljkUP5o=
 github.com/XSAM/otelsql v0.42.0/go.mod h1:4mOrEv+cS1KmKzrvTktvJnstr5GtKSAK+QHvFR9OcpI=
 github.com/cenkalti/backoff/v4 v4.3.0 h1:MyRJ/UdXutAwSAT+s3wNd7MfTIcy71VQueUuFK343L8=
