@@ -108,3 +108,13 @@ Frontend source: `pkg/web/ZpotifyUI/src/`. API client processes live in `src/pro
 - **NEVER check function errors inline:** use `if err := func(); err != nil` — always split into a separate assignment (`err := func()`) followed by `if err != nil` on the next line.
 - **Never return an error unwrapped** — always wrap with `rerrors.Wrap(err)` or `rerrors.Wrap(err, "context message")`. This applies everywhere: transaction callbacks, helper functions, and public methods alike.
 - **Never call one public method from another on the same struct** — if two public methods share logic, extract a private helper and call it from both independently.
+
+## graphify
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).

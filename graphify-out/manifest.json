@@ -1,0 +1,2142 @@
+{
+  "/Users/alexbukov/ruf/zpotify/cmd/service/main.go": {
+    "mtime": 1751049438.7491658,
+    "ast_hash": "762532802dbd27df6a3ef0a1b30e43d0",
+    "semantic_hash": "762532802dbd27df6a3ef0a1b30e43d0"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260623000000_enqueue_unverified_audio_parse.sql": {
+    "mtime": 1782188305.1130319,
+    "ast_hash": "93b13ce0c11dbba17a2cd9003b17931a",
+    "semantic_hash": "93b13ce0c11dbba17a2cd9003b17931a"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260607130450_song_base_view.sql": {
+    "mtime": 1780664875.5336893,
+    "ast_hash": "e527e5ba96f7a95365ba85b579dad3be",
+    "semantic_hash": "e527e5ba96f7a95365ba85b579dad3be"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260621000000_jobs_queue.sql": {
+    "mtime": 1782047929.7103925,
+    "ast_hash": "8a9f014a4e62f1d3c0f0055b50c65839",
+    "semantic_hash": "8a9f014a4e62f1d3c0f0055b50c65839"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260603113843_add_link_to_avatar.sql": {
+    "mtime": 1780486749.6074142,
+    "ast_hash": "0cdd5f1dd941e0e68bc247b0006c6399",
+    "semantic_hash": "0cdd5f1dd941e0e68bc247b0006c6399"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260606000000_unique_file_id_in_songs.sql": {
+    "mtime": 1780639255.9093423,
+    "ast_hash": "ab4071e6c87fdd12eb2c5ba3e8561ab2",
+    "semantic_hash": "ab4071e6c87fdd12eb2c5ba3e8561ab2"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20250627172238_init.sql": {
+    "mtime": 1776585909.9813237,
+    "ast_hash": "48b9c9902a7b3bdd9831fb3ff3621f13",
+    "semantic_hash": "48b9c9902a7b3bdd9831fb3ff3621f13"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260603130000_max_pending_tracks.sql": {
+    "mtime": 1780514427.6628783,
+    "ast_hash": "e0e7f242213c99488be7cf02efa90bc1",
+    "semantic_hash": "e0e7f242213c99488be7cf02efa90bc1"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20250926175004_init_playlists.sql": {
+    "mtime": 1780640324.53758,
+    "ast_hash": "e1d86b140eb1f9330472de27ebdfa5bc",
+    "semantic_hash": "e1d86b140eb1f9330472de27ebdfa5bc"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260608000000_playlists_v1.sql": {
+    "mtime": 1780771827.6255958,
+    "ast_hash": "5b2b8be08d1b1731f035752775553309",
+    "semantic_hash": "5b2b8be08d1b1731f035752775553309"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260604120000_add_album_fields.sql": {
+    "mtime": 1780571193.9566276,
+    "ast_hash": "27c2670321d2f9b83254d46d034e7e40",
+    "semantic_hash": "27c2670321d2f9b83254d46d034e7e40"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260603121302_delete_user_unique_nickname.sql": {
+    "mtime": 1780488804.5912433,
+    "ast_hash": "6b4653d7f54bbf48c7def0e54e4dadf5",
+    "semantic_hash": "6b4653d7f54bbf48c7def0e54e4dadf5"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260427000000_add_file_id_to_playlists_songs_v1.sql": {
+    "mtime": 1777307165.1389055,
+    "ast_hash": "3dde86bef4ecefd569cfedc084c1fb6f",
+    "semantic_hash": "3dde86bef4ecefd569cfedc084c1fb6f"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260420105546_add_verified_to_files_meta.sql": {
+    "mtime": 1776671753.1991198,
+    "ast_hash": "ddf199d84794f860875aab52e9abc214",
+    "semantic_hash": "ddf199d84794f860875aab52e9abc214"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260605000000_add_content_hash_to_files_meta.sql": {
+    "mtime": 1780637170.3248158,
+    "ast_hash": "5da752c3c4dc6120c4d687d5d9ea1307",
+    "semantic_hash": "5da752c3c4dc6120c4d687d5d9ea1307"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20251104062203_user_home_segments.sql": {
+    "mtime": 1776623516.7731562,
+    "ast_hash": "885bee321bf383723d7cf3c3dc6edcf4",
+    "semantic_hash": "885bee321bf383723d7cf3c3dc6edcf4"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260518000000_identity_tables.sql": {
+    "mtime": 1780640403.721576,
+    "ast_hash": "430ee716ec33ff3e8489eceb955f4799",
+    "semantic_hash": "430ee716ec33ff3e8489eceb955f4799"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260620000000_garbage_collector.sql": {
+    "mtime": 1781984008.7272375,
+    "ast_hash": "d3642f02fd6dcdf055afd1bec851b583",
+    "semantic_hash": "d3642f02fd6dcdf055afd1bec851b583"
+  },
+  "/Users/alexbukov/ruf/zpotify/migrations/20260603000000_locale_enum.sql": {
+    "mtime": 1780486313.8082218,
+    "ast_hash": "ab0421501f17be730b39b16d70b9bda2",
+    "semantic_hash": "ab0421501f17be730b39b16d70b9bda2"
+  },
+  "/Users/alexbukov/ruf/zpotify/tests/auth_test.go": {
+    "mtime": 1754810833.8449466,
+    "ast_hash": "5b75b01d2dc2413d8ce377c3606a6ab6",
+    "semantic_hash": "5b75b01d2dc2413d8ce377c3606a6ab6"
+  },
+  "/Users/alexbukov/ruf/zpotify/tests/main_test.go": {
+    "mtime": 1754810776.4288688,
+    "ast_hash": "b980950ffa5359b1349c1234faed115c",
+    "semantic_hash": "b980950ffa5359b1349c1234faed115c"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/background/worker.go": {
+    "mtime": 1756448081.3822012,
+    "ast_hash": "0d7d63e861d7eda3c7ed23952c7bf5e3",
+    "semantic_hash": "0d7d63e861d7eda3c7ed23952c7bf5e3"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/background/sessions_gc/task.go": {
+    "mtime": 1756448165.0635095,
+    "ast_hash": "9fbfa69a0af984d8394dd19d078fa155",
+    "semantic_hash": "9fbfa69a0af984d8394dd19d078fa155"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/clients/telegram/oidc.go": {
+    "mtime": 1780483626.0014217,
+    "ast_hash": "62d6306389b5a60012d15ca6321deaf0",
+    "semantic_hash": "62d6306389b5a60012d15ca6321deaf0"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/clients/telegram/api.go": {
+    "mtime": 1775241853.101246,
+    "ast_hash": "c6193090df69f2ac65201fefe92c8bde",
+    "semantic_hash": "c6193090df69f2ac65201fefe92c8bde"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/clients/telegram/api_model.go": {
+    "mtime": 1780478401.6539373,
+    "ast_hash": "eb0a05e100b3e22e6fa5109841cc8d41",
+    "semantic_hash": "eb0a05e100b3e22e6fa5109841cc8d41"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/clients/telegram/conn.go": {
+    "mtime": 1780641391.9982047,
+    "ast_hash": "9b8e5f010d13a52e2887b8937dcb8ed1",
+    "semantic_hash": "9b8e5f010d13a52e2887b8937dcb8ed1"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/clients/sqldb/postgres.go": {
+    "mtime": 1751044929.1947365,
+    "ast_hash": "d1663ed1ee789245c452011daa836cc3",
+    "semantic_hash": "d1663ed1ee789245c452011daa836cc3"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/clients/sqldb/conn.go": {
+    "mtime": 1782239895.6677463,
+    "ast_hash": "3eb7e41a9427101647e9c55d703d924c",
+    "semantic_hash": "3eb7e41a9427101647e9c55d703d924c"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/middleware/log.go": {
+    "mtime": 1781936669.0323083,
+    "ast_hash": "2576ef3a04e1a081d4689554bce45ae3",
+    "semantic_hash": "2576ef3a04e1a081d4689554bce45ae3"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/middleware/cors.go": {
+    "mtime": 1777141208.769425,
+    "ast_hash": "33fe1d0083728930442d597bc7b808c7",
+    "semantic_hash": "33fe1d0083728930442d597bc7b808c7"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/middleware/trace.go": {
+    "mtime": 1781896573.6830854,
+    "ast_hash": "d0dcd5c700f274c7e26024114d3def7e",
+    "semantic_hash": "d0dcd5c700f274c7e26024114d3def7e"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/middleware/panic.go": {
+    "mtime": 1763307278.9320629,
+    "ast_hash": "5de28404bb41b34c1130907bea6a35a3",
+    "semantic_hash": "5de28404bb41b34c1130907bea6a35a3"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/middleware/auth_interceptor.go": {
+    "mtime": 1781897238.5955906,
+    "ast_hash": "e5b211b1ff66d93cc5b6759ac9525f18",
+    "semantic_hash": "e5b211b1ff66d93cc5b6759ac9525f18"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/middleware/otel_hook.go": {
+    "mtime": 1781893520.803056,
+    "ast_hash": "9b6d325057a424b33ef6ef0a9104bc3b",
+    "semantic_hash": "9b6d325057a424b33ef6ef0a9104bc3b"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/middleware/user_context/context.go": {
+    "mtime": 1775242757.851794,
+    "ast_hash": "80fd039c1a5c9ac2b940226415b6fede",
+    "semantic_hash": "80fd039c1a5c9ac2b940226415b6fede"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/grpc.go": {
+    "mtime": 1782414658.120806,
+    "ast_hash": "d76a7392c3fe182f6280a23353d475cb",
+    "semantic_hash": "d76a7392c3fe182f6280a23353d475cb"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/http.go": {
+    "mtime": 1782414658.1209013,
+    "ast_hash": "40d14837472326776503113466cbe786",
+    "semantic_hash": "40d14837472326776503113466cbe786"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/manager.go": {
+    "mtime": 1782414658.1209848,
+    "ast_hash": "e9396f1c0ab5c45ec93d1ec4f7347d58",
+    "semantic_hash": "e9396f1c0ab5c45ec93d1ec4f7347d58"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/ui/ui.go": {
+    "mtime": 1781805834.3493664,
+    "ast_hash": "90d056fbc19fcd72e0f6dcb9d6ae777b",
+    "semantic_hash": "90d056fbc19fcd72e0f6dcb9d6ae777b"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/playlist_api_impl/get_playlist.go": {
+    "mtime": 1780571525.8579688,
+    "ast_hash": "3256cffc8968bf5a60c7b887a3c17a90",
+    "semantic_hash": "3256cffc8968bf5a60c7b887a3c17a90"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/playlist_api_impl/list_playlists.go": {
+    "mtime": 1780771107.301769,
+    "ast_hash": "cf75570b4e83ae34bcc6c2aadf5ce410",
+    "semantic_hash": "cf75570b4e83ae34bcc6c2aadf5ce410"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/playlist_api_impl/add_song_to_playlist.go": {
+    "mtime": 1776673243.5157232,
+    "ast_hash": "83bfb4998e3eac67f4653a79cf692deb",
+    "semantic_hash": "83bfb4998e3eac67f4653a79cf692deb"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/playlist_api_impl/list_songs.go": {
+    "mtime": 1777293764.0620115,
+    "ast_hash": "8f808527da597f343ada50144e11b9e5",
+    "semantic_hash": "8f808527da597f343ada50144e11b9e5"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/playlist_api_impl/update_playlist.go": {
+    "mtime": 1780571511.3959558,
+    "ast_hash": "0684fc9f1ae3d5894a0c25a928d2ce75",
+    "semantic_hash": "0684fc9f1ae3d5894a0c25a928d2ce75"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/playlist_api_impl/create_playlist.go": {
+    "mtime": 1780571505.432795,
+    "ast_hash": "d3c5d76489f1f6997321c1f630865439",
+    "semantic_hash": "d3c5d76489f1f6997321c1f630865439"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/playlist_api_impl/impl.go": {
+    "mtime": 1775590271.191703,
+    "ast_hash": "2a2bf58362f1249cf34f036efd2dfa22",
+    "semantic_hash": "2a2bf58362f1249cf34f036efd2dfa22"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/auth_api_impl/auth_methods.go": {
+    "mtime": 1781856848.1020253,
+    "ast_hash": "739d800e16681359c890bd9c29d2e7a3",
+    "semantic_hash": "739d800e16681359c890bd9c29d2e7a3"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/auth_api_impl/logout.go": {
+    "mtime": 1780199048.528439,
+    "ast_hash": "571f90df4923f32560db14fcb5842636",
+    "semantic_hash": "571f90df4923f32560db14fcb5842636"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/auth_api_impl/auth.go": {
+    "mtime": 1780199168.9665964,
+    "ast_hash": "8644e25a2f1c0082e56d20afd0875e47",
+    "semantic_hash": "8644e25a2f1c0082e56d20afd0875e47"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/auth_api_impl/refresh.go": {
+    "mtime": 1779128893.0501387,
+    "ast_hash": "39b748092d7e166bea3ae682835b8337",
+    "semantic_hash": "39b748092d7e166bea3ae682835b8337"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/auth_api_impl/impl.go": {
+    "mtime": 1781856842.1717625,
+    "ast_hash": "1a8b0aaae2b7f1088913db44fba1b292",
+    "semantic_hash": "1a8b0aaae2b7f1088913db44fba1b292"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/zpotify_api_impl/auth_methods.go": {
+    "mtime": 1775303013.4195576,
+    "ast_hash": "8d9b9bb5cd5a71611e0887d0139b9458",
+    "semantic_hash": "8d9b9bb5cd5a71611e0887d0139b9458"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/zpotify_api_impl/list_songs.go": {
+    "mtime": 1780637289.7809842,
+    "ast_hash": "a41d1a36f2cb996a6c4df314cab16016",
+    "semantic_hash": "a41d1a36f2cb996a6c4df314cab16016"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/zpotify_api_impl/playlist_create.go": {
+    "mtime": 1780571563.9612827,
+    "ast_hash": "95903929a7f94b6d9a3cb5bb095f0dcc",
+    "semantic_hash": "95903929a7f94b6d9a3cb5bb095f0dcc"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/zpotify_api_impl/playlist_get.go": {
+    "mtime": 1775215158.1938543,
+    "ast_hash": "be08940e56a8db36c2edfa0c651ca600",
+    "semantic_hash": "be08940e56a8db36c2edfa0c651ca600"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/zpotify_api_impl/impl.go": {
+    "mtime": 1775589491.612042,
+    "ast_hash": "a38545b1ace0a439f2af07ab383a6383",
+    "semantic_hash": "a38545b1ace0a439f2af07ab383a6383"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/song_api_impl/update_song.go": {
+    "mtime": 1777194368.2892609,
+    "ast_hash": "0d9a8893e4550c15384b6d9cd79ea7f8",
+    "semantic_hash": "0d9a8893e4550c15384b6d9cd79ea7f8"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/song_api_impl/batch_create_song.go": {
+    "mtime": 1780636937.2003434,
+    "ast_hash": "976f878fea1c75175f5308d8c1d7a648",
+    "semantic_hash": "976f878fea1c75175f5308d8c1d7a648"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/song_api_impl/get_song.go": {
+    "mtime": 1777406776.1886427,
+    "ast_hash": "6977aab2aee10fb2d70a46e50051aee4",
+    "semantic_hash": "6977aab2aee10fb2d70a46e50051aee4"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/song_api_impl/create_song.go": {
+    "mtime": 1776611126.0597308,
+    "ast_hash": "a0ecd137195b6bb6b2d4414cab1cbc4a",
+    "semantic_hash": "a0ecd137195b6bb6b2d4414cab1cbc4a"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/song_api_impl/impl.go": {
+    "mtime": 1776244404.1202326,
+    "ast_hash": "8eb81b803b580c09545696b8f91d5407",
+    "semantic_hash": "8eb81b803b580c09545696b8f91d5407"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/user_api_impl/user_settings.go": {
+    "mtime": 1780772146.0651865,
+    "ast_hash": "e1f57403388ba869a9f1cf24816a96de",
+    "semantic_hash": "e1f57403388ba869a9f1cf24816a96de"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/user_api_impl/user_me.go": {
+    "mtime": 1780514547.6790252,
+    "ast_hash": "806b9da3d1fba3c375257b92d01ea703",
+    "semantic_hash": "806b9da3d1fba3c375257b92d01ea703"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/user_api_impl/impl.go": {
+    "mtime": 1775499340.5312243,
+    "ast_hash": "462e4e8e18eb41b040049d6c5066b6ae",
+    "semantic_hash": "462e4e8e18eb41b040049d6c5066b6ae"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/telegram/listener.go": {
+    "mtime": 1779130509.0761209,
+    "ast_hash": "66a76a0206760d25bbf48c90346319ba",
+    "semantic_hash": "66a76a0206760d25bbf48c90346319ba"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/telegram/default_handler/handler.go": {
+    "mtime": 1775237060.0709567,
+    "ast_hash": "cfd1b18d9ad81548f60bed70615bf85b",
+    "semantic_hash": "cfd1b18d9ad81548f60bed70615bf85b"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/telegram/start/handler.go": {
+    "mtime": 1779115440.5267954,
+    "ast_hash": "4716fb56dfd020645ae43152374e390b",
+    "semantic_hash": "4716fb56dfd020645ae43152374e390b"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/telegram/add/audio.go": {
+    "mtime": 1779116095.2885454,
+    "ast_hash": "b7d00b4bd9e296fc926d9cdfbb102bd9",
+    "semantic_hash": "b7d00b4bd9e296fc926d9cdfbb102bd9"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/wapi/upload.go": {
+    "mtime": 1781936476.5312097,
+    "ast_hash": "060d04d9294b0e81eeba8b08fd61a30e",
+    "semantic_hash": "060d04d9294b0e81eeba8b08fd61a30e"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/wapi/server.go": {
+    "mtime": 1775991195.4268568,
+    "ast_hash": "0f517f9d7eafec0fef9e8a9b99ca0072",
+    "semantic_hash": "0f517f9d7eafec0fef9e8a9b99ca0072"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/wapi/common.go": {
+    "mtime": 1781899171.9648366,
+    "ast_hash": "47296e091a75c616a50dc272d97b0a05",
+    "semantic_hash": "47296e091a75c616a50dc272d97b0a05"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/wapi/get_audio.go": {
+    "mtime": 1781899179.5860624,
+    "ast_hash": "39d4984e7c7e2eee6806fba3a62e47b9",
+    "semantic_hash": "39d4984e7c7e2eee6806fba3a62e47b9"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/file_api_impl/check_files_by_hashes.go": {
+    "mtime": 1782070186.5400534,
+    "ast_hash": "ade9a5b2712f5ced60e8f1e841c8229f",
+    "semantic_hash": "ade9a5b2712f5ced60e8f1e841c8229f"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/file_api_impl/get_file.go": {
+    "mtime": 1776709980.5930777,
+    "ast_hash": "aebece4a3c490c86f59b5d510bd6e359",
+    "semantic_hash": "aebece4a3c490c86f59b5d510bd6e359"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/file_api_impl/list_uploaded_files.go": {
+    "mtime": 1776674488.598178,
+    "ast_hash": "34ff6a48efd4dd47848bc519950575c8",
+    "semantic_hash": "34ff6a48efd4dd47848bc519950575c8"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/file_api_impl/impl.go": {
+    "mtime": 1776674483.5979917,
+    "ast_hash": "51bac1d0ce8cac7800c4d09aca9092cd",
+    "semantic_hash": "51bac1d0ce8cac7800c4d09aca9092cd"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/artists_api_impl/list_artist.go": {
+    "mtime": 1776683762.564016,
+    "ast_hash": "af7874ade3cc9dc746e267022dd49e39",
+    "semantic_hash": "af7874ade3cc9dc746e267022dd49e39"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/artists_api_impl/create_artist.go": {
+    "mtime": 1780648504.2359974,
+    "ast_hash": "78ecb741bc413f1d483abf9a912a8a27",
+    "semantic_hash": "78ecb741bc413f1d483abf9a912a8a27"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/transport/artists_api_impl/impl.go": {
+    "mtime": 1776683759.4532049,
+    "ast_hash": "e026a6674f2341a67053118987f91db7",
+    "semantic_hash": "e026a6674f2341a67053118987f91db7"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/app/custom.go": {
+    "mtime": 1782240490.1527588,
+    "ast_hash": "4099d3ba98645f2742aa9c278815442c",
+    "semantic_hash": "4099d3ba98645f2742aa9c278815442c"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/app/config.go": {
+    "mtime": 1782414658.9936662,
+    "ast_hash": "d6b7acfe89603d3c385bb48d3a21b9c9",
+    "semantic_hash": "d6b7acfe89603d3c385bb48d3a21b9c9"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/app/server.go": {
+    "mtime": 1782414658.9940178,
+    "ast_hash": "90d24fb773b18ae530d87d86f0bcbea4",
+    "semantic_hash": "90d24fb773b18ae530d87d86f0bcbea4"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/app/data_sources.go": {
+    "mtime": 1782414658.9938378,
+    "ast_hash": "925496b292a6902dad76339eb4b0831a",
+    "semantic_hash": "925496b292a6902dad76339eb4b0831a"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/app/app.go": {
+    "mtime": 1782414658.9934497,
+    "ast_hash": "201f3cba839864f35063fa55de833ff4",
+    "semantic_hash": "201f3cba839864f35063fa55de833ff4"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/app/otel.go": {
+    "mtime": 1781880588.628459,
+    "ast_hash": "b50305d0edca416a4aad2964f52d8c67",
+    "semantic_hash": "b50305d0edca416a4aad2964f52d8c67"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/config/servers.go": {
+    "mtime": 1782414658.9945908,
+    "ast_hash": "bd289d918f417950491034b290842f24",
+    "semantic_hash": "bd289d918f417950491034b290842f24"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/config/data_sources.go": {
+    "mtime": 1782414658.9941769,
+    "ast_hash": "20a34a30d8763a26e3fc73785813b035",
+    "semantic_hash": "20a34a30d8763a26e3fc73785813b035"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/config/environment.go": {
+    "mtime": 1782414658.9943147,
+    "ast_hash": "858dff8950f3155493fd90993457dbbe",
+    "semantic_hash": "858dff8950f3155493fd90993457dbbe"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/config/load.go": {
+    "mtime": 1782414658.994429,
+    "ast_hash": "502cd52accfb292d8ad5d97af140fa24",
+    "semantic_hash": "502cd52accfb292d8ad5d97af140fa24"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/user_errors/auth.go": {
+    "mtime": 1777362986.8113441,
+    "ast_hash": "cb6fba98f254996b1a1022960ce64659",
+    "semantic_hash": "cb6fba98f254996b1a1022960ce64659"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/user_errors/errors.go": {
+    "mtime": 1776610158.563054,
+    "ast_hash": "760d2e2274ad185aa6681d3677026a2a",
+    "semantic_hash": "760d2e2274ad185aa6681d3677026a2a"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/async/pool.go": {
+    "mtime": 1782036831.7056684,
+    "ast_hash": "f1691c28d163546d7457b37b9ee73771",
+    "semantic_hash": "f1691c28d163546d7457b37b9ee73771"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/async/provider/pgqueue/provider.go": {
+    "mtime": 1782048143.191036,
+    "ast_hash": "1a3102bceb62f7204ed6bd3e0ab1a1b1",
+    "semantic_hash": "1a3102bceb62f7204ed6bd3e0ab1a1b1"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/async/handlers/audio_parser/handler.go": {
+    "mtime": 1782187651.8247566,
+    "ast_hash": "b715a5e1c533d8b9cb288174ed7c0b49",
+    "semantic_hash": "b715a5e1c533d8b9cb288174ed7c0b49"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/async/handlers/garbage_collector/handler.go": {
+    "mtime": 1782048147.8513231,
+    "ast_hash": "0cfe4a8427ec9c60586f664ceb227dd9",
+    "semantic_hash": "0cfe4a8427ec9c60586f664ceb227dd9"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/utils/closer.go": {
+    "mtime": 1776761845.5220456,
+    "ast_hash": "c2e06c8b92a51f2d8c8a1e68b121912d",
+    "semantic_hash": "c2e06c8b92a51f2d8c8a1e68b121912d"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/storage.go": {
+    "mtime": 1782187626.5102715,
+    "ast_hash": "ed78251b1de43cf14a81b0cd1dfa363e",
+    "semantic_hash": "ed78251b1de43cf14a81b0cd1dfa363e"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/errors.go": {
+    "mtime": 1780597752.4921215,
+    "ast_hash": "bb91564e4ef67991c9230dfac8c37d0f",
+    "semantic_hash": "bb91564e4ef67991c9230dfac8c37d0f"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/files_cache/file.go": {
+    "mtime": 1759342497.4554865,
+    "ast_hash": "77b428850fcf68d1eee8c3013aed3739",
+    "semantic_hash": "77b428850fcf68d1eee8c3013aed3739"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/files_cache/files_cache.go": {
+    "mtime": 1759342497.4557097,
+    "ast_hash": "86aa91e9c64eaf1c82cf19b45d551e99",
+    "semantic_hash": "86aa91e9c64eaf1c82cf19b45d551e99"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/user.go": {
+    "mtime": 1780514519.3139713,
+    "ast_hash": "1fe8e7abf4203db21167a71cc76f5044",
+    "semantic_hash": "1fe8e7abf4203db21167a71cc76f5044"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/user_settings.go": {
+    "mtime": 1780488550.0349798,
+    "ast_hash": "15b590634338c56a80293dc862e9021b",
+    "semantic_hash": "15b590634338c56a80293dc862e9021b"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/identity_telegram.go": {
+    "mtime": 1780648584.0558841,
+    "ast_hash": "dd288f813d26c2bdb10726cabad292d5",
+    "semantic_hash": "dd288f813d26c2bdb10726cabad292d5"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/session.go": {
+    "mtime": 1776586857.1049037,
+    "ast_hash": "dde65d814d636d8765cee62eb05957dd",
+    "semantic_hash": "dde65d814d636d8765cee62eb05957dd"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/storage.go": {
+    "mtime": 1782048459.8229315,
+    "ast_hash": "847f2dd4e7ed9bca630c251c4e9ec09a",
+    "semantic_hash": "847f2dd4e7ed9bca630c251c4e9ec09a"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/playlist.go": {
+    "mtime": 1780771966.1873598,
+    "ast_hash": "db204b3d0d04b999b953b8aefe58236f",
+    "semantic_hash": "db204b3d0d04b999b953b8aefe58236f"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/jobs.go": {
+    "mtime": 1782187631.6404846,
+    "ast_hash": "2242344f73991b1622cbff217aa7367a",
+    "semantic_hash": "2242344f73991b1622cbff217aa7367a"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/artists.go": {
+    "mtime": 1781939777.1957676,
+    "ast_hash": "6e461202dc76ccac5244010643116593",
+    "semantic_hash": "6e461202dc76ccac5244010643116593"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/identity_zpotify.go": {
+    "mtime": 1780475423.4234948,
+    "ast_hash": "403ce2fa39e87373663083ac248476e7",
+    "semantic_hash": "403ce2fa39e87373663083ac248476e7"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/song.go": {
+    "mtime": 1780665094.3444068,
+    "ast_hash": "b22758ca44d3b00b8a778dbd877afc20",
+    "semantic_hash": "b22758ca44d3b00b8a778dbd877afc20"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/file_meta.go": {
+    "mtime": 1782062638.1009908,
+    "ast_hash": "fe0e87c868d442bd39dce2f830cbaa4b",
+    "semantic_hash": "fe0e87c868d442bd39dce2f830cbaa4b"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/models.go": {
+    "mtime": 1782047956.0920358,
+    "ast_hash": "be6b57c0d956da437edd9caa1f45a739",
+    "semantic_hash": "be6b57c0d956da437edd9caa1f45a739"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/user_playlist.sql.go": {
+    "mtime": 1782047956.0939202,
+    "ast_hash": "9c5fdb8c33b84d99e2d0849edf8a6897",
+    "semantic_hash": "9c5fdb8c33b84d99e2d0849edf8a6897"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/playlist.sql.go": {
+    "mtime": 1782047956.09593,
+    "ast_hash": "641584469d9fb67bdeb1212a3fe2e31c",
+    "semantic_hash": "641584469d9fb67bdeb1212a3fe2e31c"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/db.go": {
+    "mtime": 1782047956.0932174,
+    "ast_hash": "3e80311b60671ad666f99090dcaa4b65",
+    "semantic_hash": "3e80311b60671ad666f99090dcaa4b65"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/user_session.sql.go": {
+    "mtime": 1782047956.0943081,
+    "ast_hash": "88e9de5d488eca009a9544f32a23b56b",
+    "semantic_hash": "88e9de5d488eca009a9544f32a23b56b"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/user_settings.sql.go": {
+    "mtime": 1782047956.0947838,
+    "ast_hash": "0f541912f183b57e09ea4d59377fc9a4",
+    "semantic_hash": "0f541912f183b57e09ea4d59377fc9a4"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/user.sql.go": {
+    "mtime": 1782047956.0941317,
+    "ast_hash": "b75fbcbb0fbce48d4f9008b224c6bc23",
+    "semantic_hash": "b75fbcbb0fbce48d4f9008b224c6bc23"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/querier.go": {
+    "mtime": 1782047956.0953526,
+    "ast_hash": "2b67b3ee885f1ff1b9845194055e9890",
+    "semantic_hash": "2b67b3ee885f1ff1b9845194055e9890"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/identity_telegram.sql.go": {
+    "mtime": 1782047956.093027,
+    "ast_hash": "8039c53bd72becdc2f71b59a5f64dfe1",
+    "semantic_hash": "8039c53bd72becdc2f71b59a5f64dfe1"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/song.sql.go": {
+    "mtime": 1782047956.0927937,
+    "ast_hash": "219070929ec1e42d35eebeaeef5d60eb",
+    "semantic_hash": "219070929ec1e42d35eebeaeef5d60eb"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/user_permissions.sql.go": {
+    "mtime": 1782047956.0951927,
+    "ast_hash": "09cce3f73a878817c40debdaad63b71a",
+    "semantic_hash": "09cce3f73a878817c40debdaad63b71a"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/identity_zpotify.sql.go": {
+    "mtime": 1782047956.0946972,
+    "ast_hash": "6a83be903d5e98a93425adfda55e9872",
+    "semantic_hash": "6a83be903d5e98a93425adfda55e9872"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/file.sql.go": {
+    "mtime": 1782047956.093747,
+    "ast_hash": "1945d960d9ba8b52e7153828a7aae7ed",
+    "semantic_hash": "1945d960d9ba8b52e7153828a7aae7ed"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/songs_q/models.go": {
+    "mtime": 1782047956.09353,
+    "ast_hash": "646043f69afe4ec10bfa3caa1951698c",
+    "semantic_hash": "646043f69afe4ec10bfa3caa1951698c"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/songs_q/db.go": {
+    "mtime": 1782047956.0933518,
+    "ast_hash": "41c1992fe3cd3ac629d3d3280f4009ab",
+    "semantic_hash": "41c1992fe3cd3ac629d3d3280f4009ab"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/songs_q/songs.sql.go": {
+    "mtime": 1782047956.091581,
+    "ast_hash": "ef1ad05c5b8e2fd1a3e087d535cdf8f1",
+    "semantic_hash": "ef1ad05c5b8e2fd1a3e087d535cdf8f1"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/songs_q/querier.go": {
+    "mtime": 1782047956.0932922,
+    "ast_hash": "dd8f75038a0ec151eddf2ede94f6025c",
+    "semantic_hash": "dd8f75038a0ec151eddf2ede94f6025c"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/playlist_q/models.go": {
+    "mtime": 1775810390.4692798,
+    "ast_hash": "f322e4666c08e893f515bd8598392603",
+    "semantic_hash": "f322e4666c08e893f515bd8598392603"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/playlist_q/db.go": {
+    "mtime": 1775810390.4691067,
+    "ast_hash": "81843046376ddf4410fc87e1a5a6c4ee",
+    "semantic_hash": "81843046376ddf4410fc87e1a5a6c4ee"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/playlist_q/view.sql.go": {
+    "mtime": 1775810390.4689193,
+    "ast_hash": "2662e96ee6b4428b1c3c124e34bc5c04",
+    "semantic_hash": "2662e96ee6b4428b1c3c124e34bc5c04"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/playlist_q/querier.go": {
+    "mtime": 1775810390.4694507,
+    "ast_hash": "6c86570483be1337447f47ec3546e6ca",
+    "semantic_hash": "6c86570483be1337447f47ec3546e6ca"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/file_meta_q/models.go": {
+    "mtime": 1782047956.0944092,
+    "ast_hash": "206e167460c68d91cec5cee285765b2f",
+    "semantic_hash": "206e167460c68d91cec5cee285765b2f"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/file_meta_q/db.go": {
+    "mtime": 1782047956.0955033,
+    "ast_hash": "c32bcb4d3319011b8fa7ab0c564714c9",
+    "semantic_hash": "c32bcb4d3319011b8fa7ab0c564714c9"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/file_meta_q/querier.go": {
+    "mtime": 1782047956.0907738,
+    "ast_hash": "a745902eebc9d3f5f1907484ba7efcfd",
+    "semantic_hash": "a745902eebc9d3f5f1907484ba7efcfd"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/file_meta_q/file_meta.sql.go": {
+    "mtime": 1782062628.4709544,
+    "ast_hash": "f3f5f244c4105bee1aebf044a0f7c97f",
+    "semantic_hash": "f3f5f244c4105bee1aebf044a0f7c97f"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/jobs_q/models.go": {
+    "mtime": 1782047956.0936947,
+    "ast_hash": "73ac151b3ed4b685537f08a99b230b1d",
+    "semantic_hash": "73ac151b3ed4b685537f08a99b230b1d"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/jobs_q/db.go": {
+    "mtime": 1782047956.094611,
+    "ast_hash": "6491326bfe46030aef3f3aed5d3e4d5f",
+    "semantic_hash": "6491326bfe46030aef3f3aed5d3e4d5f"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/jobs_q/jobs.sql.go": {
+    "mtime": 1782047956.0918136,
+    "ast_hash": "fa94997a62792432da1ec0e185ce5609",
+    "semantic_hash": "fa94997a62792432da1ec0e185ce5609"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/generated/jobs_q/querier.go": {
+    "mtime": 1782047956.0956407,
+    "ast_hash": "7c3ecef72c28c5b3a38b1560cca07584",
+    "semantic_hash": "7c3ecef72c28c5b3a38b1560cca07584"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/queries/identity_zpotify.sql": {
+    "mtime": 1779130262.5583284,
+    "ast_hash": "3fe3224891b79b911df30b533e499e46",
+    "semantic_hash": "3fe3224891b79b911df30b533e499e46"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/queries/user_session.sql": {
+    "mtime": 1775239809.391543,
+    "ast_hash": "b6d465d7d688319b3251df923c1f6081",
+    "semantic_hash": "b6d465d7d688319b3251df923c1f6081"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/queries/playlist.sql": {
+    "mtime": 1780771832.493252,
+    "ast_hash": "f1e426a927a31d2cebe9783284daac11",
+    "semantic_hash": "f1e426a927a31d2cebe9783284daac11"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/queries/song.sql": {
+    "mtime": 1780664786.415454,
+    "ast_hash": "81a71b35c058f06e6abb10a0c376a87a",
+    "semantic_hash": "81a71b35c058f06e6abb10a0c376a87a"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/queries/file.sql": {
+    "mtime": 1780637195.1875622,
+    "ast_hash": "5cb26c71ed548ab24532aa927ad2ac8c",
+    "semantic_hash": "5cb26c71ed548ab24532aa927ad2ac8c"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/queries/user_playlist.sql": {
+    "mtime": 1780597752.4944506,
+    "ast_hash": "14b33b3874a259e3cb7253f826bf8c1f",
+    "semantic_hash": "14b33b3874a259e3cb7253f826bf8c1f"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/queries/user.sql": {
+    "mtime": 1780514447.1473782,
+    "ast_hash": "33ccdf0561fb37f28730fcbc51f26e94",
+    "semantic_hash": "33ccdf0561fb37f28730fcbc51f26e94"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/queries/identity_telegram.sql": {
+    "mtime": 1780480237.2390845,
+    "ast_hash": "4786d4153b87d745062f6de6dd1fd63a",
+    "semantic_hash": "4786d4153b87d745062f6de6dd1fd63a"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/queries/user_permissions.sql": {
+    "mtime": 1780514442.0242243,
+    "ast_hash": "cd31c504cc50648b9c970373b79bb858",
+    "semantic_hash": "cd31c504cc50648b9c970373b79bb858"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/queries/user_settings.sql": {
+    "mtime": 1780488127.4957373,
+    "ast_hash": "1ce249f3d283ee6b45d46836288a7e4a",
+    "semantic_hash": "1ce249f3d283ee6b45d46836288a7e4a"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/queries/songs/songs.sql": {
+    "mtime": 1780664942.3757453,
+    "ast_hash": "e03539e80ca013a33eecf8ee16c3c7fa",
+    "semantic_hash": "e03539e80ca013a33eecf8ee16c3c7fa"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/queries/playlist/view.sql": {
+    "mtime": 1775628060.2273414,
+    "ast_hash": "d97a3997b738e6d104934245cac97902",
+    "semantic_hash": "d97a3997b738e6d104934245cac97902"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/queries/jobs/jobs.sql": {
+    "mtime": 1782047953.4005551,
+    "ast_hash": "27fcaab93973774ed49669f0f7404596",
+    "semantic_hash": "27fcaab93973774ed49669f0f7404596"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/pg/queries/file_meta/file_meta.sql": {
+    "mtime": 1782062617.6888092,
+    "ast_hash": "530849ad62863222801d4b958d1581e6",
+    "semantic_hash": "530849ad62863222801d4b958d1581e6"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/file_storage_providers/storage.go": {
+    "mtime": 1781984064.20463,
+    "ast_hash": "e79690e2b354920da5ae80e41dcd47aa",
+    "semantic_hash": "e79690e2b354920da5ae80e41dcd47aa"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/storage/tx_manager/tx_manager.go": {
+    "mtime": 1760009412.50547,
+    "ast_hash": "198da2d87ea47feb62bf88a3c9736d1e",
+    "semantic_hash": "198da2d87ea47feb62bf88a3c9736d1e"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_user.pb.gw.go": {
+    "mtime": 1782070179.7624567,
+    "ast_hash": "9288875f525ec99f302acfd65da5855c",
+    "semantic_hash": "9288875f525ec99f302acfd65da5855c"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_api.pb.go": {
+    "mtime": 1782070179.7463317,
+    "ast_hash": "8f294772e2b52ee76388e35e2cdb333f",
+    "semantic_hash": "8f294772e2b52ee76388e35e2cdb333f"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_song.pb.gw.go": {
+    "mtime": 1782070179.761525,
+    "ast_hash": "547dc4d936c1b3dd7a3008fbff92a84c",
+    "semantic_hash": "547dc4d936c1b3dd7a3008fbff92a84c"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_files.pb.gw.go": {
+    "mtime": 1782070179.7580912,
+    "ast_hash": "764674c92c19e6d736a1e3ef45c23f4b",
+    "semantic_hash": "764674c92c19e6d736a1e3ef45c23f4b"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_api_grpc.pb.go": {
+    "mtime": 1782070179.7490587,
+    "ast_hash": "dea161e1ccbd8ad59f345f97fb1141bc",
+    "semantic_hash": "dea161e1ccbd8ad59f345f97fb1141bc"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_auth.pb.gw.go": {
+    "mtime": 1782070179.7577035,
+    "ast_hash": "40d0993e32c2adc36fbd78ac059528e6",
+    "semantic_hash": "40d0993e32c2adc36fbd78ac059528e6"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_api.pb.gw.go": {
+    "mtime": 1782070179.7472124,
+    "ast_hash": "d80eb020f063d4fa60db54599d3fab9b",
+    "semantic_hash": "d80eb020f063d4fa60db54599d3fab9b"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_common.pb.go": {
+    "mtime": 1782070179.745614,
+    "ast_hash": "4962e8f65bbe93d19f3327fb5d420488",
+    "semantic_hash": "4962e8f65bbe93d19f3327fb5d420488"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_auth_grpc.pb.go": {
+    "mtime": 1782070179.757834,
+    "ast_hash": "287212fb9959f997215ec68d0ec4539f",
+    "semantic_hash": "287212fb9959f997215ec68d0ec4539f"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_file_grpc.pb.go": {
+    "mtime": 1776244779.9270077,
+    "ast_hash": "0875bdb16125ed9f592bc10d40b5ff20",
+    "semantic_hash": "0875bdb16125ed9f592bc10d40b5ff20"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_files.pb.go": {
+    "mtime": 1782070179.758009,
+    "ast_hash": "299901ca21bbc0c1aa70566fbf36caea",
+    "semantic_hash": "299901ca21bbc0c1aa70566fbf36caea"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_files_grpc.pb.go": {
+    "mtime": 1782070179.758247,
+    "ast_hash": "c9615cb69f1f8c8c1b21285331a1c678",
+    "semantic_hash": "c9615cb69f1f8c8c1b21285331a1c678"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_file.pb.go": {
+    "mtime": 1776244779.9268448,
+    "ast_hash": "9f7511b6270abec284e8b99d6c4250bc",
+    "semantic_hash": "9f7511b6270abec284e8b99d6c4250bc"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_user.pb.go": {
+    "mtime": 1782070179.7621224,
+    "ast_hash": "0c89ec2a8e6ea5ca6c557052831b0052",
+    "semantic_hash": "0c89ec2a8e6ea5ca6c557052831b0052"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_user.pb.go": {
+    "mtime": 1782070179.7627187,
+    "ast_hash": "163f9520c8df3902401e6d01bf07d539",
+    "semantic_hash": "163f9520c8df3902401e6d01bf07d539"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_auth.pb.go": {
+    "mtime": 1782070179.7558527,
+    "ast_hash": "23d2bc327d5498567c80671d22d8073d",
+    "semantic_hash": "23d2bc327d5498567c80671d22d8073d"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_playlist_grpc.pb.go": {
+    "mtime": 1782070179.7596655,
+    "ast_hash": "b8666de8444c840935836124bb1d81ff",
+    "semantic_hash": "b8666de8444c840935836124bb1d81ff"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_playlist.pb.gw.go": {
+    "mtime": 1782070179.759576,
+    "ast_hash": "3c7fa731e3e888d0b3d117a0a593f02d",
+    "semantic_hash": "3c7fa731e3e888d0b3d117a0a593f02d"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_artists_grpc.pb.go": {
+    "mtime": 1782070179.7524827,
+    "ast_hash": "8387a894360dd8133d3b175c4d01be19",
+    "semantic_hash": "8387a894360dd8133d3b175c4d01be19"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_song.pb.go": {
+    "mtime": 1782070179.759827,
+    "ast_hash": "5e5448676012c2887a76eaac18eed6c2",
+    "semantic_hash": "5e5448676012c2887a76eaac18eed6c2"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_user_settings.pb.go": {
+    "mtime": 1782070179.7636054,
+    "ast_hash": "932ad6c903a0ad2b2bf68ff1709162dd",
+    "semantic_hash": "932ad6c903a0ad2b2bf68ff1709162dd"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_artists.pb.go": {
+    "mtime": 1782070179.749468,
+    "ast_hash": "2074361c6b54bea271c90e6227dee296",
+    "semantic_hash": "2074361c6b54bea271c90e6227dee296"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_song_grpc.pb.go": {
+    "mtime": 1782070179.7616286,
+    "ast_hash": "23c9cba571604838e52df857db8fdaa6",
+    "semantic_hash": "23c9cba571604838e52df857db8fdaa6"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_playlist.pb.go": {
+    "mtime": 1782070179.7583814,
+    "ast_hash": "7bf7832f603b0accde23c299e0051dd3",
+    "semantic_hash": "7bf7832f603b0accde23c299e0051dd3"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_artists.pb.gw.go": {
+    "mtime": 1782070179.749837,
+    "ast_hash": "eb5fa1f27a3556946a1a503e7e168044",
+    "semantic_hash": "eb5fa1f27a3556946a1a503e7e168044"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/api/server/zpotify_api/zpotify_service_user_grpc.pb.go": {
+    "mtime": 1782070179.762579,
+    "ast_hash": "92fa363748deb29993952fff8d6f2093",
+    "semantic_hash": "92fa363748deb29993952fff8d6f2093"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/log/log.go": {
+    "mtime": 1781896558.6089537,
+    "ast_hash": "fabd70b7f363a262440e394e26156525",
+    "semantic_hash": "fabd70b7f363a262440e394e26156525"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/service/service.go": {
+    "mtime": 1782065746.2665133,
+    "ast_hash": "e661080ea042568b45d76bf733dad659",
+    "semantic_hash": "e661080ea042568b45d76bf733dad659"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/service/v1/file_service.go": {
+    "mtime": 1782187641.372705,
+    "ast_hash": "dc81db33e351fc39e619cb213fec6f09",
+    "semantic_hash": "dc81db33e351fc39e619cb213fec6f09"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/service/v1/user_service.go": {
+    "mtime": 1780489216.0517633,
+    "ast_hash": "e57e3faf4c1bfb9e6cb99738a8eb1ff2",
+    "semantic_hash": "e57e3faf4c1bfb9e6cb99738a8eb1ff2"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/service/v1/song_service.go": {
+    "mtime": 1782048459.6350803,
+    "ast_hash": "75b0f3ee0213fa9ccbe25ca52c911e13",
+    "semantic_hash": "75b0f3ee0213fa9ccbe25ca52c911e13"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/service/v1/playlist_service.go": {
+    "mtime": 1782048078.453872,
+    "ast_hash": "24b40817bd1fac295d9fdd39a8be4949",
+    "semantic_hash": "24b40817bd1fac295d9fdd39a8be4949"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/service/v1/artists_service.go": {
+    "mtime": 1780648718.7396739,
+    "ast_hash": "4fdd25ad7223e86da566d03dbb7c41ea",
+    "semantic_hash": "4fdd25ad7223e86da566d03dbb7c41ea"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/service/v1/auth/auth.go": {
+    "mtime": 1780488127.4936237,
+    "ast_hash": "cb0a2c7afb4a532a4ff4fb8d931b61e0",
+    "semantic_hash": "cb0a2c7afb4a532a4ff4fb8d931b61e0"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/service/v1/auth/session.go": {
+    "mtime": 1780487031.736094,
+    "ast_hash": "7827d924ef9f13cfdd3e32e136ff6934",
+    "semantic_hash": "7827d924ef9f13cfdd3e32e136ff6934"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/service/v1/auth/login.go": {
+    "mtime": 1780489216.0704172,
+    "ast_hash": "10b2a98b10cce2841a70b9a059ed19d6",
+    "semantic_hash": "10b2a98b10cce2841a70b9a059ed19d6"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/service/service_errors/errors.go": {
+    "mtime": 1780597752.4909403,
+    "ast_hash": "0c80a863be8210f1f3aa0e8b900cc653",
+    "semantic_hash": "0c80a863be8210f1f3aa0e8b900cc653"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/domain/user.go": {
+    "mtime": 1780514458.4183664,
+    "ast_hash": "ec7318a1b8b7fab6b609b73ce8d8e5ff",
+    "semantic_hash": "ec7318a1b8b7fab6b609b73ce8d8e5ff"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/domain/playlist.go": {
+    "mtime": 1780771826.9206638,
+    "ast_hash": "ae94cbf9f3f5d116f5b13c3f73a9f99b",
+    "semantic_hash": "ae94cbf9f3f5d116f5b13c3f73a9f99b"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/domain/audio.go": {
+    "mtime": 1782070148.69225,
+    "ast_hash": "819081bb8bf89e5301e880f0172d0f0f",
+    "semantic_hash": "819081bb8bf89e5301e880f0172d0f0f"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/audio_parsers/audio_info.go": {
+    "mtime": 1777406776.0163577,
+    "ast_hash": "ef0d39ae95ecb1705e982b73e3185c79",
+    "semantic_hash": "ef0d39ae95ecb1705e982b73e3185c79"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/audio_parsers/mp3.go": {
+    "mtime": 1776762705.7220118,
+    "ast_hash": "ebcfc906f0f0ecbeb0f44d74781cbbf9",
+    "semantic_hash": "ebcfc906f0f0ecbeb0f44d74781cbbf9"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/audio_parsers/flac.go": {
+    "mtime": 1777406776.0165555,
+    "ast_hash": "0b76aee6c9a1574b16fb859194d39922",
+    "semantic_hash": "0b76aee6c9a1574b16fb859194d39922"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/audio_parsers/aac.go": {
+    "mtime": 1777406776.0161161,
+    "ast_hash": "68f878dcff238ea2052d43cfd9d231ca",
+    "semantic_hash": "68f878dcff238ea2052d43cfd9d231ca"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/localization/responses_file.go": {
+    "mtime": 1758653480.9971962,
+    "ast_hash": "6dcda7a479242a3c10ca176e610075ed",
+    "semantic_hash": "6dcda7a479242a3c10ca176e610075ed"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/localization/responses.go": {
+    "mtime": 1758653291.7223682,
+    "ast_hash": "5458d0643152a1d50378ee7992275e9a",
+    "semantic_hash": "5458d0643152a1d50378ee7992275e9a"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/localization/locales.go": {
+    "mtime": 1752305917.989119,
+    "ast_hash": "5620278a0fbc9ca021d2fd3743eefb98",
+    "semantic_hash": "5620278a0fbc9ca021d2fd3743eefb98"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/localization/responses_auth.go": {
+    "mtime": 1758653173.7903106,
+    "ast_hash": "3fad7a3c341f87994d23deb724891d93",
+    "semantic_hash": "3fad7a3c341f87994d23deb724891d93"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/localization/manager.go": {
+    "mtime": 1758653278.333116,
+    "ast_hash": "477826881e8f5640c22cce326d76ca43",
+    "semantic_hash": "477826881e8f5640c22cce326d76ca43"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/localization/responses/en_EN.json": {
+    "mtime": 1758653603.307976,
+    "ast_hash": "23871b2c3d797fbb7beb8d6914a9c943",
+    "semantic_hash": "23871b2c3d797fbb7beb8d6914a9c943"
+  },
+  "/Users/alexbukov/ruf/zpotify/internal/localization/responses/ru_RU.json": {
+    "mtime": 1758653577.8820999,
+    "ast_hash": "f7bfa1fc664dac40da2ddefe0ef52c55",
+    "semantic_hash": "f7bfa1fc664dac40da2ddefe0ef52c55"
+  },
+  "/Users/alexbukov/ruf/zpotify/.claude/settings.json": {
+    "mtime": 1782459474.945469,
+    "ast_hash": "60ce23be03037487083b051999876042",
+    "semantic_hash": "60ce23be03037487083b051999876042"
+  },
+  "/Users/alexbukov/ruf/zpotify/.claude/settings.local.json": {
+    "mtime": 1780636748.3243737,
+    "ast_hash": "89615ea8ab31afa51e0bc619c56100f6",
+    "semantic_hash": "89615ea8ab31afa51e0bc619c56100f6"
+  },
+  "/Users/alexbukov/ruf/zpotify/examples/http-client.env.json": {
+    "mtime": 1777307265.9431064,
+    "ast_hash": "7a281cdb9908775e7c7d549ae5877853",
+    "semantic_hash": "7a281cdb9908775e7c7d549ae5877853"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/tsconfig.node.json": {
+    "mtime": 1751046077.4503915,
+    "ast_hash": "fa43e0ad6d187f90154ac2233d26e9a1",
+    "semantic_hash": "fa43e0ad6d187f90154ac2233d26e9a1"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/vite.config.d.ts": {
+    "mtime": 1781891197.8592288,
+    "ast_hash": "9dbaee352953ed87ed2e78f6a210e908",
+    "semantic_hash": "9dbaee352953ed87ed2e78f6a210e908"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/vite.config.js": {
+    "mtime": 1781891791.0145383,
+    "ast_hash": "a7d948a68be828bfc105e52e31905a86",
+    "semantic_hash": "a7d948a68be828bfc105e52e31905a86"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/package.json": {
+    "mtime": 1781878459.1342168,
+    "ast_hash": "46049057caffec132184ad0f263b13de",
+    "semantic_hash": "46049057caffec132184ad0f263b13de"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/tsconfig.json": {
+    "mtime": 1751046073.2131863,
+    "ast_hash": "d0ddd25c6bb3f4ef694a76c53ac46a7b",
+    "semantic_hash": "d0ddd25c6bb3f4ef694a76c53ac46a7b"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/eslint.config.js": {
+    "mtime": 1782073473.3208504,
+    "ast_hash": "0800b333c07f59ed657268f77be01b26",
+    "semantic_hash": "0800b333c07f59ed657268f77be01b26"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/vite.config.ts": {
+    "mtime": 1781879022.8276155,
+    "ast_hash": "cdd257d07c30a333f2ae014a560cde0b",
+    "semantic_hash": "cdd257d07c30a333f2ae014a560cde0b"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/stylelint.config.js": {
+    "mtime": 1780686073.3246286,
+    "ast_hash": "bc0f995c62f3f9f3cd560f57786e9e0a",
+    "semantic_hash": "bc0f995c62f3f9f3cd560f57786e9e0a"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/.claude/settings.json": {
+    "mtime": 1776804190.7697194,
+    "ast_hash": "101c05b77f825dad5f4c5b775c140d8a",
+    "semantic_hash": "101c05b77f825dad5f4c5b775c140d8a"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/.claude/settings.local.json": {
+    "mtime": 1781864631.3695934,
+    "ast_hash": "404d53753d252e87f8cb560d6702d7cb",
+    "semantic_hash": "404d53753d252e87f8cb560d6702d7cb"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/main.tsx": {
+    "mtime": 1780770248.0265188,
+    "ast_hash": "6e7c85a4c3929c3e3e37b65c1b65cf15",
+    "semantic_hash": "6e7c85a4c3929c3e3e37b65c1b65cf15"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/vite-env.d.ts": {
+    "mtime": 1780682031.4888835,
+    "ast_hash": "0352474ba2918efe13895edbc3780d94",
+    "semantic_hash": "0352474ba2918efe13895edbc3780d94"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/layouts/MainLayout.tsx": {
+    "mtime": 1780809809.846025,
+    "ast_hash": "e1be95b2096915be0b5059a04cbb039f",
+    "semantic_hash": "e1be95b2096915be0b5059a04cbb039f"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/hooks/Dialog.tsx": {
+    "mtime": 1780684255.213824,
+    "ast_hash": "6293ac7bdfd8012b9108c346f112eeba",
+    "semantic_hash": "6293ac7bdfd8012b9108c346f112eeba"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/api/api.ts": {
+    "mtime": 1780684255.213803,
+    "ast_hash": "0ccae123b2ec36be12520ba3db3e1de5",
+    "semantic_hash": "0ccae123b2ec36be12520ba3db3e1de5"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/api/zpotify/zpotify_service_song.pb.ts": {
+    "mtime": 1782072918.3173995,
+    "ast_hash": "800f61e134702973047e4cffcb298cdc",
+    "semantic_hash": "800f61e134702973047e4cffcb298cdc"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/api/zpotify/zpotify_user_settings.pb.ts": {
+    "mtime": 1782072918.3175824,
+    "ast_hash": "a0e2fab5d430feee18311a0b0115b408",
+    "semantic_hash": "a0e2fab5d430feee18311a0b0115b408"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/api/zpotify/zpotify_service_artists.pb.ts": {
+    "mtime": 1782072918.3169527,
+    "ast_hash": "52297b8d4c0157e6da32512288bf2d2f",
+    "semantic_hash": "52297b8d4c0157e6da32512288bf2d2f"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/api/zpotify/zpotify_service_playlist.pb.ts": {
+    "mtime": 1782072918.317264,
+    "ast_hash": "51d613cfb46308882a3db7d6c85c86f9",
+    "semantic_hash": "51d613cfb46308882a3db7d6c85c86f9"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/api/zpotify/zpotify_service_user.pb.ts": {
+    "mtime": 1782072918.3174627,
+    "ast_hash": "a541f493095ad46a3e58e11db2e0ac97",
+    "semantic_hash": "a541f493095ad46a3e58e11db2e0ac97"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/api/zpotify/zpotify_user.pb.ts": {
+    "mtime": 1782072918.31752,
+    "ast_hash": "59264b4bd27e8107185237dce742cd4b",
+    "semantic_hash": "59264b4bd27e8107185237dce742cd4b"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/api/zpotify/zpotify_service_auth.pb.ts": {
+    "mtime": 1782072918.3170118,
+    "ast_hash": "b0f6996d7061a81d76189b7832bf39c6",
+    "semantic_hash": "b0f6996d7061a81d76189b7832bf39c6"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/api/zpotify/zpotify_common.pb.ts": {
+    "mtime": 1782072918.3134184,
+    "ast_hash": "58abce24bd376d6242c9f752336ecc2b",
+    "semantic_hash": "58abce24bd376d6242c9f752336ecc2b"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/api/zpotify/zpotify_service_files.pb.ts": {
+    "mtime": 1782072918.317087,
+    "ast_hash": "dd9b0af34d81fbeafb3660c0cc738887",
+    "semantic_hash": "dd9b0af34d81fbeafb3660c0cc738887"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/api/zpotify/index.ts": {
+    "mtime": 1782072918.3101838,
+    "ast_hash": "66ec95a059e6b4c1f4c8097ed41ac04e",
+    "semantic_hash": "66ec95a059e6b4c1f4c8097ed41ac04e"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/api/zpotify/fetch.pb.ts": {
+    "mtime": 1782072918.3116918,
+    "ast_hash": "611a00bd7dd14cbdfe7c5ea6170b6625",
+    "semantic_hash": "611a00bd7dd14cbdfe7c5ea6170b6625"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/api/zpotify/zpotify_service_api.pb.ts": {
+    "mtime": 1782072918.3168895,
+    "ast_hash": "4ad2712ae3276253b1e570a4102bd7c1",
+    "semantic_hash": "4ad2712ae3276253b1e570a4102bd7c1"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/routing/Router.tsx": {
+    "mtime": 1781891250.2362063,
+    "ast_hash": "76cabd2440394e74e629244655ed424d",
+    "semantic_hash": "76cabd2440394e74e629244655ed424d"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/app/routing/paths.ts": {
+    "mtime": 1780776652.2978761,
+    "ast_hash": "cb20d12f38f496509bbfaa73238b2f0f",
+    "semantic_hash": "cb20d12f38f496509bbfaa73238b2f0f"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/features/auth/LogPassAuth.tsx": {
+    "mtime": 1780684255.2141733,
+    "ast_hash": "4b00f110c42614c059cfa3448faa91b1",
+    "semantic_hash": "4b00f110c42614c059cfa3448faa91b1"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/features/auth/TelegramAuth.tsx": {
+    "mtime": 1781865560.5061963,
+    "ast_hash": "feaabc363ce0523f0136d33b0fae5fd1",
+    "semantic_hash": "feaabc363ce0523f0136d33b0fae5fd1"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/features/upload/DropZone.tsx": {
+    "mtime": 1782073580.5674655,
+    "ast_hash": "c3b48aad70f139ec6b56a7c95c657ed7",
+    "semantic_hash": "c3b48aad70f139ec6b56a7c95c657ed7"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/features/upload/AddTrackButton.tsx": {
+    "mtime": 1780684255.2141714,
+    "ast_hash": "9b70ed6958e5015d1bc8af414dd565a2",
+    "semantic_hash": "9b70ed6958e5015d1bc8af414dd565a2"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/ui/BackButton.tsx": {
+    "mtime": 1780684255.2142735,
+    "ast_hash": "a5e8f0e9fd4ebc20dd68eb2598d088f3",
+    "semantic_hash": "a5e8f0e9fd4ebc20dd68eb2598d088f3"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/ui/FloatInput.tsx": {
+    "mtime": 1780684255.214295,
+    "ast_hash": "da1d74b19c140f4f15787e6fc65ba79e",
+    "semantic_hash": "da1d74b19c140f4f15787e6fc65ba79e"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/ui/StepDots.tsx": {
+    "mtime": 1780684255.2143106,
+    "ast_hash": "2835bfd0a5cadb122c8364ad94d7a8e8",
+    "semantic_hash": "2835bfd0a5cadb122c8364ad94d7a8e8"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/ui/DisabledChip.tsx": {
+    "mtime": 1782073581.7317386,
+    "ast_hash": "3a796889a56212760e0d282508cd3593",
+    "semantic_hash": "3a796889a56212760e0d282508cd3593"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/ui/AuthButton.tsx": {
+    "mtime": 1780684255.2142718,
+    "ast_hash": "6aa1535f0a6efa96c49628b6f65e08e2",
+    "semantic_hash": "6aa1535f0a6efa96c49628b6f65e08e2"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/ui/Chip.tsx": {
+    "mtime": 1780684255.2142787,
+    "ast_hash": "4da90bb916ae51e69f0125b6494c7fff",
+    "semantic_hash": "4da90bb916ae51e69f0125b6494c7fff"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/ui/GenerativeCover.tsx": {
+    "mtime": 1780769529.7427323,
+    "ast_hash": "7887534d18520b830724627c469961e7",
+    "semantic_hash": "7887534d18520b830724627c469961e7"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/ui/CloseButton.tsx": {
+    "mtime": 1780684255.2142808,
+    "ast_hash": "d45f57cbe73ead73e98b687ffae7cde5",
+    "semantic_hash": "d45f57cbe73ead73e98b687ffae7cde5"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/ui/IconButton.tsx": {
+    "mtime": 1780684255.2143037,
+    "ast_hash": "a826332b7ea33abacfd718e9078e95b4",
+    "semantic_hash": "a826332b7ea33abacfd718e9078e95b4"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/ui/Button.tsx": {
+    "mtime": 1780684255.2142828,
+    "ast_hash": "481915a75c06f3687d05811e2f570113",
+    "semantic_hash": "481915a75c06f3687d05811e2f570113"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/ui/MultiSelect.tsx": {
+    "mtime": 1780685644.8743143,
+    "ast_hash": "b1eb5c83a2b685f2b0c4e2385498ff47",
+    "semantic_hash": "b1eb5c83a2b685f2b0c4e2385498ff47"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/ui/Input.tsx": {
+    "mtime": 1780684255.2143133,
+    "ast_hash": "253086e89b86d3864c4bf04029596f6f",
+    "semantic_hash": "253086e89b86d3864c4bf04029596f6f"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/ui/ZButton/ZButton.tsx": {
+    "mtime": 1780684255.2143323,
+    "ast_hash": "7946c6d17a3769808b1f43af04f224c3",
+    "semantic_hash": "7946c6d17a3769808b1f43af04f224c3"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/model/Song.ts": {
+    "mtime": 1780684255.2142537,
+    "ast_hash": "01768a1af6eccd29d7eed399b2572ecd",
+    "semantic_hash": "01768a1af6eccd29d7eed399b2572ecd"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/model/AudioFile.ts": {
+    "mtime": 1780684255.2142646,
+    "ast_hash": "222f179ce6a660e69313c7001f670028",
+    "semantic_hash": "222f179ce6a660e69313c7001f670028"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/model/HomeSegments.tsx": {
+    "mtime": 1780810107.7192404,
+    "ast_hash": "ea8511e527c164b976e2f3eb7faa3c44",
+    "semantic_hash": "ea8511e527c164b976e2f3eb7faa3c44"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/model/User.ts": {
+    "mtime": 1780685083.9963431,
+    "ast_hash": "1180ee9c7a884cd52e451512ea2824f7",
+    "semantic_hash": "1180ee9c7a884cd52e451512ea2824f7"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/lib/files.ts": {
+    "mtime": 1780684255.2142537,
+    "ast_hash": "61d755cb1d90b22fa903899d7b48a519",
+    "semantic_hash": "61d755cb1d90b22fa903899d7b48a519"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/lib/time.ts": {
+    "mtime": 1780684255.214234,
+    "ast_hash": "80923ec1bda8a614cc3ffcd654a4aa99",
+    "semantic_hash": "80923ec1bda8a614cc3ffcd654a4aa99"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/lib/toaster/ToasterZ.ts": {
+    "mtime": 1781891250.2422626,
+    "ast_hash": "8b9e2cf7f4c2c5553c1505632a082536",
+    "semantic_hash": "8b9e2cf7f4c2c5553c1505632a082536"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/lib/common/Platform.ts": {
+    "mtime": 1780682031.5201511,
+    "ast_hash": "04c3b6e91ab16b20a417def7c8e26f92",
+    "semantic_hash": "04c3b6e91ab16b20a417def7c8e26f92"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/lib/common/Link.ts": {
+    "mtime": 1780684255.2142508,
+    "ast_hash": "5b050dbed474341c1bce8fe2e846a642",
+    "semantic_hash": "5b050dbed474341c1bce8fe2e846a642"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/api/BaseService.ts": {
+    "mtime": 1781891178.5968454,
+    "ast_hash": "1d89d787559a9fc39e4ece43c61df6cf",
+    "semantic_hash": "1d89d787559a9fc39e4ece43c61df6cf"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/api/HomePage.ts": {
+    "mtime": 1781891178.5977366,
+    "ast_hash": "0307a1e2ecc9dee88c5db70d54b5f9ba",
+    "semantic_hash": "0307a1e2ecc9dee88c5db70d54b5f9ba"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/api/Errors.ts": {
+    "mtime": 1780684255.214208,
+    "ast_hash": "e2682cd133fe2783121138319298ced9",
+    "semantic_hash": "e2682cd133fe2783121138319298ced9"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/api/Api.ts": {
+    "mtime": 1780684255.2142038,
+    "ast_hash": "9c3cfb5f27b7bb566b6de71740fa0a23",
+    "semantic_hash": "9c3cfb5f27b7bb566b6de71740fa0a23"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/api/Songs.ts": {
+    "mtime": 1782068778.8565266,
+    "ast_hash": "f4dd37768b5d2aa49f8a53a4be9d9001",
+    "semantic_hash": "f4dd37768b5d2aa49f8a53a4be9d9001"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/api/ArtistsService.ts": {
+    "mtime": 1781891178.596096,
+    "ast_hash": "1f1121bc120666971651ac0466a1b9ac",
+    "semantic_hash": "1f1121bc120666971651ac0466a1b9ac"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/api/WebApi.ts": {
+    "mtime": 1781891178.599022,
+    "ast_hash": "ee5f778f92ffd43bc32b3b59fb804f9e",
+    "semantic_hash": "ee5f778f92ffd43bc32b3b59fb804f9e"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/api/FileService.ts": {
+    "mtime": 1782071038.4605794,
+    "ast_hash": "446d16e7dae7af8b6bb357249dba0a09",
+    "semantic_hash": "446d16e7dae7af8b6bb357249dba0a09"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/api/User.ts": {
+    "mtime": 1781891178.5986338,
+    "ast_hash": "2e05e9efebc3c26cdde0923ea114ddf8",
+    "semantic_hash": "2e05e9efebc3c26cdde0923ea114ddf8"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/api/Auth.ts": {
+    "mtime": 1781891178.5965517,
+    "ast_hash": "d27137489f615423501046ab2024a3f1",
+    "semantic_hash": "d27137489f615423501046ab2024a3f1"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/shared/api/PlaylistService.ts": {
+    "mtime": 1781891178.5982592,
+    "ast_hash": "972affe52e9109ef9ca03a9c1ea3d8e5",
+    "semantic_hash": "972affe52e9109ef9ca03a9c1ea3d8e5"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/tabs/SegmentTabBar.tsx": {
+    "mtime": 1780684255.2139258,
+    "ast_hash": "864321965628e9b849ca4fa5421db979",
+    "semantic_hash": "864321965628e9b849ca4fa5421db979"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/Dropdown/DropdownSearchRow.tsx": {
+    "mtime": 1782120697.6324441,
+    "ast_hash": "a045c539a37cf1a24ae02b585cfedc40",
+    "semantic_hash": "a045c539a37cf1a24ae02b585cfedc40"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/Dropdown/Dropdown.types.ts": {
+    "mtime": 1782120681.144161,
+    "ast_hash": "e4b509ef17a23be16efcbe10854ee5d3",
+    "semantic_hash": "e4b509ef17a23be16efcbe10854ee5d3"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/Dropdown/DropdownSkeletonList.tsx": {
+    "mtime": 1782120701.8418834,
+    "ast_hash": "cfcd2bf6cdad98d72b346d3cbf545f5d",
+    "semantic_hash": "cfcd2bf6cdad98d72b346d3cbf545f5d"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/Dropdown/Dropdown.tsx": {
+    "mtime": 1782121249.0924065,
+    "ast_hash": "08963333bd3a51852d75b39b055da358",
+    "semantic_hash": "08963333bd3a51852d75b39b055da358"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/Dropdown/DropdownCreateRow.tsx": {
+    "mtime": 1782120758.8216815,
+    "ast_hash": "ee2ce1c1530a23cacfc4be368e2e679c",
+    "semantic_hash": "ee2ce1c1530a23cacfc4be368e2e679c"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/Dropdown/Dropdown.hooks.ts": {
+    "mtime": 1782120691.553219,
+    "ast_hash": "14c4de78ad7e2da2e7172d8344f13d00",
+    "semantic_hash": "14c4de78ad7e2da2e7172d8344f13d00"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/Dropdown/DropdownOptionRow.tsx": {
+    "mtime": 1782120813.311647,
+    "ast_hash": "634afb8cd4720b5f5d417705a9456f86",
+    "semantic_hash": "634afb8cd4720b5f5d417705a9456f86"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/Chip/Chip.tsx": {
+    "mtime": 1782120068.9826953,
+    "ast_hash": "5cb3599914422a82ab8e75152e505d52",
+    "semantic_hash": "5cb3599914422a82ab8e75152e505d52"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/CoverField/CoverField.tsx": {
+    "mtime": 1782073569.628747,
+    "ast_hash": "1a0d45eb663b017347cf42c0c5bb330f",
+    "semantic_hash": "1a0d45eb663b017347cf42c0c5bb330f"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/carousel/SegmentCarousel.tsx": {
+    "mtime": 1780813294.28038,
+    "ast_hash": "3f12cd889302c159b847feeceb234a24",
+    "semantic_hash": "3f12cd889302c159b847feeceb234a24"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/carousel/Carousel.tsx": {
+    "mtime": 1780685549.2220402,
+    "ast_hash": "54b8064b85b93f707649974222bd5fec",
+    "semantic_hash": "54b8064b85b93f707649974222bd5fec"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/menu/Menu.tsx": {
+    "mtime": 1780684255.2139184,
+    "ast_hash": "3752caafc73cd85f5beeb34186878347",
+    "semantic_hash": "3752caafc73cd85f5beeb34186878347"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/GenerativeCover/GenerativeCover.tsx": {
+    "mtime": 1780773514.2967522,
+    "ast_hash": "72ffb479d73421abb06701ac1ef25837",
+    "semantic_hash": "72ffb479d73421abb06701ac1ef25837"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/notifications/Toaster.tsx": {
+    "mtime": 1781891250.2369306,
+    "ast_hash": "e299a0ba2c38cfed7443a5d47fcdf94b",
+    "semantic_hash": "e299a0ba2c38cfed7443a5d47fcdf94b"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/EditableTitle/EditableTitle.tsx": {
+    "mtime": 1782073570.9030287,
+    "ast_hash": "aa192600741a3c5c248806feef780052",
+    "semantic_hash": "aa192600741a3c5c248806feef780052"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/AddTrack/AddTrackDialog.tsx": {
+    "mtime": 1782073626.0615284,
+    "ast_hash": "cd09465affe4b182f7c689b152e162cd",
+    "semantic_hash": "cd09465affe4b182f7c689b152e162cd"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/AddTrack/screens/LibraryCard.tsx": {
+    "mtime": 1782073571.6676197,
+    "ast_hash": "3595ba0e74001bc50fc6226110de29ae",
+    "semantic_hash": "3595ba0e74001bc50fc6226110de29ae"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/AddTrack/screens/PendingFilesScreen.tsx": {
+    "mtime": 1781891178.5889683,
+    "ast_hash": "82438c1f5784d020d456c125af7c0709",
+    "semantic_hash": "82438c1f5784d020d456c125af7c0709"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/AddTrack/screens/DropZoneScreen.tsx": {
+    "mtime": 1781982464.6330643,
+    "ast_hash": "dfc3d985617530f8eb41947005541e8d",
+    "semantic_hash": "dfc3d985617530f8eb41947005541e8d"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/AddTrack/screens/ChooseScreen.tsx": {
+    "mtime": 1781982464.6989105,
+    "ast_hash": "c936a649675be930fd9120c1a7ae1051",
+    "semantic_hash": "c936a649675be930fd9120c1a7ae1051"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/AddTrack/screens/UploadCard.tsx": {
+    "mtime": 1782073574.848466,
+    "ast_hash": "ffb27cdf349c80bacc5e8f06f25d1052",
+    "semantic_hash": "ffb27cdf349c80bacc5e8f06f25d1052"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/Meta/MetaDialog.tsx": {
+    "mtime": 1782057328.2185957,
+    "ast_hash": "f03c45b382deda68c62cff3c58faea3f",
+    "semantic_hash": "f03c45b382deda68c62cff3c58faea3f"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/shared/screens/MetaScreen.tsx": {
+    "mtime": 1781944336.6269681,
+    "ast_hash": "71b92e3113ad2bc499f4d9876224fdeb",
+    "semantic_hash": "71b92e3113ad2bc499f4d9876224fdeb"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/LoginViaPass/LoginViaPass.tsx": {
+    "mtime": 1781891178.590948,
+    "ast_hash": "8df4fedec0f9fa7159ec34a8a3ed2163",
+    "semantic_hash": "8df4fedec0f9fa7159ec34a8a3ed2163"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/FileList/FilesList.tsx": {
+    "mtime": 1781891178.5900357,
+    "ast_hash": "7761c0e63145c606dfdacce3be530fe2",
+    "semantic_hash": "7761c0e63145c606dfdacce3be530fe2"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/EditTrack/EditTrackDialog.tsx": {
+    "mtime": 1782057358.3062198,
+    "ast_hash": "19a7a9e01617ce8608c9db572cd2e8c1",
+    "semantic_hash": "19a7a9e01617ce8608c9db572cd2e8c1"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/MultitrackUpload/TrackRow.tsx": {
+    "mtime": 1782073577.0275586,
+    "ast_hash": "47ba0567e91ed1809dc49c5761450009",
+    "semantic_hash": "47ba0567e91ed1809dc49c5761450009"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/MultitrackUpload/TrackList.tsx": {
+    "mtime": 1782073603.7176473,
+    "ast_hash": "7b479777b07d90f295303a2a297bcef6",
+    "semantic_hash": "7b479777b07d90f295303a2a297bcef6"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/MultitrackUpload/utils.ts": {
+    "mtime": 1782072708.40818,
+    "ast_hash": "41781b2eb469c63063d3fcc181d40412",
+    "semantic_hash": "41781b2eb469c63063d3fcc181d40412"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/MultitrackUpload/PlaylistDetailsPanel.tsx": {
+    "mtime": 1782073575.9855301,
+    "ast_hash": "0f565bbc6715e3910caf8d53c943717b",
+    "semantic_hash": "0f565bbc6715e3910caf8d53c943717b"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/MultitrackUpload/MultitrackUploadModal.tsx": {
+    "mtime": 1782073608.7958107,
+    "ast_hash": "7fd6462496d07f08952b8daf87527edb",
+    "semantic_hash": "7fd6462496d07f08952b8daf87527edb"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/MultitrackUpload/PlaylistToggleRow.tsx": {
+    "mtime": 1782073598.8336465,
+    "ast_hash": "174436cd9eb9c23070ee6c9e168ce606",
+    "semantic_hash": "174436cd9eb9c23070ee6c9e168ce606"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/SongEdit/SongEditDialog.tsx": {
+    "mtime": 1781891336.4351876,
+    "ast_hash": "c260e9ba61bc26ffcd74dfc528cef669",
+    "semantic_hash": "c260e9ba61bc26ffcd74dfc528cef669"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/MoreDots.tsx": {
+    "mtime": 1780684255.2138689,
+    "ast_hash": "e394ab9035fd83ba071917d94d3d5aef",
+    "semantic_hash": "e394ab9035fd83ba071917d94d3d5aef"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/Bin.tsx": {
+    "mtime": 1780684255.2138698,
+    "ast_hash": "1b639cb9fc3628ea86a4fbc1387d05a9",
+    "semantic_hash": "1b639cb9fc3628ea86a4fbc1387d05a9"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/TelegramLogo.tsx": {
+    "mtime": 1780684255.2138696,
+    "ast_hash": "d0a3af2f7e7d27ee4e4696a1905f7b91",
+    "semantic_hash": "d0a3af2f7e7d27ee4e4696a1905f7b91"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/AnimatedZ.tsx": {
+    "mtime": 1780684255.213845,
+    "ast_hash": "7d35cb5a367d0cfe279d9c9e6e9e7087",
+    "semantic_hash": "7d35cb5a367d0cfe279d9c9e6e9e7087"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/icons/ChevronRightIcon.tsx": {
+    "mtime": 1782072703.727942,
+    "ast_hash": "1460c190e551e4f72469f1d413ca7a57",
+    "semantic_hash": "1460c190e551e4f72469f1d413ca7a57"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/icons/SearchIcon.tsx": {
+    "mtime": 1782120024.464391,
+    "ast_hash": "d25d2eac033e13c9c76dffeb72246ec5",
+    "semantic_hash": "d25d2eac033e13c9c76dffeb72246ec5"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/icons/PlusIcon.tsx": {
+    "mtime": 1782073768.8085716,
+    "ast_hash": "2be1b34260bea2cacad22a0849ab2943",
+    "semantic_hash": "2be1b34260bea2cacad22a0849ab2943"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/icons/PlayIcon.tsx": {
+    "mtime": 1780774101.1168785,
+    "ast_hash": "c3acf48e187b540858a66423a8fbae5e",
+    "semantic_hash": "c3acf48e187b540858a66423a8fbae5e"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/icons/MusicFileIcon.tsx": {
+    "mtime": 1780684255.2138882,
+    "ast_hash": "1cccfe42a07df1541a726d10de25918d",
+    "semantic_hash": "1cccfe42a07df1541a726d10de25918d"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/icons/RemoveIcon.tsx": {
+    "mtime": 1782120034.7992423,
+    "ast_hash": "9c9eff4febde1534149129317208d145",
+    "semantic_hash": "9c9eff4febde1534149129317208d145"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/icons/CheckIcon.tsx": {
+    "mtime": 1782072699.7378294,
+    "ast_hash": "45c3aba324728f0ebedf66cbc4213e71",
+    "semantic_hash": "45c3aba324728f0ebedf66cbc4213e71"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/icons/NowPlayingBars.tsx": {
+    "mtime": 1781879213.04964,
+    "ast_hash": "a083e67e3250188134be64129e29aa3b",
+    "semantic_hash": "a083e67e3250188134be64129e29aa3b"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/icons/LockIcon.tsx": {
+    "mtime": 1782120030.1013777,
+    "ast_hash": "421c197cd1fb07717f98e2ccb05f91c9",
+    "semantic_hash": "421c197cd1fb07717f98e2ccb05f91c9"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/player/ShuffleArrows.tsx": {
+    "mtime": 1780684255.2138948,
+    "ast_hash": "b5695e059d33136ad53142765fabf172",
+    "semantic_hash": "b5695e059d33136ad53142765fabf172"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/pages/init/InitPage.tsx": {
+    "mtime": 1780770319.3964305,
+    "ast_hash": "2f7bcb6884395bda408ea8d025113142",
+    "semantic_hash": "2f7bcb6884395bda408ea8d025113142"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/pages/init/ZLogoLanding.tsx": {
+    "mtime": 1780684255.2142022,
+    "ast_hash": "ac9d4b93c6a18a27436d4a4a058fff95",
+    "semantic_hash": "ac9d4b93c6a18a27436d4a4a058fff95"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/pages/dialog/Dialog.tsx": {
+    "mtime": 1780810225.4194212,
+    "ast_hash": "476b7f912353885505a4881aab594ae7",
+    "semantic_hash": "476b7f912353885505a4881aab594ae7"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/pages/early_access/EarlyAccessPage.tsx": {
+    "mtime": 1780770294.2350848,
+    "ast_hash": "6b292a346eb3dd84d17139472f405552",
+    "semantic_hash": "6b292a346eb3dd84d17139472f405552"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/pages/main/home/HomePage.tsx": {
+    "mtime": 1780810295.5581253,
+    "ast_hash": "666da3013ac374475c66da4e45f8e702",
+    "semantic_hash": "666da3013ac374475c66da4e45f8e702"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/pages/main/playlist/PlaylistPage.tsx": {
+    "mtime": 1780810333.6959732,
+    "ast_hash": "ec8e0219d524637e6fa5cacbb019618d",
+    "semantic_hash": "ec8e0219d524637e6fa5cacbb019618d"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/pages/main/playlist/usePlaylist.ts": {
+    "mtime": 1781891317.1619287,
+    "ast_hash": "0ba936affc6fc289ef43840196f8a37c",
+    "semantic_hash": "0ba936affc6fc289ef43840196f8a37c"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/pages/main/album/AlbumPage.tsx": {
+    "mtime": 1780811549.2027242,
+    "ast_hash": "38ca310847995b07208492e41a7dc02f",
+    "semantic_hash": "38ca310847995b07208492e41a7dc02f"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/pages/main/album/useAlbumSongs.ts": {
+    "mtime": 1781891312.0778365,
+    "ast_hash": "d400c0664d4792a4963d3524d77204fe",
+    "semantic_hash": "d400c0664d4792a4963d3524d77204fe"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/pages/error/ErrorPage.tsx": {
+    "mtime": 1780684255.2141852,
+    "ast_hash": "ecb80d95c31401c4bbac983a38bf1249",
+    "semantic_hash": "ecb80d95c31401c4bbac983a38bf1249"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/admin/coloring/Coloring.tsx": {
+    "mtime": 1781891250.2444806,
+    "ast_hash": "13d05e2d1f9fa839575a5982d02e486c",
+    "semantic_hash": "13d05e2d1f9fa839575a5982d02e486c"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/User/UserWidget.tsx": {
+    "mtime": 1780684255.2173834,
+    "ast_hash": "32dfd73a77b9c23f4a858203299274df",
+    "semantic_hash": "32dfd73a77b9c23f4a858203299274df"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/AuthWidgets/LogPassWidget.tsx": {
+    "mtime": 1781891178.599731,
+    "ast_hash": "38c19514ce60bf844c71e6d51b704075",
+    "semantic_hash": "38c19514ce60bf844c71e6d51b704075"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/PlaylistHomeSegment/PlaylistHomeSegment.tsx": {
+    "mtime": 1780810054.1963928,
+    "ast_hash": "9e54e74c4648715529952579c7c76558",
+    "semantic_hash": "9e54e74c4648715529952579c7c76558"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/MusicPlayer/MusicPlayerWithLogo.tsx": {
+    "mtime": 1781879105.048573,
+    "ast_hash": "829981425a01a9cf64cc3322c96acedf",
+    "semantic_hash": "829981425a01a9cf64cc3322c96acedf"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/MusicPlayer/usePlayer.ts": {
+    "mtime": 1781978801.3719685,
+    "ast_hash": "71c54bfa19699c4b319b9ab6c3ec6057",
+    "semantic_hash": "71c54bfa19699c4b319b9ab6c3ec6057"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/MusicPlayer/PlayerControls.tsx": {
+    "mtime": 1780684255.2143843,
+    "ast_hash": "20f9e18709c7dd80d246a572af003036",
+    "semantic_hash": "20f9e18709c7dd80d246a572af003036"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/MusicPlayer/buttons/TrackProgressControls.tsx": {
+    "mtime": 1781879213.0193415,
+    "ast_hash": "b6ed6c0d713525ff50020c338aa241df",
+    "semantic_hash": "b6ed6c0d713525ff50020c338aa241df"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/MusicPlayer/buttons/VolumeControls.tsx": {
+    "mtime": 1781879213.038417,
+    "ast_hash": "4df2803dd6fffe69ab7c36750b246de0",
+    "semantic_hash": "4df2803dd6fffe69ab7c36750b246de0"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/MusicPlayer/buttons/TrackRewindButton.tsx": {
+    "mtime": 1781879213.0565171,
+    "ast_hash": "0ffba68ec4f651a8b5c094629da3fb11",
+    "semantic_hash": "0ffba68ec4f651a8b5c094629da3fb11"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/MusicPlayer/buttons/ShuffleTracksButton.tsx": {
+    "mtime": 1781879213.07104,
+    "ast_hash": "0265671243a8863e5e7e0c8e6bd4de62",
+    "semantic_hash": "0265671243a8863e5e7e0c8e6bd4de62"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/MusicPlayer/buttons/PlayPauseButton.tsx": {
+    "mtime": 1781879213.0631237,
+    "ast_hash": "ef2e59475fdf014d3be759f6756386e5",
+    "semantic_hash": "ef2e59475fdf014d3be759f6756386e5"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/TrackList/LazyLoadSongsList.tsx": {
+    "mtime": 1782057288.8779168,
+    "ast_hash": "6f84abaf526d182ee7805e194a650ea8",
+    "semantic_hash": "6f84abaf526d182ee7805e194a650ea8"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/TrackList/TrackListWidget.tsx": {
+    "mtime": 1781978801.3399787,
+    "ast_hash": "c5b2a419fe336ee822220b072b7c8456",
+    "semantic_hash": "c5b2a419fe336ee822220b072b7c8456"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/AuthMethods/AuthMethodsWidget.tsx": {
+    "mtime": 1780684255.214396,
+    "ast_hash": "0e43f0eee96e51c314418fd6cca6671d",
+    "semantic_hash": "0e43f0eee96e51c314418fd6cca6671d"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/ArtistField/ArtistChip.tsx": {
+    "mtime": 1782073582.9748573,
+    "ast_hash": "4b9851250120807144dc4c44eb33c720",
+    "semantic_hash": "4b9851250120807144dc4c44eb33c720"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/ArtistField/ArtistChipsField.tsx": {
+    "mtime": 1782119886.1814995,
+    "ast_hash": "c90e741bce0eeee4c318093a0e737e3b",
+    "semantic_hash": "c90e741bce0eeee4c318093a0e737e3b"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/HomeSegments/useHomeSegments.ts": {
+    "mtime": 1781891326.2680714,
+    "ast_hash": "2e3321cc9aefa91bfd67ca8a9903c422",
+    "semantic_hash": "2e3321cc9aefa91bfd67ca8a9903c422"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/Header/HeaderPart.tsx": {
+    "mtime": 1780770339.793673,
+    "ast_hash": "b8ddb189daf86cfa7019671f0b79b1e9",
+    "semantic_hash": "b8ddb189daf86cfa7019671f0b79b1e9"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/PlaylistsLibrarySegment/PlaylistCardWide.tsx": {
+    "mtime": 1782073591.722438,
+    "ast_hash": "8aec19ecc7f12373acbb4f21340666a7",
+    "semantic_hash": "8aec19ecc7f12373acbb4f21340666a7"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/PlaylistsLibrarySegment/AlbumCard.tsx": {
+    "mtime": 1782073590.767385,
+    "ast_hash": "2fe649b3f5f92aa11b21fb7a31cf3ac7",
+    "semantic_hash": "2fe649b3f5f92aa11b21fb7a31cf3ac7"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/PlaylistsLibrarySegment/PlaylistsLibrarySegment.tsx": {
+    "mtime": 1781891250.2435367,
+    "ast_hash": "6613b4472b89ec18017b2e062252c9e5",
+    "semantic_hash": "6613b4472b89ec18017b2e062252c9e5"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/ManagementHomeSegment/ManagementHomeSegment.tsx": {
+    "mtime": 1780810067.1135235,
+    "ast_hash": "4b747d36bcdd38e53f7f6d89be7fd493",
+    "semantic_hash": "4b747d36bcdd38e53f7f6d89be7fd493"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/entities/song/SongListItem.tsx": {
+    "mtime": 1781879213.0594125,
+    "ast_hash": "81678bdd70c428732dbcb798bdf1bf9e",
+    "semantic_hash": "81678bdd70c428732dbcb798bdf1bf9e"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/entities/song/useListSongs.ts": {
+    "mtime": 1782057279.617688,
+    "ast_hash": "71d338edac5976f94436273941fa006f",
+    "semantic_hash": "71d338edac5976f94436273941fa006f"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/entities/song/useSongListRefresh.ts": {
+    "mtime": 1782057263.2571485,
+    "ast_hash": "0e2e5f108fb791a0faa34be355023508",
+    "semantic_hash": "0e2e5f108fb791a0faa34be355023508"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/entities/song/GhostSong.tsx": {
+    "mtime": 1780684255.2141616,
+    "ast_hash": "6752e9ad3d2e82d29cab100e233fbc31",
+    "semantic_hash": "6752e9ad3d2e82d29cab100e233fbc31"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/entities/song/more/MoreButton.tsx": {
+    "mtime": 1781879083.300314,
+    "ast_hash": "adda9af884db2b53b35060ce9b0191ea",
+    "semantic_hash": "adda9af884db2b53b35060ce9b0191ea"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/entities/user/GeneratedAvatar.tsx": {
+    "mtime": 1780684255.2141588,
+    "ast_hash": "1f77c4bac7d2f37c56e33826c7c52370",
+    "semantic_hash": "1f77c4bac7d2f37c56e33826c7c52370"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/entities/user/User.tsx": {
+    "mtime": 1780684255.214155,
+    "ast_hash": "b3120c8242e3425d8a18813d4e05831a",
+    "semantic_hash": "b3120c8242e3425d8a18813d4e05831a"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/entities/user/useUser.ts": {
+    "mtime": 1781891306.8848395,
+    "ast_hash": "4da723501bf1fc235397088d29a1ee96",
+    "semantic_hash": "4da723501bf1fc235397088d29a1ee96"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs.swagger_ui.go": {
+    "mtime": 1782239896.5349302,
+    "ast_hash": "b5503333e691613e1ff8dd007931fa2e",
+    "semantic_hash": "b5503333e691613e1ff8dd007931fa2e"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/swaggers/zpotify_service_auth.swagger.json": {
+    "mtime": 1782070179.7319624,
+    "ast_hash": "dcda1cf2abfe71a2506e486e4b15bc7e",
+    "semantic_hash": "dcda1cf2abfe71a2506e486e4b15bc7e"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/swaggers/zpotify_api_service.swagger.json": {
+    "mtime": 1775505264.5165484,
+    "ast_hash": "06df79697b69d295d93d14ff1012431d",
+    "semantic_hash": "06df79697b69d295d93d14ff1012431d"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/swaggers/zpotify_auth_service.swagger.json": {
+    "mtime": 1775505264.5169737,
+    "ast_hash": "2f7541663b2751a4435151a492273330",
+    "semantic_hash": "2f7541663b2751a4435151a492273330"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/swaggers/zpotify_user.swagger.json": {
+    "mtime": 1782070179.739776,
+    "ast_hash": "265e1cc1dd81d2167a559126e4aafa5e",
+    "semantic_hash": "265e1cc1dd81d2167a559126e4aafa5e"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/swaggers/zpotify_service_api.swagger.json": {
+    "mtime": 1782070179.7305026,
+    "ast_hash": "cf033b2f960dd4307ee9ce7f1fe489b3",
+    "semantic_hash": "cf033b2f960dd4307ee9ce7f1fe489b3"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/swaggers/zpotify_user_settings.swagger.json": {
+    "mtime": 1782070179.7437756,
+    "ast_hash": "926c21db044a31166a68c4bb66256fcd",
+    "semantic_hash": "926c21db044a31166a68c4bb66256fcd"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/swaggers/zpotify_api.swagger.json": {
+    "mtime": 1775452725.2739909,
+    "ast_hash": "c01a625a0d919ce9f3d40634219640cb",
+    "semantic_hash": "c01a625a0d919ce9f3d40634219640cb"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/swaggers/zpotify_service_artists.swagger.json": {
+    "mtime": 1782070179.7313964,
+    "ast_hash": "aa09d47133b05b83ab160ce693d7a837",
+    "semantic_hash": "aa09d47133b05b83ab160ce693d7a837"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/swaggers/zpotify_service_user.swagger.json": {
+    "mtime": 1782070179.7357197,
+    "ast_hash": "e77328c4127d0e4effea5410506a4239",
+    "semantic_hash": "e77328c4127d0e4effea5410506a4239"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/swaggers/zpotify_common.swagger.json": {
+    "mtime": 1782070179.7268384,
+    "ast_hash": "1be98415490d6bf1f26764d448e57212",
+    "semantic_hash": "1be98415490d6bf1f26764d448e57212"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/swaggers/zpotify_service_playlist.swagger.json": {
+    "mtime": 1782070179.734196,
+    "ast_hash": "67deda6073e29ef4a327557063b42c94",
+    "semantic_hash": "67deda6073e29ef4a327557063b42c94"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/swaggers/zpotify_service_file.swagger.json": {
+    "mtime": 1776244779.9314046,
+    "ast_hash": "491318e4236b1b0a4f3415d0c33b2ef1",
+    "semantic_hash": "491318e4236b1b0a4f3415d0c33b2ef1"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/swaggers/zpotify_service_song.swagger.json": {
+    "mtime": 1782070179.7351995,
+    "ast_hash": "058921b922e535009ad4b33774eb093c",
+    "semantic_hash": "058921b922e535009ad4b33774eb093c"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/swaggers/zpotify_service_files.swagger.json": {
+    "mtime": 1782070179.7332263,
+    "ast_hash": "755a20e119e769235e326404b33cebfc",
+    "semantic_hash": "755a20e119e769235e326404b33cebfc"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/docs.swagger_ui.go": {
+    "mtime": 1780554115.393071,
+    "ast_hash": "b5503333e691613e1ff8dd007931fa2e",
+    "semantic_hash": "b5503333e691613e1ff8dd007931fa2e"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/swaggers/zpotify_service_auth.swagger.json": {
+    "mtime": 1780199226.9377637,
+    "ast_hash": "9a821c774625c9ae0d523ebdb2453144",
+    "semantic_hash": "9a821c774625c9ae0d523ebdb2453144"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/swaggers/zpotify_api_service.swagger.json": {
+    "mtime": 1780199226.938521,
+    "ast_hash": "06df79697b69d295d93d14ff1012431d",
+    "semantic_hash": "06df79697b69d295d93d14ff1012431d"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/swaggers/zpotify_auth_service.swagger.json": {
+    "mtime": 1780199226.939145,
+    "ast_hash": "2f7541663b2751a4435151a492273330",
+    "semantic_hash": "2f7541663b2751a4435151a492273330"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/swaggers/zpotify_user.swagger.json": {
+    "mtime": 1780199226.9397933,
+    "ast_hash": "265e1cc1dd81d2167a559126e4aafa5e",
+    "semantic_hash": "265e1cc1dd81d2167a559126e4aafa5e"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/swaggers/zpotify_service_api.swagger.json": {
+    "mtime": 1780199226.9406033,
+    "ast_hash": "cf033b2f960dd4307ee9ce7f1fe489b3",
+    "semantic_hash": "cf033b2f960dd4307ee9ce7f1fe489b3"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/swaggers/zpotify_user_settings.swagger.json": {
+    "mtime": 1780199226.9411426,
+    "ast_hash": "926c21db044a31166a68c4bb66256fcd",
+    "semantic_hash": "926c21db044a31166a68c4bb66256fcd"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/swaggers/zpotify_api.swagger.json": {
+    "mtime": 1780199226.9417906,
+    "ast_hash": "c01a625a0d919ce9f3d40634219640cb",
+    "semantic_hash": "c01a625a0d919ce9f3d40634219640cb"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/swaggers/zpotify_service_artists.swagger.json": {
+    "mtime": 1780199226.9421778,
+    "ast_hash": "24a8f5de6dd277a9f319feed3980ec4f",
+    "semantic_hash": "24a8f5de6dd277a9f319feed3980ec4f"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/swaggers/zpotify_service_user.swagger.json": {
+    "mtime": 1780199226.942499,
+    "ast_hash": "33765247aa8b9da863b6925707f37e3f",
+    "semantic_hash": "33765247aa8b9da863b6925707f37e3f"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/swaggers/zpotify_common.swagger.json": {
+    "mtime": 1780199226.9429827,
+    "ast_hash": "1be98415490d6bf1f26764d448e57212",
+    "semantic_hash": "1be98415490d6bf1f26764d448e57212"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/swaggers/zpotify_service_playlist.swagger.json": {
+    "mtime": 1780199226.9435897,
+    "ast_hash": "7d2e461763a7711ad299bd2f731f3750",
+    "semantic_hash": "7d2e461763a7711ad299bd2f731f3750"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/swaggers/zpotify_service_file.swagger.json": {
+    "mtime": 1780199226.9440145,
+    "ast_hash": "491318e4236b1b0a4f3415d0c33b2ef1",
+    "semantic_hash": "491318e4236b1b0a4f3415d0c33b2ef1"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/swaggers/zpotify_service_song.swagger.json": {
+    "mtime": 1780199226.9445586,
+    "ast_hash": "008a7086ea289fdf50bc89c992648aac",
+    "semantic_hash": "008a7086ea289fdf50bc89c992648aac"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/docs/docs/swaggers/zpotify_service_files.swagger.json": {
+    "mtime": 1780199226.9448786,
+    "ast_hash": "73e8a0fa49656cae603fbe55f9c9e40d",
+    "semantic_hash": "73e8a0fa49656cae603fbe55f9c9e40d"
+  },
+  "/Users/alexbukov/ruf/zpotify/moti.yaml": {
+    "mtime": 1775215098.3713863,
+    "ast_hash": "75ade9372a601ba41c67bfaa7bea947b",
+    "semantic_hash": "75ade9372a601ba41c67bfaa7bea947b"
+  },
+  "/Users/alexbukov/ruf/zpotify/docker-compose.yaml": {
+    "mtime": 1781852239.7953048,
+    "ast_hash": "afd871deb38b3d09964e204a656ce96d",
+    "semantic_hash": "afd871deb38b3d09964e204a656ce96d"
+  },
+  "/Users/alexbukov/ruf/zpotify/sqlc.yaml": {
+    "mtime": 1782047943.13076,
+    "ast_hash": "dbe42225e52021aa6c6cd10bf61bc85e",
+    "semantic_hash": "dbe42225e52021aa6c6cd10bf61bc85e"
+  },
+  "/Users/alexbukov/ruf/zpotify/easyp.yaml": {
+    "mtime": 1781852538.3079004,
+    "ast_hash": "551a3504adb9e6f2f98d3ec5706b4ed6",
+    "semantic_hash": "551a3504adb9e6f2f98d3ec5706b4ed6"
+  },
+  "/Users/alexbukov/ruf/zpotify/README.md": {
+    "mtime": 1751008996.3867953,
+    "ast_hash": "466f7a0852dcc8d673f0b4d6b2443d8b",
+    "semantic_hash": "466f7a0852dcc8d673f0b4d6b2443d8b"
+  },
+  "/Users/alexbukov/ruf/zpotify/.golangci.yaml": {
+    "mtime": 1781896884.9226906,
+    "ast_hash": "578ad98ff3e83580ca96980fdb89f71b",
+    "semantic_hash": "578ad98ff3e83580ca96980fdb89f71b"
+  },
+  "/Users/alexbukov/ruf/zpotify/CLAUDE.md": {
+    "mtime": 1782459474.944833,
+    "ast_hash": "0ab8b9125e3bf39937bf7fa97ead0a8e",
+    "semantic_hash": "0ab8b9125e3bf39937bf7fa97ead0a8e"
+  },
+  "/Users/alexbukov/ruf/zpotify/config/config.yaml": {
+    "mtime": 1782240359.3978145,
+    "ast_hash": "8a7fede16a99df70825c074fd4ee3903",
+    "semantic_hash": "8a7fede16a99df70825c074fd4ee3903"
+  },
+  "/Users/alexbukov/ruf/zpotify/config/config_template.yaml": {
+    "mtime": 1782240369.3460386,
+    "ast_hash": "70fd9c3fb9567aa8d402668834336133",
+    "semantic_hash": "70fd9c3fb9567aa8d402668834336133"
+  },
+  "/Users/alexbukov/ruf/zpotify/tests/config/config.yaml": {
+    "mtime": 1754810802.5910075,
+    "ast_hash": "27ca3f355cfc0cdccf3720e76340a56b",
+    "semantic_hash": "27ca3f355cfc0cdccf3720e76340a56b"
+  },
+  "/Users/alexbukov/ruf/zpotify/tests/load/load.yaml": {
+    "mtime": 1753731309.0864139,
+    "ast_hash": "95ba1753fccba694245f901d472b8804",
+    "semantic_hash": "95ba1753fccba694245f901d472b8804"
+  },
+  "/Users/alexbukov/ruf/zpotify/.github/workflows/branch-push.yaml": {
+    "mtime": 1751556200.4546013,
+    "ast_hash": "634184f17f1795378645abcba07b89c1",
+    "semantic_hash": "634184f17f1795378645abcba07b89c1"
+  },
+  "/Users/alexbukov/ruf/zpotify/.github/workflows/release.yaml": {
+    "mtime": 1781851342.283749,
+    "ast_hash": "3a3151aa4781ac13d129d7d746dd8496",
+    "semantic_hash": "3a3151aa4781ac13d129d7d746dd8496"
+  },
+  "/Users/alexbukov/ruf/zpotify/.verv/resources.yaml": {
+    "mtime": 1780044179.8772507,
+    "ast_hash": "33cf281768b2d49603980b70fc962e7c",
+    "semantic_hash": "33cf281768b2d49603980b70fc962e7c"
+  },
+  "/Users/alexbukov/ruf/zpotify/.verv/vervonomicon.yaml": {
+    "mtime": 1780043957.1012428,
+    "ast_hash": "97fefbd9a770bfe6c0c5691636810bdd",
+    "semantic_hash": "97fefbd9a770bfe6c0c5691636810bdd"
+  },
+  "/Users/alexbukov/ruf/zpotify/.verv/auth.yaml": {
+    "mtime": 1780043642.832267,
+    "ast_hash": "8ece82fb2b0f8924d31e1444ed418146",
+    "semantic_hash": "8ece82fb2b0f8924d31e1444ed418146"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/moti.yaml": {
+    "mtime": 1775468209.7676072,
+    "ast_hash": "f171e9b72d5a6d377a243023e5c9a9cb",
+    "semantic_hash": "f171e9b72d5a6d377a243023e5c9a9cb"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/index.html": {
+    "mtime": 1751555286.4464295,
+    "ast_hash": "1818d72147974d7fb66fe2aa2c2f3b31",
+    "semantic_hash": "1818d72147974d7fb66fe2aa2c2f3b31"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/README.md": {
+    "mtime": 1751045989.0182083,
+    "ast_hash": "bc5635d768227ab0d338f67fa70b991d",
+    "semantic_hash": "bc5635d768227ab0d338f67fa70b991d"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/CLAUDE.md": {
+    "mtime": 1782120092.995361,
+    "ast_hash": "91656d1f9097896585891b8326bf5ea3",
+    "semantic_hash": "91656d1f9097896585891b8326bf5ea3"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/.agents/manifesto.md": {
+    "mtime": 1775540340.8459032,
+    "ast_hash": "2892491dbe37417b3a1c7debeab21739",
+    "semantic_hash": "2892491dbe37417b3a1c7debeab21739"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/.claude/tasks/design_handoff_album_page/README.md": {
+    "mtime": 1780777148.0,
+    "ast_hash": "2db9806f69d75b1daa89e11358eb5da2",
+    "semantic_hash": "2db9806f69d75b1daa89e11358eb5da2"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/.claude/tasks/design_handoff_album_page/Album Page Desktop.html": {
+    "mtime": 1780777148.0,
+    "ast_hash": "4a2eb0b3d6a16c7462dd28d17d671e7c",
+    "semantic_hash": "4a2eb0b3d6a16c7462dd28d17d671e7c"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/type-scale.html": {
+    "mtime": 1780571581.305457,
+    "ast_hash": "9f761ff8790fa7a110bcfb7df4cc5a85",
+    "semantic_hash": "9f761ff8790fa7a110bcfb7df4cc5a85"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/public/logo.svg": {
+    "mtime": 1751964094.1081064,
+    "ast_hash": "704bc38e48d69d44956e90dee1a37b9b",
+    "semantic_hash": "704bc38e48d69d44956e90dee1a37b9b"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/pen.svg": {
+    "mtime": 1775762528.1295059,
+    "ast_hash": "1d217b4786b0fb7ad413ffda18ba36d5",
+    "semantic_hash": "1d217b4786b0fb7ad413ffda18ba36d5"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/TgLogo.png": {
+    "mtime": 1573766876.0,
+    "ast_hash": "08412639439510ebb7b148b44ce6778b",
+    "semantic_hash": "08412639439510ebb7b148b44ce6778b"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/icons/github.svg": {
+    "mtime": 1776838013.9214365,
+    "ast_hash": "2d4166a34e3de4fca0fcdfd61090b502",
+    "semantic_hash": "2d4166a34e3de4fca0fcdfd61090b502"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/icons/lock.svg": {
+    "mtime": 1776837999.365861,
+    "ast_hash": "4cdda691bf488eb9f4e2fb1f3d779bce",
+    "semantic_hash": "4cdda691bf488eb9f4e2fb1f3d779bce"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/icons/telegram.svg": {
+    "mtime": 1776837997.801699,
+    "ast_hash": "d9cc8f2d01120631456a99e3a2209a5a",
+    "semantic_hash": "d9cc8f2d01120631456a99e3a2209a5a"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/icons/google.svg": {
+    "mtime": 1776838004.1622987,
+    "ast_hash": "e2b3b1582ca38a0cfe0d75f121590e27",
+    "semantic_hash": "e2b3b1582ca38a0cfe0d75f121590e27"
+  },
+  "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/assets/icons/apple.svg": {
+    "mtime": 1776838009.2770326,
+    "ast_hash": "4642100e5cc8217b86a89463064c1c03",
+    "semantic_hash": "4642100e5cc8217b86a89463064c1c03"
+  }
+}
