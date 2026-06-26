@@ -2,17 +2,53 @@
     display: flex;
     flex-direction: column;
     aspect-ratio: 1 / 1;
-    overflow: hidden;
+
     background: var(--color-bg-card);
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius-md);
     cursor: pointer;
     transition: all var(--ease-quick);
 
+    position: relative;
+
     &:hover {
         border-color: var(--color-border-light);
         transform: translateY(-2px);
     }
+
+
+    .CoverImage {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: var(--border-radius-md);
+        transition: border-radius var(--ease-quick-half);
+        transition-delay: var(--ease-quick-half);
+    }
+    &:hover .CoverImage {
+        border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+    }
+
+
+    .Footer {
+        position: absolute;
+
+        width: 100%;
+        bottom: 0;
+        background: var(--album-footer-bg);
+        flex-shrink: 0;
+        padding: 0.4rem 0.55rem 0.5rem;
+        max-height: 4rem;
+        overflow: hidden;
+        transition: border-radius var(--ease-quick), transform var(--ease-quick);
+
+        border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+        box-shadow: 0 -0.5rem 1.5rem var(--color-shadow-deep);
+    }
+    &:hover .Footer {
+        transform: translateY(100%);
+    }
+
 }
 
 .CoverWrapper {
@@ -21,17 +57,6 @@
     overflow: hidden;
 }
 
-.CoverImage {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.Footer {
-    flex-shrink: 0;
-    padding: 0.4rem 0.55rem 0.5rem;
-}
 
 .Name {
     font-size: var(--font-size-sm);
