@@ -4,6 +4,8 @@ import cls from '@/widgets/User/UserWidget.module.css';
 import useUser from '@/entities/user/useUser.ts';
 import GeneratedAvatar from '@/entities/user/GeneratedAvatar.tsx';
 import Menu from '@/components/menu/Menu.tsx';
+import { useDialog } from '@/app/hooks/Dialog.tsx';
+import SettingsDialog from '@/dialogs/Settings/SettingsDialog.tsx';
 
 export default function UserWidget() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,10 +13,16 @@ export default function UserWidget() {
 
     const userData = useUser((state) => state.userData);
     const logout = useUser((state) => state.logout);
+    const { OpenDialog } = useDialog();
+
+    function openSettings() {
+        setIsMenuOpen(false);
+        OpenDialog(<SettingsDialog />);
+    }
 
     const menuOptions = [
         { label: 'Profile', disabled: true },
-        { label: 'Settings', disabled: true },
+        { label: 'Settings', onClick: openSettings },
         {},
         { label: 'Logout', onClick: logout },
     ];

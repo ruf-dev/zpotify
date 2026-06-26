@@ -188,3 +188,11 @@ p, .t-body {
         background-position: 0 50%;
     }
 }
+
+
+/* Chures overrides*/
+:root {
+    --chures-accent: #fafdff;
+    --chures-toggle-bg-off: #fafdff ;
+    --chures-toggle-bg-on: #fafdff;
+}
