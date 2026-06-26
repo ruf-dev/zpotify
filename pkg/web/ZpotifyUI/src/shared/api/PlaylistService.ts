@@ -29,7 +29,7 @@ export class PlaylistService extends BaseService implements IPlaylistService {
         shuffleHash: string | undefined,
     ): Promise<ListSongsResponse> {
         const req = {
-            uuid: uuid,
+            playlistUuid: uuid,
             paging: {
                 limit: limit.toString(),
                 offset: offset.toString(),

@@ -32,5 +32,9 @@ func (impl *Impl) GetPlaylist(ctx context.Context, req *zpotify_api.GetPlaylist_
 		Artists:     protoArtists,
 	}
 
+	if playlist.CoverFilePath != "" {
+		protoPlaylist.CoverFilePath = toolbox.ToPtr(playlist.CoverFilePath)
+	}
+
 	return &zpotify_api.GetPlaylist_Response{Playlist: protoPlaylist}, nil
 }

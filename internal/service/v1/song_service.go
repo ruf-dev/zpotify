@@ -73,6 +73,12 @@ func (s *AudioService) Create(ctx context.Context, req domain.CreateSong) (int64
 			return rerrors.Wrap(err, "error during song finalization")
 		}
 
+		playlistStorage := s.playlistStorage.WithTx(tx)
+		err = playlistStorage.AddSong(ctx, domain.GlobalPlaylistUuid, int32(songId))
+		if err != nil {
+			return rerrors.Wrap(err, "error adding song to global playlist")
+		}
+
 		return nil
 	})
 	if err != nil {
@@ -122,6 +128,14 @@ func (s *AudioService) CreateBatch(ctx context.Context, reqs []domain.CreateSong
 				}
 			}
 
+			playlistStorage := s.playlistStorage.WithTx(tx)
+			for i := len(songIds) - 1; i >= 0; i-- {
+				err = playlistStorage.AddSong(ctx, domain.GlobalPlaylistUuid, int32(songIds[i]))
+				if err != nil {
+					return rerrors.Wrap(err, "error adding song to global playlist")
+				}
+			}
+
 			ids = append(ids, songIds...)
 
 			return nil
@@ -141,7 +155,6 @@ func (s *AudioService) finalizeSong(
 ) error {
 	songsStorage := s.songsStorage.WithTx(tx)
 	fileMetaStorage := s.fileMetaStorage.WithTx(tx)
-	playlistStorage := s.playlistStorage.WithTx(tx)
 
 	fileMeta, err := fileMetaStorage.Get(ctx, req.FileID)
 	if err != nil {
@@ -182,11 +195,6 @@ func (s *AudioService) finalizeSong(
 		if err != nil {
 			return rerrors.Wrap(err, "error adding artist to song", artistUuid)
 		}
-	}
-
-	err = playlistStorage.AddSong(ctx, domain.GlobalPlaylistUuid, int32(songId))
-	if err != nil {
-		return rerrors.Wrap(err, "error adding song to global playlist")
 	}
 
 	jobStorage := s.jobStorage.WithTx(tx)

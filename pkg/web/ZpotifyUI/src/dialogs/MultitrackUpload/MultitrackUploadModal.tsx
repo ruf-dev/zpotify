@@ -286,9 +286,9 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                 );
                 const playlistUuid = playlist.uuid ?? '';
 
-                await Promise.all(
-                    songIds.map((id) => playlistService.AddSongToPlaylist(playlistUuid, parseInt(id, 10))),
-                );
+                for (const id of songIds) {
+                    await playlistService.AddSongToPlaylist(playlistUuid, parseInt(id, 10));
+                }
             }
 
             setTimeout(() => {

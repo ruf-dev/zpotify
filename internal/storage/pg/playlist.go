@@ -211,6 +211,10 @@ func (p *PlaylistStorage) Get(ctx context.Context, userId int64, playlistUuid st
 		playlist.CoverFileId = &row.CoverFileID.Int64
 	}
 
+	if row.CoverFilePath.Valid {
+		playlist.CoverFilePath = row.CoverFilePath.String
+	}
+
 	artists, err := p.GetPlaylistArtists(ctx, playlistUuid)
 	if err != nil {
 		return domain.Playlist{}, rerrors.Wrap(err, "error getting playlist artists")

@@ -21,7 +21,7 @@ func (impl *Impl) ListSongs(ctx context.Context, req *zpotify_api.ListSongs_Requ
 		RandomHash: req.RandomHash,
 
 		OrderBy: domain.SongsOrderByOrderNumber,
-		Desc:    true,
+		Desc:    req.PlaylistUuid == nil,
 	}
 
 	list, err := impl.playlistService.ListSongs(ctx, listReq)

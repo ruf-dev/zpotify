@@ -14,15 +14,17 @@ RETURNING playlist_id;
 
 
 -- name: GetPlaylistWithAuth :one
-SELECT uuid,
-       name,
-       description,
-       is_public,
-       cover_file_id
+SELECT playlists.uuid,
+       playlists.name,
+       playlists.description,
+       playlists.is_public,
+       playlists.cover_file_id,
+       fm.file_path AS cover_file_path
 FROM playlists
          LEFT JOIN user_playlists AS up
                    ON up.playlist_id = playlists.uuid
                        AND user_id = $1
+         LEFT JOIN files_meta fm ON fm.id = playlists.cover_file_id
 WHERE playlists.uuid = $2
   AND (
     playlists.is_public

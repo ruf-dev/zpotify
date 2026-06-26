@@ -68,7 +68,7 @@ const MOCK_COMMENTS: MockComment[] = [
 /* ── Helpers ─────────────────────────────────────────────── */
 
 function resolveCoverSeed(playlist: Playlist): number {
-    const fileId = playlist.coverFileId ?? '';
+    const fileId = playlist.coverFilePath ?? '';
     const match = fileId.match(/^generative:(\d+)$/);
     if (match) {
         return parseInt(match[1], 10);
