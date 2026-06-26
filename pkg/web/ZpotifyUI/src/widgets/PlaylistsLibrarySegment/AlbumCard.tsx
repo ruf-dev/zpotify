@@ -9,11 +9,12 @@ interface AlbumCardProps {
     name: string;
     artistNames: string;
     seed: number;
+    coverUrl?: string;
     onClick: () => void;
     onArtistClick: (e: React.MouseEvent) => void;
 }
 
-export default function AlbumCard({ name, artistNames, seed, onClick, onArtistClick }: AlbumCardProps) {
+export default function AlbumCard({ name, artistNames, seed, coverUrl, onClick, onArtistClick }: AlbumCardProps) {
     function handleArtistClick(e: React.MouseEvent) {
         e.stopPropagation();
         onArtistClick(e);
@@ -22,7 +23,11 @@ export default function AlbumCard({ name, artistNames, seed, onClick, onArtistCl
     return (
         <div className={cn(cls.AlbumCardContainer)} onClick={onClick}>
             <div className={cls.CoverWrapper}>
-                <GenerativeCover seed={seed} />
+                {coverUrl ? (
+                    <img src={coverUrl} alt={name} className={cls.CoverImage} />
+                ) : (
+                    <GenerativeCover seed={seed} />
+                )}
             </div>
             <div className={cls.Footer}>
                 <p className={cls.Name}>{name}</p>

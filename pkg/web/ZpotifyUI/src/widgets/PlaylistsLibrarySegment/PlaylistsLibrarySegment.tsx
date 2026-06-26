@@ -9,6 +9,7 @@ import {ServiceError} from '@/shared/api/Errors.ts';
 import {playlistService} from '@/shared/api/PlaylistService.ts';
 import AlbumCard from '@/widgets/PlaylistsLibrarySegment/AlbumCard.tsx';
 import PlaylistCardWide from '@/widgets/PlaylistsLibrarySegment/PlaylistCardWide.tsx';
+import PlaylistsLibrarySegmentSkeleton from '@/widgets/PlaylistsLibrarySegment/PlaylistsLibrarySegmentSkeleton.tsx';
 
 type TrackPreview = { title: string; artist: string };
 
@@ -18,11 +19,18 @@ type PlaylistData = {
     description?: string;
     artists?: Array<{ name?: string }>;
     songCount?: number;
+    coverFilePath?: string;
 };
 
 type LibraryItem =
     | { kind: 'playlist'; playlist: PlaylistData; tracks: TrackPreview[] }
     | { kind: 'album'; playlist: PlaylistData };
+
+function buildCoverUrl(filePath?: string): string | undefined {
+    if (!filePath) return undefined;
+    const base = (import.meta.env.VITE_ZPOTIFY_WEBSERVER as string | undefined) ?? '';
+    return `${base}/${filePath}`;
+}
 
 function uuidToSeed(uuid: string): number {
     let sum = 0;
@@ -104,7 +112,7 @@ export default function PlaylistsLibrarySegment() {
     }, []);
 
     if (loading) {
-        return <div className={cls.PlaylistsLibrarySegmentContainer}/>;
+        return <PlaylistsLibrarySegmentSkeleton />;
     }
 
     if (items.length === 0) {
@@ -132,6 +140,7 @@ export default function PlaylistsLibrarySegment() {
                                 name={playlist.name ?? ''}
                                 artistNames={artistNames}
                                 seed={seed}
+                                coverUrl={buildCoverUrl(playlist.coverFilePath)}
                                 onClick={function handleAlbumClick() {
                                     navigate(albumPath(uuid));
                                 }}
@@ -150,6 +159,7 @@ export default function PlaylistsLibrarySegment() {
                             songCount={playlist.songCount}
                             description={playlist.description}
                             seed={seed}
+                            coverUrl={buildCoverUrl(playlist.coverFilePath)}
                             tracks={item.tracks}
                             onClick={function handlePlaylistClick() {
                                 navigate(playlistPath(uuid));

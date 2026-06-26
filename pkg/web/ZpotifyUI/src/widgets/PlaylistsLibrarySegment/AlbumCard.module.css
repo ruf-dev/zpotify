@@ -21,6 +21,13 @@
     overflow: hidden;
 }
 
+.CoverImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .Footer {
     flex-shrink: 0;
     padding: 0.4rem 0.55rem 0.5rem;

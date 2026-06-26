@@ -6,13 +6,14 @@ type PlaylistPermissions struct {
 }
 
 type Playlist struct {
-	Uuid        string
-	Name        string
-	Description string
-	IsPublic    bool
-	Artists     []ArtistsBase
-	CoverFileId *int64
-	SongCount   *int32
+	Uuid          string
+	Name          string
+	Description   string
+	IsPublic      bool
+	Artists       []ArtistsBase
+	CoverFileId   *int64
+	CoverFilePath string
+	SongCount     *int32
 }
 
 type CreatePlaylistParams struct {

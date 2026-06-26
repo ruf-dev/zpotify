@@ -11,6 +11,7 @@ interface PlaylistCardWideProps {
     songCount: number | undefined;
     description: string | undefined;
     seed: number;
+    coverUrl?: string;
     tracks: Array<{ title: string; artist: string }>;
     onClick: () => void;
 }
@@ -50,6 +51,7 @@ export default function PlaylistCardWide({
     songCount,
     description,
     seed,
+    coverUrl,
     tracks,
     onClick,
 }: PlaylistCardWideProps) {
@@ -58,7 +60,11 @@ export default function PlaylistCardWide({
     return (
         <div className={cls.PlaylistCardWideContainer} onClick={onClick}>
             <div className={cls.CoverWrapper}>
-                <GenerativeCover seed={seed} />
+                {coverUrl ? (
+                    <img src={coverUrl} alt={name} className={cls.CoverImage} />
+                ) : (
+                    <GenerativeCover seed={seed} />
+                )}
             </div>
             <div className={cls.Content}>
                 <div className={cls.Header}>

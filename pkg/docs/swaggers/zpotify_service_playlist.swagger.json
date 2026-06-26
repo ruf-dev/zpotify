@@ -479,14 +479,13 @@
             "$ref": "#/definitions/zpotify_apiArtistBase"
           }
         },
-        "coverFileId": {
-          "type": "string",
-          "format": "int64"
-        },
         "songCount": {
           "type": "integer",
           "format": "int32",
           "title": "TODO: Implement — populate song count when returning playlists"
+        },
+        "coverFilePath": {
+          "type": "string"
         }
       }
     },

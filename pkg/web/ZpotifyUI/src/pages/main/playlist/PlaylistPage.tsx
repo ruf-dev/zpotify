@@ -22,6 +22,12 @@ function resolveCoverSeed(playlist: Playlist): number {
     return (uuid.charCodeAt(0) % 7) + 1;
 }
 
+function buildCoverUrl(filePath?: string): string | undefined {
+    if (!filePath) return undefined;
+    const base = (import.meta.env.VITE_ZPOTIFY_WEBSERVER as string | undefined) ?? '';
+    return `${base}/${filePath}`;
+}
+
 interface PlaylistSidebarProps {
     playlist: Playlist;
     username: string;
@@ -29,11 +35,16 @@ interface PlaylistSidebarProps {
 
 function PlaylistSidebar({ playlist, username }: PlaylistSidebarProps) {
     const seed = resolveCoverSeed(playlist);
+    const coverUrl = buildCoverUrl(playlist.coverFilePath);
 
     return (
         <div className={cls.Sidebar}>
             <div className={cls.CoverWrapper}>
-                <GenerativeCover seed={seed} size={220} borderRadius="0" />
+                {coverUrl ? (
+                    <img src={coverUrl} alt={playlist.name} className={cls.CoverImage} />
+                ) : (
+                    <GenerativeCover seed={seed} size={220} borderRadius="0" />
+                )}
             </div>
 
             <div className={cls.TitleBlock}>

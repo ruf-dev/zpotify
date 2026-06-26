@@ -47,13 +47,18 @@ func toPlaylist(pl domain.Playlist) *zpotify_api.Playlist {
 		songCount = toolbox.ToPtr(*pl.SongCount)
 	}
 
+	var coverFilePath *string
+	if pl.CoverFilePath != "" {
+		coverFilePath = toolbox.ToPtr(pl.CoverFilePath)
+	}
+
 	return &zpotify_api.Playlist{
-		Uuid:        pl.Uuid,
-		Name:        pl.Name,
-		Description: toolbox.ToPtr(pl.Description),
-		IsPublic:    pl.IsPublic,
-		Artists:     protoArtists,
-		CoverFileId: pl.CoverFileId,
-		SongCount:   songCount,
+		Uuid:          pl.Uuid,
+		Name:          pl.Name,
+		Description:   toolbox.ToPtr(pl.Description),
+		IsPublic:      pl.IsPublic,
+		Artists:       protoArtists,
+		SongCount:     songCount,
+		CoverFilePath: coverFilePath,
 	}
 }

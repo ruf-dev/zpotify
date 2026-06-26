@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"path"
 
+	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
 	"go.redsock.ru/toolbox"
 
@@ -96,6 +97,8 @@ func (p *PlaylistService) Get(ctx context.Context, playlistUuid string) (domain.
 	if err != nil {
 		return domain.Playlist{}, rerrors.Wrap(err, "error reading playlist info")
 	}
+
+	p.resolveCoverPath(ctx, &playlist)
 
 	return playlist, nil
 }
@@ -240,12 +243,30 @@ func (p *PlaylistService) List(ctx context.Context, req domain.ListPlaylists) (d
 		return domain.ListPlaylistsResult{}, rerrors.Wrap(err, "error counting playlists from storage")
 	}
 
+	for i := range playlists {
+		p.resolveCoverPath(ctx, &playlists[i])
+	}
+
 	result := domain.ListPlaylistsResult{
 		Playlists: playlists,
 		Total:     total,
 	}
 
 	return result, nil
+}
+
+func (p *PlaylistService) resolveCoverPath(ctx context.Context, pl *domain.Playlist) {
+	if pl.CoverFileId == nil {
+		return
+	}
+
+	meta, err := p.fileMetaStorage.Get(ctx, *pl.CoverFileId)
+	if err != nil {
+		log.Warn().Err(err).Int64("cover_file_id", *pl.CoverFileId).Msg("failed to resolve cover file path")
+		return
+	}
+
+	pl.CoverFilePath = meta.FilePath
 }
 
 func (p *PlaylistService) moveCoverFile(

@@ -31,8 +31,8 @@ export type Playlist = {
   description?: string;
   isPublic?: boolean;
   artists?: ArtistBase[];
-  coverFileId?: string;
   songCount?: number;
+  coverFilePath?: string;
 };
 
 export type SongFile = {

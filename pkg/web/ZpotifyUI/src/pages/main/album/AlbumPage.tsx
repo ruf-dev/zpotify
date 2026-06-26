@@ -77,6 +77,12 @@ function resolveCoverSeed(playlist: Playlist): number {
     return (uuid.charCodeAt(0) % 7) + 1;
 }
 
+function buildCoverUrl(filePath?: string): string | undefined {
+    if (!filePath) return undefined;
+    const base = (import.meta.env.VITE_ZPOTIFY_WEBSERVER as string | undefined) ?? '';
+    return `${base}/${filePath}`;
+}
+
 function formatDuration(sec: number): string {
     const m = Math.floor(sec / 60);
     const s = sec % 60;
@@ -168,6 +174,7 @@ interface AlbumSidebarProps {
 
 function AlbumSidebar({ playlist, totalDuration, saved, onToggleSave, onBack, onPlay }: AlbumSidebarProps) {
     const seed = resolveCoverSeed(playlist);
+    const coverUrl = buildCoverUrl(playlist.coverFilePath);
     const artistName = playlist.artists?.[0]?.name ?? 'Unknown Artist';
     const [aboutExpanded, setAboutExpanded] = useState(false);
 
@@ -180,7 +187,11 @@ function AlbumSidebar({ playlist, totalDuration, saved, onToggleSave, onBack, on
             <BackButton onClick={onBack} />
 
             <div className={cls.CoverWrapper}>
-                <GenerativeCover seed={seed} size={220} borderRadius="0" />
+                {coverUrl ? (
+                    <img src={coverUrl} alt={playlist.name} className={cls.CoverImage} />
+                ) : (
+                    <GenerativeCover seed={seed} size={220} borderRadius="0" />
+                )}
             </div>
 
             <div className={cls.TitleBlock}>

@@ -30,7 +30,6 @@ func (impl *Impl) GetPlaylist(ctx context.Context, req *zpotify_api.GetPlaylist_
 		Description: toolbox.ToPtr(playlist.Description),
 		IsPublic:    playlist.IsPublic,
 		Artists:     protoArtists,
-		CoverFileId: playlist.CoverFileId,
 	}
 
 	return &zpotify_api.GetPlaylist_Response{Playlist: protoPlaylist}, nil
