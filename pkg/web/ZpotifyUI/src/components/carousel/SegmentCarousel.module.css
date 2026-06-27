@@ -38,7 +38,7 @@
 .Disabled {
     overflow-x: hidden;
     scroll-snap-type: none;
-    --carousel-card-width: 90vw;
+    --carousel-card-width: 90%;
 }
 
 .CardContent {

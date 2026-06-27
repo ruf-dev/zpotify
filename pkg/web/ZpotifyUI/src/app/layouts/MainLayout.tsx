@@ -27,25 +27,27 @@ export default function MainLayout() {
 
     return (
         <div className={cls.MainLayoutContainer}>
-            <div className={cls.LayoutRow}>
-                {showSidebar && <SidebarSegment />}
                 <div className={cls.MainArea}>
-                    <div className={cls.Header}>
-                        <HeaderPart/>
-                    </div>
-                    <div className={cls.Content}>
-                        <Outlet/>
-                    </div>
+                    {showSidebar && <SidebarSegment/>}
+
+                    <div className={cls.CenterContent}>
+                        <div className={cls.Header}>
+                            <HeaderPart/>
+                        </div>
+                        <div className={cls.Content}>
+                            <Outlet/>
+                        </div>
                 </div>
-                {showQueuePanel && <QueuePanelWidget />}
             </div>
-            {showPlayerBar ? (
-                <PlayerBarSegment />
-            ) : (
+            {showPlayerBar && <div className={cls.PlayerBar}><PlayerBarSegment/></div>}
+
+            {!showPlayerBar &&
                 <div className={cls.Player}>
                     <MusicPlayerWithLogo audioPlayer={audioPlayer}/>
                 </div>
-            )}
+            }
+
+            {showQueuePanel && <QueuePanelWidget/>}
         </div>
     );
 }

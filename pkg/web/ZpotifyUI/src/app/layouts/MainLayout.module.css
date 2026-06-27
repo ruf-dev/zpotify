@@ -5,19 +5,19 @@
     overflow: hidden;
 }
 
-.LayoutRow {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-    min-height: 0;
-}
 
 .MainArea {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex: 1;
     overflow: hidden;
     min-width: 0;
+
+    .CenterContent {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
 }
 
 .Header {
@@ -27,7 +27,9 @@
 
 .Content {
     flex: 1;
-    overflow-y: auto;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
 }
 
 /* Legacy player pill — shown when PlayerBar segment is off */
@@ -37,4 +39,9 @@
     align-items: center;
     padding: var(--space-sm) 0 var(--space-md);
     flex-shrink: 0;
+}
+
+
+.PlayerBar {
+
 }
