@@ -1,0 +1,122 @@
+.QueuePanelContainer {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    width: 15.5rem;
+    height: 100%;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.32);
+    backdrop-filter: blur(20px) saturate(1.1);
+    border-left: 1px solid var(--color-border);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.QueuePanelContainerClosed {
+    width: 0;
+    border-left-color: transparent;
+}
+
+/* Header */
+
+.QueueHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    padding: var(--space-lg) 1.125rem 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.QueueLabel {
+    font-size: 0.4375rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-fg-tertiary);
+}
+
+.CloseButton {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    color: var(--color-fg-tertiary);
+    line-height: 1;
+    transition: color var(--ease-quick);
+
+    &:hover {
+        color: var(--color-fg-primary);
+    }
+}
+
+/* Track list */
+
+.QueueTrackList {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-sm) var(--space-10);
+}
+
+.TrackRow {
+    display: grid;
+    grid-template-columns: 2rem 1.6875rem 1fr auto;
+    gap: 0.5rem;
+    padding: 0.45rem 0.5rem;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background var(--ease-quick);
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.045);
+    }
+}
+
+.TrackIndex {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-disabled);
+    text-align: center;
+    align-self: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.TrackCover {
+    width: 1.6875rem;
+    height: 1.6875rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.TrackInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+}
+
+.TrackTitle {
+    font-size: var(--font-size-sm);
+    font-weight: 400;
+    color: var(--color-fg-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.TrackArtist {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.TrackDuration {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    align-self: center;
+}

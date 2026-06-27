@@ -31,11 +31,11 @@ export default function MainLayout() {
                     {showSidebar && <SidebarSegment/>}
 
                     <div className={cls.CenterContent}>
-                        <div className={cls.Header}>
-                            <HeaderPart/>
-                        </div>
                         <div className={cls.Content}>
                             <Outlet/>
+                        </div>
+                        <div className={cls.Header}>
+                            <HeaderPart/>
                         </div>
                 </div>
             </div>
