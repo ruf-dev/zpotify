@@ -1,6 +1,6 @@
 import cn from 'classnames';
 
-import cls from '@/widgets/PlaylistsLibrarySegment/AlbumCard.module.css';
+import cls from '@/widgets/PlaylistsLibrarySegment/components/AlbumCard/AlbumCard.module.css';
 import skeletonCls from '@/widgets/PlaylistsLibrarySegment/Skeleton.module.css';
 
 export default function AlbumCardSkeleton() {

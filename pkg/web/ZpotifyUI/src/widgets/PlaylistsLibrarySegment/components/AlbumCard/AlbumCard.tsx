@@ -1,27 +1,25 @@
+import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 
+import { albumPath } from '@/app/routing/paths.ts';
 import GenerativeCover from '@/shared/ui/GenerativeCover.tsx';
+import type { AlbumCardProps } from '@/widgets/PlaylistsLibrarySegment/model.ts';
 
-import cls from '@/widgets/PlaylistsLibrarySegment/AlbumCard.module.css';
+import cls from '@/widgets/PlaylistsLibrarySegment/components/AlbumCard/AlbumCard.module.css';
 
-interface AlbumCardProps {
-    uuid: string;
-    name: string;
-    artistNames: string;
-    seed: number;
-    coverUrl?: string;
-    onClick: () => void;
-    onArtistClick: (e: React.MouseEvent) => void;
-}
+export default function AlbumCard({ uuid, name, artistNames, seed, coverUrl }: AlbumCardProps) {
+    const navigate = useNavigate();
 
-export default function AlbumCard({ name, artistNames, seed, coverUrl, onClick, onArtistClick }: AlbumCardProps) {
+    function handleClick() {
+        navigate(albumPath(uuid));
+    }
+
     function handleArtistClick(e: React.MouseEvent) {
         e.stopPropagation();
-        onArtistClick(e);
     }
 
     return (
-        <div className={cn(cls.AlbumCardContainer)} onClick={onClick}>
+        <div className={cn(cls.AlbumCardContainer)} onClick={handleClick}>
             <div className={cls.CoverWrapper}>
                 {coverUrl ? (
                     <img src={coverUrl} alt={name} className={cls.CoverImage} />

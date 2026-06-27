@@ -1,20 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 
+import { playlistPath } from '@/app/routing/paths.ts';
 import GenerativeCover from '@/shared/ui/GenerativeCover.tsx';
+import type { PlaylistCardWideProps } from '@/widgets/PlaylistsLibrarySegment/model.ts';
 
-import cls from '@/widgets/PlaylistsLibrarySegment/PlaylistCardWide.module.css';
-
-interface PlaylistCardWideProps {
-    uuid: string;
-    name: string;
-    songCount: number | undefined;
-    description: string | undefined;
-    seed: number;
-    coverUrl?: string;
-    tracks: Array<{ title: string; artist: string }>;
-    onClick: () => void;
-}
+import cls from '@/widgets/PlaylistsLibrarySegment/components/PlaylistCardWide/PlaylistCardWide.module.css';
 
 interface TrackRowProps {
     index: number;
@@ -47,18 +39,23 @@ function TrackRow({ index, title, artist }: TrackRowProps) {
 }
 
 export default function PlaylistCardWide({
+    uuid,
     name,
     songCount,
     description,
     seed,
     coverUrl,
     tracks,
-    onClick,
 }: PlaylistCardWideProps) {
+    const navigate = useNavigate();
     const subText = `${songCount ?? '?'} tracks${description ? ` · ${description}` : ''}`;
 
+    function handleClick() {
+        navigate(playlistPath(uuid));
+    }
+
     return (
-        <div className={cls.PlaylistCardWideContainer} onClick={onClick}>
+        <div className={cls.PlaylistCardWideContainer} onClick={handleClick}>
             <div className={cls.CoverWrapper}>
                 {coverUrl ? (
                     <img src={coverUrl} alt={name} className={cls.CoverImage} />

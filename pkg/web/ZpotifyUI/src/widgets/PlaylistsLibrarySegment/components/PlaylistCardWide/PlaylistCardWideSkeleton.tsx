@@ -1,6 +1,6 @@
 import cn from 'classnames';
 
-import cls from '@/widgets/PlaylistsLibrarySegment/PlaylistCardWide.module.css';
+import cls from '@/widgets/PlaylistsLibrarySegment/components/PlaylistCardWide/PlaylistCardWide.module.css';
 import skeletonCls from '@/widgets/PlaylistsLibrarySegment/Skeleton.module.css';
 
 export default function PlaylistCardWideSkeleton() {
