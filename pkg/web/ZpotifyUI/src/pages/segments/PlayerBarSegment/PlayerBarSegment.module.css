@@ -24,7 +24,7 @@
 }
 
 .PlayerBarContainer {
-    height: 4.25rem;
+    height: var(--player-bar-height);
     width: 100%;
     background: rgba(0, 0, 0, 0.78);
     backdrop-filter: blur(1.75rem) saturate(1.1);

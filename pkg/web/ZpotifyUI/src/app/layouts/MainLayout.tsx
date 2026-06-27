@@ -1,4 +1,5 @@
 import {Outlet, useNavigate} from 'react-router-dom';
+import cn from 'classnames';
 import cls from '@/app/layouts/MainLayout.module.css'
 import useUser from "@/entities/user/useUser.ts";
 import {useEffect} from "react";
@@ -27,25 +28,29 @@ export default function MainLayout() {
 
     return (
         <div className={cls.MainLayoutContainer}>
-                <div className={cls.MainArea}>
-                    {showSidebar && <SidebarSegment/>}
+            <div className={cls.MainArea}>
+                {showSidebar && <SidebarSegment/>}
 
-                    <div className={cls.CenterContent}>
-                        <div className={cls.Content}>
-                            <Outlet/>
-                        </div>
-                        <div className={cls.Header}>
-                            <HeaderPart/>
-                        </div>
+                <div className={cls.CenterContent}>
+                    <div className={cls.Content}>
+                        <Outlet/>
+                    </div>
+                    <div className={cls.Header}>
+                        <HeaderPart/>
+                    </div>
                 </div>
             </div>
-            {showPlayerBar && <div className={cls.PlayerBar}><PlayerBarSegment/></div>}
 
-            {!showPlayerBar &&
+            <div className={cn(cls.PlayerBarSpacer, showPlayerBar && cls.PlayerBarSpacerVisible)}/>
+            <div className={cn(cls.PlayerBar, showPlayerBar && cls.PlayerBarVisible)}>
+                <PlayerBarSegment/>
+            </div>
+
+            {!showPlayerBar && (
                 <div className={cls.Player}>
                     <MusicPlayerWithLogo audioPlayer={audioPlayer}/>
                 </div>
-            }
+            )}
 
             {showQueuePanel && <QueuePanelWidget/>}
         </div>
