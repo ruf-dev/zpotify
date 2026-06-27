@@ -96,6 +96,7 @@ export default function SegmentCarousel({activeIdx, count, onChange, renderSlide
                                 className={cn(cls.CardContent, {
                                     [cls.Scrollable]: isActive,
                                 })}
+                                style={isActive ? undefined : {pointerEvents: 'none'}}
                             >
                                 {renderSlide(idx, isActive)}
                             </div>
