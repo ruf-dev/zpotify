@@ -35,6 +35,12 @@
     }
 }
 
+.Disabled {
+    overflow-x: hidden;
+    scroll-snap-type: none;
+    --carousel-card-width: 90vw;
+}
+
 .CardContent {
     flex: 1;
     overflow-y: hidden;

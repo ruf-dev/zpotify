@@ -47,6 +47,32 @@ pages / dialogs  →  widgets  →  features  →  entities  →  components  �
 - Group tightly-coupled subcomponents into named subfolders (e.g. `widgets/MusicPlayer/buttons/`).
 - No mandatory `ui/`, `model/`, `lib/` segments inside a slice — add them only when grouping is needed.
 
+### Large widget pattern (tabbed / multi-screen)
+
+Use this structure when a widget has multiple top-level views (tabs, steps, sections):
+
+```
+widgets/{Name}/
+├── {Name}Widget.tsx          # root: owns nav state, renders sidebar + content area
+├── {Name}Widget.module.css   # root styles + shared layout classes used by screens
+├── components/               # widget-private UI atoms reused across screens
+│   └── {ComponentName}/
+│       ├── {ComponentName}.tsx
+│       └── {ComponentName}.module.css
+└── screens/                  # one component per tab/view
+    └── {TabName}Screen/
+        └── {TabName}Screen.tsx
+```
+
+Rules:
+- Root widget owns tab selection state (`useState`) and renders the nav + content shell. No business logic.
+- Define tabs as a typed constant array at module level (`const TABS: Tab[] = [...]`), not inline JSX.
+- Export types co-located with the component that defines them (e.g. `Tab` exported from `SettingsTabButton.tsx`).
+- Screens are self-contained: they call entity hooks directly (`useUISettings()`) — no prop-drilling from root.
+- Screens import shared layout classes from the root widget's `.module.css` (e.g. `cls.SettingsGroup`); no separate CSS file needed per screen unless it has unique styles.
+- `components/` holds layout primitives shared by multiple screens (e.g. `SettingsRow`: label + description + `children` slot).
+- This same `screens/` convention applies to `dialogs/` (multi-step modal flows).
+
 ### Barrel / index.ts
 
 - Do **not** create `index.ts` barrel files for slices. Always import by full file path.

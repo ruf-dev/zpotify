@@ -35,9 +35,10 @@ export default function PlaylistHomeSegment({playlistUuid}: DisplayPlaylistSegme
                 onTotal={setTotalCount}/>
 
             <div
-                className={cn(cls.GhostButtonWrapper, {
-                    [cls.hidden]: !isEditing,
-                })}
+                className={
+                    cn(cls.GhostButtonWrapper, {
+                        [cls.hidden]: !isEditing,
+                    })}
             >
                 <GhostSong/>
             </div>
