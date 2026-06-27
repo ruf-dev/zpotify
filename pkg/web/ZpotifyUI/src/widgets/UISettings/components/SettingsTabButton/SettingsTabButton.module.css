@@ -1,0 +1,25 @@
+.TabItem {
+    all: unset;
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--font-size-base);
+    color: var(--color-fg-secondary);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    margin: 0 var(--space-xs);
+
+    &:hover:not(:disabled) {
+        background: var(--color-bg-hover);
+        color: var(--color-fg-primary);
+    }
+}
+
+.TabItemActive {
+    background: var(--color-bg-accent);
+    color: var(--color-fg-primary);
+}
+
+.TabItemDisabled {
+    color: var(--color-fg-disabled);
+    cursor: default;
+}
