@@ -1,21 +1,40 @@
 .MainLayoutContainer {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
 
-    .Header {
-        position: fixed;
-        top: 0;
-        width: 100vw;
-        height: var(--header-height);
-    }
+.LayoutRow {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+}
 
+.MainArea {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    min-width: 0;
+}
 
-    .Player {
-        position: fixed;
-        bottom: var(--player-bottom);
-        width: 100vw;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+.Header {
+    height: var(--header-height);
+    flex-shrink: 0;
+}
+
+.Content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Legacy player pill — shown when PlayerBar segment is off */
+.Player {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space-sm) 0 var(--space-md);
+    flex-shrink: 0;
 }

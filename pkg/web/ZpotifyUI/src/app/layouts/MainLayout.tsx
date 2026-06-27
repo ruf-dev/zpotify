@@ -6,11 +6,18 @@ import {Path} from "@/app/routing/paths.ts";
 import HeaderPart from "@/widgets/Header/HeaderPart.tsx";
 import MusicPlayerWithLogo from "@/widgets/MusicPlayer/MusicPlayerWithLogo.tsx";
 import useAudioPlayer from "@/widgets/MusicPlayer/usePlayer.ts";
+import {useUISettings} from "@/entities/ui-settings/useUISettings.ts";
+import SidebarSegment from "@/pages/segments/SidebarSegment/SidebarSegment.tsx";
+import PlayerBarSegment from "@/pages/segments/PlayerBarSegment/PlayerBarSegment.tsx";
+import QueuePanelWidget from "@/widgets/QueuePanel/QueuePanelWidget.tsx";
 
 export default function MainLayout() {
     const userData = useUser((state) => state.userData);
-    const audioPlayer = useAudioPlayer();
     const navigate = useNavigate();
+    const showSidebar = useUISettings((state) => state.showSidebar);
+    const showPlayerBar = useUISettings((state) => state.showPlayerBar);
+    const showQueuePanel = useUISettings((state) => state.showQueuePanel);
+    const audioPlayer = useAudioPlayer();
 
     useEffect(() => {
         if (!userData) {
@@ -20,14 +27,25 @@ export default function MainLayout() {
 
     return (
         <div className={cls.MainLayoutContainer}>
-            <Outlet/>
-
-            <div className={cls.Header}>
-                <HeaderPart/>
+            <div className={cls.LayoutRow}>
+                {showSidebar && <SidebarSegment />}
+                <div className={cls.MainArea}>
+                    <div className={cls.Header}>
+                        <HeaderPart/>
+                    </div>
+                    <div className={cls.Content}>
+                        <Outlet/>
+                    </div>
+                </div>
+                {showQueuePanel && <QueuePanelWidget />}
             </div>
-            <div className={cls.Player}>
-                <MusicPlayerWithLogo audioPlayer={audioPlayer}/>
-            </div>
+            {showPlayerBar ? (
+                <PlayerBarSegment />
+            ) : (
+                <div className={cls.Player}>
+                    <MusicPlayerWithLogo audioPlayer={audioPlayer}/>
+                </div>
+            )}
         </div>
     );
 }
