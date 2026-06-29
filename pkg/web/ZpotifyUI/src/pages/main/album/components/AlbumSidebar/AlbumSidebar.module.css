@@ -1,0 +1,286 @@
+/* ── Sidebar ─────────────────────────────────────────────── */
+
+.SidebarContainer {
+    width: 17rem;
+    flex-shrink: 0;
+    height: 100%;
+    overflow-y: auto;
+    border-right: 0.0625rem solid var(--color-border);
+    padding: 2rem 1.25rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    box-sizing: border-box;
+}
+
+.CoverWrapper {
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow:
+        0 1.25rem 3.75rem var(--color-shadow-drop),
+        0 0 0 0.0625rem var(--color-border);
+    align-self: flex-start;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+}
+
+.CoverImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.TitleBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.TypeLabel {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--color-fg-tertiary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.AlbumName {
+    margin: 0;
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--color-fg-primary);
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+}
+
+.ArtistName {
+    font-size: var(--font-size-md);
+    font-weight: 700;
+    color: var(--color-fg-accent);
+}
+
+.MetaRow {
+    display: flex;
+    gap: 0.375rem;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-disabled);
+}
+
+/* ── Genre Chips ─────────────────────────────────────────── */
+
+.GenreChipsRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+}
+
+.GenreChip {
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--border-radius-pill);
+    border: 0.0625rem solid var(--color-border-light);
+    background: var(--color-bg-secondary);
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-secondary);
+}
+
+/* ── Action Row ──────────────────────────────────────────── */
+
+.ActionRow {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.PlayButton {
+    width: var(--icon-circle-md);
+    height: var(--icon-circle-md);
+    border-radius: var(--border-radius-circle);
+    border: none;
+    background: var(--color-fg-accent);
+    color: var(--color-fg-white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0.25rem 1.5rem var(--color-accent-shadow);
+    transition: transform var(--ease-quick);
+    flex-shrink: 0;
+
+    &:hover {
+        transform: scale(1.08);
+    }
+}
+
+.PlayIcon {
+    margin-left: 0.125rem;
+}
+
+.IconButton {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--border-radius-circle);
+    border: 0.0625rem solid var(--color-border);
+    background: transparent;
+    color: var(--color-fg-tertiary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--ease-quick), border-color var(--ease-quick), background var(--ease-quick);
+
+    &:hover {
+        color: var(--color-fg-secondary);
+        border-color: var(--color-border-light);
+        background: var(--color-bg-hover-mid);
+    }
+}
+
+.IconButtonActive {
+    background: var(--color-accent-dim);
+    border-color: var(--color-fg-accent);
+    color: var(--color-fg-accent);
+
+    &:hover {
+        background: var(--color-accent-dim-hover);
+        border-color: var(--color-fg-accent);
+        color: var(--color-fg-accent);
+    }
+}
+
+/* ── Section Label ───────────────────────────────────────── */
+
+.SectionLabel {
+    display: block;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--color-fg-tertiary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+/* ── About Section ───────────────────────────────────────── */
+
+.AboutSection {
+    display: flex;
+    flex-direction: column;
+}
+
+.AboutBody {
+    font-size: var(--font-size-md);
+    color: var(--color-fg-secondary);
+    line-height: 1.65;
+    margin: 0;
+}
+
+.AboutBodyClamped {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ReadMoreToggle {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-accent);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    margin-top: 0.25rem;
+    text-align: left;
+    font-family: inherit;
+}
+
+/* ── Credits ─────────────────────────────────────────────── */
+
+.CreditsSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.CreditEntry {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.CreditRole {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-disabled);
+    letter-spacing: 0.04em;
+}
+
+.CreditName {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-fg-secondary);
+}
+
+/* ── Error State ─────────────────────────────────────────── */
+
+.ErrorState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.ErrorIcon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--border-radius-circle);
+    border: 0.125rem solid var(--color-error);
+    color: var(--color-error);
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ErrorTitle {
+    margin: 0;
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    color: var(--color-fg-primary);
+}
+
+.ErrorHint {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-tertiary);
+    line-height: 1.5;
+}
+
+/* ── Label Pill ──────────────────────────────────────────── */
+
+.LabelPill {
+    background: var(--color-bg-card);
+    border: 0.0625rem solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.LabelPillLabel {
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-fg-disabled);
+}
+
+.LabelPillName {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-fg-secondary);
+}

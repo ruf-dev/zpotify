@@ -1,0 +1,106 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "zpotify_service_feature_flags.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "FeatureFlagsAPI"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/feature-flags": {
+      "get": {
+        "operationId": "FeatureFlagsAPI_GetFeatureFlags",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetFeatureFlagsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "FeatureFlagsAPI"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "zpotify_apiFeatureFlag": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/zpotify_apiFeatureFlagId"
+        },
+        "isEnabled": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiFeatureFlagId": {
+      "type": "string",
+      "enum": [
+        "FEATURE_FLAG_ID_UNSPECIFIED",
+        "IS_COMMENTS_ON_ALBUM_ENABLED"
+      ],
+      "default": "FEATURE_FLAG_ID_UNSPECIFIED"
+    },
+    "zpotify_apiGetFeatureFlagsResponse": {
+      "type": "object",
+      "properties": {
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiFeatureFlag"
+          }
+        }
+      }
+    }
+  }
+}

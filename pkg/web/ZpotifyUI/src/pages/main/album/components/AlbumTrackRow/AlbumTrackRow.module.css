@@ -1,0 +1,140 @@
+.TrackRow {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr 2rem 3rem 1.5rem;
+    gap: 0.5rem;
+    padding: 0.55rem 1rem;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    align-items: center;
+    border-left: 0.125rem solid transparent;
+    transition: background var(--ease-quick);
+
+    &:hover {
+        background: var(--color-bg-hover);
+
+        & .TrackNum {
+            opacity: 0;
+        }
+
+        & .PlayTriangle {
+            opacity: 1;
+        }
+
+        & .HeartIcon {
+            opacity: 1;
+        }
+
+        & .OverflowBtn {
+            opacity: 0.5;
+        }
+    }
+}
+
+.TrackRowPlaying {
+    background: var(--color-accent-dim);
+    border-left-color: var(--color-fg-accent);
+}
+
+.TrackNumCell {
+    display: grid;
+    place-items: center;
+}
+
+.TrackNum,
+.PlayTriangle {
+    grid-area: 1 / 1;
+}
+
+.TrackNum {
+    font-size: var(--font-size-base);
+    color: var(--color-fg-tertiary);
+    transition: opacity var(--ease-quick);
+}
+
+.PlayTriangle {
+    opacity: 0;
+    transition: opacity var(--ease-quick);
+    color: var(--color-fg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.TrackTitleCell {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 0.1rem;
+}
+
+.TrackTitle {
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    color: var(--color-fg-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.TrackTitlePlaying {
+    color: var(--color-fg-accent);
+}
+
+.TrackArtist {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-tertiary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.HeartIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--ease-quick);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: var(--color-fg-tertiary);
+}
+
+.HeartIconLiked {
+    opacity: 1;
+    color: var(--color-fg-accent);
+}
+
+.HeartPop {
+    animation: heartPop 350ms ease-in-out;
+}
+
+.TrackDuration {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-tertiary);
+    text-align: right;
+}
+
+.OverflowBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--ease-quick);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: var(--color-fg-tertiary);
+    font-size: var(--font-size-md);
+    letter-spacing: 0.05em;
+    font-family: inherit;
+}
+
+@keyframes heartPop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.4); }
+    70%  { transform: scale(0.88); }
+    100% { transform: scale(1); }
+}

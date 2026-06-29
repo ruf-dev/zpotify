@@ -27,13 +27,7 @@ make install-go-deps       # Install sqlc and other codegen tools
 ```
 
 ### Frontend
-```bash
-cd pkg/web/ZpotifyUI
-npm run dev                # Vite dev server
-npm run build:ui           # TypeScript check + Vite build
-npm run lint               # ESLint
-make build-ui              # Full build: npm link + dist copy to backend
-```
+Look for CLAUDE.md inside pkg/web/ZpotifyUI
 
 ### Docker / Local Dev
 ```bash
