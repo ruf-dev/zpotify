@@ -17,6 +17,7 @@ export default function SegmentCarousel({activeIdx, count, onChange, renderSlide
     const isProgrammatic = useRef(false);
     const activeIdxRef = useRef(activeIdx);
     activeIdxRef.current = activeIdx;
+    const prevCountRef = useRef(0);
 
     const swipeEnabled = useUISettings((s) => s.swipeEnabled);
 
@@ -30,11 +31,14 @@ export default function SegmentCarousel({activeIdx, count, onChange, renderSlide
         const delta = cardRect.left + cardRect.width / 2 - (containerRect.left + containerRect.width / 2);
         const targetScrollLeft = container.scrollLeft + delta;
 
+        const isInitial = prevCountRef.current === 0 && count > 0;
+        prevCountRef.current = count;
+
         isProgrammatic.current = true;
-        container.scrollTo({left: targetScrollLeft, behavior: 'smooth'});
+        container.scrollTo({left: targetScrollLeft, behavior: isInitial ? 'instant' : 'smooth'});
         setTimeout(() => {
             isProgrammatic.current = false;
-        }, 450);
+        }, isInitial ? 0 : 450);
     }, [activeIdx, count, swipeEnabled]);
 
     const handleScroll = () => {
