@@ -98,6 +98,25 @@ Rules:
 - `components/` holds layout primitives shared by multiple screens (e.g. `SettingsRow`: label + description + `children` slot).
 - This same `screens/` convention applies to `dialogs/` (multi-step modal flows).
 
+### Local widget pattern
+
+A **local widget** is a self-contained component with its own data fetching that belongs exclusively to one parent slice (page, segment, dialog). It lives in a `Widget/` subfolder next to the parent, not in the global `src/widgets/`:
+
+```
+pages/segments/SidebarSegment/
+├── SidebarSegment.tsx
+├── Widget/
+│   └── SidebarArtistsWidget/
+│       ├── SidebarArtistsWidget.tsx
+│       └── SidebarArtistsWidget.module.css
+└── components/
+    └── ArtistRow/
+```
+
+- Use `components/` for pure UI atoms (no business logic, no API calls).
+- Use `Widget/` for units that own their own data fetching but are not reused outside the parent slice.
+- If a widget needs to be reused across slices, move it to `src/widgets/`.
+
 ### Barrel / index.ts
 
 - Do **not** create `index.ts` barrel files for slices. Always import by full file path.

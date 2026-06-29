@@ -4,12 +4,11 @@ import cls from '@/pages/segments/SidebarSegment/components/ArtistRow/ArtistRow.
 
 interface ArtistRowProps {
     name: string;
-    tracks: number;
     seed: string;
     isCollapsed: boolean;
 }
 
-export default function ArtistRow({ name, tracks, seed, isCollapsed }: ArtistRowProps) {
+export default function ArtistRow({ name, seed, isCollapsed }: ArtistRowProps) {
     return (
         <div className={cn(cls.ArtistRow, isCollapsed && cls.ArtistRowCollapsed)}>
             <div
@@ -20,7 +19,6 @@ export default function ArtistRow({ name, tracks, seed, isCollapsed }: ArtistRow
             </div>
             <div className={cn(cls.ArtistInfoWrapper, isCollapsed && cls.ArtistInfoWrapperHidden)}>
                 <span className={cls.ArtistName}>{name}</span>
-                <span className={cls.ArtistTracks}>{tracks} tracks</span>
             </div>
         </div>
     );

@@ -58,8 +58,3 @@
     color: var(--color-fg-primary);
     white-space: nowrap;
 }
-
-.ArtistTracks {
-    font-size: 0.4375rem;
-    color: var(--color-fg-tertiary);
-}
