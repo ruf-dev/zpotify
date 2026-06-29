@@ -24,8 +24,15 @@ type Storage interface {
 	ArtistStorage() ArtistStorage
 	FileMeta() FileMetaStorage
 	Jobs() JobStorage
+	FeatureFlags() FeatureFlagsStorage
 
 	TxManager() *tx_manager.TxManager
+}
+
+type FeatureFlagsStorage interface {
+	WithTx(tx *sql.Tx) FeatureFlagsStorage
+
+	GetAll(ctx context.Context) ([]domain.FeatureFlag, error)
 }
 
 type TelegramIdentityStorage interface {

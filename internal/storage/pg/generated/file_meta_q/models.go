@@ -14,6 +14,47 @@ import (
 	"github.com/google/uuid"
 )
 
+type FeatureFlagID string
+
+const (
+	FeatureFlagIDIsCommentsOnAlbumEnabled FeatureFlagID = "is_comments_on_album_enabled"
+)
+
+func (e *FeatureFlagID) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = FeatureFlagID(s)
+	case string:
+		*e = FeatureFlagID(s)
+	default:
+		return fmt.Errorf("unsupported scan type for FeatureFlagID: %T", src)
+	}
+	return nil
+}
+
+type NullFeatureFlagID struct {
+	FeatureFlagID FeatureFlagID
+	Valid         bool // Valid is true if FeatureFlagID is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullFeatureFlagID) Scan(value interface{}) error {
+	if value == nil {
+		ns.FeatureFlagID, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.FeatureFlagID.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullFeatureFlagID) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.FeatureFlagID), nil
+}
+
 type JobStatus string
 
 const (
@@ -144,6 +185,13 @@ func (ns NullUserHomeSegmentType) Value() (driver.Value, error) {
 type Artist struct {
 	Uuid uuid.UUID
 	Name string
+}
+
+type FeatureFlag struct {
+	ID        FeatureFlagID
+	IsEnabled bool
+	Value     json.RawMessage
+	Comment   string
 }
 
 type FilesMetum struct {

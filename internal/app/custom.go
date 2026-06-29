@@ -32,6 +32,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/transport"
 	"go.zpotify.ru/zpotify/internal/transport/artists_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/auth_api_impl"
+	"go.zpotify.ru/zpotify/internal/transport/feature_flags_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/file_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/playlist_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/song_api_impl"
@@ -52,12 +53,13 @@ type Custom struct {
 	BackgroundWorker *background.Worker
 	AsyncPool        *async.Pool
 
-	ArtistsApiImpl  *artists_api_impl.Impl
-	AuthApiImpl     *auth_api_impl.Impl
-	FileApiImpl     *file_api_impl.Impl
-	UserApiImpl     *user_api_impl.Impl
-	PlaylistApiImpl *playlist_api_impl.Impl
-	SongApiImpl     *song_api_impl.Impl
+	ArtistsApiImpl   *artists_api_impl.Impl
+	AuthApiImpl      *auth_api_impl.Impl
+	FeatureFlagsImpl *feature_flags_api_impl.Impl
+	FileApiImpl      *file_api_impl.Impl
+	UserApiImpl      *user_api_impl.Impl
+	PlaylistApiImpl  *playlist_api_impl.Impl
+	SongApiImpl      *song_api_impl.Impl
 
 	ServerManager  *transport.ServersManager
 	telegramServer *telegramtransport.Server
@@ -123,6 +125,7 @@ func (c *Custom) Init(a *App) (err error) {
 
 	c.ArtistsApiImpl = artists_api_impl.New(c.Service)
 	c.AuthApiImpl = auth_api_impl.New(c.Service, a.Cfg.Environment.TelegramClientID)
+	c.FeatureFlagsImpl = feature_flags_api_impl.New(c.Service)
 	c.FileApiImpl = file_api_impl.New(c.Service)
 	c.UserApiImpl = user_api_impl.New(c.Service)
 	c.PlaylistApiImpl = playlist_api_impl.New(c.Service)
@@ -146,6 +149,7 @@ func (c *Custom) Init(a *App) (err error) {
 				zpotify_api.AuthAPI_RefreshToken_FullMethodName,
 				zpotify_api.AuthAPI_AuthAsync_FullMethodName,
 				zpotify_api.AuthAPI_GetAuthMethods_FullMethodName,
+				zpotify_api.FeatureFlagsAPI_GetFeatureFlags_FullMethodName,
 			),
 			middleware.WithDebug(a.Cfg.Environment.DebugAuth),
 		),
@@ -154,6 +158,7 @@ func (c *Custom) Init(a *App) (err error) {
 	c.ServerManager.AddImplementation(
 		c.ArtistsApiImpl,
 		c.AuthApiImpl,
+		c.FeatureFlagsImpl,
 		c.FileApiImpl,
 		c.UserApiImpl,
 		c.SongApiImpl,

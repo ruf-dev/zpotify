@@ -4,8 +4,9 @@ import cn from 'classnames';
 
 import cls from '@/pages/main/album/AlbumPage.module.css';
 import type { Playlist, SongBase } from '@/app/api/zpotify';
-
 import useUser from '@/entities/user/useUser.ts';
+import { selectFlagEnabled, useFeatureFlags } from '@/entities/feature-flags/useFeatureFlags.ts';
+import { useFeatureFlagsQuery } from '@/entities/feature-flags/useFeatureFlagsQuery.ts';
 import { Path } from '@/app/routing/paths.ts';
 import { usePlaylist } from '@/pages/main/playlist/usePlaylist.ts';
 import { useAlbumSongs } from '@/pages/main/album/useAlbumSongs.ts';
@@ -459,6 +460,7 @@ interface AlbumMainContentProps {
 function AlbumMainContent({ songs, currentTrackPath, onPlaySong, username }: AlbumMainContentProps) {
     const [likedSongIds, setLikedSongIds] = useState<Set<string>>(new Set());
     const [animatingHeartId, setAnimatingHeartId] = useState<string | null>(null);
+    const commentsEnabled = useFeatureFlags((s) => selectFlagEnabled(s, 'IS_COMMENTS_ON_ALBUM_ENABLED'));
 
     function handleToggleLike(songId: string) {
         setLikedSongIds((prev) => {
@@ -501,7 +503,7 @@ function AlbumMainContent({ songs, currentTrackPath, onPlaySong, username }: Alb
                 ))}
             </div>
 
-            <CommentsSection username={username} />
+            {commentsEnabled && <CommentsSection username={username} />}
         </div>
     );
 }
@@ -516,6 +518,7 @@ export default function AlbumPage() {
     const { playlist } = usePlaylist(id);
     const { songs } = useAlbumSongs(id);
     const audioPlayer = useAudioPlayer();
+    useFeatureFlagsQuery();
 
     const [saved, setSaved] = useState(false);
 

@@ -21,15 +21,17 @@ type Service interface {
 	PlaylistService() PlaylistService
 	ArtistsService() ArtistsService
 	FileService() FileService
+	FeatureFlagsService() FeatureFlagsService
 }
 
 type service struct {
-	audioService    AudioService
-	userService     UserService
-	authService     AuthService
-	playlistService PlaylistService
-	artistsService  ArtistsService
-	fileService     FileService
+	audioService        AudioService
+	userService         UserService
+	authService         AuthService
+	playlistService     PlaylistService
+	artistsService      ArtistsService
+	fileService         FileService
+	featureFlagsService FeatureFlagsService
 }
 
 func New(dataStorage storage.Storage, cache files_cache.FilesCache, fileStorage storage.BinaryFileStorage) (Service, error) {
@@ -45,12 +47,13 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache, fileStorage 
 	}
 
 	return &service{
-		audioService:    v1.NewAudioService(dataStorage, cache, fileStorage),
-		userService:     v1.NewUserService(dataStorage),
-		authService:     authSvc,
-		playlistService: v1.NewPlaylistService(dataStorage, fileStorage),
-		artistsService:  v1.NewArtistsService(dataStorage),
-		fileService:     v1.NewFileService(dataStorage, fileStorage),
+		audioService:        v1.NewAudioService(dataStorage, cache, fileStorage),
+		userService:         v1.NewUserService(dataStorage),
+		authService:         authSvc,
+		playlistService:     v1.NewPlaylistService(dataStorage, fileStorage),
+		artistsService:      v1.NewArtistsService(dataStorage),
+		fileService:         v1.NewFileService(dataStorage, fileStorage),
+		featureFlagsService: v1.NewFeatureFlagsService(dataStorage),
 	}, nil
 }
 
@@ -76,6 +79,10 @@ func (s *service) ArtistsService() ArtistsService {
 
 func (s *service) FileService() FileService {
 	return s.fileService
+}
+
+func (s *service) FeatureFlagsService() FeatureFlagsService {
+	return s.featureFlagsService
 }
 
 type AudioService interface {
@@ -140,4 +147,8 @@ type FileService interface {
 	ListUploadedFiles(ctx context.Context, req domain.ListUploadedFiles) ([]domain.SongFile, error)
 	GetFile(ctx context.Context, fileId int64) (domain.FileMeta, error)
 	CheckFilesByHashes(ctx context.Context, hashes []string) ([]domain.FoundFileByHash, error)
+}
+
+type FeatureFlagsService interface {
+	GetAll(ctx context.Context) ([]domain.FeatureFlag, error)
 }

@@ -26,7 +26,7 @@ export default (function (_a) {
     });
     uc.server = {
         host: true, // allows access from network IPs
-        allowedHosts: ['.loca.lt', 'localhost', '127.0.0.1', 'alexskilled.zpotify.ru'],
+        allowedHosts: ['.loca.lt', 'localhost', '127.0.0.1', 'alexskilled.zpotify.ru', 'host.docker.internal'],
     };
     return uc;
 });

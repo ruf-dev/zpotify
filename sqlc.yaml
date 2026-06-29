@@ -56,3 +56,17 @@ sql:
         emit_interface: true
         emit_exact_table_names: false
         emit_empty_slices: true
+  - engine: "postgresql"
+    queries:
+      - "internal/storage/pg/queries/feature_flags/*.sql"
+    schema:
+      - "migrations/*.sql"
+    gen:
+      go:
+        package: "feature_flags_q"
+        out: "internal/storage/pg/generated/feature_flags_q"
+        sql_package: "database/sql"
+        emit_prepared_queries: false
+        emit_interface: true
+        emit_exact_table_names: false
+        emit_empty_slices: true
