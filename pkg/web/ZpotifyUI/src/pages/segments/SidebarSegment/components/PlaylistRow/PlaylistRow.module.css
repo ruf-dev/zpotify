@@ -1,0 +1,54 @@
+.PlaylistRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 1rem;
+    opacity: 0.6;
+    cursor: pointer;
+    transition: opacity var(--ease-quick);
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.PlaylistRowCollapsed {
+    padding: 0.35rem;
+    justify-content: center;
+    gap: 0;
+}
+
+.PlaylistCover {
+    width: 1.625rem;
+    height: 1.625rem;
+    border-radius: var(--space-xs);
+    background: var(--playlist-color);
+    flex-shrink: 0;
+}
+
+.PlaylistInfoWrapper {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-width: 8rem;
+    opacity: 1;
+    transition: opacity var(--ease-quick), max-width var(--ease-quick);
+}
+
+.PlaylistInfoWrapperHidden {
+    opacity: 0;
+    max-width: 0;
+}
+
+.PlaylistName {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-fg-primary);
+    white-space: nowrap;
+}
+
+.PlaylistTracks {
+    font-size: 0.4375rem;
+    color: var(--color-fg-tertiary);
+}

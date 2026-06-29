@@ -1,0 +1,68 @@
+.LogoRowContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    height: var(--header-height);
+    flex-shrink: 0;
+
+    .LogoCircle {
+        width: 1.6875rem;
+        height: 1.6875rem;
+        border-radius: 50%;
+        background: var(--color-fg-accent);
+        flex-shrink: 0;
+
+        cursor: pointer;
+    }
+
+    .Wordmark {
+        font-size: var(--font-size-base);
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: rgba(255, 255, 255, 0.8);
+        margin-left: var(--space-sm);
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 8rem;
+        opacity: 1;
+        transition: opacity var(--ease-quick), max-width var(--ease-quick);
+
+        &.hidden {
+            opacity: 0;
+            max-width: 0;
+        }
+    }
+
+    .CollapseToggle {
+        margin-left: auto;
+        background: none;
+        color: var(--color-fg-tertiary);
+        border: var(--color-fg-tertiary) solid 1px;
+        padding: 0.125rem;
+        cursor: pointer;
+        font-size: var(--font-size-base);
+        line-height: 1;
+        flex-shrink: 0;
+        transition: color var(--ease-quick);
+        border-radius: 0.25rem;
+
+        width: 1rem;
+
+        &:hover {
+            color: var(--color-fg-primary);
+        }
+    }
+
+    .hidden {
+        width: var(--sidebar-collapsed-width);
+        justify-content: space-between;
+    }
+}
+
+
+
+
+

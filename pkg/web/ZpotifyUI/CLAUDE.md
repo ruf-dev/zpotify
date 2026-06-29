@@ -47,6 +47,31 @@ pages / dialogs  →  widgets  →  features  →  entities  →  components  �
 - Group tightly-coupled subcomponents into named subfolders (e.g. `widgets/MusicPlayer/buttons/`).
 - No mandatory `ui/`, `model/`, `lib/` segments inside a slice — add them only when grouping is needed.
 
+### Local components pattern
+
+Any slice (page, widget, dialog, feature) may have a `components/` subfolder for atomic UI that is **only used within that slice** and not intended for reuse elsewhere. Each local component lives in its own named subfolder with a paired `.module.css`:
+
+```
+pages/segments/SidebarSegment/
+├── SidebarSegment.tsx
+├── SidebarSegment.module.css
+└── components/
+    ├── LogoRow/
+    │   ├── LogoRow.tsx
+    │   └── LogoRow.module.css
+    ├── NavItem/
+    │   ├── NavItem.tsx
+    │   └── NavItem.module.css
+    └── UserPill/
+        ├── UserPill.tsx
+        └── UserPill.module.css
+```
+
+- Each component has its own folder — never flat files directly in `components/`.
+- Each folder contains exactly one component file and its paired `.module.css`.
+- CSS classes belong in the component's own `.module.css`, not the parent's.
+- The parent's `.module.css` keeps only layout/container classes used directly in the parent JSX.
+
 ### Large widget pattern (tabbed / multi-screen)
 
 Use this structure when a widget has multiple top-level views (tabs, steps, sections):

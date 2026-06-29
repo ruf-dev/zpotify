@@ -1,0 +1,65 @@
+.ArtistRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.35rem 1rem;
+    opacity: 0.65;
+    cursor: pointer;
+    transition: opacity var(--ease-quick);
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.ArtistRowCollapsed {
+    padding: 0.35rem;
+    justify-content: center;
+    gap: 0;
+}
+
+.ArtistAvatar {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--seed) 13%, transparent);
+    border: 1px solid color-mix(in srgb, var(--seed) 27%, transparent);
+    color: var(--seed);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.ArtistAvatarCollapsed {
+    width: 1.625rem;
+    height: 1.625rem;
+}
+
+.ArtistInfoWrapper {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-width: 8rem;
+    opacity: 1;
+    transition: opacity var(--ease-quick), max-width var(--ease-quick);
+}
+
+.ArtistInfoWrapperHidden {
+    opacity: 0;
+    max-width: 0;
+}
+
+.ArtistName {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-primary);
+    white-space: nowrap;
+}
+
+.ArtistTracks {
+    font-size: 0.4375rem;
+    color: var(--color-fg-tertiary);
+}

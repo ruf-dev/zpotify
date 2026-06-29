@@ -192,7 +192,12 @@ p, .t-body {
 
 /* Chures overrides*/
 :root {
-    --chures-accent: #fafdff;
-    --chures-toggle-bg-off: #fafdff ;
-    --chures-toggle-bg-on: #fafdff;
+    /*TODO*/
+    --chures-accent: var(--color-fg-accent) !important;
+}
+
+
+/*Sidebar*/
+:root {
+    --sidebar-collapsed-width: 4.25rem
 }

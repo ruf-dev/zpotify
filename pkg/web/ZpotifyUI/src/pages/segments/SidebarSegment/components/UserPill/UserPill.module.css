@@ -1,0 +1,38 @@
+.UserPill {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--color-border);
+    flex-shrink: 0;
+}
+
+.UserAvatar {
+    width: 1.625rem;
+    height: 1.625rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    flex-shrink: 0;
+    color: var(--color-fg-primary);
+}
+
+.UserName {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-tertiary);
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 8rem;
+    opacity: 1;
+    transition: opacity var(--ease-quick), max-width var(--ease-quick);
+}
+
+.UserNameHidden {
+    opacity: 0;
+    max-width: 0;
+}
