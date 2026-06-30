@@ -170,6 +170,7 @@ export class PlaylistService extends BaseService implements IPlaylistService {
     async ListUserPlaylists(limit: number, offset: number): Promise<ListPlaylistsResponse> {
         const req: ListPlaylistsRequest = {
             paging: { limit: limit.toString(), offset: offset.toString() } as Paging,
+            byAuthedUser: true,
         };
         return this.executeAuthApiCall(async (initReq) => {
             return PlaylistAPI.ListPlaylists(req, initReq);
@@ -179,6 +180,7 @@ export class PlaylistService extends BaseService implements IPlaylistService {
     async ListLibrary(filter: LibraryFilter): Promise<LibraryItem[]> {
         const playlistsReq: ListPlaylistsRequest = {
             paging: { limit: filter.limit.toString(), offset: filter.offset.toString() } as Paging,
+            byAuthedUser: true,
         };
         const resp = await this.executeAuthApiCall((initReq) => PlaylistAPI.ListPlaylists(playlistsReq, initReq));
 

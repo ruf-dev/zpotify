@@ -1051,6 +1051,7 @@ func (*AddSongToPlaylist_Response) Descriptor() ([]byte, []int) {
 type ListPlaylists_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Paging        *Paging                `protobuf:"bytes,1,opt,name=paging,proto3" json:"paging,omitempty"`
+	ByAuthedUser  *bool                  `protobuf:"varint,2,opt,name=by_authed_user,json=byAuthedUser,proto3,oneof" json:"by_authed_user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1090,6 +1091,13 @@ func (x *ListPlaylists_Request) GetPaging() *Paging {
 		return x.Paging
 	}
 	return nil
+}
+
+func (x *ListPlaylists_Request) GetByAuthedUser() bool {
+	if x != nil && x.ByAuthedUser != nil {
+		return *x.ByAuthedUser
+	}
+	return false
 }
 
 type ListPlaylists_Response struct {
@@ -1215,10 +1223,12 @@ const file_zpotify_service_playlist_proto_rawDesc = "" +
 	"\rplaylist_uuid\x18\x01 \x01(\tR\fplaylistUuid\x12\x17\n" +
 	"\asong_id\x18\x02 \x01(\x05R\x06songId\x1a\n" +
 	"\n" +
-	"\bResponse\"\x9e\x01\n" +
-	"\rListPlaylists\x1a6\n" +
+	"\bResponse\"\xdc\x01\n" +
+	"\rListPlaylists\x1at\n" +
 	"\aRequest\x12+\n" +
-	"\x06paging\x18\x01 \x01(\v2\x13.zpotify_api.PagingR\x06paging\x1aU\n" +
+	"\x06paging\x18\x01 \x01(\v2\x13.zpotify_api.PagingR\x06paging\x12)\n" +
+	"\x0eby_authed_user\x18\x02 \x01(\bH\x00R\fbyAuthedUser\x88\x01\x01B\x11\n" +
+	"\x0f_by_authed_user\x1aU\n" +
 	"\bResponse\x123\n" +
 	"\tplaylists\x18\x01 \x03(\v2\x15.zpotify_api.PlaylistR\tplaylists\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\rR\x05total2\xed\a\n" +
@@ -1316,6 +1326,7 @@ func file_zpotify_service_playlist_proto_init() {
 	file_zpotify_service_playlist_proto_msgTypes[8].OneofWrappers = []any{}
 	file_zpotify_service_playlist_proto_msgTypes[12].OneofWrappers = []any{}
 	file_zpotify_service_playlist_proto_msgTypes[14].OneofWrappers = []any{}
+	file_zpotify_service_playlist_proto_msgTypes[22].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -416,6 +416,9 @@
       "properties": {
         "paging": {
           "$ref": "#/definitions/zpotify_apiPaging"
+        },
+        "byAuthedUser": {
+          "type": "boolean"
         }
       }
     },

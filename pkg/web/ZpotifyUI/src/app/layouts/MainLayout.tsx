@@ -19,6 +19,7 @@ export default function MainLayout() {
     const showPlayerBar = useUISettings((state) => state.showPlayerBar);
     const showQueuePanel = useUISettings((state) => state.showQueuePanel);
     const audioPlayer = useAudioPlayer();
+    const effectiveShowPlayerBar = showPlayerBar && audioPlayer.trackPath !== null;
 
     useEffect(() => {
         if (!userData) {
@@ -41,12 +42,12 @@ export default function MainLayout() {
                 </div>
             </div>
 
-            <div className={cn(cls.PlayerBarSpacer, showPlayerBar && cls.PlayerBarSpacerVisible)}/>
-            <div className={cn(cls.PlayerBar, showPlayerBar && cls.PlayerBarVisible)}>
+            <div className={cn(cls.PlayerBarSpacer, effectiveShowPlayerBar && cls.PlayerBarSpacerVisible)}/>
+            <div className={cn(cls.PlayerBar, effectiveShowPlayerBar && cls.PlayerBarVisible)}>
                 <PlayerBarSegment/>
             </div>
 
-            {!showPlayerBar && (
+            {!effectiveShowPlayerBar && (
                 <div className={cls.Player}>
                     <MusicPlayerWithLogo audioPlayer={audioPlayer}/>
                 </div>

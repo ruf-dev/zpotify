@@ -1,5 +1,6 @@
 import {useMemo} from 'react';
 import {create} from 'zustand';
+import {persist} from 'zustand/middleware';
 
 export interface AudioPlayer {
     isPlaying: boolean;
@@ -53,30 +54,53 @@ interface AudioStoreState {
     shuffleHash: number | null;
 }
 
-const useAudioStore = create<AudioStoreState>(() => ({
-    isPlaying: false,
-    volume: 36,
-    trackPath: null,
-
-    isMuted: false,
-
-    songTitle: null,
-    songArtist: null,
-    songCover: null,
-    progress: 0,
-    nextTrackUrl: undefined,
-    prevTrackUrl: undefined,
-    shuffleHash: null,
-}));
+const useAudioStore = create<AudioStoreState>()(
+    persist(
+        (): AudioStoreState => ({
+            isPlaying: false,
+            volume: 36,
+            trackPath: null,
+            isMuted: false,
+            songTitle: null,
+            songArtist: null,
+            songCover: null,
+            progress: 0,
+            nextTrackUrl: undefined,
+            prevTrackUrl: undefined,
+            shuffleHash: null,
+        }),
+        {
+            name: 'zpotify-last-played',
+            partialize: (state) => ({
+                trackPath: state.trackPath,
+                songTitle: state.songTitle,
+                songArtist: state.songArtist,
+                songCover: state.songCover,
+                progress: state.progress,
+                volume: state.volume,
+            }),
+        }
+    )
+);
 
 class AudioPlayerImpl implements AudioPlayer {
     private audio: HTMLAudioElement;
     private onendedCallback: (() => void) | null = null;
+    private pendingRestoreProgress: number | null = null;
 
     constructor() {
         this.audio = new Audio();
         this.setupEventListeners();
         this.setupMediaSession();
+        this.restoreLastPlayed();
+    }
+
+    private restoreLastPlayed(): void {
+        const {trackPath, progress} = useAudioStore.getState();
+        if (trackPath) {
+            this.pendingRestoreProgress = progress;
+            this.preload(trackPath);
+        }
     }
 
     private setupEventListeners() {
@@ -85,6 +109,13 @@ class AudioPlayerImpl implements AudioPlayer {
             useAudioStore.setState({
                 progress: (this.audio.currentTime / this.audio.duration) * 100,
             });
+        });
+
+        this.audio.addEventListener('loadedmetadata', () => {
+            if (this.pendingRestoreProgress !== null && this.audio.duration) {
+                this.audio.currentTime = this.audio.duration * (this.pendingRestoreProgress / 100);
+                this.pendingRestoreProgress = null;
+            }
         });
 
         this.audio.addEventListener('play', () => {
@@ -213,6 +244,7 @@ class AudioPlayerImpl implements AudioPlayer {
     }
 
     play(trackUrl: string): void {
+        this.pendingRestoreProgress = null;
         this.preload(trackUrl);
         this.startPlay();
     }

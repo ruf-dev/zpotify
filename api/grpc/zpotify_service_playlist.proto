@@ -153,7 +153,8 @@ message AddSongToPlaylist {
 
 message ListPlaylists {
   message Request {
-    Paging paging = 1;
+    Paging paging            = 1;
+    optional bool by_authed_user = 2;
   }
 
   message Response {

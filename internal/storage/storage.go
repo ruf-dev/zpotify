@@ -131,8 +131,8 @@ type PlaylistStorage interface {
 
 	AddSong(ctx context.Context, playlistUuid string, songId int32) error
 	SetSongOrder(ctx context.Context, playlistUuid string, songId int64, orderNum int64) error
-	List(ctx context.Context, userId int64, req domain.ListPlaylists) ([]domain.Playlist, error)
-	CountPlaylists(ctx context.Context, userId int64) (uint32, error)
+	List(ctx context.Context, req domain.ListPlaylists) ([]domain.Playlist, error)
+	CountPlaylists(ctx context.Context, req domain.ListPlaylists) (uint32, error)
 }
 
 type UserSettingsStorage interface {

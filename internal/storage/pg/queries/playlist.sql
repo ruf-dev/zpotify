@@ -67,19 +67,6 @@ SET name        = CASE WHEN $2::text != '' THEN $2::text ELSE name END,
     year        = COALESCE(sqlc.narg('year')::int4, year)
 WHERE uuid = $1;
 
--- name: ListUserPlaylists :many
-SELECT v.uuid, v.name, v.description, v.is_public, v.cover_file_id, v.song_count, v.year
-FROM playlists_v2 v
-JOIN user_playlists up ON up.playlist_id = v.uuid
-WHERE up.user_id = $1
-ORDER BY up.order_id
-LIMIT $2 OFFSET $3;
-
--- name: CountUserPlaylists :one
-SELECT COUNT(v.uuid) FROM playlists_v2 v
-JOIN user_playlists up ON up.playlist_id = v.uuid
-WHERE up.user_id = $1;
-
 -- name: DecrementPlaylistSongCount :exec
 UPDATE playlists SET song_count = GREATEST(song_count - 1, 0) WHERE uuid = $1;
 

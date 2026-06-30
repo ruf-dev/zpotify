@@ -454,39 +454,70 @@ func (p *PlaylistStorage) SetSongOrder(ctx context.Context, playlistUuid string,
 	return nil
 }
 
-func (p *PlaylistStorage) List(ctx context.Context, userId int64, req domain.ListPlaylists) ([]domain.Playlist, error) {
-	params := generated.ListUserPlaylistsParams{
-		UserID: userId,
-		Limit:  int32(req.Limit),
-		Offset: int32(req.Offset),
+func (p *PlaylistStorage) List(ctx context.Context, req domain.ListPlaylists) ([]domain.Playlist, error) {
+	builder := playlistsListBuilder{
+		sq.Select(
+			"v.uuid",
+			"v.name",
+			"v.description",
+			"v.is_public",
+			"v.cover_file_id",
+			"v.song_count",
+			"v.year",
+		).
+			From("playlists_v2 v").
+			PlaceholderFormat(sq.Dollar),
+	}.
+		applyFilters(req).
+		applySorting(req).
+		Limit(req.Limit).
+		Offset(req.Offset)
+
+	querySql, args, err := builder.ToSql()
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error building list playlists query")
 	}
 
-	rows, err := p.querier.ListUserPlaylists(ctx, params)
+	rows, err := p.db.QueryContext(ctx, querySql, args...)
 	if err != nil {
 		return nil, wrapPgErr(err)
 	}
+	defer closeRowScanner(rows.Close)
 
-	playlists := make([]domain.Playlist, 0, len(rows))
-	for _, row := range rows {
+	var playlists []domain.Playlist
+	for rows.Next() {
+		var (
+			id          uuid.UUID
+			name        string
+			description string
+			isPublic    bool
+			coverFileID sql.NullInt64
+			songCount   int32
+			year        sql.NullInt32
+		)
+
+		err = rows.Scan(&id, &name, &description, &isPublic, &coverFileID, &songCount, &year)
+		if err != nil {
+			return nil, wrapPgErr(err)
+		}
+
 		playlist := domain.Playlist{
-			Uuid:        row.Uuid.String(),
-			Name:        row.Name,
-			Description: row.Description,
-			IsPublic:    row.IsPublic,
+			Uuid:        id.String(),
+			Name:        name,
+			Description: description,
+			IsPublic:    isPublic,
+			SongCount:   &songCount,
 		}
 
-		if row.CoverFileID.Valid {
-			playlist.CoverFileId = &row.CoverFileID.Int64
+		if coverFileID.Valid {
+			playlist.CoverFileId = &coverFileID.Int64
 		}
 
-		songCount := row.SongCount
-		playlist.SongCount = &songCount
-
-		if row.Year.Valid {
-			playlist.Year = &row.Year.Int32
+		if year.Valid {
+			playlist.Year = &year.Int32
 		}
 
-		artists, err := p.GetPlaylistArtists(ctx, row.Uuid.String())
+		artists, err := p.GetPlaylistArtists(ctx, id.String())
 		if err != nil {
 			return nil, rerrors.Wrap(err, "error getting playlist artists")
 		}
@@ -498,11 +529,48 @@ func (p *PlaylistStorage) List(ctx context.Context, userId int64, req domain.Lis
 	return playlists, nil
 }
 
-func (p *PlaylistStorage) CountPlaylists(ctx context.Context, userId int64) (uint32, error) {
-	count, err := p.querier.CountUserPlaylists(ctx, userId)
+type playlistsListBuilder struct {
+	sq.SelectBuilder
+}
+
+func (b playlistsListBuilder) applyFilters(req domain.ListPlaylists) playlistsListBuilder {
+	if req.Filter.UserId.Valid {
+		b.SelectBuilder = b.SelectBuilder.
+			Join("user_playlists up ON up.playlist_id = v.uuid").
+			Where(sq.Eq{"up.user_id": req.Filter.UserId.V})
+	}
+
+	return b
+}
+
+func (b playlistsListBuilder) applySorting(req domain.ListPlaylists) playlistsListBuilder {
+	if req.Filter.UserId.Valid {
+		b.SelectBuilder = b.SelectBuilder.
+			OrderBy("up.order_id")
+	} else {
+		b.SelectBuilder = b.SelectBuilder.OrderBy("v.uuid")
+	}
+
+	return b
+}
+
+func (p *PlaylistStorage) CountPlaylists(ctx context.Context, req domain.ListPlaylists) (uint32, error) {
+	builder := playlistsListBuilder{
+		sq.Select("COUNT(v.uuid)").
+			From("playlists_v2 v").
+			PlaceholderFormat(sq.Dollar),
+	}.applyFilters(req)
+
+	querySql, args, err := builder.ToSql()
+	if err != nil {
+		return 0, rerrors.Wrap(err, "error building count playlists query")
+	}
+
+	var count uint32
+	err = p.db.QueryRowContext(ctx, querySql, args...).Scan(&count)
 	if err != nil {
 		return 0, wrapPgErr(err)
 	}
 
-	return uint32(count), nil
+	return count, nil
 }

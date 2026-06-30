@@ -12,8 +12,9 @@ import (
 
 func (impl *Impl) ListPlaylists(ctx context.Context, req *zpotify_api.ListPlaylists_Request) (*zpotify_api.ListPlaylists_Response, error) {
 	listReq := domain.ListPlaylists{
-		Limit:  req.GetPaging().GetLimit(),
-		Offset: req.GetPaging().GetOffset(),
+		Limit:        req.GetPaging().GetLimit(),
+		Offset:       req.GetPaging().GetOffset(),
+		ByAuthedUser: req.GetByAuthedUser(),
 	}
 
 	result, err := impl.playlistService.List(ctx, listReq)

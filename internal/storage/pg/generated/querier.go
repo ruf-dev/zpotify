@@ -15,7 +15,6 @@ type Querier interface {
 	AddSongToPlaylist(ctx context.Context, arg AddSongToPlaylistParams) error
 	ClearPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) error
 	ClearPlaylistChips(ctx context.Context, playlistUuid uuid.UUID) error
-	CountUserPlaylists(ctx context.Context, userID int64) (int64, error)
 	CreateFile(ctx context.Context, arg CreateFileParams) (int64, error)
 	CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error)
 	DecrementPlaylistSongCount(ctx context.Context, argUuid uuid.UUID) error
@@ -43,7 +42,6 @@ type Querier interface {
 	InsertUser(ctx context.Context, arg InsertUserParams) (int64, error)
 	ListSessionsByUserId(ctx context.Context, userID int64) ([]UserSession, error)
 	ListUserPermissionsByUserId(ctx context.Context, userID int64) (UserPermission, error)
-	ListUserPlaylists(ctx context.Context, arg ListUserPlaylistsParams) ([]PlaylistsV2, error)
 	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error
 	SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error
 	SetSongOrderInPlaylist(ctx context.Context, arg SetSongOrderInPlaylistParams) error

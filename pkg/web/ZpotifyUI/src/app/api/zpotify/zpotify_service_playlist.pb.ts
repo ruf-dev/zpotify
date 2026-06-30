@@ -92,6 +92,7 @@ export type AddSongToPlaylist = Record<string, never>;
 
 export type ListPlaylistsRequest = {
   paging?: ZpotifyApiZpotifyCommon.Paging;
+  byAuthedUser?: boolean;
 };
 
 export type ListPlaylistsResponse = {

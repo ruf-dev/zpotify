@@ -295,12 +295,16 @@ func (p *PlaylistService) List(ctx context.Context, req domain.ListPlaylists) (d
 		return domain.ListPlaylistsResult{}, rerrors.Wrap(service_errors.ErrUnauthenticated)
 	}
 
-	playlists, err := p.playlistStorage.List(ctx, userCtx.UserId, req)
+	if req.ByAuthedUser {
+		req.Filter.UserId = sql.Null[int64]{V: userCtx.UserId, Valid: true}
+	}
+
+	playlists, err := p.playlistStorage.List(ctx, req)
 	if err != nil {
 		return domain.ListPlaylistsResult{}, rerrors.Wrap(err, "error listing playlists from storage")
 	}
 
-	total, err := p.playlistStorage.CountPlaylists(ctx, userCtx.UserId)
+	total, err := p.playlistStorage.CountPlaylists(ctx, req)
 	if err != nil {
 		return domain.ListPlaylistsResult{}, rerrors.Wrap(err, "error counting playlists from storage")
 	}

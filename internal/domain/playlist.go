@@ -1,5 +1,7 @@
 package domain
 
+import "database/sql"
+
 type PlaylistPermissions struct {
 	CanDeleteSongs bool
 	CanAddSongs    bool
@@ -66,9 +68,15 @@ type AddSongToPlaylist struct {
 	SongId       int32
 }
 
+type PlaylistFilter struct {
+	UserId sql.Null[int64]
+}
+
 type ListPlaylists struct {
-	Limit  uint64
-	Offset uint64
+	Limit        uint64
+	Offset       uint64
+	ByAuthedUser bool
+	Filter       PlaylistFilter
 }
 
 type ListPlaylistsResult struct {
