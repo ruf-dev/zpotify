@@ -14,6 +14,7 @@ type Playlist struct {
 	CoverFileId   *int64
 	CoverFilePath string
 	SongCount     *int32
+	Year          *int32
 }
 
 type CreatePlaylistParams struct {
@@ -22,6 +23,7 @@ type CreatePlaylistParams struct {
 	IsPublic    bool
 	ArtistUuids []string
 	CoverFileId *int64
+	Year        *int32
 }
 
 type UpdatePlaylistParams struct {
@@ -31,6 +33,7 @@ type UpdatePlaylistParams struct {
 	IsPublic    *bool
 	ArtistUuids []string
 	CoverFileId *int64
+	Year        *int32
 }
 
 type SongsInPlaylist struct {

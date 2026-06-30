@@ -354,6 +354,10 @@
         "coverFileId": {
           "type": "string",
           "format": "int64"
+        },
+        "year": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -481,11 +485,14 @@
         },
         "songCount": {
           "type": "integer",
-          "format": "int32",
-          "title": "TODO: Implement — populate song count when returning playlists"
+          "format": "int32"
         },
         "coverFilePath": {
           "type": "string"
+        },
+        "year": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -543,6 +550,10 @@
         "coverFileId": {
           "type": "string",
           "format": "int64"
+        },
+        "year": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

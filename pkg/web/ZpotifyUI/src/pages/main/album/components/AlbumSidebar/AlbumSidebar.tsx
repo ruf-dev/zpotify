@@ -10,9 +10,7 @@ import PlayIcon from '@/assets/icons/PlayIcon.tsx';
 import { HeartIcon } from '@/assets/icons/HeartIcon.tsx';
 import { ShareIcon } from '@/assets/icons/ShareIcon.tsx';
 
-// TODO: implement album metadata endpoint (GetAlbum) — album entity not yet in backend
 const MOCK_GENRES = ['Electronic', 'Ambient', 'Experimental'];
-const MOCK_YEAR = 2024;
 const MOCK_CREDITS = [
     { role: 'Producer', name: 'Lena Kovacs' },
     { role: 'Mastering', name: 'Studio Ariel' },
@@ -39,13 +37,14 @@ function buildCoverUrl(filePath?: string): string | undefined {
 export interface AlbumSidebarProps {
     playlist: Playlist | null;
     totalDuration: string;
+    trackCount: number;
     saved: boolean;
     onToggleSave: () => void;
     onBack: () => void;
     onPlay: () => void;
 }
 
-export default function AlbumSidebar({ playlist, totalDuration, saved, onToggleSave, onBack, onPlay }: AlbumSidebarProps) {
+export default function AlbumSidebar({ playlist, totalDuration, trackCount, saved, onToggleSave, onBack, onPlay }: AlbumSidebarProps) {
     const seed = playlist ? resolveCoverSeed(playlist) : 1;
     const coverUrl = buildCoverUrl(playlist?.coverFilePath);
     const artistName = playlist?.artists?.[0]?.name ?? 'Unknown Artist';
@@ -85,10 +84,13 @@ export default function AlbumSidebar({ playlist, totalDuration, saved, onToggleS
                 <h1 className={cls.AlbumName}>{playlist.name}</h1>
                 <span className={cls.ArtistName}>{artistName}</span>
                 <div className={cls.MetaRow}>
-                    {/* TODO: implement album metadata endpoint (GetAlbum) — album entity not yet in backend */}
-                    <span>{MOCK_YEAR}</span>
-                    <span>·</span>
-                    <span>{playlist.songCount ?? 0} tracks</span>
+                    {playlist.year != null && (
+                        <>
+                            <span>{playlist.year}</span>
+                            <span>·</span>
+                        </>
+                    )}
+                    <span>{trackCount} tracks</span>
                     <span>·</span>
                     <span>{totalDuration}</span>
                 </div>

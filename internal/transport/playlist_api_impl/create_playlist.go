@@ -22,6 +22,11 @@ func (impl *Impl) CreatePlaylist(ctx context.Context, req *zpotify_api.CreatePla
 		createReq.CoverFileId = &fileId
 	}
 
+	if req.Year != nil {
+		year := req.GetYear()
+		createReq.Year = &year
+	}
+
 	playlistUuid, err := impl.playlistService.Create(ctx, createReq)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error creating playlist")

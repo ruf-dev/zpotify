@@ -46,6 +46,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
     const [playlistMode, setPlaylistMode] = useState(true);
     const [playlistName, setPlaylistName] = useState('');
     const [albumArtists, setAlbumArtists] = useState<ArtistItem[]>([]);
+    const [year, setYear] = useState<number | undefined>();
     const [cover, setCover] = useState<File | undefined>();
     const [submitting, setSubmitting] = useState(false);
 
@@ -283,6 +284,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                     playlistName.trim(),
                     albumArtistUuids.length > 0 ? albumArtistUuids : undefined,
                     coverFileId,
+                    year,
                 );
                 const playlistUuid = playlist.uuid ?? '';
 
@@ -358,6 +360,8 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                         onAlbumArtistsChange={setAlbumArtists}
                         totalDurationSec={totalDuration}
                         trackCount={tracks.length}
+                        year={year}
+                        onYearChange={setYear}
                         loadArtistOptions={loadArtistOptions}
                         onCreateArtist={handleCreateArtist}
                     />

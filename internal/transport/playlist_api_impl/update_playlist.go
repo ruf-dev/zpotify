@@ -27,6 +27,11 @@ func (impl *Impl) UpdatePlaylist(ctx context.Context, req *zpotify_api.UpdatePla
 		updateReq.CoverFileId = &fileId
 	}
 
+	if req.Year != nil {
+		year := req.GetYear()
+		updateReq.Year = &year
+	}
+
 	err := impl.playlistService.Update(ctx, updateReq)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error updating playlist")

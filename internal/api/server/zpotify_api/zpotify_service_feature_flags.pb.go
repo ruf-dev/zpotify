@@ -7,6 +7,7 @@
 package zpotify_api
 
 import (
+	_ "go.redsock.ru/protoc-gen-npm/npmplugin"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -248,7 +249,7 @@ var File_zpotify_service_feature_flags_proto protoreflect.FileDescriptor
 
 const file_zpotify_service_feature_flags_proto_rawDesc = "" +
 	"\n" +
-	"#zpotify_service_feature_flags.proto\x12\vzpotify_api\x1a\x1cgoogle/api/annotations.proto\"n\n" +
+	"#zpotify_service_feature_flags.proto\x12\vzpotify_api\x1a\tnpm.proto\x1a\x1cgoogle/api/annotations.proto\"n\n" +
 	"\vFeatureFlag\x12*\n" +
 	"\x02id\x18\x01 \x01(\x0e2\x1a.zpotify_api.FeatureFlagIdR\x02id\x12\x1d\n" +
 	"\n" +
@@ -262,7 +263,7 @@ const file_zpotify_service_feature_flags_proto_rawDesc = "" +
 	"\x1bFEATURE_FLAG_ID_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cIS_COMMENTS_ON_ALBUM_ENABLED\x10\x012\x8d\x01\n" +
 	"\x0fFeatureFlagsAPI\x12z\n" +
-	"\x0fGetFeatureFlags\x12$.zpotify_api.GetFeatureFlags.Request\x1a%.zpotify_api.GetFeatureFlags.Response\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/feature-flagsB7Z5go.zpotify.ru/zpotify/internal/api/server/zpotify_apib\x06proto3"
+	"\x0fGetFeatureFlags\x12$.zpotify_api.GetFeatureFlags.Request\x1a%.zpotify_api.GetFeatureFlags.Response\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/feature-flagsB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_feature_flags_proto_rawDescOnce sync.Once

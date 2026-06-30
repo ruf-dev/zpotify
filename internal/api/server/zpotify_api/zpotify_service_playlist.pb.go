@@ -519,6 +519,7 @@ type CreatePlaylist_Request struct {
 	IsPublic      bool                   `protobuf:"varint,3,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"`
 	ArtistUuids   []string               `protobuf:"bytes,4,rep,name=artist_uuids,json=artistUuids,proto3" json:"artist_uuids,omitempty"`
 	CoverFileId   *int64                 `protobuf:"varint,5,opt,name=cover_file_id,json=coverFileId,proto3,oneof" json:"cover_file_id,omitempty"`
+	Year          *int32                 `protobuf:"varint,6,opt,name=year,proto3,oneof" json:"year,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -588,6 +589,13 @@ func (x *CreatePlaylist_Request) GetCoverFileId() int64 {
 	return 0
 }
 
+func (x *CreatePlaylist_Request) GetYear() int32 {
+	if x != nil && x.Year != nil {
+		return *x.Year
+	}
+	return 0
+}
+
 type CreatePlaylist_Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -640,6 +648,7 @@ type UpdatePlaylist_Request struct {
 	IsPublic      *bool                  `protobuf:"varint,4,opt,name=is_public,json=isPublic,proto3,oneof" json:"is_public,omitempty"`
 	ArtistUuids   []string               `protobuf:"bytes,5,rep,name=artist_uuids,json=artistUuids,proto3" json:"artist_uuids,omitempty"`
 	CoverFileId   *int64                 `protobuf:"varint,6,opt,name=cover_file_id,json=coverFileId,proto3,oneof" json:"cover_file_id,omitempty"`
+	Year          *int32                 `protobuf:"varint,7,opt,name=year,proto3,oneof" json:"year,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -712,6 +721,13 @@ func (x *UpdatePlaylist_Request) GetArtistUuids() []string {
 func (x *UpdatePlaylist_Request) GetCoverFileId() int64 {
 	if x != nil && x.CoverFileId != nil {
 		return *x.CoverFileId
+	}
+	return 0
+}
+
+func (x *UpdatePlaylist_Request) GetYear() int32 {
+	if x != nil && x.Year != nil {
+		return *x.Year
 	}
 	return 0
 }
@@ -1118,31 +1134,35 @@ const file_zpotify_service_playlist_proto_rawDesc = "" +
 	"\rplaylist_uuid\x18\x01 \x01(\tR\fplaylistUuid\x12\x17\n" +
 	"\asong_id\x18\x02 \x01(\x05R\x06songId\x1a\n" +
 	"\n" +
-	"\bResponse\"\x82\x02\n" +
-	"\x0eCreatePlaylist\x1a\xcf\x01\n" +
+	"\bResponse\"\xa4\x02\n" +
+	"\x0eCreatePlaylist\x1a\xf1\x01\n" +
 	"\aRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12%\n" +
 	"\vdescription\x18\x02 \x01(\tH\x00R\vdescription\x88\x01\x01\x12\x1b\n" +
 	"\tis_public\x18\x03 \x01(\bR\bisPublic\x12!\n" +
 	"\fartist_uuids\x18\x04 \x03(\tR\vartistUuids\x12'\n" +
-	"\rcover_file_id\x18\x05 \x01(\x03H\x01R\vcoverFileId\x88\x01\x01B\x0e\n" +
+	"\rcover_file_id\x18\x05 \x01(\x03H\x01R\vcoverFileId\x88\x01\x01\x12\x17\n" +
+	"\x04year\x18\x06 \x01(\x05H\x02R\x04year\x88\x01\x01B\x0e\n" +
 	"\f_descriptionB\x10\n" +
-	"\x0e_cover_file_id\x1a\x1e\n" +
+	"\x0e_cover_file_idB\a\n" +
+	"\x05_year\x1a\x1e\n" +
 	"\bResponse\x12\x12\n" +
-	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\xa3\x02\n" +
-	"\x0eUpdatePlaylist\x1a\x84\x02\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\xc5\x02\n" +
+	"\x0eUpdatePlaylist\x1a\xa6\x02\n" +
 	"\aRequest\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x01R\vdescription\x88\x01\x01\x12 \n" +
 	"\tis_public\x18\x04 \x01(\bH\x02R\bisPublic\x88\x01\x01\x12!\n" +
 	"\fartist_uuids\x18\x05 \x03(\tR\vartistUuids\x12'\n" +
-	"\rcover_file_id\x18\x06 \x01(\x03H\x03R\vcoverFileId\x88\x01\x01B\a\n" +
+	"\rcover_file_id\x18\x06 \x01(\x03H\x03R\vcoverFileId\x88\x01\x01\x12\x17\n" +
+	"\x04year\x18\a \x01(\x05H\x04R\x04year\x88\x01\x01B\a\n" +
 	"\x05_nameB\x0e\n" +
 	"\f_descriptionB\f\n" +
 	"\n" +
 	"_is_publicB\x10\n" +
-	"\x0e_cover_file_id\x1a\n" +
+	"\x0e_cover_file_idB\a\n" +
+	"\x05_year\x1a\n" +
 	"\n" +
 	"\bResponse\"k\n" +
 	"\vGetPlaylist\x1a\x1d\n" +

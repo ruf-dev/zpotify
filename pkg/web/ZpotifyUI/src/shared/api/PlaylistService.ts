@@ -134,8 +134,8 @@ export class PlaylistService extends BaseService implements IPlaylistService {
         });
     }
 
-    async CreatePlaylist(name: string, artistUuids?: string[], coverFileId?: string): Promise<CreatePlaylistResponse> {
-        const req: CreatePlaylistRequest = { name, artistUuids, coverFileId };
+    async CreatePlaylist(name: string, artistUuids?: string[], coverFileId?: string, year?: number): Promise<CreatePlaylistResponse> {
+        const req: CreatePlaylistRequest = { name, artistUuids, coverFileId, year };
         return this.executeAuthApiCall(async (initReq) => {
             return PlaylistAPI.CreatePlaylist(req, initReq);
         });

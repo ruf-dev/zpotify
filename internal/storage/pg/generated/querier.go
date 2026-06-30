@@ -17,6 +17,7 @@ type Querier interface {
 	CountUserPlaylists(ctx context.Context, userID int64) (int64, error)
 	CreateFile(ctx context.Context, arg CreateFileParams) (int64, error)
 	CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error)
+	DecrementPlaylistSongCount(ctx context.Context, argUuid uuid.UUID) error
 	DeleteExpiredSessions(ctx context.Context) error
 	DeleteFileById(ctx context.Context, id int64) error
 	DeleteSongById(ctx context.Context, id int64) error
@@ -39,7 +40,7 @@ type Querier interface {
 	InsertUser(ctx context.Context, arg InsertUserParams) (int64, error)
 	ListSessionsByUserId(ctx context.Context, userID int64) ([]UserSession, error)
 	ListUserPermissionsByUserId(ctx context.Context, userID int64) (UserPermission, error)
-	ListUserPlaylists(ctx context.Context, arg ListUserPlaylistsParams) ([]PlaylistsV1, error)
+	ListUserPlaylists(ctx context.Context, arg ListUserPlaylistsParams) ([]PlaylistsV2, error)
 	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error
 	SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error
 	UpdateFile(ctx context.Context, arg UpdateFileParams) error

@@ -37,6 +37,7 @@ export type CreatePlaylistRequest = {
   isPublic?: boolean;
   artistUuids?: string[];
   coverFileId?: string;
+  year?: number;
 };
 
 export type CreatePlaylistResponse = {
@@ -52,6 +53,7 @@ export type UpdatePlaylistRequest = {
   isPublic?: boolean;
   artistUuids?: string[];
   coverFileId?: string;
+  year?: number;
 };
 
 export type UpdatePlaylistResponse = Record<string, never>;

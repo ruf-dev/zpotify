@@ -15,6 +15,8 @@ interface PlaylistDetailsPanelProps {
     onAlbumArtistsChange: (artists: ArtistItem[]) => void;
     totalDurationSec: number;
     trackCount: number;
+    year?: number;
+    onYearChange: (year: number | undefined) => void;
     loadArtistOptions: (query: string) => Promise<ArtistItem[]>;
     onCreateArtist: (name: string) => Promise<ArtistItem>;
 }
@@ -68,9 +70,16 @@ export default function PlaylistDetailsPanel({
     onAlbumArtistsChange,
     totalDurationSec,
     trackCount,
+    year,
+    onYearChange,
     loadArtistOptions,
     onCreateArtist,
 }: PlaylistDetailsPanelProps) {
+    function handleYearChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const val = e.target.value;
+        onYearChange(val === '' ? undefined : parseInt(val, 10));
+    }
+
     return (
         <div className={cls.PlaylistDetailsPanelContainer}>
             <CoverField cover={cover} onChange={onCoverChange} />
@@ -88,6 +97,21 @@ export default function PlaylistDetailsPanel({
                         value={playlistName}
                         onChange={(e) => onNameChange(e.target.value)}
                         placeholder="untitled playlist"
+                    />
+                </div>
+
+                <div className={cls.FieldGroup}>
+                    <div className={cls.FieldLabelRow}>
+                        <span className={cls.FieldLabel}>year</span>
+                    </div>
+                    <input
+                        className={cls.NameInput}
+                        type="number"
+                        value={year ?? ''}
+                        onChange={handleYearChange}
+                        placeholder="e.g. 2024"
+                        min={1900}
+                        max={2100}
                     />
                 </div>
 

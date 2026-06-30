@@ -60,5 +60,6 @@ func toPlaylist(pl domain.Playlist) *zpotify_api.Playlist {
 		Artists:       protoArtists,
 		SongCount:     songCount,
 		CoverFilePath: coverFilePath,
+		Year:          pl.Year,
 	}
 }

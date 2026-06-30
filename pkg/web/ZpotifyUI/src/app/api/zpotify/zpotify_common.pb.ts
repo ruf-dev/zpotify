@@ -33,6 +33,7 @@ export type Playlist = {
   artists?: ArtistBase[];
   songCount?: number;
   coverFilePath?: string;
+  year?: number;
 };
 
 export type SongFile = {

@@ -237,6 +237,8 @@ type Playlist struct {
 	IsPublic    bool
 	OwnerID     int64
 	CoverFileID sql.NullInt64
+	Year        sql.NullInt32
+	SongCount   int32
 }
 
 type PlaylistSong struct {
@@ -279,6 +281,16 @@ type PlaylistsV1 struct {
 	IsPublic    bool
 	CoverFileID sql.NullInt64
 	SongCount   int64
+}
+
+type PlaylistsV2 struct {
+	Uuid        uuid.UUID
+	Name        string
+	Description string
+	IsPublic    bool
+	CoverFileID sql.NullInt64
+	SongCount   int32
+	Year        sql.NullInt32
 }
 
 type Song struct {

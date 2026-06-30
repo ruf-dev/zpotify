@@ -30,17 +30,21 @@ func (q *Queries) AddPlaylistArtist(ctx context.Context, arg AddPlaylistArtistPa
 }
 
 const addSongToPlaylist = `-- name: AddSongToPlaylist :exec
-INSERT INTO playlist_songs (playlist_uuid, song_id, order_number)
-VALUES ($1, $2, (SELECT COALESCE(MAX(order_number), 0) + 1 FROM playlist_songs WHERE playlist_uuid = $1))
+WITH inserted AS (
+    INSERT INTO playlist_songs (playlist_uuid, song_id, order_number)
+    VALUES ($1, $2, (SELECT COALESCE(MAX(order_number), 0) + 1 FROM playlist_songs WHERE playlist_uuid = $1))
+    RETURNING playlist_uuid
+)
+UPDATE playlists SET song_count = song_count + 1 WHERE uuid = $1
 `
 
 type AddSongToPlaylistParams struct {
-	PlaylistUuid uuid.UUID
-	SongID       int64
+	Uuid   uuid.UUID
+	SongID int64
 }
 
 func (q *Queries) AddSongToPlaylist(ctx context.Context, arg AddSongToPlaylistParams) error {
-	_, err := q.db.ExecContext(ctx, addSongToPlaylist, arg.PlaylistUuid, arg.SongID)
+	_, err := q.db.ExecContext(ctx, addSongToPlaylist, arg.Uuid, arg.SongID)
 	return err
 }
 
@@ -54,7 +58,7 @@ func (q *Queries) ClearPlaylistArtists(ctx context.Context, playlistUuid uuid.UU
 }
 
 const countUserPlaylists = `-- name: CountUserPlaylists :one
-SELECT COUNT(v.uuid) FROM playlists_v1 v
+SELECT COUNT(v.uuid) FROM playlists_v2 v
 JOIN user_playlists up ON up.playlist_id = v.uuid
 WHERE up.user_id = $1
 `
@@ -68,8 +72,8 @@ func (q *Queries) CountUserPlaylists(ctx context.Context, userID int64) (int64, 
 
 const createPlaylist = `-- name: CreatePlaylist :one
 WITH created_playlist AS (
-    INSERT INTO playlists (name, description, is_public, owner_id)
-        VALUES ($1, $2, $3, $4)
+    INSERT INTO playlists (name, description, is_public, owner_id, year)
+        VALUES ($1, $2, $3, $4, $5)
         RETURNING uuid)
 INSERT INTO user_playlists (user_id, playlist_id, order_id, can_add_songs, can_delete_songs)
 VALUES ($4,
@@ -86,6 +90,7 @@ type CreatePlaylistParams struct {
 	Description string
 	IsPublic    bool
 	UserID      int64
+	Year        sql.NullInt32
 }
 
 func (q *Queries) CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error) {
@@ -94,10 +99,20 @@ func (q *Queries) CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) 
 		arg.Description,
 		arg.IsPublic,
 		arg.UserID,
+		arg.Year,
 	)
 	var playlist_id uuid.UUID
 	err := row.Scan(&playlist_id)
 	return playlist_id, err
+}
+
+const decrementPlaylistSongCount = `-- name: DecrementPlaylistSongCount :exec
+UPDATE playlists SET song_count = GREATEST(song_count - 1, 0) WHERE uuid = $1
+`
+
+func (q *Queries) DecrementPlaylistSongCount(ctx context.Context, argUuid uuid.UUID) error {
+	_, err := q.db.ExecContext(ctx, decrementPlaylistSongCount, argUuid)
+	return err
 }
 
 const getPlaylistArtists = `-- name: GetPlaylistArtists :many
@@ -137,7 +152,9 @@ SELECT playlists.uuid,
        playlists.description,
        playlists.is_public,
        playlists.cover_file_id,
-       fm.file_path AS cover_file_path
+       fm.file_path AS cover_file_path,
+       playlists.year,
+       playlists.song_count
 FROM playlists
          LEFT JOIN user_playlists AS up
                    ON up.playlist_id = playlists.uuid
@@ -162,6 +179,8 @@ type GetPlaylistWithAuthRow struct {
 	IsPublic      bool
 	CoverFileID   sql.NullInt64
 	CoverFilePath sql.NullString
+	Year          sql.NullInt32
+	SongCount     int32
 }
 
 func (q *Queries) GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error) {
@@ -174,13 +193,15 @@ func (q *Queries) GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAu
 		&i.IsPublic,
 		&i.CoverFileID,
 		&i.CoverFilePath,
+		&i.Year,
+		&i.SongCount,
 	)
 	return i, err
 }
 
 const listUserPlaylists = `-- name: ListUserPlaylists :many
-SELECT v.uuid, v.name, v.description, v.is_public, v.cover_file_id, v.song_count
-FROM playlists_v1 v
+SELECT v.uuid, v.name, v.description, v.is_public, v.cover_file_id, v.song_count, v.year
+FROM playlists_v2 v
 JOIN user_playlists up ON up.playlist_id = v.uuid
 WHERE up.user_id = $1
 ORDER BY up.order_id
@@ -193,15 +214,15 @@ type ListUserPlaylistsParams struct {
 	Offset int32
 }
 
-func (q *Queries) ListUserPlaylists(ctx context.Context, arg ListUserPlaylistsParams) ([]PlaylistsV1, error) {
+func (q *Queries) ListUserPlaylists(ctx context.Context, arg ListUserPlaylistsParams) ([]PlaylistsV2, error) {
 	rows, err := q.db.QueryContext(ctx, listUserPlaylists, arg.UserID, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []PlaylistsV1{}
+	items := []PlaylistsV2{}
 	for rows.Next() {
-		var i PlaylistsV1
+		var i PlaylistsV2
 		if err := rows.Scan(
 			&i.Uuid,
 			&i.Name,
@@ -209,6 +230,7 @@ func (q *Queries) ListUserPlaylists(ctx context.Context, arg ListUserPlaylistsPa
 			&i.IsPublic,
 			&i.CoverFileID,
 			&i.SongCount,
+			&i.Year,
 		); err != nil {
 			return nil, err
 		}
@@ -227,7 +249,8 @@ const updatePlaylist = `-- name: UpdatePlaylist :exec
 UPDATE playlists
 SET name        = CASE WHEN $2::text != '' THEN $2::text ELSE name END,
     description = CASE WHEN $3::text != '' THEN $3::text ELSE description END,
-    is_public   = CASE WHEN $4 THEN $4 ELSE is_public END
+    is_public   = CASE WHEN $4 THEN $4 ELSE is_public END,
+    year        = COALESCE($5::int4, year)
 WHERE uuid = $1
 `
 
@@ -236,6 +259,7 @@ type UpdatePlaylistParams struct {
 	Column2  string
 	Column3  string
 	IsPublic bool
+	Year     sql.NullInt32
 }
 
 func (q *Queries) UpdatePlaylist(ctx context.Context, arg UpdatePlaylistParams) error {
@@ -244,6 +268,7 @@ func (q *Queries) UpdatePlaylist(ctx context.Context, arg UpdatePlaylistParams) 
 		arg.Column2,
 		arg.Column3,
 		arg.IsPublic,
+		arg.Year,
 	)
 	return err
 }

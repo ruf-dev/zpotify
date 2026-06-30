@@ -200,11 +200,13 @@ func (p *PlaylistStorage) Get(ctx context.Context, userId int64, playlistUuid st
 		return domain.Playlist{}, wrapPgErr(err)
 	}
 
+	songCount := row.SongCount
 	playlist := domain.Playlist{
 		Uuid:        row.Uuid.String(),
 		Name:        row.Name,
 		Description: row.Description,
 		IsPublic:    row.IsPublic,
+		SongCount:   &songCount,
 	}
 
 	if row.CoverFileID.Valid {
@@ -213,6 +215,10 @@ func (p *PlaylistStorage) Get(ctx context.Context, userId int64, playlistUuid st
 
 	if row.CoverFilePath.Valid {
 		playlist.CoverFilePath = row.CoverFilePath.String
+	}
+
+	if row.Year.Valid {
+		playlist.Year = &row.Year.Int32
 	}
 
 	artists, err := p.GetPlaylistArtists(ctx, playlistUuid)
@@ -230,6 +236,10 @@ func (p *PlaylistStorage) Create(ctx context.Context, params domain.CreatePlayli
 		Description: params.Description,
 		IsPublic:    params.IsPublic,
 		UserID:      userId,
+	}
+
+	if params.Year != nil {
+		createParams.Year = sql.NullInt32{Int32: *params.Year, Valid: true}
 	}
 
 	playlistUuid, err := p.querier.CreatePlaylist(ctx, createParams)
@@ -256,6 +266,10 @@ func (p *PlaylistStorage) Update(ctx context.Context, params domain.UpdatePlayli
 		Column2:  params.Name,
 		Column3:  params.Description,
 		IsPublic: isPublic,
+	}
+
+	if params.Year != nil {
+		updateParams.Year = sql.NullInt32{Int32: *params.Year, Valid: true}
 	}
 
 	err = p.querier.UpdatePlaylist(ctx, updateParams)
@@ -353,8 +367,8 @@ func (p *PlaylistStorage) AddSong(ctx context.Context, playlistUuid string, song
 		return rerrors.Wrap(err, "error parsing playlist uuid")
 	}
 	params := generated.AddSongToPlaylistParams{
-		PlaylistUuid: pUuid,
-		SongID:       int64(songId),
+		Uuid:   pUuid,
+		SongID: int64(songId),
 	}
 	err = p.querier.AddSongToPlaylist(ctx, params)
 	if err != nil {
@@ -389,8 +403,12 @@ func (p *PlaylistStorage) List(ctx context.Context, userId int64, req domain.Lis
 			playlist.CoverFileId = &row.CoverFileID.Int64
 		}
 
-		songCount := int32(row.SongCount)
+		songCount := row.SongCount
 		playlist.SongCount = &songCount
+
+		if row.Year.Valid {
+			playlist.Year = &row.Year.Int32
+		}
 
 		artists, err := p.GetPlaylistArtists(ctx, row.Uuid.String())
 		if err != nil {

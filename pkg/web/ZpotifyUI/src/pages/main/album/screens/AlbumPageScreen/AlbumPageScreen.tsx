@@ -52,6 +52,7 @@ export default function AlbumPageScreen({ playlist, songs, username }: Props) {
     }
 
     const totalDuration = computeTotalDuration(songs);
+    const trackCount = songs.length > 0 ? songs.length : (playlist?.songCount ?? 0);
 
     return (
         <div className={cls.AlbumPageContainer}>
@@ -60,6 +61,7 @@ export default function AlbumPageScreen({ playlist, songs, username }: Props) {
                 <AlbumSidebar
                     playlist={playlist}
                     totalDuration={totalDuration}
+                    trackCount={trackCount}
                     saved={saved}
                     onToggleSave={handleToggleSave}
                     onBack={handleBack}
