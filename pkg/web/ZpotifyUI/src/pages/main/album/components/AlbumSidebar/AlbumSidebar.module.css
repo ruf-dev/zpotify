@@ -289,6 +289,28 @@
     line-height: 1.5;
 }
 
+/* ── Portrait / Mobile ───────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .SidebarContainer {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 0.0625rem solid var(--color-border);
+        overflow-y: visible;
+        flex-shrink: 0;
+    }
+
+    .CoverWrapper {
+        width: 8rem;
+        align-self: center;
+    }
+
+    .EditButton {
+        display: none;
+    }
+}
+
 /* ── Edit Mode ───────────────────────────────────────────── */
 
 .MetaText {

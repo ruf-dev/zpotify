@@ -336,7 +336,7 @@ export default function AlbumSidebar({
                         </>
                     ) : (
                         <button
-                            className={cls.IconButton}
+                            className={cn(cls.IconButton, cls.EditButton)}
                             type="button"
                             aria-label="Edit"
                             onClick={onEnterEditMode}

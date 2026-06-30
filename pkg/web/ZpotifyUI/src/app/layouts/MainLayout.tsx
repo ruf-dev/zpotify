@@ -18,11 +18,16 @@ export default function MainLayout() {
     const showSidebar = useUISettings((state) => state.showSidebar);
     const showPlayerBar = useUISettings((state) => state.showPlayerBar);
     const showQueuePanel = useUISettings((state) => state.showQueuePanel);
+
     const audioPlayer = useAudioPlayer();
     const effectiveShowPlayerBar = showPlayerBar && audioPlayer.trackPath !== null;
 
     useEffect(() => {
         if (!userData) {
+            const path = window.location.pathname;
+            if (path !== Path.HomePage && path !== Path.IntiPage) {
+                sessionStorage.setItem('zpotify-return-path', path);
+            }
             navigate(Path.IntiPage);
         }
     }, [userData]);
@@ -47,7 +52,7 @@ export default function MainLayout() {
                 <PlayerBarSegment/>
             </div>
 
-            {!effectiveShowPlayerBar && (
+            {!showPlayerBar && (
                 <div className={cls.Player}>
                     <MusicPlayerWithLogo audioPlayer={audioPlayer}/>
                 </div>

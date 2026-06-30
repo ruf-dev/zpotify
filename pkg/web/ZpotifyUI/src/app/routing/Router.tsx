@@ -9,7 +9,6 @@ import ErrorPage from '@/pages/error/ErrorPage.tsx';
 import PlaylistPage from '@/pages/main/playlist/PlaylistPage.tsx';
 import AlbumPage from '@/pages/main/album/AlbumPage.tsx';
 import EarlyAccessPage from '@/pages/early_access/EarlyAccessPage.tsx';
-import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
 import useUser from '@/entities/user/useUser.ts';
 import Toaster from '@/components/notifications/Toaster.tsx';
 import HomePage from '@/pages/main/home/HomePage.tsx';
@@ -18,7 +17,6 @@ import Dialog from '@/pages/dialog/Dialog.tsx';
 import MainLayout from "@/app/layouts/MainLayout.tsx";
 
 export default function Router() {
-    const audioPlayer = useAudioPlayer();
     const navigate = useNavigate();
 
     const earlyAccessDenied = useUser((state) => state.earlyAccessDenied);
@@ -43,7 +41,7 @@ export default function Router() {
                 <Routes>
                     <Route
                         path={Path.IntiPage}
-                        element={<InitPage AudioPlayer={audioPlayer}/>}
+                        element={<InitPage/>}
                         errorElement={<ErrorPage/>}
                     />
 

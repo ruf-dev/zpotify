@@ -96,6 +96,16 @@ class AudioPlayerImpl implements AudioPlayer {
     }
 
     private restoreLastPlayed(): void {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const store = useAudioStore as any;
+        if (store.persist.hasHydrated()) {
+            this.doRestore();
+        } else {
+            store.persist.onFinishHydration(() => this.doRestore());
+        }
+    }
+
+    private doRestore(): void {
         const {trackPath, progress} = useAudioStore.getState();
         if (trackPath) {
             this.pendingRestoreProgress = progress;
@@ -221,7 +231,6 @@ class AudioPlayerImpl implements AudioPlayer {
     preload(trackPath: string): void {
         const base = import.meta.env.VITE_ZPOTIFY_WEBSERVER as string || "";
         const trackUrl = base + (trackPath.startsWith('/') ? trackPath : '/' + trackPath);
-        if (this.audio.src === trackUrl) return;
 
         this.audio.src = trackUrl;
         this.audio.load();

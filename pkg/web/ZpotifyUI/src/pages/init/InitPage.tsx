@@ -8,18 +8,13 @@ import AuthButton from '@/shared/ui/AuthButton.tsx';
 import TelegramAuth from '@/features/auth/TelegramAuth.tsx';
 import { Path } from '@/app/routing/paths.ts';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
-import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
 import useUser from '@/entities/user/useUser.ts';
 import lockIcon from '@/assets/icons/lock.svg';
 import googleIcon from '@/assets/icons/google.svg';
 import appleIcon from '@/assets/icons/apple.svg';
 import githubIcon from '@/assets/icons/github.svg';
 
-interface InitPageProps {
-    AudioPlayer: AudioPlayer;
-}
-
-export default function InitPage({ AudioPlayer }: InitPageProps) {
+export default function InitPage() {
     const navigate = useNavigate();
     const { OpenDialog } = useDialog();
 
@@ -28,8 +23,9 @@ export default function InitPage({ AudioPlayer }: InitPageProps) {
 
     useEffect(() => {
         if (userData) {
-            navigate(Path.HomePage);
-            AudioPlayer.unload();
+            const returnPath = sessionStorage.getItem('zpotify-return-path');
+            sessionStorage.removeItem('zpotify-return-path');
+            navigate(returnPath ?? Path.HomePage);
         }
     }, [userData]);
 

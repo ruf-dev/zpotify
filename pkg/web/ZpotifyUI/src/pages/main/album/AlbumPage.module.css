@@ -25,3 +25,17 @@
     from { opacity: 0; }
     to   { opacity: 1; }
 }
+
+@media (max-width: 768px) {
+    .AlbumPageContainer {
+        overflow-y: auto;
+    }
+
+    .Body {
+        position: relative;
+        inset: unset;
+        min-height: 100%;
+        flex-direction: column;
+        overflow: visible;
+    }
+}

@@ -8,6 +8,13 @@
     box-sizing: border-box;
 }
 
+@media (max-width: 768px) {
+    .MainContentContainer {
+        overflow-y: visible;
+        padding: 1rem 1rem 4rem;
+    }
+}
+
 .TrackListHeader {
     display: grid;
     grid-template-columns: 2.5rem 1fr 2rem 3rem 1.5rem;
