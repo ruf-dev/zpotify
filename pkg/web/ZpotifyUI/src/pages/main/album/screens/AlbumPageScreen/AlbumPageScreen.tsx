@@ -8,6 +8,12 @@ import AlbumSidebar from '@/pages/main/album/components/AlbumSidebar/AlbumSideba
 import AlbumMainContent from '@/pages/main/album/components/AlbumMainContent/AlbumMainContent.tsx';
 import cls from '@/pages/main/album/AlbumPage.module.css';
 
+function buildCoverUrl(filePath?: string): string | undefined {
+    if (!filePath) return undefined;
+    const base = (import.meta.env.VITE_ZPOTIFY_WEBSERVER as string | undefined) ?? '';
+    return `${base}/${filePath}`;
+}
+
 function computeTotalDuration(songs: SongBase[]): string {
     const totalSec = songs.reduce((acc, s) => acc + (s.durationSec ?? 0), 0);
     const m = Math.floor(totalSec / 60);
@@ -24,6 +30,7 @@ export default function AlbumPageScreen({ playlist, songs, username }: Props) {
     const navigate = useNavigate();
     const audioPlayer = useAudioPlayer();
     const [saved, setSaved] = useState(false);
+    const [editMode, setEditMode] = useState(false);
 
     function handleBack() {
         navigate(Path.HomePage);
@@ -33,10 +40,12 @@ export default function AlbumPageScreen({ playlist, songs, username }: Props) {
         setSaved((prev) => !prev);
     }
 
+    const coverUrl = buildCoverUrl(playlist?.coverFilePath);
+
     function handlePlay() {
         const first = songs[0];
         if (!first?.filePath) return;
-        audioPlayer.setSongInfo(first.title ?? null, first.artists?.[0]?.name ?? null);
+        audioPlayer.setSongInfo(first.title ?? null, first.artists?.[0]?.name ?? null, coverUrl);
         audioPlayer.play(first.filePath);
         audioPlayer.setNext(songs[1]?.filePath);
         audioPlayer.setPrev(undefined);
@@ -45,7 +54,7 @@ export default function AlbumPageScreen({ playlist, songs, username }: Props) {
     function handlePlaySong(song: SongBase) {
         if (!song.filePath) return;
         const idx = songs.findIndex(s => s.filePath === song.filePath);
-        audioPlayer.setSongInfo(song.title ?? null, song.artists?.[0]?.name ?? null);
+        audioPlayer.setSongInfo(song.title ?? null, song.artists?.[0]?.name ?? null, coverUrl);
         audioPlayer.play(song.filePath);
         audioPlayer.setNext(songs[idx + 1]?.filePath);
         audioPlayer.setPrev(idx > 0 ? songs[idx - 1]?.filePath : undefined);
@@ -66,12 +75,18 @@ export default function AlbumPageScreen({ playlist, songs, username }: Props) {
                     onToggleSave={handleToggleSave}
                     onBack={handleBack}
                     onPlay={handlePlay}
+                    editMode={editMode}
+                    onEnterEditMode={() => setEditMode(true)}
+                    onExitEditMode={() => setEditMode(false)}
                 />
                 <AlbumMainContent
                     songs={songs}
                     currentTrackPath={audioPlayer.trackPath}
                     onPlaySong={handlePlaySong}
                     username={username}
+                    canEdit={playlist?.canEdit ?? false}
+                    editMode={editMode}
+                    playlistUuid={playlist?.uuid}
                 />
             </div>
         </div>

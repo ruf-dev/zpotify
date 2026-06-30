@@ -10,9 +10,10 @@ type SongListWidgetProps = {
     songs: SongBase[];
     permissions?: SongListPermissions;
     audioPlayer: AudioPlayer;
+    coverUrl?: string;
 };
 
-export default function SongListWidget({ songs, audioPlayer }: SongListWidgetProps) {
+export default function SongListWidget({ songs, audioPlayer, coverUrl }: SongListWidgetProps) {
     const [currentSongIdx, setCurrentSongIdx] = useState<number>(-1);
 
     const [menuOpenedSongId, setMenuOpenedSongId] = useState<string | null>(null);
@@ -64,7 +65,7 @@ export default function SongListWidget({ songs, audioPlayer }: SongListWidgetPro
         if (!song.filePath) throw 'No song url path';
 
         audioPlayer.play(song.filePath);
-        audioPlayer.setSongInfo(song.title || null, song.artists?.[0]?.name || null);
+        audioPlayer.setSongInfo(song.title || null, song.artists?.[0]?.name || null, coverUrl);
 
         setCurrentSongIdx(idx);
 

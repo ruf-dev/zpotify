@@ -17,7 +17,8 @@ export interface AudioPlayer {
     trackPath: string | null;
     songTitle: string | null;
     songArtist: string | null;
-    setSongInfo: (title: string | null, artist: string | null) => void;
+    songCover: string | null;
+    setSongInfo: (title: string | null, artist: string | null, cover?: string | null) => void;
 
     onEnd: (callback: () => void) => void;
 
@@ -43,6 +44,7 @@ interface AudioStoreState {
 
     songTitle: string | null;
     songArtist: string | null;
+    songCover: string | null;
 
     progress: number;
 
@@ -60,6 +62,7 @@ const useAudioStore = create<AudioStoreState>(() => ({
 
     songTitle: null,
     songArtist: null,
+    songCover: null,
     progress: 0,
     nextTrackUrl: undefined,
     prevTrackUrl: undefined,
@@ -145,8 +148,12 @@ class AudioPlayerImpl implements AudioPlayer {
         return useAudioStore.getState().songArtist;
     }
 
-    setSongInfo(title: string | null, artist: string | null): void {
-        useAudioStore.setState({songTitle: title, songArtist: artist});
+    get songCover() {
+        return useAudioStore.getState().songCover;
+    }
+
+    setSongInfo(title: string | null, artist: string | null, cover?: string | null): void {
+        useAudioStore.setState({songTitle: title, songArtist: artist, songCover: cover ?? null});
     }
 
     get progress() {

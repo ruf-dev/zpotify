@@ -342,6 +342,64 @@ func (p *PlaylistStorage) ClearPlaylistArtists(ctx context.Context, playlistUuid
 	return nil
 }
 
+func (p *PlaylistStorage) GetPlaylistChips(ctx context.Context, playlistUuid string) ([]domain.PlaylistChip, error) {
+	parsedUuid, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+
+	rows, err := p.querier.GetPlaylistChips(ctx, parsedUuid)
+	if err != nil {
+		return nil, wrapPgErr(err)
+	}
+
+	chips := make([]domain.PlaylistChip, 0, len(rows))
+	for _, row := range rows {
+		chip := domain.PlaylistChip{
+			Kind:  row.Kind,
+			Value: row.Value,
+		}
+		chips = append(chips, chip)
+	}
+
+	return chips, nil
+}
+
+func (p *PlaylistStorage) InsertPlaylistChip(ctx context.Context, playlistUuid string, chip domain.PlaylistChip, orderId int) error {
+	parsedUuid, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+
+	insertParams := generated.InsertPlaylistChipParams{
+		PlaylistUuid: parsedUuid,
+		Kind:         chip.Kind,
+		Value:        chip.Value,
+		OrderID:      int64(orderId),
+	}
+
+	err = p.querier.InsertPlaylistChip(ctx, insertParams)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
+func (p *PlaylistStorage) ClearPlaylistChips(ctx context.Context, playlistUuid string) error {
+	parsedUuid, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+
+	err = p.querier.ClearPlaylistChips(ctx, parsedUuid)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
 func (p *PlaylistStorage) UpdateCoverFileId(ctx context.Context, playlistUuid string, coverFileId int64) error {
 	parsedUuid, err := uuid.Parse(playlistUuid)
 	if err != nil {
@@ -371,6 +429,24 @@ func (p *PlaylistStorage) AddSong(ctx context.Context, playlistUuid string, song
 		SongID: int64(songId),
 	}
 	err = p.querier.AddSongToPlaylist(ctx, params)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
+func (p *PlaylistStorage) SetSongOrder(ctx context.Context, playlistUuid string, songId int64, orderNum int64) error {
+	pUuid, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+	params := generated.SetSongOrderInPlaylistParams{
+		PlaylistUuid: pUuid,
+		SongID:       songId,
+		OrderNumber:  orderNum,
+	}
+	err = p.querier.SetSongOrderInPlaylist(ctx, params)
 	if err != nil {
 		return wrapPgErr(err)
 	}

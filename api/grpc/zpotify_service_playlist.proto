@@ -101,6 +101,7 @@ message CreatePlaylist {
     repeated string artist_uuids = 4;
     optional int64 cover_file_id = 5;
     optional int32 year = 6;
+    repeated PlaylistChip chips = 7;
   }
 
   message Response {
@@ -117,6 +118,7 @@ message UpdatePlaylist {
     repeated string artist_uuids = 5;
     optional int64 cover_file_id = 6;
     optional int32 year = 7;
+    repeated PlaylistChip chips = 8;
   }
 
   message Response {}
@@ -134,7 +136,10 @@ message GetPlaylist {
 }
 
 message ChangeSongsOrder{
-  message Request {}
+  message Request {
+    string playlist_uuid = 1;
+    repeated int64 song_ids = 2;
+  }
   message Response {}
 }
 

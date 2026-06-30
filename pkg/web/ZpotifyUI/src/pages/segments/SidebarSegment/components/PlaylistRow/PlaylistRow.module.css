@@ -25,6 +25,7 @@
     border-radius: var(--space-xs);
     background: var(--playlist-color);
     flex-shrink: 0;
+    object-fit: cover;
 }
 
 .PlaylistInfoWrapper {

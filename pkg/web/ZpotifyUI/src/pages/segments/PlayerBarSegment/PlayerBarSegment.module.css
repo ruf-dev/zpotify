@@ -54,6 +54,7 @@
     height: 2.25rem;
     border-radius: 0.3125rem;
     flex-shrink: 0;
+    object-fit: cover;
 }
 
 .TrackTextWrapper {

@@ -25,6 +25,11 @@ export type SongBase = {
   fileId?: string;
 };
 
+export type PlaylistChip = {
+  kind?: string;
+  value?: string;
+};
+
 export type Playlist = {
   uuid?: string;
   name?: string;
@@ -34,6 +39,8 @@ export type Playlist = {
   songCount?: number;
   coverFilePath?: string;
   year?: number;
+  chips?: PlaylistChip[];
+  canEdit?: boolean;
 };
 
 export type SongFile = {

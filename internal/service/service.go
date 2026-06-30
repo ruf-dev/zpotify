@@ -131,6 +131,7 @@ type PlaylistService interface {
 	Create(ctx context.Context, req domain.CreatePlaylistParams) (string, error)
 	Get(ctx context.Context, playlistUuid string) (domain.Playlist, error)
 	Update(ctx context.Context, req domain.UpdatePlaylistParams) error
+	ChangeSongsOrder(ctx context.Context, params domain.ChangeSongsOrderParams) error
 
 	ListSongs(ctx context.Context, songs domain.ListSongs) (domain.SongsInPlaylist, error)
 	AddSong(ctx context.Context, req domain.AddSongToPlaylist) error

@@ -1,7 +1,9 @@
 import CoverField from '@/components/CoverField/CoverField';
 import ArtistChipsField from '@/widgets/ArtistField/ArtistChipsField';
 import DisabledChip from '@/shared/ui/DisabledChip';
+import ChipsField from '@/widgets/ChipsField/ChipsField';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
+import type { ChipEntry } from '@/widgets/ChipsField/ChipsField';
 import { formatDuration } from '@/shared/lib/time';
 
 import cls from '@/dialogs/MultitrackUpload/PlaylistDetailsPanel.module.css';
@@ -9,16 +11,19 @@ import cls from '@/dialogs/MultitrackUpload/PlaylistDetailsPanel.module.css';
 interface PlaylistDetailsPanelProps {
     cover?: File;
     onCoverChange: (file: File) => void;
+    existingCoverUrl?: string;
     playlistName: string;
     onNameChange: (name: string) => void;
     albumArtists: ArtistItem[];
     onAlbumArtistsChange: (artists: ArtistItem[]) => void;
-    totalDurationSec: number;
-    trackCount: number;
+    totalDurationSec?: number;
+    trackCount?: number;
     year?: number;
     onYearChange: (year: number | undefined) => void;
     loadArtistOptions: (query: string) => Promise<ArtistItem[]>;
     onCreateArtist: (name: string) => Promise<ArtistItem>;
+    chips: ChipEntry[];
+    onChipsChange: (chips: ChipEntry[]) => void;
 }
 
 function ClockIcon() {
@@ -64,6 +69,7 @@ function formatTotalDuration(secs: number): string {
 export default function PlaylistDetailsPanel({
     cover,
     onCoverChange,
+    existingCoverUrl,
     playlistName,
     onNameChange,
     albumArtists,
@@ -74,6 +80,8 @@ export default function PlaylistDetailsPanel({
     onYearChange,
     loadArtistOptions,
     onCreateArtist,
+    chips,
+    onChipsChange,
 }: PlaylistDetailsPanelProps) {
     function handleYearChange(e: React.ChangeEvent<HTMLInputElement>) {
         const val = e.target.value;
@@ -82,7 +90,7 @@ export default function PlaylistDetailsPanel({
 
     return (
         <div className={cls.PlaylistDetailsPanelContainer}>
-            <CoverField cover={cover} onChange={onCoverChange} />
+            <CoverField cover={cover} onChange={onCoverChange} existingCoverUrl={existingCoverUrl} />
 
             <div className={cls.FieldsStack}>
                 <div className={cls.FieldGroup}>
@@ -129,10 +137,20 @@ export default function PlaylistDetailsPanel({
                     />
                 </div>
 
-                <div className={cls.MetaChipsRow}>
-                    <DisabledChip icon={<ClockIcon />} label="total" value={formatTotalDuration(totalDurationSec)} />
-                    <DisabledChip icon={<DiscIcon />} label="tracks" value={String(trackCount)} />
+                <div className={cls.FieldGroup}>
+                    <div className={cls.FieldLabelRow}>
+                        <span className={cls.FieldLabel}>tags</span>
+                        <span className={cls.FieldHint}>genre, mood, era…</span>
+                    </div>
+                    <ChipsField chips={chips} onChange={onChipsChange} />
                 </div>
+
+                {totalDurationSec !== undefined && trackCount !== undefined && (
+                    <div className={cls.MetaChipsRow}>
+                        <DisabledChip icon={<ClockIcon />} label="total" value={formatTotalDuration(totalDurationSec)} />
+                        <DisabledChip icon={<DiscIcon />} label="tracks" value={String(trackCount)} />
+                    </div>
+                )}
             </div>
         </div>
     );

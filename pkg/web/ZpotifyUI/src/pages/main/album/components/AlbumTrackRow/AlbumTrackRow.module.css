@@ -1,6 +1,6 @@
 .TrackRow {
     display: grid;
-    grid-template-columns: 2.5rem 1fr 2rem 3rem 1.5rem;
+    grid-template-columns: 2.5rem 1fr 2rem 3rem 1.5rem 0;
     gap: 0.5rem;
     padding: 0.55rem 1rem;
     border-radius: var(--border-radius-sm);
@@ -130,6 +130,31 @@
     font-size: var(--font-size-md);
     letter-spacing: 0.05em;
     font-family: inherit;
+}
+
+.TrackRowReorderable {
+    grid-template-columns: 2.5rem 1fr 2rem 3rem 1.5rem 1.5rem;
+}
+
+.DragHandle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: grab;
+    color: var(--color-fg-disabled);
+    touch-action: none;
+    transition: color var(--ease-quick);
+
+    &:hover {
+        color: var(--color-fg-tertiary);
+    }
+
+    &:active {
+        cursor: grabbing;
+    }
 }
 
 @keyframes heartPop {

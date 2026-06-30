@@ -70,6 +70,13 @@ func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistP
 				}
 			}
 
+			for i, chip := range req.Chips {
+				createErr = playlistStorage.InsertPlaylistChip(ctx, playlistUuid, chip, i)
+				if createErr != nil {
+					return rerrors.Wrap(createErr, "error adding chip to playlist")
+				}
+			}
+
 			if req.CoverFileId != nil {
 				jobStorage := p.jobStorage.WithTx(tx)
 				createErr = p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, jobStorage, playlistUuid, *req.CoverFileId, req.ArtistUuids, userCtx.UserId)
@@ -99,6 +106,18 @@ func (p *PlaylistService) Get(ctx context.Context, playlistUuid string) (domain.
 	}
 
 	p.resolveCoverPath(ctx, &playlist)
+
+	chips, err := p.playlistStorage.GetPlaylistChips(ctx, playlistUuid)
+	if err != nil {
+		return domain.Playlist{}, rerrors.Wrap(err, "error reading playlist chips")
+	}
+	playlist.Chips = chips
+
+	permissions, err := p.userStorage.GetPermissionsOnPlaylist(ctx, userCtx.UserId, playlistUuid)
+	if err != nil {
+		return domain.Playlist{}, rerrors.Wrap(err, "error reading playlist permissions")
+	}
+	playlist.Permissions = &permissions
 
 	return playlist, nil
 }
@@ -139,6 +158,20 @@ func (p *PlaylistService) Update(ctx context.Context, req domain.UpdatePlaylistP
 				addErr := playlistStorage.AddPlaylistArtist(ctx, req.Uuid, artistUuid, i)
 				if addErr != nil {
 					return rerrors.Wrap(addErr, "error adding artist to playlist")
+				}
+			}
+		}
+
+		if req.Chips != nil {
+			clearErr := playlistStorage.ClearPlaylistChips(ctx, req.Uuid)
+			if clearErr != nil {
+				return rerrors.Wrap(clearErr, "error clearing playlist chips")
+			}
+
+			for i, chip := range req.Chips {
+				addErr := playlistStorage.InsertPlaylistChip(ctx, req.Uuid, chip, i)
+				if addErr != nil {
+					return rerrors.Wrap(addErr, "error adding chip to playlist")
 				}
 			}
 		}
@@ -225,6 +258,35 @@ func (p *PlaylistService) AddSong(ctx context.Context, req domain.AddSongToPlayl
 	}
 
 	return nil
+}
+
+func (p *PlaylistService) ChangeSongsOrder(ctx context.Context, params domain.ChangeSongsOrderParams) error {
+	userCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return rerrors.Wrap(service_errors.ErrUnauthenticated)
+	}
+
+	permissions, err := p.userStorage.GetPermissionsOnPlaylist(ctx, userCtx.UserId, params.PlaylistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting permissions on playlist")
+	}
+
+	if !permissions.CanEdit {
+		return rerrors.Wrap(service_errors.ErrUnauthorized)
+	}
+
+	err = p.txManager.Execute(func(tx *sql.Tx) error {
+		playlistStorage := p.playlistStorage.WithTx(tx)
+		for i, songId := range params.SongIds {
+			setErr := playlistStorage.SetSongOrder(ctx, params.PlaylistUuid, songId, int64(i))
+			if setErr != nil {
+				return rerrors.Wrap(setErr, fmt.Sprintf("error setting order for song %d", songId))
+			}
+		}
+		return nil
+	})
+
+	return err
 }
 
 func (p *PlaylistService) List(ctx context.Context, req domain.ListPlaylists) (domain.ListPlaylistsResult, error) {

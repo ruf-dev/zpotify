@@ -10,12 +10,19 @@ interface PlaylistItem {
     name: string;
     tracks: number;
     color: string;
+    coverUrl?: string;
 }
 
 function uuidToHslColor(uuid: string): string {
     let hash = 0;
     for (let i = 0; i < uuid.length; i++) hash = (hash * 31 + uuid.charCodeAt(i)) | 0;
     return `hsl(${Math.abs(hash) % 360}, 55%, 45%)`;
+}
+
+function buildCoverUrl(filePath?: string): string | undefined {
+    if (!filePath) return undefined;
+    const base = (import.meta.env.VITE_ZPOTIFY_WEBSERVER as string | undefined) ?? '';
+    return `${base}/${filePath}`;
 }
 
 interface SidebarPlaylistsWidgetProps {
@@ -36,6 +43,7 @@ export default function SidebarPlaylistsWidget({ isCollapsed }: SidebarPlaylists
                     name: p.name ?? '',
                     tracks: p.songCount ?? 0,
                     color: uuidToHslColor(p.uuid ?? ''),
+                    coverUrl: buildCoverUrl(p.coverFilePath),
                 }));
                 setPlaylists(items);
                 setLoaded(true);
@@ -68,6 +76,7 @@ export default function SidebarPlaylistsWidget({ isCollapsed }: SidebarPlaylists
                     name={playlist.name}
                     tracks={playlist.tracks}
                     color={playlist.color}
+                    coverUrl={playlist.coverUrl}
                     isCollapsed={isCollapsed}
                 />
             ))}

@@ -241,6 +241,14 @@ type Playlist struct {
 	SongCount   int32
 }
 
+type PlaylistChip struct {
+	ID           sql.NullInt32
+	PlaylistUuid uuid.UUID
+	Kind         string
+	Value        string
+	OrderID      int64
+}
+
 type PlaylistSong struct {
 	PlaylistUuid uuid.UUID
 	SongID       int64
@@ -342,6 +350,7 @@ type UserPlaylist struct {
 	OrderID        int64
 	CanDeleteSongs bool
 	CanAddSongs    bool
+	CanEdit        bool
 }
 
 type UserSession struct {

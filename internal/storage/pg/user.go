@@ -118,6 +118,7 @@ func (s *UserStorage) GetPermissionsOnPlaylist(ctx context.Context, userTgId int
 	return domain.PlaylistPermissions{
 		CanDeleteSongs: res.CanDeleteSongs,
 		CanAddSongs:    res.CanAddSongs,
+		CanEdit:        res.CanEdit,
 	}, nil
 }
 

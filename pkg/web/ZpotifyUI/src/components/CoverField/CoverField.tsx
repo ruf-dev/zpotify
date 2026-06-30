@@ -1,28 +1,13 @@
 import { useRef, useState } from 'react';
+import cn from 'classnames';
 
 import cls from '@/components/CoverField/CoverField.module.css';
+import { UploadArrowIcon } from '@/assets/icons/UploadArrowIcon.tsx';
 
 interface CoverFieldProps {
     cover?: File;
     onChange: (file: File) => void;
-}
-
-function UploadArrowIcon() {
-    return (
-        <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="M8 12V4M4 8l4-4 4 4" />
-            <path d="M2 14h12" />
-        </svg>
-    );
+    existingCoverUrl?: string;
 }
 
 function ZLogoIcon() {
@@ -33,13 +18,21 @@ function ZLogoIcon() {
     );
 }
 
-export default function CoverField({ cover, onChange }: CoverFieldProps) {
+export default function CoverField({ cover, onChange, existingCoverUrl }: CoverFieldProps) {
     const inputRef = useRef<HTMLInputElement>(null);
     const [hover, setHover] = useState(false);
     const [previewUrl, setPreviewUrl] = useState<string | undefined>();
 
     function handleClick() {
         inputRef.current?.click();
+    }
+
+    function handleMouseEnter() {
+        setHover(true);
+    }
+
+    function handleMouseLeave() {
+        setHover(false);
     }
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -50,21 +43,22 @@ export default function CoverField({ cover, onChange }: CoverFieldProps) {
         setPreviewUrl(url);
     }
 
-    const hasImage = Boolean(cover && previewUrl);
+    const hasImage = Boolean((cover && previewUrl) || existingCoverUrl);
+    const displayUrl = previewUrl ?? existingCoverUrl;
 
     return (
         <div
-            className={`${cls.CoverFieldContainer} ${hasImage ? cls.HasImage : cls.NoImage}`}
+            className={cn(cls.CoverFieldContainer, hasImage ? cls.HasImage : cls.NoImage)}
             onClick={handleClick}
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
         >
             <input ref={inputRef} type="file" accept="image/*" className={cls.HiddenInput} onChange={handleChange} />
 
-            {hasImage ? <img src={previewUrl} alt="playlist cover" className={cls.CoverImage} /> : <ZLogoIcon />}
+            {hasImage ? <img src={displayUrl} alt="playlist cover" className={cls.CoverImage} /> : <ZLogoIcon />}
 
             {hover && (
-                <div className={`${cls.HoverOverlay} ${hasImage ? cls.OverlayRounded : cls.OverlayCircle}`}>
+                <div className={cn(cls.HoverOverlay, hasImage ? cls.OverlayRounded : cls.OverlayCircle)}>
                     <UploadArrowIcon />
                     <span className={cls.OverlayLabel}>{hasImage ? 'change' : 'add cover'}</span>
                 </div>

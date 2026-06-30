@@ -3,13 +3,13 @@ WITH created_playlist AS (
     INSERT INTO playlists (name, description, is_public, owner_id, year)
         VALUES ($1, $2, $3, $4, $5)
         RETURNING uuid)
-INSERT INTO user_playlists (user_id, playlist_id, order_id, can_add_songs, can_delete_songs)
+INSERT INTO user_playlists (user_id, playlist_id, order_id, can_add_songs, can_delete_songs, can_edit)
 VALUES ($4,
         (SELECT uuid FROM created_playlist),
         (SELECT
              COALESCE(MAX(order_id), 0) + 1
          FROM user_playlists WHERE user_id = $4),
-        true, true)
+        true, true, true)
 RETURNING playlist_id;
 
 
@@ -82,3 +82,18 @@ WHERE up.user_id = $1;
 
 -- name: DecrementPlaylistSongCount :exec
 UPDATE playlists SET song_count = GREATEST(song_count - 1, 0) WHERE uuid = $1;
+
+-- name: GetPlaylistChips :many
+SELECT kind, value FROM playlist_chips
+WHERE playlist_uuid = $1 ORDER BY order_id;
+
+-- name: InsertPlaylistChip :exec
+INSERT INTO playlist_chips (playlist_uuid, kind, value, order_id)
+VALUES ($1, $2, $3, $4)
+ON CONFLICT (playlist_uuid, kind, value) DO NOTHING;
+
+-- name: ClearPlaylistChips :exec
+DELETE FROM playlist_chips WHERE playlist_uuid = $1;
+
+-- name: SetSongOrderInPlaylist :exec
+UPDATE playlist_songs SET order_number = $1 WHERE playlist_uuid = $2 AND song_id = $3;

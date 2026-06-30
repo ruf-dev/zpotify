@@ -10,6 +10,7 @@ import { songsService } from '@/shared/api/Songs.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { fileService } from '@/shared/api/FileService.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
+import type { ChipEntry } from '@/widgets/ChipsField/ChipsField';
 import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
 import type { SongBase } from '@/app/api/zpotify';
 import ChevronRightIcon from '@/assets/icons/ChevronRightIcon.tsx';
@@ -47,6 +48,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
     const [playlistName, setPlaylistName] = useState('');
     const [albumArtists, setAlbumArtists] = useState<ArtistItem[]>([]);
     const [year, setYear] = useState<number | undefined>();
+    const [chips, setChips] = useState<ChipEntry[]>([]);
     const [cover, setCover] = useState<File | undefined>();
     const [submitting, setSubmitting] = useState(false);
 
@@ -285,6 +287,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                     albumArtistUuids.length > 0 ? albumArtistUuids : undefined,
                     coverFileId,
                     year,
+                    chips.length > 0 ? chips : undefined,
                 );
                 const playlistUuid = playlist.uuid ?? '';
 
@@ -364,6 +367,8 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                         onYearChange={setYear}
                         loadArtistOptions={loadArtistOptions}
                         onCreateArtist={handleCreateArtist}
+                        chips={chips}
+                        onChipsChange={setChips}
                     />
                 )}
 

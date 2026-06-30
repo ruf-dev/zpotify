@@ -21,8 +21,12 @@ export function useDropdownClose(panelRef: React.RefObject<HTMLDivElement | null
     }, [onClose, panelRef]);
 }
 
-export function useSearchResults(query: string, onSearch?: (q: string) => Promise<DropdownOption[]>) {
-    const [searchResults, setSearchResults] = useState<DropdownOption[]>([]);
+export function useSearchResults(
+    query: string,
+    onSearch?: (q: string) => Promise<DropdownOption[]>,
+    initialOptions: DropdownOption[] = [],
+) {
+    const [searchResults, setSearchResults] = useState<DropdownOption[]>(initialOptions);
 
     useEffect(() => {
         if (!onSearch) return;

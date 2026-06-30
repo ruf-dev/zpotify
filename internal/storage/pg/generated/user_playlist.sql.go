@@ -13,7 +13,8 @@ import (
 
 const getUserPermissionsOnPlaylist = `-- name: GetUserPermissionsOnPlaylist :one
 SELECT can_delete_songs,
-       can_add_songs
+       can_add_songs,
+       can_edit
 FROM user_playlists
 WHERE user_id = $1
   AND playlist_id = $2
@@ -28,21 +29,23 @@ type GetUserPermissionsOnPlaylistParams struct {
 type GetUserPermissionsOnPlaylistRow struct {
 	CanDeleteSongs bool
 	CanAddSongs    bool
+	CanEdit        bool
 }
 
 func (q *Queries) GetUserPermissionsOnPlaylist(ctx context.Context, arg GetUserPermissionsOnPlaylistParams) (GetUserPermissionsOnPlaylistRow, error) {
 	row := q.db.QueryRowContext(ctx, getUserPermissionsOnPlaylist, arg.UserID, arg.PlaylistID)
 	var i GetUserPermissionsOnPlaylistRow
-	err := row.Scan(&i.CanDeleteSongs, &i.CanAddSongs)
+	err := row.Scan(&i.CanDeleteSongs, &i.CanAddSongs, &i.CanEdit)
 	return i, err
 }
 
 const upsertUserPlaylist = `-- name: UpsertUserPlaylist :exec
-INSERT INTO user_playlists (user_id, playlist_id, order_id, can_delete_songs, can_add_songs)
-VALUES ($1, $2, (SELECT COALESCE(MAX(order_id), 0) + 1 FROM user_playlists WHERE user_id = $1), $3, $4)
+INSERT INTO user_playlists (user_id, playlist_id, order_id, can_delete_songs, can_add_songs, can_edit)
+VALUES ($1, $2, (SELECT COALESCE(MAX(order_id), 0) + 1 FROM user_playlists WHERE user_id = $1), $3, $4, $5)
 ON CONFLICT (user_id, playlist_id)
     DO UPDATE SET can_delete_songs = excluded.can_delete_songs,
-                  can_add_songs    = excluded.can_add_songs
+                  can_add_songs    = excluded.can_add_songs,
+                  can_edit         = excluded.can_edit
 `
 
 type UpsertUserPlaylistParams struct {
@@ -50,6 +53,7 @@ type UpsertUserPlaylistParams struct {
 	PlaylistID     uuid.UUID
 	CanDeleteSongs bool
 	CanAddSongs    bool
+	CanEdit        bool
 }
 
 func (q *Queries) UpsertUserPlaylist(ctx context.Context, arg UpsertUserPlaylistParams) error {
@@ -58,6 +62,7 @@ func (q *Queries) UpsertUserPlaylist(ctx context.Context, arg UpsertUserPlaylist
 		arg.PlaylistID,
 		arg.CanDeleteSongs,
 		arg.CanAddSongs,
+		arg.CanEdit,
 	)
 	return err
 }

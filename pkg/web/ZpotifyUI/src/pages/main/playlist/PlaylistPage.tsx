@@ -75,9 +75,10 @@ function PlaylistSidebar({ playlist, username }: PlaylistSidebarProps) {
 
 interface PlaylistMainContentProps {
     playlistId: string;
+    coverUrl?: string;
 }
 
-function PlaylistMainContent({ playlistId }: PlaylistMainContentProps) {
+function PlaylistMainContent({ playlistId, coverUrl }: PlaylistMainContentProps) {
     return (
         <div className={cls.MainContent}>
             <div className={cls.TrackListHeader}>
@@ -85,7 +86,7 @@ function PlaylistMainContent({ playlistId }: PlaylistMainContentProps) {
                 <span className={cls.ColTitle}>title</span>
                 <span className={cls.ColArtist}>artist</span>
             </div>
-            <LazyLoadSongsList playlistId={playlistId} fixedSize />
+            <LazyLoadSongsList playlistId={playlistId} fixedSize coverUrl={coverUrl} />
         </div>
     );
 }
@@ -95,14 +96,15 @@ export default function PlaylistPage() {
     const userData = useUser((state) => state.userData);
     const { playlist } = usePlaylist(id);
 
-
     if (!id || !userData) return null;
+
+    const coverUrl = buildCoverUrl(playlist?.coverFilePath);
 
     return (
         <div className={cls.PlaylistPageContainer}>
             <div className={cls.Body}>
                 {playlist && <PlaylistSidebar playlist={playlist} username={userData.username}/>}
-                <PlaylistMainContent playlistId={id}/>
+                <PlaylistMainContent playlistId={id} coverUrl={coverUrl}/>
             </div>
         </div>
     );

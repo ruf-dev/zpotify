@@ -7,9 +7,12 @@ import {
     GetPlaylistRequest,
     CreatePlaylistResponse,
     CreatePlaylistRequest,
+    UpdatePlaylistRequest,
+    ChangeSongsOrderRequest,
     AddSongToPlaylistRequest,
     ListPlaylistsRequest,
     ListPlaylistsResponse,
+    type PlaylistChip,
 } from '@/app/api/zpotify';
 import { BaseService } from '@/shared/api/BaseService.ts';
 import type { LibraryItem, TrackPreview } from '@/widgets/PlaylistsLibrarySegment/model.ts';
@@ -100,7 +103,9 @@ function interleave(
 export interface IPlaylistService {
     ListSongs(uuid: string, offset: number, limit: number, shuffleHash: string | undefined): Promise<ListSongsResponse>;
     GetPlaylist(uuid: string): Promise<GetPlaylistResponse>;
-    CreatePlaylist(name: string, artistUuids?: string[], coverFileId?: string): Promise<CreatePlaylistResponse>;
+    CreatePlaylist(name: string, artistUuids?: string[], coverFileId?: string, year?: number, chips?: PlaylistChip[]): Promise<CreatePlaylistResponse>;
+    UpdatePlaylist(uuid: string, name?: string, description?: string, artistUuids?: string[], coverFileId?: string, year?: number, chips?: PlaylistChip[]): Promise<void>;
+    ChangeSongsOrder(playlistUuid: string, songIds: number[]): Promise<void>;
     AddSongToPlaylist(playlistUuid: string, songId: number): Promise<void>;
     ListUserPlaylists(limit: number, offset: number): Promise<ListPlaylistsResponse>;
     ListLibrary(filter: LibraryFilter): Promise<LibraryItem[]>;
@@ -134,10 +139,24 @@ export class PlaylistService extends BaseService implements IPlaylistService {
         });
     }
 
-    async CreatePlaylist(name: string, artistUuids?: string[], coverFileId?: string, year?: number): Promise<CreatePlaylistResponse> {
-        const req: CreatePlaylistRequest = { name, artistUuids, coverFileId, year };
+    async CreatePlaylist(name: string, artistUuids?: string[], coverFileId?: string, year?: number, chips?: PlaylistChip[]): Promise<CreatePlaylistResponse> {
+        const req: CreatePlaylistRequest = { name, artistUuids, coverFileId, year, chips };
         return this.executeAuthApiCall(async (initReq) => {
             return PlaylistAPI.CreatePlaylist(req, initReq);
+        });
+    }
+
+    async UpdatePlaylist(uuid: string, name?: string, description?: string, artistUuids?: string[], coverFileId?: string, year?: number, chips?: PlaylistChip[]): Promise<void> {
+        const req: UpdatePlaylistRequest = { uuid, name, description, artistUuids, coverFileId, year, chips };
+        return this.executeAuthApiCall(async (initReq) => {
+            return PlaylistAPI.UpdatePlaylist(req, initReq).then(() => undefined);
+        });
+    }
+
+    async ChangeSongsOrder(playlistUuid: string, songIds: number[]): Promise<void> {
+        const req: ChangeSongsOrderRequest = { playlistUuid, songIds: songIds.map(String) };
+        return this.executeAuthApiCall(async (initReq) => {
+            return PlaylistAPI.ChangeSongsOrder(req, initReq).then(() => undefined);
         });
     }
 

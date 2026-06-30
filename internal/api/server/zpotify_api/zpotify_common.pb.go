@@ -210,6 +210,58 @@ func (x *SongBase) GetFileId() int64 {
 	return 0
 }
 
+type PlaylistChip struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Kind          string                 `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
+	Value         string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PlaylistChip) Reset() {
+	*x = PlaylistChip{}
+	mi := &file_zpotify_common_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlaylistChip) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlaylistChip) ProtoMessage() {}
+
+func (x *PlaylistChip) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_common_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlaylistChip.ProtoReflect.Descriptor instead.
+func (*PlaylistChip) Descriptor() ([]byte, []int) {
+	return file_zpotify_common_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *PlaylistChip) GetKind() string {
+	if x != nil {
+		return x.Kind
+	}
+	return ""
+}
+
+func (x *PlaylistChip) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
 type Playlist struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -220,13 +272,15 @@ type Playlist struct {
 	SongCount     *int32                 `protobuf:"varint,6,opt,name=song_count,json=songCount,proto3,oneof" json:"song_count,omitempty"`
 	CoverFilePath *string                `protobuf:"bytes,7,opt,name=cover_file_path,json=coverFilePath,proto3,oneof" json:"cover_file_path,omitempty"`
 	Year          *int32                 `protobuf:"varint,8,opt,name=year,proto3,oneof" json:"year,omitempty"`
+	Chips         []*PlaylistChip        `protobuf:"bytes,9,rep,name=chips,proto3" json:"chips,omitempty"`
+	CanEdit       *bool                  `protobuf:"varint,10,opt,name=can_edit,json=canEdit,proto3,oneof" json:"can_edit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Playlist) Reset() {
 	*x = Playlist{}
-	mi := &file_zpotify_common_proto_msgTypes[3]
+	mi := &file_zpotify_common_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -238,7 +292,7 @@ func (x *Playlist) String() string {
 func (*Playlist) ProtoMessage() {}
 
 func (x *Playlist) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_common_proto_msgTypes[3]
+	mi := &file_zpotify_common_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -251,7 +305,7 @@ func (x *Playlist) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Playlist.ProtoReflect.Descriptor instead.
 func (*Playlist) Descriptor() ([]byte, []int) {
-	return file_zpotify_common_proto_rawDescGZIP(), []int{3}
+	return file_zpotify_common_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Playlist) GetUuid() string {
@@ -310,6 +364,20 @@ func (x *Playlist) GetYear() int32 {
 	return 0
 }
 
+func (x *Playlist) GetChips() []*PlaylistChip {
+	if x != nil {
+		return x.Chips
+	}
+	return nil
+}
+
+func (x *Playlist) GetCanEdit() bool {
+	if x != nil && x.CanEdit != nil {
+		return *x.CanEdit
+	}
+	return false
+}
+
 type SongFile struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -320,7 +388,7 @@ type SongFile struct {
 
 func (x *SongFile) Reset() {
 	*x = SongFile{}
-	mi := &file_zpotify_common_proto_msgTypes[4]
+	mi := &file_zpotify_common_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -332,7 +400,7 @@ func (x *SongFile) String() string {
 func (*SongFile) ProtoMessage() {}
 
 func (x *SongFile) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_common_proto_msgTypes[4]
+	mi := &file_zpotify_common_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -345,7 +413,7 @@ func (x *SongFile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SongFile.ProtoReflect.Descriptor instead.
 func (*SongFile) Descriptor() ([]byte, []int) {
-	return file_zpotify_common_proto_rawDescGZIP(), []int{4}
+	return file_zpotify_common_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *SongFile) GetId() int64 {
@@ -380,7 +448,10 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\aartists\x18\x03 \x03(\v2\x17.zpotify_api.ArtistBaseR\aartists\x12!\n" +
 	"\fduration_sec\x18\x04 \x01(\x05R\vdurationSec\x12\x1b\n" +
 	"\tfile_path\x18\x05 \x01(\tR\bfilePath\x12\x17\n" +
-	"\afile_id\x18\x06 \x01(\x03R\x06fileId\"\xcf\x02\n" +
+	"\afile_id\x18\x06 \x01(\x03R\x06fileId\"8\n" +
+	"\fPlaylistChip\x12\x12\n" +
+	"\x04kind\x18\x01 \x01(\tR\x04kind\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value\"\xad\x03\n" +
 	"\bPlaylist\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
@@ -390,11 +461,15 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\n" +
 	"song_count\x18\x06 \x01(\x05H\x01R\tsongCount\x88\x01\x01\x12+\n" +
 	"\x0fcover_file_path\x18\a \x01(\tH\x02R\rcoverFilePath\x88\x01\x01\x12\x17\n" +
-	"\x04year\x18\b \x01(\x05H\x03R\x04year\x88\x01\x01B\x0e\n" +
+	"\x04year\x18\b \x01(\x05H\x03R\x04year\x88\x01\x01\x12/\n" +
+	"\x05chips\x18\t \x03(\v2\x19.zpotify_api.PlaylistChipR\x05chips\x12\x1e\n" +
+	"\bcan_edit\x18\n" +
+	" \x01(\bH\x04R\acanEdit\x88\x01\x01B\x0e\n" +
 	"\f_descriptionB\r\n" +
 	"\v_song_countB\x12\n" +
 	"\x10_cover_file_pathB\a\n" +
-	"\x05_year\".\n" +
+	"\x05_yearB\v\n" +
+	"\t_can_edit\".\n" +
 	"\bSongFile\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04path\x18\x02 \x01(\tR\x04pathB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
@@ -411,22 +486,24 @@ func file_zpotify_common_proto_rawDescGZIP() []byte {
 	return file_zpotify_common_proto_rawDescData
 }
 
-var file_zpotify_common_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_zpotify_common_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_zpotify_common_proto_goTypes = []any{
-	(*Paging)(nil),     // 0: zpotify_api.Paging
-	(*ArtistBase)(nil), // 1: zpotify_api.ArtistBase
-	(*SongBase)(nil),   // 2: zpotify_api.SongBase
-	(*Playlist)(nil),   // 3: zpotify_api.Playlist
-	(*SongFile)(nil),   // 4: zpotify_api.SongFile
+	(*Paging)(nil),       // 0: zpotify_api.Paging
+	(*ArtistBase)(nil),   // 1: zpotify_api.ArtistBase
+	(*SongBase)(nil),     // 2: zpotify_api.SongBase
+	(*PlaylistChip)(nil), // 3: zpotify_api.PlaylistChip
+	(*Playlist)(nil),     // 4: zpotify_api.Playlist
+	(*SongFile)(nil),     // 5: zpotify_api.SongFile
 }
 var file_zpotify_common_proto_depIdxs = []int32{
 	1, // 0: zpotify_api.SongBase.artists:type_name -> zpotify_api.ArtistBase
 	1, // 1: zpotify_api.Playlist.artists:type_name -> zpotify_api.ArtistBase
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	3, // 2: zpotify_api.Playlist.chips:type_name -> zpotify_api.PlaylistChip
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_common_proto_init() }
@@ -434,14 +511,14 @@ func file_zpotify_common_proto_init() {
 	if File_zpotify_common_proto != nil {
 		return
 	}
-	file_zpotify_common_proto_msgTypes[3].OneofWrappers = []any{}
+	file_zpotify_common_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_common_proto_rawDesc), len(file_zpotify_common_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

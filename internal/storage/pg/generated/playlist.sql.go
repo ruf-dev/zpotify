@@ -57,6 +57,15 @@ func (q *Queries) ClearPlaylistArtists(ctx context.Context, playlistUuid uuid.UU
 	return err
 }
 
+const clearPlaylistChips = `-- name: ClearPlaylistChips :exec
+DELETE FROM playlist_chips WHERE playlist_uuid = $1
+`
+
+func (q *Queries) ClearPlaylistChips(ctx context.Context, playlistUuid uuid.UUID) error {
+	_, err := q.db.ExecContext(ctx, clearPlaylistChips, playlistUuid)
+	return err
+}
+
 const countUserPlaylists = `-- name: CountUserPlaylists :one
 SELECT COUNT(v.uuid) FROM playlists_v2 v
 JOIN user_playlists up ON up.playlist_id = v.uuid
@@ -75,13 +84,13 @@ WITH created_playlist AS (
     INSERT INTO playlists (name, description, is_public, owner_id, year)
         VALUES ($1, $2, $3, $4, $5)
         RETURNING uuid)
-INSERT INTO user_playlists (user_id, playlist_id, order_id, can_add_songs, can_delete_songs)
+INSERT INTO user_playlists (user_id, playlist_id, order_id, can_add_songs, can_delete_songs, can_edit)
 VALUES ($4,
         (SELECT uuid FROM created_playlist),
         (SELECT
              COALESCE(MAX(order_id), 0) + 1
          FROM user_playlists WHERE user_id = $4),
-        true, true)
+        true, true, true)
 RETURNING playlist_id
 `
 
@@ -133,6 +142,39 @@ func (q *Queries) GetPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID
 	for rows.Next() {
 		var i Artist
 		if err := rows.Scan(&i.Uuid, &i.Name); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getPlaylistChips = `-- name: GetPlaylistChips :many
+SELECT kind, value FROM playlist_chips
+WHERE playlist_uuid = $1 ORDER BY order_id
+`
+
+type GetPlaylistChipsRow struct {
+	Kind  string
+	Value string
+}
+
+func (q *Queries) GetPlaylistChips(ctx context.Context, playlistUuid uuid.UUID) ([]GetPlaylistChipsRow, error) {
+	rows, err := q.db.QueryContext(ctx, getPlaylistChips, playlistUuid)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetPlaylistChipsRow{}
+	for rows.Next() {
+		var i GetPlaylistChipsRow
+		if err := rows.Scan(&i.Kind, &i.Value); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -199,6 +241,29 @@ func (q *Queries) GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAu
 	return i, err
 }
 
+const insertPlaylistChip = `-- name: InsertPlaylistChip :exec
+INSERT INTO playlist_chips (playlist_uuid, kind, value, order_id)
+VALUES ($1, $2, $3, $4)
+ON CONFLICT (playlist_uuid, kind, value) DO NOTHING
+`
+
+type InsertPlaylistChipParams struct {
+	PlaylistUuid uuid.UUID
+	Kind         string
+	Value        string
+	OrderID      int64
+}
+
+func (q *Queries) InsertPlaylistChip(ctx context.Context, arg InsertPlaylistChipParams) error {
+	_, err := q.db.ExecContext(ctx, insertPlaylistChip,
+		arg.PlaylistUuid,
+		arg.Kind,
+		arg.Value,
+		arg.OrderID,
+	)
+	return err
+}
+
 const listUserPlaylists = `-- name: ListUserPlaylists :many
 SELECT v.uuid, v.name, v.description, v.is_public, v.cover_file_id, v.song_count, v.year
 FROM playlists_v2 v
@@ -243,6 +308,21 @@ func (q *Queries) ListUserPlaylists(ctx context.Context, arg ListUserPlaylistsPa
 		return nil, err
 	}
 	return items, nil
+}
+
+const setSongOrderInPlaylist = `-- name: SetSongOrderInPlaylist :exec
+UPDATE playlist_songs SET order_number = $1 WHERE playlist_uuid = $2 AND song_id = $3
+`
+
+type SetSongOrderInPlaylistParams struct {
+	OrderNumber  int64
+	PlaylistUuid uuid.UUID
+	SongID       int64
+}
+
+func (q *Queries) SetSongOrderInPlaylist(ctx context.Context, arg SetSongOrderInPlaylistParams) error {
+	_, err := q.db.ExecContext(ctx, setSongOrderInPlaylist, arg.OrderNumber, arg.PlaylistUuid, arg.SongID)
+	return err
 }
 
 const updatePlaylist = `-- name: UpdatePlaylist :exec

@@ -328,7 +328,19 @@
       }
     },
     "zpotify_apiChangeSongsOrderRequest": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "playlistUuid": {
+          "type": "string"
+        },
+        "songIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        }
+      }
     },
     "zpotify_apiChangeSongsOrderResponse": {
       "type": "object"
@@ -358,6 +370,13 @@
         "year": {
           "type": "integer",
           "format": "int32"
+        },
+        "chips": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiPlaylistChip"
+          }
         }
       }
     },
@@ -493,6 +512,27 @@
         "year": {
           "type": "integer",
           "format": "int32"
+        },
+        "chips": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiPlaylistChip"
+          }
+        },
+        "canEdit": {
+          "type": "boolean"
+        }
+      }
+    },
+    "zpotify_apiPlaylistChip": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
         }
       }
     },
@@ -554,6 +594,13 @@
         "year": {
           "type": "integer",
           "format": "int32"
+        },
+        "chips": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiPlaylistChip"
+          }
         }
       }
     },

@@ -122,10 +122,15 @@ type PlaylistStorage interface {
 	ClearPlaylistArtists(ctx context.Context, playlistUuid string) error
 	UpdateCoverFileId(ctx context.Context, playlistUuid string, coverFileId int64) error
 
+	GetPlaylistChips(ctx context.Context, playlistUuid string) ([]domain.PlaylistChip, error)
+	InsertPlaylistChip(ctx context.Context, playlistUuid string, chip domain.PlaylistChip, orderId int) error
+	ClearPlaylistChips(ctx context.Context, playlistUuid string) error
+
 	ListSongs(ctx context.Context, r domain.ListSongs) ([]domain.PlaylistSong, error)
 	CountSongs(ctx context.Context, r domain.ListSongs) (uint16, error)
 
 	AddSong(ctx context.Context, playlistUuid string, songId int32) error
+	SetSongOrder(ctx context.Context, playlistUuid string, songId int64, orderNum int64) error
 	List(ctx context.Context, userId int64, req domain.ListPlaylists) ([]domain.Playlist, error)
 	CountPlaylists(ctx context.Context, userId int64) (uint32, error)
 }

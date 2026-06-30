@@ -38,6 +38,7 @@ export type CreatePlaylistRequest = {
   artistUuids?: string[];
   coverFileId?: string;
   year?: number;
+  chips?: ZpotifyApiZpotifyCommon.PlaylistChip[];
 };
 
 export type CreatePlaylistResponse = {
@@ -54,6 +55,7 @@ export type UpdatePlaylistRequest = {
   artistUuids?: string[];
   coverFileId?: string;
   year?: number;
+  chips?: ZpotifyApiZpotifyCommon.PlaylistChip[];
 };
 
 export type UpdatePlaylistResponse = Record<string, never>;
@@ -70,7 +72,10 @@ export type GetPlaylistResponse = {
 
 export type GetPlaylist = Record<string, never>;
 
-export type ChangeSongsOrderRequest = Record<string, never>;
+export type ChangeSongsOrderRequest = {
+  playlistUuid?: string;
+  songIds?: string[];
+};
 
 export type ChangeSongsOrderResponse = Record<string, never>;
 

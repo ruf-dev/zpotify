@@ -12,9 +12,10 @@ interface InfiniteSongsListProps {
     fixedSize?: boolean;
     onTotal?: (total: number) => void;
     autoLoadAll?: boolean;
+    coverUrl?: string;
 }
 
-export default function LazyLoadSongsList({ playlistId, fixedSize, onTotal, autoLoadAll }: InfiniteSongsListProps) {
+export default function LazyLoadSongsList({ playlistId, fixedSize, onTotal, autoLoadAll, coverUrl }: InfiniteSongsListProps) {
     const audioPlayer = useAudioPlayer();
     const { songs, isListEnded, loadMore, loadShuffled } = useListSongs(playlistId, { onTotal, autoLoadAll });
 
@@ -28,7 +29,7 @@ export default function LazyLoadSongsList({ playlistId, fixedSize, onTotal, auto
 
     return (
         <div className={cn(cls.InfiniteSongsListContainer, { [cls.scrollable]: fixedSize })}>
-            <SongListWidget songs={songs} audioPlayer={audioPlayer} />
+            <SongListWidget songs={songs} audioPlayer={audioPlayer} coverUrl={coverUrl} />
             {!autoLoadAll && !isListEnded ? <ZButton title={'Load more'} onClick={loadMore} /> : null}
         </div>
     );

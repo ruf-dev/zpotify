@@ -26,7 +26,7 @@ export default function PlayerBarSegment() {
     const audioPlayer = useAudioPlayer();
     const progressTrackRef = useRef<HTMLDivElement>(null);
 
-    const { isPlaying, songTitle, songArtist, progress } = audioPlayer;
+    const { isPlaying, songTitle, songArtist, songCover, progress } = audioPlayer;
     const coverColor = computeCoverColor(songTitle);
 
     function handleProgressClick(e: React.MouseEvent<HTMLDivElement>) {
@@ -52,10 +52,11 @@ export default function PlayerBarSegment() {
     return (
         <div className={cls.PlayerBarContainer}>
             <div className={cls.TrackInfoWrapper}>
-                <div
-                    className={cls.CoverPlaceholder}
-                    style={{ backgroundColor: coverColor }}
-                />
+                {songCover ? (
+                    <img src={songCover} alt={songTitle ?? ''} className={cls.CoverPlaceholder} />
+                ) : (
+                    <div className={cls.CoverPlaceholder} style={{ backgroundColor: coverColor }} />
+                )}
                 <div className={cls.TrackTextWrapper}>
                     <span
                         className={cn(

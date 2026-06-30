@@ -19,6 +19,7 @@ interface ArtistChipsFieldProps {
     loadOptions: (query: string) => Promise<ArtistItem[]>;
     onCreateArtist: (name: string) => Promise<ArtistItem>;
     readOnly?: boolean;
+    preloadedOptions?: ArtistItem[];
 }
 
 export default function ArtistChipsField({
@@ -30,6 +31,7 @@ export default function ArtistChipsField({
     loadOptions,
     onCreateArtist,
     readOnly,
+    preloadedOptions = [],
 }: ArtistChipsFieldProps) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const handleClose = useCallback(() => setDropdownOpen(false), []);
@@ -152,6 +154,7 @@ export default function ArtistChipsField({
                 <Dropdown
                     excluded={[...lockedArtists.map((a) => a.id), ...artists.map((a) => a.id)]}
                     onSearch={wrappedSearch}
+                    initialOptions={preloadedOptions.map((a) => ({ id: a.id, name: a.name }))}
                     onCreate={handleCreate}
                     onPick={handlePick}
                     onClose={handleClose}

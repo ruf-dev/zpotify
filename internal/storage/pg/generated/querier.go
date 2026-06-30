@@ -14,6 +14,7 @@ type Querier interface {
 	AddPlaylistArtist(ctx context.Context, arg AddPlaylistArtistParams) error
 	AddSongToPlaylist(ctx context.Context, arg AddSongToPlaylistParams) error
 	ClearPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) error
+	ClearPlaylistChips(ctx context.Context, playlistUuid uuid.UUID) error
 	CountUserPlaylists(ctx context.Context, userID int64) (int64, error)
 	CreateFile(ctx context.Context, arg CreateFileParams) (int64, error)
 	CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error)
@@ -27,6 +28,7 @@ type Querier interface {
 	GetFileBySongId(ctx context.Context, id int64) (FilesMetum, error)
 	GetHomeSegments(ctx context.Context, userID int64) ([]UserHomeSegment, error)
 	GetPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) ([]Artist, error)
+	GetPlaylistChips(ctx context.Context, playlistUuid uuid.UUID) ([]GetPlaylistChipsRow, error)
 	GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error)
 	GetTelegramIdentityByTgId(ctx context.Context, telegramID int64) (IdentityTelegram, error)
 	GetTelegramIdentityByTgIdForUpdate(ctx context.Context, telegramID int64) (IdentityTelegram, error)
@@ -37,12 +39,14 @@ type Querier interface {
 	GetUserSessionByRefreshToken(ctx context.Context, refreshToken string) (UserSession, error)
 	GetZpotifyIdentityByLogin(ctx context.Context, login string) (IdentityZpotify, error)
 	InsertHomeSegment(ctx context.Context, arg InsertHomeSegmentParams) error
+	InsertPlaylistChip(ctx context.Context, arg InsertPlaylistChipParams) error
 	InsertUser(ctx context.Context, arg InsertUserParams) (int64, error)
 	ListSessionsByUserId(ctx context.Context, userID int64) ([]UserSession, error)
 	ListUserPermissionsByUserId(ctx context.Context, userID int64) (UserPermission, error)
 	ListUserPlaylists(ctx context.Context, arg ListUserPlaylistsParams) ([]PlaylistsV2, error)
 	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error
 	SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error
+	SetSongOrderInPlaylist(ctx context.Context, arg SetSongOrderInPlaylistParams) error
 	UpdateFile(ctx context.Context, arg UpdateFileParams) error
 	UpdatePlaylist(ctx context.Context, arg UpdatePlaylistParams) error
 	UpdatePlaylistCoverFileId(ctx context.Context, arg UpdatePlaylistCoverFileIdParams) error

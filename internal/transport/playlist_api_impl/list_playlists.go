@@ -42,6 +42,15 @@ func toPlaylist(pl domain.Playlist) *zpotify_api.Playlist {
 		protoArtists = append(protoArtists, artist)
 	}
 
+	protoChips := make([]*zpotify_api.PlaylistChip, 0, len(pl.Chips))
+	for _, c := range pl.Chips {
+		chip := &zpotify_api.PlaylistChip{
+			Kind:  c.Kind,
+			Value: c.Value,
+		}
+		protoChips = append(protoChips, chip)
+	}
+
 	var songCount *int32
 	if pl.SongCount != nil {
 		songCount = toolbox.ToPtr(*pl.SongCount)
@@ -50,6 +59,11 @@ func toPlaylist(pl domain.Playlist) *zpotify_api.Playlist {
 	var coverFilePath *string
 	if pl.CoverFilePath != "" {
 		coverFilePath = toolbox.ToPtr(pl.CoverFilePath)
+	}
+
+	var canEdit *bool
+	if pl.Permissions != nil && pl.Permissions.CanEdit {
+		canEdit = toolbox.ToPtr(true)
 	}
 
 	return &zpotify_api.Playlist{
@@ -61,5 +75,19 @@ func toPlaylist(pl domain.Playlist) *zpotify_api.Playlist {
 		SongCount:     songCount,
 		CoverFilePath: coverFilePath,
 		Year:          pl.Year,
+		Chips:         protoChips,
+		CanEdit:       canEdit,
 	}
+}
+
+func protoChipsToDomain(chips []*zpotify_api.PlaylistChip) []domain.PlaylistChip {
+	result := make([]domain.PlaylistChip, 0, len(chips))
+	for _, c := range chips {
+		chip := domain.PlaylistChip{
+			Kind:  c.GetKind(),
+			Value: c.GetValue(),
+		}
+		result = append(result, chip)
+	}
+	return result
 }

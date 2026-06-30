@@ -3,6 +3,12 @@ package domain
 type PlaylistPermissions struct {
 	CanDeleteSongs bool
 	CanAddSongs    bool
+	CanEdit        bool
+}
+
+type PlaylistChip struct {
+	Kind  string
+	Value string
 }
 
 type Playlist struct {
@@ -15,6 +21,13 @@ type Playlist struct {
 	CoverFilePath string
 	SongCount     *int32
 	Year          *int32
+	Chips         []PlaylistChip
+	Permissions   *PlaylistPermissions
+}
+
+type ChangeSongsOrderParams struct {
+	PlaylistUuid string
+	SongIds      []int64
 }
 
 type CreatePlaylistParams struct {
@@ -24,6 +37,7 @@ type CreatePlaylistParams struct {
 	ArtistUuids []string
 	CoverFileId *int64
 	Year        *int32
+	Chips       []PlaylistChip
 }
 
 type UpdatePlaylistParams struct {
@@ -34,6 +48,7 @@ type UpdatePlaylistParams struct {
 	ArtistUuids []string
 	CoverFileId *int64
 	Year        *int32
+	Chips       []PlaylistChip
 }
 
 type SongsInPlaylist struct {

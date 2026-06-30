@@ -520,6 +520,7 @@ type CreatePlaylist_Request struct {
 	ArtistUuids   []string               `protobuf:"bytes,4,rep,name=artist_uuids,json=artistUuids,proto3" json:"artist_uuids,omitempty"`
 	CoverFileId   *int64                 `protobuf:"varint,5,opt,name=cover_file_id,json=coverFileId,proto3,oneof" json:"cover_file_id,omitempty"`
 	Year          *int32                 `protobuf:"varint,6,opt,name=year,proto3,oneof" json:"year,omitempty"`
+	Chips         []*PlaylistChip        `protobuf:"bytes,7,rep,name=chips,proto3" json:"chips,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -596,6 +597,13 @@ func (x *CreatePlaylist_Request) GetYear() int32 {
 	return 0
 }
 
+func (x *CreatePlaylist_Request) GetChips() []*PlaylistChip {
+	if x != nil {
+		return x.Chips
+	}
+	return nil
+}
+
 type CreatePlaylist_Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -649,6 +657,7 @@ type UpdatePlaylist_Request struct {
 	ArtistUuids   []string               `protobuf:"bytes,5,rep,name=artist_uuids,json=artistUuids,proto3" json:"artist_uuids,omitempty"`
 	CoverFileId   *int64                 `protobuf:"varint,6,opt,name=cover_file_id,json=coverFileId,proto3,oneof" json:"cover_file_id,omitempty"`
 	Year          *int32                 `protobuf:"varint,7,opt,name=year,proto3,oneof" json:"year,omitempty"`
+	Chips         []*PlaylistChip        `protobuf:"bytes,8,rep,name=chips,proto3" json:"chips,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -730,6 +739,13 @@ func (x *UpdatePlaylist_Request) GetYear() int32 {
 		return *x.Year
 	}
 	return 0
+}
+
+func (x *UpdatePlaylist_Request) GetChips() []*PlaylistChip {
+	if x != nil {
+		return x.Chips
+	}
+	return nil
 }
 
 type UpdatePlaylist_Response struct {
@@ -858,6 +874,8 @@ func (x *GetPlaylist_Response) GetPlaylist() *Playlist {
 
 type ChangeSongsOrder_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	PlaylistUuid  string                 `protobuf:"bytes,1,opt,name=playlist_uuid,json=playlistUuid,proto3" json:"playlist_uuid,omitempty"`
+	SongIds       []int64                `protobuf:"varint,2,rep,packed,name=song_ids,json=songIds,proto3" json:"song_ids,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -890,6 +908,20 @@ func (x *ChangeSongsOrder_Request) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ChangeSongsOrder_Request.ProtoReflect.Descriptor instead.
 func (*ChangeSongsOrder_Request) Descriptor() ([]byte, []int) {
 	return file_zpotify_service_playlist_proto_rawDescGZIP(), []int{5, 0}
+}
+
+func (x *ChangeSongsOrder_Request) GetPlaylistUuid() string {
+	if x != nil {
+		return x.PlaylistUuid
+	}
+	return ""
+}
+
+func (x *ChangeSongsOrder_Request) GetSongIds() []int64 {
+	if x != nil {
+		return x.SongIds
+	}
+	return nil
 }
 
 type ChangeSongsOrder_Response struct {
@@ -1134,21 +1166,22 @@ const file_zpotify_service_playlist_proto_rawDesc = "" +
 	"\rplaylist_uuid\x18\x01 \x01(\tR\fplaylistUuid\x12\x17\n" +
 	"\asong_id\x18\x02 \x01(\x05R\x06songId\x1a\n" +
 	"\n" +
-	"\bResponse\"\xa4\x02\n" +
-	"\x0eCreatePlaylist\x1a\xf1\x01\n" +
+	"\bResponse\"\xd5\x02\n" +
+	"\x0eCreatePlaylist\x1a\xa2\x02\n" +
 	"\aRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12%\n" +
 	"\vdescription\x18\x02 \x01(\tH\x00R\vdescription\x88\x01\x01\x12\x1b\n" +
 	"\tis_public\x18\x03 \x01(\bR\bisPublic\x12!\n" +
 	"\fartist_uuids\x18\x04 \x03(\tR\vartistUuids\x12'\n" +
 	"\rcover_file_id\x18\x05 \x01(\x03H\x01R\vcoverFileId\x88\x01\x01\x12\x17\n" +
-	"\x04year\x18\x06 \x01(\x05H\x02R\x04year\x88\x01\x01B\x0e\n" +
+	"\x04year\x18\x06 \x01(\x05H\x02R\x04year\x88\x01\x01\x12/\n" +
+	"\x05chips\x18\a \x03(\v2\x19.zpotify_api.PlaylistChipR\x05chipsB\x0e\n" +
 	"\f_descriptionB\x10\n" +
 	"\x0e_cover_file_idB\a\n" +
 	"\x05_year\x1a\x1e\n" +
 	"\bResponse\x12\x12\n" +
-	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\xc5\x02\n" +
-	"\x0eUpdatePlaylist\x1a\xa6\x02\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\xf6\x02\n" +
+	"\x0eUpdatePlaylist\x1a\xd7\x02\n" +
 	"\aRequest\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12%\n" +
@@ -1156,7 +1189,8 @@ const file_zpotify_service_playlist_proto_rawDesc = "" +
 	"\tis_public\x18\x04 \x01(\bH\x02R\bisPublic\x88\x01\x01\x12!\n" +
 	"\fartist_uuids\x18\x05 \x03(\tR\vartistUuids\x12'\n" +
 	"\rcover_file_id\x18\x06 \x01(\x03H\x03R\vcoverFileId\x88\x01\x01\x12\x17\n" +
-	"\x04year\x18\a \x01(\x05H\x04R\x04year\x88\x01\x01B\a\n" +
+	"\x04year\x18\a \x01(\x05H\x04R\x04year\x88\x01\x01\x12/\n" +
+	"\x05chips\x18\b \x03(\v2\x19.zpotify_api.PlaylistChipR\x05chipsB\a\n" +
 	"\x05_nameB\x0e\n" +
 	"\f_descriptionB\f\n" +
 	"\n" +
@@ -1169,9 +1203,11 @@ const file_zpotify_service_playlist_proto_rawDesc = "" +
 	"\aRequest\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x1a=\n" +
 	"\bResponse\x121\n" +
-	"\bplaylist\x18\x01 \x01(\v2\x15.zpotify_api.PlaylistR\bplaylist\")\n" +
-	"\x10ChangeSongsOrder\x1a\t\n" +
-	"\aRequest\x1a\n" +
+	"\bplaylist\x18\x01 \x01(\v2\x15.zpotify_api.PlaylistR\bplaylist\"i\n" +
+	"\x10ChangeSongsOrder\x1aI\n" +
+	"\aRequest\x12#\n" +
+	"\rplaylist_uuid\x18\x01 \x01(\tR\fplaylistUuid\x12\x19\n" +
+	"\bsong_ids\x18\x02 \x03(\x03R\asongIds\x1a\n" +
 	"\n" +
 	"\bResponse\"h\n" +
 	"\x11AddSongToPlaylist\x1aG\n" +
@@ -1237,35 +1273,38 @@ var file_zpotify_service_playlist_proto_goTypes = []any{
 	(*ListPlaylists_Response)(nil),     // 23: zpotify_api.ListPlaylists.Response
 	(*Paging)(nil),                     // 24: zpotify_api.Paging
 	(*SongBase)(nil),                   // 25: zpotify_api.SongBase
-	(*Playlist)(nil),                   // 26: zpotify_api.Playlist
+	(*PlaylistChip)(nil),               // 26: zpotify_api.PlaylistChip
+	(*Playlist)(nil),                   // 27: zpotify_api.Playlist
 }
 var file_zpotify_service_playlist_proto_depIdxs = []int32{
 	24, // 0: zpotify_api.ListSongs.Request.paging:type_name -> zpotify_api.Paging
 	25, // 1: zpotify_api.ListSongs.Response.songs:type_name -> zpotify_api.SongBase
-	26, // 2: zpotify_api.GetPlaylist.Response.playlist:type_name -> zpotify_api.Playlist
-	24, // 3: zpotify_api.ListPlaylists.Request.paging:type_name -> zpotify_api.Paging
-	26, // 4: zpotify_api.ListPlaylists.Response.playlists:type_name -> zpotify_api.Playlist
-	12, // 5: zpotify_api.PlaylistAPI.CreatePlaylist:input_type -> zpotify_api.CreatePlaylist.Request
-	16, // 6: zpotify_api.PlaylistAPI.GetPlaylist:input_type -> zpotify_api.GetPlaylist.Request
-	10, // 7: zpotify_api.PlaylistAPI.DeleteSong:input_type -> zpotify_api.DeleteSong.Request
-	8,  // 8: zpotify_api.PlaylistAPI.ListSongs:input_type -> zpotify_api.ListSongs.Request
-	18, // 9: zpotify_api.PlaylistAPI.ChangeSongsOrder:input_type -> zpotify_api.ChangeSongsOrder.Request
-	20, // 10: zpotify_api.PlaylistAPI.AddSongToPlaylist:input_type -> zpotify_api.AddSongToPlaylist.Request
-	14, // 11: zpotify_api.PlaylistAPI.UpdatePlaylist:input_type -> zpotify_api.UpdatePlaylist.Request
-	22, // 12: zpotify_api.PlaylistAPI.ListPlaylists:input_type -> zpotify_api.ListPlaylists.Request
-	13, // 13: zpotify_api.PlaylistAPI.CreatePlaylist:output_type -> zpotify_api.CreatePlaylist.Response
-	17, // 14: zpotify_api.PlaylistAPI.GetPlaylist:output_type -> zpotify_api.GetPlaylist.Response
-	11, // 15: zpotify_api.PlaylistAPI.DeleteSong:output_type -> zpotify_api.DeleteSong.Response
-	9,  // 16: zpotify_api.PlaylistAPI.ListSongs:output_type -> zpotify_api.ListSongs.Response
-	19, // 17: zpotify_api.PlaylistAPI.ChangeSongsOrder:output_type -> zpotify_api.ChangeSongsOrder.Response
-	21, // 18: zpotify_api.PlaylistAPI.AddSongToPlaylist:output_type -> zpotify_api.AddSongToPlaylist.Response
-	15, // 19: zpotify_api.PlaylistAPI.UpdatePlaylist:output_type -> zpotify_api.UpdatePlaylist.Response
-	23, // 20: zpotify_api.PlaylistAPI.ListPlaylists:output_type -> zpotify_api.ListPlaylists.Response
-	13, // [13:21] is the sub-list for method output_type
-	5,  // [5:13] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	26, // 2: zpotify_api.CreatePlaylist.Request.chips:type_name -> zpotify_api.PlaylistChip
+	26, // 3: zpotify_api.UpdatePlaylist.Request.chips:type_name -> zpotify_api.PlaylistChip
+	27, // 4: zpotify_api.GetPlaylist.Response.playlist:type_name -> zpotify_api.Playlist
+	24, // 5: zpotify_api.ListPlaylists.Request.paging:type_name -> zpotify_api.Paging
+	27, // 6: zpotify_api.ListPlaylists.Response.playlists:type_name -> zpotify_api.Playlist
+	12, // 7: zpotify_api.PlaylistAPI.CreatePlaylist:input_type -> zpotify_api.CreatePlaylist.Request
+	16, // 8: zpotify_api.PlaylistAPI.GetPlaylist:input_type -> zpotify_api.GetPlaylist.Request
+	10, // 9: zpotify_api.PlaylistAPI.DeleteSong:input_type -> zpotify_api.DeleteSong.Request
+	8,  // 10: zpotify_api.PlaylistAPI.ListSongs:input_type -> zpotify_api.ListSongs.Request
+	18, // 11: zpotify_api.PlaylistAPI.ChangeSongsOrder:input_type -> zpotify_api.ChangeSongsOrder.Request
+	20, // 12: zpotify_api.PlaylistAPI.AddSongToPlaylist:input_type -> zpotify_api.AddSongToPlaylist.Request
+	14, // 13: zpotify_api.PlaylistAPI.UpdatePlaylist:input_type -> zpotify_api.UpdatePlaylist.Request
+	22, // 14: zpotify_api.PlaylistAPI.ListPlaylists:input_type -> zpotify_api.ListPlaylists.Request
+	13, // 15: zpotify_api.PlaylistAPI.CreatePlaylist:output_type -> zpotify_api.CreatePlaylist.Response
+	17, // 16: zpotify_api.PlaylistAPI.GetPlaylist:output_type -> zpotify_api.GetPlaylist.Response
+	11, // 17: zpotify_api.PlaylistAPI.DeleteSong:output_type -> zpotify_api.DeleteSong.Response
+	9,  // 18: zpotify_api.PlaylistAPI.ListSongs:output_type -> zpotify_api.ListSongs.Response
+	19, // 19: zpotify_api.PlaylistAPI.ChangeSongsOrder:output_type -> zpotify_api.ChangeSongsOrder.Response
+	21, // 20: zpotify_api.PlaylistAPI.AddSongToPlaylist:output_type -> zpotify_api.AddSongToPlaylist.Response
+	15, // 21: zpotify_api.PlaylistAPI.UpdatePlaylist:output_type -> zpotify_api.UpdatePlaylist.Response
+	23, // 22: zpotify_api.PlaylistAPI.ListPlaylists:output_type -> zpotify_api.ListPlaylists.Response
+	15, // [15:23] is the sub-list for method output_type
+	7,  // [7:15] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_service_playlist_proto_init() }

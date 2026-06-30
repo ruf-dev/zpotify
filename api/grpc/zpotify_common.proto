@@ -26,6 +26,11 @@ message SongBase {
   int64 file_id = 6;
 }
 
+message PlaylistChip {
+  string kind = 1;
+  string value = 2;
+}
+
 message Playlist {
   string uuid = 1;
   string name = 2;
@@ -35,6 +40,8 @@ message Playlist {
   optional int32 song_count = 6;
   optional string cover_file_path = 7;
   optional int32 year = 8;
+  repeated PlaylistChip chips = 9;
+  optional bool can_edit = 10;
 }
 
 message SongFile {

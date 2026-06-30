@@ -14,6 +14,7 @@ export type {DropdownOption};
 
 interface DropdownProps {
     options?: DropdownOption[];
+    initialOptions?: DropdownOption[];
     onSearch?: (query: string) => Promise<DropdownOption[]>;
     onCreate?: (name: string) => Promise<DropdownOption>;
     onPick: (option: DropdownOption) => void;
@@ -30,7 +31,7 @@ interface DropdownProps {
 export default function Dropdown(
     {
         onSearch, onCreate, onPick, onClose, placeholder,
-        options = [], excluded = [], selected = [],
+        options = [], initialOptions = [], excluded = [], selected = [],
         multiSelect = false,
         isLoading = false,
         emptyHint = 'no results found',
@@ -44,7 +45,7 @@ export default function Dropdown(
     const panelRef = useRef<HTMLDivElement>(null);
 
     const hasSearch = Boolean(onSearch);
-    const searchResults = useSearchResults(query, onSearch);
+    const searchResults = useSearchResults(query, onSearch, initialOptions);
 
     useDropdownClose(panelRef, onClose);
     const toaster = useToaster();
