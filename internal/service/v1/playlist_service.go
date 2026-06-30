@@ -295,9 +295,7 @@ func (p *PlaylistService) List(ctx context.Context, req domain.ListPlaylists) (d
 		return domain.ListPlaylistsResult{}, rerrors.Wrap(service_errors.ErrUnauthenticated)
 	}
 
-	if req.ByAuthedUser {
-		req.Filter.UserId = sql.Null[int64]{V: userCtx.UserId, Valid: true}
-	}
+	req.Filter.UserId = sql.Null[int64]{V: userCtx.UserId, Valid: true}
 
 	playlists, err := p.playlistStorage.List(ctx, req)
 	if err != nil {

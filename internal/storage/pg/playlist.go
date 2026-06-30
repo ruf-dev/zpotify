@@ -534,19 +534,27 @@ type playlistsListBuilder struct {
 }
 
 func (b playlistsListBuilder) applyFilters(req domain.ListPlaylists) playlistsListBuilder {
-	if req.Filter.UserId.Valid {
+	if !req.Filter.UserId.Valid {
+		b.SelectBuilder = b.SelectBuilder.Where(sq.Eq{"v.is_public": true})
+		return b
+	}
+
+	if req.ByAuthedUser {
 		b.SelectBuilder = b.SelectBuilder.
-			Join("user_playlists up ON up.playlist_id = v.uuid").
-			Where(sq.Eq{"up.user_id": req.Filter.UserId.V})
+			Join("user_playlists up ON up.playlist_id = v.uuid AND up.user_id = ?", req.Filter.UserId.V).
+			Where(sq.NotEq{"up.user_id": nil})
+	} else {
+		b.SelectBuilder = b.SelectBuilder.
+			LeftJoin("user_playlists up ON up.playlist_id = v.uuid AND up.user_id = ?", req.Filter.UserId.V).
+			Where(sq.Or{sq.Eq{"v.is_public": true}, sq.NotEq{"up.user_id": nil}})
 	}
 
 	return b
 }
 
 func (b playlistsListBuilder) applySorting(req domain.ListPlaylists) playlistsListBuilder {
-	if req.Filter.UserId.Valid {
-		b.SelectBuilder = b.SelectBuilder.
-			OrderBy("up.order_id")
+	if req.ByAuthedUser {
+		b.SelectBuilder = b.SelectBuilder.OrderBy("up.order_id")
 	} else {
 		b.SelectBuilder = b.SelectBuilder.OrderBy("v.uuid")
 	}
