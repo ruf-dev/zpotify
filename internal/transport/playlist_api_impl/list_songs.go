@@ -68,6 +68,7 @@ func toArtists(artists []domain.ArtistsBase) []*zpotify_api.ArtistBase {
 
 func toArtist(base domain.ArtistsBase) *zpotify_api.ArtistBase {
 	return &zpotify_api.ArtistBase{
+		Uuid: base.Uuid,
 		Name: base.Name,
 	}
 }

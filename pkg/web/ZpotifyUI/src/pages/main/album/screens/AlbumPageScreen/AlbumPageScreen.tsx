@@ -35,17 +35,20 @@ export default function AlbumPageScreen({ playlist, songs, username }: Props) {
 
     function handlePlay() {
         const first = songs[0];
-        if (!first?.id) return;
-        const artistName = first.artists?.[0]?.name ?? null;
-        audioPlayer.setSongInfo(first.title ?? null, artistName);
-        audioPlayer.play(first.id);
+        if (!first?.filePath) return;
+        audioPlayer.setSongInfo(first.title ?? null, first.artists?.[0]?.name ?? null);
+        audioPlayer.play(first.filePath);
+        audioPlayer.setNext(songs[1]?.filePath);
+        audioPlayer.setPrev(undefined);
     }
 
     function handlePlaySong(song: SongBase) {
-        if (!song.id) return;
-        const artistName = song.artists?.[0]?.name ?? null;
-        audioPlayer.setSongInfo(song.title ?? null, artistName);
-        audioPlayer.play(song.id);
+        if (!song.filePath) return;
+        const idx = songs.findIndex(s => s.filePath === song.filePath);
+        audioPlayer.setSongInfo(song.title ?? null, song.artists?.[0]?.name ?? null);
+        audioPlayer.play(song.filePath);
+        audioPlayer.setNext(songs[idx + 1]?.filePath);
+        audioPlayer.setPrev(idx > 0 ? songs[idx - 1]?.filePath : undefined);
     }
 
     const totalDuration = computeTotalDuration(songs);

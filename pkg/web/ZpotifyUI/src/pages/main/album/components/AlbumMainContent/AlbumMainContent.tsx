@@ -51,7 +51,7 @@ export default function AlbumMainContent({ songs, currentTrackPath, onPlaySong, 
                         key={song.id}
                         song={song}
                         index={i + 1}
-                        isPlaying={currentTrackPath === song.id}
+                        isPlaying={currentTrackPath === song.filePath}
                         isLiked={likedSongIds.has(song.id ?? '')}
                         isHeartAnimating={animatingHeartId === song.id}
                         onPlay={() => onPlaySong(song)}
