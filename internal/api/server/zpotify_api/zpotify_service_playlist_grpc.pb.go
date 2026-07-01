@@ -19,14 +19,15 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PlaylistAPI_CreatePlaylist_FullMethodName    = "/zpotify_api.PlaylistAPI/CreatePlaylist"
-	PlaylistAPI_GetPlaylist_FullMethodName       = "/zpotify_api.PlaylistAPI/GetPlaylist"
-	PlaylistAPI_DeleteSong_FullMethodName        = "/zpotify_api.PlaylistAPI/DeleteSong"
-	PlaylistAPI_ListSongs_FullMethodName         = "/zpotify_api.PlaylistAPI/ListSongs"
-	PlaylistAPI_ChangeSongsOrder_FullMethodName  = "/zpotify_api.PlaylistAPI/ChangeSongsOrder"
-	PlaylistAPI_AddSongToPlaylist_FullMethodName = "/zpotify_api.PlaylistAPI/AddSongToPlaylist"
-	PlaylistAPI_UpdatePlaylist_FullMethodName    = "/zpotify_api.PlaylistAPI/UpdatePlaylist"
-	PlaylistAPI_ListPlaylists_FullMethodName     = "/zpotify_api.PlaylistAPI/ListPlaylists"
+	PlaylistAPI_CreatePlaylist_FullMethodName     = "/zpotify_api.PlaylistAPI/CreatePlaylist"
+	PlaylistAPI_GetPlaylist_FullMethodName        = "/zpotify_api.PlaylistAPI/GetPlaylist"
+	PlaylistAPI_DeleteSong_FullMethodName         = "/zpotify_api.PlaylistAPI/DeleteSong"
+	PlaylistAPI_ListSongs_FullMethodName          = "/zpotify_api.PlaylistAPI/ListSongs"
+	PlaylistAPI_ChangeSongsOrder_FullMethodName   = "/zpotify_api.PlaylistAPI/ChangeSongsOrder"
+	PlaylistAPI_AddSongToPlaylist_FullMethodName  = "/zpotify_api.PlaylistAPI/AddSongToPlaylist"
+	PlaylistAPI_AddSongsToPlaylist_FullMethodName = "/zpotify_api.PlaylistAPI/AddSongsToPlaylist"
+	PlaylistAPI_UpdatePlaylist_FullMethodName     = "/zpotify_api.PlaylistAPI/UpdatePlaylist"
+	PlaylistAPI_ListPlaylists_FullMethodName      = "/zpotify_api.PlaylistAPI/ListPlaylists"
 )
 
 // PlaylistAPIClient is the client API for PlaylistAPI service.
@@ -39,6 +40,7 @@ type PlaylistAPIClient interface {
 	ListSongs(ctx context.Context, in *ListSongs_Request, opts ...grpc.CallOption) (*ListSongs_Response, error)
 	ChangeSongsOrder(ctx context.Context, in *ChangeSongsOrder_Request, opts ...grpc.CallOption) (*ChangeSongsOrder_Response, error)
 	AddSongToPlaylist(ctx context.Context, in *AddSongToPlaylist_Request, opts ...grpc.CallOption) (*AddSongToPlaylist_Response, error)
+	AddSongsToPlaylist(ctx context.Context, in *AddSongsToPlaylist_Request, opts ...grpc.CallOption) (*AddSongsToPlaylist_Response, error)
 	UpdatePlaylist(ctx context.Context, in *UpdatePlaylist_Request, opts ...grpc.CallOption) (*UpdatePlaylist_Response, error)
 	// TODO: Implement
 	ListPlaylists(ctx context.Context, in *ListPlaylists_Request, opts ...grpc.CallOption) (*ListPlaylists_Response, error)
@@ -112,6 +114,16 @@ func (c *playlistAPIClient) AddSongToPlaylist(ctx context.Context, in *AddSongTo
 	return out, nil
 }
 
+func (c *playlistAPIClient) AddSongsToPlaylist(ctx context.Context, in *AddSongsToPlaylist_Request, opts ...grpc.CallOption) (*AddSongsToPlaylist_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddSongsToPlaylist_Response)
+	err := c.cc.Invoke(ctx, PlaylistAPI_AddSongsToPlaylist_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *playlistAPIClient) UpdatePlaylist(ctx context.Context, in *UpdatePlaylist_Request, opts ...grpc.CallOption) (*UpdatePlaylist_Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UpdatePlaylist_Response)
@@ -142,6 +154,7 @@ type PlaylistAPIServer interface {
 	ListSongs(context.Context, *ListSongs_Request) (*ListSongs_Response, error)
 	ChangeSongsOrder(context.Context, *ChangeSongsOrder_Request) (*ChangeSongsOrder_Response, error)
 	AddSongToPlaylist(context.Context, *AddSongToPlaylist_Request) (*AddSongToPlaylist_Response, error)
+	AddSongsToPlaylist(context.Context, *AddSongsToPlaylist_Request) (*AddSongsToPlaylist_Response, error)
 	UpdatePlaylist(context.Context, *UpdatePlaylist_Request) (*UpdatePlaylist_Response, error)
 	// TODO: Implement
 	ListPlaylists(context.Context, *ListPlaylists_Request) (*ListPlaylists_Response, error)
@@ -172,6 +185,9 @@ func (UnimplementedPlaylistAPIServer) ChangeSongsOrder(context.Context, *ChangeS
 }
 func (UnimplementedPlaylistAPIServer) AddSongToPlaylist(context.Context, *AddSongToPlaylist_Request) (*AddSongToPlaylist_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method AddSongToPlaylist not implemented")
+}
+func (UnimplementedPlaylistAPIServer) AddSongsToPlaylist(context.Context, *AddSongsToPlaylist_Request) (*AddSongsToPlaylist_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method AddSongsToPlaylist not implemented")
 }
 func (UnimplementedPlaylistAPIServer) UpdatePlaylist(context.Context, *UpdatePlaylist_Request) (*UpdatePlaylist_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdatePlaylist not implemented")
@@ -308,6 +324,24 @@ func _PlaylistAPI_AddSongToPlaylist_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PlaylistAPI_AddSongsToPlaylist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddSongsToPlaylist_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlaylistAPIServer).AddSongsToPlaylist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PlaylistAPI_AddSongsToPlaylist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlaylistAPIServer).AddSongsToPlaylist(ctx, req.(*AddSongsToPlaylist_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PlaylistAPI_UpdatePlaylist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdatePlaylist_Request)
 	if err := dec(in); err != nil {
@@ -374,6 +408,10 @@ var PlaylistAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddSongToPlaylist",
 			Handler:    _PlaylistAPI_AddSongToPlaylist_Handler,
+		},
+		{
+			MethodName: "AddSongsToPlaylist",
+			Handler:    _PlaylistAPI_AddSongsToPlaylist_Handler,
 		},
 		{
 			MethodName: "UpdatePlaylist",

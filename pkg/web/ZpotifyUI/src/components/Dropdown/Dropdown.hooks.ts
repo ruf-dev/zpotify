@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import type { DropdownOption } from '@/components/Dropdown/Dropdown.types';
+
+const SEARCH_DEBOUNCE_MS = 250;
 
 export function useDropdownClose(panelRef: React.RefObject<HTMLDivElement | null>, onClose: () => void) {
     useEffect(() => {
@@ -29,21 +31,30 @@ export function useSearchResults(
     const [searchResults, setSearchResults] = useState<DropdownOption[]>(initialOptions);
     const [isSearching, setIsSearching] = useState(false);
 
+    const onSearchRef = useRef(onSearch);
     useEffect(() => {
-        if (!onSearch) return;
+        onSearchRef.current = onSearch;
+    });
+
+    useEffect(() => {
+        const fn = onSearchRef.current;
+        if (!fn) return;
         let cancelled = false;
         setIsSearching(true);
-        onSearch(query)
-            .then((results) => {
-                if (!cancelled) setSearchResults(results);
-            })
-            .finally(() => {
-                if (!cancelled) setIsSearching(false);
-            });
+        const timer = setTimeout(() => {
+            fn(query)
+                .then((results) => {
+                    if (!cancelled) setSearchResults(results);
+                })
+                .finally(() => {
+                    if (!cancelled) setIsSearching(false);
+                });
+        }, SEARCH_DEBOUNCE_MS);
         return () => {
             cancelled = true;
+            clearTimeout(timer);
         };
-    }, [query, onSearch]);
+    }, [query]);
 
     return { searchResults, isSearching };
 }

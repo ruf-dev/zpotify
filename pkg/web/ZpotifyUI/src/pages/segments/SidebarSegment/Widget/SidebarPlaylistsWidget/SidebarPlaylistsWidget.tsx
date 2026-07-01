@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 import { playlistService } from '@/shared/api/PlaylistService';
+import { usePlaylistListRefresh } from '@/entities/playlist/usePlaylistListRefresh';
 import PlaylistRow from '@/pages/segments/SidebarSegment/components/PlaylistRow/PlaylistRow';
 import cls from '@/pages/segments/SidebarSegment/Widget/SidebarPlaylistsWidget/SidebarPlaylistsWidget.module.css';
 
@@ -33,8 +34,9 @@ export default function SidebarPlaylistsWidget({ isCollapsed }: SidebarPlaylists
     const [playlists, setPlaylists] = useState<PlaylistItem[]>([]);
     const [loaded, setLoaded] = useState(false);
     const navigate = useNavigate();
+    const version = usePlaylistListRefresh((s) => s.version);
 
-    useEffect(() => {
+    useEffect(function fetchPlaylists() {
         playlistService
             .ListUserPlaylists(50, 0)
             .then((resp) => {
@@ -51,7 +53,7 @@ export default function SidebarPlaylistsWidget({ isCollapsed }: SidebarPlaylists
             .catch(() => {
                 setLoaded(true);
             });
-    }, []);
+    }, [version]);
 
     function handleCreateClick() {
         void navigate('/');

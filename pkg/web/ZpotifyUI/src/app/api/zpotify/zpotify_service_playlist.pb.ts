@@ -90,6 +90,15 @@ export type AddSongToPlaylistResponse = Record<string, never>;
 
 export type AddSongToPlaylist = Record<string, never>;
 
+export type AddSongsToPlaylistRequest = {
+  playlistUuid?: string;
+  songIds?: number[];
+};
+
+export type AddSongsToPlaylistResponse = Record<string, never>;
+
+export type AddSongsToPlaylist = Record<string, never>;
+
 export type ListPlaylistsRequest = {
   paging?: ZpotifyApiZpotifyCommon.Paging;
   byAuthedUser?: boolean;
@@ -120,6 +129,9 @@ export class PlaylistAPI {
   }
   static AddSongToPlaylist(this:void, req: AddSongToPlaylistRequest, initReq?: fm.InitReq): Promise<AddSongToPlaylistResponse> {
     return fm.fetchRequest<AddSongToPlaylistResponse>(`/api/playlist/add_song`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static AddSongsToPlaylist(this:void, req: AddSongsToPlaylistRequest, initReq?: fm.InitReq): Promise<AddSongsToPlaylistResponse> {
+    return fm.fetchRequest<AddSongsToPlaylistResponse>(`/api/playlist/add_songs`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
   static UpdatePlaylist(this:void, req: UpdatePlaylistRequest, initReq?: fm.InitReq): Promise<UpdatePlaylistResponse> {
     return fm.fetchRequest<UpdatePlaylistResponse>(`/api/playlist/update`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});

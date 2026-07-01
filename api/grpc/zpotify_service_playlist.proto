@@ -52,6 +52,13 @@ service PlaylistAPI {
     };
   }
 
+  rpc AddSongsToPlaylist(AddSongsToPlaylist.Request) returns (AddSongsToPlaylist.Response) {
+    option (google.api.http) = {
+      post: "/api/playlist/add_songs",
+      body: "*"
+    };
+  }
+
   rpc UpdatePlaylist(UpdatePlaylist.Request) returns (UpdatePlaylist.Response) {
     option (google.api.http) = {
       post: "/api/playlist/update",
@@ -147,6 +154,14 @@ message AddSongToPlaylist {
   message Request {
     string playlist_uuid = 1;
     int32 song_id = 2;
+  }
+  message Response {}
+}
+
+message AddSongsToPlaylist {
+  message Request {
+    string playlist_uuid = 1;
+    repeated int32 song_ids = 2;
   }
   message Response {}
 }

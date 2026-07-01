@@ -1405,8 +1405,8 @@
     "semantic_hash": "cfcd2bf6cdad98d72b346d3cbf545f5d"
   },
   "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/Dropdown/Dropdown.tsx": {
-    "mtime": 1782814798.5239925,
-    "ast_hash": "f668f40622e4b80ddfeafe4e61025013",
+    "mtime": 1782905888.7683067,
+    "ast_hash": "c690a428fc52b0f864ea614c4d4462c8",
     "semantic_hash": ""
   },
   "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/Dropdown/DropdownCreateRow.tsx": {
@@ -1415,8 +1415,8 @@
     "semantic_hash": "ee2ce1c1530a23cacfc4be368e2e679c"
   },
   "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/Dropdown/Dropdown.hooks.ts": {
-    "mtime": 1782814788.764411,
-    "ast_hash": "93ff8e12eb5a4d212337a7d7369e2fe2",
+    "mtime": 1782915118.4164236,
+    "ast_hash": "391c198ee96a67f70251b83da94b14e9",
     "semantic_hash": ""
   },
   "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/components/Dropdown/DropdownOptionRow.tsx": {
@@ -1540,8 +1540,8 @@
     "semantic_hash": ""
   },
   "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/MultitrackUpload/MultitrackUploadModal.tsx": {
-    "mtime": 1782904515.5975254,
-    "ast_hash": "e2d0f9b7e03a1c806a16226058d3dd1a",
+    "mtime": 1782906815.7648323,
+    "ast_hash": "47e91c047e148fb172780c63e1eea547",
     "semantic_hash": ""
   },
   "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/dialogs/MultitrackUpload/PlaylistToggleRow.tsx": {
@@ -1755,8 +1755,8 @@
     "semantic_hash": "4b9851250120807144dc4c44eb33c720"
   },
   "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/ArtistField/ArtistChipsField.tsx": {
-    "mtime": 1782814812.549281,
-    "ast_hash": "df0e8d08d0115f9c3fbe9c4fb065a5a0",
+    "mtime": 1782915150.862261,
+    "ast_hash": "432add2bc8273570a371e207c8c80b9b",
     "semantic_hash": ""
   },
   "/Users/alexbukov/ruf/zpotify/pkg/web/ZpotifyUI/src/widgets/HomeSegments/useHomeSegments.ts": {

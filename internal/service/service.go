@@ -135,6 +135,7 @@ type PlaylistService interface {
 
 	ListSongs(ctx context.Context, songs domain.ListSongs) (domain.SongsInPlaylist, error)
 	AddSong(ctx context.Context, req domain.AddSongToPlaylist) error
+	AddSongs(ctx context.Context, req domain.AddSongsToPlaylist) error
 	List(ctx context.Context, req domain.ListPlaylists) (domain.ListPlaylistsResult, error)
 }
 

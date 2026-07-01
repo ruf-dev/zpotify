@@ -48,6 +48,38 @@
         ]
       }
     },
+    "/api/playlist/add_songs": {
+      "post": {
+        "operationId": "PlaylistAPI_AddSongsToPlaylist",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiAddSongsToPlaylistResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiAddSongsToPlaylistRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PlaylistAPI"
+        ]
+      }
+    },
     "/api/playlist/create": {
       "post": {
         "operationId": "PlaylistAPI_CreatePlaylist",
@@ -314,6 +346,24 @@
       }
     },
     "zpotify_apiAddSongToPlaylistResponse": {
+      "type": "object"
+    },
+    "zpotify_apiAddSongsToPlaylistRequest": {
+      "type": "object",
+      "properties": {
+        "playlistUuid": {
+          "type": "string"
+        },
+        "songIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "zpotify_apiAddSongsToPlaylistResponse": {
       "type": "object"
     },
     "zpotify_apiArtistBase": {

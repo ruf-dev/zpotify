@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import cn from 'classnames';
 
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChip';
@@ -42,9 +42,11 @@ export default function ArtistChipsField({
         onChange(artists.filter((a) => a.id !== id));
     }
 
-    function wrappedSearch(query: string): Promise<DropdownOption[]> {
-        return loadOptions(query).then((items) => items.map((a) => ({ id: a.id, name: a.name })));
-    }
+    const wrappedSearch = useCallback(
+        (query: string): Promise<DropdownOption[]> =>
+            loadOptions(query).then((items) => items.map((a) => ({ id: a.id, name: a.name }))),
+        [loadOptions],
+    );
 
     function handlePick(option: DropdownOption) {
         const id = typeof option === 'string' ? option : option.id;
@@ -102,6 +104,11 @@ export default function ArtistChipsField({
         setDropdownOpen((o) => !o);
     }
 
+    const excluded = useMemo(
+        () => [...lockedArtists.map((a) => a.id), ...artists.map((a) => a.id)],
+        [lockedArtists, artists],
+    );
+
     const showPlaceholder = lockedArtists.length === 0 && artists.length === 0;
 
     return (
@@ -152,7 +159,7 @@ export default function ArtistChipsField({
 
             {!readOnly && dropdownOpen && (
                 <Dropdown
-                    excluded={[...lockedArtists.map((a) => a.id), ...artists.map((a) => a.id)]}
+                    excluded={excluded}
                     onSearch={wrappedSearch}
                     initialOptions={preloadedOptions.map((a) => ({ id: a.id, name: a.name }))}
                     onCreate={handleCreate}

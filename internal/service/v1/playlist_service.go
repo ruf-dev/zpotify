@@ -260,6 +260,52 @@ func (p *PlaylistService) AddSong(ctx context.Context, req domain.AddSongToPlayl
 	return nil
 }
 
+func (p *PlaylistService) AddSongs(ctx context.Context, req domain.AddSongsToPlaylist) error {
+	userCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return rerrors.Wrap(service_errors.ErrUnauthenticated)
+	}
+
+	permissions, err := p.userStorage.GetPermissionsOnPlaylist(ctx, userCtx.UserId, req.PlaylistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting permissions for playlist")
+	}
+
+	if !permissions.CanAddSongs {
+		return rerrors.Wrap(service_errors.ErrUnauthorized, "user is missing can_add_song permission on playlist")
+	}
+
+	for _, songId := range req.SongIds {
+		songFile, err := p.fileMetaStorage.GetBySongId(ctx, songId)
+		if err != nil {
+			return rerrors.Wrap(err, "error getting song file from storage")
+		}
+
+		if !songFile.Verified {
+			return rerrors.Wrap(service_errors.ErrFileNotVerified,
+				"file you are trying to add as a song to playlist is not verified")
+		}
+	}
+
+	err = p.txManager.Execute(func(tx *sql.Tx) error {
+		playlistStorage := p.playlistStorage.WithTx(tx)
+
+		for _, songId := range req.SongIds {
+			err := playlistStorage.AddSong(ctx, req.PlaylistUuid, songId)
+			if err != nil {
+				return rerrors.Wrap(err, "error saving song to playlist")
+			}
+		}
+
+		return nil
+	})
+	if err != nil {
+		return rerrors.Wrap(err)
+	}
+
+	return nil
+}
+
 func (p *PlaylistService) ChangeSongsOrder(ctx context.Context, params domain.ChangeSongsOrderParams) error {
 	userCtx, ok := user_context.GetUserContext(ctx)
 	if !ok {

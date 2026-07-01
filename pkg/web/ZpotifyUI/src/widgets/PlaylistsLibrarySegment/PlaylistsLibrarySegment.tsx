@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useToaster} from '@/shared/lib/toaster/ToasterZ.ts';
 import {playlistService} from '@/shared/api/PlaylistService.ts';
+import {usePlaylistListRefresh} from '@/entities/playlist/usePlaylistListRefresh.ts';
 import type {LibraryItem} from '@/widgets/PlaylistsLibrarySegment/model.ts';
 import LibraryGridScreen from '@/widgets/PlaylistsLibrarySegment/screens/LibraryGridScreen/LibraryGridScreen.tsx';
 import LibraryGridScreenSkeleton from '@/widgets/PlaylistsLibrarySegment/screens/LibraryGridScreen/LibraryGridScreenSkeleton.tsx';
@@ -10,8 +11,9 @@ export default function PlaylistsLibrarySegment() {
     const toaster = useToaster();
     const [items, setItems] = useState<LibraryItem[]>([]);
     const [loading, setLoading] = useState(true);
+    const version = usePlaylistListRefresh((s) => s.version);
 
-    useEffect(fetchLibrary, []);
+    useEffect(fetchLibrary, [version]);
 
     function fetchLibrary() {
         playlistService.ListLibrary({limit: 50, offset: 0})

@@ -12,6 +12,7 @@ import { fileService } from '@/shared/api/FileService.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import type { ChipEntry } from '@/widgets/ChipsField/ChipsField';
 import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
+import { usePlaylistListRefresh } from '@/entities/playlist/usePlaylistListRefresh.ts';
 import type { SongBase } from '@/app/api/zpotify';
 import ChevronRightIcon from '@/assets/icons/ChevronRightIcon.tsx';
 
@@ -35,6 +36,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
     const { CloseDialog, LockClosing, UnlockClosing } = useDialog();
     const toaster = useToaster();
     const refreshActive = useSongListRefresh((s) => s.refreshActive);
+    const refreshPlaylists = usePlaylistListRefresh((s) => s.refresh);
 
     const [tracks, setTracks] = useState<TrackDraft[]>(() =>
         files.map((f) => ({
@@ -317,14 +319,17 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                 );
                 const playlistUuid = playlist.uuid ?? '';
 
-                for (const id of songIds) {
-                    await playlistService.AddSongToPlaylist(playlistUuid, parseInt(id, 10));
-                }
+                await playlistService.AddSongsToPlaylist(
+                    playlistUuid,
+                    songIds.map((id) => parseInt(id, 10)),
+                );
             }
 
             setTimeout(() => {
+                UnlockClosing();
                 CloseDialog();
                 refreshActive();
+                if (playlistMode) refreshPlaylists();
             }, 800);
         } catch (e) {
             setSubmitting(false);

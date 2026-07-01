@@ -68,6 +68,11 @@ type AddSongToPlaylist struct {
 	SongId       int32
 }
 
+type AddSongsToPlaylist struct {
+	PlaylistUuid string
+	SongIds      []int32
+}
+
 type PlaylistFilter struct {
 	UserId sql.Null[int64]
 }

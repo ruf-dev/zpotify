@@ -10,6 +10,7 @@ import {
     UpdatePlaylistRequest,
     ChangeSongsOrderRequest,
     AddSongToPlaylistRequest,
+    AddSongsToPlaylistRequest,
     ListPlaylistsRequest,
     ListPlaylistsResponse,
     type PlaylistChip,
@@ -164,6 +165,13 @@ export class PlaylistService extends BaseService implements IPlaylistService {
         const req: AddSongToPlaylistRequest = { playlistUuid, songId };
         return this.executeAuthApiCall(async (initReq) => {
             return PlaylistAPI.AddSongToPlaylist(req, initReq).then(() => undefined);
+        });
+    }
+
+    async AddSongsToPlaylist(playlistUuid: string, songIds: number[]): Promise<void> {
+        const req: AddSongsToPlaylistRequest = { playlistUuid, songIds };
+        return this.executeAuthApiCall(async (initReq) => {
+            return PlaylistAPI.AddSongsToPlaylist(req, initReq).then(() => undefined);
         });
     }
 
