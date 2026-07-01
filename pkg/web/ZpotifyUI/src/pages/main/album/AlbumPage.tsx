@@ -26,7 +26,9 @@ export default function AlbumPage() {
 
     if (!id || !userData) return null;
 
-    if (songsLoading || playlistLoading || notAnAlbum) return <AlbumPageSkeletonLoadScreen/>;
+    if (playlistLoading || songsLoading) return <AlbumPageSkeletonLoadScreen/>;
+
+    if (notAnAlbum) return null;
 
     return <AlbumPageScreen playlist={playlist} songs={songs} username={userData.username ?? ''} />;
 }
