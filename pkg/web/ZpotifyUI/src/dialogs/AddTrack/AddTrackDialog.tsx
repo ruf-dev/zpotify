@@ -25,6 +25,7 @@ export interface AddTrackContext {
     uploadError: string | null;
     handleFiles: (files: File[]) => void;
     handleSelectFromLibrary: (song: SongFile) => void;
+    handleCreatePlaylist: () => void;
 }
 
 const DOT_STEPS: ModalStep[] = ['choose', 'drop'];
@@ -93,6 +94,11 @@ export default function AddTrackDialog() {
             .finally(() => setUploading(false));
     }
 
+    function handleCreatePlaylist() {
+        CloseDialog();
+        OpenDialog(<MultitrackUploadModal files={[]} />);
+    }
+
     function handleSelectFromLibrary(songFile: SongFile) {
         const id = songFile.id ?? '';
         const name = songFile.path?.split('/').pop() ?? '';
@@ -109,6 +115,7 @@ export default function AddTrackDialog() {
         uploadError,
         handleFiles,
         handleSelectFromLibrary,
+        handleCreatePlaylist,
     };
 
     const Screen = SCREENS[step];

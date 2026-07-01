@@ -23,6 +23,7 @@ const (
 	SongAPI_BatchCreateSong_FullMethodName = "/zpotify_api.SongAPI/BatchCreateSong"
 	SongAPI_UpdateSong_FullMethodName      = "/zpotify_api.SongAPI/UpdateSong"
 	SongAPI_GetSong_FullMethodName         = "/zpotify_api.SongAPI/GetSong"
+	SongAPI_SearchSongs_FullMethodName     = "/zpotify_api.SongAPI/SearchSongs"
 )
 
 // SongAPIClient is the client API for SongAPI service.
@@ -33,6 +34,7 @@ type SongAPIClient interface {
 	BatchCreateSong(ctx context.Context, in *BatchCreateSong_Request, opts ...grpc.CallOption) (*BatchCreateSong_Response, error)
 	UpdateSong(ctx context.Context, in *UpdateSong_Request, opts ...grpc.CallOption) (*UpdateSong_Response, error)
 	GetSong(ctx context.Context, in *GetSong_Request, opts ...grpc.CallOption) (*GetSong_Response, error)
+	SearchSongs(ctx context.Context, in *SearchSongs_Request, opts ...grpc.CallOption) (*SearchSongs_Response, error)
 }
 
 type songAPIClient struct {
@@ -83,6 +85,16 @@ func (c *songAPIClient) GetSong(ctx context.Context, in *GetSong_Request, opts .
 	return out, nil
 }
 
+func (c *songAPIClient) SearchSongs(ctx context.Context, in *SearchSongs_Request, opts ...grpc.CallOption) (*SearchSongs_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SearchSongs_Response)
+	err := c.cc.Invoke(ctx, SongAPI_SearchSongs_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SongAPIServer is the server API for SongAPI service.
 // All implementations must embed UnimplementedSongAPIServer
 // for forward compatibility.
@@ -91,6 +103,7 @@ type SongAPIServer interface {
 	BatchCreateSong(context.Context, *BatchCreateSong_Request) (*BatchCreateSong_Response, error)
 	UpdateSong(context.Context, *UpdateSong_Request) (*UpdateSong_Response, error)
 	GetSong(context.Context, *GetSong_Request) (*GetSong_Response, error)
+	SearchSongs(context.Context, *SearchSongs_Request) (*SearchSongs_Response, error)
 	mustEmbedUnimplementedSongAPIServer()
 }
 
@@ -112,6 +125,9 @@ func (UnimplementedSongAPIServer) UpdateSong(context.Context, *UpdateSong_Reques
 }
 func (UnimplementedSongAPIServer) GetSong(context.Context, *GetSong_Request) (*GetSong_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetSong not implemented")
+}
+func (UnimplementedSongAPIServer) SearchSongs(context.Context, *SearchSongs_Request) (*SearchSongs_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method SearchSongs not implemented")
 }
 func (UnimplementedSongAPIServer) mustEmbedUnimplementedSongAPIServer() {}
 func (UnimplementedSongAPIServer) testEmbeddedByValue()                 {}
@@ -206,6 +222,24 @@ func _SongAPI_GetSong_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SongAPI_SearchSongs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchSongs_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SongAPIServer).SearchSongs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SongAPI_SearchSongs_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SongAPIServer).SearchSongs(ctx, req.(*SearchSongs_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SongAPI_ServiceDesc is the grpc.ServiceDesc for SongAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -228,6 +262,10 @@ var SongAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSong",
 			Handler:    _SongAPI_GetSong_Handler,
+		},
+		{
+			MethodName: "SearchSongs",
+			Handler:    _SongAPI_SearchSongs_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -21,7 +21,7 @@ export default function AddTrackButton({ onClick }: AddTrackButtonProps) {
                     <line x1="1" y1="6" x2="11" y2="6" />
                 </svg>
             </span>
-            <span className={cls.Label}>add track</span>
+            <span className={cls.Label}>Create</span>
         </button>
     );
 }

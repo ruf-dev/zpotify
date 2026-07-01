@@ -51,6 +51,17 @@ export type GetSongResponse = {
 
 export type GetSong = Record<string, never>;
 
+export type SearchSongsRequest = {
+  query?: string;
+  paging?: ZpotifyApiZpotifyCommon.Paging;
+};
+
+export type SearchSongsResponse = {
+  songs?: ZpotifyApiZpotifyCommon.SongBase[];
+};
+
+export type SearchSongs = Record<string, never>;
+
 export class SongAPI {
   static CreateSong(this:void, req: CreateSongRequest, initReq?: fm.InitReq): Promise<CreateSongResponse> {
     return fm.fetchRequest<CreateSongResponse>(`/api/song/create`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
@@ -63,5 +74,8 @@ export class SongAPI {
   }
   static GetSong(this:void, req: GetSongRequest, initReq?: fm.InitReq): Promise<GetSongResponse> {
     return fm.fetchRequest<GetSongResponse>(`/api/song/${req.id}?${fm.renderURLSearchParams(req, ["id"])}`, {...initReq, method: "GET"});
+  }
+  static SearchSongs(this:void, req: SearchSongsRequest, initReq?: fm.InitReq): Promise<SearchSongsResponse> {
+    return fm.fetchRequest<SearchSongsResponse>(`/api/song/search`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }

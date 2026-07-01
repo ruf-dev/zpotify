@@ -1,0 +1,119 @@
+.SongSearchBoxContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.SearchBox {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--border-radius-md);
+    background: var(--color-bg-accent);
+    border: 0.0625rem solid var(--color-border);
+    transition: border-color 0.15s ease;
+}
+
+.SearchBox:focus-within {
+    border-color: var(--color-border-bright);
+}
+
+.SearchIcon {
+    display: flex;
+    align-items: center;
+    color: var(--color-fg-tertiary);
+    flex-shrink: 0;
+}
+
+.SearchInput {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--color-fg-primary);
+    font-size: var(--font-size-sm);
+}
+
+.SearchInput::placeholder {
+    color: var(--color-fg-tertiary);
+}
+
+.ResultsPanel {
+    display: flex;
+    flex-direction: column;
+    max-height: 15rem;
+    overflow-y: auto;
+    border-radius: var(--border-radius-md);
+    background: var(--color-bg-card);
+    border: 0.0625rem solid var(--color-border);
+}
+
+.HintRow {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+}
+
+.ResultRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    color: var(--color-fg-primary);
+    transition: background 0.15s ease;
+}
+
+.ResultRow:hover {
+    background: var(--color-bg-hover);
+}
+
+.ResultText {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.ResultTitle {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ResultArtists {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ResultDuration {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-secondary);
+    flex-shrink: 0;
+}
+
+.AddIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: var(--border-radius-circle);
+    background: var(--color-fg-accent);
+    color: var(--color-fg-white);
+    font-size: var(--font-size-base);
+    line-height: 1;
+    flex-shrink: 0;
+}

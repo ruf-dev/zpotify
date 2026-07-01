@@ -9,11 +9,12 @@ import cls from '@/dialogs/MultitrackUpload/TrackRow.module.css';
 
 export interface TrackDraft {
     id: string;
-    file: File;
+    // Absent for existing songs added via search (no local file to upload).
+    file?: File;
     title: string;
     artists: ArtistItem[];
     duration: number;
-    size: number;
+    size?: number;
     uploadStatus: 'pending' | 'uploading' | 'done' | 'error';
     uploadProgress: number;
     fileId?: string;

@@ -80,6 +80,38 @@
         ]
       }
     },
+    "/api/song/search": {
+      "post": {
+        "operationId": "SongAPI_SearchSongs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiSearchSongsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiSearchSongsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SongAPI"
+        ]
+      }
+    },
     "/api/song/update": {
       "post": {
         "operationId": "SongAPI_UpdateSong",
@@ -240,6 +272,42 @@
       "properties": {
         "song": {
           "$ref": "#/definitions/zpotify_apiSongBase"
+        }
+      }
+    },
+    "zpotify_apiPaging": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "offset": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "zpotify_apiSearchSongsRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string"
+        },
+        "paging": {
+          "$ref": "#/definitions/zpotify_apiPaging"
+        }
+      }
+    },
+    "zpotify_apiSearchSongsResponse": {
+      "type": "object",
+      "properties": {
+        "songs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiSongBase"
+          }
         }
       }
     },

@@ -6,6 +6,7 @@ export interface ISongsService {
     BatchCreateSong: (songs: Array<{ title: string; artistUuids: string[]; fileId: string }>) => Promise<string[]>;
     UpdateSong: (id: string, title: string, artistUuids: string[]) => Promise<void>;
     GetSong: (id: string) => Promise<SongBase>;
+    SearchSongs: (query: string, offset?: number, limit?: number) => Promise<SongBase[]>;
 }
 
 export class SongsService extends BaseService implements ISongsService {
@@ -30,6 +31,13 @@ export class SongsService extends BaseService implements ISongsService {
     async GetSong(id: string): Promise<SongBase> {
         return this.executeAuthApiCall((initReq: InitReq) => {
             return SongAPI.GetSong({ id }, initReq).then((resp) => resp.song!);
+        });
+    }
+
+    async SearchSongs(query: string, offset = 0, limit = 8): Promise<SongBase[]> {
+        return this.executeAuthApiCall((initReq: InitReq) => {
+            const paging = { offset: String(offset), limit: String(limit) };
+            return SongAPI.SearchSongs({ query, paging }, initReq).then((resp) => resp.songs ?? []);
         });
     }
 }

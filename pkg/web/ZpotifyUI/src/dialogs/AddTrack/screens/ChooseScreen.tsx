@@ -1,11 +1,46 @@
 import { useEffect, useState } from 'react';
+import cn from 'classnames';
 
 import cls from '@/dialogs/AddTrack/screens/ChooseScreen.module.css';
 import useUser from '@/entities/user/useUser.ts';
 import { fileService } from '@/shared/api/FileService.ts';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 
-function LibraryCard({ onClick, disabled }: { onClick: () => void; disabled: boolean }) {
+function CreatePlaylistCard({ onClick }: { onClick: () => void }) {
+    return (
+        <div className={cn(cls.Card, cls.CardWide)} onClick={onClick}>
+            <div className={cls.IconCircle}>
+                <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                >
+                    <path d="M3 6h11M3 12h11M3 18h7" />
+                    <path d="M19 12v7M15.5 15.5h7" />
+                </svg>
+            </div>
+            <div className={cls.CardWideText}>
+                <span className={cls.CardTitle}>Create playlist</span>
+                <span className={cls.CardSubtitle}>start an empty playlist and add tracks</span>
+            </div>
+        </div>
+    );
+}
+
+function LibraryCard({
+    onClick,
+    disabled,
+    pendingCount,
+}: {
+    onClick: () => void;
+    disabled: boolean;
+    pendingCount: number;
+}) {
     return (
         <div className={`${cls.Card} ${disabled ? cls.CardDisabled : ''}`} onClick={disabled ? undefined : onClick}>
             <div className={cls.IconCircle}>
@@ -24,7 +59,9 @@ function LibraryCard({ onClick, disabled }: { onClick: () => void; disabled: boo
                     <circle cx="18" cy="16" r="3" />
                 </svg>
             </div>
-            <span className={cls.CardTitle}>pending uploads</span>
+            <span className={cls.CardTitle}>
+                Pending {pendingCount} upload{pendingCount == 1 ? '' : 's'}{' '}
+            </span>
             <span className={cls.CardSubtitle}>assign an already-uploaded file</span>
         </div>
     );
@@ -65,14 +102,14 @@ function UploadCard({ atLimit, loading, pendingCount, maxPendingTracks, onClick 
             </span>
             {!loading && maxPendingTracks > 0 && (
                 <span className={`${cls.UsageChip} ${atLimit ? cls.UsageChipLimit : ''}`}>
-                    {pendingCount} / {maxPendingTracks}
+                    {maxPendingTracks - pendingCount} / {maxPendingTracks} available to upload
                 </span>
             )}
         </div>
     );
 }
 
-export default function ChooseScreen({ goTo }: AddTrackContext) {
+export default function ChooseScreen({ goTo, handleCreatePlaylist }: AddTrackContext) {
     const { userData } = useUser();
 
     const [pendingCount, setPendingCount] = useState(0);
@@ -91,7 +128,9 @@ export default function ChooseScreen({ goTo }: AddTrackContext) {
     return (
         <div className={cls.ChooseScreenContainer}>
             <div className={cls.GridWrapper}>
+                <CreatePlaylistCard onClick={handleCreatePlaylist} />
                 <LibraryCard
+                    pendingCount={pendingCount}
                     onClick={() => goTo('pending')}
                     disabled={pendingCount === 0}
                 />

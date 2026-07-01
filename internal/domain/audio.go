@@ -129,6 +129,12 @@ type UpdateSong struct {
 	ArtistUuids []string
 }
 
+type SearchSongsParams struct {
+	Query  string
+	Limit  uint64
+	Offset uint64
+}
+
 type ListUploadedFiles struct {
 	TemporaryOnly bool
 }

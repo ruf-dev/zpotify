@@ -15,10 +15,36 @@
     gap: 0.625rem;
 }
 
+.CardWide {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 1rem;
+}
+
+.CardWideText {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
 @media (orientation: portrait) {
     .GridWrapper {
         display: flex;
-        flex-direction: column-reverse;
+        flex-direction: column;
+    }
+
+    .Card {
+        order: 2;
+    }
+
+    .CardWide {
+        order: 0;
+    }
+
+    .CardAccent {
+        order: 1;
     }
 }
 

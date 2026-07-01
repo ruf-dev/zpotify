@@ -20,8 +20,9 @@ import ChevronRightIcon from '@/assets/icons/ChevronRightIcon.tsx';
 import TrackList from '@/dialogs/MultitrackUpload/TrackList';
 import PlaylistDetailsPanel from '@/dialogs/MultitrackUpload/PlaylistDetailsPanel';
 import PlaylistToggleRow from '@/dialogs/MultitrackUpload/PlaylistToggleRow';
+import SongSearchBox from '@/dialogs/MultitrackUpload/SongSearchBox/SongSearchBox';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
-import { cleanTitle, formatTotalSize, computeHash } from '@/dialogs/MultitrackUpload/utils';
+import { cleanTitle, formatBytes, computeHash } from '@/dialogs/MultitrackUpload/utils';
 
 import cls from '@/dialogs/MultitrackUpload/MultitrackUploadModal.module.css';
 
@@ -79,16 +80,20 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
     }
 
     function runUpload(t: TrackDraft) {
+        if (!t.file) {
+            activeUploadsRef.current -= 1;
+            pumpUploadQueue();
+            return;
+        }
+        const file = t.file;
         setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadStatus: 'uploading' } : p)));
         webApiService
-            .UploadFileWithProgress(t.file, (pct) => {
+            .UploadFileWithProgress(file, (pct) => {
                 setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadProgress: pct } : p)));
             })
             .then((fileId) => {
                 setTracks((prev) =>
-                    prev.map((p) =>
-                        p.id === t.id ? { ...p, fileId, uploadProgress: 100, uploadStatus: 'done' } : p,
-                    ),
+                    prev.map((p) => (p.id === t.id ? { ...p, fileId, uploadProgress: 100, uploadStatus: 'done' } : p)),
                 );
             })
             .catch(() => {
@@ -109,8 +114,8 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
         async function processInitialTracks() {
             const initial = tracksRef.current;
             const [hashes, metas] = await Promise.all([
-                Promise.all(initial.map((t) => computeHash(t.file))),
-                Promise.allSettled(initial.map((t) => parseBlob(t.file))),
+                Promise.all(initial.map((t) => computeHash(t.file!))),
+                Promise.allSettled(initial.map((t) => parseBlob(t.file!))),
             ]);
 
             hashes.forEach((h, i) => knownHashesRef.current.set(h, initial[i].id));
@@ -129,8 +134,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
 
             setTracks((prev) =>
                 prev.map((p, i) => {
-                    const dur =
-                        metas[i].status === 'fulfilled' ? (metas[i].value.format.duration ?? 0) : 0;
+                    const dur = metas[i].status === 'fulfilled' ? (metas[i].value.format.duration ?? 0) : 0;
                     const existing = existingMap.get(hashes[i]);
                     const song = songMetaMap.get(hashes[i]);
                     if (existing) {
@@ -173,12 +177,9 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
         [],
     );
 
-    const handleCreateArtist = useCallback(
-        async function handleCreateArtist(name: string): Promise<ArtistItem> {
-            return artistsService.CreateArtist(name);
-        },
-        [],
-    );
+    const handleCreateArtist = useCallback(async function handleCreateArtist(name: string): Promise<ArtistItem> {
+        return artistsService.CreateArtist(name);
+    }, []);
 
     function handleTitleChange(id: string, title: string) {
         setTracks((prev) => prev.map((t) => (t.id === id ? { ...t, title } : t)));
@@ -274,7 +275,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
         setTracks((prev) => [...prev, ...newTracks]);
 
         newTracks.forEach(function processAddedTrack(t, i) {
-            parseBlob(t.file)
+            parseBlob(t.file!)
                 .then((meta) => {
                     const dur = meta.format.duration ?? 0;
                     setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, duration: dur } : p)));
@@ -285,6 +286,26 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                 startUpload(t);
             }
         });
+    }
+
+    function handleAddSong(song: SongBase) {
+        const songId = song.id;
+        if (!songId) return;
+        if (tracksRef.current.some((t) => t.linkedSongId === songId)) return;
+
+        const newTrack: TrackDraft = {
+            id: crypto.randomUUID(),
+            title: song.title ?? '',
+            artists: (song.artists ?? []).filter((a) => a.uuid && a.name).map((a) => ({ id: a.uuid!, name: a.name! })),
+            duration: song.durationSec ?? 0,
+            uploadStatus: 'done',
+            uploadProgress: 100,
+            fileId: song.fileId,
+            isExisting: true,
+            linkedSongId: songId,
+        };
+
+        setTracks((prev) => [...prev, newTrack]);
     }
 
     async function handleSubmit() {
@@ -303,13 +324,15 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                     const artistUuids = [...albumArtists, ...track.artists]
                         .filter((a) => !seen.has(a.id) && seen.add(a.id))
                         .map((a) => a.id);
-                    toCreate.push({ idx, draft: { title: track.title || track.file.name, artistUuids, fileId: track.fileId! } });
+                    toCreate.push({
+                        idx,
+                        draft: { title: track.title || track.file?.name || '', artistUuids, fileId: track.fileId! },
+                    });
                 }
             });
 
-            const createdIds = toCreate.length > 0
-                ? await songsService.BatchCreateSong(toCreate.map((t) => t.draft))
-                : [];
+            const createdIds =
+                toCreate.length > 0 ? await songsService.BatchCreateSong(toCreate.map((t) => t.draft)) : [];
 
             const songIds = tracks.map((track, i) => {
                 if (track.linkedSongId) return track.linkedSongId;
@@ -352,6 +375,8 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
     }
 
     const totalDuration = tracks.reduce((s, t) => s + t.duration, 0);
+    const totalBytes = tracks.reduce((s, t) => s + (t.size ?? 0), 0);
+    const linkedSongIds = new Set(tracks.map((t) => t.linkedSongId).filter((id): id is string => !!id));
     const allUploaded = tracks.length > 0 && tracks.every((t) => t.uploadStatus === 'done');
     const hasUploadError = tracks.some((t) => t.uploadStatus === 'error');
     const isUploading =
@@ -369,7 +394,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                         {titleText}
                     </span>
                     <span className={cls.PanelMeta}>
-                        {files.length} files · {formatTotalSize(files)}
+                        {tracks.length} {tracks.length === 1 ? 'file' : 'files'} · {formatBytes(totalBytes)}
                     </span>
                 </div>
                 <button
@@ -415,6 +440,8 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                         onChipsChange={setChips}
                     />
                 )}
+
+                {playlistMode && <SongSearchBox excludedIds={linkedSongIds} onAddSong={handleAddSong} />}
 
                 <TrackList
                     tracks={tracks}

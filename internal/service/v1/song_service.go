@@ -399,6 +399,11 @@ func (s *AudioService) List(ctx context.Context, req domain.ListSongs) (domain.S
 	return domain.SongsList{}, nil
 }
 
+func (s *AudioService) Search(ctx context.Context, req domain.SearchSongsParams) ([]domain.Song, error) {
+	// TODO: implement song search by title/artist
+	return []domain.Song{}, nil
+}
+
 func (s *AudioService) openFileWithFallback(ctx context.Context, file domain.FileMeta) (io.ReadCloser, error) {
 	//telegramBytesStream, err := s.tgApi.OpenFile(ctx, file.TgFile)
 	//if err == nil {

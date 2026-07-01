@@ -36,6 +36,13 @@ service SongAPI {
       get: "/api/song/{id}"
     };
   };
+
+  rpc SearchSongs(SearchSongs.Request) returns (SearchSongs.Response) {
+    option (google.api.http) = {
+      post: "/api/song/search",
+      body: "*"
+    };
+  };
 }
 
 message CreateSong {
@@ -77,5 +84,16 @@ message GetSong {
 
   message Response {
     SongBase song = 1;
+  }
+}
+
+message SearchSongs {
+  message Request {
+    string query = 1;
+    Paging paging = 2;
+  }
+
+  message Response {
+    repeated SongBase songs = 1;
   }
 }

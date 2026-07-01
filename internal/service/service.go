@@ -92,6 +92,7 @@ type AudioService interface {
 	Save(ctx context.Context, req domain.AddAudio) (domain.SaveFileMetaResp, error)
 
 	List(ctx context.Context, req domain.ListSongs) (domain.SongsList, error)
+	Search(ctx context.Context, req domain.SearchSongsParams) ([]domain.Song, error)
 
 	Get(fileId int64, start, end int64) (domain.Song, io.ReadCloser, error)
 
