@@ -3,6 +3,8 @@ package pg
 import (
 	"context"
 	"database/sql"
+	"regexp"
+	"strings"
 	"time"
 
 	sq "github.com/Masterminds/squirrel"
@@ -63,6 +65,33 @@ func (s *SongsStorage) GetByFileId(ctx context.Context, fileId int64) (domain.So
 	}
 
 	return song, nil
+}
+
+func (s *SongsStorage) SearchByTitle(ctx context.Context, query string, limit, offset uint64) ([]domain.Song, error) {
+	tsQuery := toPrefixTSQuery(query)
+	if tsQuery == "" {
+		return []domain.Song{}, nil
+	}
+
+	params := songs_q.SearchSongsByTitleParams{
+		Query:  tsQuery,
+		Limit:  int32(limit),
+		Offset: int32(offset),
+	}
+
+	rows, err := s.querier.SearchSongsByTitle(ctx, params)
+	if err != nil {
+		return nil, wrapPgErr(err)
+	}
+
+	songs := make([]domain.Song, len(rows))
+	for i, row := range rows {
+		songs[i] = domain.Song{
+			SongBase: toSongBaseFromSearch(row),
+		}
+	}
+
+	return songs, nil
 }
 
 func (s *SongsStorage) Create(ctx context.Context, params songs_q.CreateSongParams) (int64, error) {
@@ -184,4 +213,33 @@ func toSongBase(song songs_q.SongBaseViewV1) domain.SongBase {
 		FilePath: song.FilePath,
 		FileId:   song.FileID,
 	}
+}
+
+func toSongBaseFromSearch(song songs_q.SearchSongsByTitleRow) domain.SongBase {
+	return domain.SongBase{
+		Id:       song.ID,
+		Title:    song.Title,
+		Duration: time.Duration(song.DurationSec) * time.Second,
+		FilePath: song.FilePath,
+		FileId:   song.FileID,
+	}
+}
+
+var tsQueryTokenRe = regexp.MustCompile(`[\p{L}\p{N}]+`)
+
+// toPrefixTSQuery turns raw user input into a prefix-matching tsquery string
+// (e.g. "love story" -> "love:* & story:*"). Non-word characters are dropped so
+// the result is always safe to pass to to_tsquery. Returns "" when there are no
+// usable tokens.
+func toPrefixTSQuery(raw string) string {
+	tokens := tsQueryTokenRe.FindAllString(raw, -1)
+	if len(tokens) == 0 {
+		return ""
+	}
+
+	for i, t := range tokens {
+		tokens[i] = t + ":*"
+	}
+
+	return strings.Join(tokens, " & ")
 }

@@ -306,6 +306,7 @@ type Song struct {
 	FileID    int64
 	Title     string
 	CreatedAt time.Time
+	TitleTsv  interface{}
 }
 
 type SongBaseViewV1 struct {
@@ -315,6 +316,16 @@ type SongBaseViewV1 struct {
 	DurationSec int64
 	FilePath    string
 	FileID      int64
+}
+
+type SongSearchViewV1 struct {
+	ID          int64
+	Title       string
+	CreatedAt   time.Time
+	DurationSec int64
+	FilePath    string
+	FileID      int64
+	TitleTsv    interface{}
 }
 
 type SongsArtist struct {

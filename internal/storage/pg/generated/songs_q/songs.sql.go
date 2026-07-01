@@ -7,6 +7,7 @@ package songs_q
 
 import (
 	"context"
+	"time"
 )
 
 const clearSongArtists = `-- name: ClearSongArtists :exec
@@ -116,6 +117,64 @@ func (q *Queries) GetSongById(ctx context.Context, id int64) (SongBaseViewV1, er
 		&i.FileID,
 	)
 	return i, err
+}
+
+const searchSongsByTitle = `-- name: SearchSongsByTitle :many
+SELECT id,
+       title,
+       created_at,
+       duration_sec,
+       file_path,
+       file_id
+FROM song_search_view_v1
+WHERE title_tsv @@ to_tsquery('simple', $1::text)
+ORDER BY ts_rank(title_tsv, to_tsquery('simple', $1::text)) DESC, id
+LIMIT $3 OFFSET $2
+`
+
+type SearchSongsByTitleParams struct {
+	Query  string
+	Offset int32
+	Limit  int32
+}
+
+type SearchSongsByTitleRow struct {
+	ID          int64
+	Title       string
+	CreatedAt   time.Time
+	DurationSec int64
+	FilePath    string
+	FileID      int64
+}
+
+func (q *Queries) SearchSongsByTitle(ctx context.Context, arg SearchSongsByTitleParams) ([]SearchSongsByTitleRow, error) {
+	rows, err := q.db.QueryContext(ctx, searchSongsByTitle, arg.Query, arg.Offset, arg.Limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []SearchSongsByTitleRow{}
+	for rows.Next() {
+		var i SearchSongsByTitleRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.CreatedAt,
+			&i.DurationSec,
+			&i.FilePath,
+			&i.FileID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const updateSongTitle = `-- name: UpdateSongTitle :exec

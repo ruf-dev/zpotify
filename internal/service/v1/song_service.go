@@ -19,6 +19,10 @@ import (
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 )
 
+// defaultSearchLimit caps song search results when the request omits paging,
+// guarding against LIMIT 0 (which returns nothing).
+const defaultSearchLimit = 30
+
 type AudioService struct {
 	txManager *tx_manager.TxManager
 
@@ -400,8 +404,17 @@ func (s *AudioService) List(ctx context.Context, req domain.ListSongs) (domain.S
 }
 
 func (s *AudioService) Search(ctx context.Context, req domain.SearchSongsParams) ([]domain.Song, error) {
-	// TODO: implement song search by title/artist
-	return []domain.Song{}, nil
+	limit := req.Limit
+	if limit == 0 {
+		limit = defaultSearchLimit
+	}
+
+	songs, err := s.songsStorage.SearchByTitle(ctx, req.Query, limit, req.Offset)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error searching songs by title")
+	}
+
+	return songs, nil
 }
 
 func (s *AudioService) openFileWithFallback(ctx context.Context, file domain.FileMeta) (io.ReadCloser, error) {
