@@ -167,30 +167,113 @@
 
 .ProgressTrackWrapper {
     flex: 1;
-    height: 0.125rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 0.0625rem;
+    height: 0.75rem;
+    display: flex;
+    align-items: center;
     cursor: pointer;
     position: relative;
 }
 
+.ProgressTrackWrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 0.25rem;
+    transform: translateY(-50%);
+    background: var(--color-border-light);
+    border-radius: 0.125rem;
+    pointer-events: none;
+}
+
 .ProgressFill {
     position: absolute;
-    top: 0;
+    top: 50%;
     left: 0;
-    height: 100%;
+    height: 0.25rem;
+    transform: translateY(-50%);
+    background: var(--color-fg-disabled);
+    border-radius: 0.125rem;
+    transition: background-color var(--ease-quick), width var(--ease-quick);
+    pointer-events: none;
+}
+
+.ProgressTrackWrapper:hover .ProgressFill {
     background: var(--color-fg-accent);
-    border-radius: 0.0625rem;
 }
 
 /* ── Right: Now Playing Indicator ── */
 
 .NowPlayingWrapper {
     flex: 0 0 auto;
-    min-width: 5rem;
+    min-width: 7.5rem;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    gap: var(--space-sm);
+}
+
+.VolumeWrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.VolumeButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: var(--color-fg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--ease-quick);
+
+    &:hover {
+        color: var(--color-fg-primary);
+    }
+}
+
+.VolumeTrackWrapper {
+    width: 3.5rem;
+    height: 0.75rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    touch-action: none;
+}
+
+.VolumeTrackWrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 0.1875rem;
+    transform: translateY(-50%);
+    background: var(--color-border-light);
+    border-radius: 0.09375rem;
+    pointer-events: none;
+}
+
+.VolumeFill {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 0.1875rem;
+    transform: translateY(-50%);
+    background: var(--color-fg-disabled);
+    border-radius: 0.09375rem;
+    transition: background-color var(--ease-quick);
+    pointer-events: none;
+}
+
+.VolumeTrackWrapper:hover .VolumeFill,
+.VolumeFillActive {
+    background: var(--color-fg-accent);
 }
 
 .BarsContainer {

@@ -27,6 +27,10 @@ interface MultitrackUploadModalProps {
     files: File[];
 }
 
+// Upload strictly one file at a time so a batch does not saturate the uplink
+// and starve every other request (audio, API, artwork). Tune here if needed.
+const MAX_CONCURRENT_UPLOADS = 3;
+
 export default function MultitrackUploadModal({ files }: MultitrackUploadModalProps) {
     const { CloseDialog, LockClosing, UnlockClosing } = useDialog();
     const toaster = useToaster();
@@ -58,7 +62,20 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
     // hash → trackId; used to de-dup files added in the same session
     const knownHashesRef = useRef<Map<string, string>>(new Map());
 
-    function startUpload(t: TrackDraft) {
+    // Bounded upload queue: startUpload() enqueues, and at most
+    // MAX_CONCURRENT_UPLOADS run at once. Queued tracks stay 'pending'.
+    const uploadQueueRef = useRef<TrackDraft[]>([]);
+    const activeUploadsRef = useRef(0);
+
+    function pumpUploadQueue() {
+        while (activeUploadsRef.current < MAX_CONCURRENT_UPLOADS && uploadQueueRef.current.length > 0) {
+            const next = uploadQueueRef.current.shift()!;
+            activeUploadsRef.current += 1;
+            runUpload(next);
+        }
+    }
+
+    function runUpload(t: TrackDraft) {
         setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadStatus: 'uploading' } : p)));
         webApiService
             .UploadFileWithProgress(t.file, (pct) => {
@@ -73,7 +90,16 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
             })
             .catch(() => {
                 setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadStatus: 'error' } : p)));
+            })
+            .finally(() => {
+                activeUploadsRef.current -= 1;
+                pumpUploadQueue();
             });
+    }
+
+    function startUpload(t: TrackDraft) {
+        uploadQueueRef.current.push(t);
+        pumpUploadQueue();
     }
 
     useEffect(() => {

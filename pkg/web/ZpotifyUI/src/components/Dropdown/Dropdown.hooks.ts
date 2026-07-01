@@ -27,17 +27,23 @@ export function useSearchResults(
     initialOptions: DropdownOption[] = [],
 ) {
     const [searchResults, setSearchResults] = useState<DropdownOption[]>(initialOptions);
+    const [isSearching, setIsSearching] = useState(false);
 
     useEffect(() => {
         if (!onSearch) return;
         let cancelled = false;
-        onSearch(query).then((results) => {
-            if (!cancelled) setSearchResults(results);
-        });
+        setIsSearching(true);
+        onSearch(query)
+            .then((results) => {
+                if (!cancelled) setSearchResults(results);
+            })
+            .finally(() => {
+                if (!cancelled) setIsSearching(false);
+            });
         return () => {
             cancelled = true;
         };
     }, [query, onSearch]);
 
-    return searchResults;
+    return { searchResults, isSearching };
 }

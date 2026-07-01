@@ -11,7 +11,11 @@
     ],
     "deny": [
       "Bash(rm -rf:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(pip install:*)",
+      "Bash(pip3 install:*)",
+      "Bash(playwright install:*)",
+      "Bash(npx playwright install:*)"
     ]
   },
   "hooks": {

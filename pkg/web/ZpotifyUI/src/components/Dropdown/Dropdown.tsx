@@ -45,7 +45,7 @@ export default function Dropdown(
     const panelRef = useRef<HTMLDivElement>(null);
 
     const hasSearch = Boolean(onSearch);
-    const searchResults = useSearchResults(query, onSearch, initialOptions);
+    const { searchResults, isSearching } = useSearchResults(query, onSearch, initialOptions);
 
     useDropdownClose(panelRef, onClose);
     const toaster = useToaster();
@@ -109,7 +109,7 @@ export default function Dropdown(
                 />
             )}
             <div className={cls.ResultsList}>
-                {isLoading ? (
+                {isLoading || isSearching ? (
                     <DropdownSkeletonList count={skeletonRowCount}/>
                 ) : (
                     <>

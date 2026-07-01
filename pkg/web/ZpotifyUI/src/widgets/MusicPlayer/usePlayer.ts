@@ -26,6 +26,9 @@ export interface AudioPlayer {
     progress: number;
     setProgress: (percent: number) => void;
 
+    currentTime: number;
+    duration: number;
+
     playNext: () => void;
     playPrev: () => void;
 
@@ -48,6 +51,8 @@ interface AudioStoreState {
     songCover: string | null;
 
     progress: number;
+    currentTime: number;
+    duration: number;
 
     nextTrackUrl: string | undefined;
     prevTrackUrl: string | undefined;
@@ -65,6 +70,8 @@ const useAudioStore = create<AudioStoreState>()(
             songArtist: null,
             songCover: null,
             progress: 0,
+            currentTime: 0,
+            duration: 0,
             nextTrackUrl: undefined,
             prevTrackUrl: undefined,
             shuffleHash: null,
@@ -118,6 +125,8 @@ class AudioPlayerImpl implements AudioPlayer {
             if (!this.audio.duration) return;
             useAudioStore.setState({
                 progress: (this.audio.currentTime / this.audio.duration) * 100,
+                currentTime: this.audio.currentTime,
+                duration: this.audio.duration,
             });
         });
 
@@ -126,6 +135,10 @@ class AudioPlayerImpl implements AudioPlayer {
                 this.audio.currentTime = this.audio.duration * (this.pendingRestoreProgress / 100);
                 this.pendingRestoreProgress = null;
             }
+            useAudioStore.setState({
+                duration: this.audio.duration || 0,
+                currentTime: this.audio.currentTime || 0,
+            });
         });
 
         this.audio.addEventListener('play', () => {
@@ -201,6 +214,14 @@ class AudioPlayerImpl implements AudioPlayer {
         return useAudioStore.getState().progress;
     }
 
+    get currentTime() {
+        return useAudioStore.getState().currentTime;
+    }
+
+    get duration() {
+        return useAudioStore.getState().duration;
+    }
+
     get shuffleHash() {
         return useAudioStore.getState().shuffleHash;
     }
@@ -234,7 +255,7 @@ class AudioPlayerImpl implements AudioPlayer {
 
         this.audio.src = trackUrl;
         this.audio.load();
-        useAudioStore.setState({trackPath: trackPath});
+        useAudioStore.setState({trackPath: trackPath, currentTime: 0, duration: 0});
 
         if ('mediaSession' in navigator) {
             // Ideally we should set metadata here, but we only have trackUrl
@@ -249,7 +270,7 @@ class AudioPlayerImpl implements AudioPlayer {
 
     unload(): void {
         this.audio.src = '';
-        useAudioStore.setState({trackPath: null, isPlaying: false});
+        useAudioStore.setState({trackPath: null, isPlaying: false, currentTime: 0, duration: 0});
     }
 
     play(trackUrl: string): void {
