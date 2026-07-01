@@ -6,6 +6,8 @@ import (
 	"encoding/hex"
 	"errors"
 	"io"
+	"path"
+	"strings"
 
 	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
@@ -53,6 +55,28 @@ func (s *FileService) CheckFilesByHashes(ctx context.Context, hashes []string) (
 	return result, nil
 }
 
+// coverImageExtensions are the image formats accepted for cover art uploads.
+// The upload endpoint is shared between audio tracks and cover images, so an
+// upload is allowed when it is either a parsable audio file or one of these.
+var coverImageExtensions = map[string]struct{}{
+	".jpg":  {},
+	".jpeg": {},
+	".png":  {},
+	".webp": {},
+	".gif":  {},
+}
+
+// isSupportedUpload reports whether the file may be uploaded: a parsable audio
+// format (mp3/flac/aac) or a supported cover image.
+func isSupportedUpload(name string) bool {
+	if audio_parsers.IsSupported(name) {
+		return true
+	}
+	ext := strings.ToLower(path.Ext(name))
+	_, ok := coverImageExtensions[ext]
+	return ok
+}
+
 type FileService struct {
 	storage     storage.FileMetaStorage
 	songStorage storage.SongStorage
@@ -78,6 +102,10 @@ func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, cont
 
 	if !uCtx.Permissions.CanUpload {
 		return 0, rerrors.Wrap(user_errors.ErrPermissionDenied, "not allowed to upload file")
+	}
+
+	if !isSupportedUpload(fileNameWithExt) {
+		return 0, rerrors.Wrap(service_errors.ErrUnsupportedUploadFormat, path.Ext(fileNameWithExt))
 	}
 
 	files, err := s.binaryStorage.ListFiles(ctx, uCtx.UserId)

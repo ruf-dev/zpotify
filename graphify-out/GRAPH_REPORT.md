@@ -1,16 +1,16 @@
 # Graph Report - zpotify  (2026-07-01)
 
 ## Corpus Check
-- 469 files · ~130,533 words
+- 471 files · ~131,114 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 7117 nodes · 10125 edges · 581 communities (484 shown, 97 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 274 edges (avg confidence: 0.8)
+- 7127 nodes · 10161 edges · 578 communities (483 shown, 95 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 275 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c63bc5f6`
+- Built from commit: `24617761`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -541,17 +541,14 @@
 - [[_COMMUNITY_Community 561|Community 561]]
 - [[_COMMUNITY_Community 562|Community 562]]
 - [[_COMMUNITY_Community 563|Community 563]]
-- [[_COMMUNITY_Community 564|Community 564]]
 - [[_COMMUNITY_Community 565|Community 565]]
 - [[_COMMUNITY_Community 566|Community 566]]
-- [[_COMMUNITY_Community 567|Community 567]]
 - [[_COMMUNITY_Community 568|Community 568]]
 - [[_COMMUNITY_Community 569|Community 569]]
 - [[_COMMUNITY_Community 570|Community 570]]
 - [[_COMMUNITY_Community 571|Community 571]]
 - [[_COMMUNITY_Community 572|Community 572]]
 - [[_COMMUNITY_Community 573|Community 573]]
-- [[_COMMUNITY_Community 574|Community 574]]
 - [[_COMMUNITY_Community 575|Community 575]]
 - [[_COMMUNITY_Community 579|Community 579]]
 
@@ -588,7 +585,7 @@
 - **Frontend Architecture Documentation Set** — zpotifyui_claude_md, agents_manifesto_md, design_handoff_album_page_readme_md [INFERRED 0.85]
 - **OAuth Social Login Provider Icons Set (GitHub, Telegram, Google, Apple)** — icons_github, icons_telegram, icons_google, icons_apple [INFERRED 0.85]
 
-## Communities (581 total, 97 thin omitted)
+## Communities (578 total, 95 thin omitted)
 
 ### Community 0 - "Audio Parser & Core Infra"
 Cohesion: 0.09
@@ -607,24 +604,24 @@ Cohesion: 0.07
 Nodes (47): New(), FileMetaAPIClient, FileMetaAPIServer, CheckFilesByHashes_Request, CheckFilesByHashes_Response, ClientConnInterface, Context, GetFile_Request (+39 more)
 
 ### Community 4 - "Song Management Frontend"
-Cohesion: 0.06
-Nodes (33): ISongsService, SongsService, EditTrackDialog(), EditTrackDialogProps, MusicFileIconProps, MetaDialog(), MetaDialogProps, AudioFile (+25 more)
+Cohesion: 0.07
+Nodes (28): AddTrackDialog(), ISongsService, SongsService, EditTrackDialog(), EditTrackDialogProps, MusicFileIconProps, MetaDialog(), MetaDialogProps (+20 more)
 
 ### Community 5 - "Frontend API Auth Layer"
-Cohesion: 0.07
-Nodes (22): Absent, Auth, AuthAPI, AuthLogPass, AuthRequest, AuthResponse, AuthTelegramOAuth, AuthViaAsync (+14 more)
+Cohesion: 0.27
+Nodes (8): findAudio(), New(), Handler, Audio, AudioService, Chat, MessageIn, ResponseBuilder
 
 ### Community 6 - "Auth UI Components"
-Cohesion: 0.06
-Nodes (26): AuthService, LogPassAuth(), LogPassWidget(), LogPassWidgetProps, Dialog(), EarlyAccessPage(), FilesList(), FilesListProps (+18 more)
+Cohesion: 0.05
+Nodes (30): AuthService, LogPassAuth(), LogPassWidget(), LogPassWidgetProps, Dialog(), EarlyAccessPage(), FilesList(), FilesListProps (+22 more)
 
 ### Community 7 - "Artists Proto Types"
 Cohesion: 0.06
 Nodes (17): ArtistBase, Message, MessageState, Paging, SizeCache, UnknownFields, ListArtist_Filters, CreateArtist (+9 more)
 
 ### Community 8 - "Add Track Modal"
-Cohesion: 0.05
-Nodes (28): AddTrackContext, AddTrackDialog(), BACK_STEPS, DOT_STEPS, ModalStep, PanelHeaderProps, SCREENS, STEP_TITLES (+20 more)
+Cohesion: 0.04
+Nodes (31): AddTrackContext, BACK_STEPS, DOT_STEPS, ModalStep, PanelHeaderProps, SCREENS, STEP_TITLES, FileHashResult (+23 more)
 
 ### Community 10 - "REST API Swagger v2"
 Cohesion: 0.06
@@ -647,16 +644,16 @@ Cohesion: 0.07
 Nodes (36): New(), AuthViaAsync_Request, AuthViaAsync_Response, Auth_Request, Auth_Response, ClientConnInterface, Context, GetAuthMethods_Request (+28 more)
 
 ### Community 15 - "Home Page Service"
-Cohesion: 0.05
-Nodes (27): ISettingsService, SettingsService, HomePage(), useHomeSegments(), HomeSegment, LibrarySegmentInfo, ManagementSegmentInfo, PlaylistSegmentInfo (+19 more)
+Cohesion: 0.06
+Nodes (21): ISettingsService, SettingsService, HomePage(), useHomeSegments(), HomeSegment, LibrarySegmentInfo, ManagementSegmentInfo, PlaylistSegmentInfo (+13 more)
 
 ### Community 16 - "Album Page UI"
 Cohesion: 0.04
-Nodes (42): AlbumMainContentProps, AlbumPage(), AlbumSidebar(), AlbumSidebarProps, AlbumTrackRow(), AlbumTrackRowProps, CommentsSectionProps, computeTotalDuration() (+34 more)
+Nodes (44): AlbumMainContentProps, AlbumPage(), AlbumSidebar(), AlbumSidebarProps, AlbumTrackRow(), AlbumTrackRowProps, CommentsSectionProps, computeTotalDuration() (+36 more)
 
 ### Community 17 - "Playlist Service & Proto"
 Cohesion: 0.05
-Nodes (39): buildCoverUrl(), interleave(), IPlaylistService, LibraryFilter, mapToTrackPreviews(), PlaylistData, PlaylistService, toAlbumItem() (+31 more)
+Nodes (40): buildCoverUrl(), interleave(), IPlaylistService, LibraryFilter, mapToTrackPreviews(), PlaylistData, PlaylistService, toAlbumItem() (+32 more)
 
 ### Community 18 - "API Gateway gRPC"
 Cohesion: 0.07
@@ -703,24 +700,24 @@ Cohesion: 0.08
 Nodes (27): Locale, MessageIn, Context, Responses, Context, Listener, ServeMux, ServerOption (+19 more)
 
 ### Community 29 - "Frontend Base API Service"
-Cohesion: 0.07
-Nodes (42): apiPrefix(), InitReq, options, AuthMiddleware, AuthViaTelegram(), clearLocalStorage(), fromLocalStorage(), getLocalStorageAuthInfoKey() (+34 more)
+Cohesion: 0.04
+Nodes (69): AuthMiddleware, AuthViaTelegram(), clearLocalStorage(), fromLocalStorage(), getLocalStorageAuthInfoKey(), GetTelegramBotId(), IAuthService, saveToLocalStorage() (+61 more)
 
 ### Community 30 - "Audio Info Parser"
-Cohesion: 0.09
-Nodes (22): Parse(), AudioInfo, Closable, Duration, Reader, ArtistsBase, Context, CreatePlaylistParams (+14 more)
+Cohesion: 0.11
+Nodes (18): IsSupported(), Parse(), AudioInfo, Duration, Reader, ArtistsBase, Context, CreatePlaylistParams (+10 more)
 
 ### Community 31 - "Frontend Assets & Animations"
-Cohesion: 0.07
-Nodes (22): PlayPauseButtonProps, ShuffleTracksButtonProps, TrackProgressControlsProps, TrackRewindButton, VolumeControlsProps, InitPageProps, formatFileBytes(), formatFileDuration() (+14 more)
+Cohesion: 0.05
+Nodes (29): PlayPauseButtonProps, ShuffleTracksButtonProps, TrackProgressControlsProps, TrackRewindButton, VolumeControlsProps, InitPageProps, formatFileBytes(), formatFileDuration() (+21 more)
 
 ### Community 32 - "Playlist SQLC Models"
 Cohesion: 0.10
 Nodes (23): RawMessage, Time, UUID, Value, Artist, FilesMetum, IdentityProvider, Locale (+15 more)
 
 ### Community 33 - "App Initialization"
-Cohesion: 0.14
-Nodes (13): App, App, Context, DB, File, FileMeta, FilesMetum, Querier (+5 more)
+Cohesion: 0.10
+Nodes (20): ParseAAC(), ParseFLAC(), Int64, App, App, AudioInfo, Reader, AudioInfo (+12 more)
 
 ### Community 34 - "Song Storage Layer"
 Cohesion: 0.13
@@ -799,8 +796,8 @@ Cohesion: 0.09
 Nodes (23): devDependencies, eslint, eslint-config-prettier, eslint-import-resolver-typescript, @eslint/js, eslint-plugin-import, eslint-plugin-prettier, eslint-plugin-react (+15 more)
 
 ### Community 54 - "Proto Boolean Types"
-Cohesion: 0.09
-Nodes (18): ParseAAC(), ParseFLAC(), Bool, Cond, File, Int64, AudioInfo, Reader (+10 more)
+Cohesion: 0.12
+Nodes (13): Bool, Cache, Cond, File, NewFile(), New(), FilesCache, Mutex (+5 more)
 
 ### Community 55 - "User Storage"
 Cohesion: 0.15
@@ -812,7 +809,7 @@ Nodes (15): Buffer, App, Handler, ResponseWriter, ServerOption, ServerOption, Se
 
 ### Community 57 - "Auth Proto Types"
 Cohesion: 0.12
-Nodes (7): MessageState, SizeCache, UnknownFields, Auth, AuthViaAsync_Request, GetAuthMethods, Logout_Response
+Nodes (7): MessageState, SizeCache, UnknownFields, Auth, AuthViaAsync, AuthViaAsync_Request, GetAuthMethods
 
 ### Community 58 - "Auth Service Core"
 Cohesion: 0.15
@@ -835,8 +832,8 @@ Cohesion: 0.11
 Nodes (20): zpotify_apiArtistBase, zpotify_apiCreatePlaylistRequest, zpotify_apiCreatePlaylistResponse, zpotify_apiPlaylist, type, type, type, description (+12 more)
 
 ### Community 63 - "Frontend Fetch Proto TS"
-Cohesion: 0.06
-Nodes (27): b64, b64Encode(), fetchStreamingRequest(), FlattenedRequestPayload, flattenRequestPayload(), getNewLineDelimitedJSONDecodingStream(), getNotifyEntityArrivalSink(), JSONStringStreamController (+19 more)
+Cohesion: 0.05
+Nodes (31): b64, b64Encode(), fetchStreamingRequest(), FlattenedRequestPayload, flattenRequestPayload(), getNewLineDelimitedJSONDecodingStream(), getNotifyEntityArrivalSink(), JSONStringStreamController (+23 more)
 
 ### Community 64 - "Audio Counting Reader"
 Cohesion: 0.16
@@ -849,6 +846,10 @@ Nodes (13): ArtistStorage, BinaryFileStorage, FileMeta, FileMetaStorage, FilesCa
 ### Community 66 - "Auth Swagger (pkg)"
 Cohesion: 0.15
 Nodes (13): $ref, type, zpotify_apiAuthResponse, zpotify_apiAuthViaAsyncResponse, zpotify_apiRefreshResponse, authData, authUuid, properties (+5 more)
+
+### Community 67 - "Artists Service Frontend"
+Cohesion: 0.15
+Nodes (6): ArtistItem, EditableTitleProps, Drag, TrackListProps, TrackDraft, TrackRowProps
 
 ### Community 68 - "Playlist Swagger Extended (pkg)"
 Cohesion: 0.17
@@ -863,16 +864,16 @@ Cohesion: 0.18
 Nodes (12): Context, Duration, Job, JobStorage, Listener, Once, T, HandleFunc (+4 more)
 
 ### Community 71 - "Now Playing Bars Icon"
-Cohesion: 0.09
-Nodes (18): AlbumMainContent(), AlbumMainContentProps, Drag, AlbumTrackRow(), AlbumTrackRowProps, formatDuration(), CommentsSectionProps, MOCK_COMMENTS (+10 more)
+Cohesion: 0.06
+Nodes (27): AlbumMainContent(), AlbumMainContentProps, Drag, AlbumTrackRow(), AlbumTrackRowProps, formatDuration(), apiPrefix(), InitReq (+19 more)
 
 ### Community 72 - "Artists Service API"
-Cohesion: 0.05
-Nodes (30): ArtistsService, IArtistsService, ArtistRowProps, SongListPermissions, UserPermissions, SidebarArtistsWidgetProps, SongItem(), SongItemProp (+22 more)
+Cohesion: 0.09
+Nodes (16): ArtistsService, IArtistsService, BaseService, WebApiImpl, ArtistRowProps, SidebarArtistsWidgetProps, ArtistBase, Paging (+8 more)
 
 ### Community 73 - "Song Proto TS Types"
 Cohesion: 0.18
-Nodes (4): LogoRowProps, NAV_ITEMS, SidebarSegment(), UserPillProps
+Nodes (11): schema, get, description, schema, operationId, parameters, responses, tags (+3 more)
 
 ### Community 74 - "User Service Business Logic"
 Cohesion: 0.21
@@ -887,12 +888,12 @@ Cohesion: 0.15
 Nodes (11): Context, Duration, Once, SessionStorage, Storage, DB, Tx, Task (+3 more)
 
 ### Community 77 - "Files Swagger (docs)"
-Cohesion: 0.12
-Nodes (17): zpotify_apiFileInfo, zpotify_apiSongFile, format, type, format, type, type, durationSec (+9 more)
+Cohesion: 0.14
+Nodes (15): zpotify_apiFileInfo, format, type, format, type, type, durationSec, id (+7 more)
 
 ### Community 78 - "Playlist Swagger (docs extra)"
-Cohesion: 0.09
-Nodes (35): description, schema, post, post, post, post, post, get (+27 more)
+Cohesion: 0.24
+Nodes (17): description, post, post, post, post, post, paths, /api/playlist/add_song (+9 more)
 
 ### Community 79 - "Files Swagger (pkg)"
 Cohesion: 0.12
@@ -951,8 +952,8 @@ Cohesion: 0.13
 Nodes (6): Auth_LogPass, Auth_TelegramOAuth, isAuth_Request_Payload, Auth_Request, Auth_Request_LogPass, Auth_Request_TelegramOauth
 
 ### Community 93 - "Files Proto Types"
-Cohesion: 0.16
-Nodes (6): MessageState, SizeCache, UnknownFields, CheckFilesByHashes, CheckFilesByHashes_Request, GetFile
+Cohesion: 0.22
+Nodes (4): MessageState, SizeCache, CheckFilesByHashes, GetFile
 
 ### Community 94 - "Playlist Proto Types Extended"
 Cohesion: 0.14
@@ -983,16 +984,16 @@ Cohesion: 0.14
 Nodes (15): zpotify_apiArtistBase, zpotify_apiCreatePlaylistRequest, zpotify_apiPlaylist, type, type, type, description, isPublic (+7 more)
 
 ### Community 101 - "Docs Swaggers Zpotify"
-Cohesion: 0.14
-Nodes (15): description, schema, get, description, schema, operationId, responses, tags (+7 more)
+Cohesion: 0.15
+Nodes (13): description, schema, get, schema, operationId, responses, tags, /api/auth/auth_methods (+5 more)
 
 ### Community 102 - "Docs Swaggers Zpotify"
 Cohesion: 0.25
 Nodes (15): description, post, post, post, post, paths, /api/auth/async, /api/auth/logout (+7 more)
 
 ### Community 103 - "Docs Swaggers Zpotify"
-Cohesion: 0.28
-Nodes (9): items, type, items, $ref, type, artists, songs, items (+1 more)
+Cohesion: 0.15
+Nodes (15): items, type, zpotify_apiListSongsResponse, items, $ref, type, artists, songs (+7 more)
 
 ### Community 104 - "Docs Swaggers Zpotify"
 Cohesion: 0.17
@@ -1019,8 +1020,8 @@ Cohesion: 0.28
 Nodes (9): Dropdown(), DropdownProps, useDropdownClose(), useSearchResults(), DropdownOption, getOptionId(), getOptionLabel(), DropdownOptionRow() (+1 more)
 
 ### Community 110 - "Swaggers Zpotify Service"
-Cohesion: 0.08
-Nodes (32): zpotify_apiCreatePlaylistRequest, zpotify_apiPlaylist, type, type, description, isPublic, properties, type (+24 more)
+Cohesion: 0.10
+Nodes (28): zpotify_apiCreatePlaylistRequest, type, type, type, description, isPublic, name, properties (+20 more)
 
 ### Community 112 - "Api Server Zpotify"
 Cohesion: 0.17
@@ -1060,7 +1061,7 @@ Nodes (14): HomePageSegmentPlaylistSegment, zpotify_apiListSongsRequest, propert
 
 ### Community 121 - "Docs Swaggers Zpotify"
 Cohesion: 0.14
-Nodes (14): definitions, HomePageSegmentManagement, zpotify_apiAuthMethods, zpotify_apiDeleteSongResponse, zpotify_apiGetUserSettingsResponse, type, settings, $ref (+6 more)
+Nodes (14): definitions, HomePageSegmentManagement, zpotify_apiAuthMethods, zpotify_apiDeleteSongResponse, zpotify_apiUiSettings, type, type, locale (+6 more)
 
 ### Community 122 - "Docs Swaggers Zpotify"
 Cohesion: 0.14
@@ -1071,8 +1072,8 @@ Cohesion: 0.12
 Nodes (16): format, type, type, zpotify_apiAuthData, zpotify_apiRefreshRequest, accessExpiresAt, accessToken, refreshExpiresAt (+8 more)
 
 ### Community 124 - "Docs Swaggers Zpotify"
-Cohesion: 0.40
-Nodes (5): zpotify_apiGetPlaylistResponse, $ref, playlist, properties, type
+Cohesion: 0.33
+Nodes (5): Closable, ListSongs, PlaylistSong, playlistSongsQueryBuilder, closeRowScanner()
 
 ### Community 125 - "Swaggers Zpotify Api"
 Cohesion: 0.14
@@ -1091,8 +1092,8 @@ Cohesion: 0.18
 Nodes (7): CHIP_KINDS, ChipEntry, ChipsFieldProps, formatTotalDuration(), PlaylistDetailsPanel(), PlaylistDetailsPanelProps, DisabledChipProps
 
 ### Community 129 - "Transport Playlist Api"
-Cohesion: 0.12
-Nodes (20): findAudio(), New(), Handler, Audio, ArtistBase, ArtistsBase, Context, ListSongs_Request (+12 more)
+Cohesion: 0.22
+Nodes (12): ArtistBase, ArtistsBase, Context, ListSongs_Request, ListSongs_Response, Impl, PlaylistSong, SongBase (+4 more)
 
 ### Community 130 - "Cmd Service Main"
 Cohesion: 0.33
@@ -1105,6 +1106,10 @@ Nodes (11): Custom, Impl, BinaryFileStorage, Context, Server, Service, Storage, 
 ### Community 132 - "Module 132"
 Cohesion: 0.18
 Nodes (10): FS, Handler, Request, ResponseWriter, Swagger(), HandlerFunc, Swagger(), HandlerFunc (+2 more)
+
+### Community 133 - "Zpotify Api Checkfilesbyhashes"
+Cohesion: 0.18
+Nodes (3): UnknownFields, CheckFilesByHashes_FoundFileByHash, CheckFilesByHashes_Response
 
 ### Community 135 - "Domain Addsongtoplaylist"
 Cohesion: 0.16
@@ -1167,8 +1172,8 @@ Cohesion: 0.15
 Nodes (13): description, schema, get, schema, operationId, responses, tags, /api/auth/auth_methods (+5 more)
 
 ### Community 150 - "Swaggers Zpotify Service"
-Cohesion: 0.18
-Nodes (11): definitions, zpotify_apiGetFileResponse, zpotify_apiListUploadedFilesRequest, $ref, file, temporaryOnly, type, properties (+3 more)
+Cohesion: 0.15
+Nodes (13): definitions, rpcStatus, zpotify_apiGetFileResponse, zpotify_apiListUploadedFilesRequest, $ref, file, temporaryOnly, type (+5 more)
 
 ### Community 151 - "Swaggers Zpotify Service"
 Cohesion: 0.18
@@ -1224,7 +1229,7 @@ Nodes (12): title, type, title, type, zpotify_apiPermissions, title, type, canCr
 
 ### Community 164 - "Docs Swaggers Zpotify"
 Cohesion: 0.20
-Nodes (10): definitions, rpcStatus, zpotify_apiAuthMethods, zpotify_apiAuthViaAsyncRequest, type, default, enum, type (+2 more)
+Nodes (10): type, definitions, AuthLogPass, zpotify_apiAuthMethods, zpotify_apiAuthViaAsyncRequest, default, enum, type (+2 more)
 
 ### Community 165 - "Docs Swaggers Zpotify"
 Cohesion: 0.18
@@ -1251,8 +1256,8 @@ Cohesion: 0.17
 Nodes (12): definitions, zpotify_apiAuthMethods, zpotify_apiAuthViaAsyncRequest, zpotify_apiLogoutRequest, zpotify_apiLogoutResponse, default, enum, type (+4 more)
 
 ### Community 171 - "Swaggers Zpotify Service"
-Cohesion: 0.24
-Nodes (10): zpotify_apiListUploadedFilesResponse, items, items, type, $ref, type, files, properties (+2 more)
+Cohesion: 0.20
+Nodes (12): items, type, items, $ref, type, details, zpotify_apiCheckFilesByHashesResponse, items (+4 more)
 
 ### Community 172 - "Swaggers Zpotify Service"
 Cohesion: 0.20
@@ -1284,7 +1289,7 @@ Nodes (7): InsertHomeSegmentParams, Context, Queries, RawMessage, UserHomeSegmen
 
 ### Community 179 - "Add Audio Findaudio"
 Cohesion: 0.18
-Nodes (3): UnknownFields, AddSongToPlaylist, CreatePlaylist
+Nodes (3): MessageState, AddSongsToPlaylist_Response, AddSongToPlaylist
 
 ### Community 180 - "Storage Playlist"
 Cohesion: 0.18
@@ -1299,8 +1304,8 @@ Cohesion: 0.18
 Nodes (11): items, type, zpotify_apiGetAuthMethodsResponse, items, type, $ref, type, authMethods (+3 more)
 
 ### Community 183 - "Docs Swaggers Zpotify"
-Cohesion: 0.33
-Nodes (11): post, post, post, paths, /api/auth/async, /api/auth/refresh_token, /api/auth/sync, operationId (+3 more)
+Cohesion: 0.26
+Nodes (13): post, post, post, description, paths, /api/auth/async, /api/auth/refresh_token, /api/auth/sync (+5 more)
 
 ### Community 184 - "Docs Swaggers Zpotify"
 Cohesion: 0.20
@@ -1311,16 +1316,16 @@ Cohesion: 0.18
 Nodes (11): items, type, zpotify_apiGetAuthMethodsResponse, items, type, $ref, type, authMethods (+3 more)
 
 ### Community 186 - "Docs Swaggers Zpotify"
-Cohesion: 0.18
-Nodes (11): definitions, rpcStatus, zpotify_apiGetFileResponse, zpotify_apiListUploadedFilesResponse, $ref, file, type, properties (+3 more)
+Cohesion: 0.25
+Nodes (8): definitions, zpotify_apiGetFileResponse, zpotify_apiSongFile, $ref, file, properties, type, type
 
 ### Community 187 - "Docs Swaggers Zpotify"
 Cohesion: 0.18
 Nodes (11): get, post, operationId, parameters, tags, paths, /api/file_meta/{fileId}, /api/file_meta/list (+3 more)
 
 ### Community 188 - "Docs Swaggers Zpotify"
-Cohesion: 0.27
-Nodes (6): Cache, NewFile(), New(), FilesCache, File, Mutex
+Cohesion: 0.25
+Nodes (7): consumes, info, title, version, produces, swagger, tags
 
 ### Community 189 - "Docs Swaggers Zpotify"
 Cohesion: 0.18
@@ -1331,8 +1336,8 @@ Cohesion: 0.18
 Nodes (11): zpotify_apiSongBase, format, type, format, type, durationSec, id, title (+3 more)
 
 ### Community 191 - "Swaggers Zpotify Auth"
-Cohesion: 0.12
-Nodes (17): items, type, format, type, zpotify_apiGetAuthMethodsResponse, items, type, $ref (+9 more)
+Cohesion: 0.18
+Nodes (11): items, type, zpotify_apiGetAuthMethodsResponse, items, type, $ref, type, authMethods (+3 more)
 
 ### Community 192 - "Swaggers Zpotify Auth"
 Cohesion: 0.33
@@ -1343,8 +1348,8 @@ Cohesion: 0.20
 Nodes (11): items, type, zpotify_apiListArtistResponse, items, type, $ref, type, artists (+3 more)
 
 ### Community 194 - "Swaggers Zpotify Service"
-Cohesion: 0.40
-Nodes (5): ListArtistFilters, properties, type, search, type
+Cohesion: 0.18
+Nodes (11): definitions, ListArtistFilters, properties, type, search, type, $ref, zpotify_apiCreateArtistResponse (+3 more)
 
 ### Community 195 - "Swaggers Zpotify Service"
 Cohesion: 0.18
@@ -1371,8 +1376,8 @@ Cohesion: 0.18
 Nodes (10): auth, successfully_authenticated, file, already_exists, must_have_performer, must_have_title, not_provided, success_adding (+2 more)
 
 ### Community 201 - "Swaggers Zpotify Service"
-Cohesion: 0.12
-Nodes (16): definitions, zpotify_apiAddSongToPlaylistResponse, zpotify_apiChangeSongsOrderResponse, zpotify_apiDeleteSongResponse, zpotify_apiGetPlaylistResponse, $ref, playlist, type (+8 more)
+Cohesion: 0.11
+Nodes (18): definitions, zpotify_apiAddSongToPlaylistResponse, zpotify_apiChangeSongsOrderResponse, zpotify_apiDeleteSongResponse, zpotify_apiGetPlaylistResponse, zpotify_apiPlaylist, $ref, playlist (+10 more)
 
 ### Community 202 - "Swaggers Zpotify Service"
 Cohesion: 0.15
@@ -1383,8 +1388,8 @@ Cohesion: 0.21
 Nodes (8): Client, Context, File, ReadCloser, queryClient, NewTgApiClient(), tgApi, TgApiClient
 
 ### Community 204 - "Src Shared Generativecover"
-Cohesion: 0.05
-Nodes (28): AppearanceScreen(), SegmentCarousel(), SegmentCarouselProps, LibraryGridScreen(), Props, PlaylistListRefreshState, usePlaylistListRefresh, TrackRowProps (+20 more)
+Cohesion: 0.07
+Nodes (21): AppearanceScreen(), SegmentCarousel(), SegmentCarouselProps, LibraryGridScreen(), Props, TrackRowProps, AlbumCardProps, LibraryItem (+13 more)
 
 ### Community 205 - "Transport User Api"
 Cohesion: 0.20
@@ -1393,6 +1398,10 @@ Nodes (9): Context, Me_Request, Me_Response, Null, Permissions, Impl, UserPermis
 ### Community 206 - "Transport Wapi Common"
 Cohesion: 0.20
 Nodes (8): Context, ResponseWriter, Reader, Request, ResponseWriter, Server, unwrapError(), extractFilePart()
+
+### Community 208 - "Api Server Zpotify"
+Cohesion: 0.25
+Nodes (3): ListPlaylists, file_zpotify_service_playlist_proto_init(), init()
 
 ### Community 210 - "Zpotify Api Createplaylist"
 Cohesion: 0.07
@@ -1404,7 +1413,7 @@ Nodes (8): ClientConnInterface, ServiceRegistrar, FileAPIClient, FileAPIServer, 
 
 ### Community 213 - "Service File Service"
 Cohesion: 0.15
-Nodes (13): FoundFileByHash, BinaryFileStorage, Context, FileMeta, FileMetaStorage, JobStorage, Reader, SongFile (+5 more)
+Nodes (14): FoundFileByHash, BinaryFileStorage, Context, FileMeta, FileMetaStorage, JobStorage, Reader, SongFile (+6 more)
 
 ### Community 214 - "Homepagesegment Librarysegment"
 Cohesion: 0.22
@@ -1435,8 +1444,8 @@ Cohesion: 0.22
 Nodes (10): type, zpotify_apiCreateSongRequest, zpotify_apiUpdateSongRequest, artistUuids, title, type, properties, type (+2 more)
 
 ### Community 221 - "Swaggers Zpotify Api"
-Cohesion: 0.27
-Nodes (10): items, items, type, items, $ref, type, details, songs (+2 more)
+Cohesion: 0.16
+Nodes (15): items, zpotify_apiUserSettings, items, type, items, type, $ref, type (+7 more)
 
 ### Community 222 - "Swaggers Zpotify Api"
 Cohesion: 0.20
@@ -1447,8 +1456,8 @@ Cohesion: 0.20
 Nodes (10): $ref, type, zpotify_apiAuthResponse, zpotify_apiRefreshResponse, authData, authUuid, properties, type (+2 more)
 
 ### Community 224 - "Swaggers Zpotify Service"
-Cohesion: 0.17
-Nodes (13): definitions, rpcStatus, zpotify_apiArtistBase, type, name, uuid, type, type (+5 more)
+Cohesion: 0.20
+Nodes (10): zpotify_apiArtistBase, type, name, uuid, type, properties, type, zpotify_apiCreateArtistRequest (+2 more)
 
 ### Community 225 - "Swaggers Zpotify Service"
 Cohesion: 0.22
@@ -1479,8 +1488,8 @@ Cohesion: 0.33
 Nodes (6): GetUserPermissionsOnPlaylistParams, GetUserPermissionsOnPlaylistRow, UpsertUserPlaylistParams, Context, Queries, UUID
 
 ### Community 236 - "Assets Moredots Moredots"
-Cohesion: 0.28
-Nodes (3): MenuOption, MenuProps, MoreButtonProps
+Cohesion: 0.25
+Nodes (8): format, type, rpcStatus, type, code, message, properties, type
 
 ### Community 237 - "Docs Swaggers Zpotify"
 Cohesion: 0.22
@@ -1551,8 +1560,8 @@ Cohesion: 0.25
 Nodes (6): AuthViaAsync_Response_AuthData, AuthViaAsync_Response_AuthUuid, isAuth_Request_Payload, isAuthViaAsync_Response_Payload, file_zpotify_service_auth_proto_init(), init()
 
 ### Community 257 - "Api Server Zpotify"
-Cohesion: 0.25
-Nodes (3): ChangeSongsOrder, file_zpotify_service_playlist_proto_init(), init()
+Cohesion: 0.18
+Nodes (3): SizeCache, ChangeSongsOrder, ListSongs
 
 ### Community 258 - "Api Server Zpotify"
 Cohesion: 0.25
@@ -1619,12 +1628,12 @@ Cohesion: 0.25
 Nodes (7): consumes, info, title, version, produces, swagger, tags
 
 ### Community 275 - "Docs Swaggers Zpotify"
-Cohesion: 0.20
-Nodes (10): type, definitions, AuthLogPass, zpotify_apiAuthMethods, zpotify_apiAuthViaAsyncRequest, default, enum, type (+2 more)
+Cohesion: 0.15
+Nodes (13): definitions, zpotify_apiAuthMethods, zpotify_apiAuthRequest, zpotify_apiAuthViaAsyncRequest, $ref, logPass, default, enum (+5 more)
 
 ### Community 276 - "Docs Swaggers Zpotify"
-Cohesion: 0.25
-Nodes (8): format, type, rpcStatus, type, code, message, properties, type
+Cohesion: 0.33
+Nodes (6): format, type, type, code, message, properties
 
 ### Community 277 - "Docs Swaggers Zpotify"
 Cohesion: 0.25
@@ -1648,7 +1657,7 @@ Nodes (7): consumes, info, title, version, produces, swagger, tags
 
 ### Community 282 - "Docs Swaggers Zpotify"
 Cohesion: 0.25
-Nodes (8): format, type, type, type, code, details, message, properties
+Nodes (8): format, type, rpcStatus, type, code, message, properties, type
 
 ### Community 283 - "Docs Swaggers Zpotify"
 Cohesion: 0.27
@@ -1683,8 +1692,8 @@ Cohesion: 0.25
 Nodes (8): format, type, rpcStatus, type, code, message, properties, type
 
 ### Community 291 - "Swaggers Zpotify Api"
-Cohesion: 0.25
-Nodes (8): zpotify_apiListSongsResponse, total, userCanDelete, format, type, type, properties, type
+Cohesion: 0.20
+Nodes (10): zpotify_apiListSongsResponse, songs, total, userCanDelete, type, format, type, type (+2 more)
 
 ### Community 292 - "Swaggers Zpotify Api"
 Cohesion: 0.25
@@ -1707,8 +1716,8 @@ Cohesion: 0.25
 Nodes (8): zpotify_apiListSongsResponse, total, userCanDelete, format, type, type, properties, type
 
 ### Community 297 - "Swaggers Zpotify Auth"
-Cohesion: 0.20
-Nodes (10): zpotify_apiArtistBase, zpotify_apiCreatePlaylistResponse, type, name, uuid, type, properties, type (+2 more)
+Cohesion: 0.25
+Nodes (8): zpotify_apiArtistBase, zpotify_apiCreatePlaylistResponse, uuid, type, properties, type, properties, type
 
 ### Community 298 - "Swaggers Zpotify Auth"
 Cohesion: 0.25
@@ -1719,8 +1728,8 @@ Cohesion: 0.25
 Nodes (7): consumes, info, title, version, produces, swagger, tags
 
 ### Community 300 - "Swaggers Zpotify Service"
-Cohesion: 0.33
-Nodes (6): format, type, type, code, message, properties
+Cohesion: 0.25
+Nodes (8): format, type, rpcStatus, type, code, message, properties, type
 
 ### Community 301 - "Swaggers Zpotify Service"
 Cohesion: 0.25
@@ -1747,8 +1756,8 @@ Cohesion: 0.25
 Nodes (8): format, type, rpcStatus, type, code, message, properties, type
 
 ### Community 307 - "Artistfield Artistchipsfield Artistchipsfield"
-Cohesion: 0.32
-Nodes (3): DropdownCreateRowProps, PlusIcon(), PlusIconProps
+Cohesion: 0.16
+Nodes (7): ArtistChipsFieldProps, DropdownCreateRowProps, EditableArtistPickerProps, FADE_TRANSITION, HEIGHT_TRANSITION, PlusIcon(), PlusIconProps
 
 ### Community 308 - "Transport Telegram Start"
 Cohesion: 0.32
@@ -1835,8 +1844,8 @@ Cohesion: 0.29
 Nodes (7): zpotify_apiMeResponse, $ref, permissions, userData, $ref, properties, type
 
 ### Community 337 - "Docs Swaggers Zpotify"
-Cohesion: 0.40
-Nodes (5): properties, type, type, login, password
+Cohesion: 0.29
+Nodes (7): properties, type, AuthLogPass, type, type, login, password
 
 ### Community 338 - "Docs Swaggers Zpotify"
 Cohesion: 0.29
@@ -1875,8 +1884,8 @@ Cohesion: 0.29
 Nodes (7): zpotify_apiMeResponse, $ref, permissions, userData, $ref, properties, type
 
 ### Community 347 - "Swaggers Zpotify Api"
-Cohesion: 0.22
-Nodes (9): definitions, zpotify_apiAddSongToPlaylistResponse, zpotify_apiChangeSongsOrderRequest, zpotify_apiChangeSongsOrderResponse, zpotify_apiDeleteSongResponse, type, type, type (+1 more)
+Cohesion: 0.14
+Nodes (14): definitions, zpotify_apiAddSongToPlaylistResponse, zpotify_apiChangeSongsOrderRequest, zpotify_apiChangeSongsOrderResponse, zpotify_apiDeleteSongResponse, zpotify_apiGetPlaylistResponse, $ref, playlist (+6 more)
 
 ### Community 348 - "Swaggers Zpotify Api"
 Cohesion: 0.29
@@ -1967,8 +1976,8 @@ Cohesion: 0.33
 Nodes (6): post, paths, /api/artists/list, operationId, parameters, tags
 
 ### Community 382 - "Docs Swaggers Zpotify"
-Cohesion: 0.33
-Nodes (6): definitions, ListArtistFilters, properties, type, search, type
+Cohesion: 0.25
+Nodes (8): definitions, ListArtistFilters, rpcStatus, properties, type, search, type, type
 
 ### Community 383 - "Docs Swaggers Zpotify"
 Cohesion: 0.33
@@ -1983,8 +1992,8 @@ Cohesion: 0.33
 Nodes (6): protobufAny, @type, additionalProperties, properties, type, type
 
 ### Community 386 - "Docs Swaggers Zpotify"
-Cohesion: 0.40
-Nodes (6): items, items, type, $ref, type, files
+Cohesion: 0.20
+Nodes (11): zpotify_apiListUploadedFilesResponse, items, type, items, type, $ref, type, details (+3 more)
 
 ### Community 387 - "Docs Swaggers Zpotify"
 Cohesion: 0.33
@@ -2027,8 +2036,8 @@ Cohesion: 0.33
 Nodes (6): protobufAny, @type, additionalProperties, properties, type, type
 
 ### Community 397 - "Swaggers Zpotify Service"
-Cohesion: 0.20
-Nodes (10): format, type, rpcStatus, type, type, code, details, message (+2 more)
+Cohesion: 0.33
+Nodes (6): format, type, type, code, message, properties
 
 ### Community 398 - "Swaggers Zpotify Service"
 Cohesion: 0.33
@@ -2060,15 +2069,11 @@ Nodes (42): 1a. Logo Row, 1b. Navigation, 1c. Your Artists, 1d. Your Library, 1e
 
 ### Community 413 - "Zpotify Api Listsongs"
 Cohesion: 0.18
-Nodes (3): SizeCache, AddSongsToPlaylist, ListSongs
+Nodes (3): UnknownFields, AddSongsToPlaylist, CreatePlaylist
 
 ### Community 414 - "Zpotify Api Updateplaylist"
 Cohesion: 0.12
 Nodes (15): Architecture — Feature Slice Design, Barrel / index.ts, Coding rules, Commands, Exploration Rules, Export conventions, Internal slice structure, Large widget pattern (tabbed / multi-screen) (+7 more)
-
-### Community 415 - "Zpotify Api Updateplaylist"
-Cohesion: 0.18
-Nodes (3): MessageState, AddSongsToPlaylist_Response, UpdatePlaylist_Response
 
 ### Community 418 - "Agents Manifesto"
 Cohesion: 0.33
@@ -2122,13 +2127,9 @@ Nodes (5): zpotify_apiGetUserSettingsResponse, settings, $ref, properties, type
 Cohesion: 0.40
 Nodes (5): zpotify_apiUserData, username, type, properties, type
 
-### Community 432 - "Docs Swaggers Zpotify"
-Cohesion: 0.29
-Nodes (7): zpotify_apiUserSettings, type, homeSegments, ui, $ref, properties, type
-
 ### Community 434 - "Docs Swaggers Zpotify"
 Cohesion: 0.40
-Nodes (5): zpotify_apiAuthRequest, $ref, logPass, properties, type
+Nodes (4): Context, Impl, GetFile_Request, GetFile_Response
 
 ### Community 435 - "Docs Swaggers Zpotify"
 Cohesion: 0.40
@@ -2136,7 +2137,7 @@ Nodes (5): properties, type, AuthTelegramOAuth, type, idToken
 
 ### Community 436 - "Docs Swaggers Zpotify"
 Cohesion: 0.40
-Nodes (5): zpotify_apiUiSettings, type, locale, properties, type
+Nodes (5): zpotify_apiGetUserSettingsResponse, settings, $ref, properties, type
 
 ### Community 437 - "Docs Swaggers Zpotify"
 Cohesion: 0.25
@@ -2183,16 +2184,16 @@ Cohesion: 0.40
 Nodes (5): zpotify_apiAuthRequest, $ref, logPass, properties, type
 
 ### Community 448 - "Swaggers Zpotify Auth"
-Cohesion: 0.29
-Nodes (7): properties, type, AuthLogPass, type, type, login, password
+Cohesion: 0.40
+Nodes (5): properties, type, type, login, password
 
 ### Community 449 - "Swaggers Zpotify Service"
 Cohesion: 0.40
 Nodes (5): properties, type, AuthTelegramOAuth, type, idToken
 
 ### Community 450 - "Swaggers Zpotify Service"
-Cohesion: 0.33
-Nodes (3): SettingsTabButtonProps, Tab, TABS
+Cohesion: 0.40
+Nodes (5): zpotify_apiListUploadedFilesResponse, type, files, properties, type
 
 ### Community 451 - "Swaggers Zpotify Service"
 Cohesion: 0.40
@@ -2201,6 +2202,10 @@ Nodes (5): HomePageSegmentPlaylistSegment, properties, type, type, playlistId
 ### Community 452 - "Swaggers Zpotify Service"
 Cohesion: 0.40
 Nodes (5): zpotify_apiGetUserSettingsResponse, settings, $ref, properties, type
+
+### Community 454 - "Icons Checkicon Checkicon"
+Cohesion: 0.09
+Nodes (15): MultitrackUploadModal(), MultitrackUploadModalProps, PlaylistToggleRowProps, cleanTitle(), computeHash(), formatBytes(), formatTotalSize(), PlaylistListRefreshState (+7 more)
 
 ### Community 455 - "Src Entities User"
 Cohesion: 0.60
@@ -2227,8 +2232,8 @@ Cohesion: 0.40
 Nodes (4): Context, Impl, UpdateSong_Request, UpdateSong_Response
 
 ### Community 462 - "Swaggers Zpotify Service"
-Cohesion: 0.33
-Nodes (6): zpotify_apiListSongsResponse, total, format, type, properties, type
+Cohesion: 0.50
+Nodes (4): songCount, format, title, type
 
 ### Community 465 - "Transport Zpotify Api"
 Cohesion: 0.40
@@ -2322,10 +2327,6 @@ Nodes (6): protobufAny, @type, additionalProperties, properties, type, type
 Cohesion: 0.40
 Nodes (6): items, type, items, $ref, type, details
 
-### Community 564 - "Community 564"
-Cohesion: 0.15
-Nodes (10): ArtistItem, ArtistChipsFieldProps, EditableArtistPickerProps, FADE_TRANSITION, HEIGHT_TRANSITION, Drag, TrackListProps, TrackDraft (+2 more)
-
 ### Community 565 - "Community 565"
 Cohesion: 0.40
 Nodes (4): ChangeSongsOrder_Request, ChangeSongsOrder_Response, Context, Impl
@@ -2333,10 +2334,6 @@ Nodes (4): ChangeSongsOrder_Request, ChangeSongsOrder_Response, Context, Impl
 ### Community 566 - "Community 566"
 Cohesion: 0.40
 Nodes (5): zpotify_apiListUploadedFilesRequest, temporaryOnly, type, properties, type
-
-### Community 567 - "Community 567"
-Cohesion: 0.40
-Nodes (5): $ref, zpotify_apiCreateArtistResponse, artist, properties, type
 
 ### Community 568 - "Community 568"
 Cohesion: 0.40
@@ -2350,10 +2347,6 @@ Nodes (5): zpotify_apiGetFeatureFlagsResponse, type, flags, properties, type
 Cohesion: 0.50
 Nodes (3): Context, Queries, FeatureFlag
 
-### Community 574 - "Community 574"
-Cohesion: 0.40
-Nodes (5): zpotify_apiCheckFilesByHashesResponse, type, found, properties, type
-
 ### Community 579 - "Community 579"
 Cohesion: 0.67
 Nodes (3): Handler, buildOriginSet(), CorsMiddleware()
@@ -2363,24 +2356,24 @@ Nodes (3): Handler, buildOriginSet(), CorsMiddleware()
   pkg/web/ZpotifyUI/src/assets/pen.svg · relation: semantically_similar_to
 
 ## Knowledge Gaps
-- **2247 isolated node(s):** `Suite`, `TestEnv`, `App`, `M`, `T` (+2242 more)
+- **2249 isolated node(s):** `Suite`, `TestEnv`, `App`, `M`, `T` (+2244 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **97 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **95 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **What is the exact relationship between `Pen Edit Action Icon SVG` and `Lock Security Icon SVG (padlock, white, 16x16)`?**
   _Edge tagged AMBIGUOUS (relation: semantically_similar_to) - confidence is low._
-- **Why does `Int64` connect `Proto Boolean Types` to `Audio Counting Reader`, `Transport Playlist Api`, `App Initialization`, `Transport Song Api`, `File Metadata Service`, `Song gRPC Generated Code`, `Foundfilebyhash`, `Session Storage`, `Service File Service`, `Transport Wapi Get`, `Custom App Init`, `Audio Info Parser`?**
+- **Why does `Int64` connect `App Initialization` to `Audio Counting Reader`, `Transport Playlist Api`, `Transport Song Api`, `File Metadata Service`, `Song gRPC Generated Code`, `Frontend API Auth Layer`, `Foundfilebyhash`, `Docs Swaggers Zpotify`, `Session Storage`, `Service File Service`, `Proto Boolean Types`, `Transport Wapi Get`, `Custom App Init`, `Audio Info Parser`?**
   _High betweenness centrality (0.020) - this node is a cross-community bridge._
-- **Why does `wrapPgErr()` connect `Song Storage Layer` to `App Initialization`, `Artists Storage Layer`, `Storage User Settings`, `Storage Identity Telegram`, `Session Storage`, `Storage Identity Zpotify`, `Proto Boolean Types`, `User Storage`, `Audio Info Parser`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **Why does `file_zpotify_service_files_proto_init()` connect `Api Server Zpotify` to `Enumdescriptor`, `Community 572`, `Homepagesegment Management`?**
+  _High betweenness centrality (0.008) - this node is a cross-community bridge._
+- **Why does `wrapPgErr()` connect `Song Storage Layer` to `App Initialization`, `Artists Storage Layer`, `Storage User Settings`, `Storage Identity Telegram`, `Session Storage`, `Storage Identity Zpotify`, `User Storage`, `Docs Swaggers Zpotify`, `Audio Info Parser`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **Are the 45 inferred relationships involving `wrapPgErr()` (e.g. with `.Upsert()` and `.Add()`) actually correct?**
   _`wrapPgErr()` has 45 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Suite`, `TestEnv`, `App` to the rest of the system?**
-  _2249 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _2251 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Audio Parser & Core Infra` be split into smaller, more focused modules?**
   _Cohesion score 0.08508891928864569 - nodes in this community are weakly interconnected._

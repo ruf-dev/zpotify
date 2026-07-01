@@ -2,6 +2,7 @@ import { useRef, useState, type DragEvent, type ChangeEvent } from 'react';
 
 import cls from '@/dialogs/AddTrack/screens/DropZoneScreen.module.css';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
+import { AUDIO_ACCEPT, isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
 
 function IdleDecoration() {
     return (
@@ -125,7 +126,7 @@ export default function DropZoneScreen({ handleFiles, uploadError, uploading }: 
     function handleDrop(e: DragEvent<HTMLDivElement>) {
         e.preventDefault();
         setDragOver(false);
-        const files = Array.from(e.dataTransfer.files).filter((f) => f.type.startsWith('audio/'));
+        const files = Array.from(e.dataTransfer.files).filter(isSupportedAudioFile);
         if (files.length > 0) handleFiles(files);
     }
 
@@ -160,7 +161,7 @@ export default function DropZoneScreen({ handleFiles, uploadError, uploading }: 
                 <input
                     ref={inputRef}
                     type="file"
-                    accept="audio/*"
+                    accept={AUDIO_ACCEPT}
                     multiple
                     className={cls.HiddenInput}
                     onChange={handleInputChange}

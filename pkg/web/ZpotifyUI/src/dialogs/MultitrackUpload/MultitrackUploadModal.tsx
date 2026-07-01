@@ -9,6 +9,7 @@ import { artistsService } from '@/shared/api/ArtistsService.ts';
 import { songsService } from '@/shared/api/Songs.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { fileService } from '@/shared/api/FileService.ts';
+import { isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import type { ChipEntry } from '@/widgets/ChipsField/ChipsField';
 import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
@@ -200,7 +201,19 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
         });
     }
 
-    async function handleAddFiles(newFiles: File[]) {
+    async function handleAddFiles(incomingFiles: File[]) {
+        const newFiles = incomingFiles.filter(isSupportedAudioFile);
+        const unsupported = incomingFiles.filter((f) => !isSupportedAudioFile(f));
+        if (unsupported.length > 0) {
+            toaster.bake({
+                title: 'unsupported format',
+                description: `only mp3, flac and aac are supported: ${unsupported.map((f) => f.name).join(', ')}`,
+                level: 'Warn',
+                isDismissable: true,
+            });
+        }
+        if (newFiles.length === 0) return;
+
         const hashes = await Promise.all(newFiles.map(computeHash));
 
         const fresh: Array<{ file: File; hash: string }> = [];

@@ -15,6 +15,7 @@ import PendingFilesScreen from '@/dialogs/AddTrack/screens/PendingFilesScreen';
 import MultitrackUploadModal from '@/dialogs/MultitrackUpload/MultitrackUploadModal';
 import MetaDialog from '@/dialogs/Meta/MetaDialog';
 import { AudioFile } from '@/shared/model/AudioFile.ts';
+import { isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
 
 export type ModalStep = 'choose' | 'drop' | 'pending';
 
@@ -53,7 +54,19 @@ export default function AddTrackDialog() {
     const [uploading, setUploading] = useState(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
 
-    function handleFiles(files: File[]) {
+    function handleFiles(rawFiles: File[]) {
+        const files = rawFiles.filter(isSupportedAudioFile);
+        const rejected = rawFiles.filter((f) => !isSupportedAudioFile(f));
+        if (rejected.length > 0) {
+            toaster.bake({
+                title: 'unsupported format',
+                description: `only mp3, flac and aac are supported: ${rejected.map((f) => f.name).join(', ')}`,
+                level: 'Warn',
+                isDismissable: true,
+            });
+        }
+        if (files.length === 0) return;
+
         if (files.length > 1) {
             CloseDialog();
             OpenDialog(<MultitrackUploadModal files={files} />);
