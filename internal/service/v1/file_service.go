@@ -77,6 +77,17 @@ func isSupportedUpload(name string) bool {
 	return ok
 }
 
+// countingWriter tracks how many bytes have been written through it, used to
+// measure an upload's real size while it is streamed to disk.
+type countingWriter struct {
+	n int64
+}
+
+func (c *countingWriter) Write(p []byte) (int, error) {
+	c.n += int64(len(p))
+	return len(p), nil
+}
+
 type FileService struct {
 	storage     storage.FileMetaStorage
 	songStorage storage.SongStorage
@@ -117,9 +128,16 @@ func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, cont
 	}
 
 	hashWriter := sha256.New()
-	tmpFilePath, err := s.binaryStorage.SaveToTempFolder(ctx, uCtx.UserId, fileNameWithExt, io.TeeReader(content, hashWriter))
+	sizeCounter := &countingWriter{}
+	limitedContent := io.LimitReader(content, uCtx.Permissions.MaxSongSizeBytes+1)
+	tmpFilePath, err := s.binaryStorage.SaveToTempFolder(ctx, uCtx.UserId, fileNameWithExt, io.TeeReader(limitedContent, io.MultiWriter(hashWriter, sizeCounter)))
 	if err != nil {
 		return 0, rerrors.Wrap(err, "error storing to temporary folder")
+	}
+
+	if sizeCounter.n > uCtx.Permissions.MaxSongSizeBytes {
+		_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
+		return 0, service_errors.ErrSongSizeLimitExceeded
 	}
 
 	contentHash := hex.EncodeToString(hashWriter.Sum(nil))
@@ -134,9 +152,20 @@ func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, cont
 		return existingFile.Id, nil
 	}
 
+	totalSize, err := s.storage.GetTotalSizeByUser(ctx, uCtx.UserId)
+	if err != nil {
+		_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
+		return 0, rerrors.Wrap(err, "error getting total uploaded size for limit check")
+	}
+	if totalSize+sizeCounter.n > uCtx.Permissions.MaxTotalUploadBytes {
+		_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
+		return 0, service_errors.ErrTotalUploadSizeLimitExceeded
+	}
+
 	fileMetaUpdate := domain.FileMeta{
 		File: domain.File{
 			FilePath:    tmpFilePath,
+			SizeBytes:   sizeCounter.n,
 			ContentHash: contentHash,
 		},
 		AddedById: uCtx.UserId,

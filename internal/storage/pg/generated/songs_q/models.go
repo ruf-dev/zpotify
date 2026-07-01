@@ -348,11 +348,13 @@ type UserHomeSegment struct {
 }
 
 type UserPermission struct {
-	UserID            int64
-	CanUpload         bool
-	EarlyAccess       bool
-	CanCreatePlaylist bool
-	MaxPendingTracks  int64
+	UserID              int64
+	CanUpload           bool
+	EarlyAccess         bool
+	CanCreatePlaylist   bool
+	MaxPendingTracks    int64
+	MaxSongSizeBytes    int64
+	MaxTotalUploadBytes int64
 }
 
 type UserPlaylist struct {

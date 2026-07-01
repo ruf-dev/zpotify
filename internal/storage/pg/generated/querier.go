@@ -31,6 +31,7 @@ type Querier interface {
 	GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error)
 	GetTelegramIdentityByTgId(ctx context.Context, telegramID int64) (IdentityTelegram, error)
 	GetTelegramIdentityByTgIdForUpdate(ctx context.Context, telegramID int64) (IdentityTelegram, error)
+	GetTotalFileSizeByUser(ctx context.Context, addedByID int64) (int64, error)
 	GetUiSettings(ctx context.Context, userID int64) (UserSetting, error)
 	GetUserById(ctx context.Context, id int64) (User, error)
 	GetUserPermissionsOnPlaylist(ctx context.Context, arg GetUserPermissionsOnPlaylistParams) (GetUserPermissionsOnPlaylistRow, error)

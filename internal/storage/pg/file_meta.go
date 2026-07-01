@@ -182,6 +182,15 @@ func (s *FileMetaStorage) GetByHash(ctx context.Context, hash string, userId int
 	return toFileDomain(fileDb), nil
 }
 
+func (s *FileMetaStorage) GetTotalSizeByUser(ctx context.Context, userId int64) (int64, error) {
+	total, err := s.q.GetTotalFileSizeByUser(ctx, userId)
+	if err != nil {
+		return 0, wrapPgErr(err)
+	}
+
+	return total, nil
+}
+
 func (s *FileMetaStorage) WithTx(tx *sql.Tx) storage.FileMetaStorage {
 	return &FileMetaStorage{
 		db:  &txWrapper{tx},

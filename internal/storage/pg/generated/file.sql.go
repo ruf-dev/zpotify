@@ -163,6 +163,19 @@ func (q *Queries) GetFileBySongId(ctx context.Context, id int64) (FilesMetum, er
 	return i, err
 }
 
+const getTotalFileSizeByUser = `-- name: GetTotalFileSizeByUser :one
+SELECT COALESCE(SUM(size_bytes), 0)::BIGINT AS total_size
+FROM files_meta
+WHERE added_by_id = $1
+`
+
+func (q *Queries) GetTotalFileSizeByUser(ctx context.Context, addedByID int64) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getTotalFileSizeByUser, addedByID)
+	var total_size int64
+	err := row.Scan(&total_size)
+	return total_size, err
+}
+
 const updateFile = `-- name: UpdateFile :exec
 UPDATE files_meta
 SET duration_sec = $2,

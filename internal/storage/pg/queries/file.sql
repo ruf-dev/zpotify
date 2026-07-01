@@ -59,3 +59,8 @@ SET duration_sec = $2,
     size_bytes = $3,
     verified = $4
 WHERE id = $1;
+
+-- name: GetTotalFileSizeByUser :one
+SELECT COALESCE(SUM(size_bytes), 0)::BIGINT AS total_size
+FROM files_meta
+WHERE added_by_id = $1;

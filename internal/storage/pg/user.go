@@ -81,11 +81,13 @@ func (s *UserStorage) SaveSettings(ctx context.Context, userId int64, settings d
 
 func (s *UserStorage) SavePermissions(ctx context.Context, userId int64, permissions domain.UserPermissions) error {
 	params := querier.SaveUserPermissionsParams{
-		UserID:            userId,
-		CanUpload:         permissions.CanUpload,
-		EarlyAccess:       permissions.EarlyAccess,
-		CanCreatePlaylist: permissions.CanCreatePlaylist,
-		MaxPendingTracks:  permissions.MaxPendingTracks,
+		UserID:              userId,
+		CanUpload:           permissions.CanUpload,
+		EarlyAccess:         permissions.EarlyAccess,
+		CanCreatePlaylist:   permissions.CanCreatePlaylist,
+		MaxPendingTracks:    permissions.MaxPendingTracks,
+		MaxSongSizeBytes:    permissions.MaxSongSizeBytes,
+		MaxTotalUploadBytes: permissions.MaxTotalUploadBytes,
 	}
 
 	err := s.querier.SaveUserPermissions(ctx, params)
@@ -188,10 +190,12 @@ func (s *UserStorage) WithTx(tx *sql.Tx) storage.UserStorage {
 
 func toDomainUserPermissions(p querier.UserPermission) domain.UserPermissions {
 	return domain.UserPermissions{
-		CanUpload:         p.CanUpload,
-		EarlyAccess:       p.EarlyAccess,
-		CanCreatePlaylist: p.CanCreatePlaylist,
-		MaxPendingTracks:  p.MaxPendingTracks,
+		CanUpload:           p.CanUpload,
+		EarlyAccess:         p.EarlyAccess,
+		CanCreatePlaylist:   p.CanCreatePlaylist,
+		MaxPendingTracks:    p.MaxPendingTracks,
+		MaxSongSizeBytes:    p.MaxSongSizeBytes,
+		MaxTotalUploadBytes: p.MaxTotalUploadBytes,
 	}
 }
 

@@ -16,6 +16,10 @@ var (
 
 	ErrPendingTrackLimitReached = rerrors.New("pending track limit reached", codes.ResourceExhausted, rerrors.WithHttpStatus(http.StatusTooManyRequests))
 
+	ErrSongSizeLimitExceeded = rerrors.New("song size limit exceeded", codes.ResourceExhausted, rerrors.WithHttpStatus(http.StatusTooManyRequests))
+
+	ErrTotalUploadSizeLimitExceeded = rerrors.New("total upload size limit exceeded", codes.ResourceExhausted, rerrors.WithHttpStatus(http.StatusTooManyRequests))
+
 	ErrTrackMustHaveOneArtist = rerrors.New("at least one artist is required", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
 
 	ErrUnsupportedUploadFormat = rerrors.New("unsupported file format", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
