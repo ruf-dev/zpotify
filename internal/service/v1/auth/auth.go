@@ -13,6 +13,11 @@ import (
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 )
 
+// AdminNotifier notifies admins about auth-related events, e.g. new user registrations.
+type AdminNotifier interface {
+	NotifyNewUser(userId int64, username string) error
+}
+
 type Service struct {
 	tgJwkParser telegram.TokenParser
 
@@ -24,12 +29,14 @@ type Service struct {
 
 	txManager *tx_manager.TxManager
 
+	adminNotifier AdminNotifier
+
 	accessTokenTTL     time.Duration
 	refreshTokenTTL    time.Duration
 	maxSessionsPerUser int
 }
 
-func New(data storage.Storage, tgJwkParser telegram.TokenParser) (*Service, error) {
+func New(data storage.Storage, tgJwkParser telegram.TokenParser, adminNotifier AdminNotifier) (*Service, error) {
 	return &Service{
 		tgJwkParser: tgJwkParser,
 
@@ -40,6 +47,8 @@ func New(data storage.Storage, tgJwkParser telegram.TokenParser) (*Service, erro
 		settingsStorage:         data.UserSettings(),
 
 		txManager: data.TxManager(),
+
+		adminNotifier: adminNotifier,
 
 		accessTokenTTL:     time.Hour,
 		refreshTokenTTL:    time.Hour * 24 * 7,

@@ -100,6 +100,24 @@ func (u *UserService) Get(ctx context.Context, userId int64) (domain.User, error
 	}, nil
 }
 
+func (u *UserService) GrantAccess(ctx context.Context, userId int64) error {
+	permissions, err := u.userStorage.GetPermissions(ctx, userId)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting permissions from storage")
+	}
+
+	permissions.CanUpload = true
+	permissions.CanCreatePlaylist = true
+	permissions.EarlyAccess = true
+
+	err = u.userStorage.SavePermissions(ctx, userId, permissions)
+	if err != nil {
+		return rerrors.Wrap(err, "error saving permissions to storage")
+	}
+
+	return nil
+}
+
 func (u *UserService) GetByUsername(ctx context.Context, tgUsername string) (domain.User, error) {
 	//filter := domain.GetUserFilter{
 	//	Username: []string{tgUsername},

@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/telegram"
@@ -35,6 +36,7 @@ func (s *Service) LoginViaTelegram(ctx context.Context, idToken string) (domain.
 	}
 
 	var session domain.UserSession
+	var isNewUser bool
 	err = s.txManager.Execute(func(tx *sql.Tx) error {
 		tgStorage := s.telegramIdentityStorage.WithTx(tx)
 		sessionStorage := s.sessionStorage.WithTx(tx)
@@ -45,7 +47,8 @@ func (s *Service) LoginViaTelegram(ctx context.Context, idToken string) (domain.
 		}
 
 		internalUserId := identityValue.V.UserId
-		if !identityValue.Valid {
+		isNewUser = !identityValue.Valid
+		if isNewUser {
 			internalUserId, err = s.initTelegramUser(ctx, tx, tgClaims)
 			if err != nil {
 				return rerrors.Wrap(err, "create telegram user")
@@ -63,6 +66,13 @@ func (s *Service) LoginViaTelegram(ctx context.Context, idToken string) (domain.
 	})
 	if err != nil {
 		return domain.UserSession{}, rerrors.Wrap(err)
+	}
+
+	if isNewUser {
+		notifyErr := s.adminNotifier.NotifyNewUser(session.UserId, tgClaims.Login)
+		if notifyErr != nil {
+			log.Err(notifyErr).Msg("error notifying admin about new user")
+		}
 	}
 
 	return session, nil

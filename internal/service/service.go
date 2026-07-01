@@ -34,14 +34,14 @@ type service struct {
 	featureFlagsService FeatureFlagsService
 }
 
-func New(dataStorage storage.Storage, cache files_cache.FilesCache, fileStorage storage.BinaryFileStorage) (Service, error) {
+func New(dataStorage storage.Storage, cache files_cache.FilesCache, fileStorage storage.BinaryFileStorage, adminNotifier auth.AdminNotifier) (Service, error) {
 	tokenParser := telegram.NewTokenParser(
 		"https://oauth.telegram.org/.well-known/jwks.json",
 		"https://oauth.telegram.org",
 		//TODO change to configurable bot id
 		"8046808891")
 
-	authSvc, err := auth.New(dataStorage, tokenParser)
+	authSvc, err := auth.New(dataStorage, tokenParser, adminNotifier)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error initializing auth service")
 	}
@@ -109,6 +109,9 @@ type UserService interface {
 	GetMe(ctx context.Context) (domain.User, error)
 	GetByUsername(ctx context.Context, tgUsername string) (domain.User, error)
 	GetSettings(ctx context.Context) (domain.UserSettings, error)
+
+	// GrantAccess enables standard app permissions (upload, playlists, early access) for a user.
+	GrantAccess(ctx context.Context, userId int64) error
 }
 
 type AuthService interface {

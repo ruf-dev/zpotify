@@ -23,6 +23,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/async/provider/pgqueue"
 	"go.zpotify.ru/zpotify/internal/background"
 	"go.zpotify.ru/zpotify/internal/background/sessions_gc"
+	tgclient "go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/middleware"
 	"go.zpotify.ru/zpotify/internal/service"
 	"go.zpotify.ru/zpotify/internal/storage"
@@ -37,6 +38,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/transport/playlist_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/song_api_impl"
 	telegramtransport "go.zpotify.ru/zpotify/internal/transport/telegram"
+	"go.zpotify.ru/zpotify/internal/transport/telegram/grant_access"
 	"go.zpotify.ru/zpotify/internal/transport/ui"
 	"go.zpotify.ru/zpotify/internal/transport/user_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/wapi"
@@ -89,15 +91,19 @@ func (c *Custom) Init(a *App) (err error) {
 		return rerrors.Wrap(err, "")
 	}
 
+	adminNotifier := tgclient.NewAdminNotifier(c.tgConn, int64(a.Cfg.Environment.TelegramNotificationsChatID))
+
 	fc, err := files_cache.New()
 	if err != nil {
 		return rerrors.Wrap(err, "error creating files cache")
 	}
 
-	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage)
+	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, adminNotifier)
 	if err != nil {
 		return rerrors.Wrap(err, "error creating service")
 	}
+
+	c.tgConn.MustAddCommandHandler(grant_access.New(c.Service.UserService(), int64(a.Cfg.Environment.TelegramNotificationsChatID)))
 
 	c.BackgroundWorker = background.New(
 		sessions_gc.New(c.dataStorage),
@@ -207,6 +213,14 @@ func (c *Custom) Start(ctx context.Context) error {
 
 	eg.Go(c.ServerManager.Start)
 
+	eg.Go(func() error {
+		startErr := c.tgConn.Start()
+		if startErr != nil {
+			return rerrors.Wrap(startErr, "error starting telegram bot")
+		}
+		return nil
+	})
+
 	err := eg.Wait()
 	if err != nil {
 		return rerrors.Wrap(err)
@@ -227,6 +241,10 @@ func (c *Custom) Stop() error {
 		return c.AsyncPool.Stop()
 	})
 	eg.Go(c.ServerManager.Stop)
+	eg.Go(func() error {
+		c.tgConn.Stop()
+		return nil
+	})
 
 	err := eg.Wait()
 	if err != nil {
