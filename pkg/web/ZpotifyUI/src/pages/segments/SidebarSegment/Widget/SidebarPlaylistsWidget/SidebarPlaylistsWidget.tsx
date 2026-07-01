@@ -4,15 +4,10 @@ import cn from 'classnames';
 import { playlistService } from '@/shared/api/PlaylistService';
 import { usePlaylistListRefresh } from '@/entities/playlist/usePlaylistListRefresh';
 import PlaylistRow from '@/pages/segments/SidebarSegment/components/PlaylistRow/PlaylistRow';
+import type { PlaylistRowData } from '@/pages/segments/SidebarSegment/components/PlaylistRow/PlaylistRow';
 import cls from '@/pages/segments/SidebarSegment/Widget/SidebarPlaylistsWidget/SidebarPlaylistsWidget.module.css';
 
-interface PlaylistItem {
-    uuid: string;
-    name: string;
-    tracks: number;
-    color: string;
-    coverUrl?: string;
-}
+type PlaylistItem = PlaylistRowData;
 
 function uuidToHslColor(uuid: string): string {
     let hash = 0;
@@ -74,13 +69,9 @@ export default function SidebarPlaylistsWidget({ isCollapsed }: SidebarPlaylists
             )}
             {playlists.map((playlist) => (
                 <PlaylistRow
-                    key={playlist.uuid}
-                    name={playlist.name}
-                    tracks={playlist.tracks}
-                    color={playlist.color}
-                    coverUrl={playlist.coverUrl}
-                    isCollapsed={isCollapsed}
-                />
+                    key={playlist.uuid} 
+                    {...playlist}
+                    isCollapsed={isCollapsed} />
             ))}
         </div>
     );

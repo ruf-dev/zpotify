@@ -1,9 +1,12 @@
-import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import cls from '@/pages/main/playlist/PlaylistPage.module.css';
 import type { Playlist } from '@/app/api/zpotify';
 
 import useUser from '@/entities/user/useUser.ts';
+import { isAlbum } from '@/entities/playlist/isAlbum.ts';
+import { albumPath } from '@/app/routing/paths.ts';
 import LazyLoadSongsList from '@/widgets/TrackList/LazyLoadSongsList.tsx';
 import { usePlaylist } from '@/pages//main/playlist/usePlaylist.ts';
 import GenerativeCover from '@/components/GenerativeCover/GenerativeCover.tsx';
@@ -93,10 +96,21 @@ function PlaylistMainContent({ playlistId, coverUrl }: PlaylistMainContentProps)
 
 export default function PlaylistPage() {
     const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
     const userData = useUser((state) => state.userData);
     const { playlist } = usePlaylist(id);
 
+    const isActuallyAlbum = !!playlist && isAlbum(playlist);
+
+    useEffect(() => {
+        if (id && isActuallyAlbum) {
+            navigate(albumPath(id), { replace: true });
+        }
+    }, [id, isActuallyAlbum, navigate]);
+
     if (!id || !userData) return null;
+
+    if (isActuallyAlbum) return null;
 
     const coverUrl = buildCoverUrl(playlist?.coverFilePath);
 

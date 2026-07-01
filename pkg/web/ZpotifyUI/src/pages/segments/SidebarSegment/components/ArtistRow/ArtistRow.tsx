@@ -10,7 +10,12 @@ interface ArtistRowProps {
 
 export default function ArtistRow({ name, seed, isCollapsed }: ArtistRowProps) {
     return (
-        <div className={cn(cls.ArtistRow, isCollapsed && cls.ArtistRowCollapsed)}>
+        <div
+            className={cn(cls.ArtistRow, isCollapsed && cls.ArtistRowCollapsed)}
+            data-tooltip-id="root-tooltip"
+            data-tooltip-content="Artist's page not implemented yet"
+            data-tooltip-place="right"
+        >
             <div
                 className={cn(cls.ArtistAvatar, isCollapsed && cls.ArtistAvatarCollapsed)}
                 style={{ '--seed': seed } as CSSProperties}

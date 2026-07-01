@@ -29,7 +29,12 @@ export default function AlbumCard({ uuid, name, artistNames, seed, coverUrl }: A
             </div>
             <div className={cls.Footer}>
                 <p className={cls.Name}>{name}</p>
-                <p className={cls.Artist} onClick={handleArtistClick}>
+                <p
+                    className={cls.Artist}
+                    onClick={handleArtistClick}
+                    data-tooltip-id="root-tooltip"
+                    data-tooltip-content="Artist's page not implemented yet"
+                >
                     {artistNames}
                 </p>
             </div>

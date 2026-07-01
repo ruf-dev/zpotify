@@ -73,12 +73,15 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    cursor: pointer;
+    /* cursor: pointer; TODO: re-enable when artist page is implemented */
+    cursor: default;
     margin: 0.1rem 0 0;
     transition: color var(--ease-quick);
 
+    /* TODO: re-enable hover when artist page is implemented
     &:hover {
         color: var(--color-fg-secondary);
         text-decoration: underline;
     }
+    */
 }

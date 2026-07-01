@@ -1,5 +1,5 @@
 import cls from '@/pages/main/album/AlbumPage.module.css';
-import skeletonCls from './AlbumPageSkeletonLoadScreen.module.css';
+import skeletonCls from '@/pages/main/album/screens/AlbumPageSkeletonLoadScreen/AlbumPageSkeletonLoadScreen.module.css';
 
 export default function AlbumPageSkeletonLoadScreen() {
     return (
