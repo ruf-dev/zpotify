@@ -6,13 +6,20 @@
 .ChooseScreenContainer {
     animation: slideIn 0.2s ease both;
 
-    width: 40vw;
+    width: clamp(36vw, 660px);
 }
 
 .GridWrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.625rem;
+}
+
+@media (orientation: portrait) {
+    .GridWrapper {
+        display: flex;
+        flex-direction: column-reverse;
+    }
 }
 
 .Card {

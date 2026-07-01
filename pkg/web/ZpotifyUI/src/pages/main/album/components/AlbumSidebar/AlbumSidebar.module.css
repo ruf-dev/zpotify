@@ -291,7 +291,7 @@
 
 /* ── Portrait / Mobile ───────────────────────────────────── */
 
-@media (max-width: 768px) {
+@media (orientation: portrait) {
     .SidebarContainer {
         width: 100%;
         height: auto;

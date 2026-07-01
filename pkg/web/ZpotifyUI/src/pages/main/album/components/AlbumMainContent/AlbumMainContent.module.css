@@ -8,7 +8,7 @@
     box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
+@media (orientation: portrait) {
     .MainContentContainer {
         overflow-y: visible;
         padding: 1rem 1rem 4rem;

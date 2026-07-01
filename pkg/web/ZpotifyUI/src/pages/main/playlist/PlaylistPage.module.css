@@ -199,3 +199,38 @@
 .ColNum {
     text-align: center;
 }
+
+/* ── Portrait / Mobile ───────────────────────────────────── */
+
+@media (orientation: portrait) {
+    .PlaylistPageContainer {
+        overflow-y: auto;
+    }
+
+    .Body {
+        position: relative;
+        inset: unset;
+        min-height: 100%;
+        flex-direction: column;
+        overflow: visible;
+    }
+
+    .Sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 0.0625rem solid var(--color-border);
+        overflow-y: visible;
+        flex-shrink: 0;
+    }
+
+    .CoverWrapper {
+        width: 8rem;
+        align-self: center;
+    }
+
+    .MainContent {
+        overflow: visible;
+        padding: 1rem 1rem 4rem;
+    }
+}

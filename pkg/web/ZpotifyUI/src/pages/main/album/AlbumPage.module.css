@@ -26,7 +26,7 @@
     to   { opacity: 1; }
 }
 
-@media (max-width: 768px) {
+@media (orientation: portrait) {
     .AlbumPageContainer {
         overflow-y: auto;
     }
