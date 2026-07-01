@@ -19,6 +19,7 @@
     background: rgb(217 0 127 / 9%);
     transform: scaleX(var(--upload-pct, 0));
     transform-origin: left;
+    border-radius: var(--border-radius-md);
     transition: transform 0.3s ease, background 0.3s ease;
 }
 
