@@ -6,10 +6,18 @@
   type: local_volume # forces service to run in sticky mode
   container_path: /data
 
-- name: webserver
-  type: angie
+- name: media-server
+  type: nginx
   ssl: enabled
   domain: zpotify.ru
   port: 443
   container_port: 80
+  config:
+    - ./media-server.conf:/etc/nginx/nginx.conf:ro
   serve_mode: proxy_pass # proxy_pass, redirect
+  container_settings:
+    hardware:
+      ulimits:
+        nofile:
+          soft: 65535
+          hard: 65535
