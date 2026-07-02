@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"go.redsock.ru/rerrors"
 	"go.redsock.ru/toolbox"
 )
 
@@ -30,6 +29,50 @@ type TgClaims struct {
 	FamilyName    string `json:"family_name"`
 	Picture       string `json:"picture"`
 	Locale        string `json:"locale"`
+}
+
+// telegramID unmarshals the "id" claim, which Telegram encodes inconsistently
+// as either a JSON number or a JSON string.
+type telegramID int64
+
+func (t *telegramID) UnmarshalJSON(data []byte) error {
+	var asInt int64
+	if err := json.Unmarshal(data, &asInt); err == nil {
+		*t = telegramID(asInt)
+		return nil
+	}
+
+	var asString string
+	if err := json.Unmarshal(data, &asString); err != nil {
+		return fmt.Errorf("telegram id claim is neither a number nor a string: %w", err)
+	}
+
+	parsed, err := strconv.ParseInt(asString, 10, 64)
+	if err != nil {
+		return fmt.Errorf("failed to parse telegram id claim %q: %w", asString, err)
+	}
+
+	*t = telegramID(parsed)
+	return nil
+}
+
+// UnmarshalJSON is defined explicitly so the "id" claim can be decoded via telegramID
+// while every other field keeps the default struct-tag-driven unmarshaling.
+func (c *TgClaims) UnmarshalJSON(data []byte) error {
+	type alias TgClaims
+	aux := struct {
+		Id telegramID `json:"id"`
+		*alias
+	}{
+		alias: (*alias)(c),
+	}
+
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return fmt.Errorf("failed to unmarshal telegram claims: %w", err)
+	}
+
+	c.Id = int64(aux.Id)
+	return nil
 }
 
 // JWKSResponse represents the JSON Web Key Set response
@@ -99,9 +142,8 @@ func (tp *TokenParser) ParseAndVerifyIdToken(idToken string) (TgClaims, error) {
 
 	claims.Login = toolbox.Coalesce(claims.Name, claims.GivenName)
 
-	claims.Id, err = strconv.ParseInt(claims.Subject, 10, 64)
-	if err != nil {
-		return *claims, rerrors.Wrap(err, "parse telegram user id from claims subject")
+	if claims.Id == 0 {
+		return *claims, fmt.Errorf("missing telegram id in claims")
 	}
 
 	return *claims, nil

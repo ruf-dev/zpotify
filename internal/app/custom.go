@@ -98,7 +98,7 @@ func (c *Custom) Init(a *App) (err error) {
 		return rerrors.Wrap(err, "error creating files cache")
 	}
 
-	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, adminNotifier)
+	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, adminNotifier, a.Cfg)
 	if err != nil {
 		return rerrors.Wrap(err, "error creating service")
 	}

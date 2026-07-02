@@ -7,6 +7,7 @@ import (
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/telegram"
+	"go.zpotify.ru/zpotify/internal/config"
 	"go.zpotify.ru/zpotify/internal/domain"
 	v1 "go.zpotify.ru/zpotify/internal/service/v1"
 	"go.zpotify.ru/zpotify/internal/service/v1/auth"
@@ -34,12 +35,14 @@ type service struct {
 	featureFlagsService FeatureFlagsService
 }
 
-func New(dataStorage storage.Storage, cache files_cache.FilesCache, fileStorage storage.BinaryFileStorage, adminNotifier auth.AdminNotifier) (Service, error) {
+func New(dataStorage storage.Storage, cache files_cache.FilesCache,
+	fileStorage storage.BinaryFileStorage, adminNotifier auth.AdminNotifier,
+	cfg config.Config,
+) (Service, error) {
 	tokenParser := telegram.NewTokenParser(
 		"https://oauth.telegram.org/.well-known/jwks.json",
 		"https://oauth.telegram.org",
-		//TODO change to configurable bot id
-		"8046808891")
+		cfg.Environment.TelegramClientID)
 
 	authSvc, err := auth.New(dataStorage, tokenParser, adminNotifier)
 	if err != nil {
