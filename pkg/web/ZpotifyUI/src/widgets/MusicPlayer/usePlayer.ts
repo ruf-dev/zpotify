@@ -21,8 +21,6 @@ export interface AudioPlayer {
     songCover: string | null;
     setSongInfo: (title: string | null, artist: string | null, cover?: string | null) => void;
 
-    onEnd: (callback: () => void) => void;
-
     progress: number;
     setProgress: (percent: number) => void;
 
@@ -92,7 +90,6 @@ const useAudioStore = create<AudioStoreState>()(
 
 class AudioPlayerImpl implements AudioPlayer {
     private audio: HTMLAudioElement;
-    private onendedCallback: (() => void) | null = null;
     private pendingRestoreProgress: number | null = null;
 
     constructor() {
@@ -156,9 +153,7 @@ class AudioPlayerImpl implements AudioPlayer {
         });
 
         this.audio.addEventListener('ended', () => {
-            if (this.onendedCallback) {
-                this.onendedCallback();
-            }
+            this.playNext();
         });
 
         this.audio.addEventListener('volumechange', () => {
@@ -288,10 +283,6 @@ class AudioPlayerImpl implements AudioPlayer {
         const isMuted = !this.audio.muted;
         this.audio.muted = isMuted;
         useAudioStore.setState({isMuted});
-    }
-
-    onEnd(callback: () => void): void {
-        this.onendedCallback = callback;
     }
 
     setProgress(percent: number): void {

@@ -68,16 +68,6 @@ export default function SongListWidget({ songs, audioPlayer, coverUrl }: SongLis
         audioPlayer.setSongInfo(song.title || null, song.artists?.[0]?.name || null, coverUrl);
 
         setCurrentSongIdx(idx);
-
-        audioPlayer.onEnd(() => {
-            const nextSongUrl = getNext(idx);
-            if (nextSongUrl) {
-                const nextIdx = songs.findIndex((s) => s.filePath === nextSongUrl);
-                playSongAtIndex(nextIdx);
-            }
-
-            return nextSongUrl;
-        });
     }
 
     return (
