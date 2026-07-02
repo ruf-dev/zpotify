@@ -22,16 +22,25 @@ export interface AlbumMainContentProps {
     songs: SongBase[];
     currentTrackPath: string | null;
     onPlaySong: (song: SongBase) => void;
+    onReorder: (songs: SongBase[]) => void;
     username: string;
     canEdit?: boolean;
     editMode?: boolean;
     playlistUuid?: string;
 }
 
-export default function AlbumMainContent({ songs: songsProp, currentTrackPath, onPlaySong, username, canEdit, editMode, playlistUuid }: AlbumMainContentProps) {
+export default function AlbumMainContent({
+    songs,
+    currentTrackPath,
+    onPlaySong,
+    onReorder,
+    username,
+    canEdit,
+    editMode,
+    playlistUuid,
+}: AlbumMainContentProps) {
     const [likedSongIds, setLikedSongIds] = useState<Set<string>>(new Set());
     const [animatingHeartId, setAnimatingHeartId] = useState<string | null>(null);
-    const [songs, setSongs] = useState<SongBase[]>(songsProp);
     const [drag, setDrag] = useState<Drag>(null);
     const [dropIdx, setDropIdx] = useState<number | null>(null);
     const commentsEnabled = useFeatureFlags((s) => selectFlagEnabled(s, 'IS_COMMENTS_ON_ALBUM_ENABLED'));
@@ -39,10 +48,6 @@ export default function AlbumMainContent({ songs: songsProp, currentTrackPath, o
 
     const dropIdxRef = useRef<number | null>(null);
     const rowRefs = useRef<Record<string, HTMLDivElement>>({});
-
-    useEffect(() => {
-        setSongs(songsProp);
-    }, [songsProp]);
 
     useEffect(() => {
         dropIdxRef.current = dropIdx;
@@ -114,18 +119,16 @@ export default function AlbumMainContent({ songs: songsProp, currentTrackPath, o
 
     function handleReorder(fromIdx: number, toIdx: number) {
         if (fromIdx === toIdx) return;
-        setSongs((prev) => {
-            const next = [...prev];
-            const [moved] = next.splice(fromIdx, 1);
-            next.splice(toIdx, 0, moved);
-            if (playlistUuid) {
-                const songIds = next.map((s) => Number(s.id ?? 0));
-                void playlistService.ChangeSongsOrder(playlistUuid, songIds).catch((e: unknown) => {
-                    toaster.catch(e as never);
-                });
-            }
-            return next;
-        });
+        const next = [...songs];
+        const [moved] = next.splice(fromIdx, 1);
+        next.splice(toIdx, 0, moved);
+        if (playlistUuid) {
+            const songIds = next.map((s) => Number(s.id ?? 0));
+            void playlistService.ChangeSongsOrder(playlistUuid, songIds).catch((e: unknown) => {
+                toaster.catch(e as never);
+            });
+        }
+        onReorder(next);
     }
 
     function getRowDragStyle(id: string, idx: number): React.CSSProperties {

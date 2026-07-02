@@ -55,7 +55,7 @@ export default function SongListWidget({ songs, audioPlayer, coverUrl }: SongLis
         const currentSongIdx = songs.findIndex((s) => s.filePath == audioPlayer.trackPath);
         audioPlayer.setNext(getNext(currentSongIdx));
         audioPlayer.setPrev(getPrev(currentSongIdx));
-    }, [audioPlayer.trackPath]);
+    }, [audioPlayer.trackPath, songs]);
 
     function playSongAtIndex(idx: number) {
         const song = songs[idx];

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import type { Playlist, SongBase } from '@/app/api/zpotify';
@@ -26,6 +26,11 @@ export default function AlbumPageScreen({ playlist, songs, username }: Props) {
     const audioPlayer = useAudioPlayer();
     const [saved, setSaved] = useState(false);
     const [editMode, setEditMode] = useState(false);
+    const [orderedSongs, setOrderedSongs] = useState<SongBase[]>(songs);
+
+    useEffect(() => {
+        setOrderedSongs(songs);
+    }, [songs]);
 
     function handleBack() {
         navigate(Path.HomePage);
@@ -38,22 +43,24 @@ export default function AlbumPageScreen({ playlist, songs, username }: Props) {
     const coverUrl = buildCoverUrl(playlist?.coverFilePath);
 
     function handlePlay() {
-        const first = songs[0];
+        const first = orderedSongs[0];
         if (!first?.filePath) return;
         audioPlayer.setSongInfo(first.title ?? null, first.artists?.[0]?.name ?? null, coverUrl);
         audioPlayer.play(first.filePath);
-        audioPlayer.setNext(songs[1]?.filePath);
-        audioPlayer.setPrev(undefined);
     }
 
     function handlePlaySong(song: SongBase) {
         if (!song.filePath) return;
-        const idx = songs.findIndex(s => s.filePath === song.filePath);
         audioPlayer.setSongInfo(song.title ?? null, song.artists?.[0]?.name ?? null, coverUrl);
         audioPlayer.play(song.filePath);
-        audioPlayer.setNext(songs[idx + 1]?.filePath);
-        audioPlayer.setPrev(idx > 0 ? songs[idx - 1]?.filePath : undefined);
     }
+
+    useEffect(() => {
+        const idx = orderedSongs.findIndex((s) => s.filePath === audioPlayer.trackPath);
+        if (idx === -1) return;
+        audioPlayer.setNext(orderedSongs[idx + 1]?.filePath);
+        audioPlayer.setPrev(idx > 0 ? orderedSongs[idx - 1]?.filePath : undefined);
+    }, [orderedSongs, audioPlayer.trackPath]);
 
     const totalDuration = computeTotalDuration(songs);
     const trackCount = songs.length > 0 ? songs.length : (playlist?.songCount ?? 0);
@@ -75,9 +82,10 @@ export default function AlbumPageScreen({ playlist, songs, username }: Props) {
                     onExitEditMode={() => setEditMode(false)}
                 />
                 <AlbumMainContent
-                    songs={songs}
+                    songs={orderedSongs}
                     currentTrackPath={audioPlayer.trackPath}
                     onPlaySong={handlePlaySong}
+                    onReorder={setOrderedSongs}
                     username={username}
                     canEdit={playlist?.canEdit ?? false}
                     editMode={editMode}
