@@ -84,3 +84,13 @@ DELETE FROM playlist_chips WHERE playlist_uuid = $1;
 
 -- name: SetSongOrderInPlaylist :exec
 UPDATE playlist_songs SET order_number = $1 WHERE playlist_uuid = $2 AND song_id = $3;
+
+-- name: RemoveSongFromPlaylist :exec
+WITH deleted AS (
+    DELETE FROM playlist_songs WHERE playlist_uuid = $1 AND song_id = $2
+    RETURNING playlist_uuid
+)
+UPDATE playlists SET song_count = GREATEST(song_count - 1, 0) WHERE uuid = $1;
+
+-- name: GetPlaylistOwnerAndVisibility :one
+SELECT owner_id, is_public FROM playlists WHERE uuid = $1;

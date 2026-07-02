@@ -113,8 +113,12 @@ type UserService interface {
 	GetByUsername(ctx context.Context, tgUsername string) (domain.User, error)
 	GetSettings(ctx context.Context) (domain.UserSettings, error)
 
-	// GrantAccess enables standard app permissions (upload, playlists, early access) for a user.
+	// GrantAccess enables listener-only access (early access) for a user.
 	GrantAccess(ctx context.Context, userId int64) error
+
+	// GrantCreatorAccess enables creator permissions (upload, playlists, early access)
+	// plus default upload size limits for a user.
+	GrantCreatorAccess(ctx context.Context, userId int64) error
 }
 
 type AuthService interface {
@@ -143,7 +147,13 @@ type PlaylistService interface {
 	ListSongs(ctx context.Context, songs domain.ListSongs) (domain.SongsInPlaylist, error)
 	AddSong(ctx context.Context, req domain.AddSongToPlaylist) error
 	AddSongs(ctx context.Context, req domain.AddSongsToPlaylist) error
+	DeleteSong(ctx context.Context, req domain.DeleteSongFromPlaylist) error
 	List(ctx context.Context, req domain.ListPlaylists) (domain.ListPlaylistsResult, error)
+
+	// Follow adds a public playlist that isn't owned by the caller to their library.
+	Follow(ctx context.Context, playlistUuid string) error
+	// Unfollow removes a previously followed playlist from the caller's library.
+	Unfollow(ctx context.Context, playlistUuid string) error
 }
 
 type ArtistsService interface {

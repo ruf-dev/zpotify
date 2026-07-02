@@ -175,6 +175,22 @@ func (q *Queries) GetPlaylistChips(ctx context.Context, playlistUuid uuid.UUID) 
 	return items, nil
 }
 
+const getPlaylistOwnerAndVisibility = `-- name: GetPlaylistOwnerAndVisibility :one
+SELECT owner_id, is_public FROM playlists WHERE uuid = $1
+`
+
+type GetPlaylistOwnerAndVisibilityRow struct {
+	OwnerID  int64
+	IsPublic bool
+}
+
+func (q *Queries) GetPlaylistOwnerAndVisibility(ctx context.Context, argUuid uuid.UUID) (GetPlaylistOwnerAndVisibilityRow, error) {
+	row := q.db.QueryRowContext(ctx, getPlaylistOwnerAndVisibility, argUuid)
+	var i GetPlaylistOwnerAndVisibilityRow
+	err := row.Scan(&i.OwnerID, &i.IsPublic)
+	return i, err
+}
+
 const getPlaylistWithAuth = `-- name: GetPlaylistWithAuth :one
 SELECT playlists.uuid,
        playlists.name,
@@ -248,6 +264,24 @@ func (q *Queries) InsertPlaylistChip(ctx context.Context, arg InsertPlaylistChip
 		arg.Value,
 		arg.OrderID,
 	)
+	return err
+}
+
+const removeSongFromPlaylist = `-- name: RemoveSongFromPlaylist :exec
+WITH deleted AS (
+    DELETE FROM playlist_songs WHERE playlist_uuid = $1 AND song_id = $2
+    RETURNING playlist_uuid
+)
+UPDATE playlists SET song_count = GREATEST(song_count - 1, 0) WHERE uuid = $1
+`
+
+type RemoveSongFromPlaylistParams struct {
+	Uuid   uuid.UUID
+	SongID int64
+}
+
+func (q *Queries) RemoveSongFromPlaylist(ctx context.Context, arg RemoveSongFromPlaylistParams) error {
+	_, err := q.db.ExecContext(ctx, removeSongFromPlaylist, arg.Uuid, arg.SongID)
 	return err
 }
 

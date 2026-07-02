@@ -41,6 +41,7 @@ export type Playlist = {
   year?: number;
   chips?: PlaylistChip[];
   canEdit?: boolean;
+  isSaved?: boolean;
 };
 
 export type SongFile = {

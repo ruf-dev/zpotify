@@ -4,6 +4,7 @@ export type UserInfo = {
     username: string;
     permissions: UserPermissions;
     pictureUrl?: string;
+    likedPlaylistId: string;
 };
 
 export type UserPermissions = Permissions;

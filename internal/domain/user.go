@@ -22,9 +22,10 @@ type GetUserFilter struct {
 	Limit  uint64
 }
 type UserBaseInfo struct {
-	Id       int64
-	Username string
-	PhotoUrl sql.Null[string]
+	Id              int64
+	Username        string
+	PhotoUrl        sql.Null[string]
+	LikedPlaylistId string
 }
 
 type UserUiSettings struct {

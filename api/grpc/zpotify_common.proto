@@ -42,6 +42,7 @@ message Playlist {
   optional int32 year = 8;
   repeated PlaylistChip chips = 9;
   optional bool can_edit = 10;
+  optional bool is_saved = 11;
 }
 
 message SongFile {

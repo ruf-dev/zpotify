@@ -100,15 +100,41 @@ func (u *UserService) Get(ctx context.Context, userId int64) (domain.User, error
 	}, nil
 }
 
+const (
+	creatorMaxSongSizeBytes    = 50 * 1024 * 1024
+	creatorMaxTotalUploadBytes = 400 * 1024 * 1024
+)
+
+// GrantAccess enables listener-only access (login, browse, listen) for a user.
 func (u *UserService) GrantAccess(ctx context.Context, userId int64) error {
 	permissions, err := u.userStorage.GetPermissions(ctx, userId)
 	if err != nil {
 		return rerrors.Wrap(err, "error getting permissions from storage")
 	}
 
+	permissions.EarlyAccess = true
+
+	err = u.userStorage.SavePermissions(ctx, userId, permissions)
+	if err != nil {
+		return rerrors.Wrap(err, "error saving permissions to storage")
+	}
+
+	return nil
+}
+
+// GrantCreatorAccess enables listener access plus upload/playlist creation
+// permissions and default upload size limits for a user.
+func (u *UserService) GrantCreatorAccess(ctx context.Context, userId int64) error {
+	permissions, err := u.userStorage.GetPermissions(ctx, userId)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting permissions from storage")
+	}
+
+	permissions.EarlyAccess = true
 	permissions.CanUpload = true
 	permissions.CanCreatePlaylist = true
-	permissions.EarlyAccess = true
+	permissions.MaxSongSizeBytes = creatorMaxSongSizeBytes
+	permissions.MaxTotalUploadBytes = creatorMaxTotalUploadBytes
 
 	err = u.userStorage.SavePermissions(ctx, userId, permissions)
 	if err != nil {

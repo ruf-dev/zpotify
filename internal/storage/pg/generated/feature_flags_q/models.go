@@ -335,9 +335,10 @@ type SongsArtist struct {
 }
 
 type User struct {
-	ID         int64
-	Username   string
-	AvatarLink sql.NullString
+	ID              int64
+	Username        string
+	AvatarLink      sql.NullString
+	LikedPlaylistID uuid.UUID
 }
 
 type UserHomeSegment struct {

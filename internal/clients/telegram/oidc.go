@@ -29,6 +29,10 @@ type TgClaims struct {
 	FamilyName    string `json:"family_name"`
 	Picture       string `json:"picture"`
 	Locale        string `json:"locale"`
+
+	// Username is Telegram's public @handle claim. It is empty for accounts
+	// that have not set a public username.
+	Username string `json:"username"`
 }
 
 // telegramID unmarshals the "id" claim, which Telegram encodes inconsistently

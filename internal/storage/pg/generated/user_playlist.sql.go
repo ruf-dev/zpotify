@@ -11,6 +11,20 @@ import (
 	"github.com/google/uuid"
 )
 
+const deleteUserPlaylist = `-- name: DeleteUserPlaylist :exec
+DELETE FROM user_playlists WHERE user_id = $1 AND playlist_id = $2
+`
+
+type DeleteUserPlaylistParams struct {
+	UserID     int64
+	PlaylistID uuid.UUID
+}
+
+func (q *Queries) DeleteUserPlaylist(ctx context.Context, arg DeleteUserPlaylistParams) error {
+	_, err := q.db.ExecContext(ctx, deleteUserPlaylist, arg.UserID, arg.PlaylistID)
+	return err
+}
+
 const getUserPermissionsOnPlaylist = `-- name: GetUserPermissionsOnPlaylist :one
 SELECT can_delete_songs,
        can_add_songs,

@@ -39,6 +39,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/transport/song_api_impl"
 	telegramtransport "go.zpotify.ru/zpotify/internal/transport/telegram"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/grant_access"
+	"go.zpotify.ru/zpotify/internal/transport/telegram/grant_creator_access"
 	"go.zpotify.ru/zpotify/internal/transport/ui"
 	"go.zpotify.ru/zpotify/internal/transport/user_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/wapi"
@@ -104,6 +105,7 @@ func (c *Custom) Init(a *App) (err error) {
 	}
 
 	c.tgConn.MustAddCommandHandler(grant_access.New(c.Service.UserService(), int64(a.Cfg.Environment.TelegramNotificationsChatID)))
+	c.tgConn.MustAddCommandHandler(grant_creator_access.New(c.Service.UserService(), int64(a.Cfg.Environment.TelegramNotificationsChatID)))
 
 	c.BackgroundWorker = background.New(
 		sessions_gc.New(c.dataStorage),

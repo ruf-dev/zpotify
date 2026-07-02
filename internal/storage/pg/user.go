@@ -34,9 +34,10 @@ func (s *UserStorage) GetUserById(ctx context.Context, userId int64) (domain.Use
 	}
 
 	return domain.UserBaseInfo{
-		Id:       row.ID,
-		Username: row.Username,
-		PhotoUrl: sql.Null[string]{V: row.AvatarLink.String, Valid: row.AvatarLink.Valid},
+		Id:              row.ID,
+		Username:        row.Username,
+		PhotoUrl:        sql.Null[string]{V: row.AvatarLink.String, Valid: row.AvatarLink.Valid},
+		LikedPlaylistId: row.LikedPlaylistID.String(),
 	}, nil
 }
 
@@ -121,7 +122,68 @@ func (s *UserStorage) GetPermissionsOnPlaylist(ctx context.Context, userTgId int
 		CanDeleteSongs: res.CanDeleteSongs,
 		CanAddSongs:    res.CanAddSongs,
 		CanEdit:        res.CanEdit,
+		IsSaved:        true,
 	}, nil
+}
+
+func (s *UserStorage) SetLikedPlaylistId(ctx context.Context, userId int64, playlistUuid string) error {
+	parsedUuid, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+
+	params := querier.SetUserLikedPlaylistParams{
+		ID:              userId,
+		LikedPlaylistID: parsedUuid,
+	}
+
+	err = s.querier.SetUserLikedPlaylist(ctx, params)
+	if err != nil {
+		return rerrors.Wrap(wrapPgErr(err), "error setting user's liked playlist")
+	}
+
+	return nil
+}
+
+func (s *UserStorage) FollowPlaylist(ctx context.Context, userId int64, playlistUuid string) error {
+	parsedUuid, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+
+	params := querier.UpsertUserPlaylistParams{
+		UserID:         userId,
+		PlaylistID:     parsedUuid,
+		CanDeleteSongs: false,
+		CanAddSongs:    false,
+		CanEdit:        false,
+	}
+
+	err = s.querier.UpsertUserPlaylist(ctx, params)
+	if err != nil {
+		return rerrors.Wrap(wrapPgErr(err), "error following playlist")
+	}
+
+	return nil
+}
+
+func (s *UserStorage) UnfollowPlaylist(ctx context.Context, userId int64, playlistUuid string) error {
+	parsedUuid, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+
+	params := querier.DeleteUserPlaylistParams{
+		UserID:     userId,
+		PlaylistID: parsedUuid,
+	}
+
+	err = s.querier.DeleteUserPlaylist(ctx, params)
+	if err != nil {
+		return rerrors.Wrap(wrapPgErr(err), "error unfollowing playlist")
+	}
+
+	return nil
 }
 
 //func (s *UserStorage) ListUsers(ctx context.Context, filter domain.GetUserFilter) ([]domain.User, error) {

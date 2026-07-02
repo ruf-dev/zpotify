@@ -266,6 +266,79 @@ func (p *PlaylistService) AddSong(ctx context.Context, req domain.AddSongToPlayl
 	return nil
 }
 
+func (p *PlaylistService) DeleteSong(ctx context.Context, req domain.DeleteSongFromPlaylist) error {
+	userCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return rerrors.Wrap(service_errors.ErrUnauthenticated)
+	}
+
+	permissions, err := p.userStorage.GetPermissionsOnPlaylist(ctx, userCtx.UserId, req.PlaylistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting permissions for playlist")
+	}
+
+	if !permissions.CanDeleteSongs {
+		return rerrors.Wrap(service_errors.ErrUnauthorized, "user is missing can_delete_songs permission on playlist")
+	}
+
+	err = p.playlistStorage.RemoveSong(ctx, req.PlaylistUuid, req.SongId)
+	if err != nil {
+		return rerrors.Wrap(err, "error removing song from playlist")
+	}
+
+	return nil
+}
+
+func (p *PlaylistService) Follow(ctx context.Context, playlistUuid string) error {
+	userCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return rerrors.Wrap(service_errors.ErrUnauthenticated)
+	}
+
+	ownerId, isPublic, err := p.playlistStorage.GetOwnerAndVisibility(ctx, playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting playlist owner and visibility")
+	}
+
+	if ownerId == userCtx.UserId {
+		return rerrors.Wrap(service_errors.ErrUnauthorized, "cannot follow own playlist")
+	}
+
+	if !isPublic {
+		return rerrors.Wrap(service_errors.ErrUnauthorized, "cannot follow a private playlist")
+	}
+
+	err = p.userStorage.FollowPlaylist(ctx, userCtx.UserId, playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error following playlist")
+	}
+
+	return nil
+}
+
+func (p *PlaylistService) Unfollow(ctx context.Context, playlistUuid string) error {
+	userCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return rerrors.Wrap(service_errors.ErrUnauthenticated)
+	}
+
+	ownerId, _, err := p.playlistStorage.GetOwnerAndVisibility(ctx, playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting playlist owner")
+	}
+
+	if ownerId == userCtx.UserId {
+		return rerrors.Wrap(service_errors.ErrUnauthorized, "cannot unfollow own playlist")
+	}
+
+	err = p.userStorage.UnfollowPlaylist(ctx, userCtx.UserId, playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error unfollowing playlist")
+	}
+
+	return nil
+}
+
 func (p *PlaylistService) AddSongs(ctx context.Context, req domain.AddSongsToPlaylist) error {
 	userCtx, ok := user_context.GetUserContext(ctx)
 	if !ok {

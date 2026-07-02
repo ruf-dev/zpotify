@@ -113,6 +113,22 @@ export type ListPlaylistsResponse = {
 
 export type ListPlaylists = Record<string, never>;
 
+export type FollowPlaylistRequest = {
+  playlistUuid?: string;
+};
+
+export type FollowPlaylistResponse = Record<string, never>;
+
+export type FollowPlaylist = Record<string, never>;
+
+export type UnfollowPlaylistRequest = {
+  playlistUuid?: string;
+};
+
+export type UnfollowPlaylistResponse = Record<string, never>;
+
+export type UnfollowPlaylist = Record<string, never>;
+
 export class PlaylistAPI {
   static CreatePlaylist(this:void, req: CreatePlaylistRequest, initReq?: fm.InitReq): Promise<CreatePlaylistResponse> {
     return fm.fetchRequest<CreatePlaylistResponse>(`/api/playlist/create`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
@@ -140,5 +156,11 @@ export class PlaylistAPI {
   }
   static ListPlaylists(this:void, req: ListPlaylistsRequest, initReq?: fm.InitReq): Promise<ListPlaylistsResponse> {
     return fm.fetchRequest<ListPlaylistsResponse>(`/api/playlist/list`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static FollowPlaylist(this:void, req: FollowPlaylistRequest, initReq?: fm.InitReq): Promise<FollowPlaylistResponse> {
+    return fm.fetchRequest<FollowPlaylistResponse>(`/api/playlist/follow`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static UnfollowPlaylist(this:void, req: UnfollowPlaylistRequest, initReq?: fm.InitReq): Promise<UnfollowPlaylistResponse> {
+    return fm.fetchRequest<UnfollowPlaylistResponse>(`/api/playlist/unfollow`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }

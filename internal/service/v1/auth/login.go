@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"database/sql"
+	"strings"
 
 	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
@@ -69,7 +70,7 @@ func (s *Service) LoginViaTelegram(ctx context.Context, idToken string) (domain.
 	}
 
 	if isNewUser {
-		notifyErr := s.adminNotifier.NotifyNewUser(session.UserId, tgClaims.Login)
+		notifyErr := s.adminNotifier.NotifyNewUser(session.UserId, telegramDisplayName(tgClaims), tgClaims.Username)
 		if notifyErr != nil {
 			log.Err(notifyErr).Msg("error notifying admin about new user")
 		}
@@ -78,10 +79,21 @@ func (s *Service) LoginViaTelegram(ctx context.Context, idToken string) (domain.
 	return session, nil
 }
 
+// telegramDisplayName returns a human-readable display name for the admin
+// notification, falling back to given+family name when Name is empty.
+func telegramDisplayName(claims telegram.TgClaims) string {
+	if claims.Name != "" {
+		return claims.Name
+	}
+
+	return strings.TrimSpace(claims.GivenName + " " + claims.FamilyName)
+}
+
 func (s *Service) initTelegramUser(ctx context.Context, tx *sql.Tx, claims telegram.TgClaims) (int64, error) {
 	userStorage := s.userStorage.WithTx(tx)
 	tgStorage := s.telegramIdentityStorage.WithTx(tx)
 	settingsStorage := s.settingsStorage.WithTx(tx)
+	playlistStorage := s.playlistStorage.WithTx(tx)
 
 	userBase := domain.UserBaseInfo{
 		Username: claims.Name,
@@ -115,6 +127,20 @@ func (s *Service) initTelegramUser(ctx context.Context, tx *sql.Tx, claims teleg
 	_, err = tgStorage.Upsert(ctx, claims.Id, userBase.Id, claims.Login)
 	if err != nil {
 		return userBase.Id, rerrors.Wrap(err, "upsert telegram identity")
+	}
+
+	likedPlaylistParams := domain.CreatePlaylistParams{
+		Name:     userBase.Username + "'s Likes",
+		IsPublic: false,
+	}
+	likedPlaylistUuid, err := playlistStorage.Create(ctx, likedPlaylistParams, userBase.Id)
+	if err != nil {
+		return userBase.Id, rerrors.Wrap(err, "create liked songs playlist")
+	}
+
+	err = userStorage.SetLikedPlaylistId(ctx, userBase.Id, likedPlaylistUuid)
+	if err != nil {
+		return userBase.Id, rerrors.Wrap(err, "set user's liked playlist id")
 	}
 
 	for _, seg := range domain.DefaultSegments(userBase.Id) {

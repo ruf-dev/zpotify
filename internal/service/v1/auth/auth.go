@@ -15,7 +15,7 @@ import (
 
 // AdminNotifier notifies admins about auth-related events, e.g. new user registrations.
 type AdminNotifier interface {
-	NotifyNewUser(userId int64, username string) error
+	NotifyNewUser(userId int64, displayName string, username string) error
 }
 
 type Service struct {
@@ -26,6 +26,7 @@ type Service struct {
 	sessionStorage          storage.SessionStorage
 	userStorage             storage.UserStorage
 	settingsStorage         storage.UserSettingsStorage
+	playlistStorage         storage.PlaylistStorage
 
 	txManager *tx_manager.TxManager
 
@@ -45,6 +46,7 @@ func New(data storage.Storage, tgJwkParser telegram.TokenParser, adminNotifier A
 		sessionStorage:          data.SessionStorage(),
 		userStorage:             data.User(),
 		settingsStorage:         data.UserSettings(),
+		playlistStorage:         data.PlaylistStorage(),
 
 		txManager: data.TxManager(),
 

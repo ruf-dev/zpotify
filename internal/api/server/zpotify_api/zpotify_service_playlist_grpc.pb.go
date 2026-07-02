@@ -28,6 +28,8 @@ const (
 	PlaylistAPI_AddSongsToPlaylist_FullMethodName = "/zpotify_api.PlaylistAPI/AddSongsToPlaylist"
 	PlaylistAPI_UpdatePlaylist_FullMethodName     = "/zpotify_api.PlaylistAPI/UpdatePlaylist"
 	PlaylistAPI_ListPlaylists_FullMethodName      = "/zpotify_api.PlaylistAPI/ListPlaylists"
+	PlaylistAPI_FollowPlaylist_FullMethodName     = "/zpotify_api.PlaylistAPI/FollowPlaylist"
+	PlaylistAPI_UnfollowPlaylist_FullMethodName   = "/zpotify_api.PlaylistAPI/UnfollowPlaylist"
 )
 
 // PlaylistAPIClient is the client API for PlaylistAPI service.
@@ -44,6 +46,8 @@ type PlaylistAPIClient interface {
 	UpdatePlaylist(ctx context.Context, in *UpdatePlaylist_Request, opts ...grpc.CallOption) (*UpdatePlaylist_Response, error)
 	// TODO: Implement
 	ListPlaylists(ctx context.Context, in *ListPlaylists_Request, opts ...grpc.CallOption) (*ListPlaylists_Response, error)
+	FollowPlaylist(ctx context.Context, in *FollowPlaylist_Request, opts ...grpc.CallOption) (*FollowPlaylist_Response, error)
+	UnfollowPlaylist(ctx context.Context, in *UnfollowPlaylist_Request, opts ...grpc.CallOption) (*UnfollowPlaylist_Response, error)
 }
 
 type playlistAPIClient struct {
@@ -144,6 +148,26 @@ func (c *playlistAPIClient) ListPlaylists(ctx context.Context, in *ListPlaylists
 	return out, nil
 }
 
+func (c *playlistAPIClient) FollowPlaylist(ctx context.Context, in *FollowPlaylist_Request, opts ...grpc.CallOption) (*FollowPlaylist_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FollowPlaylist_Response)
+	err := c.cc.Invoke(ctx, PlaylistAPI_FollowPlaylist_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *playlistAPIClient) UnfollowPlaylist(ctx context.Context, in *UnfollowPlaylist_Request, opts ...grpc.CallOption) (*UnfollowPlaylist_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UnfollowPlaylist_Response)
+	err := c.cc.Invoke(ctx, PlaylistAPI_UnfollowPlaylist_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PlaylistAPIServer is the server API for PlaylistAPI service.
 // All implementations must embed UnimplementedPlaylistAPIServer
 // for forward compatibility.
@@ -158,6 +182,8 @@ type PlaylistAPIServer interface {
 	UpdatePlaylist(context.Context, *UpdatePlaylist_Request) (*UpdatePlaylist_Response, error)
 	// TODO: Implement
 	ListPlaylists(context.Context, *ListPlaylists_Request) (*ListPlaylists_Response, error)
+	FollowPlaylist(context.Context, *FollowPlaylist_Request) (*FollowPlaylist_Response, error)
+	UnfollowPlaylist(context.Context, *UnfollowPlaylist_Request) (*UnfollowPlaylist_Response, error)
 	mustEmbedUnimplementedPlaylistAPIServer()
 }
 
@@ -194,6 +220,12 @@ func (UnimplementedPlaylistAPIServer) UpdatePlaylist(context.Context, *UpdatePla
 }
 func (UnimplementedPlaylistAPIServer) ListPlaylists(context.Context, *ListPlaylists_Request) (*ListPlaylists_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListPlaylists not implemented")
+}
+func (UnimplementedPlaylistAPIServer) FollowPlaylist(context.Context, *FollowPlaylist_Request) (*FollowPlaylist_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method FollowPlaylist not implemented")
+}
+func (UnimplementedPlaylistAPIServer) UnfollowPlaylist(context.Context, *UnfollowPlaylist_Request) (*UnfollowPlaylist_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method UnfollowPlaylist not implemented")
 }
 func (UnimplementedPlaylistAPIServer) mustEmbedUnimplementedPlaylistAPIServer() {}
 func (UnimplementedPlaylistAPIServer) testEmbeddedByValue()                     {}
@@ -378,6 +410,42 @@ func _PlaylistAPI_ListPlaylists_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PlaylistAPI_FollowPlaylist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FollowPlaylist_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlaylistAPIServer).FollowPlaylist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PlaylistAPI_FollowPlaylist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlaylistAPIServer).FollowPlaylist(ctx, req.(*FollowPlaylist_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PlaylistAPI_UnfollowPlaylist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnfollowPlaylist_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlaylistAPIServer).UnfollowPlaylist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PlaylistAPI_UnfollowPlaylist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlaylistAPIServer).UnfollowPlaylist(ctx, req.(*UnfollowPlaylist_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PlaylistAPI_ServiceDesc is the grpc.ServiceDesc for PlaylistAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -420,6 +488,14 @@ var PlaylistAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListPlaylists",
 			Handler:    _PlaylistAPI_ListPlaylists_Handler,
+		},
+		{
+			MethodName: "FollowPlaylist",
+			Handler:    _PlaylistAPI_FollowPlaylist_Handler,
+		},
+		{
+			MethodName: "UnfollowPlaylist",
+			Handler:    _PlaylistAPI_UnfollowPlaylist_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

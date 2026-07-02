@@ -67,6 +67,11 @@ func toPlaylist(pl domain.Playlist) *zpotify_api.Playlist {
 		canEdit = toolbox.ToPtr(true)
 	}
 
+	var isSaved *bool
+	if pl.Permissions != nil && pl.Permissions.IsSaved {
+		isSaved = toolbox.ToPtr(true)
+	}
+
 	return &zpotify_api.Playlist{
 		Uuid:          pl.Uuid,
 		Name:          pl.Name,
@@ -78,6 +83,7 @@ func toPlaylist(pl domain.Playlist) *zpotify_api.Playlist {
 		Year:          pl.Year,
 		Chips:         protoChips,
 		CanEdit:       canEdit,
+		IsSaved:       isSaved,
 	}
 }
 

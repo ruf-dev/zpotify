@@ -57,6 +57,10 @@ type UserStorage interface {
 	SavePermissions(ctx context.Context, id int64, permissions domain.UserPermissions) error
 	GetPermissionsOnPlaylist(ctx context.Context, userId int64, playlistUuid string) (domain.PlaylistPermissions, error)
 	GetPermissions(ctx context.Context, id int64) (domain.UserPermissions, error)
+
+	SetLikedPlaylistId(ctx context.Context, userId int64, playlistUuid string) error
+	FollowPlaylist(ctx context.Context, userId int64, playlistUuid string) error
+	UnfollowPlaylist(ctx context.Context, userId int64, playlistUuid string) error
 }
 
 type FileMetaStorage interface {
@@ -132,9 +136,12 @@ type PlaylistStorage interface {
 	CountSongs(ctx context.Context, r domain.ListSongs) (uint16, error)
 
 	AddSong(ctx context.Context, playlistUuid string, songId int32) error
+	RemoveSong(ctx context.Context, playlistUuid string, songId int32) error
 	SetSongOrder(ctx context.Context, playlistUuid string, songId int64, orderNum int64) error
 	List(ctx context.Context, req domain.ListPlaylists) ([]domain.Playlist, error)
 	CountPlaylists(ctx context.Context, req domain.ListPlaylists) (uint32, error)
+
+	GetOwnerAndVisibility(ctx context.Context, playlistUuid string) (ownerId int64, isPublic bool, err error)
 }
 
 type UserSettingsStorage interface {

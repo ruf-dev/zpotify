@@ -73,6 +73,20 @@ service PlaylistAPI {
       body: "*"
     };
   }
+
+  rpc FollowPlaylist(FollowPlaylist.Request) returns (FollowPlaylist.Response) {
+    option (google.api.http) = {
+      post: "/api/playlist/follow",
+      body: "*"
+    };
+  }
+
+  rpc UnfollowPlaylist(UnfollowPlaylist.Request) returns (UnfollowPlaylist.Response) {
+    option (google.api.http) = {
+      post: "/api/playlist/unfollow",
+      body: "*"
+    };
+  }
 }
 
 
@@ -178,4 +192,18 @@ message ListPlaylists {
     repeated Playlist playlists = 1;
     uint32 total = 2;
   }
+}
+
+message FollowPlaylist {
+  message Request {
+    string playlist_uuid = 1;
+  }
+  message Response {}
+}
+
+message UnfollowPlaylist {
+  message Request {
+    string playlist_uuid = 1;
+  }
+  message Response {}
 }

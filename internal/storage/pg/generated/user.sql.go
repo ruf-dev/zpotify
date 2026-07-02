@@ -8,12 +8,15 @@ package querier
 import (
 	"context"
 	"database/sql"
+
+	"github.com/google/uuid"
 )
 
 const getUserById = `-- name: GetUserById :one
 SELECT id,
        username,
-       avatar_link
+       avatar_link,
+       liked_playlist_id
 FROM users
 WHERE id = $1
 `
@@ -21,7 +24,12 @@ WHERE id = $1
 func (q *Queries) GetUserById(ctx context.Context, id int64) (User, error) {
 	row := q.db.QueryRowContext(ctx, getUserById, id)
 	var i User
-	err := row.Scan(&i.ID, &i.Username, &i.AvatarLink)
+	err := row.Scan(
+		&i.ID,
+		&i.Username,
+		&i.AvatarLink,
+		&i.LikedPlaylistID,
+	)
 	return i, err
 }
 
@@ -93,6 +101,20 @@ type SaveUserSettingsParams struct {
 
 func (q *Queries) SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error {
 	_, err := q.db.ExecContext(ctx, saveUserSettings, arg.UserID, arg.Locale)
+	return err
+}
+
+const setUserLikedPlaylist = `-- name: SetUserLikedPlaylist :exec
+UPDATE users SET liked_playlist_id = $2 WHERE id = $1
+`
+
+type SetUserLikedPlaylistParams struct {
+	ID              int64
+	LikedPlaylistID uuid.UUID
+}
+
+func (q *Queries) SetUserLikedPlaylist(ctx context.Context, arg SetUserLikedPlaylistParams) error {
+	_, err := q.db.ExecContext(ctx, setUserLikedPlaylist, arg.ID, arg.LikedPlaylistID)
 	return err
 }
 

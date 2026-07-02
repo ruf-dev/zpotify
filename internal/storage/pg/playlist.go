@@ -436,6 +436,37 @@ func (p *PlaylistStorage) AddSong(ctx context.Context, playlistUuid string, song
 	return nil
 }
 
+func (p *PlaylistStorage) RemoveSong(ctx context.Context, playlistUuid string, songId int32) error {
+	pUuid, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+	params := generated.RemoveSongFromPlaylistParams{
+		Uuid:   pUuid,
+		SongID: int64(songId),
+	}
+	err = p.querier.RemoveSongFromPlaylist(ctx, params)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
+func (p *PlaylistStorage) GetOwnerAndVisibility(ctx context.Context, playlistUuid string) (int64, bool, error) {
+	pUuid, err := uuid.Parse(playlistUuid)
+	if err != nil {
+		return 0, false, rerrors.Wrap(err, "error parsing playlist uuid")
+	}
+
+	row, err := p.querier.GetPlaylistOwnerAndVisibility(ctx, pUuid)
+	if err != nil {
+		return 0, false, wrapPgErr(err)
+	}
+
+	return row.OwnerID, row.IsPublic, nil
+}
+
 func (p *PlaylistStorage) SetSongOrder(ctx context.Context, playlistUuid string, songId int64, orderNum int64) error {
 	pUuid, err := uuid.Parse(playlistUuid)
 	if err != nil {

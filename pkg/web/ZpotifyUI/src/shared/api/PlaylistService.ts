@@ -12,6 +12,9 @@ import {
     ChangeSongsOrderRequest,
     AddSongToPlaylistRequest,
     AddSongsToPlaylistRequest,
+    DeleteSongRequest,
+    FollowPlaylistRequest,
+    UnfollowPlaylistRequest,
     ListPlaylistsRequest,
     ListPlaylistsResponse,
     type PlaylistChip,
@@ -104,6 +107,9 @@ export interface IPlaylistService {
     UpdatePlaylist(uuid: string, name?: string, description?: string, artistUuids?: string[], coverFileId?: string, year?: number, chips?: PlaylistChip[]): Promise<UpdatePlaylistResponse>;
     ChangeSongsOrder(playlistUuid: string, songIds: number[]): Promise<void>;
     AddSongToPlaylist(playlistUuid: string, songId: number): Promise<void>;
+    DeleteSong(playlistUuid: string, songId: number): Promise<void>;
+    FollowPlaylist(playlistUuid: string): Promise<void>;
+    UnfollowPlaylist(playlistUuid: string): Promise<void>;
     ListUserPlaylists(limit: number, offset: number): Promise<ListPlaylistsResponse>;
     ListLibrary(filter: LibraryFilter): Promise<LibraryItem[]>;
 }
@@ -161,6 +167,27 @@ export class PlaylistService extends BaseService implements IPlaylistService {
         const req: AddSongToPlaylistRequest = { playlistUuid, songId };
         return this.executeAuthApiCall(async (initReq) => {
             return PlaylistAPI.AddSongToPlaylist(req, initReq).then(() => undefined);
+        });
+    }
+
+    async DeleteSong(playlistUuid: string, songId: number): Promise<void> {
+        const req: DeleteSongRequest = { playlistUuid, songId };
+        return this.executeAuthApiCall(async (initReq) => {
+            return PlaylistAPI.DeleteSong(req, initReq).then(() => undefined);
+        });
+    }
+
+    async FollowPlaylist(playlistUuid: string): Promise<void> {
+        const req: FollowPlaylistRequest = { playlistUuid };
+        return this.executeAuthApiCall(async (initReq) => {
+            return PlaylistAPI.FollowPlaylist(req, initReq).then(() => undefined);
+        });
+    }
+
+    async UnfollowPlaylist(playlistUuid: string): Promise<void> {
+        const req: UnfollowPlaylistRequest = { playlistUuid };
+        return this.executeAuthApiCall(async (initReq) => {
+            return PlaylistAPI.UnfollowPlaylist(req, initReq).then(() => undefined);
         });
     }
 

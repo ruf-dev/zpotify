@@ -12,9 +12,13 @@ ON CONFLICT (id)
 -- name: GetUserById :one
 SELECT id,
        username,
-       avatar_link
+       avatar_link,
+       liked_playlist_id
 FROM users
 WHERE id = $1;
+
+-- name: SetUserLikedPlaylist :exec
+UPDATE users SET liked_playlist_id = $2 WHERE id = $1;
 
 -- name: SaveUserSettings :exec
 INSERT INTO user_settings

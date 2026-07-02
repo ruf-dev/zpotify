@@ -8,6 +8,8 @@ import AlbumSidebar from '@/pages/main/album/components/AlbumSidebar/AlbumSideba
 import AlbumMainContent from '@/pages/main/album/components/AlbumMainContent/AlbumMainContent.tsx';
 import cls from '@/pages/main/album/AlbumPage.module.css';
 import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
+import { playlistService } from '@/shared/api/PlaylistService.ts';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 function computeTotalDuration(songs: SongBase[]): string {
     const totalSec = songs.reduce((acc, s) => acc + (s.durationSec ?? 0), 0);
@@ -24,7 +26,8 @@ interface Props {
 export default function AlbumPageScreen({ playlist, songs, username }: Props) {
     const navigate = useNavigate();
     const audioPlayer = useAudioPlayer();
-    const [saved, setSaved] = useState(false);
+    const toaster = useToaster();
+    const [saved, setSaved] = useState(playlist?.isSaved ?? false);
     const [editMode, setEditMode] = useState(false);
     const [orderedSongs, setOrderedSongs] = useState<SongBase[]>(songs);
 
@@ -32,12 +35,26 @@ export default function AlbumPageScreen({ playlist, songs, username }: Props) {
         setOrderedSongs(songs);
     }, [songs]);
 
+    useEffect(() => {
+        setSaved(playlist?.isSaved ?? false);
+    }, [playlist?.uuid, playlist?.isSaved]);
+
     function handleBack() {
         navigate(Path.HomePage);
     }
 
     function handleToggleSave() {
-        setSaved((prev) => !prev);
+        const uuid = playlist?.uuid;
+        if (!uuid) return;
+
+        const next = !saved;
+        setSaved(next);
+
+        const request = next ? playlistService.FollowPlaylist(uuid) : playlistService.UnfollowPlaylist(uuid);
+        void request.catch((e: unknown) => {
+            setSaved(!next);
+            toaster.catch(e as never);
+        });
     }
 
     const coverUrl = buildCoverUrl(playlist?.coverFilePath);

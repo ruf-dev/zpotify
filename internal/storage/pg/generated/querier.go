@@ -21,6 +21,7 @@ type Querier interface {
 	DeleteExpiredSessions(ctx context.Context) error
 	DeleteFileById(ctx context.Context, id int64) error
 	DeleteSongById(ctx context.Context, id int64) error
+	DeleteUserPlaylist(ctx context.Context, arg DeleteUserPlaylistParams) error
 	GetFileByHash(ctx context.Context, arg GetFileByHashParams) (FilesMetum, error)
 	GetFileById(ctx context.Context, id int64) (FilesMetum, error)
 	GetFileByPath(ctx context.Context, filePath string) (FilesMetum, error)
@@ -28,6 +29,7 @@ type Querier interface {
 	GetHomeSegments(ctx context.Context, userID int64) ([]UserHomeSegment, error)
 	GetPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) ([]Artist, error)
 	GetPlaylistChips(ctx context.Context, playlistUuid uuid.UUID) ([]GetPlaylistChipsRow, error)
+	GetPlaylistOwnerAndVisibility(ctx context.Context, argUuid uuid.UUID) (GetPlaylistOwnerAndVisibilityRow, error)
 	GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error)
 	GetTelegramIdentityByTgId(ctx context.Context, telegramID int64) (IdentityTelegram, error)
 	GetTelegramIdentityByTgIdForUpdate(ctx context.Context, telegramID int64) (IdentityTelegram, error)
@@ -43,9 +45,11 @@ type Querier interface {
 	InsertUser(ctx context.Context, arg InsertUserParams) (int64, error)
 	ListSessionsByUserId(ctx context.Context, userID int64) ([]UserSession, error)
 	ListUserPermissionsByUserId(ctx context.Context, userID int64) (UserPermission, error)
+	RemoveSongFromPlaylist(ctx context.Context, arg RemoveSongFromPlaylistParams) error
 	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error
 	SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error
 	SetSongOrderInPlaylist(ctx context.Context, arg SetSongOrderInPlaylistParams) error
+	SetUserLikedPlaylist(ctx context.Context, arg SetUserLikedPlaylistParams) error
 	UpdateFile(ctx context.Context, arg UpdateFileParams) error
 	UpdatePlaylist(ctx context.Context, arg UpdatePlaylistParams) error
 	UpdatePlaylistCoverFileId(ctx context.Context, arg UpdatePlaylistCoverFileIdParams) error

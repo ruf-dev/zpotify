@@ -17,8 +17,9 @@ func (impl *Impl) Me(ctx context.Context, _ *zpotify_api.Me_Request) (*zpotify_a
 	}
 
 	userData := &zpotify_api.UserData{
-		Username:   user.Username,
-		PictureUrl: nullStringPtr(user.PhotoUrl),
+		Username:        user.Username,
+		PictureUrl:      nullStringPtr(user.PhotoUrl),
+		LikedPlaylistId: user.LikedPlaylistId,
 	}
 	out := &zpotify_api.Me_Response{
 		UserData:    userData,

@@ -290,6 +290,60 @@ func local_request_PlaylistAPI_ListPlaylists_0(ctx context.Context, marshaler ru
 	return msg, metadata, err
 }
 
+func request_PlaylistAPI_FollowPlaylist_0(ctx context.Context, marshaler runtime.Marshaler, client PlaylistAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq FollowPlaylist_Request
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	msg, err := client.FollowPlaylist(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_PlaylistAPI_FollowPlaylist_0(ctx context.Context, marshaler runtime.Marshaler, server PlaylistAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq FollowPlaylist_Request
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.FollowPlaylist(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+func request_PlaylistAPI_UnfollowPlaylist_0(ctx context.Context, marshaler runtime.Marshaler, client PlaylistAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq UnfollowPlaylist_Request
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	msg, err := client.UnfollowPlaylist(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_PlaylistAPI_UnfollowPlaylist_0(ctx context.Context, marshaler runtime.Marshaler, server PlaylistAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq UnfollowPlaylist_Request
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.UnfollowPlaylist(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 // RegisterPlaylistAPIHandlerServer registers the http handlers for service PlaylistAPI to "mux".
 // UnaryRPC     :call PlaylistAPIServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -475,6 +529,46 @@ func RegisterPlaylistAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 		forward_PlaylistAPI_ListPlaylists_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_PlaylistAPI_FollowPlaylist_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zpotify_api.PlaylistAPI/FollowPlaylist", runtime.WithHTTPPathPattern("/api/playlist/follow"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_PlaylistAPI_FollowPlaylist_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_PlaylistAPI_FollowPlaylist_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_PlaylistAPI_UnfollowPlaylist_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zpotify_api.PlaylistAPI/UnfollowPlaylist", runtime.WithHTTPPathPattern("/api/playlist/unfollow"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_PlaylistAPI_UnfollowPlaylist_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_PlaylistAPI_UnfollowPlaylist_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -669,6 +763,40 @@ func RegisterPlaylistAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		}
 		forward_PlaylistAPI_ListPlaylists_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodPost, pattern_PlaylistAPI_FollowPlaylist_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zpotify_api.PlaylistAPI/FollowPlaylist", runtime.WithHTTPPathPattern("/api/playlist/follow"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_PlaylistAPI_FollowPlaylist_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_PlaylistAPI_FollowPlaylist_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_PlaylistAPI_UnfollowPlaylist_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zpotify_api.PlaylistAPI/UnfollowPlaylist", runtime.WithHTTPPathPattern("/api/playlist/unfollow"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_PlaylistAPI_UnfollowPlaylist_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_PlaylistAPI_UnfollowPlaylist_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	return nil
 }
 
@@ -682,6 +810,8 @@ var (
 	pattern_PlaylistAPI_AddSongsToPlaylist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "playlist", "add_songs"}, ""))
 	pattern_PlaylistAPI_UpdatePlaylist_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "playlist", "update"}, ""))
 	pattern_PlaylistAPI_ListPlaylists_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "playlist", "list"}, ""))
+	pattern_PlaylistAPI_FollowPlaylist_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "playlist", "follow"}, ""))
+	pattern_PlaylistAPI_UnfollowPlaylist_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "playlist", "unfollow"}, ""))
 )
 
 var (
@@ -694,4 +824,6 @@ var (
 	forward_PlaylistAPI_AddSongsToPlaylist_0 = runtime.ForwardResponseMessage
 	forward_PlaylistAPI_UpdatePlaylist_0     = runtime.ForwardResponseMessage
 	forward_PlaylistAPI_ListPlaylists_0      = runtime.ForwardResponseMessage
+	forward_PlaylistAPI_FollowPlaylist_0     = runtime.ForwardResponseMessage
+	forward_PlaylistAPI_UnfollowPlaylist_0   = runtime.ForwardResponseMessage
 )

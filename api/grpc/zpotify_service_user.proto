@@ -28,6 +28,7 @@ service UserAPI {
 message UserData {
   string username = 1;
   optional string picture_url = 2;
+  string liked_playlist_id = 3;
 }
 
 message Me {

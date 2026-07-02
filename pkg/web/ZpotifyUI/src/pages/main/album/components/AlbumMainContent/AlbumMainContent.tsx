@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import cls from '@/pages/main/album/components/AlbumMainContent/AlbumMainContent.module.css';
 import type { SongBase } from '@/app/api/zpotify';
 import { selectFlagEnabled, useFeatureFlags } from '@/entities/feature-flags/useFeatureFlags.ts';
+import { useLikedSongs } from '@/entities/song/useLikedSongs.ts';
+import useUser from '@/entities/user/useUser.ts';
 import { ClockIcon } from '@/assets/icons/ClockIcon.tsx';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
@@ -39,12 +41,17 @@ export default function AlbumMainContent({
     editMode,
     playlistUuid,
 }: AlbumMainContentProps) {
-    const [likedSongIds, setLikedSongIds] = useState<Set<string>>(new Set());
     const [animatingHeartId, setAnimatingHeartId] = useState<string | null>(null);
     const [drag, setDrag] = useState<Drag>(null);
     const [dropIdx, setDropIdx] = useState<number | null>(null);
     const commentsEnabled = useFeatureFlags((s) => selectFlagEnabled(s, 'IS_COMMENTS_ON_ALBUM_ENABLED'));
     const toaster = useToaster();
+
+    const likedPlaylistId = useUser((s) => s.userData?.likedPlaylistId);
+    const likedSongIds = useLikedSongs((s) => s.likedSongIds);
+    const fetchLikedSongs = useLikedSongs((s) => s.fetchLikedSongs);
+    const likeSong = useLikedSongs((s) => s.likeSong);
+    const unlikeSong = useLikedSongs((s) => s.unlikeSong);
 
     const dropIdxRef = useRef<number | null>(null);
     const rowRefs = useRef<Record<string, HTMLDivElement>>({});
@@ -53,16 +60,15 @@ export default function AlbumMainContent({
         dropIdxRef.current = dropIdx;
     }, [dropIdx]);
 
+    useEffect(() => {
+        if (!likedPlaylistId) return;
+        void fetchLikedSongs(likedPlaylistId);
+    }, [likedPlaylistId, fetchLikedSongs]);
+
     function handleToggleLike(songId: string) {
-        setLikedSongIds((prev) => {
-            const next = new Set(prev);
-            if (next.has(songId)) {
-                next.delete(songId);
-            } else {
-                next.add(songId);
-            }
-            return next;
-        });
+        const toggle = likedSongIds.has(songId) ? unlikeSong : likeSong;
+        void toggle(songId).catch((e: unknown) => toaster.catch(e as never));
+
         setAnimatingHeartId(songId);
         setTimeout(() => setAnimatingHeartId(null), 350);
     }

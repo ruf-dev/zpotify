@@ -15,3 +15,6 @@ ON CONFLICT (user_id, playlist_id)
                   can_add_songs    = excluded.can_add_songs,
                   can_edit         = excluded.can_edit;
 
+-- name: DeleteUserPlaylist :exec
+DELETE FROM user_playlists WHERE user_id = $1 AND playlist_id = $2;
+

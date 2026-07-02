@@ -24,19 +24,26 @@ func NewAdminNotifier(bot go_tg.TgApi, chatId int64) *AdminNotifier {
 	return notifier
 }
 
-// NotifyNewUser sends a message with a "Grant access" button to the admin chat.
-// No-op if the notifications chat isn't configured.
-func (n *AdminNotifier) NotifyNewUser(userId int64, username string) error {
+// NotifyNewUser sends a message with "Give access" and "Give creator access" buttons
+// to the admin chat. No-op if the notifications chat isn't configured.
+func (n *AdminNotifier) NotifyNewUser(userId int64, displayName string, username string) error {
 	if n.chatId == 0 {
 		return nil
 	}
 
-	grantAccessButton := keyboard.NewButton("Grant access", fmt.Sprintf("/grant_access %d", userId))
+	giveAccessButton := keyboard.NewButton("Give access", fmt.Sprintf("/grant_access %d", userId))
+	giveCreatorAccessButton := keyboard.NewButton("Give creator access", fmt.Sprintf("/grant_creator_access %d", userId))
 
 	keys := &keyboard.GridKeyboard{}
-	keys.AddButton(grantAccessButton)
+	keys.AddButton(giveAccessButton)
+	keys.AddButton(giveCreatorAccessButton)
 
-	text := fmt.Sprintf("New user registered: @%s (id=%d)", username, userId)
+	usernameSuffix := ""
+	if username != "" {
+		usernameSuffix = " @" + username
+	}
+
+	text := fmt.Sprintf("New user registered: %s%s (id=%d)", displayName, usernameSuffix, userId)
 
 	msg := response.New().
 		SetText(text).

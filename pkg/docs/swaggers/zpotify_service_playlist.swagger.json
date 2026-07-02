@@ -144,6 +144,38 @@
         ]
       }
     },
+    "/api/playlist/follow": {
+      "post": {
+        "operationId": "PlaylistAPI_FollowPlaylist",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiFollowPlaylistResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiFollowPlaylistRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PlaylistAPI"
+        ]
+      }
+    },
     "/api/playlist/list": {
       "post": {
         "summary": "TODO: Implement",
@@ -233,6 +265,38 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/zpotify_apiChangeSongsOrderRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PlaylistAPI"
+        ]
+      }
+    },
+    "/api/playlist/unfollow": {
+      "post": {
+        "operationId": "PlaylistAPI_UnfollowPlaylist",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiUnfollowPlaylistResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiUnfollowPlaylistRequest"
             }
           }
         ],
@@ -453,6 +517,17 @@
     "zpotify_apiDeleteSongResponse": {
       "type": "object"
     },
+    "zpotify_apiFollowPlaylistRequest": {
+      "type": "object",
+      "properties": {
+        "playlistUuid": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiFollowPlaylistResponse": {
+      "type": "object"
+    },
     "zpotify_apiGetPlaylistResponse": {
       "type": "object",
       "properties": {
@@ -575,6 +650,9 @@
         },
         "canEdit": {
           "type": "boolean"
+        },
+        "isSaved": {
+          "type": "boolean"
         }
       }
     },
@@ -618,6 +696,17 @@
           "format": "int64"
         }
       }
+    },
+    "zpotify_apiUnfollowPlaylistRequest": {
+      "type": "object",
+      "properties": {
+        "playlistUuid": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiUnfollowPlaylistResponse": {
+      "type": "object"
     },
     "zpotify_apiUpdatePlaylistRequest": {
       "type": "object",

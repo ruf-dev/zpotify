@@ -6,6 +6,7 @@ type PlaylistPermissions struct {
 	CanDeleteSongs bool
 	CanAddSongs    bool
 	CanEdit        bool
+	IsSaved        bool
 }
 
 type PlaylistChip struct {
@@ -75,6 +76,11 @@ type AddSongToPlaylist struct {
 type AddSongsToPlaylist struct {
 	PlaylistUuid string
 	SongIds      []int32
+}
+
+type DeleteSongFromPlaylist struct {
+	PlaylistUuid string
+	SongId       int32
 }
 
 type PlaylistFilter struct {

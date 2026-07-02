@@ -176,6 +176,9 @@
         },
         "pictureUrl": {
           "type": "string"
+        },
+        "likedPlaylistId": {
+          "type": "string"
         }
       }
     },

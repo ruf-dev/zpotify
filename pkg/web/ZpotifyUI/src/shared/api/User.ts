@@ -18,6 +18,7 @@ export default class UserService extends BaseService {
                 username: r.userData.username,
                 permissions: r.permissions,
                 pictureUrl: r.userData.pictureUrl,
+                likedPlaylistId: r.userData.likedPlaylistId,
             } as UserInfo;
         });
     }
