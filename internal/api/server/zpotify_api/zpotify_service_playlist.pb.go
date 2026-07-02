@@ -786,6 +786,7 @@ func (x *UpdatePlaylist_Request) GetChips() []*PlaylistChip {
 
 type UpdatePlaylist_Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	CoverFilePath *string                `protobuf:"bytes,1,opt,name=cover_file_path,json=coverFilePath,proto3,oneof" json:"cover_file_path,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -818,6 +819,13 @@ func (x *UpdatePlaylist_Response) ProtoReflect() protoreflect.Message {
 // Deprecated: Use UpdatePlaylist_Response.ProtoReflect.Descriptor instead.
 func (*UpdatePlaylist_Response) Descriptor() ([]byte, []int) {
 	return file_zpotify_service_playlist_proto_rawDescGZIP(), []int{3, 1}
+}
+
+func (x *UpdatePlaylist_Response) GetCoverFilePath() string {
+	if x != nil && x.CoverFilePath != nil {
+		return *x.CoverFilePath
+	}
+	return ""
 }
 
 type GetPlaylist_Request struct {
@@ -1312,7 +1320,7 @@ const file_zpotify_service_playlist_proto_rawDesc = "" +
 	"\x0e_cover_file_idB\a\n" +
 	"\x05_year\x1a\x1e\n" +
 	"\bResponse\x12\x12\n" +
-	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\xf6\x02\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\xb7\x03\n" +
 	"\x0eUpdatePlaylist\x1a\xd7\x02\n" +
 	"\aRequest\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x17\n" +
@@ -1328,9 +1336,10 @@ const file_zpotify_service_playlist_proto_rawDesc = "" +
 	"\n" +
 	"_is_publicB\x10\n" +
 	"\x0e_cover_file_idB\a\n" +
-	"\x05_year\x1a\n" +
-	"\n" +
-	"\bResponse\"k\n" +
+	"\x05_year\x1aK\n" +
+	"\bResponse\x12+\n" +
+	"\x0fcover_file_path\x18\x01 \x01(\tH\x00R\rcoverFilePath\x88\x01\x01B\x12\n" +
+	"\x10_cover_file_path\"k\n" +
 	"\vGetPlaylist\x1a\x1d\n" +
 	"\aRequest\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x1a=\n" +
@@ -1462,6 +1471,7 @@ func file_zpotify_service_playlist_proto_init() {
 	file_zpotify_service_playlist_proto_msgTypes[9].OneofWrappers = []any{}
 	file_zpotify_service_playlist_proto_msgTypes[13].OneofWrappers = []any{}
 	file_zpotify_service_playlist_proto_msgTypes[15].OneofWrappers = []any{}
+	file_zpotify_service_playlist_proto_msgTypes[16].OneofWrappers = []any{}
 	file_zpotify_service_playlist_proto_msgTypes[25].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

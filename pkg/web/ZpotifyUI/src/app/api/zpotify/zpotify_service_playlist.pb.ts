@@ -58,7 +58,9 @@ export type UpdatePlaylistRequest = {
   chips?: ZpotifyApiZpotifyCommon.PlaylistChip[];
 };
 
-export type UpdatePlaylistResponse = Record<string, never>;
+export type UpdatePlaylistResponse = {
+  coverFilePath?: string;
+};
 
 export type UpdatePlaylist = Record<string, never>;
 

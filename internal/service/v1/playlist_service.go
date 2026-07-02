@@ -79,7 +79,7 @@ func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistP
 
 			if req.CoverFileId != nil {
 				jobStorage := p.jobStorage.WithTx(tx)
-				createErr = p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, jobStorage, playlistUuid, *req.CoverFileId, req.ArtistUuids, userCtx.UserId)
+				_, createErr = p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, jobStorage, playlistUuid, *req.CoverFileId, req.ArtistUuids, userCtx.UserId)
 				if createErr != nil {
 					return rerrors.Wrap(createErr, "error handling cover file")
 				}
@@ -122,19 +122,21 @@ func (p *PlaylistService) Get(ctx context.Context, playlistUuid string) (domain.
 	return playlist, nil
 }
 
-func (p *PlaylistService) Update(ctx context.Context, req domain.UpdatePlaylistParams) error {
+func (p *PlaylistService) Update(ctx context.Context, req domain.UpdatePlaylistParams) (domain.UpdatePlaylistResult, error) {
+	result := domain.UpdatePlaylistResult{}
+
 	userCtx, ok := user_context.GetUserContext(ctx)
 	if !ok {
-		return rerrors.Wrap(service_errors.ErrUnauthenticated)
+		return result, rerrors.Wrap(service_errors.ErrUnauthenticated)
 	}
 
 	permissions, err := p.userStorage.GetPermissionsOnPlaylist(ctx, userCtx.UserId, req.Uuid)
 	if err != nil {
-		return rerrors.Wrap(err, "error getting permissions on playlist")
+		return result, rerrors.Wrap(err, "error getting permissions on playlist")
 	}
 
 	if !permissions.CanDeleteSongs {
-		return rerrors.Wrap(service_errors.ErrUnauthorized)
+		return result, rerrors.Wrap(service_errors.ErrUnauthorized)
 	}
 
 	err = p.txManager.Execute(func(tx *sql.Tx) error {
@@ -190,16 +192,20 @@ func (p *PlaylistService) Update(ctx context.Context, req domain.UpdatePlaylistP
 			}
 
 			jobStorage := p.jobStorage.WithTx(tx)
-			coverErr := p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, jobStorage, req.Uuid, *req.CoverFileId, updatedArtists, userCtx.UserId)
+			coverFilePath, coverErr := p.moveCoverFile(ctx, fileMetaStorage, playlistStorage, jobStorage, req.Uuid, *req.CoverFileId, updatedArtists, userCtx.UserId)
 			if coverErr != nil {
 				return rerrors.Wrap(coverErr, "error handling cover file")
 			}
+			result.CoverFilePath = &coverFilePath
 		}
 
 		return nil
 	})
+	if err != nil {
+		return domain.UpdatePlaylistResult{}, rerrors.Wrap(err)
+	}
 
-	return err
+	return result, nil
 }
 
 func (p *PlaylistService) ListSongs(ctx context.Context, req domain.ListSongs) (domain.SongsInPlaylist, error) {
@@ -376,7 +382,7 @@ func (p *PlaylistService) resolveCoverPath(ctx context.Context, pl *domain.Playl
 		return
 	}
 
-	pl.CoverFilePath = meta.FilePath
+	pl.CoverFilePath = buildVersionedCoverPath(meta.FilePath, meta.ContentHash)
 }
 
 func (p *PlaylistService) moveCoverFile(
@@ -388,10 +394,15 @@ func (p *PlaylistService) moveCoverFile(
 	coverFileId int64,
 	artistUuids []string,
 	userId int64,
-) error {
+) (string, error) {
 	coverMeta, err := fileMetaStorage.Get(ctx, coverFileId)
 	if err != nil {
-		return rerrors.Wrap(err, "error getting cover file meta")
+		return "", rerrors.Wrap(err, "error getting cover file meta")
+	}
+
+	if !coverMeta.Verified {
+		return "", rerrors.Wrap(service_errors.ErrFileNotVerified,
+			"file you are trying to use as a playlist cover is not verified")
 	}
 
 	ext := path.Ext(coverMeta.FilePath)
@@ -407,24 +418,41 @@ func (p *PlaylistService) moveCoverFile(
 
 	err = p.binaryStorage.Copy(ctx, oldPath, newPath)
 	if err != nil {
-		return rerrors.Wrap(err, "error copying cover file")
+		return "", rerrors.Wrap(err, "error copying cover file")
 	}
 
 	coverMeta.FilePath = newPath
 	err = fileMetaStorage.Update(ctx, coverFileId, coverMeta.File)
 	if err != nil {
-		return rerrors.Wrap(err, "error updating cover file meta")
+		return "", rerrors.Wrap(err, "error updating cover file meta")
 	}
 
 	err = jobStorage.EnqueueGarbageFile(ctx, oldPath)
 	if err != nil {
-		return rerrors.Wrap(err, "error enqueueing old cover file for deletion")
+		return "", rerrors.Wrap(err, "error enqueueing old cover file for deletion")
 	}
 
 	err = playlistStorage.UpdateCoverFileId(ctx, playlistUuid, coverFileId)
 	if err != nil {
-		return rerrors.Wrap(err, "error updating playlist cover file id")
+		return "", rerrors.Wrap(err, "error updating playlist cover file id")
 	}
 
-	return nil
+	return buildVersionedCoverPath(newPath, coverMeta.ContentHash), nil
+}
+
+// buildVersionedCoverPath appends a content-hash-derived query param to a
+// cover file path so that clients bust their image cache whenever the
+// underlying cover content changes, even though the stored path itself is
+// stable across re-uploads.
+func buildVersionedCoverPath(filePath, contentHash string) string {
+	if contentHash == "" {
+		return filePath
+	}
+
+	hashLen := 12
+	if len(contentHash) < hashLen {
+		hashLen = len(contentHash)
+	}
+
+	return filePath + "?v=" + contentHash[:hashLen]
 }

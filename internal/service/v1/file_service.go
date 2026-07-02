@@ -5,7 +5,13 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
+	"image"
+	// registers jpeg/png/gif decoders with image.DecodeConfig for cover image verification.
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
 	"io"
+	"net/http"
 	"path"
 	"strings"
 
@@ -77,6 +83,45 @@ func isSupportedUpload(name string) bool {
 	return ok
 }
 
+// isCoverImageUpload reports whether the file is one of the supported cover
+// image formats, as opposed to an audio track.
+func isCoverImageUpload(name string) bool {
+	ext := strings.ToLower(path.Ext(name))
+	_, ok := coverImageExtensions[ext]
+	return ok
+}
+
+// sniffHeaderSize is the number of bytes http.DetectContentType inspects to
+// determine a file's content type.
+const sniffHeaderSize = 512
+
+// verifyImage checks that r actually decodes as the image format implied by
+// ext. The stdlib has no webp decoder, so webp is verified via content
+// sniffing instead of a full decode.
+func verifyImage(ext string, r io.Reader) error {
+	if ext == ".webp" {
+		header := make([]byte, sniffHeaderSize)
+		n, err := io.ReadFull(r, header)
+		if err != nil && !errors.Is(err, io.ErrUnexpectedEOF) && !errors.Is(err, io.EOF) {
+			return rerrors.Wrap(err, "error reading file header")
+		}
+
+		contentType := http.DetectContentType(header[:n])
+		if contentType != "image/webp" {
+			return rerrors.Wrap(service_errors.ErrInvalidImageFile, "file is not a valid webp image")
+		}
+
+		return nil
+	}
+
+	_, _, err := image.DecodeConfig(r)
+	if err != nil {
+		return rerrors.Wrap(service_errors.ErrInvalidImageFile, "file is not a decodable image")
+	}
+
+	return nil
+}
+
 // countingWriter tracks how many bytes have been written through it, used to
 // measure an upload's real size while it is streamed to disk.
 type countingWriter struct {
@@ -140,6 +185,26 @@ func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, cont
 		return 0, service_errors.ErrSongSizeLimitExceeded
 	}
 
+	isCoverImage := isCoverImageUpload(fileNameWithExt)
+	verified := false
+	if isCoverImage {
+		rc, getErr := s.binaryStorage.GetFile(ctx, tmpFilePath)
+		if getErr != nil {
+			_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
+			return 0, rerrors.Wrap(getErr, "error opening uploaded cover image for verification")
+		}
+
+		ext := strings.ToLower(path.Ext(fileNameWithExt))
+		verifyErr := verifyImage(ext, rc)
+		utils.CloseWithLog(rc, tmpFilePath)
+		if verifyErr != nil {
+			_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
+			return 0, rerrors.Wrap(verifyErr)
+		}
+
+		verified = true
+	}
+
 	contentHash := hex.EncodeToString(hashWriter.Sum(nil))
 
 	existingFile, err := s.storage.GetByHash(ctx, contentHash, uCtx.UserId)
@@ -167,6 +232,7 @@ func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, cont
 			FilePath:    tmpFilePath,
 			SizeBytes:   sizeCounter.n,
 			ContentHash: contentHash,
+			Verified:    verified,
 		},
 		AddedById: uCtx.UserId,
 	}
@@ -176,9 +242,11 @@ func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, cont
 		return 0, rerrors.Wrap(err, "error saving file meta")
 	}
 
-	enqErr := s.jobs.EnqueueAudioParseJob(ctx, id, tmpFilePath)
-	if enqErr != nil {
-		log.Warn().Err(enqErr).Int64("file_id", id).Msg("failed to enqueue audio parse job")
+	if !isCoverImage {
+		enqErr := s.jobs.EnqueueAudioParseJob(ctx, id, tmpFilePath)
+		if enqErr != nil {
+			log.Warn().Err(enqErr).Int64("file_id", id).Msg("failed to enqueue audio parse job")
+		}
 	}
 
 	return id, nil

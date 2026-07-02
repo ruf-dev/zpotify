@@ -53,6 +53,10 @@ type UpdatePlaylistParams struct {
 	Chips       []PlaylistChip
 }
 
+type UpdatePlaylistResult struct {
+	CoverFilePath *string
+}
+
 type SongsInPlaylist struct {
 	Songs []PlaylistSong
 	Total uint16

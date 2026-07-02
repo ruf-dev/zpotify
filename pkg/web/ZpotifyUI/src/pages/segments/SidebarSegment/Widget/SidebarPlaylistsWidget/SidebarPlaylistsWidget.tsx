@@ -6,6 +6,7 @@ import { usePlaylistListRefresh } from '@/entities/playlist/usePlaylistListRefre
 import PlaylistRow from '@/pages/segments/SidebarSegment/components/PlaylistRow/PlaylistRow';
 import type { PlaylistRowData } from '@/pages/segments/SidebarSegment/components/PlaylistRow/PlaylistRow';
 import cls from '@/pages/segments/SidebarSegment/Widget/SidebarPlaylistsWidget/SidebarPlaylistsWidget.module.css';
+import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
 
 type PlaylistItem = PlaylistRowData;
 
@@ -13,12 +14,6 @@ function uuidToHslColor(uuid: string): string {
     let hash = 0;
     for (let i = 0; i < uuid.length; i++) hash = (hash * 31 + uuid.charCodeAt(i)) | 0;
     return `hsl(${Math.abs(hash) % 360}, 55%, 45%)`;
-}
-
-function buildCoverUrl(filePath?: string): string | undefined {
-    if (!filePath) return undefined;
-    const base = (import.meta.env.VITE_ZPOTIFY_WEBSERVER as string | undefined) ?? '';
-    return `${base}/${filePath}`;
 }
 
 interface SidebarPlaylistsWidgetProps {

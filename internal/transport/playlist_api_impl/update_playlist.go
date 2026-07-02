@@ -33,10 +33,14 @@ func (impl *Impl) UpdatePlaylist(ctx context.Context, req *zpotify_api.UpdatePla
 		updateReq.Year = &year
 	}
 
-	err := impl.playlistService.Update(ctx, updateReq)
+	result, err := impl.playlistService.Update(ctx, updateReq)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error updating playlist")
 	}
 
-	return &zpotify_api.UpdatePlaylist_Response{}, nil
+	resp := &zpotify_api.UpdatePlaylist_Response{
+		CoverFilePath: result.CoverFilePath,
+	}
+
+	return resp, nil
 }

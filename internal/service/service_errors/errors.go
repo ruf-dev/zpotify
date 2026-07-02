@@ -23,4 +23,6 @@ var (
 	ErrTrackMustHaveOneArtist = rerrors.New("at least one artist is required", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
 
 	ErrUnsupportedUploadFormat = rerrors.New("unsupported file format", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
+
+	ErrInvalidImageFile = rerrors.New("uploaded file is not a valid image", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
 )

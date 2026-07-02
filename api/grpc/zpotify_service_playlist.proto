@@ -128,7 +128,9 @@ message UpdatePlaylist {
     repeated PlaylistChip chips = 8;
   }
 
-  message Response {}
+  message Response {
+    optional string cover_file_path = 1;
+  }
 }
 
 

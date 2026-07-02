@@ -10,6 +10,7 @@ import { albumPath } from '@/app/routing/paths.ts';
 import LazyLoadSongsList from '@/widgets/TrackList/LazyLoadSongsList.tsx';
 import { usePlaylist } from '@/pages//main/playlist/usePlaylist.ts';
 import GenerativeCover from '@/components/GenerativeCover/GenerativeCover.tsx';
+import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
 
 import RandomArrows from '@/assets/player/ShuffleArrows.tsx';
 import PlayIcon from '@/assets/icons/PlayIcon.tsx';
@@ -23,12 +24,6 @@ function resolveCoverSeed(playlist: Playlist): number {
     }
     const uuid = playlist.uuid ?? '0';
     return (uuid.charCodeAt(0) % 7) + 1;
-}
-
-function buildCoverUrl(filePath?: string): string | undefined {
-    if (!filePath) return undefined;
-    const base = (import.meta.env.VITE_ZPOTIFY_WEBSERVER as string | undefined) ?? '';
-    return `${base}/${filePath}`;
 }
 
 interface PlaylistSidebarProps {

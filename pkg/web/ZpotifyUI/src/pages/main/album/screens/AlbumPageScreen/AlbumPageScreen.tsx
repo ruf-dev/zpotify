@@ -7,12 +7,7 @@ import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
 import AlbumSidebar from '@/pages/main/album/components/AlbumSidebar/AlbumSidebar.tsx';
 import AlbumMainContent from '@/pages/main/album/components/AlbumMainContent/AlbumMainContent.tsx';
 import cls from '@/pages/main/album/AlbumPage.module.css';
-
-function buildCoverUrl(filePath?: string): string | undefined {
-    if (!filePath) return undefined;
-    const base = (import.meta.env.VITE_ZPOTIFY_WEBSERVER as string | undefined) ?? '';
-    return `${base}/${filePath}`;
-}
+import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
 
 function computeTotalDuration(songs: SongBase[]): string {
     const totalSec = songs.reduce((acc, s) => acc + (s.durationSec ?? 0), 0);

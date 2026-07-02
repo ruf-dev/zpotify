@@ -134,7 +134,7 @@ type AuthService interface {
 type PlaylistService interface {
 	Create(ctx context.Context, req domain.CreatePlaylistParams) (string, error)
 	Get(ctx context.Context, playlistUuid string) (domain.Playlist, error)
-	Update(ctx context.Context, req domain.UpdatePlaylistParams) error
+	Update(ctx context.Context, req domain.UpdatePlaylistParams) (domain.UpdatePlaylistResult, error)
 	ChangeSongsOrder(ctx context.Context, params domain.ChangeSongsOrderParams) error
 
 	ListSongs(ctx context.Context, songs domain.ListSongs) (domain.SongsInPlaylist, error)

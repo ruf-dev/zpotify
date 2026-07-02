@@ -21,6 +21,7 @@ import EditableArtistPicker from '@/pages/main/album/components/EditableArtistPi
 import { artistsService } from '@/shared/api/ArtistsService.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { webApiService } from '@/shared/api/WebApi.ts';
+import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 const SECTION_TRANSITION = { duration: 0.2, ease: [0.4, 0, 0.2, 1] } as const;
@@ -34,12 +35,6 @@ function resolveCoverSeed(playlist: Playlist): number {
     }
     const uuid = playlist.uuid ?? '0';
     return (uuid.charCodeAt(0) % 7) + 1;
-}
-
-function buildCoverUrl(filePath?: string): string | undefined {
-    if (!filePath) return undefined;
-    const base = (import.meta.env.VITE_ZPOTIFY_WEBSERVER as string | undefined) ?? '';
-    return `${base}/${filePath}`;
 }
 
 export interface AlbumSidebarProps {
@@ -124,7 +119,7 @@ export default function AlbumSidebar({
                 coverFileId = await webApiService.UploadFile(editCover);
             }
             const artistUuids = editArtists.map((a) => a.id);
-            await playlistService.UpdatePlaylist(
+            const response = await playlistService.UpdatePlaylist(
                 playlist.uuid ?? '',
                 editName.trim(),
                 editDesc.trim(),
@@ -133,6 +128,13 @@ export default function AlbumSidebar({
                 editYear,
                 [],
             );
+            if (response.coverFilePath) {
+                queryClient.setQueryData(['playlist', playlist.uuid], (old: Playlist | null | undefined) =>
+                    old ? { ...old, coverFilePath: response.coverFilePath } : old,
+                );
+            }
+            setEditCover(undefined);
+            setCoverPreviewUrl(undefined);
             await queryClient.invalidateQueries({ queryKey: ['playlist', playlist.uuid] });
             onExitEditMode();
         } catch (e) {

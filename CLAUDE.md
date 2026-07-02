@@ -95,6 +95,12 @@ React 18 + TypeScript, built with Vite. State: Zustand. Backend calls via **gRPC
 
 Frontend source: `pkg/web/ZpotifyUI/src/`. API client processes live in `src/processes/`.
 
+## Testing Changes
+
+- **Never self-test by starting the backend server, running docker compose, or exercising the app end-to-end.** There is usually already a dev instance running (check `lsof -i :8087` before assuming otherwise) — starting a second one can bind-fail, fight over the same DB, or interfere with the user's live session.
+- Verification you *can* do yourself: `go build`, `go test`, `go vet`, `golangci-lint run`, `bun run build`, `bun lint`, and — for new migrations — `goose -dir migrations up` / `down` against the already-running dev DB (safe, idempotent, doesn't touch a running server process).
+- For anything that requires exercising the running app (manual UI flows, API calls against a live server), do not run it yourself. Instead, write out a concrete manual test plan (steps, expected results, edge cases) and hand it to the user to run themselves.
+
 ## Go Coding Rules
 
 - **Always use `utils.CloseWithLog(c, "subject")` for deferred closes** instead of inline `defer c.Close()` or manual close-with-error-log patterns. The function is at `internal/utils/closer.go` (`go.zpotify.ru/zpotify/internal/utils`).

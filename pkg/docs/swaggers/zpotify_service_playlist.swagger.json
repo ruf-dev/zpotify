@@ -658,7 +658,12 @@
       }
     },
     "zpotify_apiUpdatePlaylistResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "coverFilePath": {
+          "type": "string"
+        }
+      }
     }
   }
 }
