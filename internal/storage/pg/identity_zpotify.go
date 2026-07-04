@@ -15,7 +15,7 @@ type ZpotifyIdentityStorage struct {
 }
 
 func (s *ZpotifyIdentityStorage) GetByLogoPass(ctx context.Context, login string, password string) (domain.ZpotifyIdentity, error) {
-	//TODO
+	// TODO
 	return domain.ZpotifyIdentity{}, nil
 }
 

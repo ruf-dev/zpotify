@@ -97,7 +97,7 @@ func (s *SessionStorage) WithTx(tx *sql.Tx) storage.SessionStorage {
 
 func toDomainUserSession(s querier.UserSession) domain.UserSession {
 	return domain.UserSession{
-		UserId:           int64(s.UserID),
+		UserId:           s.UserID,
 		AccessToken:      s.AccessToken,
 		AccessExpiresAt:  s.AccessExpireAt,
 		RefreshToken:     s.RefreshToken,

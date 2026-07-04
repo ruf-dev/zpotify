@@ -122,7 +122,7 @@ func (s *SongsStorage) CreateBatch(ctx context.Context, songs []songs_q.CreateSo
 	if err != nil {
 		return nil, wrapPgErr(err)
 	}
-	defer rows.Close()
+	defer utils.CloseWithLog(rows, "songs batch insert rows")
 
 	ids := make([]int64, 0, len(songs))
 	for rows.Next() {
@@ -198,6 +198,7 @@ func (s *SongsStorage) listArtists(ctx context.Context, songId int64) ([]domain.
 
 	return domainArtists, nil
 }
+
 func (s *SongsStorage) WithTx(tx *sql.Tx) storage.SongStorage {
 	return &SongsStorage{
 		db:      &txWrapper{tx},

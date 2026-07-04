@@ -88,7 +88,8 @@ func (f *File) Get(start, end int64) io.ReadCloser {
 			f.mu.Unlock()
 
 			// Write chunk to pipe
-			if _, err := pw.Write(chunk); err != nil {
+			_, err := pw.Write(chunk)
+			if err != nil {
 				return
 			}
 		}
@@ -145,7 +146,7 @@ func (f *File) Size() int64 {
 }
 
 // IsInitializedSwap - if file is initialized - return true
-// is not - sets flag to "initialized" and return false
+// is not - sets flag to "initialized" and return false.
 func (f *File) IsInitializedSwap() bool {
 	return !f.isInitialized.CompareAndSwap(false, true)
 }

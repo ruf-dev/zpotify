@@ -9,7 +9,6 @@ import (
 	sq "github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
-
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
@@ -66,7 +65,8 @@ func (s *PlaylistStorage) ListSongs(ctx context.Context, r domain.ListSongs) ([]
 			"artist_info",
 			"file_path",
 			"file_id",
-		)}.
+		),
+	}.
 		buildSongBaseQuery().
 		applyListQueryFilters(r).
 		applyListQueryOrder(r).
@@ -78,7 +78,7 @@ func (s *PlaylistStorage) ListSongs(ctx context.Context, r domain.ListSongs) ([]
 		return nil, rerrors.Wrap(err, "error building query")
 	}
 
-	rows, err := s.db.QueryContext(ctx, querySql, args...)
+	rows, err := s.db.QueryContext(ctx, querySql, args...) //nolint:sqlclosecheck // closed below via closeRowScanner
 	if err != nil {
 		return nil, wrapPgErr(err)
 	}
@@ -111,6 +111,11 @@ func (s *PlaylistStorage) ListSongs(ctx context.Context, r domain.ListSongs) ([]
 		}
 
 		songs = append(songs, song)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, wrapPgErr(err)
 	}
 
 	return songs, nil
@@ -513,7 +518,7 @@ func (p *PlaylistStorage) List(ctx context.Context, req domain.ListPlaylists) ([
 		return nil, rerrors.Wrap(err, "error building list playlists query")
 	}
 
-	rows, err := p.db.QueryContext(ctx, querySql, args...)
+	rows, err := p.db.QueryContext(ctx, querySql, args...) //nolint:sqlclosecheck // closed below via closeRowScanner
 	if err != nil {
 		return nil, wrapPgErr(err)
 	}
@@ -552,13 +557,18 @@ func (p *PlaylistStorage) List(ctx context.Context, req domain.ListPlaylists) ([
 			playlist.Year = &year.Int32
 		}
 
-		artists, err := p.GetPlaylistArtists(ctx, id.String())
-		if err != nil {
-			return nil, rerrors.Wrap(err, "error getting playlist artists")
+		artists, artistsErr := p.GetPlaylistArtists(ctx, id.String())
+		if artistsErr != nil {
+			return nil, rerrors.Wrap(artistsErr, "error getting playlist artists")
 		}
 		playlist.Artists = artists
 
 		playlists = append(playlists, playlist)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, wrapPgErr(err)
 	}
 
 	return playlists, nil
@@ -570,7 +580,7 @@ type playlistsListBuilder struct {
 
 func (b playlistsListBuilder) applyFilters(req domain.ListPlaylists) playlistsListBuilder {
 	if !req.Filter.UserId.Valid {
-		b.SelectBuilder = b.SelectBuilder.Where(sq.Eq{"v.is_public": true})
+		b.SelectBuilder = b.Where(sq.Eq{"v.is_public": true})
 		return b
 	}
 
@@ -589,9 +599,9 @@ func (b playlistsListBuilder) applyFilters(req domain.ListPlaylists) playlistsLi
 
 func (b playlistsListBuilder) applySorting(req domain.ListPlaylists) playlistsListBuilder {
 	if req.ByAuthedUser {
-		b.SelectBuilder = b.SelectBuilder.OrderBy("up.order_id")
+		b.SelectBuilder = b.OrderBy("up.order_id")
 	} else {
-		b.SelectBuilder = b.SelectBuilder.OrderBy("v.uuid")
+		b.SelectBuilder = b.OrderBy("v.uuid")
 	}
 
 	return b

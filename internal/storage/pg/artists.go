@@ -10,6 +10,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
+	"go.zpotify.ru/zpotify/internal/utils"
 )
 
 type ArtistsStorage struct {
@@ -85,7 +86,7 @@ func (a *ArtistsStorage) Upsert(ctx context.Context, artists []domain.ArtistsBas
 		return nil, wrapPgErr(err)
 	}
 
-	defer scnr.Close()
+	defer utils.CloseWithLog(scnr, "artists insert scanner")
 
 	res := make([]domain.ArtistsBase, 0, len(artists))
 	for scnr.Next() {
@@ -99,6 +100,11 @@ func (a *ArtistsStorage) Upsert(ctx context.Context, artists []domain.ArtistsBas
 		}
 
 		res = append(res, artist)
+	}
+
+	err = scnr.Err()
+	if err != nil {
+		return nil, wrapPgErr(err)
 	}
 
 	return res, nil
@@ -125,11 +131,11 @@ func (a *ArtistsStorage) List(ctx context.Context, req domain.ListArtists) ([]do
 		return nil, rerrors.Wrap(err)
 	}
 
-	rows, err := a.db.QueryContext(ctx, query, args...)
+	rows, err := a.db.QueryContext(ctx, query, args...) //nolint:sqlclosecheck // closed below via utils.CloseWithLog
 	if err != nil {
 		return nil, rerrors.Wrap(err)
 	}
-	defer rows.Close()
+	defer utils.CloseWithLog(rows, "artists list rows")
 
 	out := make([]domain.ArtistsBase, 0)
 	for rows.Next() {
@@ -143,6 +149,11 @@ func (a *ArtistsStorage) List(ctx context.Context, req domain.ListArtists) ([]do
 			return nil, rerrors.Wrap(err)
 		}
 		out = append(out, artist)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, rerrors.Wrap(err)
 	}
 
 	return out, nil

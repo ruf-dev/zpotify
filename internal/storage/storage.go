@@ -152,7 +152,7 @@ type UserSettingsStorage interface {
 	SetHomeSegment(ctx context.Context, userId int64, segment domain.UserHomeSegment) error
 }
 
-// BinaryFileStorage - describes a provider to store / retrieve actual binary file data
+// BinaryFileStorage - describes a provider to store / retrieve actual binary file data.
 type BinaryFileStorage interface {
 	// SaveToTempFolder - downloads file and stores it to temporary folder
 	SaveToTempFolder(ctx context.Context, userId int64, filePath string, content io.Reader) (tempPath string, err error)

@@ -99,9 +99,6 @@ func (d *dataStorage) TxManager() *tx_manager.TxManager {
 	return tx_manager.New(d.conn)
 }
 
-type errInfo struct {
-}
-
 type wrapperOpt func(e error) error
 
 func wrapPgErr(err error, opt ...wrapperOpt) error {
@@ -124,10 +121,6 @@ func wrapPgErr(err error, opt ...wrapperOpt) error {
 	}
 
 	return err
-}
-
-type scanner interface {
-	Scan(dest ...interface{}) error
 }
 
 func closeRowScanner(s closer.Closable) {

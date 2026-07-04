@@ -52,6 +52,7 @@ func (s *FileMetaStorage) Get(ctx context.Context, fileId int64) (file domain.Fi
 
 	return toFileDomain(fileDb), nil
 }
+
 func (s *FileMetaStorage) GetBySongId(ctx context.Context, songId int32) (domain.FileMeta, error) {
 	fileDb, err := s.q.GetFileBySongId(ctx, int64(songId))
 	if err != nil {
@@ -114,7 +115,6 @@ func (s *FileMetaStorage) List(ctx context.Context, listReq domain.ListFileMeta)
 	//}
 
 	return files, nil
-
 }
 
 func (s *FileMetaStorage) Delete(ctx context.Context, fileId int64) error {
@@ -159,12 +159,12 @@ func toFileDomain(f querier.FilesMetum) domain.FileMeta {
 		Id: f.ID,
 		File: domain.File{
 			FilePath:    f.FilePath,
-			SizeBytes:   int64(f.SizeBytes),
+			SizeBytes:   f.SizeBytes,
 			Duration:    time.Duration(f.DurationSec) * time.Second,
 			Verified:    f.Verified,
 			ContentHash: f.ContentHash,
 		},
-		AddedById: int64(f.AddedByID),
+		AddedById: f.AddedByID,
 	}
 }
 
