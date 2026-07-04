@@ -199,12 +199,14 @@ SELECT playlists.uuid,
        playlists.cover_file_id,
        fm.file_path AS cover_file_path,
        playlists.year,
-       playlists.song_count
+       playlists.song_count,
+       owner.username AS owner_username
 FROM playlists
          LEFT JOIN user_playlists AS up
                    ON up.playlist_id = playlists.uuid
                        AND user_id = $1
          LEFT JOIN files_meta fm ON fm.id = playlists.cover_file_id
+         LEFT JOIN users owner ON owner.id = playlists.owner_id
 WHERE playlists.uuid = $2
   AND (
     playlists.is_public
@@ -226,6 +228,7 @@ type GetPlaylistWithAuthRow struct {
 	CoverFilePath sql.NullString
 	Year          sql.NullInt32
 	SongCount     int32
+	OwnerUsername sql.NullString
 }
 
 func (q *Queries) GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error) {
@@ -240,6 +243,7 @@ func (q *Queries) GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAu
 		&i.CoverFilePath,
 		&i.Year,
 		&i.SongCount,
+		&i.OwnerUsername,
 	)
 	return i, err
 }

@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import type { Playlist, SongBase } from '@/app/api/zpotify';
 import { Path } from '@/app/routing/paths.ts';
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
-import AlbumSidebar from '@/pages/main/album/components/AlbumSidebar/AlbumSidebar.tsx';
-import AlbumMainContent from '@/pages/main/album/components/AlbumMainContent/AlbumMainContent.tsx';
-import cls from '@/pages/main/album/AlbumPage.module.css';
+import Sidebar from '@/widgets/PlaylistScreen/components/Sidebar/Sidebar.tsx';
+import MainContent from '@/widgets/PlaylistScreen/components/MainContent/MainContent.tsx';
+import cls from '@/widgets/PlaylistScreen/PlaylistScreenWidget.module.css';
 import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
@@ -21,9 +21,11 @@ interface Props {
     playlist: Playlist | null;
     songs: SongBase[];
     username: string;
+    isListEnded?: boolean;
+    onLoadMore?: () => void;
 }
 
-export default function AlbumPageScreen({ playlist, songs, username }: Props) {
+export default function PlaylistScreenWidget({ playlist, songs, username, isListEnded, onLoadMore }: Props) {
     const navigate = useNavigate();
     const audioPlayer = useAudioPlayer();
     const toaster = useToaster();
@@ -83,10 +85,10 @@ export default function AlbumPageScreen({ playlist, songs, username }: Props) {
     const trackCount = songs.length > 0 ? songs.length : (playlist?.songCount ?? 0);
 
     return (
-        <div className={cls.AlbumPageContainer}>
+        <div className={cls.PlaylistScreenContainer}>
             <div className={cls.AmbientWash} />
             <div className={cls.Body}>
-                <AlbumSidebar
+                <Sidebar
                     playlist={playlist}
                     totalDuration={totalDuration}
                     trackCount={trackCount}
@@ -98,7 +100,7 @@ export default function AlbumPageScreen({ playlist, songs, username }: Props) {
                     onEnterEditMode={() => setEditMode(true)}
                     onExitEditMode={() => setEditMode(false)}
                 />
-                <AlbumMainContent
+                <MainContent
                     songs={orderedSongs}
                     currentTrackPath={audioPlayer.trackPath}
                     onPlaySong={handlePlaySong}
@@ -107,6 +109,8 @@ export default function AlbumPageScreen({ playlist, songs, username }: Props) {
                     canEdit={playlist?.canEdit ?? false}
                     editMode={editMode}
                     playlistUuid={playlist?.uuid}
+                    isListEnded={isListEnded}
+                    onLoadMore={onLoadMore}
                 />
             </div>
         </div>

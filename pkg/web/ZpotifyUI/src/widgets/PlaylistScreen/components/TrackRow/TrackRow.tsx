@@ -1,7 +1,7 @@
 import { type MouseEvent } from 'react';
 import cn from 'classnames';
 
-import cls from '@/pages/main/album/components/AlbumTrackRow/AlbumTrackRow.module.css';
+import cls from '@/widgets/PlaylistScreen/components/TrackRow/TrackRow.module.css';
 import type { SongBase } from '@/app/api/zpotify';
 import NowPlayingBars from '@/assets/icons/NowPlayingBars.tsx';
 import { HeartIcon } from '@/assets/icons/HeartIcon.tsx';
@@ -31,7 +31,7 @@ function GripIcon() {
     );
 }
 
-export interface AlbumTrackRowProps {
+export interface TrackRowProps {
     song: SongBase;
     index: number;
     isPlaying: boolean;
@@ -46,7 +46,7 @@ export interface AlbumTrackRowProps {
     rowRef?: (el: HTMLDivElement | null) => void;
 }
 
-export default function AlbumTrackRow({
+export default function TrackRow({
     song,
     index,
     isPlaying,
@@ -59,7 +59,7 @@ export default function AlbumTrackRow({
     dragStyle,
     anyDragging,
     rowRef,
-}: AlbumTrackRowProps) {
+}: TrackRowProps) {
     function handleRowClick() {
         if (anyDragging) return;
         onPlay();

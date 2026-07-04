@@ -42,6 +42,15 @@ func (s *Service) LoginViaTelegram(ctx context.Context, idToken string) (domain.
 		tgStorage := s.telegramIdentityStorage.WithTx(tx)
 		sessionStorage := s.sessionStorage.WithTx(tx)
 
+		// SELECT ... FOR UPDATE in GetByTgIdTx can only lock an existing row, so it
+		// can't serialize two concurrent logins for a brand-new telegram id: both
+		// would see "not found" and each create a duplicate user + liked playlist.
+		// An advisory lock keyed on the telegram id serializes that case too.
+		_, txErr := tx.ExecContext(ctx, "SELECT pg_advisory_xact_lock($1)", tgClaims.Id)
+		if txErr != nil {
+			return rerrors.Wrap(txErr, "acquire telegram login advisory lock")
+		}
+
 		identityValue, txErr := tgStorage.GetByTgIdTx(ctx, tgClaims.Id)
 		if txErr != nil {
 			return rerrors.Wrap(txErr, "get telegram identity for update")

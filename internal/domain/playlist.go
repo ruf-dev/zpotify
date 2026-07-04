@@ -26,6 +26,7 @@ type Playlist struct {
 	Year          *int32
 	Chips         []PlaylistChip
 	Permissions   *PlaylistPermissions
+	OwnerUsername string
 }
 
 type ChangeSongsOrderParams struct {

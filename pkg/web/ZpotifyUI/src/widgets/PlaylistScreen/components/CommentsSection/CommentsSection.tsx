@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent } from 'react';
 import cn from 'classnames';
 
-import cls from '@/pages/main/album/components/CommentsSection/CommentsSection.module.css';
+import cls from '@/widgets/PlaylistScreen/components/CommentsSection/CommentsSection.module.css';
 import { HeartIcon } from '@/assets/icons/HeartIcon.tsx';
 
 interface MockComment {

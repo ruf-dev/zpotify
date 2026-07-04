@@ -33,11 +33,16 @@ func (s *UserStorage) GetUserById(ctx context.Context, userId int64) (domain.Use
 		return domain.UserBaseInfo{}, wrapPgErr(err)
 	}
 
+	var likedPlaylistId string
+	if row.LikedPlaylistID.Valid {
+		likedPlaylistId = row.LikedPlaylistID.UUID.String()
+	}
+
 	return domain.UserBaseInfo{
 		Id:              row.ID,
 		Username:        row.Username,
 		PhotoUrl:        sql.Null[string]{V: row.AvatarLink.String, Valid: row.AvatarLink.Valid},
-		LikedPlaylistId: row.LikedPlaylistID.String(),
+		LikedPlaylistId: likedPlaylistId,
 	}, nil
 }
 
@@ -134,7 +139,7 @@ func (s *UserStorage) SetLikedPlaylistId(ctx context.Context, userId int64, play
 
 	params := querier.SetUserLikedPlaylistParams{
 		ID:              userId,
-		LikedPlaylistID: parsedUuid,
+		LikedPlaylistID: uuid.NullUUID{UUID: parsedUuid, Valid: true},
 	}
 
 	err = s.querier.SetUserLikedPlaylist(ctx, params)

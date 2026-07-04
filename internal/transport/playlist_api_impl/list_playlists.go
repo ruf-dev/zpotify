@@ -72,6 +72,11 @@ func toPlaylist(pl domain.Playlist) *zpotify_api.Playlist {
 		isSaved = toolbox.ToPtr(true)
 	}
 
+	var ownerUsername *string
+	if pl.OwnerUsername != "" {
+		ownerUsername = toolbox.ToPtr(pl.OwnerUsername)
+	}
+
 	return &zpotify_api.Playlist{
 		Uuid:          pl.Uuid,
 		Name:          pl.Name,
@@ -84,6 +89,7 @@ func toPlaylist(pl domain.Playlist) *zpotify_api.Playlist {
 		Chips:         protoChips,
 		CanEdit:       canEdit,
 		IsSaved:       isSaved,
+		OwnerUsername: ownerUsername,
 	}
 }
 

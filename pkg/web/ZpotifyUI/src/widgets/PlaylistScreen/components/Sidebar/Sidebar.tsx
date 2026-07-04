@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'classnames';
 
-import cls from '@/pages/main/album/components/AlbumSidebar/AlbumSidebar.module.css';
+import cls from '@/widgets/PlaylistScreen/components/Sidebar/Sidebar.module.css';
 import type { Playlist } from '@/app/api/zpotify';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import GenerativeCover from '@/components/GenerativeCover/GenerativeCover.tsx';
@@ -16,8 +16,9 @@ import EditIcon from '@/assets/icons/EditIcon.tsx';
 import SaveIcon from '@/assets/icons/SaveIcon.tsx';
 import { RemoveIcon } from '@/assets/icons/RemoveIcon.tsx';
 import { UploadArrowIcon } from '@/assets/icons/UploadArrowIcon.tsx';
-import EditableText from '@/pages/main/album/components/EditableText/EditableText.tsx';
-import EditableArtistPicker from '@/pages/main/album/components/EditableArtistPicker/EditableArtistPicker.tsx';
+import EditableText from '@/widgets/PlaylistScreen/components/EditableText/EditableText.tsx';
+import EditableArtistPicker from '@/widgets/PlaylistScreen/components/EditableArtistPicker/EditableArtistPicker.tsx';
+import { isAlbum } from '@/entities/playlist/isAlbum.ts';
 import { artistsService } from '@/shared/api/ArtistsService.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { webApiService } from '@/shared/api/WebApi.ts';
@@ -37,7 +38,7 @@ function resolveCoverSeed(playlist: Playlist): number {
     return (uuid.charCodeAt(0) % 7) + 1;
 }
 
-export interface AlbumSidebarProps {
+export interface SidebarProps {
     playlist: Playlist | null;
     totalDuration: string;
     trackCount: number;
@@ -50,7 +51,7 @@ export interface AlbumSidebarProps {
     onExitEditMode: () => void;
 }
 
-export default function AlbumSidebar({
+export default function Sidebar({
     playlist,
     totalDuration,
     trackCount,
@@ -61,7 +62,7 @@ export default function AlbumSidebar({
     editMode,
     onEnterEditMode,
     onExitEditMode,
-}: AlbumSidebarProps) {
+}: SidebarProps) {
     const seed = playlist ? resolveCoverSeed(playlist) : 1;
     const coverUrl = buildCoverUrl(playlist?.coverFilePath);
     const artistName = playlist?.artists?.[0]?.name ?? 'Unknown Artist';
@@ -178,14 +179,14 @@ export default function AlbumSidebar({
                 <BackButton onClick={onBack} />
                 <div className={cls.ErrorState}>
                     <span className={cls.ErrorIcon}>!</span>
-                    <p className={cls.ErrorTitle}>Album not found</p>
-                    <p className={cls.ErrorHint}>This album may have been removed or is unavailable.</p>
+                    <p className={cls.ErrorTitle}>Playlist not found</p>
+                    <p className={cls.ErrorHint}>This playlist may have been removed or is unavailable.</p>
                 </div>
             </div>
         );
     }
 
-    const isAlbum = (playlist.artists?.length ?? 0) > 0;
+    const playlistIsAlbum = isAlbum(playlist);
     const displayCoverUrl = coverPreviewUrl ?? coverUrl;
 
     return (
@@ -219,7 +220,7 @@ export default function AlbumSidebar({
             </div>
 
             <div className={cls.TitleBlock}>
-                <span className={cls.TypeLabel}>{isAlbum ? 'album' : 'playlist'}</span>
+                <span className={cls.TypeLabel}>{playlistIsAlbum ? 'album' : 'playlist'}</span>
 
                 <EditableText
                     displayValue={playlist.name ?? ''}
@@ -232,16 +233,26 @@ export default function AlbumSidebar({
                     placeholder="name…"
                 />
 
-                <EditableArtistPicker
-                    displayName={artistName}
-                    displayClassName={cls.ArtistName}
-                    artists={editArtists}
-                    isEditing={editMode}
-                    onChange={setEditArtists}
-                    loadOptions={loadArtistOptions}
-                    onCreateArtist={handleCreateArtist}
-                    preloadedArtists={editArtists}
-                />
+                {playlistIsAlbum ? (
+                    <EditableArtistPicker
+                        displayName={artistName}
+                        displayClassName={cls.ArtistName}
+                        artists={editArtists}
+                        isEditing={editMode}
+                        onChange={setEditArtists}
+                        loadOptions={loadArtistOptions}
+                        onCreateArtist={handleCreateArtist}
+                        preloadedArtists={editArtists}
+                    />
+                ) : (
+                    <span
+                        className={cls.ArtistName}
+                        data-tooltip-id="root-tooltip"
+                        data-tooltip-content="The user who created this playlist"
+                    >
+                        Author: {playlist.ownerUsername || 'Unknown'}
+                    </span>
+                )}
 
                 <div className={cls.MetaRow}>
                     {(playlist.year != null || editMode) && (

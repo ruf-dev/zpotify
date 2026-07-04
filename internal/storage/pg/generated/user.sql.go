@@ -110,7 +110,7 @@ UPDATE users SET liked_playlist_id = $2 WHERE id = $1
 
 type SetUserLikedPlaylistParams struct {
 	ID              int64
-	LikedPlaylistID uuid.UUID
+	LikedPlaylistID uuid.NullUUID
 }
 
 func (q *Queries) SetUserLikedPlaylist(ctx context.Context, arg SetUserLikedPlaylistParams) error {

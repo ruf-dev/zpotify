@@ -221,6 +221,10 @@ func (p *PlaylistStorage) Get(ctx context.Context, userId int64, playlistUuid st
 		playlist.Year = &row.Year.Int32
 	}
 
+	if row.OwnerUsername.Valid {
+		playlist.OwnerUsername = row.OwnerUsername.String
+	}
+
 	artists, err := p.GetPlaylistArtists(ctx, playlistUuid)
 	if err != nil {
 		return domain.Playlist{}, rerrors.Wrap(err, "error getting playlist artists")

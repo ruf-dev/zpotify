@@ -23,7 +23,13 @@ BEGIN
 END $$;
 -- +goose StatementEnd
 
-ALTER TABLE users ALTER COLUMN liked_playlist_id SET NOT NULL;
+-- Column is intentionally left nullable: CreateUser inserts a user row before
+-- that user's liked playlist can exist (playlists.owner_id requires the user
+-- to already exist), so liked_playlist_id is only set afterwards via
+-- SetUserLikedPlaylist. A NOT NULL constraint here breaks every new user
+-- insert.
 
 -- +goose Down
+DELETE FROM user_playlists WHERE playlist_id IN (SELECT liked_playlist_id FROM users WHERE liked_playlist_id IS NOT NULL);
+DELETE FROM playlists WHERE uuid IN (SELECT liked_playlist_id FROM users WHERE liked_playlist_id IS NOT NULL);
 ALTER TABLE users DROP COLUMN liked_playlist_id;

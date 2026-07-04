@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import cls from '@/pages/main/album/components/AlbumMainContent/AlbumMainContent.module.css';
+import cls from '@/widgets/PlaylistScreen/components/MainContent/MainContent.module.css';
 import type { SongBase } from '@/app/api/zpotify';
 import { selectFlagEnabled, useFeatureFlags } from '@/entities/feature-flags/useFeatureFlags.ts';
 import { useLikedSongs } from '@/entities/song/useLikedSongs.ts';
@@ -8,8 +8,9 @@ import useUser from '@/entities/user/useUser.ts';
 import { ClockIcon } from '@/assets/icons/ClockIcon.tsx';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
-import AlbumTrackRow from '@/pages/main/album/components/AlbumTrackRow/AlbumTrackRow.tsx';
-import CommentsSection from '@/pages/main/album/components/CommentsSection/CommentsSection.tsx';
+import TrackRow from '@/widgets/PlaylistScreen/components/TrackRow/TrackRow.tsx';
+import CommentsSection from '@/widgets/PlaylistScreen/components/CommentsSection/CommentsSection.tsx';
+import ZButton from '@/shared/ui/ZButton/ZButton.tsx';
 
 type Drag = {
     id: string;
@@ -20,7 +21,7 @@ type Drag = {
     settling: boolean;
 } | null;
 
-export interface AlbumMainContentProps {
+export interface MainContentProps {
     songs: SongBase[];
     currentTrackPath: string | null;
     onPlaySong: (song: SongBase) => void;
@@ -29,9 +30,11 @@ export interface AlbumMainContentProps {
     canEdit?: boolean;
     editMode?: boolean;
     playlistUuid?: string;
+    isListEnded?: boolean;
+    onLoadMore?: () => void;
 }
 
-export default function AlbumMainContent({
+export default function MainContent({
     songs,
     currentTrackPath,
     onPlaySong,
@@ -40,7 +43,9 @@ export default function AlbumMainContent({
     canEdit,
     editMode,
     playlistUuid,
-}: AlbumMainContentProps) {
+    isListEnded,
+    onLoadMore,
+}: MainContentProps) {
     const [animatingHeartId, setAnimatingHeartId] = useState<string | null>(null);
     const [drag, setDrag] = useState<Drag>(null);
     const [dropIdx, setDropIdx] = useState<number | null>(null);
@@ -192,7 +197,7 @@ export default function AlbumMainContent({
                 {songs.map((song, i) => {
                     const id = song.id ?? String(i);
                     return (
-                        <AlbumTrackRow
+                        <TrackRow
                             key={song.id}
                             song={song}
                             index={i + 1}
@@ -213,6 +218,8 @@ export default function AlbumMainContent({
                     );
                 })}
             </div>
+
+            {onLoadMore && !isListEnded && <ZButton title={'Load more'} onClick={onLoadMore} />}
 
             {commentsEnabled && <CommentsSection username={username} />}
         </div>

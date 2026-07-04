@@ -275,6 +275,7 @@ type Playlist struct {
 	Chips         []*PlaylistChip        `protobuf:"bytes,9,rep,name=chips,proto3" json:"chips,omitempty"`
 	CanEdit       *bool                  `protobuf:"varint,10,opt,name=can_edit,json=canEdit,proto3,oneof" json:"can_edit,omitempty"`
 	IsSaved       *bool                  `protobuf:"varint,11,opt,name=is_saved,json=isSaved,proto3,oneof" json:"is_saved,omitempty"`
+	OwnerUsername *string                `protobuf:"bytes,12,opt,name=owner_username,json=ownerUsername,proto3,oneof" json:"owner_username,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -386,6 +387,13 @@ func (x *Playlist) GetIsSaved() bool {
 	return false
 }
 
+func (x *Playlist) GetOwnerUsername() string {
+	if x != nil && x.OwnerUsername != nil {
+		return *x.OwnerUsername
+	}
+	return ""
+}
+
 type SongFile struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -459,7 +467,7 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\afile_id\x18\x06 \x01(\x03R\x06fileId\"8\n" +
 	"\fPlaylistChip\x12\x12\n" +
 	"\x04kind\x18\x01 \x01(\tR\x04kind\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value\"\xda\x03\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value\"\x99\x04\n" +
 	"\bPlaylist\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
@@ -473,13 +481,15 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\x05chips\x18\t \x03(\v2\x19.zpotify_api.PlaylistChipR\x05chips\x12\x1e\n" +
 	"\bcan_edit\x18\n" +
 	" \x01(\bH\x04R\acanEdit\x88\x01\x01\x12\x1e\n" +
-	"\bis_saved\x18\v \x01(\bH\x05R\aisSaved\x88\x01\x01B\x0e\n" +
+	"\bis_saved\x18\v \x01(\bH\x05R\aisSaved\x88\x01\x01\x12*\n" +
+	"\x0eowner_username\x18\f \x01(\tH\x06R\rownerUsername\x88\x01\x01B\x0e\n" +
 	"\f_descriptionB\r\n" +
 	"\v_song_countB\x12\n" +
 	"\x10_cover_file_pathB\a\n" +
 	"\x05_yearB\v\n" +
 	"\t_can_editB\v\n" +
-	"\t_is_saved\".\n" +
+	"\t_is_savedB\x11\n" +
+	"\x0f_owner_username\".\n" +
 	"\bSongFile\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04path\x18\x02 \x01(\tR\x04pathB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"

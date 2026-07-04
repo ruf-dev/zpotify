@@ -42,6 +42,7 @@ export type Playlist = {
   chips?: PlaylistChip[];
   canEdit?: boolean;
   isSaved?: boolean;
+  ownerUsername?: string;
 };
 
 export type SongFile = {

@@ -653,6 +653,9 @@
         },
         "isSaved": {
           "type": "boolean"
+        },
+        "ownerUsername": {
+          "type": "string"
         }
       }
     },

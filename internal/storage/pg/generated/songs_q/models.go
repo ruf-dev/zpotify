@@ -338,7 +338,7 @@ type User struct {
 	ID              int64
 	Username        string
 	AvatarLink      sql.NullString
-	LikedPlaylistID uuid.UUID
+	LikedPlaylistID uuid.NullUUID
 }
 
 type UserHomeSegment struct {
