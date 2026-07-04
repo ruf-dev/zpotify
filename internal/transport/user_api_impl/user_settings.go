@@ -75,7 +75,6 @@ func toPbHomeSegments(segment []domain.UserHomeSegment) ([]*zpotify_api.HomePage
 }
 
 func toPbHomeSegment(s domain.UserHomeSegment) (*zpotify_api.HomePageSegment, error) {
-
 	switch s.Type {
 	case querier.UserHomeSegmentTypePlaylist:
 		return toPlaylistSegment(s)
@@ -90,7 +89,7 @@ func toPlaylistSegment(s domain.UserHomeSegment) (*zpotify_api.HomePageSegment, 
 
 	err := json.Unmarshal(s.Segment, seg)
 	if err != nil {
-		//TODO make more tolerant to errors
+		// TODO make more tolerant to errors
 		return nil, rerrors.Wrap(err, "error unmarshalling segment data")
 	}
 

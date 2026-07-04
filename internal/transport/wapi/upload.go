@@ -13,25 +13,25 @@ import (
 	"go.zpotify.ru/zpotify/internal/log"
 )
 
-func (s *Server) Upload(w http.ResponseWriter, r *http.Request) {
+func (s *Server) Upload(writer http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	method := r.Method
 	if method != http.MethodPost {
-		w.WriteHeader(http.StatusMethodNotAllowed)
+		writer.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
 
 	filename, filePart, err := extractFilePart(r)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		_, _ = w.Write([]byte(err.Error()))
+		writer.WriteHeader(http.StatusBadRequest)
+		_, _ = writer.Write([]byte(err.Error()))
 		return
 	}
 
 	id, err := s.fileService.SaveFile(ctx, filename, filePart)
 	if err != nil {
-		unwrapError(ctx, w, rerrors.Wrap(err, "error in file service StoreToLocalStorage"))
+		unwrapError(ctx, writer, rerrors.Wrap(err, "error in file service StoreToLocalStorage"))
 		return
 	}
 
@@ -42,7 +42,7 @@ func (s *Server) Upload(w http.ResponseWriter, r *http.Request) {
 	})
 
 	response := fmt.Sprintf(`{"id": %d}`, id)
-	_, _ = w.Write([]byte(response))
+	_, _ = writer.Write([]byte(response))
 }
 
 func extractFilePart(r *http.Request) (string, io.Reader, error) {

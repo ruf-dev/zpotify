@@ -5,6 +5,8 @@ import (
 	"io/fs"
 	"net/http"
 	"strings"
+
+	"go.zpotify.ru/zpotify/internal/utils"
 )
 
 //go:embed all:dist
@@ -28,7 +30,7 @@ func (h *spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if path != "" {
 		f, err := h.fs.Open(path)
 		if err == nil {
-			f.Close()
+			utils.CloseWithLog(f, "embedded ui file")
 			http.FileServer(http.FS(h.fs)).ServeHTTP(w, r)
 			return
 		}

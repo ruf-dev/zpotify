@@ -6,14 +6,11 @@ import (
 	"github.com/Red-Sock/go_tg/model/response"
 
 	"go.zpotify.ru/zpotify/internal/localization"
-	v1 "go.zpotify.ru/zpotify/internal/service/v1"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/add"
 )
 
 type Handler struct {
 	responseBuilder *localization.ResponseBuilder
-
-	fileService v1.AudioService
 
 	addHandler *add.Handler
 }

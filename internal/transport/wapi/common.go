@@ -12,7 +12,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/service/service_errors"
 )
 
-func unwrapError(ctx context.Context, w http.ResponseWriter, err error) {
+func unwrapError(ctx context.Context, writer http.ResponseWriter, err error) {
 	if err == nil {
 		return
 	}
@@ -24,35 +24,35 @@ func unwrapError(ctx context.Context, w http.ResponseWriter, err error) {
 	}
 
 	if stderrs.Is(err, service_errors.ErrNotFound) {
-		w.WriteHeader(http.StatusNotFound)
-		_, _ = w.Write([]byte(err.Error()))
+		writer.WriteHeader(http.StatusNotFound)
+		_, _ = writer.Write([]byte(err.Error()))
 		return
 	}
 
 	if stderrs.Is(err, service_errors.ErrPendingTrackLimitReached) {
-		w.WriteHeader(http.StatusTooManyRequests)
-		_, _ = w.Write([]byte(err.Error()))
+		writer.WriteHeader(http.StatusTooManyRequests)
+		_, _ = writer.Write([]byte(err.Error()))
 		return
 	}
 
 	if stderrs.Is(err, service_errors.ErrSongSizeLimitExceeded) {
-		w.WriteHeader(http.StatusTooManyRequests)
-		_, _ = w.Write([]byte(err.Error()))
+		writer.WriteHeader(http.StatusTooManyRequests)
+		_, _ = writer.Write([]byte(err.Error()))
 		return
 	}
 
 	if stderrs.Is(err, service_errors.ErrTotalUploadSizeLimitExceeded) {
-		w.WriteHeader(http.StatusTooManyRequests)
-		_, _ = w.Write([]byte(err.Error()))
+		writer.WriteHeader(http.StatusTooManyRequests)
+		_, _ = writer.Write([]byte(err.Error()))
 		return
 	}
 
 	if stderrs.Is(err, service_errors.ErrUnsupportedUploadFormat) {
-		w.WriteHeader(http.StatusBadRequest)
-		_, _ = w.Write([]byte(err.Error()))
+		writer.WriteHeader(http.StatusBadRequest)
+		_, _ = writer.Write([]byte(err.Error()))
 		return
 	}
 
-	w.WriteHeader(http.StatusInternalServerError)
-	_, _ = w.Write([]byte(err.Error()))
+	writer.WriteHeader(http.StatusInternalServerError)
+	_, _ = writer.Write([]byte(err.Error()))
 }
