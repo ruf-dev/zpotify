@@ -50,39 +50,3 @@ func toSong(base domain.Song) *zpotify_api.SongBase {
 		//DurationSec: int32(base.Duration.Seconds()),
 	}
 }
-
-func toArtists(artists []domain.ArtistsBase) []*zpotify_api.ArtistBase {
-	res := make([]*zpotify_api.ArtistBase, 0, len(artists))
-
-	for _, artist := range artists {
-		res = append(res, toArtist(artist))
-	}
-
-	return res
-}
-
-func toArtist(base domain.ArtistsBase) *zpotify_api.ArtistBase {
-	return &zpotify_api.ArtistBase{
-		Name: base.Name,
-	}
-}
-
-func mockSongs(offSet int) []domain.SongBase {
-	out := make([]domain.SongBase, 0, 20)
-	for i := 0; i < cap(out); i++ {
-		out = append(out,
-			domain.SongBase{
-				//UniqueFileId: strconv.Itoa(i + offSet),
-				Title: "When did you get hot?",
-				//Artists: []domain.ArtistsBase{
-				//	{
-				//		Name: "Sabrina Carpenter",
-				//	},
-				//},
-				//Duration: 3*time.Minute + time.Second*14,
-			},
-		)
-	}
-
-	return out
-}

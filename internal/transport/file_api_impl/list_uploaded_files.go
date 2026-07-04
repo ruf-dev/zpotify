@@ -9,9 +9,9 @@ import (
 	"go.zpotify.ru/zpotify/internal/domain"
 )
 
-func (impl *Impl) ListUploadedFiles(ctx context.Context, req *zpotify_api.ListUploadedFiles_Request) (
+func (impl *Impl) ListUploadedFiles(ctx context.Context,
+	req *zpotify_api.ListUploadedFiles_Request) (
 	*zpotify_api.ListUploadedFiles_Response, error) {
-
 	listReq := domain.ListUploadedFiles{
 		TemporaryOnly: req.TemporaryOnly,
 	}
