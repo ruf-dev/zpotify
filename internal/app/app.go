@@ -5,12 +5,13 @@ package app
 import (
 	"context"
 	"database/sql"
+	"net"
+
 	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
 	"go.redsock.ru/toolbox"
 	"go.redsock.ru/toolbox/closer"
 	"golang.org/x/sync/errgroup"
-	"net"
 
 	"go.zpotify.ru/zpotify/internal/config"
 )

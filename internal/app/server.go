@@ -3,8 +3,9 @@
 package app
 
 import (
-	"go.redsock.ru/rerrors"
 	"net"
+
+	"go.redsock.ru/rerrors"
 )
 
 func (a *App) InitServers() (err error) {

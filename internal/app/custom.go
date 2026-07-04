@@ -37,7 +37,6 @@ import (
 	"go.zpotify.ru/zpotify/internal/transport/file_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/playlist_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/song_api_impl"
-	telegramtransport "go.zpotify.ru/zpotify/internal/transport/telegram"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/grant_access"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/grant_creator_access"
 	"go.zpotify.ru/zpotify/internal/transport/ui"
@@ -64,48 +63,47 @@ type Custom struct {
 	PlaylistApiImpl  *playlist_api_impl.Impl
 	SongApiImpl      *song_api_impl.Impl
 
-	ServerManager  *transport.ServersManager
-	telegramServer *telegramtransport.Server
+	ServerManager *transport.ServersManager
 }
 
-func (c *Custom) Init(a *App) (err error) {
+func (c *Custom) Init(app *App) (err error) {
 	rerrors.SetSeparator(':')
 
-	err = a.initOTel()
+	err = app.initOTel()
 	if err != nil {
 		return rerrors.Wrap(err, "init otel")
 	}
-	if a.Cfg.Environment.OtelEndpoint != "" {
+	if app.Cfg.Environment.OtelEndpoint != "" {
 		hook := middleware.NewOtelLogHook("zpotify")
 		log.Logger = log.Logger.Hook(hook)
 	}
 
-	c.dataStorage = pg.NewStorage(a.Postgres)
-	c.binaryStorage, err = file_storage_providers.NewLocalStorageProvider(a.Cfg.Environment.LocalStoragePath)
+	c.dataStorage = pg.NewStorage(app.Postgres)
+	c.binaryStorage, err = file_storage_providers.NewLocalStorageProvider(app.Cfg.Environment.LocalStoragePath)
 	if err != nil {
 		return rerrors.Wrap(err, "error creating local file storage provider")
 	}
 
-	c.tgConn, err = go_tg.NewBot(a.Cfg.Environment.TelegramToken,
-		go_tg.WithProxy(a.Cfg.Environment.TelegramProxyURL))
+	c.tgConn, err = go_tg.NewBot(app.Cfg.Environment.TelegramToken,
+		go_tg.WithProxy(app.Cfg.Environment.TelegramProxyURL))
 	if err != nil {
 		return rerrors.Wrap(err, "")
 	}
 
-	adminNotifier := tgclient.NewAdminNotifier(c.tgConn, int64(a.Cfg.Environment.TelegramNotificationsChatID))
+	adminNotifier := tgclient.NewAdminNotifier(c.tgConn, int64(app.Cfg.Environment.TelegramNotificationsChatID))
 
 	fc, err := files_cache.New()
 	if err != nil {
 		return rerrors.Wrap(err, "error creating files cache")
 	}
 
-	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, adminNotifier, a.Cfg)
+	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, adminNotifier, app.Cfg)
 	if err != nil {
 		return rerrors.Wrap(err, "error creating service")
 	}
 
-	c.tgConn.MustAddCommandHandler(grant_access.New(c.Service.UserService(), int64(a.Cfg.Environment.TelegramNotificationsChatID)))
-	c.tgConn.MustAddCommandHandler(grant_creator_access.New(c.Service.UserService(), int64(a.Cfg.Environment.TelegramNotificationsChatID)))
+	c.tgConn.MustAddCommandHandler(grant_access.New(c.Service.UserService(), int64(app.Cfg.Environment.TelegramNotificationsChatID)))
+	c.tgConn.MustAddCommandHandler(grant_creator_access.New(c.Service.UserService(), int64(app.Cfg.Environment.TelegramNotificationsChatID)))
 
 	c.BackgroundWorker = background.New(
 		sessions_gc.New(c.dataStorage),
@@ -113,7 +111,7 @@ func (c *Custom) Init(a *App) (err error) {
 
 	gcHandler := gc_handler.New(c.binaryStorage)
 	gcProvider := pgqueue.New[storage.GarbageFilePayload](
-		a.Cfg.DataSources.Postgres.ConnectionString(),
+		app.Cfg.DataSources.Postgres.ConnectionString(),
 		c.dataStorage.Jobs(),
 		storage.QueueNameGarbageCollector,
 		gcHandler.Handle,
@@ -122,7 +120,7 @@ func (c *Custom) Init(a *App) (err error) {
 
 	apHandler := ap_handler.New(c.dataStorage.FileMeta(), c.binaryStorage)
 	apProvider := pgqueue.New[storage.AudioParsePayload](
-		a.Cfg.DataSources.Postgres.ConnectionString(),
+		app.Cfg.DataSources.Postgres.ConnectionString(),
 		c.dataStorage.Jobs(),
 		storage.QueueNameAudioParser,
 		apHandler.Handle,
@@ -132,14 +130,14 @@ func (c *Custom) Init(a *App) (err error) {
 	c.AsyncPool = async.New(gcProvider, apProvider)
 
 	c.ArtistsApiImpl = artists_api_impl.New(c.Service)
-	c.AuthApiImpl = auth_api_impl.New(c.Service, a.Cfg.Environment.TelegramClientID)
+	c.AuthApiImpl = auth_api_impl.New(c.Service, app.Cfg.Environment.TelegramClientID)
 	c.FeatureFlagsImpl = feature_flags_api_impl.New(c.Service)
 	c.FileApiImpl = file_api_impl.New(c.Service)
 	c.UserApiImpl = user_api_impl.New(c.Service)
 	c.PlaylistApiImpl = playlist_api_impl.New(c.Service)
 	c.SongApiImpl = song_api_impl.New(c.Service)
 
-	c.ServerManager, err = transport.NewServerManager(a.Ctx, a.MASTER)
+	c.ServerManager, err = transport.NewServerManager(app.Ctx, app.MASTER)
 	if err != nil {
 		return rerrors.Wrap(err, "error creating server manager")
 	}
@@ -159,7 +157,7 @@ func (c *Custom) Init(a *App) (err error) {
 				zpotify_api.AuthAPI_GetAuthMethods_FullMethodName,
 				zpotify_api.FeatureFlagsAPI_GetFeatureFlags_FullMethodName,
 			),
-			middleware.WithDebug(a.Cfg.Environment.DebugAuth),
+			middleware.WithDebug(app.Cfg.Environment.DebugAuth),
 		),
 	)
 
@@ -181,18 +179,18 @@ func (c *Custom) Init(a *App) (err error) {
 	wapiHandler := wapi.New(audioService, fileService)
 	wapiHandler = middleware.HttpAuthMiddleware(
 		c.Service,
-		middleware.WithDebug(a.Cfg.Environment.DebugAuth),
+		middleware.WithDebug(app.Cfg.Environment.DebugAuth),
 	)(wapiHandler)
-	wapiHandler = middleware.CorsMiddleware(a.Cfg.Environment.CorsAllowedOrigins)(wapiHandler)
+	wapiHandler = middleware.CorsMiddleware(app.Cfg.Environment.CorsAllowedOrigins)(wapiHandler)
 	wapiHandler = middleware.LogWebMiddleware(wapiHandler)
 
 	wapiHandler = otelhttp.NewHandler(wapiHandler, "/wapi")
 	c.ServerManager.AddHttpHandler("/wapi/", wapiHandler)
 	c.ServerManager.AddHttpHandler("/", ui.NewHandler())
 
-	if a.Cfg.Environment.TelegramNotificationsChatID != 0 {
+	if app.Cfg.Environment.TelegramNotificationsChatID != 0 {
 		startMessage := &response.MessageOut{
-			ChatId: int64(a.Cfg.Environment.TelegramNotificationsChatID),
+			ChatId: int64(app.Cfg.Environment.TelegramNotificationsChatID),
 			Text:   "Application started",
 		}
 
@@ -206,9 +204,9 @@ func (c *Custom) Init(a *App) (err error) {
 }
 
 // Start - launch custom handlers
-// Even if you won't use it keep it for proper work
+// Even if you won't use it keep it for proper work.
 func (c *Custom) Start(ctx context.Context) error {
-	eg, ctx := errgroup.WithContext(ctx)
+	eg, _ := errgroup.WithContext(ctx)
 
 	eg.Go(c.BackgroundWorker.Start)
 	eg.Go(c.AsyncPool.Start)
@@ -232,7 +230,7 @@ func (c *Custom) Start(ctx context.Context) error {
 }
 
 // Stop - gracefully stop custom handlers
-// Even if you won't use it keep it for proper work
+// Even if you won't use it keep it for proper work.
 func (c *Custom) Stop() error {
 	eg := errgroup.Group{}
 
