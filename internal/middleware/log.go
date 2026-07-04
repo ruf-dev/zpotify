@@ -36,34 +36,34 @@ func LogInterceptor() grpc.ServerOption {
 }
 
 func LogWebMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		start := time.Now()
 		rw := &loggingResponseWriter{ResponseWriter: w, status: http.StatusOK}
 
-		ctx := log.WithContext(r.Context())
-		r = r.WithContext(ctx)
+		ctx := log.WithContext(req.Context())
+		req = req.WithContext(ctx)
 
-		path := r.URL.Path
+		path := req.URL.Path
 		logReqBody := !strings.Contains(path, "/upload")
 		logRespBody := !strings.Contains(path, "/audio")
 
 		rw.captureBody = logRespBody
 
 		var reqBody []byte
-		if logReqBody && r.Body != nil {
-			body, err := io.ReadAll(r.Body)
+		if logReqBody && req.Body != nil {
+			body, err := io.ReadAll(req.Body)
 			if err == nil {
 				reqBody = body
-				r.Body = io.NopCloser(bytes.NewReader(body))
+				req.Body = io.NopCloser(bytes.NewReader(body))
 			}
 		}
 
-		next.ServeHTTP(rw, r)
+		next.ServeHTTP(rw, req)
 
 		event := log.Debug(ctx).
-			Str("method", r.Method).
+			Str("method", req.Method).
 			Str("path", path).
-			Str("remote", r.RemoteAddr).
+			Str("remote", req.RemoteAddr).
 			Int("status", rw.status).
 			Dur("duration", time.Since(start))
 

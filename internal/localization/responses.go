@@ -1,7 +1,7 @@
 package localization
 
 // responses - contains all available user responses
-// Read ONLY struct
+// Read ONLY struct.
 type responses struct {
 	Hello_ string `json:"hello"`
 	File_  file   `json:"file"`
@@ -15,6 +15,7 @@ func (r responses) Hello() string {
 func (r responses) File() File {
 	return r.File_
 }
+
 func (r responses) Auth() Auth {
 	return r.Auth_
 }

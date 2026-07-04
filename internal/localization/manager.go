@@ -71,6 +71,7 @@ type contextLangKey struct{}
 func LangToCtx(ctx context.Context, l Locale) context.Context {
 	return context.WithValue(ctx, contextLangKey{}, l)
 }
+
 func LangFromCtx(ctx context.Context) Locale {
 	v, _ := ctx.Value(contextLangKey{}).(Locale)
 	if v == "" {

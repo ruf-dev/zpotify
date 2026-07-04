@@ -111,22 +111,22 @@ func HttpAuthMiddleware(srv service.Service, opts ...authOption) func(http.Handl
 	}
 
 	return func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if ac.isIgnored(r.URL.Path) {
-				next.ServeHTTP(w, r)
+		return http.HandlerFunc(func(writer http.ResponseWriter, req *http.Request) {
+			if ac.isIgnored(req.URL.Path) {
+				next.ServeHTTP(writer, req)
 				return
 			}
 
 			md := metadata.MD{}
-			for k, v := range r.Header {
+			for k, v := range req.Header {
 				k = strings.TrimPrefix(k, "Grpc-Metadata-")
 				md.Set(k, v...)
 			}
 
-			ctx := r.Context()
+			ctx := req.Context()
 			ctxWithUser, err := ac.authWithSession(ctx, md)
 			if err == nil {
-				next.ServeHTTP(w, r.WithContext(ctxWithUser))
+				next.ServeHTTP(writer, req.WithContext(ctxWithUser))
 				return
 			}
 
@@ -137,12 +137,12 @@ func HttpAuthMiddleware(srv service.Service, opts ...authOption) func(http.Handl
 					log.AddField(ctx, func(e *zerolog.Event) *zerolog.Event {
 						return e.Int64("user_id", userCtx.UserId)
 					})
-					next.ServeHTTP(w, r.WithContext(ctx))
+					next.ServeHTTP(writer, req.WithContext(ctx))
 					return
 				}
 			}
 
-			writeError(err, w)
+			writeError(err, writer)
 		})
 	}
 }
