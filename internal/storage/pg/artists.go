@@ -131,7 +131,7 @@ func (a *ArtistsStorage) List(ctx context.Context, req domain.ListArtists) ([]do
 		return nil, rerrors.Wrap(err)
 	}
 
-	rows, err := a.db.QueryContext(ctx, query, args...) //nolint:sqlclosecheck // closed below via utils.CloseWithLog
+	rows, err := a.db.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, rerrors.Wrap(err)
 	}

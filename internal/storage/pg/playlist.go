@@ -9,6 +9,7 @@ import (
 	sq "github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
+
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
@@ -78,7 +79,7 @@ func (s *PlaylistStorage) ListSongs(ctx context.Context, r domain.ListSongs) ([]
 		return nil, rerrors.Wrap(err, "error building query")
 	}
 
-	rows, err := s.db.QueryContext(ctx, querySql, args...) //nolint:sqlclosecheck // closed below via closeRowScanner
+	rows, err := s.db.QueryContext(ctx, querySql, args...)
 	if err != nil {
 		return nil, wrapPgErr(err)
 	}
@@ -518,7 +519,7 @@ func (p *PlaylistStorage) List(ctx context.Context, req domain.ListPlaylists) ([
 		return nil, rerrors.Wrap(err, "error building list playlists query")
 	}
 
-	rows, err := p.db.QueryContext(ctx, querySql, args...) //nolint:sqlclosecheck // closed below via closeRowScanner
+	rows, err := p.db.QueryContext(ctx, querySql, args...)
 	if err != nil {
 		return nil, wrapPgErr(err)
 	}
