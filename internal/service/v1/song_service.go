@@ -364,7 +364,7 @@ func (s *AudioService) Get(uniqueFileId int64, start, end int64) (domain.Song, i
 	//	return f.SongInfo, f.Get(start, end), nil
 	//}
 
-	//ctx := context.Background()
+	// ctx := context.Background()
 
 	// Before uploading file to cache - validate it's size
 	//fileMeta, err := s.fileMetaStorage.Get(ctx, uniqueFileId)
@@ -377,8 +377,8 @@ func (s *AudioService) Get(uniqueFileId int64, start, end int64) (domain.Song, i
 	//	return f.SongInfo, nil, rerrors.Wrap(err, "error getting song from storage")
 	//}
 
-	//f.SongInfo.SongBase = song
-	//f.SongInfo.FileMeta = fileMeta
+	// f.SongInfo.SongBase = song
+	// f.SongInfo.FileMeta = fileMeta
 
 	//telegramBytesStream, err := s.openFileWithFallback(ctx, fileMeta)
 	//if err != nil {
@@ -391,7 +391,7 @@ func (s *AudioService) Get(uniqueFileId int64, start, end int64) (domain.Song, i
 	//	f.Upload(telegramBytesStream, fileMeta.SizeBytes)
 	//}()
 
-	//return f.SongInfo, f.Get(start, end), nil
+	// return f.SongInfo, f.Get(start, end), nil
 	return domain.Song{}, nil, nil
 }
 
@@ -417,6 +417,7 @@ func (s *AudioService) Search(ctx context.Context, req domain.SearchSongsParams)
 	return songs, nil
 }
 
+//nolint:unused // WIP: only caller is commented out pending the Get() rewrite above
 func (s *AudioService) openFileWithFallback(ctx context.Context, file domain.FileMeta) (io.ReadCloser, error) {
 	//telegramBytesStream, err := s.tgApi.OpenFile(ctx, file.TgFile)
 	//if err == nil {

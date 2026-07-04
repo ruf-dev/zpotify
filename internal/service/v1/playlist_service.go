@@ -63,7 +63,7 @@ func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistP
 			}
 
 			for i, artistUuid := range req.ArtistUuids {
-				//TODO make bath insert of artists into playlist
+				// TODO make bath insert of artists into playlist
 				createErr = playlistStorage.AddPlaylistArtist(ctx, playlistUuid, artistUuid, i)
 				if createErr != nil {
 					return rerrors.Wrap(createErr, "error adding artist to playlist")
@@ -355,9 +355,9 @@ func (p *PlaylistService) AddSongs(ctx context.Context, req domain.AddSongsToPla
 	}
 
 	for _, songId := range req.SongIds {
-		songFile, err := p.fileMetaStorage.GetBySongId(ctx, songId)
-		if err != nil {
-			return rerrors.Wrap(err, "error getting song file from storage")
+		songFile, fileErr := p.fileMetaStorage.GetBySongId(ctx, songId)
+		if fileErr != nil {
+			return rerrors.Wrap(fileErr, "error getting song file from storage")
 		}
 
 		if !songFile.Verified {
@@ -370,9 +370,9 @@ func (p *PlaylistService) AddSongs(ctx context.Context, req domain.AddSongsToPla
 		playlistStorage := p.playlistStorage.WithTx(tx)
 
 		for _, songId := range req.SongIds {
-			err := playlistStorage.AddSong(ctx, req.PlaylistUuid, songId)
-			if err != nil {
-				return rerrors.Wrap(err, "error saving song to playlist")
+			addErr := playlistStorage.AddSong(ctx, req.PlaylistUuid, songId)
+			if addErr != nil {
+				return rerrors.Wrap(addErr, "error saving song to playlist")
 			}
 		}
 
@@ -483,7 +483,7 @@ func (p *PlaylistService) moveCoverFile(
 	if len(artistUuids) > 0 {
 		newPath = fmt.Sprintf("%s/%s/cover%s", artistUuids[0], playlistUuid, ext)
 	} else {
-		//should use playlist uuid for this
+		// should use playlist uuid for this
 		newPath = fmt.Sprintf("%d/%s/cover%s", userId, playlistUuid, ext)
 	}
 

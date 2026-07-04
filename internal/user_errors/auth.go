@@ -6,11 +6,13 @@ import (
 	"google.golang.org/grpc/codes"
 )
 
+const authErrorDomain = "auth"
+
 var (
 	ErrRefreshTokenNotFound = rerrors.New("refresh token doesn't exist", codes.Unauthenticated,
 		&errdetails.ErrorInfo{
 			Reason:   "REFRESH_TOKEN_NOT_FOUND",
-			Domain:   "auth",
+			Domain:   authErrorDomain,
 			Metadata: make(map[string]string),
 		},
 	)
@@ -18,7 +20,7 @@ var (
 		codes.Unauthenticated,
 		&errdetails.ErrorInfo{
 			Reason:   "ACCESS_TOKEN_NOT_FOUND",
-			Domain:   "auth",
+			Domain:   authErrorDomain,
 			Metadata: make(map[string]string),
 		})
 	ErrAccessTokenExpired = rerrors.New(
@@ -26,7 +28,7 @@ var (
 		codes.Unauthenticated,
 		&errdetails.ErrorInfo{
 			Reason:   "ACCESS_TOKEN_EXPIRED",
-			Domain:   "auth",
+			Domain:   authErrorDomain,
 			Metadata: make(map[string]string),
 		},
 	)

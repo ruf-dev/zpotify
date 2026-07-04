@@ -85,7 +85,7 @@ func (s *Service) Logout(ctx context.Context, accessToken string) error {
 }
 
 func (s *Service) GetOrCreateTelegramUser(ctx context.Context, tgId int64, username string) (int64, error) {
-	//TODO remove
+	// TODO remove
 	return 0, nil
 }
 

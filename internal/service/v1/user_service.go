@@ -81,7 +81,7 @@ func (u *UserService) GetMe(ctx context.Context) (domain.User, error) {
 	return domain.User{
 		UserBaseInfo: user,
 		Permissions:  permissions,
-		//TODO
+		// TODO
 		UserUiSettings: domain.UserUiSettings{},
 	}, nil
 }
@@ -94,7 +94,7 @@ func (u *UserService) Get(ctx context.Context, userId int64) (domain.User, error
 
 	return domain.User{
 		UserBaseInfo: user,
-		//TODO
+		// TODO
 		UserUiSettings: domain.UserUiSettings{},
 		Permissions:    domain.UserPermissions{},
 	}, nil
