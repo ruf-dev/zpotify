@@ -12,6 +12,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/user_errors"
+	"go.zpotify.ru/zpotify/internal/utils"
 )
 
 type TgApiClient interface {
@@ -47,10 +48,11 @@ func (t *tgApi) GetFile(ctx context.Context, fileId string) (*tgbotapi.File, err
 	params.Add("file_id", fileId)
 	req.URL.RawQuery = params.Encode()
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := http.DefaultClient.Do(req) //nolint:bodyclose // closed below via utils.CloseWithLog
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error sending request")
 	}
+	defer utils.CloseWithLog(resp.Body, "telegram getFile response body")
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, rerrors.New(http.StatusText(resp.StatusCode))
@@ -67,8 +69,8 @@ func (t *tgApi) GetFile(ctx context.Context, fileId string) (*tgbotapi.File, err
 
 func (t *tgApi) OpenFile(ctx context.Context, file domain.File) (io.ReadCloser, error) {
 	f := tgbotapi.File{
-		//FileID:   file.FileId,
-		//FilePath: file.FilePath,
+		// FileID:   file.FileId,
+		// FilePath: file.FilePath,
 	}
 
 	link := f.Link(t.token)
@@ -78,7 +80,7 @@ func (t *tgApi) OpenFile(ctx context.Context, file domain.File) (io.ReadCloser, 
 		return nil, rerrors.Wrap(err, "error creating request")
 	}
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := http.DefaultClient.Do(req) //nolint:bodyclose // closed below via utils.CloseWithLog
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error opening file")
 	}
@@ -86,7 +88,7 @@ func (t *tgApi) OpenFile(ctx context.Context, file domain.File) (io.ReadCloser, 
 	if resp.StatusCode == http.StatusOK {
 		return resp.Body, nil
 	}
-	defer resp.Body.Close()
+	defer utils.CloseWithLog(resp.Body, "telegram file response body")
 
 	switch resp.StatusCode {
 	case http.StatusNotFound:

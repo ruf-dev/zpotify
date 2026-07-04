@@ -35,9 +35,14 @@ func New[T any](
 	period time.Duration,
 ) *Provider[T] {
 	ctx, cancel := context.WithCancel(context.Background())
+
 	listener := pq.NewListener(connStr, 10*time.Second, time.Minute, func(_ pq.ListenerEventType, err error) {
 		if err != nil {
-			log.Err(err).Str("queue", queueName).Msg("pgqueue: listener event")
+			log.Error().
+				Ctx(ctx).
+				Err(err).
+				Str("queue", queueName).
+				Msg("pgqueue: listener event")
 		}
 	})
 	return &Provider[T]{
@@ -55,7 +60,7 @@ func (p *Provider[T]) Start() {
 	go p.once.Do(func() {
 		err := p.listener.Listen("pgqueue_" + p.queueName)
 		if err != nil {
-			log.Err(rerrors.Wrap(err)).Str("queue", p.queueName).Msg("pgqueue: failed to listen")
+			log.Error().Ctx(p.ctx).Err(rerrors.Wrap(err)).Str("queue", p.queueName).Msg("pgqueue: failed to listen")
 		}
 
 		p.poll()
@@ -84,14 +89,21 @@ func (p *Provider[T]) Stop() {
 func (p *Provider[T]) requeueStalled() {
 	err := p.jobs.RequeueStalled(p.ctx)
 	if err != nil {
-		log.Err(rerrors.Wrap(err)).Str("queue", p.queueName).Msg("pgqueue: requeue stalled failed")
+		log.Error().
+			Ctx(p.ctx).
+			Err(rerrors.Wrap(err)).
+			Str("queue", p.queueName).
+			Msg("pgqueue: requeue stalled failed")
 	}
 }
 
 func (p *Provider[T]) poll() {
 	jobs, err := p.jobs.Claim(p.ctx, p.queueName, 10)
 	if err != nil {
-		log.Err(rerrors.Wrap(err)).Str("queue", p.queueName).Msg("pgqueue: claim failed")
+		log.Error().Ctx(p.ctx).
+			Err(rerrors.Wrap(err)).
+			Str("queue", p.queueName).
+			Msg("pgqueue: claim failed")
 		return
 	}
 	for _, job := range jobs {
@@ -103,27 +115,35 @@ func (p *Provider[T]) processJob(job storage.Job) {
 	var payload T
 	err := json.Unmarshal(job.Payload, &payload)
 	if err != nil {
-		log.Err(rerrors.Wrap(err)).Int64("job_id", job.ID).Msg("pgqueue: failed to unmarshal payload")
+		log.Error().
+			Ctx(p.ctx).
+			Err(rerrors.Wrap(err)).
+			Int64("job_id", job.ID).
+			Msg("pgqueue: failed to unmarshal payload")
 		failErr := p.jobs.Fail(p.ctx, job.ID, err.Error(), backoff(job.Attempts))
 		if failErr != nil {
-			log.Err(rerrors.Wrap(failErr)).Int64("job_id", job.ID).Msg("pgqueue: failed to record unmarshal error")
+			log.Error().
+				Ctx(p.ctx).
+				Err(rerrors.Wrap(failErr)).
+				Int64("job_id", job.ID).
+				Msg("pgqueue: failed to record unmarshal error")
 		}
 		return
 	}
 
 	err = p.handle(p.ctx, payload)
 	if err != nil {
-		log.Err(rerrors.Wrap(err)).Int64("job_id", job.ID).Msg("pgqueue: handler error")
+		log.Error().Ctx(p.ctx).Err(rerrors.Wrap(err)).Int64("job_id", job.ID).Msg("pgqueue: handler error")
 		failErr := p.jobs.Fail(p.ctx, job.ID, err.Error(), backoff(job.Attempts))
 		if failErr != nil {
-			log.Err(rerrors.Wrap(failErr)).Int64("job_id", job.ID).Msg("pgqueue: failed to record handler error")
+			log.Error().Ctx(p.ctx).Err(rerrors.Wrap(failErr)).Int64("job_id", job.ID).Msg("pgqueue: failed to record handler error")
 		}
 		return
 	}
 
 	completeErr := p.jobs.Complete(p.ctx, job.ID)
 	if completeErr != nil {
-		log.Err(rerrors.Wrap(completeErr)).Int64("job_id", job.ID).Msg("pgqueue: failed to mark job completed")
+		log.Error().Ctx(p.ctx).Err(rerrors.Wrap(completeErr)).Int64("job_id", job.ID).Msg("pgqueue: failed to mark job completed")
 	}
 }
 

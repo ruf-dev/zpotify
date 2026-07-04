@@ -20,6 +20,8 @@ func TestMain(m *testing.M) {
 }
 
 func NewTestEnv(t *testing.T) (te TestEnv) {
+	t.Helper()
+
 	var err error
 	te.App, err = app.New()
 	require.NoError(t, err)

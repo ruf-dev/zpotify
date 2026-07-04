@@ -35,7 +35,10 @@ func (t *Task) Start() {
 	go t.once.Do(func() {
 		err := t.do()
 		if err != nil {
-			log.Err(err).Msg("failed to delete expired sessions")
+			log.Error().
+				Ctx(t.ctx).
+				Err(err).
+				Msg("failed to delete expired sessions")
 		}
 
 		ticker := time.NewTicker(t.period)
@@ -46,7 +49,10 @@ func (t *Task) Start() {
 			case <-ticker.C:
 				err = t.do()
 				if err != nil {
-					log.Err(err).Msg("failed to delete expired sessions")
+					log.Error().
+						Ctx(t.ctx).
+						Err(err).
+						Msg("failed to delete expired sessions")
 				}
 			}
 		}

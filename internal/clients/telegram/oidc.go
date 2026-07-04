@@ -1,6 +1,7 @@
 package telegram
 
 import (
+	"context"
 	"crypto/rsa"
 	"encoding/base64"
 	"encoding/json"
@@ -12,6 +13,8 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"go.redsock.ru/toolbox"
+
+	"go.zpotify.ru/zpotify/internal/utils"
 )
 
 type TgClaims struct {
@@ -41,13 +44,15 @@ type telegramID int64
 
 func (t *telegramID) UnmarshalJSON(data []byte) error {
 	var asInt int64
-	if err := json.Unmarshal(data, &asInt); err == nil {
+	err := json.Unmarshal(data, &asInt)
+	if err == nil {
 		*t = telegramID(asInt)
 		return nil
 	}
 
 	var asString string
-	if err := json.Unmarshal(data, &asString); err != nil {
+	err = json.Unmarshal(data, &asString)
+	if err != nil {
 		return fmt.Errorf("telegram id claim is neither a number nor a string: %w", err)
 	}
 
@@ -71,7 +76,8 @@ func (c *TgClaims) UnmarshalJSON(data []byte) error {
 		alias: (*alias)(c),
 	}
 
-	if err := json.Unmarshal(data, &aux); err != nil {
+	err := json.Unmarshal(data, &aux)
+	if err != nil {
 		return fmt.Errorf("failed to unmarshal telegram claims: %w", err)
 	}
 
@@ -79,12 +85,12 @@ func (c *TgClaims) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// JWKSResponse represents the JSON Web Key Set response
+// JWKSResponse represents the JSON Web Key Set response.
 type JWKSResponse struct {
 	Keys []JWK `json:"keys"`
 }
 
-// JWK represents a JSON Web Key
+// JWK represents a JSON Web Key.
 type JWK struct {
 	Kid string   `json:"kid"`
 	Kty string   `json:"kty"`
@@ -95,7 +101,7 @@ type JWK struct {
 	X5c []string `json:"x5c,omitempty"`
 }
 
-// TokenParser handles ID token parsing and verification
+// TokenParser handles ID token parsing and verification.
 type TokenParser struct {
 	jwksURL     string
 	issuer      string
@@ -104,7 +110,7 @@ type TokenParser struct {
 	cacheExpiry time.Time
 }
 
-// NewTokenParser creates a new token parser with configuration
+// NewTokenParser creates a new token parser with configuration.
 func NewTokenParser(jwksURL, issuer, audience string) TokenParser {
 	return TokenParser{
 		jwksURL:  jwksURL,
@@ -153,7 +159,7 @@ func (tp *TokenParser) ParseAndVerifyIdToken(idToken string) (TgClaims, error) {
 	return *claims, nil
 }
 
-// keyFunc provides the public key for token verification
+// keyFunc provides the public key for token verification.
 func (tp *TokenParser) keyFunc(token *jwt.Token) (interface{}, error) {
 	// Verify signing algorithm
 	if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
@@ -189,7 +195,7 @@ func (tp *TokenParser) keyFunc(token *jwt.Token) (interface{}, error) {
 	return tp.jwkToRSAKey(jwk)
 }
 
-// getJWKS fetches and caches JWKS from the provider
+// getJWKS fetches and caches JWKS from the provider.
 func (tp *TokenParser) getJWKS() (*JWKSResponse, error) {
 	// Return cached JWKS if still valid (cache for 24 hours)
 	if tp.jwksCache != nil && time.Now().Before(tp.cacheExpiry) {
@@ -197,14 +203,20 @@ func (tp *TokenParser) getJWKS() (*JWKSResponse, error) {
 	}
 
 	// Fetch JWKS
-	resp, err := http.Get(tp.jwksURL)
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, tp.jwksURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to build JWKS request: %w", err)
+	}
+
+	resp, err := http.DefaultClient.Do(req) //nolint:bodyclose // closed below via utils.CloseWithLog
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch JWKS: %w", err)
 	}
-	defer resp.Body.Close()
+	defer utils.CloseWithLog(resp.Body, "telegram JWKS response body")
 
 	var jwks JWKSResponse
-	if err := json.NewDecoder(resp.Body).Decode(&jwks); err != nil {
+	err = json.NewDecoder(resp.Body).Decode(&jwks)
+	if err != nil {
 		return nil, fmt.Errorf("failed to decode JWKS: %w", err)
 	}
 
@@ -215,7 +227,7 @@ func (tp *TokenParser) getJWKS() (*JWKSResponse, error) {
 	return &jwks, nil
 }
 
-// jwkToRSAKey converts a JWK to an RSA public key
+// jwkToRSAKey converts a JWK to an RSA public key.
 func (tp *TokenParser) jwkToRSAKey(jwk *JWK) (*rsa.PublicKey, error) {
 	// Decode modulus (n) and exponent (e) from base64
 	nBytes, err := base64.RawURLEncoding.DecodeString(jwk.N)

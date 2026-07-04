@@ -17,11 +17,11 @@ func (s *AuthTestSuite) SetupSuite() {
 }
 
 func (s *AuthTestSuite) Test_AuthorizeGrpc() {
-	//TODO
+	// TODO
 }
 
 func (s *AuthTestSuite) Test_AuthorizeWapi() {
-	//TODO
+	// TODO
 }
 
 func Test_Auth(t *testing.T) {
