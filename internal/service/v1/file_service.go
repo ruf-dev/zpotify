@@ -6,7 +6,6 @@ import (
 	"encoding/hex"
 	"errors"
 	"image"
-	// registers jpeg/png/gif decoders with image.DecodeConfig for cover image verification.
 	_ "image/gif"
 	_ "image/jpeg"
 	_ "image/png"

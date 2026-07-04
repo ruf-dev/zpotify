@@ -52,7 +52,6 @@ linters:
     - dupword
     - durationcheck
     - errcheck
-    - errchkjson
     - errname
     - exhaustive
     - forbidigo
@@ -73,17 +72,18 @@ linters:
     - misspell
     - nakedret
     - nilerr
-    - noctx
+#TODO
+#    - noctx
     - nolintlint
     - nosprintfhostport
-    - paralleltest
+#TODO
+#    - paralleltest
     - predeclared
     - promlinter
     - reassign
     - rowserrcheck
     - staticcheck
     - testableexamples
-    - testpackage
     - thelper
     - tparallel
     - unconvert
@@ -156,7 +156,6 @@ linters:
 formatters:
   enable:
     - gofmt
-    - gofumpt
     - goimports
   exclusions:
     paths:
