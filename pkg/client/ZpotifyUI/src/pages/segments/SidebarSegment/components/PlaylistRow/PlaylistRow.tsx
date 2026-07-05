@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
+
 import { playlistPath } from '@/app/routing/paths.ts';
 import cls from '@/pages/segments/SidebarSegment/components/PlaylistRow/PlaylistRow.module.css';
 
@@ -24,10 +25,7 @@ export default function PlaylistRow({ uuid, name, tracks, color, coverUrl, isCol
     }
 
     return (
-        <div
-            className={cn(cls.PlaylistRow, isCollapsed && cls.PlaylistRowCollapsed)}
-            onClick={handleClick}
-        >
+        <div className={cn(cls.PlaylistRow, isCollapsed && cls.PlaylistRowCollapsed)} onClick={handleClick}>
             {coverUrl ? (
                 <img src={coverUrl} alt={name} className={cls.PlaylistCover} />
             ) : (

@@ -25,6 +25,7 @@
         transition: border-radius var(--ease-quick-half);
         transition-delay: var(--ease-quick-half);
     }
+
     &:hover .CoverImage {
         border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
     }
@@ -45,6 +46,7 @@
         border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
         box-shadow: 0 -0.5rem 1.5rem var(--color-shadow-deep);
     }
+
     &:hover .Footer {
         transform: translateY(100%);
     }
@@ -73,6 +75,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
     /* cursor: pointer; TODO: re-enable when artist page is implemented */
     cursor: default;
     margin: 0.1rem 0 0;

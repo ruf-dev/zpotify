@@ -16,10 +16,7 @@ export default function DropdownCreateRow({ query, withBorder, onCreate }: Dropd
     }
 
     return (
-        <div
-            className={cn(cls.CreateRow, withBorder && cls.CreateRowWithBorder)}
-            onMouseDown={handleMouseDown}
-        >
+        <div className={cn(cls.CreateRow, withBorder && cls.CreateRowWithBorder)} onMouseDown={handleMouseDown}>
             <span className={cls.CreateIcon}>
                 <PlusIcon />
             </span>

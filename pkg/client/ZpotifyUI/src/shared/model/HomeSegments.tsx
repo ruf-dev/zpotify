@@ -1,7 +1,6 @@
 import React, { JSX } from 'react';
 
 import PlaylistHomeSegment from '@/widgets/PlaylistHomeSegment/PlaylistHomeSegment.tsx';
-
 import ManagementHomeSegment from '@/widgets/ManagementHomeSegment/ManagementHomeSegment.tsx';
 import PlaylistsLibrarySegment from '@/widgets/PlaylistsLibrarySegment/PlaylistsLibrarySegment.tsx';
 
@@ -40,6 +39,6 @@ export class LibrarySegmentInfo implements HomeSegment {
     readonly label = 'playlists';
 
     buildComponent(): React.JSX.Element {
-        return <PlaylistsLibrarySegment/>;
+        return <PlaylistsLibrarySegment />;
     }
 }

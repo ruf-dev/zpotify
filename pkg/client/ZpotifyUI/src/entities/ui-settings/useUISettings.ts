@@ -32,6 +32,6 @@ export const useUISettings = create<UISettings>()(
             showQueuePanel: false,
             setShowQueuePanel: (v: boolean) => set({ showQueuePanel: v }),
         }),
-        { name: 'zpotify-ui-settings' }
-    )
+        { name: 'zpotify-ui-settings' },
+    ),
 );

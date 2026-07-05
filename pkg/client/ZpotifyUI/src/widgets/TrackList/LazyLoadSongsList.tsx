@@ -15,7 +15,13 @@ interface InfiniteSongsListProps {
     coverUrl?: string;
 }
 
-export default function LazyLoadSongsList({ playlistId, fixedSize, onTotal, autoLoadAll, coverUrl }: InfiniteSongsListProps) {
+export default function LazyLoadSongsList({
+    playlistId,
+    fixedSize,
+    onTotal,
+    autoLoadAll,
+    coverUrl,
+}: InfiniteSongsListProps) {
     const audioPlayer = useAudioPlayer();
     const { songs, isListEnded, loadMore, loadShuffled } = useListSongs(playlistId, { onTotal, autoLoadAll });
 

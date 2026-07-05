@@ -11,7 +11,7 @@ interface CarouselProps {
     width?: string;
 }
 
-const Carousel: React.FC<CarouselProps> = ({ children, visibleItems = 3, width = '100vw' }) => {
+function Carousel({ children, visibleItems = 3, width = '100vw' }: CarouselProps) {
     const scrollRef = useRef<HTMLDivElement>(null);
     const itemRefs = useRef<HTMLDivElement[]>([]);
     const [centerIndex, setCenterIndex] = useState(0);
@@ -27,7 +27,9 @@ const Carousel: React.FC<CarouselProps> = ({ children, visibleItems = 3, width =
     // -------------------------
     useEffect(() => {
         if (!scrollRef.current) return;
-        const updateWidth = () => setContainerWidth(scrollRef.current!.offsetWidth);
+        function updateWidth() {
+            setContainerWidth(scrollRef.current!.offsetWidth);
+        }
 
         // Initial measurement
         updateWidth();
@@ -68,7 +70,7 @@ const Carousel: React.FC<CarouselProps> = ({ children, visibleItems = 3, width =
     // -------------------------
     // Scroll handler
     // -------------------------
-    const handleScroll = () => {
+    function handleScroll() {
         if (isScrollingProgrammatically) {
             if (scrollTimeout) window.clearTimeout(scrollTimeout);
             scrollTimeout = window.setTimeout(() => setIsScrollingProgrammatically(false), 100);
@@ -100,12 +102,12 @@ const Carousel: React.FC<CarouselProps> = ({ children, visibleItems = 3, width =
         if (closestIndex !== centerIndex) {
             setCenterIndex(closestIndex);
         }
-    };
+    }
 
     // -------------------------
     // Dynamic scaling based on overlap with center frame
     // -------------------------
-    const calculateScale = (index: number) => {
+    function calculateScale(index: number) {
         const container = scrollRef.current;
         const item = itemRefs.current[index];
 
@@ -133,7 +135,7 @@ const Carousel: React.FC<CarouselProps> = ({ children, visibleItems = 3, width =
         const fraction = overlap / item.offsetWidth;
 
         return 0.9 + 0.1 * Math.min(1, fraction); // scale 0.9 → 1
-    };
+    }
 
     return (
         <div
@@ -169,6 +171,6 @@ const Carousel: React.FC<CarouselProps> = ({ children, visibleItems = 3, width =
             </div>
         </div>
     );
-};
+}
 
 export default Carousel;

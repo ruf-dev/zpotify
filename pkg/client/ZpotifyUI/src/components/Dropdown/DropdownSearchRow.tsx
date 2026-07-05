@@ -9,7 +9,13 @@ interface DropdownSearchRowProps {
     placeholder: string;
 }
 
-export default function DropdownSearchRow({ inputRef, query, onChange, onKeyDown, placeholder }: DropdownSearchRowProps) {
+export default function DropdownSearchRow({
+    inputRef,
+    query,
+    onChange,
+    onKeyDown,
+    placeholder,
+}: DropdownSearchRowProps) {
     return (
         <div className={cls.SearchRow}>
             <div className={cls.SearchBox}>

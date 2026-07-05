@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import cn from 'classnames';
 
 import cls from '@/dialogs/Meta/MetaDialog.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
@@ -71,7 +72,7 @@ export default function MetaDialog({ audioFile, initialTitle }: MetaDialogProps)
                     onPlaylistChange={setPlaylistId}
                 />
                 <button
-                    className={`${cls.SubmitButton} ${submitted ? cls.ButtonSubmitted : cls.ButtonReady}`}
+                    className={cn(cls.SubmitButton, submitted ? cls.ButtonSubmitted : cls.ButtonReady)}
                     type="button"
                     onClick={handleSubmit}
                     disabled={submitted}

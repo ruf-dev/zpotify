@@ -12,10 +12,7 @@ export function useHomeSegments() {
     const [activeIdx, setActiveIdx] = useState(!isNaN(savedIdx) ? savedIdx : 0);
 
     useEffect(() => {
-        settingsService
-            .ListHomeSegments()
-            .then(setSegments)
-            .catch(toaster.catch);
+        settingsService.ListHomeSegments().then(setSegments).catch(toaster.catch);
     }, []);
 
     useEffect(() => {

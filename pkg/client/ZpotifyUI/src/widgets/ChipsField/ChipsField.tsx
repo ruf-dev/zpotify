@@ -52,7 +52,9 @@ export default function ChipsField({ chips, onChange }: ChipsFieldProps) {
                         <Chip
                             key={`${chip.kind}:${chip.value}`}
                             label={`${chip.kind}: ${chip.value}`}
-                            onRemove={function removeChip() { handleRemove(i); }}
+                            onRemove={function removeChip() {
+                                handleRemove(i);
+                            }}
                         />
                     ))}
                 </div>
@@ -60,7 +62,9 @@ export default function ChipsField({ chips, onChange }: ChipsFieldProps) {
             <div className={cls.AddRow}>
                 <select className={cls.KindSelect} value={kind} onChange={handleKindChange}>
                     {CHIP_KINDS.map((k) => (
-                        <option key={k} value={k}>{k}</option>
+                        <option key={k} value={k}>
+                            {k}
+                        </option>
                     ))}
                 </select>
                 <input

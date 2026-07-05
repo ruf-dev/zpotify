@@ -56,6 +56,9 @@ export default tseslint.config([
         rules: {
             'react/prop-types': 'off',
 
+            // Deps arrays are managed manually — too many false positives around stable refs/singletons
+            'react-hooks/exhaustive-deps': 'off',
+
             // One React component per file
             'react/no-multi-comp': ['warn', { ignoreStateless: false }],
 

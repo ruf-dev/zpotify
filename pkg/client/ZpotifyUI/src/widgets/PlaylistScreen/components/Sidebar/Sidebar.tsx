@@ -86,9 +86,7 @@ export default function Sidebar({
         setEditDesc(playlist.description ?? '');
         setEditYear(playlist.year ?? undefined);
         setEditArtists(
-            (playlist.artists ?? [])
-                .filter((a) => a.uuid && a.name)
-                .map((a) => ({ id: a.uuid!, name: a.name! })),
+            (playlist.artists ?? []).filter((a) => a.uuid && a.name).map((a) => ({ id: a.uuid!, name: a.name! })),
         );
         setEditCover(undefined);
         setCoverPreviewUrl(undefined);
@@ -99,9 +97,7 @@ export default function Sidebar({
             artistsService
                 .ListArtist(query, 0, 8)
                 .then((res) =>
-                    (res.artists ?? [])
-                        .filter((a) => a.name && a.uuid)
-                        .map((a) => ({ id: a.uuid!, name: a.name! })),
+                    (res.artists ?? []).filter((a) => a.name && a.uuid).map((a) => ({ id: a.uuid!, name: a.name! })),
                 ),
         [],
     );
@@ -325,8 +321,8 @@ export default function Sidebar({
                 <button className={cls.IconButton} type="button" aria-label="Share">
                     <ShareIcon />
                 </button>
-                {playlist.canEdit && (
-                    editMode ? (
+                {playlist.canEdit &&
+                    (editMode ? (
                         <>
                             <button
                                 className={cls.SaveIconButton}
@@ -356,8 +352,7 @@ export default function Sidebar({
                         >
                             <EditIcon />
                         </button>
-                    )
-                )}
+                    ))}
             </motion.div>
 
             <AnimatePresence mode="sync" initial={false}>

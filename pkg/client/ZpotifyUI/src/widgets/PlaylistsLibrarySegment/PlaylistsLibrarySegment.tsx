@@ -1,8 +1,9 @@
-import {useEffect, useState} from 'react';
-import {useToaster} from '@/shared/lib/toaster/ToasterZ.ts';
-import {playlistService} from '@/shared/api/PlaylistService.ts';
-import {usePlaylistListRefresh} from '@/entities/playlist/usePlaylistListRefresh.ts';
-import type {LibraryItem} from '@/widgets/PlaylistsLibrarySegment/model.ts';
+import { useEffect, useState } from 'react';
+
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
+import { playlistService } from '@/shared/api/PlaylistService.ts';
+import { usePlaylistListRefresh } from '@/entities/playlist/usePlaylistListRefresh.ts';
+import type { LibraryItem } from '@/widgets/PlaylistsLibrarySegment/model.ts';
 import LibraryGridScreen from '@/widgets/PlaylistsLibrarySegment/screens/LibraryGridScreen/LibraryGridScreen.tsx';
 import LibraryGridScreenSkeleton from '@/widgets/PlaylistsLibrarySegment/screens/LibraryGridScreen/LibraryGridScreenSkeleton.tsx';
 import cls from '@/widgets/PlaylistsLibrarySegment/screens/LibraryGridScreen/LibraryGridScreen.module.css';
@@ -16,7 +17,8 @@ export default function PlaylistsLibrarySegment() {
     useEffect(fetchLibrary, [version]);
 
     function fetchLibrary() {
-        playlistService.ListLibrary({limit: 50, offset: 0})
+        playlistService
+            .ListLibrary({ limit: 50, offset: 0 })
             .then(setItems)
             .catch(toaster.catch)
             .finally(() => setLoading(false));
@@ -25,10 +27,10 @@ export default function PlaylistsLibrarySegment() {
     if (loading) {
         return (
             <div className={cls.PlaylistsLibrarySegmentContainer}>
-                <LibraryGridScreenSkeleton/>
+                <LibraryGridScreenSkeleton />
             </div>
         );
     }
 
-    return <LibraryGridScreen items={items}/>;
+    return <LibraryGridScreen items={items} />;
 }

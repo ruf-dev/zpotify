@@ -18,6 +18,4 @@ export type PlaylistCardWideProps = {
     tracks: TrackPreview[];
 };
 
-export type LibraryItem =
-    | ({ kind: 'album' } & AlbumCardProps)
-    | ({ kind: 'playlist' } & PlaylistCardWideProps);
+export type LibraryItem = ({ kind: 'album' } & AlbumCardProps) | ({ kind: 'playlist' } & PlaylistCardWideProps);

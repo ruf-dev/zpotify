@@ -1,11 +1,11 @@
 @keyframes songGlow {
-    0%, 100% { text-shadow: 0 0 0.3125rem rgba(217, 0, 127, 0.45); }
-    50%       { text-shadow: 0 0 1.125rem rgba(217, 0, 127, 0.85); }
+    0%, 100% { text-shadow: 0 0 0.3125rem rgb(217 0 127 / 45%); }
+    50%       { text-shadow: 0 0 1.125rem rgb(217 0 127 / 85%); }
 }
 
 @keyframes pPulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(217, 0, 127, 0.18); }
-    50%       { box-shadow: 0 0 0 var(--space-10) rgba(217, 0, 127, 0); }
+    0%, 100% { box-shadow: 0 0 0 0 rgb(217 0 127 / 18%); }
+    50%       { box-shadow: 0 0 0 var(--space-10) rgb(217 0 127 / 0%); }
 }
 
 @keyframes npb1 {
@@ -26,7 +26,7 @@
 .PlayerBarContainer {
     height: var(--player-bar-height);
     width: 100%;
-    background: rgba(0, 0, 0, 0.78);
+    background: rgb(0 0 0 / 78%);
     backdrop-filter: blur(1.75rem) saturate(1.1);
     border-top: 1px solid var(--color-border);
     padding: 0 var(--space-2xl);
@@ -212,68 +212,6 @@
     justify-content: flex-end;
     align-items: center;
     gap: var(--space-sm);
-}
-
-.VolumeWrapper {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-}
-
-.VolumeButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    color: var(--color-fg-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color var(--ease-quick);
-
-    &:hover {
-        color: var(--color-fg-primary);
-    }
-}
-
-.VolumeTrackWrapper {
-    width: 3.5rem;
-    height: 0.75rem;
-    display: flex;
-    align-items: center;
-    position: relative;
-    cursor: pointer;
-    touch-action: none;
-}
-
-.VolumeTrackWrapper::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 0.1875rem;
-    transform: translateY(-50%);
-    background: var(--color-border-light);
-    border-radius: 0.09375rem;
-    pointer-events: none;
-}
-
-.VolumeFill {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    height: 0.1875rem;
-    transform: translateY(-50%);
-    background: var(--color-fg-disabled);
-    border-radius: 0.09375rem;
-    transition: background-color var(--ease-quick);
-    pointer-events: none;
-}
-
-.VolumeTrackWrapper:hover .VolumeFill,
-.VolumeFillActive {
-    background: var(--color-fg-accent);
 }
 
 .BarsContainer {

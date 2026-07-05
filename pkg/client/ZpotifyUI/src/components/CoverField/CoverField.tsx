@@ -3,19 +3,12 @@ import cn from 'classnames';
 
 import cls from '@/components/CoverField/CoverField.module.css';
 import { UploadArrowIcon } from '@/assets/icons/UploadArrowIcon.tsx';
+import { ZLogoIcon } from '@/assets/icons/ZLogoIcon.tsx';
 
 interface CoverFieldProps {
     cover?: File;
     onChange: (file: File) => void;
     existingCoverUrl?: string;
-}
-
-function ZLogoIcon() {
-    return (
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-            <path d="M8 10h24L8 30h24" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-    );
 }
 
 export default function CoverField({ cover, onChange, existingCoverUrl }: CoverFieldProps) {

@@ -13,7 +13,6 @@ export interface ChipProps {
     dragHandlers?: React.DOMAttributes<HTMLSpanElement>;
 }
 
-
 export default function Chip({ label, onRemove, locked, isDragging, isDragOver, dragHandlers }: ChipProps) {
     function handleRemoveClick(e: React.MouseEvent) {
         e.stopPropagation();

@@ -16,14 +16,12 @@ import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
 import { usePlaylistListRefresh } from '@/entities/playlist/usePlaylistListRefresh.ts';
 import type { SongBase } from '@/app/api/zpotify';
 import ChevronRightIcon from '@/assets/icons/ChevronRightIcon.tsx';
-
 import TrackList from '@/dialogs/MultitrackUpload/TrackList';
 import PlaylistDetailsPanel from '@/dialogs/MultitrackUpload/PlaylistDetailsPanel';
 import PlaylistToggleRow from '@/dialogs/MultitrackUpload/PlaylistToggleRow';
 import SongSearchBox from '@/dialogs/MultitrackUpload/SongSearchBox/SongSearchBox';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { cleanTitle, formatBytes, computeHash } from '@/dialogs/MultitrackUpload/utils';
-
 import cls from '@/dialogs/MultitrackUpload/MultitrackUploadModal.module.css';
 
 interface MultitrackUploadModalProps {
@@ -164,7 +162,6 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
         }
 
         processInitialTracks().catch(() => {});
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const loadArtistOptions = useCallback(

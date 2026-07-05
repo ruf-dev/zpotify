@@ -15,7 +15,6 @@ export default function HomePage() {
         if (idx >= 0) handleChange(idx);
     }
 
-
     function renderSlide(idx: number): React.ReactNode {
         const segment = segments[idx];
         if (!segment) return null;
@@ -26,10 +25,7 @@ export default function HomePage() {
         <div className={cls.HomePage}>
             <div className={cls.ContentArea}>
                 {tabs.length > 0 && (
-                    <SegmentTabBar
-                        tabs={tabs}
-                        activeId={activeTab?.id ?? ''}
-                        onChange={handleTabClick} />
+                    <SegmentTabBar tabs={tabs} activeId={activeTab?.id ?? ''} onChange={handleTabClick} />
                 )}
                 <SegmentCarousel
                     activeIdx={activeIdx}

@@ -1,10 +1,11 @@
-import {type ComponentType} from 'react';
+import { type ComponentType } from 'react';
+import cn from 'classnames';
+
 import cls from '@/widgets/PlaylistsLibrarySegment/screens/LibraryGridScreen/LibraryGridScreen.module.css';
-import type {LibraryItem} from '@/widgets/PlaylistsLibrarySegment/model.ts';
+import type { LibraryItem } from '@/widgets/PlaylistsLibrarySegment/model.ts';
 import AlbumCard from '@/widgets/PlaylistsLibrarySegment/components/AlbumCard/AlbumCard.tsx';
 import PlaylistCardWide from '@/widgets/PlaylistsLibrarySegment/components/PlaylistCardWide/PlaylistCardWide.tsx';
-import cn from "classnames";
-import {useUISettings} from "@/entities/ui-settings/useUISettings.ts";
+import { useUISettings } from '@/entities/ui-settings/useUISettings.ts';
 
 interface Props {
     items: LibraryItem[];
@@ -15,7 +16,7 @@ function chooseComponent(kind: LibraryItem['kind']): ComponentType<LibraryItem> 
     return PlaylistCardWide as ComponentType<LibraryItem>;
 }
 
-export default function LibraryGridScreen({items}: Props) {
+export default function LibraryGridScreen({ items }: Props) {
     const uiSettings = useUISettings();
 
     if (items.length === 0) {
@@ -28,10 +29,12 @@ export default function LibraryGridScreen({items}: Props) {
 
     return (
         <div className={cls.PlaylistsLibrarySegmentContainer}>
-            <div className={cn(cls.Grid, {
-                [cls.smallGridBox]: !uiSettings.swipeEnabled,
-                [cls.bigGridBox]: uiSettings.swipeEnabled
-            })}>
+            <div
+                className={cn(cls.Grid, {
+                    [cls.smallGridBox]: !uiSettings.swipeEnabled,
+                    [cls.bigGridBox]: uiSettings.swipeEnabled,
+                })}
+            >
                 {items.map((item) => {
                     const Component = chooseComponent(item.kind);
                     return <Component key={item.uuid} {...item} />;

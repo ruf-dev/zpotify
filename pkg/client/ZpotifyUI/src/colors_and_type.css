@@ -47,6 +47,7 @@
 
     /* ── Playlists and albums ──────────────────────────────────────── */
     --album-footer-bg: rgb(0 0 0 / 76%);
+
     /* ── Layout Tokens ──────────────────────────────────────── */
     --header-height: 6vh;
     --border-radius: 1em;
@@ -181,23 +182,25 @@ p, .t-body {
     0% {
         background-position: 0 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0 50%;
     }
 }
 
 
-/* Chures overrides*/
+/* Chures overrides */
 :root {
-    /*TODO*/
-    --chures-accent: var(--color-fg-accent) !important;
+    /* TODO */
+    --chures-accent: var(--color-fg-accent);
 }
 
 
-/*Sidebar*/
+/* Sidebar */
 :root {
     --sidebar-collapsed-width: 4.25rem
 }

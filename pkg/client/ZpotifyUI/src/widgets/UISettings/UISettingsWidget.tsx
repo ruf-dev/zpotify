@@ -29,9 +29,7 @@ export default function UISettingsWidget() {
                 ))}
             </nav>
 
-            <div className={cls.TabContent}>
-                {activeTab === 'appearance' && <AppearanceScreen />}
-            </div>
+            <div className={cls.TabContent}>{activeTab === 'appearance' && <AppearanceScreen />}</div>
         </div>
     );
 }

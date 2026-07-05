@@ -40,8 +40,9 @@ export default function MultiSelect({
     const dropdownRef = useRef<HTMLDivElement>(null);
     const searchRef = useRef<HTMLInputElement>(null);
 
-    const findOption = (id: string) =>
-        options.find((o) => o.id === id) ?? initialOptions?.find((o) => o.id === id) ?? { id, label: id };
+    function findOption(id: string) {
+        return options.find((o) => o.id === id) ?? initialOptions?.find((o) => o.id === id) ?? { id, label: id };
+    }
 
     const selectedChips = selectedIds.map(findOption);
 
@@ -67,7 +68,7 @@ export default function MultiSelect({
     }, [query, doList]);
 
     useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
+        function handleClickOutside(e: MouseEvent) {
             const target = e.target as Node;
             const inContainer = containerRef.current?.contains(target);
             const inDropdown = dropdownRef.current?.contains(target);
@@ -76,7 +77,7 @@ export default function MultiSelect({
                 e.stopPropagation();
                 e.preventDefault();
             }
-        };
+        }
         document.addEventListener('mousedown', handleClickOutside, true);
         return () => document.removeEventListener('mousedown', handleClickOutside, true);
     }, [isOpen]);
@@ -102,7 +103,7 @@ export default function MultiSelect({
         [isMultiselect, onChange, selectedIds],
     );
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    function handleKeyDown(e: React.KeyboardEvent) {
         if (e.key === 'Enter' && query.trim()) {
             const exact = options.find((o) => o.label.toLowerCase() === query.trim().toLowerCase());
             if (exact) {
@@ -112,15 +113,15 @@ export default function MultiSelect({
             }
         }
         if (e.key === 'Escape') setIsOpen(false);
-    };
+    }
 
-    const handleAdd = async () => {
+    async function handleAdd() {
         if (!onAdd || !query.trim()) return;
         const newOpt = await onAdd(query.trim());
         setOptions((prev) => [...prev, newOpt]);
         toggleOption(newOpt.id);
         setQuery('');
-    };
+    }
 
     const trimmed = query.trim();
     const canCreate = onAdd && trimmed && !options.find((o) => o.label.toLowerCase() === trimmed.toLowerCase());

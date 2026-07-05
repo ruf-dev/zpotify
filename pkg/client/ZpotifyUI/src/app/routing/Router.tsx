@@ -1,9 +1,9 @@
-import {Navigate, Route, Routes, useNavigate} from 'react-router-dom';
-import {useEffect} from 'react';
-import {Tooltip} from 'react-tooltip';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Tooltip } from 'react-tooltip';
 
 import cls from '@/app/routing/Router.module.css';
-import {Path} from '@/app/routing/paths.ts';
+import { Path } from '@/app/routing/paths.ts';
 import InitPage from '@/pages/init/InitPage.tsx';
 import ErrorPage from '@/pages/error/ErrorPage.tsx';
 import PlaylistPage from '@/pages/main/playlist/PlaylistPage.tsx';
@@ -14,7 +14,7 @@ import Toaster from '@/components/notifications/Toaster.tsx';
 import HomePage from '@/pages/main/home/HomePage.tsx';
 import Coloring from '@/widgets/admin/coloring/Coloring.tsx';
 import Dialog from '@/pages/dialog/Dialog.tsx';
-import MainLayout from "@/app/layouts/MainLayout.tsx";
+import MainLayout from '@/app/layouts/MainLayout.tsx';
 
 export default function Router() {
     const navigate = useNavigate();
@@ -39,53 +39,27 @@ export default function Router() {
         <div className={cls.Root}>
             <div className={cls.Content}>
                 <Routes>
-                    <Route
-                        path={Path.IntiPage}
-                        element={<InitPage/>}
-                        errorElement={<ErrorPage/>}
-                    />
+                    <Route path={Path.IntiPage} element={<InitPage />} errorElement={<ErrorPage />} />
 
-                    <Route
-                        element={<MainLayout/>}
-                        errorElement={<ErrorPage/>}
-                    >
-                        <Route
-                            path={Path.HomePage}
-                            element={<HomePage/>}
-                            errorElement={<ErrorPage/>}
-                        />
-                        <Route
-                            path={Path.PlaylistPage}
-                            element={<PlaylistPage/>}
-                            errorElement={<ErrorPage/>}
-                        />
+                    <Route element={<MainLayout />} errorElement={<ErrorPage />}>
+                        <Route path={Path.HomePage} element={<HomePage />} errorElement={<ErrorPage />} />
+                        <Route path={Path.PlaylistPage} element={<PlaylistPage />} errorElement={<ErrorPage />} />
 
-                        <Route
-                            path={Path.AlbumPage}
-                            element={<AlbumPage/>}
-                            errorElement={<ErrorPage/>}
-                        />
+                        <Route path={Path.AlbumPage} element={<AlbumPage />} errorElement={<ErrorPage />} />
                     </Route>
 
+                    <Route path={Path.EarlyAccessPage} element={<EarlyAccessPage />} errorElement={<ErrorPage />} />
 
-                    <Route
-                        path={Path.EarlyAccessPage}
-                        element={<EarlyAccessPage/>}
-                        errorElement={<ErrorPage/>}/>
-
-                    <Route
-                        path={'*'}
-                        element={<Navigate to={'/'} replace/>}
-                        errorElement={<ErrorPage/>}/>
+                    <Route path={'*'} element={<Navigate to={'/'} replace />} errorElement={<ErrorPage />} />
                 </Routes>
 
-                <Dialog/>
-                <Tooltip id="root-tooltip" variant={'light'}/>
-                <Toaster/>
+                <Dialog />
+                <Tooltip id="root-tooltip" variant={'light'} />
+                <Toaster />
             </div>
 
             <div className={cls.Admins}>
-                <Coloring/>
+                <Coloring />
             </div>
         </div>
     );

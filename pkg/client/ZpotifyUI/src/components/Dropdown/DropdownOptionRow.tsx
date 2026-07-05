@@ -18,13 +18,9 @@ export default function DropdownOptionRow({ opt, isSelected, multiSelect, onPick
     }
 
     return (
-        <div
-            className={cn(cls.OptionRow, isSelected && cls.OptionRowSelected)}
-            onMouseDown={handleMouseDown}
-        >
+        <div className={cn(cls.OptionRow, isSelected && cls.OptionRowSelected)} onMouseDown={handleMouseDown}>
             {multiSelect && isSelected && <span className={cls.Checkmark}>✓</span>}
             {getOptionLabel(opt)}
         </div>
     );
 }
-

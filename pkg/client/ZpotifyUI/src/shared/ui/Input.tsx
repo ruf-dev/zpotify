@@ -1,4 +1,4 @@
-import { FocusEventHandler, useState } from 'react';
+import { useState } from 'react';
 import cn from 'classnames';
 
 import cls from '@/shared/ui/Input.module.css';
@@ -27,17 +27,17 @@ export default function Input({ label, onChange, inputValue, style, onLeave, dis
     const hasValue = inputValue !== undefined && inputValue !== null && inputValue.toString().length > 0;
     const showFloatingLabel = isFocused || hasValue;
 
-    const handleFocus: FocusEventHandler<HTMLInputElement> = () => {
+    function handleFocus() {
         if (disabled) {
             return;
         }
         setIsFocused(true);
-    };
+    }
 
-    const handleBlur: FocusEventHandler<HTMLInputElement> = () => {
+    function handleBlur() {
         setIsFocused(false);
         if (onLeave) onLeave(inputValue || '');
-    };
+    }
 
     return (
         <div
@@ -58,7 +58,7 @@ export default function Input({ label, onChange, inputValue, style, onLeave, dis
                 onBlur={handleBlur}
                 value={inputValue || ''}
             />
-            {label && <label className={`${cls.Label} ${showFloatingLabel ? cls.Floating : ''}`}>{label}</label>}
+            {label && <label className={cn(cls.Label, showFloatingLabel && cls.Floating)}>{label}</label>}
             {hint && (
                 <img
                     className={cls.Hint}

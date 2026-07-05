@@ -2,9 +2,7 @@ import { useState, type ComponentType } from 'react';
 
 import type { SongFile } from '@/app/api/zpotify';
 import cls from '@/dialogs/AddTrack/AddTrackDialog.module.css';
-import CloseButton from '@/shared/ui/CloseButton';
-import StepDots from '@/shared/ui/StepDots';
-import BackButton from '@/shared/ui/BackButton';
+import PanelHeader from '@/dialogs/AddTrack/components/PanelHeader/PanelHeader';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { ServiceError } from '@/shared/api/Errors.ts';
@@ -27,14 +25,6 @@ export interface AddTrackContext {
     handleSelectFromLibrary: (song: SongFile) => void;
     handleCreatePlaylist: () => void;
 }
-
-const DOT_STEPS: ModalStep[] = ['choose', 'drop'];
-
-const STEP_TITLES: Record<ModalStep, string> = {
-    choose: 'add track(s)',
-    drop: 'upload new track',
-    pending: 'pending uploads',
-};
 
 const BACK_STEPS: Partial<Record<ModalStep, ModalStep>> = {
     drop: 'choose',
@@ -132,31 +122,6 @@ export default function AddTrackDialog() {
 
             <div className={cls.PanelBody}>
                 <Screen {...ctx} />
-            </div>
-        </div>
-    );
-}
-
-interface PanelHeaderProps {
-    step: ModalStep;
-    backStep: ModalStep | undefined;
-    uploading: boolean;
-    onBack: () => void;
-    onClose: () => void;
-}
-
-function PanelHeader({ step, backStep, uploading, onBack, onClose }: PanelHeaderProps) {
-    return (
-        <div className={cls.PanelHeader}>
-            <div className={cls.HeaderLeft}>
-                {backStep && !uploading && <BackButton onClick={onBack} />}
-                <span className={cls.PanelTitle}>{STEP_TITLES[step]}</span>
-            </div>
-
-            <div className={cls.HeaderRight}>
-                <StepDots steps={DOT_STEPS} currentStep={step} />
-
-                <CloseButton onClick={onClose} />
             </div>
         </div>
     );

@@ -2,10 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import DropZone from '@/features/upload/DropZone';
-
 import TrackRow from '@/dialogs/MultitrackUpload/TrackRow';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
-
 import cls from '@/dialogs/MultitrackUpload/TrackList.module.css';
 
 type Drag = {

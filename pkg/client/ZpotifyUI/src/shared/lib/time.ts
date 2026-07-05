@@ -1,4 +1,4 @@
-export const formatDuration = (secs: number) => {
+export function formatDuration(secs: number) {
     const hours = Math.floor(secs / 3600);
     const minutes = Math.floor((secs % 3600) / 60);
     const seconds = secs % 60;
@@ -13,4 +13,4 @@ export const formatDuration = (secs: number) => {
     parts.push(seconds.toString().padStart(2, '0'));
 
     return parts.join(':');
-};
+}

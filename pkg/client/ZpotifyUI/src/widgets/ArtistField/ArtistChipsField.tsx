@@ -1,14 +1,15 @@
 import { useCallback, useMemo, useState } from 'react';
 import cn from 'classnames';
 
-import type { ArtistItem } from '@/widgets/ArtistField/ArtistChip';
 import Chip from '@/components/Chip/Chip';
 import Dropdown, { type DropdownOption } from '@/components/Dropdown/Dropdown';
 import { PlusIcon } from '@/assets/icons/PlusIcon';
-
 import cls from '@/widgets/ArtistField/ArtistChipsField.module.css';
 
-export type { ArtistItem };
+export interface ArtistItem {
+    id: string;
+    name: string;
+}
 
 interface ArtistChipsFieldProps {
     artists: ArtistItem[];
@@ -113,7 +114,11 @@ export default function ArtistChipsField({
 
     return (
         <div
-            className={cn(cls.FieldContainer, dense ? cls.Dense : cls.Default, showPlaceholder && !readOnly && cls.FieldClickable)}
+            className={cn(
+                cls.FieldContainer,
+                dense ? cls.Dense : cls.Default,
+                showPlaceholder && !readOnly && cls.FieldClickable,
+            )}
             role="list"
             onMouseDown={showPlaceholder && !readOnly ? handleFieldMouseDown : undefined}
         >

@@ -53,7 +53,7 @@ export default function SongItem({
         },
         {
             label: 'Delete',
-            onClick: () => console.log('Delete'),
+            onClick: () => {},
             disabled: true,
         },
     ];

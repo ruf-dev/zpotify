@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
+
 import type { ArtistBase } from '@/app/api/zpotify';
 import { artistsService } from '@/shared/api/ArtistsService';
 import ArtistRow from '@/pages/segments/SidebarSegment/components/ArtistRow/ArtistRow';
@@ -39,9 +40,7 @@ export default function SidebarArtistsWidget({ isCollapsed }: SidebarArtistsWidg
 
     return (
         <div className={cls.SidebarArtistsWidgetContainer}>
-            <span className={cn(cls.SectionLabel, isCollapsed && cls.SectionLabelHidden)}>
-                Your Artists
-            </span>
+            <span className={cn(cls.SectionLabel, isCollapsed && cls.SectionLabelHidden)}>Your Artists</span>
             {loaded && artists.length === 0 && (
                 <div className={cn(cls.EmptyState, isCollapsed && cls.EmptyStateHidden)}>
                     <span className={cls.EmptyStateText}>No liked artists yet</span>

@@ -4,7 +4,6 @@ import cn from 'classnames';
 import { albumPath } from '@/app/routing/paths.ts';
 import GenerativeCover from '@/shared/ui/GenerativeCover.tsx';
 import type { AlbumCardProps } from '@/widgets/PlaylistsLibrarySegment/model.ts';
-
 import cls from '@/widgets/PlaylistsLibrarySegment/components/AlbumCard/AlbumCard.module.css';
 
 export default function AlbumCard({ uuid, name, artistNames, seed, coverUrl }: AlbumCardProps) {

@@ -5,7 +5,6 @@ import type { SongBase } from '@/app/api/zpotify';
 import { songsService } from '@/shared/api/Songs.ts';
 import { SearchIcon } from '@/assets/icons/SearchIcon';
 import { formatDuration } from '@/shared/lib/time';
-
 import cls from '@/dialogs/MultitrackUpload/SongSearchBox/SongSearchBox.module.css';
 
 interface SongSearchBoxProps {

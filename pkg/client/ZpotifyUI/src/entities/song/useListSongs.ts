@@ -47,10 +47,7 @@ export function useListSongs(playlistId: string, options: UseListSongsOptions = 
             .ListSongs(playlistId, pageOffset, SONGS_PER_PAGE, hash)
             .then((resp) => {
                 const incoming = resp.songs ?? [];
-                setSongs((prev) => [
-                    ...prev,
-                    ...incoming.filter((s) => !prev.some((old) => old.id === s.id)),
-                ]);
+                setSongs((prev) => [...prev, ...incoming.filter((s) => !prev.some((old) => old.id === s.id))]);
                 const total = resp.total ?? 0;
                 setTotalSongs(total);
                 if (onTotal != null && resp.total != null) onTotal(resp.total);

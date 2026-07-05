@@ -103,8 +103,22 @@ function interleave(
 export interface IPlaylistService {
     ListSongs(uuid: string, offset: number, limit: number, shuffleHash: string | undefined): Promise<ListSongsResponse>;
     GetPlaylist(uuid: string): Promise<GetPlaylistResponse>;
-    CreatePlaylist(name: string, artistUuids?: string[], coverFileId?: string, year?: number, chips?: PlaylistChip[]): Promise<CreatePlaylistResponse>;
-    UpdatePlaylist(uuid: string, name?: string, description?: string, artistUuids?: string[], coverFileId?: string, year?: number, chips?: PlaylistChip[]): Promise<UpdatePlaylistResponse>;
+    CreatePlaylist(
+        name: string,
+        artistUuids?: string[],
+        coverFileId?: string,
+        year?: number,
+        chips?: PlaylistChip[],
+    ): Promise<CreatePlaylistResponse>;
+    UpdatePlaylist(
+        uuid: string,
+        name?: string,
+        description?: string,
+        artistUuids?: string[],
+        coverFileId?: string,
+        year?: number,
+        chips?: PlaylistChip[],
+    ): Promise<UpdatePlaylistResponse>;
     ChangeSongsOrder(playlistUuid: string, songIds: number[]): Promise<void>;
     AddSongToPlaylist(playlistUuid: string, songId: number): Promise<void>;
     DeleteSong(playlistUuid: string, songId: number): Promise<void>;
@@ -142,14 +156,28 @@ export class PlaylistService extends BaseService implements IPlaylistService {
         });
     }
 
-    async CreatePlaylist(name: string, artistUuids?: string[], coverFileId?: string, year?: number, chips?: PlaylistChip[]): Promise<CreatePlaylistResponse> {
+    async CreatePlaylist(
+        name: string,
+        artistUuids?: string[],
+        coverFileId?: string,
+        year?: number,
+        chips?: PlaylistChip[],
+    ): Promise<CreatePlaylistResponse> {
         const req: CreatePlaylistRequest = { name, artistUuids, coverFileId, year, chips };
         return this.executeAuthApiCall(async (initReq) => {
             return PlaylistAPI.CreatePlaylist(req, initReq);
         });
     }
 
-    async UpdatePlaylist(uuid: string, name?: string, description?: string, artistUuids?: string[], coverFileId?: string, year?: number, chips?: PlaylistChip[]): Promise<UpdatePlaylistResponse> {
+    async UpdatePlaylist(
+        uuid: string,
+        name?: string,
+        description?: string,
+        artistUuids?: string[],
+        coverFileId?: string,
+        year?: number,
+        chips?: PlaylistChip[],
+    ): Promise<UpdatePlaylistResponse> {
         const req: UpdatePlaylistRequest = { uuid, name, description, artistUuids, coverFileId, year, chips };
         return this.executeAuthApiCall(async (initReq) => {
             return PlaylistAPI.UpdatePlaylist(req, initReq);
@@ -219,9 +247,8 @@ export class PlaylistService extends BaseService implements IPlaylistService {
         const albums = all.filter((p) => (p.artists?.length ?? 0) > 0);
         const playlists = all.filter((p) => (p.artists?.length ?? 0) === 0);
 
-        const self = this;
         const trackResults = await Promise.all(
-            playlists.map(async function fetchTracks(p): Promise<[string, TrackPreview[]]> {
+            playlists.map(async (p): Promise<[string, TrackPreview[]]> => {
                 const uuid = p.uuid ?? '';
                 const songsReq = {
                     playlistUuid: uuid,
@@ -230,7 +257,7 @@ export class PlaylistService extends BaseService implements IPlaylistService {
                         offset: '0',
                     } as Paging,
                 } as ListSongsRequest;
-                const songsResp = await self.executeAuthApiCall((initReq) => PlaylistAPI.ListSongs(songsReq, initReq));
+                const songsResp = await this.executeAuthApiCall((initReq) => PlaylistAPI.ListSongs(songsReq, initReq));
                 return [uuid, mapToTrackPreviews(songsResp.songs ?? [])];
             }),
         );

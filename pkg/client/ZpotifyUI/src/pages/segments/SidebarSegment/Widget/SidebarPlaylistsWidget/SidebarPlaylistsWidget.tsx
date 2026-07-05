@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
+
 import { playlistService } from '@/shared/api/PlaylistService';
 import { usePlaylistListRefresh } from '@/entities/playlist/usePlaylistListRefresh';
 import PlaylistRow from '@/pages/segments/SidebarSegment/components/PlaylistRow/PlaylistRow';
@@ -26,24 +27,27 @@ export default function SidebarPlaylistsWidget({ isCollapsed }: SidebarPlaylists
     const navigate = useNavigate();
     const version = usePlaylistListRefresh((s) => s.version);
 
-    useEffect(function fetchPlaylists() {
-        playlistService
-            .ListUserPlaylists(50, 0)
-            .then((resp) => {
-                const items = (resp.playlists ?? []).map((p) => ({
-                    uuid: p.uuid ?? '',
-                    name: p.name ?? '',
-                    tracks: p.songCount ?? 0,
-                    color: uuidToHslColor(p.uuid ?? ''),
-                    coverUrl: buildCoverUrl(p.coverFilePath),
-                }));
-                setPlaylists(items);
-                setLoaded(true);
-            })
-            .catch(() => {
-                setLoaded(true);
-            });
-    }, [version]);
+    useEffect(
+        function fetchPlaylists() {
+            playlistService
+                .ListUserPlaylists(50, 0)
+                .then((resp) => {
+                    const items = (resp.playlists ?? []).map((p) => ({
+                        uuid: p.uuid ?? '',
+                        name: p.name ?? '',
+                        tracks: p.songCount ?? 0,
+                        color: uuidToHslColor(p.uuid ?? ''),
+                        coverUrl: buildCoverUrl(p.coverFilePath),
+                    }));
+                    setPlaylists(items);
+                    setLoaded(true);
+                })
+                .catch(() => {
+                    setLoaded(true);
+                });
+        },
+        [version],
+    );
 
     function handleCreateClick() {
         void navigate('/');
@@ -51,9 +55,7 @@ export default function SidebarPlaylistsWidget({ isCollapsed }: SidebarPlaylists
 
     return (
         <div className={cls.SidebarPlaylistsWidgetContainer}>
-            <span className={cn(cls.SectionLabel, isCollapsed && cls.SectionLabelHidden)}>
-                Your Library
-            </span>
+            <span className={cn(cls.SectionLabel, isCollapsed && cls.SectionLabelHidden)}>Your Library</span>
             {loaded && playlists.length === 0 && (
                 <div className={cn(cls.EmptyState, isCollapsed && cls.EmptyStateHidden)}>
                     <span className={cls.EmptyStateText}>No playlists yet</span>
@@ -63,10 +65,7 @@ export default function SidebarPlaylistsWidget({ isCollapsed }: SidebarPlaylists
                 </div>
             )}
             {playlists.map((playlist) => (
-                <PlaylistRow
-                    key={playlist.uuid} 
-                    {...playlist}
-                    isCollapsed={isCollapsed} />
+                <PlaylistRow key={playlist.uuid} {...playlist} isCollapsed={isCollapsed} />
             ))}
         </div>
     );

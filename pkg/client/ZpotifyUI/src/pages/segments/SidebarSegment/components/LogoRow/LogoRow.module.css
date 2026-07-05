@@ -22,7 +22,7 @@
         font-size: var(--font-size-base);
         font-weight: 700;
         letter-spacing: 0.02em;
-        color: rgba(255, 255, 255, 0.8);
+        color: rgb(255 255 255 / 80%);
         margin-left: var(--space-sm);
         white-space: nowrap;
         overflow: hidden;

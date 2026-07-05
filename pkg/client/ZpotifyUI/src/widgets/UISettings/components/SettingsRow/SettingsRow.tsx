@@ -13,9 +13,7 @@ export default function SettingsRow({ label, description, children }: SettingsRo
         <div className={cls.SettingsRowContainer}>
             <div className={cls.SettingInfo}>
                 <span className={cls.SettingLabel}>{label}</span>
-                {description && (
-                    <span className={cls.SettingDescription}>{description}</span>
-                )}
+                {description && <span className={cls.SettingDescription}>{description}</span>}
             </div>
             {children}
         </div>

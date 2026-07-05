@@ -43,13 +43,8 @@ export default function QueuePanelWidget() {
                 {QUEUE_TRACKS.map(function renderTrack(track, index) {
                     return (
                         <div key={track.id} className={cls.TrackRow}>
-                            <span className={cls.TrackIndex}>
-                                {String(index + 1).padStart(2, '0')}
-                            </span>
-                            <div
-                                className={cls.TrackCover}
-                                style={{ background: track.color }}
-                            />
+                            <span className={cls.TrackIndex}>{String(index + 1).padStart(2, '0')}</span>
+                            <div className={cls.TrackCover} style={{ background: track.color }} />
                             <div className={cls.TrackInfo}>
                                 <span className={cls.TrackTitle}>{track.title}</span>
                                 <span className={cls.TrackArtist}>{track.artist}</span>

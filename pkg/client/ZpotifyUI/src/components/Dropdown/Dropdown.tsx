@@ -1,16 +1,16 @@
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import {useDropdownClose, useSearchResults} from '@/components/Dropdown/Dropdown.hooks';
-import {getOptionId, getOptionLabel} from '@/components/Dropdown/Dropdown.types';
-import type {DropdownOption} from '@/components/Dropdown/Dropdown.types';
+import { useDropdownClose, useSearchResults } from '@/components/Dropdown/Dropdown.hooks';
+import { getOptionId, getOptionLabel } from '@/components/Dropdown/Dropdown.types';
+import type { DropdownOption } from '@/components/Dropdown/Dropdown.types';
 import DropdownCreateRow from '@/components/Dropdown/DropdownCreateRow';
 import DropdownOptionRow from '@/components/Dropdown/DropdownOptionRow';
 import DropdownSearchRow from '@/components/Dropdown/DropdownSearchRow';
 import DropdownSkeletonList from '@/components/Dropdown/DropdownSkeletonList';
 import cls from '@/components/Dropdown/Dropdown.module.css';
-import {useToaster} from "@/shared/lib/toaster/ToasterZ.ts";
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
-export type {DropdownOption};
+export type { DropdownOption };
 
 interface DropdownProps {
     options?: DropdownOption[];
@@ -28,16 +28,21 @@ interface DropdownProps {
     skeletonRowCount?: number;
 }
 
-export default function Dropdown(
-    {
-        onSearch, onCreate, onPick, onClose, placeholder,
-        options = [], initialOptions = [], excluded = [], selected = [],
-        multiSelect = false,
-        isLoading = false,
-        emptyHint = 'no results found',
-        skeletonRowCount = 4,
-    }: DropdownProps) {
-
+export default function Dropdown({
+    onSearch,
+    onCreate,
+    onPick,
+    onClose,
+    placeholder,
+    options = [],
+    initialOptions = [],
+    excluded = [],
+    selected = [],
+    multiSelect = false,
+    isLoading = false,
+    emptyHint = 'no results found',
+    skeletonRowCount = 4,
+}: DropdownProps) {
     const [query, setQuery] = useState('');
     const [creating, setCreating] = useState(false);
 
@@ -54,15 +59,10 @@ export default function Dropdown(
         if (hasSearch) inputRef.current?.focus();
     }, [hasSearch]);
 
-    const visibleOptions = (onSearch ? searchResults : options)
-        .filter(
-            (opt) => !excluded.includes(getOptionId(opt)),
-        );
+    const visibleOptions = (onSearch ? searchResults : options).filter((opt) => !excluded.includes(getOptionId(opt)));
 
     const trimmedQuery = query.trim();
-    const exactMatch = visibleOptions.some(
-        (o) => getOptionLabel(o).toLowerCase() === trimmedQuery.toLowerCase(),
-    );
+    const exactMatch = visibleOptions.some((o) => getOptionLabel(o).toLowerCase() === trimmedQuery.toLowerCase());
     const showCreate = Boolean(onCreate) && trimmedQuery.length > 0 && !exactMatch;
 
     async function handleCreate() {
@@ -110,7 +110,7 @@ export default function Dropdown(
             )}
             <div className={cls.ResultsList}>
                 {isLoading || isSearching ? (
-                    <DropdownSkeletonList count={skeletonRowCount}/>
+                    <DropdownSkeletonList count={skeletonRowCount} />
                 ) : (
                     <>
                         {visibleOptions.map((opt) => (
@@ -129,9 +129,7 @@ export default function Dropdown(
                                 onCreate={handleCreate}
                             />
                         )}
-                        {visibleOptions.length === 0 && !showCreate && (
-                            <div className={cls.EmptyHint}>{emptyHint}</div>
-                        )}
+                        {visibleOptions.length === 0 && !showCreate && <div className={cls.EmptyHint}>{emptyHint}</div>}
                     </>
                 )}
             </div>

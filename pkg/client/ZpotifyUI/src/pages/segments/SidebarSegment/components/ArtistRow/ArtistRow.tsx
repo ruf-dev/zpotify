@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import cn from 'classnames';
+
 import cls from '@/pages/segments/SidebarSegment/components/ArtistRow/ArtistRow.module.css';
 
 interface ArtistRowProps {

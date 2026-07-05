@@ -12,35 +12,6 @@
     overflow: hidden;
 }
 
-.PanelHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 1rem 0.75rem;
-    border-bottom: 0.0625rem solid var(--color-border);
-    min-height: 3rem;
-}
-
-.HeaderLeft {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.PanelTitle {
-    font-size: var(--font-size-lg);
-    font-weight: 700;
-    color: var(--color-fg-primary);
-}
-
-
-.HeaderRight {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-
 .PanelBody {
     padding: 1rem;
     display: flex;

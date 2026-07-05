@@ -1,12 +1,11 @@
 import cn from 'classnames';
 
-import cls from './SettingsTabButton.module.css';
+import cls from '@/widgets/UISettings/components/SettingsTabButton/SettingsTabButton.module.css';
 
 export interface Tab {
     id: string;
     label: string;
     disabled?: boolean;
-
 }
 
 export interface SettingsTabButtonProps {

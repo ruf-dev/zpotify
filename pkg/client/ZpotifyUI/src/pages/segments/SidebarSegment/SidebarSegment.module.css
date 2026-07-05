@@ -5,7 +5,7 @@
     flex-direction: column;
     height: 100%;
     overflow: hidden;
-    background: rgba(0, 0, 0, 0.52);
+    background: rgb(0 0 0 / 52%);
     backdrop-filter: blur(22px) saturate(1.2);
     border-right: 1px solid var(--color-border);
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);

@@ -1,4 +1,3 @@
-
 import cls from '@/widgets/Header/HeaderPart.module.css';
 import UserWidget from '@/widgets/User/UserWidget.tsx';
 import AddTrackButton from '@/features/upload/AddTrackButton.tsx';
@@ -14,9 +13,7 @@ export default function HeaderPart() {
 
     return (
         <div className={cls.Header}>
-            <div className={cls.SearchContainer}>
-
-            </div>
+            <div className={cls.SearchContainer}></div>
 
             <div className={cls.UserContainer}>
                 <AddTrackButton onClick={handleAddTrack} />

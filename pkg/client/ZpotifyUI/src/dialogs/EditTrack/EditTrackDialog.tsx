@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import cn from 'classnames';
 
 import type { SongBase } from '@/app/api/zpotify';
 import cls from '@/dialogs/EditTrack/EditTrackDialog.module.css';
@@ -84,7 +85,7 @@ export default function EditTrackDialog({ song }: EditTrackDialogProps) {
                     onPlaylistChange={setPlaylistId}
                     initialArtistOptions={initialArtistOptions}
                 />
-                <button className={`${cls.SubmitButton} ${cls.ButtonReady}`} type="button" onClick={handleSave}>
+                <button className={cn(cls.SubmitButton, cls.ButtonReady)} type="button" onClick={handleSave}>
                     save
                 </button>
             </div>

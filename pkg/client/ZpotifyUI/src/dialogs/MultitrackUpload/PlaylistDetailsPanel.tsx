@@ -5,7 +5,8 @@ import ChipsField from '@/widgets/ChipsField/ChipsField';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import type { ChipEntry } from '@/widgets/ChipsField/ChipsField';
 import { formatDuration } from '@/shared/lib/time';
-
+import { MiniClockIcon } from '@/assets/icons/MiniClockIcon';
+import { MiniDiscIcon } from '@/assets/icons/MiniDiscIcon';
 import cls from '@/dialogs/MultitrackUpload/PlaylistDetailsPanel.module.css';
 
 interface PlaylistDetailsPanelProps {
@@ -24,41 +25,6 @@ interface PlaylistDetailsPanelProps {
     onCreateArtist: (name: string) => Promise<ArtistItem>;
     chips: ChipEntry[];
     onChipsChange: (chips: ChipEntry[]) => void;
-}
-
-function ClockIcon() {
-    return (
-        <svg
-            width="11"
-            height="11"
-            viewBox="0 0 11 11"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <circle cx="5.5" cy="5.5" r="4.5" />
-            <path d="M5.5 3v2.5l1.5 1.5" />
-        </svg>
-    );
-}
-
-function DiscIcon() {
-    return (
-        <svg
-            width="11"
-            height="11"
-            viewBox="0 0 11 11"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-        >
-            <circle cx="5.5" cy="5.5" r="4.5" />
-            <circle cx="5.5" cy="5.5" r="1.5" />
-        </svg>
-    );
 }
 
 function formatTotalDuration(secs: number): string {
@@ -147,8 +113,12 @@ export default function PlaylistDetailsPanel({
 
                 {totalDurationSec !== undefined && trackCount !== undefined && (
                     <div className={cls.MetaChipsRow}>
-                        <DisabledChip icon={<ClockIcon />} label="total" value={formatTotalDuration(totalDurationSec)} />
-                        <DisabledChip icon={<DiscIcon />} label="tracks" value={String(trackCount)} />
+                        <DisabledChip
+                            icon={<MiniClockIcon />}
+                            label="total"
+                            value={formatTotalDuration(totalDurationSec)}
+                        />
+                        <DisabledChip icon={<MiniDiscIcon />} label="tracks" value={String(trackCount)} />
                     </div>
                 )}
             </div>
