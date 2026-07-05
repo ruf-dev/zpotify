@@ -11,14 +11,12 @@ import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
 import { useUISettings } from '@/entities/ui-settings/useUISettings.ts';
 import SidebarSegment from '@/pages/segments/SidebarSegment/SidebarSegment.tsx';
 import PlayerBarSegment from '@/pages/segments/PlayerBarSegment/PlayerBarSegment.tsx';
-import QueuePanelWidget from '@/widgets/QueuePanel/QueuePanelWidget.tsx';
 
 export default function MainLayout() {
     const userData = useUser((state) => state.userData);
     const navigate = useNavigate();
     const showSidebar = useUISettings((state) => state.showSidebar);
     const showPlayerBar = useUISettings((state) => state.showPlayerBar);
-    const showQueuePanel = useUISettings((state) => state.showQueuePanel);
 
     const audioPlayer = useAudioPlayer();
     const effectiveShowPlayerBar = showPlayerBar && audioPlayer.trackPath !== null;
@@ -58,8 +56,6 @@ export default function MainLayout() {
                     <MusicPlayerWithLogo audioPlayer={audioPlayer} />
                 </div>
             )}
-
-            {showQueuePanel && <QueuePanelWidget />}
         </div>
     );
 }

@@ -5,6 +5,8 @@ import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer';
 import { formatDuration } from '@/shared/lib/time.ts';
 import cls from '@/pages/segments/PlayerBarSegment/PlayerBarSegment.module.css';
 import VolumeControl from '@/pages/segments/PlayerBarSegment/components/VolumeControl/VolumeControl';
+import { useIsSongCached } from '@/shared/model/audioCacheStore.ts';
+import CachedIndicator from '@/shared/ui/CachedIndicator.tsx';
 
 const COVER_COLORS: readonly string[] = [
     'rgba(217,0,127,0.9)',
@@ -34,8 +36,9 @@ export default function PlayerBarSegment() {
     const audioPlayer = useAudioPlayer();
     const progressTrackRef = useRef<HTMLDivElement>(null);
 
-    const { isPlaying, songTitle, songArtist, songCover, progress, currentTime, duration } = audioPlayer;
+    const { isPlaying, songTitle, songArtist, songCover, progress, currentTime, duration, trackPath } = audioPlayer;
     const coverColor = computeCoverColor(songTitle);
+    const isCached = useIsSongCached(trackPath);
 
     function handleProgressClick(e: React.MouseEvent<HTMLDivElement>) {
         const el = progressTrackRef.current;
@@ -77,6 +80,7 @@ export default function PlayerBarSegment() {
                     </span>
                     {songArtist && <span className={cls.SongArtist}>{songArtist}</span>}
                 </div>
+                {isCached && <CachedIndicator />}
             </div>
 
             <div className={cls.ControlsCenterWrapper}>

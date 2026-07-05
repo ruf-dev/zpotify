@@ -2,10 +2,12 @@ import { useState } from 'react';
 
 import cls from '@/widgets/UISettings/UISettingsWidget.module.css';
 import AppearanceScreen from '@/widgets/UISettings/screens/AppearanceScreen/AppearanceScreen.tsx';
+import AudioScreen from '@/widgets/UISettings/screens/AudioScreen/AudioScreen.tsx';
 import SettingsTabButton, { Tab } from '@/widgets/UISettings/components/SettingsTabButton/SettingsTabButton.tsx';
 
 const TABS: Tab[] = [
     { id: 'appearance', label: 'Appearance' },
+    { id: 'audio', label: 'Audio' },
     { id: 'server', label: 'Server', disabled: true },
 ];
 
@@ -29,7 +31,10 @@ export default function UISettingsWidget() {
                 ))}
             </nav>
 
-            <div className={cls.TabContent}>{activeTab === 'appearance' && <AppearanceScreen />}</div>
+            <div className={cls.TabContent}>
+                {activeTab === 'appearance' && <AppearanceScreen />}
+                {activeTab === 'audio' && <AudioScreen />}
+            </div>
         </div>
     );
 }

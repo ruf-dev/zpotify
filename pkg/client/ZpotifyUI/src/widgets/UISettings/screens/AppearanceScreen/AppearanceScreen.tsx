@@ -14,8 +14,6 @@ export default function AppearanceScreen() {
         setShowSidebar,
         showPlayerBar,
         setShowPlayerBar,
-        showQueuePanel,
-        setShowQueuePanel,
     } = useUISettings();
 
     return (
@@ -31,9 +29,6 @@ export default function AppearanceScreen() {
             </SettingsRow>
             <SettingsRow label="Player Bar" description="Full-width bottom player bar">
                 <Toggle checked={showPlayerBar} onChange={setShowPlayerBar} />
-            </SettingsRow>
-            <SettingsRow label="Queue Panel" description="Slide-in right queue panel">
-                <Toggle checked={showQueuePanel} onChange={setShowQueuePanel} />
             </SettingsRow>
         </div>
     );

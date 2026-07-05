@@ -7,6 +7,13 @@ import NowPlayingBars from '@/assets/icons/NowPlayingBars.tsx';
 import { HeartIcon } from '@/assets/icons/HeartIcon.tsx';
 import { PlayTriangleIcon } from '@/assets/icons/PlayTriangleIcon.tsx';
 import { GripIcon } from '@/assets/icons/GripIcon.tsx';
+import MoreButton from '@/entities/song/more/MoreButton.tsx';
+import { useDialog } from '@/app/hooks/Dialog.tsx';
+import EditTrackDialog from '@/dialogs/EditTrack/EditTrackDialog.tsx';
+import { useIsSongCached, useAudioCacheStore } from '@/shared/model/audioCacheStore.ts';
+import CachedIndicator from '@/shared/ui/CachedIndicator.tsx';
+import { cacheAudio, getTrackUrl } from '@/shared/lib/audioCache.ts';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 function formatDuration(sec: number): string {
     const m = Math.floor(sec / 60);
@@ -43,6 +50,10 @@ export default function TrackRow({
     anyDragging,
     rowRef,
 }: TrackRowProps) {
+    const { OpenDialog } = useDialog();
+    const toaster = useToaster();
+    const isCached = useIsSongCached(song.filePath);
+
     function handleRowClick() {
         if (anyDragging) return;
         onPlay();
@@ -53,9 +64,44 @@ export default function TrackRow({
         onToggleLike();
     }
 
-    function handleOverflowClick(e: MouseEvent) {
-        e.stopPropagation();
+    function handleDownload() {
+        if (!song.filePath) return;
+
+        const trackUrl = getTrackUrl(song.filePath);
+        cacheAudio(trackUrl).then((cached) => {
+            if (cached) {
+                useAudioCacheStore.getState().addCachedUrl(trackUrl);
+                toaster.bake({
+                    title: 'Song downloaded',
+                    description: `${song.title || 'Track'} is now available offline`,
+                    level: 'Info',
+                });
+            } else {
+                toaster.bake({
+                    title: 'Download failed',
+                    description: `Could not download ${song.title || 'this track'}`,
+                    level: 'Error',
+                });
+            }
+        });
     }
+
+    const menuOps = [
+        {
+            label: 'Edit',
+            onClick: () => OpenDialog(<EditTrackDialog song={song} />),
+        },
+        {
+            label: isCached ? 'Downloaded' : 'Download',
+            onClick: handleDownload,
+            disabled: isCached,
+        },
+        {
+            label: 'Delete',
+            onClick: () => {},
+            disabled: true,
+        },
+    ];
 
     const artistName = song.artists?.[0]?.name ?? 'Unknown';
     const duration = formatDuration(song.durationSec ?? 0);
@@ -86,6 +132,8 @@ export default function TrackRow({
                 <span className={cls.TrackArtist}>{artistName}</span>
             </div>
 
+            <div className={cls.CachedWrapper}>{isCached && <CachedIndicator />}</div>
+
             <button
                 type="button"
                 className={cn(cls.HeartIcon, isLiked && cls.HeartIconLiked, isHeartAnimating && cls.HeartPop)}
@@ -97,9 +145,9 @@ export default function TrackRow({
 
             <span className={cls.TrackDuration}>{duration}</span>
 
-            <button type="button" className={cls.OverflowBtn} onClick={handleOverflowClick} aria-label="More options">
-                ···
-            </button>
+            <div className={cls.OverflowBtn}>
+                <MoreButton ops={menuOps} />
+            </div>
 
             {canReorder && (
                 <button

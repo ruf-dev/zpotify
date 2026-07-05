@@ -1,0 +1,43 @@
+export const AUDIO_CACHE_NAME = 'zpotify-audio-cache-v1';
+
+export function getTrackUrl(trackPath: string): string {
+    const base = (import.meta.env.VITE_ZPOTIFY_WEBSERVER as string) || '';
+    return base + (trackPath.startsWith('/') ? trackPath : '/' + trackPath);
+}
+
+export async function getCachedAudio(url: string): Promise<Blob | null> {
+    if (!('caches' in window)) return null;
+
+    const cache = await caches.open(AUDIO_CACHE_NAME);
+    const response = await cache.match(url);
+    if (!response) return null;
+
+    return response.blob();
+}
+
+export async function cacheAudio(url: string): Promise<boolean> {
+    if (!('caches' in window)) return false;
+
+    try {
+        const cache = await caches.open(AUDIO_CACHE_NAME);
+        const existing = await cache.match(url);
+        if (existing) return true;
+
+        const response = await fetch(url);
+        if (!response.ok) return false;
+
+        await cache.put(url, response);
+        return true;
+    } catch (err) {
+        console.error('Failed to cache audio', err);
+        return false;
+    }
+}
+
+export async function listCachedUrls(): Promise<string[]> {
+    if (!('caches' in window)) return [];
+
+    const cache = await caches.open(AUDIO_CACHE_NAME);
+    const requests = await cache.keys();
+    return requests.map((r) => r.url);
+}

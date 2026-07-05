@@ -4,7 +4,10 @@ import type { SongBase } from '@/app/api/zpotify';
 import cls from '@/widgets/TrackList/TrackListWidget.module.css';
 import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
 import { SongListPermissions } from '@/shared/model/User.ts';
-import SongListItem from '@/entities/song/SongListItem.tsx';
+import TrackRow from '@/widgets/PlaylistScreen/components/TrackRow/TrackRow.tsx';
+import { useLikedSongs } from '@/entities/song/useLikedSongs.ts';
+import useUser from '@/entities/user/useUser.ts';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 type SongListWidgetProps = {
     songs: SongBase[];
@@ -14,18 +17,19 @@ type SongListWidgetProps = {
 };
 
 export default function SongListWidget({ songs, audioPlayer, coverUrl }: SongListWidgetProps) {
-    const [currentSongIdx, setCurrentSongIdx] = useState<number>(-1);
+    const [animatingHeartId, setAnimatingHeartId] = useState<string | null>(null);
 
-    const [menuOpenedSongId, setMenuOpenedSongId] = useState<string | null>(null);
+    const toaster = useToaster();
+    const likedPlaylistId = useUser((s) => s.userData?.likedPlaylistId);
+    const likedSongIds = useLikedSongs((s) => s.likedSongIds);
+    const fetchLikedSongs = useLikedSongs((s) => s.fetchLikedSongs);
+    const likeSong = useLikedSongs((s) => s.likeSong);
+    const unlikeSong = useLikedSongs((s) => s.unlikeSong);
 
     useEffect(() => {
-        if (!songs) return;
-
-        const uId = songs.findIndex((s) => s.filePath == audioPlayer.trackPath);
-        if (uId == -1) return;
-
-        setCurrentSongIdx(uId);
-    }, [audioPlayer.trackPath, songs]);
+        if (!likedPlaylistId) return;
+        void fetchLikedSongs(likedPlaylistId);
+    }, [likedPlaylistId, fetchLikedSongs]);
 
     function getNext(currentIdx: number): string | undefined {
         if (songs.length == 0 || currentIdx == -1) {
@@ -66,24 +70,29 @@ export default function SongListWidget({ songs, audioPlayer, coverUrl }: SongLis
 
         audioPlayer.play(song.filePath);
         audioPlayer.setSongInfo(song.title || null, song.artists?.[0]?.name || null, coverUrl);
+    }
 
-        setCurrentSongIdx(idx);
+    function handleToggleLike(songId: string) {
+        const toggle = likedSongIds.has(songId) ? unlikeSong : likeSong;
+        void toggle(songId).catch((e: unknown) => toaster.catch(e as never));
+
+        setAnimatingHeartId(songId);
+        setTimeout(() => setAnimatingHeartId(null), 350);
     }
 
     return (
         <div className={cls.SongListWidgetContainer}>
             {songs.map((s: SongBase, idx: number) => (
-                <div key={s.id} className={cls.Song} onClick={() => playSongAtIndex(idx)}>
-                    <SongListItem
-                        song={s}
-                        num={idx + 1}
-                        isPlaying={audioPlayer.isPlaying && audioPlayer.trackPath === s.filePath}
-                        isSelected={currentSongIdx === idx}
-                        onMenuOpened={setMenuOpenedSongId}
-                        onMenuClosed={() => setMenuOpenedSongId(null)}
-                        isInteractionDisabled={menuOpenedSongId ? menuOpenedSongId !== s.id : false}
-                    />
-                </div>
+                <TrackRow
+                    key={s.id}
+                    song={s}
+                    index={idx + 1}
+                    isPlaying={audioPlayer.trackPath === s.filePath}
+                    isLiked={likedSongIds.has(s.id ?? '')}
+                    isHeartAnimating={animatingHeartId === s.id}
+                    onPlay={() => playSongAtIndex(idx)}
+                    onToggleLike={() => handleToggleLike(s.id ?? '')}
+                />
             ))}
         </div>
     );

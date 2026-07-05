@@ -2,13 +2,17 @@ import { useMemo } from 'react';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import { cacheAudio, getCachedAudio, getTrackUrl } from '@/shared/lib/audioCache.ts';
+import { useAudioSettings } from '@/entities/audio-settings/useAudioSettings.ts';
+import { useAudioCacheStore } from '@/shared/model/audioCacheStore.ts';
+
 export interface AudioPlayer {
     isPlaying: boolean;
 
     togglePlay: () => boolean;
-    preload: (id: string) => void;
+    preload: (id: string) => Promise<void>;
     unload: () => void;
-    play: (id: string) => void;
+    play: (id: string) => Promise<void>;
 
     setVolume: (volume: number) => void;
     volume: number;
@@ -91,6 +95,7 @@ const useAudioStore = create<AudioStoreState>()(
 class AudioPlayerImpl implements AudioPlayer {
     private audio: HTMLAudioElement;
     private pendingRestoreProgress: number | null = null;
+    private currentObjectUrl: string | null = null;
 
     constructor() {
         this.audio = new Audio();
@@ -243,13 +248,38 @@ class AudioPlayerImpl implements AudioPlayer {
         return useAudioStore.getState().isPlaying;
     }
 
-    preload(trackPath: string): void {
-        const base = (import.meta.env.VITE_ZPOTIFY_WEBSERVER as string) || '';
-        const trackUrl = base + (trackPath.startsWith('/') ? trackPath : '/' + trackPath);
+    private revokeCurrentObjectUrl(): void {
+        if (this.currentObjectUrl) {
+            URL.revokeObjectURL(this.currentObjectUrl);
+            this.currentObjectUrl = null;
+        }
+    }
 
-        this.audio.src = trackUrl;
+    async preload(trackPath: string): Promise<void> {
+        const trackUrl = getTrackUrl(trackPath);
+
+        this.revokeCurrentObjectUrl();
+
+        const cacheSongs = useAudioSettings.getState().cacheSongs;
+        let src = trackUrl;
+
+        if (cacheSongs) {
+            const cachedBlob = await getCachedAudio(trackUrl);
+            if (cachedBlob) {
+                src = URL.createObjectURL(cachedBlob);
+                this.currentObjectUrl = src;
+            }
+        }
+
+        this.audio.src = src;
         this.audio.load();
         useAudioStore.setState({ trackPath: trackPath, currentTime: 0, duration: 0 });
+
+        if (cacheSongs && src === trackUrl) {
+            cacheAudio(trackUrl).then((cached) => {
+                if (cached) useAudioCacheStore.getState().addCachedUrl(trackUrl);
+            });
+        }
 
         if ('mediaSession' in navigator) {
             // Ideally we should set metadata here, but we only have trackUrl
@@ -263,13 +293,14 @@ class AudioPlayerImpl implements AudioPlayer {
     }
 
     unload(): void {
+        this.revokeCurrentObjectUrl();
         this.audio.src = '';
         useAudioStore.setState({ trackPath: null, isPlaying: false, currentTime: 0, duration: 0 });
     }
 
-    play(trackUrl: string): void {
+    async play(trackUrl: string): Promise<void> {
         this.pendingRestoreProgress = null;
-        this.preload(trackUrl);
+        await this.preload(trackUrl);
         this.startPlay();
     }
 

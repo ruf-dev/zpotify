@@ -186,6 +186,7 @@ export default function MainContent({
                 <span className={cls.ColNum}>#</span>
                 <span className={cls.ColTitle}>title</span>
                 <span />
+                <span />
                 <span className={cls.ColDuration}>
                     <ClockIcon />
                 </span>
