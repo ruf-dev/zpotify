@@ -1,0 +1,20 @@
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-0.5625rem); }
+}
+
+@keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30%            { transform: translateY(0.5625rem); }
+    75%            { transform: translateY(-0.25rem); }
+}
+
+.IconIdle {
+    color: var(--color-fg-tertiary);
+    animation: float 3s ease-in-out infinite;
+}
+
+.IconDragOver {
+    color: var(--color-fg-accent);
+    animation: bounce 0.6s ease infinite;
+}

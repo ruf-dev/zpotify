@@ -1,0 +1,31 @@
+@keyframes radarPulse {
+    0%   { transform: scale(0.6); opacity: 0.7; }
+    100% { transform: scale(2.4); opacity: 0; }
+}
+
+.DragBorder {
+    position: absolute;
+    inset: 0;
+    border: 0.125rem solid var(--color-fg-accent);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 1.75rem var(--color-accent-glow), inset 0 0 1.75rem var(--color-accent-dim);
+    pointer-events: none;
+}
+
+.RadarPulse {
+    position: absolute;
+    width: 5rem;
+    height: 5rem;
+    border-radius: var(--border-radius-circle);
+    border: 0.09375rem solid var(--color-fg-accent);
+    animation: radarPulse 1.2s ease-out infinite;
+    animation-delay: 0s;
+}
+
+.RadarPulse2 {
+    animation-delay: 0.3s;
+}
+
+.RadarPulse3 {
+    animation-delay: 0.6s;
+}

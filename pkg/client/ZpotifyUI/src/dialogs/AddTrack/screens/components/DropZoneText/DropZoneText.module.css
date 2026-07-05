@@ -1,0 +1,21 @@
+.TextIdle {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-fg-primary);
+}
+
+.TextSub {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-secondary);
+}
+
+.TextSub u {
+    color: var(--color-fg-secondary);
+    text-decoration-color: var(--color-fg-secondary);
+}
+
+.TextDragOver {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-fg-accent);
+}

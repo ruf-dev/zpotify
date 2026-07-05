@@ -1,0 +1,61 @@
+.VolumeWrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.VolumeButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: var(--color-fg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--ease-quick);
+
+    &:hover {
+        color: var(--color-fg-primary);
+    }
+}
+
+.VolumeTrackWrapper {
+    width: 3.5rem;
+    height: 0.75rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    touch-action: none;
+}
+
+.VolumeTrackWrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 0.1875rem;
+    transform: translateY(-50%);
+    background: var(--color-border-light);
+    border-radius: 0.09375rem;
+    pointer-events: none;
+}
+
+.VolumeFill {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 0.1875rem;
+    transform: translateY(-50%);
+    background: var(--color-fg-disabled);
+    border-radius: 0.09375rem;
+    transition: background-color var(--ease-quick);
+    pointer-events: none;
+}
+
+.VolumeTrackWrapper:hover .VolumeFill,
+.VolumeFillActive {
+    background: var(--color-fg-accent);
+}
