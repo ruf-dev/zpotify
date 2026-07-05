@@ -3,10 +3,10 @@ FROM --platform=$BUILDPLATFORM oven/bun:1 AS ui-builder
 
 WORKDIR /ui
 
-COPY pkg/web/ZpotifyUI/package.json pkg/web/ZpotifyUI/bun.lock ./
+COPY pkg/client/ZpotifyUI/package.json pkg/client/ZpotifyUI/bun.lock ./
 RUN bun install --frozen-lockfile
 
-COPY pkg/web/ZpotifyUI/ ./
+COPY pkg/client/ZpotifyUI/ ./
 RUN bun run build
 
 # Stage 2: build Go binary (embeds UI dist)

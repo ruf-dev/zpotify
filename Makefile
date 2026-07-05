@@ -1,35 +1,26 @@
-include rscli.mk
+DEFAULT: codegen lint
 
-# Installs golang dependencies for codegen
-install-go-deps:
-	go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 
-# Build UI part of project
-build-ui: codegen .build-ui
-
-.build-ui:
-	cd pkg/web/@zpotify/api && npm link
-	cd pkg/web/ZpotifyUI && npm link @zpotify/api && npm run build:ui
-
-link:
-	cd pkg/web/@zpotify/api && npm link
-
-# generates folders and installs dependencies
-warmup:
-	make .prepare-grpc-folders
-	make .deps-grpc
-	PROTOPACKPATH=proto_deps protopack mod download
-# generates code on warm project
 codegen:
 	moti g
 	sqlc generate
+	cd pkg/client/ZpotifyUI && bun gen
 
 lint:
+	go fmt ./...
 	golangci-lint run ./...
-
+	cd pkg/client/ZpotifyUI && bun lint
 
 reload-webserver:
 	docker compose restart
 
-run-dev-client:
-	cd pkg/web/ZpotifyUI && vite
+# Client side
+client:
+	cd pkg/client/ZpotifyUI && vite
+
+# Build UI part of project
+client-build: codegen .build-ui
+
+.build-ui:
+	cd pkg/client/@zpotify/api && npm link
+	cd pkg/client/ZpotifyUI && npm link @zpotify/api && npm run build:ui

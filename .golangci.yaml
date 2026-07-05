@@ -100,7 +100,7 @@ linters:
     paths:
       - configs
       - node_modules
-      - pkg/web/ZpotifyUI/node_modules
+      - pkg/client/ZpotifyUI/node_modules
 
 formatters:
   enable:
@@ -110,4 +110,4 @@ formatters:
     paths:
       - configs
       - node_modules
-      - pkg/web/ZpotifyUI/node_modules
+      - pkg/client/ZpotifyUI/node_modules
