@@ -12,7 +12,7 @@ lint:
 	cd pkg/client/ZpotifyUI && bun lint
 
 reload-webserver:
-	docker compose restart
+	docker compose exec -it nginx nginx -s reload
 
 # Client side
 client:
