@@ -10,9 +10,6 @@ import { Path } from '@/app/routing/paths.ts';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import useUser from '@/entities/user/useUser.ts';
 import lockIcon from '@/assets/icons/lock.svg';
-import googleIcon from '@/assets/icons/google.svg';
-import appleIcon from '@/assets/icons/apple.svg';
-import githubIcon from '@/assets/icons/github.svg';
 
 export default function InitPage() {
     const navigate = useNavigate();
@@ -36,7 +33,7 @@ export default function InitPage() {
     }, [earlyAccessDenied]);
 
     function openLogoPassDialog() {
-        OpenDialog(<LoginPasswordDialog />);
+        OpenDialog(<LoginPasswordDialog/>);
     }
 
     return (
@@ -58,30 +55,6 @@ export default function InitPage() {
                     icon={<img src={lockIcon} width={16} height={16} alt="" />}
                     label="Username & Password"
                     onClick={openLogoPassDialog}
-                />
-            </div>
-
-            <div className={cls.ComingSoonButtons}>
-                <AuthButton
-                    icon={<img src={googleIcon} width={16} height={16} alt="" />}
-                    className={cls.NotReadyButton}
-                    label="Google"
-                    disabled
-                    comingSoon
-                />
-                <AuthButton
-                    icon={<img src={appleIcon} width={16} height={16} alt="" />}
-                    className={cls.NotReadyButton}
-                    label="Apple"
-                    disabled
-                    comingSoon
-                />
-                <AuthButton
-                    icon={<img src={githubIcon} width={16} height={16} alt="" />}
-                    className={cls.NotReadyButton}
-                    label="GitHub"
-                    disabled
-                    comingSoon
                 />
             </div>
 
