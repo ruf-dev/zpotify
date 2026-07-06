@@ -41,3 +41,38 @@ export async function listCachedUrls(): Promise<string[]> {
     const requests = await cache.keys();
     return requests.map((r) => r.url);
 }
+
+const CACHE_TRACKS_CONCURRENCY = 4;
+
+export async function cacheTracks(
+    trackUrls: string[],
+    onProgress: (completed: number, total: number) => void,
+): Promise<{ succeeded: string[]; failed: string[] }> {
+    const total = trackUrls.length;
+    const succeeded: string[] = [];
+    const failed: string[] = [];
+    let completed = 0;
+    let nextIndex = 0;
+
+    async function worker(): Promise<void> {
+        while (nextIndex < trackUrls.length) {
+            const url = trackUrls[nextIndex];
+            nextIndex += 1;
+
+            const cached = await cacheAudio(url);
+            if (cached) {
+                succeeded.push(url);
+            } else {
+                failed.push(url);
+            }
+
+            completed += 1;
+            onProgress(completed, total);
+        }
+    }
+
+    const workers = Array.from({ length: Math.min(CACHE_TRACKS_CONCURRENCY, trackUrls.length) }, worker);
+    await Promise.all(workers);
+
+    return { succeeded, failed };
+}

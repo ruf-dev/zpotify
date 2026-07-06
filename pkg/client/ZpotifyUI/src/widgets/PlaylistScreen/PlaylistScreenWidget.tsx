@@ -90,6 +90,7 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
             <div className={cls.Body}>
                 <Sidebar
                     playlist={playlist}
+                    songs={orderedSongs}
                     totalDuration={totalDuration}
                     trackCount={trackCount}
                     saved={saved}

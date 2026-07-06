@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'classnames';
 
 import cls from '@/widgets/PlaylistScreen/components/Sidebar/Sidebar.module.css';
-import type { Playlist } from '@/app/api/zpotify';
+import type { Playlist, SongBase } from '@/app/api/zpotify';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import GenerativeCover from '@/components/GenerativeCover/GenerativeCover.tsx';
 import BackButton from '@/shared/ui/BackButton.tsx';
@@ -16,6 +16,8 @@ import EditIcon from '@/assets/icons/EditIcon.tsx';
 import SaveIcon from '@/assets/icons/SaveIcon.tsx';
 import { RemoveIcon } from '@/assets/icons/RemoveIcon.tsx';
 import { UploadArrowIcon } from '@/assets/icons/UploadArrowIcon.tsx';
+import { DownloadIcon } from '@/assets/icons/DownloadIcon.tsx';
+import { UploadDoneIcon } from '@/assets/icons/UploadDoneIcon.tsx';
 import EditableText from '@/widgets/PlaylistScreen/components/EditableText/EditableText.tsx';
 import EditableArtistPicker from '@/widgets/PlaylistScreen/components/EditableArtistPicker/EditableArtistPicker.tsx';
 import { isAlbum } from '@/entities/playlist/isAlbum.ts';
@@ -23,10 +25,13 @@ import { artistsService } from '@/shared/api/ArtistsService.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { webApiService } from '@/shared/api/WebApi.ts';
 import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
+import { cacheTracks, getTrackUrl } from '@/shared/lib/audioCache.ts';
+import { useAudioCacheStore, useCachedCount, useDownloadProgress } from '@/shared/model/audioCacheStore.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 const SECTION_TRANSITION = { duration: 0.2, ease: [0.4, 0, 0.2, 1] } as const;
 const LAYOUT_SPRING = { type: 'spring', stiffness: 420, damping: 42, mass: 0.75 } as const;
+const DOWNLOAD_ALL_FETCH_LIMIT = 100000;
 
 function resolveCoverSeed(playlist: Playlist): number {
     const fileId = playlist.coverFilePath ?? '';
@@ -40,6 +45,7 @@ function resolveCoverSeed(playlist: Playlist): number {
 
 export interface SidebarProps {
     playlist: Playlist | null;
+    songs: SongBase[];
     totalDuration: string;
     trackCount: number;
     saved: boolean;
@@ -53,6 +59,7 @@ export interface SidebarProps {
 
 export default function Sidebar({
     playlist,
+    songs,
     totalDuration,
     trackCount,
     saved,
@@ -72,6 +79,8 @@ export default function Sidebar({
     const coverInputRef = useRef<HTMLInputElement>(null);
     const queryClient = useQueryClient();
     const toaster = useToaster();
+    const downloadProgress = useDownloadProgress(playlist?.uuid);
+    const { cached: cachedCount, total: cachedTotal } = useCachedCount(songs);
 
     const [editName, setEditName] = useState('');
     const [editDesc, setEditDesc] = useState('');
@@ -169,6 +178,45 @@ export default function Sidebar({
         setCoverPreviewUrl(URL.createObjectURL(file));
     }
 
+    async function handleDownloadPlaylist() {
+        if (!playlist || !playlist.uuid || downloadProgress) return;
+        const uuid = playlist.uuid;
+
+        try {
+            const resp = await playlistService.ListSongs(uuid, 0, DOWNLOAD_ALL_FETCH_LIMIT, undefined);
+            const urls = (resp.songs ?? [])
+                .map((s) => s.filePath)
+                .filter((p): p is string => !!p)
+                .map(getTrackUrl);
+
+            if (urls.length === 0) return;
+
+            useAudioCacheStore.getState().setDownloadProgress(uuid, 0, urls.length);
+            const { succeeded, failed } = await cacheTracks(urls, (completed, total) =>
+                useAudioCacheStore.getState().setDownloadProgress(uuid, completed, total),
+            );
+            succeeded.forEach((url) => useAudioCacheStore.getState().addCachedUrl(url));
+
+            if (failed.length === 0) {
+                toaster.bake({
+                    title: isAlbum(playlist) ? 'Album downloaded' : 'Playlist downloaded',
+                    description: `${playlist.name || 'All tracks'} are now available offline`,
+                    level: 'Info',
+                });
+            } else {
+                toaster.bake({
+                    title: 'Download incomplete',
+                    description: `${failed.length} of ${urls.length} tracks could not be downloaded`,
+                    level: 'Error',
+                });
+            }
+        } catch (e) {
+            toaster.catch(e as never);
+        } finally {
+            useAudioCacheStore.getState().clearDownloadProgress(uuid);
+        }
+    }
+
     if (!playlist) {
         return (
             <div className={cls.SidebarContainer}>
@@ -184,6 +232,14 @@ export default function Sidebar({
 
     const playlistIsAlbum = isAlbum(playlist);
     const displayCoverUrl = coverPreviewUrl ?? coverUrl;
+
+    const allCached = cachedTotal > 0 && cachedCount === cachedTotal;
+    const downloadFillPercent = downloadProgress
+        ? (downloadProgress.completed / downloadProgress.total) * 100
+        : cachedTotal > 0
+          ? (cachedCount / cachedTotal) * 100
+          : 0;
+    const downloadButtonStyle = { '--progress': `${downloadFillPercent}%` } as React.CSSProperties;
 
     return (
         <div className={cls.SidebarContainer}>
@@ -320,6 +376,16 @@ export default function Sidebar({
                 </button>
                 <button className={cls.IconButton} type="button" aria-label="Share">
                     <ShareIcon />
+                </button>
+                <button
+                    className={cn(cls.IconButton, allCached && cls.IconButtonActive)}
+                    type="button"
+                    aria-label={allCached ? 'Downloaded' : 'Download'}
+                    onClick={handleDownloadPlaylist}
+                    disabled={allCached || !!downloadProgress}
+                    style={downloadButtonStyle}
+                >
+                    {allCached ? <UploadDoneIcon /> : <DownloadIcon />}
                 </button>
                 {playlist.canEdit &&
                     (editMode ? (

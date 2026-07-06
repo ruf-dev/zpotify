@@ -149,22 +149,27 @@
 }
 
 .IconButton {
+    --progress: 0%;
     width: 2.25rem;
     height: 2.25rem;
     border-radius: var(--border-radius-circle);
     border: 0.0625rem solid var(--color-border);
-    background: transparent;
+    background: linear-gradient(to right, var(--color-accent-dim) var(--progress), transparent var(--progress));
     color: var(--color-fg-tertiary);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: color var(--ease-quick), border-color var(--ease-quick), background var(--ease-quick);
+    transition: color var(--ease-quick), border-color var(--ease-quick), background 0.4s ease;
 
     &:hover {
         color: var(--color-fg-secondary);
         border-color: var(--color-border-light);
-        background: var(--color-bg-hover-mid);
+        background: linear-gradient(to right, var(--color-accent-dim) var(--progress), var(--color-bg-hover-mid) var(--progress));
+    }
+
+    &:disabled {
+        cursor: not-allowed;
     }
 }
 
