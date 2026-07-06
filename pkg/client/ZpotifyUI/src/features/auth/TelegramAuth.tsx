@@ -6,10 +6,13 @@ import AuthButton from '@/shared/ui/AuthButton.tsx';
 import cls from '@/features/auth/TelegramAuth.module.css';
 import useUser from '@/entities/user/useUser.ts';
 import { AuthViaTelegram, GetTelegramBotId } from '@/shared/api/Auth.ts';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 export default function TelegramAuth() {
     const [botId, setBotId] = useState('');
     const authenticate = useUser((state) => state.authenticate);
+
+    const toaster = useToaster();
 
     useEffect(function fetchBotId() {
         GetTelegramBotId().then(setBotId);
@@ -21,7 +24,12 @@ export default function TelegramAuth() {
                 authenticate(authData);
             })
             .catch(function (err: unknown) {
-                alert(err instanceof Error ? err.message : 'Telegram login failed');
+                toaster.bake({
+                    title: 'Telegram login failed',
+                    description: err instanceof Error ? err.message : `Unknown error`,
+                    level: 'Error',
+                    isDismissable: true,
+                });
             });
     }
 

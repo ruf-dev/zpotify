@@ -1,5 +1,7 @@
+import { ModalClose } from '@vervstack/chures';
+
 import cls from '@/dialogs/AddTrack/components/PanelHeader/PanelHeader.module.css';
-import CloseButton from '@/shared/ui/CloseButton';
+import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
 import StepDots from '@/shared/ui/StepDots';
 import BackButton from '@/shared/ui/BackButton';
 import type { ModalStep } from '@/dialogs/AddTrack/AddTrackDialog';
@@ -31,7 +33,7 @@ export default function PanelHeader({ step, backStep, uploading, onBack, onClose
             <div className={cls.HeaderRight}>
                 <StepDots steps={DOT_STEPS} currentStep={step} />
 
-                <CloseButton onClick={onClose} />
+                <ModalClose className={modalCloseCls.ModalCloseButton} onClick={onClose} />
             </div>
         </div>
     );

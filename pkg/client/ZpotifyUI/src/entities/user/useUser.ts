@@ -5,7 +5,7 @@ import { setAuthMiddleware } from '@/shared/api/BaseService.ts';
 import type { AuthData } from '@/app/api/zpotify';
 import { UserInfo } from '@/shared/model/User.ts';
 import { Errors, ServiceError } from '@/shared/api/Errors.ts';
-import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
+import { catchServiceError } from '@/shared/lib/toaster/ToasterZ.ts';
 import { userService } from '@/shared/api/User.ts';
 
 export interface User {
@@ -37,7 +37,7 @@ const useUser = create<User>((set, get) => {
                     set({ earlyAccessDenied: true });
                     return;
                 }
-                useToaster.getState().catch(err as ServiceError);
+                catchServiceError(err as ServiceError);
             }
         },
 

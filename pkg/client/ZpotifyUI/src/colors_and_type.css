@@ -196,8 +196,13 @@ p, .t-body {
 
 /* Chures overrides */
 :root {
-    /* TODO */
     --chures-accent: var(--color-fg-accent);
+    --chures-error: var(--color-error);
+    --chures-warn: var(--color-warning);
+    --chures-bg: var(--color-bg-base);
+    --chures-surface: var(--color-bg-secondary);
+    --chures-fg: var(--color-fg-primary);
+    --chures-fg-muted: var(--color-fg-secondary);
 }
 
 

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import cn from 'classnames';
+import { ModalActions, ModalClose } from '@vervstack/chures';
 
 import cls from '@/dialogs/Meta/MetaDialog.module.css';
+import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { songsService } from '@/shared/api/Songs.ts';
@@ -45,20 +47,7 @@ export default function MetaDialog({ audioFile, initialTitle }: MetaDialogProps)
         <div className={cls.MetaDialogContainer}>
             <div className={cls.PanelHeader}>
                 <span className={cls.PanelTitle}>track details</span>
-                <button className={cls.CloseButton} type="button" onClick={CloseDialog}>
-                    <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                    >
-                        <line x1="3" y1="3" x2="13" y2="13" />
-                        <line x1="13" y1="3" x2="3" y2="13" />
-                    </svg>
-                </button>
+                <ModalClose className={modalCloseCls.ModalCloseButton} onClick={CloseDialog} />
             </div>
 
             <div className={cls.PanelBody}>
@@ -71,14 +60,16 @@ export default function MetaDialog({ audioFile, initialTitle }: MetaDialogProps)
                     playlistId={playlistId}
                     onPlaylistChange={setPlaylistId}
                 />
-                <button
-                    className={cn(cls.SubmitButton, submitted ? cls.ButtonSubmitted : cls.ButtonReady)}
-                    type="button"
-                    onClick={handleSubmit}
-                    disabled={submitted}
-                >
-                    {submitted ? '✓ added' : 'add track'}
-                </button>
+                <ModalActions
+                    buttons={[
+                        {
+                            label: submitted ? '✓ added' : 'add track',
+                            onClick: handleSubmit,
+                            className: cn(cls.SubmitButton, submitted ? cls.ButtonSubmitted : cls.ButtonReady),
+                            disabled: submitted,
+                        },
+                    ]}
+                />
             </div>
         </div>
     );

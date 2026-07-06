@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { ModalClose } from '@vervstack/chures';
 
 import cls from '@/dialogs/FileList/FilesList.module.css';
+import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import type { SongFile } from '@/app/api/zpotify';
 import Button from '@/shared/ui/Button.tsx';
-import Chip from '@/shared/ui/Chip.tsx';
 import SongEditDialog from '@/dialogs/SongEdit/SongEditDialog.tsx';
 import { fileService } from '@/shared/api/FileService.ts';
 
@@ -35,7 +36,7 @@ export default function FilesList({ previousScreen }: FilesListProps) {
     return (
         <div className={cls.FilesList}>
             <div className={cls.CloseButton}>
-                <Chip value="×" onClick={CloseDialog} />
+                <ModalClose className={modalCloseCls.ModalCloseButton} onClick={CloseDialog} />
             </div>
             <div className={cls.Header}>
                 {previousScreen && <Button title="<" onClick={() => OpenDialog(previousScreen)} />}

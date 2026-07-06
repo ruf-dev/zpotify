@@ -167,6 +167,10 @@ pages/segments/SidebarSegment/
 - Always use `cn()` from `classnames` for combining CSS class names — never template literals (e.g. `cn(cls.Foo, isActive && cls.Active)`, not `` `${cls.Foo} ${cls.Active}` ``).
 - For dialog should only use global Dialog via useDialog hook. Import it from `@/app/hooks/Dialog.tsx`
 - Dialog screens (multi-step modal views) must live in a `screens/` subfolder inside the dialog directory (e.g. `src/dialogs/AddTrack/screens/ChooseScreen.tsx`). The root dialog file imports from `screens/`.
+- Use `ModalClose` (from `@vervstack/chures`) for every dialog's close (X) control — never hand-roll an inline SVG or repurpose `Chip`/a bespoke close component for this.
+- Use `ModalActions` (from `@vervstack/chures`) to lay out a dialog's action-button row when the buttons are plain text (no icons/children) — for anything richer (icons, hint text, an existing shared `Button` component), keep custom markup.
+- For confirm ("are you sure…") or plain info/alert dialogs, use `ConfirmDialog` / `InfoDialog` from `@vervstack/chures` instead of hand-building a new one-off `dialogs/` screen.
+- The global overlay/backdrop mechanism (`useDialog`, `OpenDialog`/`CloseDialog`, the mounted `<Dialog/>`) stays as-is — `@vervstack/chures` supplies dialog *content*, not the container.
 
 
 ## Path Alias

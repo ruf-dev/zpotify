@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { parseBlob } from 'music-metadata-browser';
 import cn from 'classnames';
+import { ModalClose } from '@vervstack/chures';
 
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
@@ -23,6 +24,7 @@ import SongSearchBox from '@/dialogs/MultitrackUpload/SongSearchBox/SongSearchBo
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { cleanTitle, formatBytes, computeHash } from '@/dialogs/MultitrackUpload/utils';
 import cls from '@/dialogs/MultitrackUpload/MultitrackUploadModal.module.css';
+import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
 
 interface MultitrackUploadModalProps {
     files: File[];
@@ -394,26 +396,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                         {tracks.length} {tracks.length === 1 ? 'file' : 'files'} · {formatBytes(totalBytes)}
                     </span>
                 </div>
-                <button
-                    type="button"
-                    className={cls.CloseButton}
-                    onClick={CloseDialog}
-                    disabled={submitting}
-                    aria-label="close"
-                >
-                    <svg
-                        width="13"
-                        height="13"
-                        viewBox="0 0 13 13"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.2"
-                        strokeLinecap="round"
-                    >
-                        <line x1="1" y1="1" x2="12" y2="12" />
-                        <line x1="12" y1="1" x2="1" y2="12" />
-                    </svg>
-                </button>
+                <ModalClose className={modalCloseCls.ModalCloseButton} onClick={CloseDialog} disabled={submitting} />
             </div>
 
             <div className={cls.PanelBody}>

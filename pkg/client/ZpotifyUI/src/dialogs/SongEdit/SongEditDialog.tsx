@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { ModalClose } from '@vervstack/chures';
 
 import cls from '@/dialogs/SongEdit/SongEditDialog.module.css';
+import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { Toast, useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import Button from '@/shared/ui/Button.tsx';
@@ -55,7 +57,7 @@ export default function SongEditDialog({
     return (
         <div className={cls.SongEditDialog}>
             <div className={cls.CloseButton}>
-                <Chip value="×" onClick={CloseDialog} />
+                <ModalClose className={modalCloseCls.ModalCloseButton} onClick={CloseDialog} />
             </div>
 
             <div className={cls.Header}>

@@ -51,30 +51,6 @@
     color: var(--color-fg-tertiary);
 }
 
-.CloseButton {
-    width: 1.625rem;
-    height: 1.625rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    border-radius: var(--border-radius-sm);
-    cursor: pointer;
-    color: var(--color-fg-tertiary);
-    transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
-
-    &:hover:not(:disabled) {
-        background: var(--color-bg-hover-mid);
-        color: var(--color-fg-primary);
-    }
-
-    &:disabled {
-        cursor: not-allowed;
-        opacity: 0.4;
-    }
-}
-
 /* ── Body ────────────────────────────────────────────────── */
 
 .PanelBody {

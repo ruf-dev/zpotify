@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Tooltip } from 'react-tooltip';
+import { Toaster } from '@vervstack/chures';
 
 import cls from '@/app/routing/Router.module.css';
 import { Path } from '@/app/routing/paths.ts';
@@ -10,7 +11,6 @@ import PlaylistPage from '@/pages/main/playlist/PlaylistPage.tsx';
 import AlbumPage from '@/pages/main/album/AlbumPage.tsx';
 import EarlyAccessPage from '@/pages/early_access/EarlyAccessPage.tsx';
 import useUser from '@/entities/user/useUser.ts';
-import Toaster from '@/components/notifications/Toaster.tsx';
 import HomePage from '@/pages/main/home/HomePage.tsx';
 import Coloring from '@/widgets/admin/coloring/Coloring.tsx';
 import Dialog from '@/pages/dialog/Dialog.tsx';

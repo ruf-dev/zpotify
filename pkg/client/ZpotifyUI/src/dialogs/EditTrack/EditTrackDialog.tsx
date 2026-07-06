@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import cn from 'classnames';
+import { ModalActions, ModalClose } from '@vervstack/chures';
 
 import type { SongBase } from '@/app/api/zpotify';
 import cls from '@/dialogs/EditTrack/EditTrackDialog.module.css';
+import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { songsService } from '@/shared/api/Songs.ts';
 import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
@@ -58,20 +60,7 @@ export default function EditTrackDialog({ song }: EditTrackDialogProps) {
         <div className={cls.EditTrackContainer}>
             <div className={cls.PanelHeader}>
                 <span className={cls.PanelTitle}>edit track</span>
-                <button className={cls.CloseButton} type="button" onClick={CloseDialog}>
-                    <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                    >
-                        <line x1="3" y1="3" x2="13" y2="13" />
-                        <line x1="13" y1="3" x2="3" y2="13" />
-                    </svg>
-                </button>
+                <ModalClose className={modalCloseCls.ModalCloseButton} onClick={CloseDialog} />
             </div>
 
             <div className={cls.PanelBody}>
@@ -85,9 +74,9 @@ export default function EditTrackDialog({ song }: EditTrackDialogProps) {
                     onPlaylistChange={setPlaylistId}
                     initialArtistOptions={initialArtistOptions}
                 />
-                <button className={cn(cls.SubmitButton, cls.ButtonReady)} type="button" onClick={handleSave}>
-                    save
-                </button>
+                <ModalActions
+                    buttons={[{ label: 'save', onClick: handleSave, className: cn(cls.SubmitButton, cls.ButtonReady) }]}
+                />
             </div>
         </div>
     );

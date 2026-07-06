@@ -1,14 +1,23 @@
-.CloseButtonContainer {
+.ModalCloseButton {
     background: none;
     border: none;
-    padding: 0.25rem;
+    padding: var(--space-xs);
     cursor: pointer;
     color: var(--color-fg-tertiary);
     display: flex;
     align-items: center;
     transition: color 0.15s ease;
+
+    position: absolute;
+    top: 5%;
+    right: 5%;
 }
 
-.CloseButtonContainer:hover {
+.ModalCloseButton:hover {
     color: var(--color-fg-secondary);
+}
+
+.ModalCloseButton:disabled {
+    color: var(--color-fg-disabled);
+    cursor: default;
 }

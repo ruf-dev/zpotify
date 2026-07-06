@@ -1,16 +1,18 @@
-import { KeyboardEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {KeyboardEvent, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import cls from '@/dialogs/LoginViaPass/LoginViaPass.module.css';
 import FloatInput from '@/shared/ui/FloatInput.tsx';
 import useUser from '@/entities/user/useUser.ts';
-import { authService } from '@/shared/api/Auth.ts';
-import { Path } from '@/app/routing/paths';
-import { useDialog } from '@/app/hooks/Dialog.tsx';
+import {authService} from '@/shared/api/Auth.ts';
+import {Path} from '@/app/routing/paths';
+import {useDialog} from '@/app/hooks/Dialog.tsx';
+import {ModalClose} from "@vervstack/chures";
+import modalCloseCls from "@/shared/ui/ModalCloseButton.module.css";
 
 export default function LoginViaPass() {
     const navigate = useNavigate();
-    const { CloseDialog } = useDialog();
+    const {CloseDialog} = useDialog();
     const authenticate = useUser((state) => state.authenticate);
 
     const [username, setUsername] = useState('');
@@ -35,19 +37,22 @@ export default function LoginViaPass() {
     }
 
     return (
-        <div className={cls.Overlay}>
-            <div className={cls.Card} onKeyDown={handleCardKey}>
-                <div className={cls.Title}>Sign in</div>
+        <div className={cls.Card} onKeyDown={handleCardKey}>
+            <ModalClose
+                className={modalCloseCls.ModalCloseButton}
+                onClick={CloseDialog}/>
 
-                <FloatInput value={username} onChange={setUsername} label="Username" autoFocus />
-                <FloatInput value={password} onChange={setPassword} type="password" label="Password" />
 
-                {validationErr && <div className={cls.Error}>{validationErr}</div>}
+            <div className={cls.Title}>Sign in</div>
 
-                <button className={cls.SubmitButton} onClick={handleSubmit}>
-                    Sign in
-                </button>
-            </div>
+            <FloatInput value={username} onChange={setUsername} label="Username" autoFocus/>
+            <FloatInput value={password} onChange={setPassword} type="password" label="Password"/>
+
+            {validationErr && <div className={cls.Error}>{validationErr}</div>}
+
+            <button className={cls.SubmitButton} onClick={handleSubmit}>
+                Sign in
+            </button>
         </div>
     );
 }
