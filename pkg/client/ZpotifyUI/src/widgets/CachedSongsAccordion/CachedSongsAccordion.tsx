@@ -11,7 +11,13 @@ export default function CachedSongsAccordion() {
     const cachedSongs = useCachedSongs();
 
     function handleToggle() {
-        setExpanded((prev) => !prev);
+        setExpanded((prev) => {
+            const next = !prev;
+            if (next) {
+                useAudioCacheStore.getState().refreshCachedSongsMeta();
+            }
+            return next;
+        });
     }
 
     function handleRemove(url: string) {

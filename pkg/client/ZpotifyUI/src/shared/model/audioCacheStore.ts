@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import type { SongBase } from '@/app/api/zpotify';
+import { songsService } from '@/shared/api/Songs.ts';
 import { clearAudioCache, getTrackUrl, listCachedUrls, uncacheAudio } from '@/shared/lib/audioCache.ts';
 
 interface DownloadProgress {
@@ -12,6 +13,7 @@ interface DownloadProgress {
 export interface CachedSongMeta {
     title: string;
     artist: string;
+    songId?: string;
 }
 
 interface AudioCacheState {
@@ -21,6 +23,7 @@ interface AudioCacheState {
     removeCachedUrls: (urls: string[]) => Promise<void>;
     clearAll: () => Promise<void>;
     refresh: () => Promise<void>;
+    refreshCachedSongsMeta: () => Promise<void>;
     downloadProgress: Record<string, DownloadProgress>;
     setDownloadProgress: (key: string, completed: number, total: number) => void;
     clearDownloadProgress: (key: string) => void;
@@ -29,7 +32,7 @@ interface AudioCacheState {
 
 export const useAudioCacheStore = create<AudioCacheState>()(
     persist(
-        (set) => ({
+        (set, get) => ({
             cachedUrls: new Set(),
             cachedSongMeta: {},
             addCachedUrl: (url: string, meta?: CachedSongMeta) =>
@@ -66,6 +69,32 @@ export const useAudioCacheStore = create<AudioCacheState>()(
             refresh: async () => {
                 const urls = await listCachedUrls();
                 set({ cachedUrls: new Set(urls) });
+            },
+            refreshCachedSongsMeta: async () => {
+                const entries = Object.entries(get().cachedSongMeta).filter(([, meta]) => !!meta.songId);
+                if (entries.length === 0) return;
+
+                const fetched = await Promise.all(
+                    entries.map(([url, meta]) =>
+                        songsService
+                            .GetSong(meta.songId!)
+                            .then((song) => [url, song] as const)
+                            .catch(() => [url, null] as const),
+                    ),
+                );
+
+                set((state) => {
+                    const nextMeta = { ...state.cachedSongMeta };
+                    fetched.forEach(([url, song]) => {
+                        if (!song || !nextMeta[url]) return;
+                        nextMeta[url] = {
+                            ...nextMeta[url],
+                            title: song.title || nextMeta[url].title,
+                            artist: song.artists?.[0]?.name ?? nextMeta[url].artist,
+                        };
+                    });
+                    return { cachedSongMeta: nextMeta };
+                });
             },
             downloadProgress: {},
             setDownloadProgress: (key: string, completed: number, total: number) =>
@@ -110,6 +139,7 @@ export interface CachedSongEntry {
     url: string;
     title: string;
     artist: string;
+    songId?: string;
 }
 
 export function useCachedSongs(): CachedSongEntry[] {
@@ -122,6 +152,7 @@ export function useCachedSongs(): CachedSongEntry[] {
             url,
             title: meta?.title ?? decodeURIComponent(url.split('/').pop() || url),
             artist: meta?.artist ?? 'Unknown',
+            songId: meta?.songId,
         };
     });
 }

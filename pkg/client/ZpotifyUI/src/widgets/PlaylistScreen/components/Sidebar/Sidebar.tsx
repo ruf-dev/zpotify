@@ -204,7 +204,7 @@ export default function Sidebar({
             succeeded.forEach((url) => {
                 const song = songsByUrl.get(url);
                 const meta = song
-                    ? { title: song.title || 'Track', artist: song.artists?.[0]?.name ?? 'Unknown' }
+                    ? { title: song.title || 'Track', artist: song.artists?.[0]?.name ?? 'Unknown', songId: song.id }
                     : undefined;
                 useAudioCacheStore.getState().addCachedUrl(url, meta);
             });

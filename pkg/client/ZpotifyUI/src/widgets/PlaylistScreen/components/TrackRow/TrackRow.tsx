@@ -73,6 +73,7 @@ export default function TrackRow({
                 useAudioCacheStore.getState().addCachedUrl(trackUrl, {
                     title: song.title || 'Track',
                     artist: song.artists?.[0]?.name ?? 'Unknown',
+                    songId: song.id,
                 });
                 toaster.bake({
                     title: 'Song downloaded',
