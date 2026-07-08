@@ -64,6 +64,7 @@ export default function SongSearchBox({ excludedIds, onAddSong }: SongSearchBoxP
                 <span className={cls.SearchIcon}>
                     <SearchIcon />
                 </span>
+                {/* eslint-disable-next-line no-restricted-syntax -- chures Input has no placeholder and always renders a visible label; this is an icon+placeholder search box with no label */}
                 <input
                     className={cls.SearchInput}
                     value={query}

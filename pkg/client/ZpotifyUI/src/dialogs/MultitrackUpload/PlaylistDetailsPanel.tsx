@@ -1,3 +1,5 @@
+import { Input } from '@vervstack/chures';
+
 import CoverField from '@/components/CoverField/CoverField';
 import ArtistChipsField from '@/widgets/ArtistField/ArtistChipsField';
 import DisabledChip from '@/shared/ui/DisabledChip';
@@ -49,8 +51,7 @@ export default function PlaylistDetailsPanel({
     chips,
     onChipsChange,
 }: PlaylistDetailsPanelProps) {
-    function handleYearChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const val = e.target.value;
+    function handleYearChange(val: string) {
         onYearChange(val === '' ? undefined : parseInt(val, 10));
     }
 
@@ -60,32 +61,15 @@ export default function PlaylistDetailsPanel({
 
             <div className={cls.FieldsStack}>
                 <div className={cls.FieldGroup}>
-                    <div className={cls.FieldLabelRow}>
-                        <span className={cls.FieldLabel}>
-                            name <span className={cls.Required}>*</span>
-                        </span>
-                    </div>
-                    <input
-                        className={cls.NameInput}
-                        type="text"
-                        value={playlistName}
-                        onChange={(e) => onNameChange(e.target.value)}
-                        placeholder="untitled playlist"
-                    />
+                    <Input value={playlistName} setValue={onNameChange} label="name *" />
                 </div>
 
                 <div className={cls.FieldGroup}>
-                    <div className={cls.FieldLabelRow}>
-                        <span className={cls.FieldLabel}>year</span>
-                    </div>
-                    <input
-                        className={cls.NameInput}
+                    <Input
+                        value={year !== undefined ? String(year) : ''}
+                        setValue={handleYearChange}
+                        label="year"
                         type="number"
-                        value={year ?? ''}
-                        onChange={handleYearChange}
-                        placeholder="e.g. 2024"
-                        min={1900}
-                        max={2100}
                     />
                 </div>
 

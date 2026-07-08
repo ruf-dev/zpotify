@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Input } from '@vervstack/chures';
 
 import cls from '@/dialogs/shared/screens/MetaScreen.module.css';
 import MusicFileIcon from '@/assets/icons/MusicFileIcon.tsx';
@@ -87,13 +88,7 @@ export default function MetaScreen({
             </div>
 
             <div className={cls.Field}>
-                <label className={cls.FieldLabel}>title</label>
-                <input
-                    className={cls.FieldInput}
-                    type="text"
-                    value={title}
-                    onChange={(e) => onTitleChange(e.target.value)}
-                />
+                <Input value={title} setValue={onTitleChange} label="title" />
             </div>
 
             <div className={cls.Field}>

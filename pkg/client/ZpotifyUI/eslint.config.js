@@ -80,6 +80,16 @@ export default tseslint.config([
                     selector: 'JSXOpeningElement[name.name="button"]',
                     message: "Use `Button` from '@vervstack/chures' instead of a raw <button> element.",
                 },
+                {
+                    selector:
+                        'JSXOpeningElement[name.name="input"]:not(:has(JSXAttribute[name.name="type"] Literal[value="file"]))',
+                    message: "Use `Input` from '@vervstack/chures' instead of a raw <input> element.",
+                },
+                {
+                    selector: 'ObjectPattern[properties.length>6]',
+                    message:
+                        'Destructuring more than 6 properties — keep the whole object as one variable (e.g. `const context = useX(...)`) instead of exploding it into separate bindings/props.',
+                },
             ],
 
             // Named function declarations — no `const fn = () => {}`

@@ -1,0 +1,59 @@
+.PlaylistInfoContainer {
+    width: 17rem;
+    flex-shrink: 0;
+    height: 100%;
+    overflow-y: auto;
+    border-right: 0.0625rem solid var(--color-border);
+    padding: 2rem 1.25rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    box-sizing: border-box;
+}
+
+.ErrorState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.ErrorIcon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--border-radius-circle);
+    border: 0.125rem solid var(--color-error);
+    color: var(--color-error);
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ErrorTitle {
+    margin: 0;
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    color: var(--color-fg-primary);
+}
+
+.ErrorHint {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-tertiary);
+    line-height: 1.5;
+}
+
+@media (orientation: portrait) {
+    .PlaylistInfoContainer {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 0.0625rem solid var(--color-border);
+        overflow-y: visible;
+        flex-shrink: 0;
+    }
+}

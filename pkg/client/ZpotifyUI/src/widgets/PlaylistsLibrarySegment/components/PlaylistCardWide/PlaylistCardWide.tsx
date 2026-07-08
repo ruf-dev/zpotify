@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import { playlistPath } from '@/app/routing/paths.ts';
-import GenerativeCover from '@/shared/ui/GenerativeCover.tsx';
+import CoverWithFallback from '@/components/CoverWithFallback/CoverWithFallback.tsx';
 import type { PlaylistCardWideProps } from '@/widgets/PlaylistsLibrarySegment/model.ts';
 import cls from '@/widgets/PlaylistsLibrarySegment/components/PlaylistCardWide/PlaylistCardWide.module.css';
 import TrackRow from '@/widgets/PlaylistsLibrarySegment/components/PlaylistCardWide/components/TrackRow/TrackRow';
@@ -25,11 +25,7 @@ export default function PlaylistCardWide({
     return (
         <div className={cls.PlaylistCardWideContainer} onClick={handleClick}>
             <div className={cls.CoverWrapper}>
-                {coverUrl ? (
-                    <img src={coverUrl} alt={name} className={cls.CoverImage} />
-                ) : (
-                    <GenerativeCover seed={seed} />
-                )}
+                <CoverWithFallback coverUrl={coverUrl} seed={seed} name={name} />
             </div>
             <div className={cls.Content}>
                 <div className={cls.Header}>

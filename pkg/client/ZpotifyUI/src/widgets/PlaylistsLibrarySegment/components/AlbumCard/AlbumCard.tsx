@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 
 import { albumPath } from '@/app/routing/paths.ts';
-import GenerativeCover from '@/shared/ui/GenerativeCover.tsx';
+import CoverWithFallback from '@/components/CoverWithFallback/CoverWithFallback.tsx';
 import type { AlbumCardProps } from '@/widgets/PlaylistsLibrarySegment/model.ts';
 import cls from '@/widgets/PlaylistsLibrarySegment/components/AlbumCard/AlbumCard.module.css';
 
@@ -20,11 +20,7 @@ export default function AlbumCard({ uuid, name, artistNames, seed, coverUrl }: A
     return (
         <div className={cn(cls.AlbumCardContainer)} onClick={handleClick}>
             <div className={cls.CoverWrapper}>
-                {coverUrl ? (
-                    <img src={coverUrl} alt={name} className={cls.CoverImage} />
-                ) : (
-                    <GenerativeCover seed={seed} />
-                )}
+                <CoverWithFallback coverUrl={coverUrl} seed={seed} name={name} className={cls.CoverImage} />
             </div>
             <div className={cls.Footer}>
                 <p className={cls.Name}>{name}</p>

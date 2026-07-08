@@ -29,6 +29,7 @@ export default function EditableText({
 
     if (isEditing) {
         return (
+            // eslint-disable-next-line no-restricted-syntax -- this swaps a heading/text element in place for inline editing; chures Input always renders a floating label, which breaks that UX
             <input
                 type={type}
                 className={inputClassName}

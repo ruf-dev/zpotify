@@ -70,23 +70,6 @@
     color: var(--color-fg-disabled);
 }
 
-.FieldInput {
-    width: 100%;
-    padding: 0.5rem 0.625rem;
-    background: var(--color-bg-accent);
-    border: 0.0625rem solid var(--color-border-light);
-    border-radius: var(--border-radius-sm);
-    color: var(--color-fg-primary);
-    font-size: var(--font-size-base);
-    font-family: Comfortaa, sans-serif;
-    transition: border-color 0.15s ease;
-    outline: none;
-}
-
-.FieldInput:focus {
-    border-color: var(--color-border-bright);
-}
-
 .TwoColGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;

@@ -193,6 +193,7 @@ export default function MultiSelect({
                         }}
                     >
                         <div className={cls.SearchRow}>
+                            {/* eslint-disable-next-line no-restricted-syntax -- chures Input has no ref/onKeyDown/onClick support; this needs autofocus-on-open, Enter/Escape handling, and click-propagation guarding */}
                             <input
                                 ref={searchRef}
                                 className={cls.SearchInput}

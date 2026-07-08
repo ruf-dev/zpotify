@@ -123,10 +123,10 @@ Some slice-local pieces are too substantial for `components/` — several intera
 
 ```
 widgets/PlaylistScreen/
-├── components/
-│   └── Sidebar/
-│       ├── Sidebar.tsx
-│       └── Sidebar.module.css
+├── segments/
+│   └── PlaylistInfoSegment/
+│       ├── PlaylistInfoSegment.tsx
+│       └── PlaylistInfoSegment.module.css
 └── widgets/
     └── PlaylistControls/
         ├── PlaylistControls.tsx
@@ -136,7 +136,28 @@ widgets/PlaylistScreen/
 - Use `components/` for pure UI atoms (no business logic).
 - Use nested `widgets/` for slice-local pieces that are "widget-sized" — meaningful internal logic or many coordinated sub-elements — but stateless w.r.t. data fetching; all state/handlers are passed in as props from the parent.
 - Use `Widget/` (singular) for slice-local pieces that fetch their own data.
-- All three are scoped to one parent slice; if any of them needs reuse elsewhere, promote it to `src/widgets/`.
+- Use `segments/` for a slice's major layout regions (see below).
+- All are scoped to one parent slice; if any of them needs reuse elsewhere, promote it to `src/widgets/`.
+
+### Local segments pattern (major layout regions)
+
+A **segment** is a top-level layout region of a page or widget — e.g. a sidebar, a player bar, a content panel — big enough to have its own hook, styles, and sub-components, but still just one section among several composed by the parent. Segments live in a `segments/` subfolder next to the parent, named `{Name}Segment`:
+
+```
+widgets/PlaylistScreen/
+├── PlaylistScreenWidget.tsx        # composes the segments
+└── segments/
+    └── PlaylistInfoSegment/
+        ├── PlaylistInfoSegment.tsx
+        ├── PlaylistInfoSegment.module.css
+        └── usePlaylistInfoSegment.ts
+```
+
+- Name the folder and component `{Name}Segment` (e.g. `PlaylistInfoSegment`, `SidebarSegment`, `PlayerBarSegment`).
+- The root CSS class drops the `Segment` suffix (e.g. `PlaylistInfoContainer`, not `PlaylistInfoSegmentContainer`) — matches existing usage in `pages/segments/`.
+- Co-locate the segment's own hook as `use{Name}.ts` inside the segment folder, same as any other widget (see "Internal slice structure" above).
+- A segment can itself contain `components/`, `widgets/`, or `Widget/` subfolders for its own local pieces.
+- This mirrors the existing `pages/segments/` convention (`SidebarSegment`, `PlayerBarSegment`) — segments aren't only a page-level concept, any composing parent (page, widget, dialog) can have them.
 
 ### Barrel / index.ts
 
@@ -188,6 +209,8 @@ widgets/PlaylistScreen/
 - Always use `cn()` from `classnames` for combining CSS class names — never template literals (e.g. `cn(cls.Foo, isActive && cls.Active)`, not `` `${cls.Foo} ${cls.Active}` ``).
 - For dialog should only use global Dialog via useDialog hook. Import it from `@/app/hooks/Dialog.tsx`
 - Dialog screens (multi-step modal views) must live in a `screens/` subfolder inside the dialog directory (e.g. `src/dialogs/AddTrack/screens/ChooseScreen.tsx`). The root dialog file imports from `screens/`.
+- When a hook or a component's props would need more than ~6 destructured bindings, keep the return value / props as one object instead (e.g. `const context = useSidebar(...)` then `context.foo`, or a single `props`-style parameter) rather than destructuring a long list of individual names. Enforced by the `no-restricted-syntax` / `ObjectPattern[properties.length>6]` ESLint rule.
+- Use `Input` (from `@vervstack/chures`) instead of a raw `<input>` element. Exception: `<input type="file">` is allowed — chures `Input` only supports `text | password | email | number`. Enforced by ESLint (`no-restricted-syntax` / `JSXOpeningElement[name.name="input"]`).
 - Use `ModalClose` (from `@vervstack/chures`) for every dialog's close (X) control — never hand-roll an inline SVG or repurpose `Chip`/a bespoke close component for this.
 - Use `ModalActions` (from `@vervstack/chures`) to lay out a dialog's action-button row when the buttons are plain text (no icons/children) — for anything richer (icons, hint text, an existing shared `Button` component), keep custom markup.
 - For confirm ("are you sure…") or plain info/alert dialogs, use `ConfirmDialog` / `InfoDialog` from `@vervstack/chures` instead of hand-building a new one-off `dialogs/` screen.

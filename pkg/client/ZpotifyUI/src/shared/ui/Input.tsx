@@ -46,6 +46,7 @@ export default function Input({ label, onChange, inputValue, style, onLeave, dis
                 [cls.Disabled]: disabled,
             })}
         >
+            {/* eslint-disable-next-line no-restricted-syntax -- chures Input's markup has no slot for the hint icon and no onLeave (blur-commit) hook; this is the app's own generic Input wrapper */}
             <input
                 className={cn(cls.input, {
                     [cls.Disabled]: disabled,

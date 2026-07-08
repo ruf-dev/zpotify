@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import cn from 'classnames';
 
 import cls from '@/components/GenerativeCover/GenerativeCover.module.css';
 
@@ -51,24 +52,27 @@ interface GenerativeCoverProps {
     seed: number;
     size?: number;
     borderRadius?: string;
+    fluid?: boolean;
 }
 
 export default function GenerativeCover({
     seed,
     size = 64,
     borderRadius = 'var(--border-radius-md)',
+    fluid = false,
 }: GenerativeCoverProps) {
     const idx = (((seed - 1) % 7) + 7) % 7;
     const p = PALETTES[idx];
+    const svgSize = fluid ? '100%' : size;
     const svgContent =
-        `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">` +
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${svgSize}" height="${svgSize}" viewBox="0 0 ${size} ${size}">` +
         `<rect width="${size}" height="${size}" fill="${p[0]}"/>` +
         SHAPES[idx](p, size) +
         `</svg>`;
 
     return (
         <div
-            className={cls.GenerativeCoverContainer}
+            className={cn(cls.GenerativeCoverContainer, { [cls.GenerativeCoverFluid]: fluid })}
             style={{ '--gc-size': `${size}px`, '--gc-radius': borderRadius } as CSSProperties}
             dangerouslySetInnerHTML={{ __html: svgContent }}
         />

@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import type { Playlist, SongBase } from '@/app/api/zpotify';
 import { Path } from '@/app/routing/paths.ts';
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
-import Sidebar from '@/widgets/PlaylistScreen/components/Sidebar/Sidebar.tsx';
+import PlaylistInfoSegment from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/PlaylistInfoSegment.tsx';
+import NotFoundPlaylistInfoSegment from '@/widgets/PlaylistScreen/segments/NotFoundPlaylistInfoSegment/NotFoundPlaylistInfoSegment.tsx';
 import MainContent from '@/widgets/PlaylistScreen/components/MainContent/MainContent.tsx';
 import cls from '@/widgets/PlaylistScreen/PlaylistScreenWidget.module.css';
 import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
@@ -100,19 +101,23 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
         <div className={cls.PlaylistScreenContainer}>
             <div className={cls.AmbientWash} />
             <div className={cls.Body}>
-                <Sidebar
-                    playlist={playlist}
-                    songs={orderedSongs}
-                    totalDuration={totalDuration}
-                    trackCount={trackCount}
-                    saved={saved}
-                    onToggleSave={handleToggleSave}
-                    onBack={handleBack}
-                    onPlay={handlePlay}
-                    editMode={editMode}
-                    onEnterEditMode={() => setEditMode(true)}
-                    onExitEditMode={() => setEditMode(false)}
-                />
+                {playlist ? (
+                    <PlaylistInfoSegment
+                        playlist={playlist}
+                        songs={orderedSongs}
+                        totalDuration={totalDuration}
+                        trackCount={trackCount}
+                        saved={saved}
+                        onToggleSave={handleToggleSave}
+                        onBack={handleBack}
+                        onPlay={handlePlay}
+                        editMode={editMode}
+                        onEnterEditMode={() => setEditMode(true)}
+                        onExitEditMode={() => setEditMode(false)}
+                    />
+                ) : (
+                    <NotFoundPlaylistInfoSegment onBack={handleBack} />
+                )}
                 <MainContent
                     songs={orderedSongs}
                     currentTrackPath={audioPlayer.trackPath}

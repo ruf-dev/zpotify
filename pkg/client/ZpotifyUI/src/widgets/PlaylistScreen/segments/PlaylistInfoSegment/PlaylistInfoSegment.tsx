@@ -1,21 +1,21 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { Button } from '@vervstack/chures';
+import {AnimatePresence, motion} from 'framer-motion';
+import {Button} from '@vervstack/chures';
 import cn from 'classnames';
 
-import cls from '@/widgets/PlaylistScreen/components/Sidebar/Sidebar.module.css';
-import type { Playlist, SongBase } from '@/app/api/zpotify';
-import GenerativeCover from '@/components/GenerativeCover/GenerativeCover.tsx';
+import cls from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/PlaylistInfoSegment.module.css';
+import type {Playlist, SongBase} from '@/app/api/zpotify';
+import CoverWithFallback from '@/components/CoverWithFallback/CoverWithFallback.tsx';
 import BackButton from '@/shared/ui/BackButton.tsx';
-import { UploadArrowIcon } from '@/assets/icons/UploadArrowIcon.tsx';
+import {UploadArrowIcon} from '@/assets/icons/UploadArrowIcon.tsx';
 import EditableText from '@/widgets/PlaylistScreen/components/EditableText/EditableText.tsx';
 import EditableArtistPicker from '@/widgets/PlaylistScreen/components/EditableArtistPicker/EditableArtistPicker.tsx';
 import PlaylistControls from '@/widgets/PlaylistScreen/widgets/PlaylistControls/PlaylistControls.tsx';
-import { useSidebar } from '@/widgets/PlaylistScreen/components/Sidebar/useSidebar.tsx';
+import {usePlaylistInfoSegment} from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/usePlaylistInfoSegment.ts';
 
-const SECTION_TRANSITION = { duration: 0.2, ease: [0.4, 0, 0.2, 1] } as const;
+const SECTION_TRANSITION = {duration: 0.2, ease: [0.4, 0, 0.2, 1]} as const;
 
-export interface SidebarProps {
-    playlist: Playlist | null;
+export interface PlaylistInfoSegmentProps {
+    playlist: Playlist;
     songs: SongBase[];
     totalDuration: string;
     trackCount: number;
@@ -28,124 +28,67 @@ export interface SidebarProps {
     onExitEditMode: () => void;
 }
 
-export default function Sidebar({
-    playlist,
-    songs,
-    totalDuration,
-    trackCount,
-    saved,
-    onToggleSave,
-    onBack,
-    onPlay,
-    editMode,
-    onEnterEditMode,
-    onExitEditMode,
-}: SidebarProps) {
-    const {
-        seed,
-        artistName,
-        playlistIsAlbum,
-        displayCoverUrl,
-
-        aboutExpanded,
-        handleToggleAbout,
-
-        saving,
-        coverHover,
-        coverInputRef,
-        handleCoverMouseEnter,
-        handleCoverMouseLeave,
-        handleCoverClick,
-        handleCoverFileChange,
-
-        editName,
-        setEditName,
-        editDesc,
-        setEditDesc,
-        editYear,
-        setEditYear,
-        editArtists,
-        setEditArtists,
-        loadArtistOptions,
-        handleCreateArtist,
-
-        handleSave,
-        handleCancel,
-
-        downloadProgress,
-        allCached,
-        downloadButtonStyle,
-        handleDownloadPlaylist,
-        handleUnloadCache,
-    } = useSidebar({ playlist, songs, editMode, onExitEditMode });
-
-    if (!playlist) {
-        return (
-            <div className={cls.SidebarContainer}>
-                <BackButton onClick={onBack} />
-                <div className={cls.ErrorState}>
-                    <span className={cls.ErrorIcon}>!</span>
-                    <p className={cls.ErrorTitle}>Playlist not found</p>
-                    <p className={cls.ErrorHint}>This playlist may have been removed or is unavailable.</p>
-                </div>
-            </div>
-        );
-    }
+export default function PlaylistInfoSegment(
+    {
+        playlist, songs, totalDuration, trackCount,
+        saved, onToggleSave, onBack, onPlay,
+        editMode, onEnterEditMode, onExitEditMode,
+    }: PlaylistInfoSegmentProps) {
+    const context = usePlaylistInfoSegment({playlist, editMode, onExitEditMode});
 
     return (
-        <div className={cls.SidebarContainer}>
-            <BackButton onClick={onBack} />
+        <div className={cls.PlaylistInfoContainer}>
+            <BackButton onClick={onBack}/>
 
             <div
-                className={cn(cls.CoverWrapper, editMode && cls.CoverWrapperEditing)}
-                onMouseEnter={handleCoverMouseEnter}
-                onMouseLeave={handleCoverMouseLeave}
-                onClick={handleCoverClick}
+                className={cn(cls.CoverWrapper,
+                    {
+                        [cls.CoverWrapperEditing]: editMode
+                    })}
+                onMouseEnter={context.handleCoverMouseEnter}
+                onMouseLeave={context.handleCoverMouseLeave}
+                onClick={context.handleCoverClick}
             >
-                {displayCoverUrl ? (
-                    <img src={displayCoverUrl} alt={playlist.name} className={cls.CoverImage} />
-                ) : (
-                    <GenerativeCover seed={seed} size={220} borderRadius="0" />
-                )}
-                {editMode && coverHover && (
+                <CoverWithFallback {...playlist} coverUrl={context.displayCoverUrl} />
+                {editMode && context.coverHover && (
                     <div className={cls.CoverChangeOverlay}>
-                        <UploadArrowIcon />
+                        <UploadArrowIcon/>
                         <span>Change</span>
                     </div>
                 )}
                 <input
-                    ref={coverInputRef}
+                    ref={context.coverInputRef}
                     type="file"
                     accept="image/*"
                     className={cls.HiddenInput}
-                    onChange={handleCoverFileChange}
+                    onChange={context.handleCoverFileChange}
                 />
             </div>
 
             <div className={cls.TitleBlock}>
-                <span className={cls.TypeLabel}>{playlistIsAlbum ? 'album' : 'playlist'}</span>
+                <span className={cls.TypeLabel}>{context.playlistIsAlbum ? 'album' : 'playlist'}</span>
 
                 <EditableText
                     displayValue={playlist.name ?? ''}
-                    editValue={editName}
+                    editValue={context.editName}
                     isEditing={editMode}
-                    onChange={setEditName}
+                    onChange={context.setEditName}
                     displayAs="h1"
                     displayClassName={cls.AlbumName}
                     inputClassName={cls.EditInputTitle}
                     placeholder="name…"
                 />
 
-                {playlistIsAlbum ? (
+                {context.playlistIsAlbum ? (
                     <EditableArtistPicker
-                        displayName={artistName}
+                        displayName={context.artistName}
                         displayClassName={cls.ArtistName}
-                        artists={editArtists}
+                        artists={context.editArtists}
                         isEditing={editMode}
-                        onChange={setEditArtists}
-                        loadOptions={loadArtistOptions}
-                        onCreateArtist={handleCreateArtist}
-                        preloadedArtists={editArtists}
+                        onChange={context.setEditArtists}
+                        loadOptions={context.loadArtistOptions}
+                        onCreateArtist={context.handleCreateArtist}
+                        preloadedArtists={context.editArtists}
                     />
                 ) : (
                     <span
@@ -162,9 +105,9 @@ export default function Sidebar({
                         <>
                             <EditableText
                                 displayValue={String(playlist.year ?? '')}
-                                editValue={String(editYear ?? '')}
+                                editValue={String(context.editYear ?? '')}
                                 isEditing={editMode}
-                                onChange={(v) => setEditYear(v ? Number(v) : undefined)}
+                                onChange={(v) => context.setEditYear(v ? Number(v) : undefined)}
                                 displayClassName={cls.MetaText}
                                 inputClassName={cls.EditInputMeta}
                                 type="number"
@@ -195,9 +138,9 @@ export default function Sidebar({
                     <motion.div
                         key="genre-view"
                         layout
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}
+                        exit={{opacity: 0}}
                         transition={SECTION_TRANSITION}
                         className={cls.GenreChipsRow}
                     >
@@ -211,18 +154,15 @@ export default function Sidebar({
             </AnimatePresence>
 
             <PlaylistControls
+                playlist={playlist}
+                songs={songs}
                 onPlay={onPlay}
                 saved={saved}
                 onToggleSave={onToggleSave}
-                allCached={allCached}
-                downloadDisabled={!!downloadProgress}
-                downloadButtonStyle={downloadButtonStyle}
-                onDownloadClick={allCached ? handleUnloadCache : handleDownloadPlaylist}
-                canEdit={!!playlist.canEdit}
                 editMode={editMode}
-                saving={saving}
-                onSave={handleSave}
-                onCancel={handleCancel}
+                saving={context.saving}
+                onSave={context.handleSave}
+                onCancel={context.handleCancel}
                 onEnterEditMode={onEnterEditMode}
             />
 
@@ -231,17 +171,17 @@ export default function Sidebar({
                     <motion.div
                         key="desc-edit"
                         layout
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}
+                        exit={{opacity: 0}}
                         transition={SECTION_TRANSITION}
                         className={cls.EditSection}
                     >
                         <span className={cls.EditSectionLabel}>description</span>
                         <textarea
                             className={cls.EditTextarea}
-                            value={editDesc}
-                            onChange={(e) => setEditDesc(e.target.value)}
+                            value={context.editDesc}
+                            onChange={(e) => context.setEditDesc(e.target.value)}
                             placeholder="add a description…"
                             rows={3}
                         />
@@ -250,18 +190,18 @@ export default function Sidebar({
                     <motion.div
                         key="desc-view"
                         layout
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}
+                        exit={{opacity: 0}}
                         transition={SECTION_TRANSITION}
                         className={cls.AboutSection}
                     >
                         <span className={cls.SectionLabel}>about</span>
-                        <p className={cn(cls.AboutBody, !aboutExpanded && cls.AboutBodyClamped)}>
+                        <p className={cn(cls.AboutBody, !context.aboutExpanded && cls.AboutBodyClamped)}>
                             {playlist.description}
                         </p>
-                        <Button variant="ghost" className={cls.ReadMoreToggle} onClick={handleToggleAbout}>
-                            {aboutExpanded ? 'show less' : 'read more'}
+                        <Button variant="ghost" className={cls.ReadMoreToggle} onClick={context.handleToggleAbout}>
+                            {context.aboutExpanded ? 'show less' : 'read more'}
                         </Button>
                     </motion.div>
                 ) : null}
