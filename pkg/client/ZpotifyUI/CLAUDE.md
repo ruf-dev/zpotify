@@ -117,6 +117,27 @@ pages/segments/SidebarSegment/
 - Use `Widget/` for units that own their own data fetching but are not reused outside the parent slice.
 - If a widget needs to be reused across slices, move it to `src/widgets/`.
 
+### Local nested widgets pattern (widget-sized, no own data fetching)
+
+Some slice-local pieces are too substantial for `components/` — several interactive elements, real orchestration logic, multiple callback props — but don't fetch their own data (so they aren't a `Widget/` either) and aren't reused outside the parent. These live in a `widgets/` subfolder (lowercase, plural — distinct from `Widget/` singular) next to the parent:
+
+```
+widgets/PlaylistScreen/
+├── components/
+│   └── Sidebar/
+│       ├── Sidebar.tsx
+│       └── Sidebar.module.css
+└── widgets/
+    └── PlaylistControls/
+        ├── PlaylistControls.tsx
+        └── PlaylistControls.module.css
+```
+
+- Use `components/` for pure UI atoms (no business logic).
+- Use nested `widgets/` for slice-local pieces that are "widget-sized" — meaningful internal logic or many coordinated sub-elements — but stateless w.r.t. data fetching; all state/handlers are passed in as props from the parent.
+- Use `Widget/` (singular) for slice-local pieces that fetch their own data.
+- All three are scoped to one parent slice; if any of them needs reuse elsewhere, promote it to `src/widgets/`.
+
 ### Barrel / index.ts
 
 - Do **not** create `index.ts` barrel files for slices. Always import by full file path.

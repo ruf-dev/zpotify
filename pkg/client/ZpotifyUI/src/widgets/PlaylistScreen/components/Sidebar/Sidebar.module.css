@@ -116,109 +116,6 @@
     color: var(--color-fg-secondary);
 }
 
-/* ── Action Row ──────────────────────────────────────────── */
-
-.ActionRow {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-}
-
-.PlayButton {
-    width: var(--icon-circle-md);
-    height: var(--icon-circle-md);
-    border-radius: var(--border-radius-circle);
-    border: none;
-    background: var(--color-fg-accent);
-    color: var(--color-fg-white);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0.25rem 1.5rem var(--color-accent-shadow);
-    transition: transform var(--ease-quick);
-    flex-shrink: 0;
-
-    &:hover {
-        transform: scale(1.08);
-    }
-}
-
-.PlayIcon {
-    margin-left: 0.125rem;
-}
-
-.IconButton {
-    --progress: 0%;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: var(--border-radius-circle);
-    border: 0.0625rem solid var(--color-border);
-    background: linear-gradient(to right, var(--color-accent-dim) var(--progress), transparent var(--progress));
-    color: var(--color-fg-tertiary);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color var(--ease-quick), border-color var(--ease-quick), background 0.4s ease;
-
-    &:hover {
-        color: var(--color-fg-secondary);
-        border-color: var(--color-border-light);
-        background: linear-gradient(to right, var(--color-accent-dim) var(--progress), var(--color-bg-hover-mid) var(--progress));
-    }
-
-    &:disabled {
-        cursor: not-allowed;
-    }
-}
-
-.IconButtonActive {
-    background: var(--color-accent-dim);
-    border-color: var(--color-fg-accent);
-    color: var(--color-fg-accent);
-
-    &:hover {
-        background: var(--color-accent-dim-hover);
-        border-color: var(--color-fg-accent);
-        color: var(--color-fg-accent);
-    }
-}
-
-.IconButtonCached:hover {
-    border-color: var(--color-error);
-}
-
-.CachedIconStack {
-    display: grid;
-
-    > * {
-        grid-area: 1 / 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-}
-
-.CachedIconDefault {
-    opacity: 1;
-    transition: opacity var(--ease-quick);
-}
-
-.CachedIconHover {
-    opacity: 0;
-    color: var(--color-error);
-    transition: opacity var(--ease-quick);
-}
-
-.IconButtonCached:hover .CachedIconDefault {
-    opacity: 0;
-}
-
-.IconButtonCached:hover .CachedIconHover {
-    opacity: 1;
-}
-
 /* ── Section Label ───────────────────────────────────────── */
 
 .SectionLabel {
@@ -343,10 +240,6 @@
     .CoverWrapper {
         width: 8rem;
         align-self: center;
-    }
-
-    .EditButton {
-        display: none;
     }
 }
 

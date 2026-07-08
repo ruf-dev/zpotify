@@ -76,6 +76,10 @@ export default tseslint.config([
                     selector: 'JSXAttribute[name.name="className"] > JSXExpressionContainer > TemplateLiteral',
                     message: "Use cn() from 'classnames' instead of template literals for className.",
                 },
+                {
+                    selector: 'JSXOpeningElement[name.name="button"]',
+                    message: "Use `Button` from '@vervstack/chures' instead of a raw <button> element.",
+                },
             ],
 
             // Named function declarations — no `const fn = () => {}`
@@ -83,6 +87,10 @@ export default tseslint.config([
 
             // No inline styles — CSS Modules only
             'react/forbid-component-props': ['warn', { forbid: ['style'] }],
+
+            // Keep files and functions small — split business logic into a co-located hook/lib file instead of growing one file
+            'max-lines': ['warn', { max: 300, skipBlankLines: true, skipComments: true }],
+            'max-lines-per-function': ['warn', { max: 100, skipBlankLines: true, skipComments: true, IIFEs: true }],
 
             // gRPC clients must only be used inside src/processes/ (type-only imports are allowed anywhere)
             '@typescript-eslint/no-restricted-imports': [
