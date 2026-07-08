@@ -99,8 +99,9 @@ type Song struct {
 }
 
 type ArtistsBase struct {
-	Uuid string `json:"uuid"`
-	Name string `json:"name"`
+	Uuid  string `json:"uuid"`
+	Name  string `json:"name"`
+	Liked bool   `json:"liked"`
 }
 
 type SongsList struct {
@@ -109,11 +110,13 @@ type SongsList struct {
 }
 
 type ListArtists struct {
-	Uuid   []string
-	Name   []string
-	Search *string
-	Limit  uint64
-	Offset uint64
+	Uuid      []string
+	Name      []string
+	Search    *string
+	Limit     uint64
+	Offset    uint64
+	UserId    int64
+	OnlyLiked bool
 }
 
 type SeekFile struct {

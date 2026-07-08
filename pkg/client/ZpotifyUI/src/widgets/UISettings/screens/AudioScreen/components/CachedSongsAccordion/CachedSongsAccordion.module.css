@@ -1,0 +1,120 @@
+.AccordionContainer {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.AccordionHeader {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    width: 100%;
+    padding: var(--space-md) 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-fg-primary);
+    font-size: var(--font-size-base);
+    text-align: left;
+}
+
+.HeaderLabel {
+    flex: 1;
+}
+
+.HeaderCount {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-secondary);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-sm);
+    padding: var(--space-xs) var(--space-sm);
+}
+
+.Chevron {
+    display: flex;
+    align-items: center;
+    color: var(--color-fg-secondary);
+    transition: transform 0.2s ease;
+}
+
+.ChevronOpen {
+    transform: rotate(90deg);
+}
+
+.AccordionBody {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.25s ease;
+}
+
+.AccordionBodyOpen {
+    grid-template-rows: 1fr;
+}
+
+.AccordionBodyInner {
+    overflow: hidden;
+}
+
+.EmptyState {
+    padding: 0 0 var(--space-lg);
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-secondary);
+}
+
+.SongList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: 0 0 var(--space-lg);
+    margin: 0;
+    list-style: none;
+}
+
+.SongRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-sm) 0;
+}
+
+.SongInfo {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.SongTitle {
+    font-size: var(--font-size-base);
+    color: var(--color-fg-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.SongArtist {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-secondary);
+}
+
+.RemoveButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--icon-circle-sm);
+    height: var(--icon-circle-sm);
+    flex-shrink: 0;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: var(--color-fg-secondary);
+    cursor: pointer;
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+.RemoveButton:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-error);
+}

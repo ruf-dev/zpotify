@@ -54,6 +54,30 @@
     }
 }
 
+.HeartBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    color: var(--color-fg-secondary);
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        background: rgb(0 0 0 / 35%);
+        color: var(--color-fg-primary);
+    }
+}
+
+.HeartBtnLiked {
+    color: var(--color-fg-accent);
+
+    &:hover {
+        color: var(--color-fg-accent);
+    }
+}
+
 .LockedChip {
     display: inline-flex;
     align-items: center;

@@ -114,6 +114,9 @@ type ArtistStorage interface {
 
 	Return(ctx context.Context, artists []string) ([]domain.ArtistsBase, error)
 	List(ctx context.Context, req domain.ListArtists) ([]domain.ArtistsBase, error)
+
+	LikeArtist(ctx context.Context, userId int64, artistUuid string) error
+	UnlikeArtist(ctx context.Context, userId int64, artistUuid string) error
 }
 
 type PlaylistStorage interface {

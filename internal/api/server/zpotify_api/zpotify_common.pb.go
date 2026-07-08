@@ -78,6 +78,7 @@ type ArtistBase struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Liked         bool                   `protobuf:"varint,3,opt,name=liked,proto3" json:"liked,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -124,6 +125,13 @@ func (x *ArtistBase) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+func (x *ArtistBase) GetLiked() bool {
+	if x != nil {
+		return x.Liked
+	}
+	return false
 }
 
 type SongBase struct {
@@ -453,11 +461,12 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\x14zpotify_common.proto\x12\vzpotify_api\x1a\tnpm.proto\"6\n" +
 	"\x06Paging\x12\x14\n" +
 	"\x05limit\x18\x01 \x01(\x04R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x02 \x01(\x04R\x06offset\"4\n" +
+	"\x06offset\x18\x02 \x01(\x04R\x06offset\"J\n" +
 	"\n" +
 	"ArtistBase\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"\xbc\x01\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
+	"\x05liked\x18\x03 \x01(\bR\x05liked\"\xbc\x01\n" +
 	"\bSongBase\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x121\n" +

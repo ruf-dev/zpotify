@@ -5,21 +5,27 @@ import (
 	"database/sql"
 
 	sq "github.com/Masterminds/squirrel"
+	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
+	"go.zpotify.ru/zpotify/internal/storage/pg/generated/artists_q"
 	"go.zpotify.ru/zpotify/internal/utils"
 )
 
+const artistNameColumn = "name"
+
 type ArtistsStorage struct {
-	db sqldb.DB
+	db      sqldb.DB
+	querier artists_q.Querier
 }
 
 func NewArtistsStorage(db sqldb.DB) *ArtistsStorage {
 	return &ArtistsStorage{
-		db: db,
+		db:      db,
+		querier: artists_q.New(db),
 	}
 }
 
@@ -68,7 +74,7 @@ func (a *ArtistsStorage) Return(ctx context.Context, artistsNames []string) ([]d
 
 func (a *ArtistsStorage) Upsert(ctx context.Context, artists []domain.ArtistsBase) ([]domain.ArtistsBase, error) {
 	builder := sq.Insert("artists").
-		Columns("name").
+		Columns(artistNameColumn).
 		Suffix("returning uuid, name").
 		PlaceholderFormat(sq.Dollar)
 
@@ -111,10 +117,13 @@ func (a *ArtistsStorage) Upsert(ctx context.Context, artists []domain.ArtistsBas
 }
 
 func (a *ArtistsStorage) List(ctx context.Context, req domain.ListArtists) ([]domain.ArtistsBase, error) {
+	columns := []string{"uuid", artistNameColumn}
+	if req.UserId != 0 {
+		columns = append(columns, "(ua.user_id IS NOT NULL) AS liked")
+	}
+
 	builder := sq.Select().
-		Columns(
-			"uuid",
-			"name").
+		Columns(columns...).
 		From("artists").
 		PlaceholderFormat(sq.Dollar)
 	builder = a.applyListQueryFilters(builder, req)
@@ -141,10 +150,18 @@ func (a *ArtistsStorage) List(ctx context.Context, req domain.ListArtists) ([]do
 	for rows.Next() {
 		var artist domain.ArtistsBase
 
-		err = rows.Scan(
-			&artist.Uuid,
-			&artist.Name,
-		)
+		if req.UserId != 0 {
+			err = rows.Scan(
+				&artist.Uuid,
+				&artist.Name,
+				&artist.Liked,
+			)
+		} else {
+			err = rows.Scan(
+				&artist.Uuid,
+				&artist.Name,
+			)
+		}
 		if err != nil {
 			return nil, rerrors.Wrap(err)
 		}
@@ -165,16 +182,65 @@ func (a *ArtistsStorage) applyListQueryFilters(builder sq.SelectBuilder, listReq
 	}
 
 	if len(listReq.Name) > 0 {
-		builder = builder.Where(sq.Eq{"name": listReq.Name})
+		builder = builder.Where(sq.Eq{artistNameColumn: listReq.Name})
 	}
 
 	if listReq.Search != nil && *listReq.Search != "" {
-		builder = builder.Where(sq.ILike{"name": "%" + *listReq.Search + "%"})
+		builder = builder.Where(sq.ILike{artistNameColumn: "%" + *listReq.Search + "%"})
+	}
+
+	if listReq.UserId != 0 {
+		builder = builder.LeftJoin("user_artists ua ON ua.artist_id = artists.uuid AND ua.user_id = ?", listReq.UserId)
+
+		if listReq.OnlyLiked {
+			builder = builder.Where(sq.Expr("ua.user_id IS NOT NULL"))
+		}
 	}
 
 	return builder
 }
 
+func (a *ArtistsStorage) LikeArtist(ctx context.Context, userId int64, artistUuid string) error {
+	parsedUuid, err := uuid.Parse(artistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing artist uuid")
+	}
+
+	params := artists_q.LikeArtistParams{
+		UserID:   userId,
+		ArtistID: parsedUuid,
+	}
+
+	err = a.querier.LikeArtist(ctx, params)
+	if err != nil {
+		return rerrors.Wrap(err, "error liking artist")
+	}
+
+	return nil
+}
+
+func (a *ArtistsStorage) UnlikeArtist(ctx context.Context, userId int64, artistUuid string) error {
+	parsedUuid, err := uuid.Parse(artistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error parsing artist uuid")
+	}
+
+	params := artists_q.UnlikeArtistParams{
+		UserID:   userId,
+		ArtistID: parsedUuid,
+	}
+
+	err = a.querier.UnlikeArtist(ctx, params)
+	if err != nil {
+		return rerrors.Wrap(err, "error unliking artist")
+	}
+
+	return nil
+}
+
 func (a *ArtistsStorage) WithTx(tx *sql.Tx) storage.ArtistStorage {
-	return NewArtistsStorage(tx)
+	return &ArtistsStorage{
+		db:      &txWrapper{tx},
+		querier: artists_q.New(tx),
+	}
 }

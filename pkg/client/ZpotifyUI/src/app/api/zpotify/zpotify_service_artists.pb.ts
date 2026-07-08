@@ -20,6 +20,7 @@ export type ListArtistResponse = {
 
 export type ListArtistFilters = {
   search?: string;
+  onlyLiked?: boolean;
 };
 
 export type ListArtist = Record<string, never>;
@@ -34,11 +35,33 @@ export type CreateArtistResponse = {
 
 export type CreateArtist = Record<string, never>;
 
+export type LikeArtistRequest = {
+  artistUuid?: string;
+};
+
+export type LikeArtistResponse = Record<string, never>;
+
+export type LikeArtist = Record<string, never>;
+
+export type UnlikeArtistRequest = {
+  artistUuid?: string;
+};
+
+export type UnlikeArtistResponse = Record<string, never>;
+
+export type UnlikeArtist = Record<string, never>;
+
 export class ArtistsAPI {
   static ListArtist(this:void, req: ListArtistRequest, initReq?: fm.InitReq): Promise<ListArtistResponse> {
     return fm.fetchRequest<ListArtistResponse>(`/api/artists/list`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
   static CreateArtist(this:void, req: CreateArtistRequest, initReq?: fm.InitReq): Promise<CreateArtistResponse> {
     return fm.fetchRequest<CreateArtistResponse>(`/api/artists/create`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static LikeArtist(this:void, req: LikeArtistRequest, initReq?: fm.InitReq): Promise<LikeArtistResponse> {
+    return fm.fetchRequest<LikeArtistResponse>(`/api/artists/like`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static UnlikeArtist(this:void, req: UnlikeArtistRequest, initReq?: fm.InitReq): Promise<UnlikeArtistResponse> {
+    return fm.fetchRequest<UnlikeArtistResponse>(`/api/artists/unlike`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }

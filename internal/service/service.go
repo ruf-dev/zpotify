@@ -159,6 +159,11 @@ type PlaylistService interface {
 type ArtistsService interface {
 	List(ctx context.Context, req domain.ListArtists) ([]domain.ArtistsBase, error)
 	Create(ctx context.Context, name string) (domain.ArtistsBase, error)
+
+	// LikeArtist adds an artist to the caller's liked artists.
+	LikeArtist(ctx context.Context, artistUuid string) error
+	// UnlikeArtist removes an artist from the caller's liked artists.
+	UnlikeArtist(ctx context.Context, artistUuid string) error
 }
 
 type FileService interface {

@@ -48,6 +48,38 @@
         ]
       }
     },
+    "/api/artists/like": {
+      "post": {
+        "operationId": "ArtistsAPI_LikeArtist",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiLikeArtistResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiLikeArtistRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ArtistsAPI"
+        ]
+      }
+    },
     "/api/artists/list": {
       "post": {
         "operationId": "ArtistsAPI_ListArtist",
@@ -79,6 +111,38 @@
           "ArtistsAPI"
         ]
       }
+    },
+    "/api/artists/unlike": {
+      "post": {
+        "operationId": "ArtistsAPI_UnlikeArtist",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiUnlikeArtistResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiUnlikeArtistRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ArtistsAPI"
+        ]
+      }
     }
   },
   "definitions": {
@@ -87,6 +151,9 @@
       "properties": {
         "search": {
           "type": "string"
+        },
+        "onlyLiked": {
+          "type": "boolean"
         }
       }
     },
@@ -126,6 +193,9 @@
         },
         "name": {
           "type": "string"
+        },
+        "liked": {
+          "type": "boolean"
         }
       }
     },
@@ -144,6 +214,17 @@
           "$ref": "#/definitions/zpotify_apiArtistBase"
         }
       }
+    },
+    "zpotify_apiLikeArtistRequest": {
+      "type": "object",
+      "properties": {
+        "artistUuid": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiLikeArtistResponse": {
+      "type": "object"
     },
     "zpotify_apiListArtistRequest": {
       "type": "object",
@@ -180,6 +261,17 @@
           "format": "uint64"
         }
       }
+    },
+    "zpotify_apiUnlikeArtistRequest": {
+      "type": "object",
+      "properties": {
+        "artistUuid": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiUnlikeArtistResponse": {
+      "type": "object"
     }
   }
 }

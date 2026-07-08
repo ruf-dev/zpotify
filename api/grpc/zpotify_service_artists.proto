@@ -25,6 +25,20 @@ service ArtistsAPI {
     };
   };
 
+  rpc LikeArtist(LikeArtist.Request) returns (LikeArtist.Response) {
+    option (google.api.http) = {
+      post: "/api/artists/like"
+      body: "*",
+    };
+  };
+
+  rpc UnlikeArtist(UnlikeArtist.Request) returns (UnlikeArtist.Response) {
+    option (google.api.http) = {
+      post: "/api/artists/unlike"
+      body: "*",
+    };
+  };
+
 }
 
 message ListArtist {
@@ -39,6 +53,7 @@ message ListArtist {
 
   message Filters {
     optional string search = 1;
+    optional bool only_liked = 2;
   }
 }
 
@@ -50,4 +65,20 @@ message CreateArtist {
   message Response {
     ArtistBase artist = 1;
   }
+}
+
+message LikeArtist {
+  message Request {
+    string artist_uuid = 1;
+  }
+
+  message Response {}
+}
+
+message UnlikeArtist {
+  message Request {
+    string artist_uuid = 1;
+  }
+
+  message Response {}
 }

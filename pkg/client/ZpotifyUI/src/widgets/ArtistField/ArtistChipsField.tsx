@@ -4,6 +4,7 @@ import cn from 'classnames';
 import Chip from '@/components/Chip/Chip';
 import Dropdown, { type DropdownOption } from '@/components/Dropdown/Dropdown';
 import { PlusIcon } from '@/assets/icons/PlusIcon';
+import { useLikedArtists } from '@/entities/artist/useLikedArtists';
 import cls from '@/widgets/ArtistField/ArtistChipsField.module.css';
 
 export interface ArtistItem {
@@ -34,6 +35,10 @@ export default function ArtistChipsField({
     readOnly,
     preloadedOptions = [],
 }: ArtistChipsFieldProps) {
+    const likedArtistIds = useLikedArtists((s) => s.likedArtistIds);
+    const likeArtist = useLikedArtists((s) => s.likeArtist);
+    const unlikeArtist = useLikedArtists((s) => s.unlikeArtist);
+
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const handleClose = useCallback(() => setDropdownOpen(false), []);
     const [dragIdx, setDragIdx] = useState<number | null>(null);
@@ -41,6 +46,11 @@ export default function ArtistChipsField({
 
     function handleRemove(id: string) {
         onChange(artists.filter((a) => a.id !== id));
+    }
+
+    function handleToggleLike(artist: ArtistItem) {
+        const action = likedArtistIds.has(artist.id) ? unlikeArtist(artist.id) : likeArtist(artist);
+        action.catch(() => {});
     }
 
     const wrappedSearch = useCallback(
@@ -139,6 +149,8 @@ export default function ArtistChipsField({
                             isDragging={dragIdx === idx}
                             isDragOver={overIdx === idx}
                             dragHandlers={chipDragHandlers(idx)}
+                            isLiked={likedArtistIds.has(a.id)}
+                            onToggleLike={() => handleToggleLike(a)}
                         />
                     )}
                 </span>

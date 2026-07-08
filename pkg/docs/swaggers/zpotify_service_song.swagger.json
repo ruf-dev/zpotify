@@ -213,6 +213,9 @@
         },
         "name": {
           "type": "string"
+        },
+        "liked": {
+          "type": "boolean"
         }
       }
     },

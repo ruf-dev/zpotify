@@ -1,0 +1,26 @@
+.CachedSongRowContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-sm) 0;
+}
+
+.SongInfoWrapper {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.SongTitle {
+    font-size: var(--font-size-base);
+    color: var(--color-fg-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.SongArtist {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-secondary);
+}

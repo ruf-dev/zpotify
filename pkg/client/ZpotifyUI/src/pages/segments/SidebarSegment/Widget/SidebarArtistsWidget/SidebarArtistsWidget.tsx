@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 
-import type { ArtistBase } from '@/app/api/zpotify';
-import { artistsService } from '@/shared/api/ArtistsService';
+import { useLikedArtists } from '@/entities/artist/useLikedArtists';
 import ArtistRow from '@/pages/segments/SidebarSegment/components/ArtistRow/ArtistRow';
 import cls from '@/pages/segments/SidebarSegment/Widget/SidebarArtistsWidget/SidebarArtistsWidget.module.css';
 
@@ -18,21 +17,14 @@ interface SidebarArtistsWidgetProps {
 }
 
 export default function SidebarArtistsWidget({ isCollapsed }: SidebarArtistsWidgetProps) {
-    const [artists, setArtists] = useState<ArtistBase[]>([]);
-    const [loaded, setLoaded] = useState(false);
+    const artists = useLikedArtists((s) => s.likedArtists);
+    const loaded = useLikedArtists((s) => s.loaded);
+    const fetchLikedArtists = useLikedArtists((s) => s.fetchLikedArtists);
     const navigate = useNavigate();
 
     useEffect(() => {
-        artistsService
-            .ListArtist('', 0, 50)
-            .then((resp) => {
-                setArtists(resp.artists ?? []);
-                setLoaded(true);
-            })
-            .catch(() => {
-                setLoaded(true);
-            });
-    }, []);
+        fetchLikedArtists().catch(() => {});
+    }, [fetchLikedArtists]);
 
     function handleSearchClick() {
         void navigate('/search');

@@ -14,6 +14,7 @@ export type Paging = {
 export type ArtistBase = {
   uuid?: string;
   name?: string;
+  liked?: boolean;
 };
 
 export type SongBase = {

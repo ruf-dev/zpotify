@@ -21,6 +21,8 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	ArtistsAPI_ListArtist_FullMethodName   = "/zpotify_api.ArtistsAPI/ListArtist"
 	ArtistsAPI_CreateArtist_FullMethodName = "/zpotify_api.ArtistsAPI/CreateArtist"
+	ArtistsAPI_LikeArtist_FullMethodName   = "/zpotify_api.ArtistsAPI/LikeArtist"
+	ArtistsAPI_UnlikeArtist_FullMethodName = "/zpotify_api.ArtistsAPI/UnlikeArtist"
 )
 
 // ArtistsAPIClient is the client API for ArtistsAPI service.
@@ -29,6 +31,8 @@ const (
 type ArtistsAPIClient interface {
 	ListArtist(ctx context.Context, in *ListArtist_Request, opts ...grpc.CallOption) (*ListArtist_Response, error)
 	CreateArtist(ctx context.Context, in *CreateArtist_Request, opts ...grpc.CallOption) (*CreateArtist_Response, error)
+	LikeArtist(ctx context.Context, in *LikeArtist_Request, opts ...grpc.CallOption) (*LikeArtist_Response, error)
+	UnlikeArtist(ctx context.Context, in *UnlikeArtist_Request, opts ...grpc.CallOption) (*UnlikeArtist_Response, error)
 }
 
 type artistsAPIClient struct {
@@ -59,12 +63,34 @@ func (c *artistsAPIClient) CreateArtist(ctx context.Context, in *CreateArtist_Re
 	return out, nil
 }
 
+func (c *artistsAPIClient) LikeArtist(ctx context.Context, in *LikeArtist_Request, opts ...grpc.CallOption) (*LikeArtist_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LikeArtist_Response)
+	err := c.cc.Invoke(ctx, ArtistsAPI_LikeArtist_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *artistsAPIClient) UnlikeArtist(ctx context.Context, in *UnlikeArtist_Request, opts ...grpc.CallOption) (*UnlikeArtist_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UnlikeArtist_Response)
+	err := c.cc.Invoke(ctx, ArtistsAPI_UnlikeArtist_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ArtistsAPIServer is the server API for ArtistsAPI service.
 // All implementations must embed UnimplementedArtistsAPIServer
 // for forward compatibility.
 type ArtistsAPIServer interface {
 	ListArtist(context.Context, *ListArtist_Request) (*ListArtist_Response, error)
 	CreateArtist(context.Context, *CreateArtist_Request) (*CreateArtist_Response, error)
+	LikeArtist(context.Context, *LikeArtist_Request) (*LikeArtist_Response, error)
+	UnlikeArtist(context.Context, *UnlikeArtist_Request) (*UnlikeArtist_Response, error)
 	mustEmbedUnimplementedArtistsAPIServer()
 }
 
@@ -80,6 +106,12 @@ func (UnimplementedArtistsAPIServer) ListArtist(context.Context, *ListArtist_Req
 }
 func (UnimplementedArtistsAPIServer) CreateArtist(context.Context, *CreateArtist_Request) (*CreateArtist_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateArtist not implemented")
+}
+func (UnimplementedArtistsAPIServer) LikeArtist(context.Context, *LikeArtist_Request) (*LikeArtist_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method LikeArtist not implemented")
+}
+func (UnimplementedArtistsAPIServer) UnlikeArtist(context.Context, *UnlikeArtist_Request) (*UnlikeArtist_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method UnlikeArtist not implemented")
 }
 func (UnimplementedArtistsAPIServer) mustEmbedUnimplementedArtistsAPIServer() {}
 func (UnimplementedArtistsAPIServer) testEmbeddedByValue()                    {}
@@ -138,6 +170,42 @@ func _ArtistsAPI_CreateArtist_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ArtistsAPI_LikeArtist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LikeArtist_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtistsAPIServer).LikeArtist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ArtistsAPI_LikeArtist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtistsAPIServer).LikeArtist(ctx, req.(*LikeArtist_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ArtistsAPI_UnlikeArtist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnlikeArtist_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtistsAPIServer).UnlikeArtist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ArtistsAPI_UnlikeArtist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtistsAPIServer).UnlikeArtist(ctx, req.(*UnlikeArtist_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ArtistsAPI_ServiceDesc is the grpc.ServiceDesc for ArtistsAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +220,14 @@ var ArtistsAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateArtist",
 			Handler:    _ArtistsAPI_CreateArtist_Handler,
+		},
+		{
+			MethodName: "LikeArtist",
+			Handler:    _ArtistsAPI_LikeArtist_Handler,
+		},
+		{
+			MethodName: "UnlikeArtist",
+			Handler:    _ArtistsAPI_UnlikeArtist_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

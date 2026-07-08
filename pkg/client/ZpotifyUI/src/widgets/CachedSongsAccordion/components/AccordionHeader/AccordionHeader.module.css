@@ -1,0 +1,29 @@
+.AccordionHeaderContainer {
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
+    margin: var(--space-sm) 0;
+}
+
+.HeaderLabel {
+    flex: 1;
+}
+
+.HeaderCount {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-secondary);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-sm);
+    padding: var(--space-xs) var(--space-sm);
+}
+
+.Chevron {
+    display: flex;
+    align-items: center;
+    color: var(--color-fg-secondary);
+    transition: transform 0.2s ease;
+}
+
+.ChevronOpen {
+    transform: rotate(180deg);
+}

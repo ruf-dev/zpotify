@@ -96,6 +96,78 @@ func (*CreateArtist) Descriptor() ([]byte, []int) {
 	return file_zpotify_service_artists_proto_rawDescGZIP(), []int{1}
 }
 
+type LikeArtist struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LikeArtist) Reset() {
+	*x = LikeArtist{}
+	mi := &file_zpotify_service_artists_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LikeArtist) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LikeArtist) ProtoMessage() {}
+
+func (x *LikeArtist) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_artists_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LikeArtist.ProtoReflect.Descriptor instead.
+func (*LikeArtist) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_artists_proto_rawDescGZIP(), []int{2}
+}
+
+type UnlikeArtist struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UnlikeArtist) Reset() {
+	*x = UnlikeArtist{}
+	mi := &file_zpotify_service_artists_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UnlikeArtist) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnlikeArtist) ProtoMessage() {}
+
+func (x *UnlikeArtist) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_artists_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnlikeArtist.ProtoReflect.Descriptor instead.
+func (*UnlikeArtist) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_artists_proto_rawDescGZIP(), []int{3}
+}
+
 type ListArtist_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Paging        *Paging                `protobuf:"bytes,1,opt,name=paging,proto3" json:"paging,omitempty"`
@@ -106,7 +178,7 @@ type ListArtist_Request struct {
 
 func (x *ListArtist_Request) Reset() {
 	*x = ListArtist_Request{}
-	mi := &file_zpotify_service_artists_proto_msgTypes[2]
+	mi := &file_zpotify_service_artists_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -118,7 +190,7 @@ func (x *ListArtist_Request) String() string {
 func (*ListArtist_Request) ProtoMessage() {}
 
 func (x *ListArtist_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_artists_proto_msgTypes[2]
+	mi := &file_zpotify_service_artists_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -157,7 +229,7 @@ type ListArtist_Response struct {
 
 func (x *ListArtist_Response) Reset() {
 	*x = ListArtist_Response{}
-	mi := &file_zpotify_service_artists_proto_msgTypes[3]
+	mi := &file_zpotify_service_artists_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -169,7 +241,7 @@ func (x *ListArtist_Response) String() string {
 func (*ListArtist_Response) ProtoMessage() {}
 
 func (x *ListArtist_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_artists_proto_msgTypes[3]
+	mi := &file_zpotify_service_artists_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -195,13 +267,14 @@ func (x *ListArtist_Response) GetArtists() []*ArtistBase {
 type ListArtist_Filters struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Search        *string                `protobuf:"bytes,1,opt,name=search,proto3,oneof" json:"search,omitempty"`
+	OnlyLiked     *bool                  `protobuf:"varint,2,opt,name=only_liked,json=onlyLiked,proto3,oneof" json:"only_liked,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListArtist_Filters) Reset() {
 	*x = ListArtist_Filters{}
-	mi := &file_zpotify_service_artists_proto_msgTypes[4]
+	mi := &file_zpotify_service_artists_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -213,7 +286,7 @@ func (x *ListArtist_Filters) String() string {
 func (*ListArtist_Filters) ProtoMessage() {}
 
 func (x *ListArtist_Filters) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_artists_proto_msgTypes[4]
+	mi := &file_zpotify_service_artists_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -236,6 +309,13 @@ func (x *ListArtist_Filters) GetSearch() string {
 	return ""
 }
 
+func (x *ListArtist_Filters) GetOnlyLiked() bool {
+	if x != nil && x.OnlyLiked != nil {
+		return *x.OnlyLiked
+	}
+	return false
+}
+
 type CreateArtist_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -245,7 +325,7 @@ type CreateArtist_Request struct {
 
 func (x *CreateArtist_Request) Reset() {
 	*x = CreateArtist_Request{}
-	mi := &file_zpotify_service_artists_proto_msgTypes[5]
+	mi := &file_zpotify_service_artists_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -257,7 +337,7 @@ func (x *CreateArtist_Request) String() string {
 func (*CreateArtist_Request) ProtoMessage() {}
 
 func (x *CreateArtist_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_artists_proto_msgTypes[5]
+	mi := &file_zpotify_service_artists_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -289,7 +369,7 @@ type CreateArtist_Response struct {
 
 func (x *CreateArtist_Response) Reset() {
 	*x = CreateArtist_Response{}
-	mi := &file_zpotify_service_artists_proto_msgTypes[6]
+	mi := &file_zpotify_service_artists_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -301,7 +381,7 @@ func (x *CreateArtist_Response) String() string {
 func (*CreateArtist_Response) ProtoMessage() {}
 
 func (x *CreateArtist_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_artists_proto_msgTypes[6]
+	mi := &file_zpotify_service_artists_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -324,31 +404,210 @@ func (x *CreateArtist_Response) GetArtist() *ArtistBase {
 	return nil
 }
 
+type LikeArtist_Request struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ArtistUuid    string                 `protobuf:"bytes,1,opt,name=artist_uuid,json=artistUuid,proto3" json:"artist_uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LikeArtist_Request) Reset() {
+	*x = LikeArtist_Request{}
+	mi := &file_zpotify_service_artists_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LikeArtist_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LikeArtist_Request) ProtoMessage() {}
+
+func (x *LikeArtist_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_artists_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LikeArtist_Request.ProtoReflect.Descriptor instead.
+func (*LikeArtist_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_artists_proto_rawDescGZIP(), []int{2, 0}
+}
+
+func (x *LikeArtist_Request) GetArtistUuid() string {
+	if x != nil {
+		return x.ArtistUuid
+	}
+	return ""
+}
+
+type LikeArtist_Response struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LikeArtist_Response) Reset() {
+	*x = LikeArtist_Response{}
+	mi := &file_zpotify_service_artists_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LikeArtist_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LikeArtist_Response) ProtoMessage() {}
+
+func (x *LikeArtist_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_artists_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LikeArtist_Response.ProtoReflect.Descriptor instead.
+func (*LikeArtist_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_artists_proto_rawDescGZIP(), []int{2, 1}
+}
+
+type UnlikeArtist_Request struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ArtistUuid    string                 `protobuf:"bytes,1,opt,name=artist_uuid,json=artistUuid,proto3" json:"artist_uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UnlikeArtist_Request) Reset() {
+	*x = UnlikeArtist_Request{}
+	mi := &file_zpotify_service_artists_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UnlikeArtist_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnlikeArtist_Request) ProtoMessage() {}
+
+func (x *UnlikeArtist_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_artists_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnlikeArtist_Request.ProtoReflect.Descriptor instead.
+func (*UnlikeArtist_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_artists_proto_rawDescGZIP(), []int{3, 0}
+}
+
+func (x *UnlikeArtist_Request) GetArtistUuid() string {
+	if x != nil {
+		return x.ArtistUuid
+	}
+	return ""
+}
+
+type UnlikeArtist_Response struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UnlikeArtist_Response) Reset() {
+	*x = UnlikeArtist_Response{}
+	mi := &file_zpotify_service_artists_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UnlikeArtist_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnlikeArtist_Response) ProtoMessage() {}
+
+func (x *UnlikeArtist_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_artists_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnlikeArtist_Response.ProtoReflect.Descriptor instead.
+func (*UnlikeArtist_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_artists_proto_rawDescGZIP(), []int{3, 1}
+}
+
 var File_zpotify_service_artists_proto protoreflect.FileDescriptor
 
 const file_zpotify_service_artists_proto_rawDesc = "" +
 	"\n" +
-	"\x1dzpotify_service_artists.proto\x12\vzpotify_api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\x1a\x14zpotify_common.proto\"\xf1\x01\n" +
+	"\x1dzpotify_service_artists.proto\x12\vzpotify_api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\x1a\x14zpotify_common.proto\"\xa4\x02\n" +
 	"\n" +
 	"ListArtist\x1aq\n" +
 	"\aRequest\x12+\n" +
 	"\x06paging\x18\x01 \x01(\v2\x13.zpotify_api.PagingR\x06paging\x129\n" +
 	"\afilters\x18\x02 \x01(\v2\x1f.zpotify_api.ListArtist.FiltersR\afilters\x1a=\n" +
 	"\bResponse\x121\n" +
-	"\aartists\x18\x01 \x03(\v2\x17.zpotify_api.ArtistBaseR\aartists\x1a1\n" +
+	"\aartists\x18\x01 \x03(\v2\x17.zpotify_api.ArtistBaseR\aartists\x1ad\n" +
 	"\aFilters\x12\x1b\n" +
-	"\x06search\x18\x01 \x01(\tH\x00R\x06search\x88\x01\x01B\t\n" +
-	"\a_search\"j\n" +
+	"\x06search\x18\x01 \x01(\tH\x00R\x06search\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"only_liked\x18\x02 \x01(\bH\x01R\tonlyLiked\x88\x01\x01B\t\n" +
+	"\a_searchB\r\n" +
+	"\v_only_liked\"j\n" +
 	"\fCreateArtist\x1a\x1d\n" +
 	"\aRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x1a;\n" +
 	"\bResponse\x12/\n" +
-	"\x06artist\x18\x01 \x01(\v2\x17.zpotify_api.ArtistBaseR\x06artist2\xf2\x01\n" +
+	"\x06artist\x18\x01 \x01(\v2\x17.zpotify_api.ArtistBaseR\x06artist\"D\n" +
+	"\n" +
+	"LikeArtist\x1a*\n" +
+	"\aRequest\x12\x1f\n" +
+	"\vartist_uuid\x18\x01 \x01(\tR\n" +
+	"artistUuid\x1a\n" +
+	"\n" +
+	"\bResponse\"F\n" +
+	"\fUnlikeArtist\x1a*\n" +
+	"\aRequest\x12\x1f\n" +
+	"\vartist_uuid\x18\x01 \x01(\tR\n" +
+	"artistUuid\x1a\n" +
+	"\n" +
+	"\bResponse2\xd8\x03\n" +
 	"\n" +
 	"ArtistsAPI\x12m\n" +
 	"\n" +
 	"ListArtist\x12\x1f.zpotify_api.ListArtist.Request\x1a .zpotify_api.ListArtist.Response\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/api/artists/list\x12u\n" +
-	"\fCreateArtist\x12!.zpotify_api.CreateArtist.Request\x1a\".zpotify_api.CreateArtist.Response\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/artists/createB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\fCreateArtist\x12!.zpotify_api.CreateArtist.Request\x1a\".zpotify_api.CreateArtist.Response\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/artists/create\x12m\n" +
+	"\n" +
+	"LikeArtist\x12\x1f.zpotify_api.LikeArtist.Request\x1a .zpotify_api.LikeArtist.Response\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/api/artists/like\x12u\n" +
+	"\fUnlikeArtist\x12!.zpotify_api.UnlikeArtist.Request\x1a\".zpotify_api.UnlikeArtist.Response\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/artists/unlikeB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_artists_proto_rawDescOnce sync.Once
@@ -362,32 +621,42 @@ func file_zpotify_service_artists_proto_rawDescGZIP() []byte {
 	return file_zpotify_service_artists_proto_rawDescData
 }
 
-var file_zpotify_service_artists_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_zpotify_service_artists_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_zpotify_service_artists_proto_goTypes = []any{
 	(*ListArtist)(nil),            // 0: zpotify_api.ListArtist
 	(*CreateArtist)(nil),          // 1: zpotify_api.CreateArtist
-	(*ListArtist_Request)(nil),    // 2: zpotify_api.ListArtist.Request
-	(*ListArtist_Response)(nil),   // 3: zpotify_api.ListArtist.Response
-	(*ListArtist_Filters)(nil),    // 4: zpotify_api.ListArtist.Filters
-	(*CreateArtist_Request)(nil),  // 5: zpotify_api.CreateArtist.Request
-	(*CreateArtist_Response)(nil), // 6: zpotify_api.CreateArtist.Response
-	(*Paging)(nil),                // 7: zpotify_api.Paging
-	(*ArtistBase)(nil),            // 8: zpotify_api.ArtistBase
+	(*LikeArtist)(nil),            // 2: zpotify_api.LikeArtist
+	(*UnlikeArtist)(nil),          // 3: zpotify_api.UnlikeArtist
+	(*ListArtist_Request)(nil),    // 4: zpotify_api.ListArtist.Request
+	(*ListArtist_Response)(nil),   // 5: zpotify_api.ListArtist.Response
+	(*ListArtist_Filters)(nil),    // 6: zpotify_api.ListArtist.Filters
+	(*CreateArtist_Request)(nil),  // 7: zpotify_api.CreateArtist.Request
+	(*CreateArtist_Response)(nil), // 8: zpotify_api.CreateArtist.Response
+	(*LikeArtist_Request)(nil),    // 9: zpotify_api.LikeArtist.Request
+	(*LikeArtist_Response)(nil),   // 10: zpotify_api.LikeArtist.Response
+	(*UnlikeArtist_Request)(nil),  // 11: zpotify_api.UnlikeArtist.Request
+	(*UnlikeArtist_Response)(nil), // 12: zpotify_api.UnlikeArtist.Response
+	(*Paging)(nil),                // 13: zpotify_api.Paging
+	(*ArtistBase)(nil),            // 14: zpotify_api.ArtistBase
 }
 var file_zpotify_service_artists_proto_depIdxs = []int32{
-	7, // 0: zpotify_api.ListArtist.Request.paging:type_name -> zpotify_api.Paging
-	4, // 1: zpotify_api.ListArtist.Request.filters:type_name -> zpotify_api.ListArtist.Filters
-	8, // 2: zpotify_api.ListArtist.Response.artists:type_name -> zpotify_api.ArtistBase
-	8, // 3: zpotify_api.CreateArtist.Response.artist:type_name -> zpotify_api.ArtistBase
-	2, // 4: zpotify_api.ArtistsAPI.ListArtist:input_type -> zpotify_api.ListArtist.Request
-	5, // 5: zpotify_api.ArtistsAPI.CreateArtist:input_type -> zpotify_api.CreateArtist.Request
-	3, // 6: zpotify_api.ArtistsAPI.ListArtist:output_type -> zpotify_api.ListArtist.Response
-	6, // 7: zpotify_api.ArtistsAPI.CreateArtist:output_type -> zpotify_api.CreateArtist.Response
-	6, // [6:8] is the sub-list for method output_type
-	4, // [4:6] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	13, // 0: zpotify_api.ListArtist.Request.paging:type_name -> zpotify_api.Paging
+	6,  // 1: zpotify_api.ListArtist.Request.filters:type_name -> zpotify_api.ListArtist.Filters
+	14, // 2: zpotify_api.ListArtist.Response.artists:type_name -> zpotify_api.ArtistBase
+	14, // 3: zpotify_api.CreateArtist.Response.artist:type_name -> zpotify_api.ArtistBase
+	4,  // 4: zpotify_api.ArtistsAPI.ListArtist:input_type -> zpotify_api.ListArtist.Request
+	7,  // 5: zpotify_api.ArtistsAPI.CreateArtist:input_type -> zpotify_api.CreateArtist.Request
+	9,  // 6: zpotify_api.ArtistsAPI.LikeArtist:input_type -> zpotify_api.LikeArtist.Request
+	11, // 7: zpotify_api.ArtistsAPI.UnlikeArtist:input_type -> zpotify_api.UnlikeArtist.Request
+	5,  // 8: zpotify_api.ArtistsAPI.ListArtist:output_type -> zpotify_api.ListArtist.Response
+	8,  // 9: zpotify_api.ArtistsAPI.CreateArtist:output_type -> zpotify_api.CreateArtist.Response
+	10, // 10: zpotify_api.ArtistsAPI.LikeArtist:output_type -> zpotify_api.LikeArtist.Response
+	12, // 11: zpotify_api.ArtistsAPI.UnlikeArtist:output_type -> zpotify_api.UnlikeArtist.Response
+	8,  // [8:12] is the sub-list for method output_type
+	4,  // [4:8] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_service_artists_proto_init() }
@@ -396,14 +665,14 @@ func file_zpotify_service_artists_proto_init() {
 		return
 	}
 	file_zpotify_common_proto_init()
-	file_zpotify_service_artists_proto_msgTypes[4].OneofWrappers = []any{}
+	file_zpotify_service_artists_proto_msgTypes[6].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_service_artists_proto_rawDesc), len(file_zpotify_service_artists_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

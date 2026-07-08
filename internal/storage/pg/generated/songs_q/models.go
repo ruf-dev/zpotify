@@ -282,6 +282,18 @@ type PlaylistsSongsV2 struct {
 	OrderNumber  int64
 }
 
+type PlaylistsSongsV3 struct {
+	PlaylistUuid uuid.UUID
+	ID           int64
+	Title        string
+	DurationSec  int64
+	FilePath     string
+	FileID       int64
+	ArtistInfo   json.RawMessage
+	OrderNumber  int64
+	IsPublic     bool
+}
+
 type PlaylistsV1 struct {
 	Uuid        uuid.UUID
 	Name        string
@@ -339,6 +351,12 @@ type User struct {
 	Username        string
 	AvatarLink      sql.NullString
 	LikedPlaylistID uuid.NullUUID
+}
+
+type UserArtist struct {
+	UserID   int64
+	ArtistID uuid.UUID
+	LikedAt  time.Time
 }
 
 type UserHomeSegment struct {
