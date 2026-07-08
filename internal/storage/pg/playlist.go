@@ -123,10 +123,6 @@ func (s *PlaylistStorage) ListSongs(ctx context.Context, r domain.ListSongs) ([]
 }
 
 func (p *PlaylistStorage) CountSongs(ctx context.Context, r domain.ListSongs) (uint16, error) {
-	if r.PlaylistUuid == nil {
-		return 0, rerrors.New("no playlist uuid is passed to count")
-	}
-
 	builder := playlistSongsQueryBuilder{
 		sq.Select("count(*)"),
 	}
@@ -153,17 +149,27 @@ type playlistSongsQueryBuilder struct {
 }
 
 func (builder playlistSongsQueryBuilder) buildSongBaseQuery() playlistSongsQueryBuilder {
-	builder.SelectBuilder = builder.From("playlists_songs_v2").
+	builder.SelectBuilder = builder.From("playlists_songs_v3").
 		PlaceholderFormat(sq.Dollar)
 
 	return builder
 }
 
 func (builder playlistSongsQueryBuilder) applyListQueryFilters(r domain.ListSongs) playlistSongsQueryBuilder {
-	if r.PlaylistUuid != nil {
-		builder.SelectBuilder = builder.Where(sq.Eq{
-			"playlist_uuid": *r.PlaylistUuid,
-		})
+	builder.SelectBuilder = builder.Where(sq.Eq{
+		"playlist_uuid": r.PlaylistUuid,
+	})
+
+	// The global queue is a public catalog of every uploaded song, not a real
+	// playlist with an owner/user_playlists row, so it's exempt from the
+	// per-user access check below.
+	if r.PlaylistUuid != domain.GlobalPlaylistUuid {
+		builder.SelectBuilder = builder.
+			LeftJoin("user_playlists up ON up.playlist_id = playlists_songs_v3.playlist_uuid AND up.user_id = ?", r.UserId).
+			Where(sq.Or{
+				sq.Eq{"is_public": true},
+				sq.Expr("up.user_id IS NOT NULL"),
+			})
 	}
 
 	return builder

@@ -8,7 +8,6 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
-	"go.redsock.ru/toolbox"
 
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
@@ -213,8 +212,14 @@ func (p *PlaylistService) ListSongs(ctx context.Context, req domain.ListSongs) (
 		req.Limit = 10
 	}
 
-	if req.PlaylistUuid == nil {
-		req.PlaylistUuid = toolbox.ToPtr(domain.GlobalPlaylistUuid)
+	userCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return domain.SongsInPlaylist{}, rerrors.Wrap(service_errors.ErrUnauthenticated)
+	}
+	req.UserId = userCtx.UserId
+
+	if req.PlaylistUuid == "" {
+		req.PlaylistUuid = domain.GlobalPlaylistUuid
 	}
 
 	songs, err := p.playlistStorage.ListSongs(ctx, req)
@@ -322,16 +327,7 @@ func (p *PlaylistService) Unfollow(ctx context.Context, playlistUuid string) err
 		return rerrors.Wrap(service_errors.ErrUnauthenticated)
 	}
 
-	ownerId, _, err := p.playlistStorage.GetOwnerAndVisibility(ctx, playlistUuid)
-	if err != nil {
-		return rerrors.Wrap(err, "error getting playlist owner")
-	}
-
-	if ownerId == userCtx.UserId {
-		return rerrors.Wrap(service_errors.ErrUnauthorized, "cannot unfollow own playlist")
-	}
-
-	err = p.userStorage.UnfollowPlaylist(ctx, userCtx.UserId, playlistUuid)
+	err := p.userStorage.UnfollowPlaylist(ctx, userCtx.UserId, playlistUuid)
 	if err != nil {
 		return rerrors.Wrap(err, "error unfollowing playlist")
 	}

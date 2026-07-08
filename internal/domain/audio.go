@@ -63,7 +63,11 @@ type ListSongs struct {
 }
 
 type ListSongsFilters struct {
-	PlaylistUuid *string
+	// PlaylistUuid is empty for the global queue (see GlobalPlaylistUuid).
+	PlaylistUuid string
+	// UserId scopes the query to songs in playlists that are public or that
+	// this user has access to.
+	UserId int64
 }
 
 type ListFileMeta struct {

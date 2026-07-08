@@ -13,7 +13,7 @@ func (impl *Impl) ListSongs(ctx context.Context, req *zpotify_api.ListSongs_Requ
 	*zpotify_api.ListSongs_Response, error) {
 	listReq := domain.ListSongs{
 		ListSongsFilters: domain.ListSongsFilters{
-			PlaylistUuid: req.PlaylistUuid,
+			PlaylistUuid: req.GetPlaylistUuid(),
 		},
 
 		Limit:      req.GetPaging().GetLimit(),

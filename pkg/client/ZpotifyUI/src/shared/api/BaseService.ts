@@ -81,6 +81,22 @@ export class BaseService {
                             );
                         }
 
+                        if (err.code == Errors.NOT_FOUND) {
+                            throw new ServiceError(
+                                WithTitle(err.message),
+                                WithCode(Errors.NOT_FOUND),
+                                WithIsNonRetryable(true),
+                            );
+                        }
+
+                        if (err.code == Errors.PERMISSION_DENIED) {
+                            throw new ServiceError(
+                                WithTitle(err.message),
+                                WithCode(Errors.PERMISSION_DENIED),
+                                WithIsNonRetryable(true),
+                            );
+                        }
+
                         throw new ServiceError(WithTitle(err.message));
                     })
                     .then(),
