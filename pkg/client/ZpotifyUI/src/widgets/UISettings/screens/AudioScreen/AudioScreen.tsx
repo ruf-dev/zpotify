@@ -1,11 +1,42 @@
-import { Toggle } from '@vervstack/chures';
+import { Button, ConfirmDialog, Toggle } from '@vervstack/chures';
 
 import cls from '@/widgets/UISettings/UISettingsWidget.module.css';
+import audioScreenCls from '@/widgets/UISettings/screens/AudioScreen/AudioScreen.module.css';
 import { useAudioSettings } from '@/entities/audio-settings/useAudioSettings.ts';
 import SettingsRow from '@/widgets/UISettings/components/SettingsRow/SettingsRow.tsx';
+import CachedSongsAccordion from '@/widgets/CachedSongsAccordion/CachedSongsAccordion.tsx';
+import { useDialog } from '@/app/hooks/Dialog.tsx';
+import { useAudioCacheStore } from '@/shared/model/audioCacheStore.ts';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 export default function AudioScreen() {
     const { cacheSongs, setCacheSongs } = useAudioSettings();
+    const { OpenDialog, CloseDialog } = useDialog();
+    const toaster = useToaster();
+    const cachedCount = useAudioCacheStore((state) => state.cachedUrls.size);
+
+    function handleClearCache() {
+        async function handleConfirm() {
+            await useAudioCacheStore.getState().clearAll();
+            toaster.bake({
+                title: 'Cache cleared',
+                description: 'All cached songs have been removed from this device',
+                level: 'Info',
+            });
+            CloseDialog();
+        }
+
+        OpenDialog(
+            <ConfirmDialog
+                title="Clear cache"
+                message="This will remove all songs downloaded for offline playback on this device."
+                confirmLabel="Clear cache"
+                danger
+                onConfirm={handleConfirm}
+                onClose={CloseDialog}
+            />,
+        );
+    }
 
     return (
         <div className={cls.SettingsGroup}>
@@ -15,6 +46,20 @@ export default function AudioScreen() {
             >
                 <Toggle checked={cacheSongs} onChange={setCacheSongs} />
             </SettingsRow>
+
+            {cachedCount === 0 ? (
+                <p className={audioScreenCls.EmptyCacheState}>No songs cached</p>
+            ) : (
+                <>
+                    <SettingsRow label="Clear Cache" description="Remove all downloaded songs from this device">
+                        <Button variant="danger" onClick={handleClearCache}>
+                            Clear Cache
+                        </Button>
+                    </SettingsRow>
+
+                    <CachedSongsAccordion />
+                </>
+            )}
         </div>
     );
 }

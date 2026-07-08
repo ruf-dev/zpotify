@@ -70,7 +70,10 @@ export default function TrackRow({
         const trackUrl = getTrackUrl(song.filePath);
         cacheAudio(trackUrl).then((cached) => {
             if (cached) {
-                useAudioCacheStore.getState().addCachedUrl(trackUrl);
+                useAudioCacheStore.getState().addCachedUrl(trackUrl, {
+                    title: song.title || 'Track',
+                    artist: song.artists?.[0]?.name ?? 'Unknown',
+                });
                 toaster.bake({
                     title: 'Song downloaded',
                     description: `${song.title || 'Track'} is now available offline`,

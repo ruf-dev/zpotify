@@ -34,6 +34,19 @@ export async function cacheAudio(url: string): Promise<boolean> {
     }
 }
 
+export async function uncacheAudio(url: string): Promise<boolean> {
+    if (!('caches' in window)) return false;
+
+    const cache = await caches.open(AUDIO_CACHE_NAME);
+    return cache.delete(url);
+}
+
+export async function clearAudioCache(): Promise<void> {
+    if (!('caches' in window)) return;
+
+    await caches.delete(AUDIO_CACHE_NAME);
+}
+
 export async function listCachedUrls(): Promise<string[]> {
     if (!('caches' in window)) return [];
 

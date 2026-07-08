@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ConfirmDialog } from '@vervstack/chures';
 import cn from 'classnames';
 
 import cls from '@/widgets/PlaylistScreen/components/Sidebar/Sidebar.module.css';
@@ -17,7 +18,8 @@ import SaveIcon from '@/assets/icons/SaveIcon.tsx';
 import { RemoveIcon } from '@/assets/icons/RemoveIcon.tsx';
 import { UploadArrowIcon } from '@/assets/icons/UploadArrowIcon.tsx';
 import { DownloadIcon } from '@/assets/icons/DownloadIcon.tsx';
-import { UploadDoneIcon } from '@/assets/icons/UploadDoneIcon.tsx';
+import { HomeIcon } from '@/assets/icons/HomeIcon.tsx';
+import { RemoveTrackIcon } from '@/assets/icons/RemoveTrackIcon.tsx';
 import EditableText from '@/widgets/PlaylistScreen/components/EditableText/EditableText.tsx';
 import EditableArtistPicker from '@/widgets/PlaylistScreen/components/EditableArtistPicker/EditableArtistPicker.tsx';
 import { isAlbum } from '@/entities/playlist/isAlbum.ts';
@@ -28,6 +30,7 @@ import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
 import { cacheTracks, getTrackUrl } from '@/shared/lib/audioCache.ts';
 import { useAudioCacheStore, useCachedCount, useDownloadProgress } from '@/shared/model/audioCacheStore.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
+import { useDialog } from '@/app/hooks/Dialog.tsx';
 
 const SECTION_TRANSITION = { duration: 0.2, ease: [0.4, 0, 0.2, 1] } as const;
 const LAYOUT_SPRING = { type: 'spring', stiffness: 420, damping: 42, mass: 0.75 } as const;
@@ -79,6 +82,7 @@ export default function Sidebar({
     const coverInputRef = useRef<HTMLInputElement>(null);
     const queryClient = useQueryClient();
     const toaster = useToaster();
+    const { OpenDialog, CloseDialog } = useDialog();
     const downloadProgress = useDownloadProgress(playlist?.uuid);
     const { cached: cachedCount, total: cachedTotal } = useCachedCount(songs);
 
@@ -184,10 +188,12 @@ export default function Sidebar({
 
         try {
             const resp = await playlistService.ListSongs(uuid, 0, DOWNLOAD_ALL_FETCH_LIMIT, undefined);
-            const urls = (resp.songs ?? [])
-                .map((s) => s.filePath)
-                .filter((p): p is string => !!p)
-                .map(getTrackUrl);
+            const songsByUrl = new Map(
+                (resp.songs ?? [])
+                    .filter((s): s is SongBase & { filePath: string } => !!s.filePath)
+                    .map((s) => [getTrackUrl(s.filePath), s] as const),
+            );
+            const urls = Array.from(songsByUrl.keys());
 
             if (urls.length === 0) return;
 
@@ -195,7 +201,13 @@ export default function Sidebar({
             const { succeeded, failed } = await cacheTracks(urls, (completed, total) =>
                 useAudioCacheStore.getState().setDownloadProgress(uuid, completed, total),
             );
-            succeeded.forEach((url) => useAudioCacheStore.getState().addCachedUrl(url));
+            succeeded.forEach((url) => {
+                const song = songsByUrl.get(url);
+                const meta = song
+                    ? { title: song.title || 'Track', artist: song.artists?.[0]?.name ?? 'Unknown' }
+                    : undefined;
+                useAudioCacheStore.getState().addCachedUrl(url, meta);
+            });
 
             if (failed.length === 0) {
                 toaster.bake({
@@ -215,6 +227,36 @@ export default function Sidebar({
         } finally {
             useAudioCacheStore.getState().clearDownloadProgress(uuid);
         }
+    }
+
+    function handleUnloadCache() {
+        if (!playlist) return;
+        const playlistName = playlist.name || 'this';
+
+        async function handleConfirm() {
+            const urls = songs
+                .map((s) => s.filePath)
+                .filter((p): p is string => !!p)
+                .map(getTrackUrl);
+            await useAudioCacheStore.getState().removeCachedUrls(urls);
+            toaster.bake({
+                title: 'Cache cleared',
+                description: `${playlistName} is no longer available offline`,
+                level: 'Info',
+            });
+            CloseDialog();
+        }
+
+        OpenDialog(
+            <ConfirmDialog
+                title="Unload cache"
+                message={`Would you like to unload cache for ${playlistName} playlist?`}
+                confirmLabel="Unload"
+                danger
+                onConfirm={handleConfirm}
+                onClose={CloseDialog}
+            />,
+        );
     }
 
     if (!playlist) {
@@ -378,14 +420,25 @@ export default function Sidebar({
                     <ShareIcon />
                 </button>
                 <button
-                    className={cn(cls.IconButton, allCached && cls.IconButtonActive)}
+                    className={cn(cls.IconButton, allCached && cls.IconButtonActive, allCached && cls.IconButtonCached)}
                     type="button"
-                    aria-label={allCached ? 'Downloaded' : 'Download'}
-                    onClick={handleDownloadPlaylist}
-                    disabled={allCached || !!downloadProgress}
+                    aria-label={allCached ? 'Unload cache' : 'Download'}
+                    onClick={allCached ? handleUnloadCache : handleDownloadPlaylist}
+                    disabled={!!downloadProgress}
                     style={downloadButtonStyle}
                 >
-                    {allCached ? <UploadDoneIcon /> : <DownloadIcon />}
+                    {allCached ? (
+                        <span className={cls.CachedIconStack}>
+                            <span className={cls.CachedIconDefault}>
+                                <HomeIcon />
+                            </span>
+                            <span className={cls.CachedIconHover}>
+                                <RemoveTrackIcon />
+                            </span>
+                        </span>
+                    ) : (
+                        <DownloadIcon />
+                    )}
                 </button>
                 {playlist.canEdit &&
                     (editMode ? (

@@ -185,6 +185,40 @@
     }
 }
 
+.IconButtonCached:hover {
+    border-color: var(--color-error);
+}
+
+.CachedIconStack {
+    display: grid;
+
+    > * {
+        grid-area: 1 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.CachedIconDefault {
+    opacity: 1;
+    transition: opacity var(--ease-quick);
+}
+
+.CachedIconHover {
+    opacity: 0;
+    color: var(--color-error);
+    transition: opacity var(--ease-quick);
+}
+
+.IconButtonCached:hover .CachedIconDefault {
+    opacity: 0;
+}
+
+.IconButtonCached:hover .CachedIconHover {
+    opacity: 1;
+}
+
 /* ── Section Label ───────────────────────────────────────── */
 
 .SectionLabel {

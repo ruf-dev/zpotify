@@ -6,6 +6,12 @@ import { cacheAudio, getCachedAudio, getTrackUrl } from '@/shared/lib/audioCache
 import { useAudioSettings } from '@/entities/audio-settings/useAudioSettings.ts';
 import { useAudioCacheStore } from '@/shared/model/audioCacheStore.ts';
 
+export interface TrackInfo {
+    title: string | null;
+    artist: string | null;
+    cover: string | null;
+}
+
 export interface AudioPlayer {
     isPlaying: boolean;
 
@@ -34,8 +40,8 @@ export interface AudioPlayer {
     playNext: () => void;
     playPrev: () => void;
 
-    setNext: (val: string | undefined) => void;
-    setPrev: (val: string | undefined) => void;
+    setNext: (val: string | undefined, info?: TrackInfo) => void;
+    setPrev: (val: string | undefined, info?: TrackInfo) => void;
 
     shuffleHash: number | null;
     setShuffleHash: (hash: number | null) => void;
@@ -58,6 +64,8 @@ interface AudioStoreState {
 
     nextTrackUrl: string | undefined;
     prevTrackUrl: string | undefined;
+    nextTrackInfo: TrackInfo | undefined;
+    prevTrackInfo: TrackInfo | undefined;
     shuffleHash: number | null;
 }
 
@@ -76,6 +84,8 @@ const useAudioStore = create<AudioStoreState>()(
             duration: 0,
             nextTrackUrl: undefined,
             prevTrackUrl: undefined,
+            nextTrackInfo: undefined,
+            prevTrackInfo: undefined,
             shuffleHash: null,
         }),
         {
@@ -276,8 +286,14 @@ class AudioPlayerImpl implements AudioPlayer {
         useAudioStore.setState({ trackPath: trackPath, currentTime: 0, duration: 0 });
 
         if (cacheSongs && src === trackUrl) {
+            const { songTitle, songArtist } = useAudioStore.getState();
             cacheAudio(trackUrl).then((cached) => {
-                if (cached) useAudioCacheStore.getState().addCachedUrl(trackUrl);
+                if (cached) {
+                    useAudioCacheStore.getState().addCachedUrl(trackUrl, {
+                        title: songTitle || 'Track',
+                        artist: songArtist || 'Unknown',
+                    });
+                }
             });
         }
 
@@ -322,25 +338,27 @@ class AudioPlayerImpl implements AudioPlayer {
     }
 
     playNext(): void {
-        const { nextTrackUrl } = useAudioStore.getState();
+        const { nextTrackUrl, nextTrackInfo } = useAudioStore.getState();
         if (nextTrackUrl) {
+            if (nextTrackInfo) this.setSongInfo(nextTrackInfo.title, nextTrackInfo.artist, nextTrackInfo.cover);
             this.play(nextTrackUrl);
         }
     }
 
     playPrev(): void {
-        const { prevTrackUrl } = useAudioStore.getState();
+        const { prevTrackUrl, prevTrackInfo } = useAudioStore.getState();
         if (prevTrackUrl) {
+            if (prevTrackInfo) this.setSongInfo(prevTrackInfo.title, prevTrackInfo.artist, prevTrackInfo.cover);
             this.play(prevTrackUrl);
         }
     }
 
-    setNext(val: string | undefined): void {
-        useAudioStore.setState({ nextTrackUrl: val });
+    setNext(val: string | undefined, info?: TrackInfo): void {
+        useAudioStore.setState({ nextTrackUrl: val, nextTrackInfo: info });
     }
 
-    setPrev(val: string | undefined): void {
-        useAudioStore.setState({ prevTrackUrl: val });
+    setPrev(val: string | undefined, info?: TrackInfo): void {
+        useAudioStore.setState({ prevTrackUrl: val, prevTrackInfo: info });
     }
 
     setShuffleHash(hash: number | null): void {

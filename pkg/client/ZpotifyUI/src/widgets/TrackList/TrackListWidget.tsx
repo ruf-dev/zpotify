@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import type { SongBase } from '@/app/api/zpotify';
 import cls from '@/widgets/TrackList/TrackListWidget.module.css';
-import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
+import { AudioPlayer, TrackInfo } from '@/widgets/MusicPlayer/usePlayer.ts';
 import { SongListPermissions } from '@/shared/model/User.ts';
 import TrackRow from '@/widgets/PlaylistScreen/components/TrackRow/TrackRow.tsx';
 import { useLikedSongs } from '@/entities/song/useLikedSongs.ts';
@@ -31,34 +31,41 @@ export default function SongListWidget({ songs, audioPlayer, coverUrl }: SongLis
         void fetchLikedSongs(likedPlaylistId);
     }, [likedPlaylistId, fetchLikedSongs]);
 
-    function getNext(currentIdx: number): string | undefined {
+    function getNext(currentIdx: number): SongBase | undefined {
         if (songs.length == 0 || currentIdx == -1) {
             return;
         }
 
         if (currentIdx < 0 || currentIdx + 1 >= songs.length) {
-            return songs[0].filePath;
+            return songs[0];
         }
 
-        return songs[currentIdx + 1].filePath;
+        return songs[currentIdx + 1];
     }
 
-    function getPrev(currentIdx: number): string | undefined {
+    function getPrev(currentIdx: number): SongBase | undefined {
         if (songs.length == 0 || currentIdx == -1) {
             return;
         }
 
         if (currentIdx === 0) {
-            return songs[songs.length - 1].filePath;
+            return songs[songs.length - 1];
         }
 
-        return songs[currentIdx - 1].filePath;
+        return songs[currentIdx - 1];
+    }
+
+    function toTrackInfo(song: SongBase | undefined): TrackInfo | undefined {
+        if (!song) return undefined;
+        return { title: song.title || null, artist: song.artists?.[0]?.name || null, cover: coverUrl ?? null };
     }
 
     useEffect(() => {
         const currentSongIdx = songs.findIndex((s) => s.filePath == audioPlayer.trackPath);
-        audioPlayer.setNext(getNext(currentSongIdx));
-        audioPlayer.setPrev(getPrev(currentSongIdx));
+        const next = getNext(currentSongIdx);
+        const prev = getPrev(currentSongIdx);
+        audioPlayer.setNext(next?.filePath, toTrackInfo(next));
+        audioPlayer.setPrev(prev?.filePath, toTrackInfo(prev));
     }, [audioPlayer.trackPath, songs]);
 
     function playSongAtIndex(idx: number) {

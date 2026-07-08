@@ -77,8 +77,20 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
     useEffect(() => {
         const idx = orderedSongs.findIndex((s) => s.filePath === audioPlayer.trackPath);
         if (idx === -1) return;
-        audioPlayer.setNext(orderedSongs[idx + 1]?.filePath);
-        audioPlayer.setPrev(idx > 0 ? orderedSongs[idx - 1]?.filePath : undefined);
+        const next = orderedSongs[idx + 1];
+        const prev = idx > 0 ? orderedSongs[idx - 1] : undefined;
+        audioPlayer.setNext(
+            next?.filePath,
+            next
+                ? { title: next.title ?? null, artist: next.artists?.[0]?.name ?? null, cover: coverUrl ?? null }
+                : undefined,
+        );
+        audioPlayer.setPrev(
+            prev?.filePath,
+            prev
+                ? { title: prev.title ?? null, artist: prev.artists?.[0]?.name ?? null, cover: coverUrl ?? null }
+                : undefined,
+        );
     }, [orderedSongs, audioPlayer.trackPath]);
 
     const totalDuration = computeTotalDuration(songs);
