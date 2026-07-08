@@ -45,6 +45,7 @@ export default function EditableTitle({ value, onChange, placeholder = 'untitled
 
     if (editing) {
         return (
+            // TODO: switch to chures Input once it supports ref/onKeyDown
             // eslint-disable-next-line no-restricted-syntax -- chures Input has no ref/onKeyDown support; this needs both for select-on-edit and Enter/Escape handling
             <input
                 ref={inputRef}

@@ -17,6 +17,7 @@ export default function FloatInput({ value, onChange, type = 'text', label, auto
 
     return (
         <div className={cls.Wrapper}>
+            {/* TODO: switch to chures Input once it supports autoFocus/ref */}
             {/* eslint-disable-next-line no-restricted-syntax -- chures Input has no autoFocus/ref support; LoginViaPass relies on autoFocus for the username field */}
             <input
                 className={cls.Input}

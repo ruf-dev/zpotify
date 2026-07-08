@@ -22,6 +22,7 @@ export default function DropdownSearchRow({
                 <span className={cls.SearchIcon}>
                     <SearchIcon />
                 </span>
+                {/* TODO: switch to chures Input once it supports ref/onKeyDown */}
                 {/* eslint-disable-next-line no-restricted-syntax -- chures Input has no ref/onKeyDown support; this needs both for keyboard nav from the parent Dropdown */}
                 <input
                     ref={inputRef}

@@ -1,28 +1,38 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
-import type { Playlist } from '@/app/api/zpotify';
+import type { Playlist, SongBase } from '@/app/api/zpotify';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
+import type { EditableArtistPickerContext } from '@/widgets/PlaylistScreen/components/EditableArtistPicker/EditableArtistPicker.tsx';
+import type { EditableCoverWithFallbackProps } from '@/widgets/PlaylistScreen/components/EditableCoverWithFallback/EditableCoverWithFallback.tsx';
+import type { EditableAlbumNameProps } from '@/widgets/PlaylistScreen/components/EditableAlbumName/EditableAlbumName.tsx';
+import type { EditableYearProps } from '@/widgets/PlaylistScreen/components/EditableYear/EditableYear.tsx';
+import type { TrackCountLabelProps } from '@/widgets/PlaylistScreen/components/TrackCountLabel/TrackCountLabel.tsx';
+import type { PlaylistOwnerLabelProps } from '@/widgets/PlaylistScreen/components/PlaylistOwnerLabel/PlaylistOwnerLabel.tsx';
+import type { PlaylistControlsProps } from '@/widgets/PlaylistScreen/widgets/PlaylistControls/PlaylistControls.tsx';
 import { isAlbum } from '@/entities/playlist/isAlbum.ts';
 import { artistsService } from '@/shared/api/ArtistsService.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { webApiService } from '@/shared/api/WebApi.ts';
-import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 export interface UsePlaylistInfoSegmentParams {
     playlist: Playlist;
+    songs: SongBase[];
+    trackCount: number;
+    saved: boolean;
+    onToggleSave: () => void;
+    onPlay: () => void;
     editMode: boolean;
+    onEnterEditMode: () => void;
     onExitEditMode: () => void;
 }
 
-export function usePlaylistInfoSegment({ playlist, editMode, onExitEditMode }: UsePlaylistInfoSegmentParams) {
-    const coverUrl = buildCoverUrl(playlist.coverFilePath);
+export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
+    const { playlist, editMode } = params;
     const artistName = playlist.artists?.[0]?.name ?? 'Unknown Artist';
     const [aboutExpanded, setAboutExpanded] = useState(false);
     const [saving, setSaving] = useState(false);
-    const [coverHover, setCoverHover] = useState(false);
-    const coverInputRef = useRef<HTMLInputElement>(null);
     const queryClient = useQueryClient();
     const toaster = useToaster();
 
@@ -31,7 +41,6 @@ export function usePlaylistInfoSegment({ playlist, editMode, onExitEditMode }: U
     const [editYear, setEditYear] = useState<number | undefined>();
     const [editArtists, setEditArtists] = useState<ArtistItem[]>([]);
     const [editCover, setEditCover] = useState<File | undefined>();
-    const [coverPreviewUrl, setCoverPreviewUrl] = useState<string | undefined>();
 
     useEffect(() => {
         if (!editMode) return;
@@ -42,7 +51,6 @@ export function usePlaylistInfoSegment({ playlist, editMode, onExitEditMode }: U
             (playlist.artists ?? []).filter((a) => a.uuid && a.name).map((a) => ({ id: a.uuid!, name: a.name! })),
         );
         setEditCover(undefined);
-        setCoverPreviewUrl(undefined);
     }, [editMode]);
 
     const loadArtistOptions = useCallback(
@@ -84,9 +92,8 @@ export function usePlaylistInfoSegment({ playlist, editMode, onExitEditMode }: U
                 );
             }
             setEditCover(undefined);
-            setCoverPreviewUrl(undefined);
             await queryClient.invalidateQueries({ queryKey: ['playlist', playlist.uuid] });
-            onExitEditMode();
+            params.onExitEditMode();
         } catch (e) {
             toaster.catch(e as never);
         } finally {
@@ -95,64 +102,91 @@ export function usePlaylistInfoSegment({ playlist, editMode, onExitEditMode }: U
     }
 
     function handleCancel() {
-        onExitEditMode();
+        params.onExitEditMode();
     }
 
     function handleToggleAbout() {
         setAboutExpanded((prev) => !prev);
     }
 
-    function handleCoverMouseEnter() {
-        setCoverHover(true);
-    }
-
-    function handleCoverMouseLeave() {
-        setCoverHover(false);
-    }
-
-    function handleCoverClick() {
-        if (!editMode) return;
-        coverInputRef.current?.click();
-    }
-
-    function handleCoverFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files?.[0];
-        if (!file) return;
+    function handleCoverFileSelect(file: File) {
         setEditCover(file);
-        setCoverPreviewUrl(URL.createObjectURL(file));
+    }
+
+    function handleYearChange(value: string) {
+        setEditYear(value ? Number(value) : undefined);
     }
 
     const playlistIsAlbum = isAlbum(playlist);
-    const displayCoverUrl = coverPreviewUrl ?? coverUrl;
+    const showYear = playlist.year != null || editMode;
+
+    const coverProps: EditableCoverWithFallbackProps = {
+        coverFilePath: playlist.coverFilePath,
+        uuid: playlist.uuid,
+        name: playlist.name,
+        isEditing: editMode,
+        onFileSelect: handleCoverFileSelect,
+    };
+
+    const albumNameProps: EditableAlbumNameProps = {
+        displayValue: editMode ? editName : (playlist.name ?? ''),
+        isEditing: editMode,
+        onChange: setEditName,
+    };
+
+    const yearProps: EditableYearProps = {
+        displayValue: editMode ? String(editYear ?? '') : String(playlist.year ?? ''),
+        isEditing: editMode,
+        onChange: handleYearChange,
+    };
+
+    const trackCountProps: TrackCountLabelProps = {
+        displayValue: editMode ? String(params.trackCount) : `${params.trackCount} tracks`,
+        isEditing: editMode,
+    };
+
+    const ownerLabelProps: PlaylistOwnerLabelProps = {
+        ownerUsername: playlist.ownerUsername,
+    };
+
+    const artistPicker: EditableArtistPickerContext = {
+        displayName: artistName,
+        isEditing: editMode,
+        artists: editArtists,
+        onChange: setEditArtists,
+        loadOptions: loadArtistOptions,
+        onCreateArtist: handleCreateArtist,
+    };
+
+    const controlsProps: PlaylistControlsProps = {
+        playlist,
+        songs: params.songs,
+        onPlay: params.onPlay,
+        saved: params.saved,
+        onToggleSave: params.onToggleSave,
+        editMode,
+        saving,
+        onSave: handleSave,
+        onCancel: handleCancel,
+        onEnterEditMode: params.onEnterEditMode,
+    };
 
     return {
-        artistName,
         playlistIsAlbum,
-        displayCoverUrl,
+        showYear,
 
         aboutExpanded,
         handleToggleAbout,
 
-        saving,
-        coverHover,
-        coverInputRef,
-        handleCoverMouseEnter,
-        handleCoverMouseLeave,
-        handleCoverClick,
-        handleCoverFileChange,
+        coverProps,
+        albumNameProps,
+        yearProps,
+        trackCountProps,
+        ownerLabelProps,
+        artistPicker,
+        controlsProps,
 
-        editName,
-        setEditName,
         editDesc,
         setEditDesc,
-        editYear,
-        setEditYear,
-        editArtists,
-        setEditArtists,
-        loadArtistOptions,
-        handleCreateArtist,
-
-        handleSave,
-        handleCancel,
     };
 }

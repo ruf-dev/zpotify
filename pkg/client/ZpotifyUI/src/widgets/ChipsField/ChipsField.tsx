@@ -67,6 +67,7 @@ export default function ChipsField({ chips, onChange }: ChipsFieldProps) {
                         </option>
                     ))}
                 </select>
+                {/* TODO: switch to chures Input once it supports onKeyDown and a placeholder-only (no-label) mode */}
                 {/* eslint-disable-next-line no-restricted-syntax -- chures Input has no onKeyDown support, needed for Enter-to-add; it also has no placeholder-only mode */}
                 <input
                     className={cls.ValueInput}

@@ -2740,13 +2740,13 @@
     "semantic_hash": ""
   },
   "/Users/alexbukov/ruf/zpotify/pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/PlaylistInfoSegment.tsx": {
-    "mtime": 1783524705.4907773,
-    "ast_hash": "52d66a58bbc69ac54455cb21d5ea2b78",
+    "mtime": 1783523662.7841933,
+    "ast_hash": "53bd016ac88659b1ed3dcd0ba7835c3c",
     "semantic_hash": ""
   },
   "/Users/alexbukov/ruf/zpotify/pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/usePlaylistInfoSegment.ts": {
-    "mtime": 1783524747.9994245,
-    "ast_hash": "fe44f1e5eb39134b77e9e992fd4c507c",
+    "mtime": 1783523662.7845511,
+    "ast_hash": "9406f1874a15fe8f9f8c6b397a6f5c99",
     "semantic_hash": ""
   },
   "/Users/alexbukov/ruf/zpotify/pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/NotFoundPlaylistInfoSegment/NotFoundPlaylistInfoSegment.tsx": {
@@ -2777,11 +2777,6 @@
   "/Users/alexbukov/ruf/zpotify/pkg/client/ZpotifyUI/src/entities/artist/useLikedArtists.ts": {
     "mtime": 1783512213.7360291,
     "ast_hash": "451b41f8c5c0d33034867a2ee8ce4674",
-    "semantic_hash": ""
-  },
-  "/Users/alexbukov/ruf/zpotify/pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/EditableCoverWithFallback/EditableCoverWithFallback.tsx": {
-    "mtime": 1783524791.7302592,
-    "ast_hash": "f3598a5f2992dfbbddcd983a9c6c8923",
     "semantic_hash": ""
   }
 }

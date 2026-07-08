@@ -1,18 +1,20 @@
-import {AnimatePresence, motion} from 'framer-motion';
-import {Button} from '@vervstack/chures';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Button } from '@vervstack/chures';
 import cn from 'classnames';
 
 import cls from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/PlaylistInfoSegment.module.css';
-import type {Playlist, SongBase} from '@/app/api/zpotify';
-import CoverWithFallback from '@/components/CoverWithFallback/CoverWithFallback.tsx';
+import type { Playlist, SongBase } from '@/app/api/zpotify';
 import BackButton from '@/shared/ui/BackButton.tsx';
-import {UploadArrowIcon} from '@/assets/icons/UploadArrowIcon.tsx';
-import EditableText from '@/widgets/PlaylistScreen/components/EditableText/EditableText.tsx';
+import EditableCoverWithFallback from '@/widgets/PlaylistScreen/components/EditableCoverWithFallback/EditableCoverWithFallback.tsx';
+import EditableAlbumName from '@/widgets/PlaylistScreen/components/EditableAlbumName/EditableAlbumName.tsx';
+import EditableYear from '@/widgets/PlaylistScreen/components/EditableYear/EditableYear.tsx';
+import TrackCountLabel from '@/widgets/PlaylistScreen/components/TrackCountLabel/TrackCountLabel.tsx';
 import EditableArtistPicker from '@/widgets/PlaylistScreen/components/EditableArtistPicker/EditableArtistPicker.tsx';
+import PlaylistOwnerLabel from '@/widgets/PlaylistScreen/components/PlaylistOwnerLabel/PlaylistOwnerLabel.tsx';
 import PlaylistControls from '@/widgets/PlaylistScreen/widgets/PlaylistControls/PlaylistControls.tsx';
-import {usePlaylistInfoSegment} from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/usePlaylistInfoSegment.ts';
+import { usePlaylistInfoSegment } from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/usePlaylistInfoSegment.ts';
 
-const SECTION_TRANSITION = {duration: 0.2, ease: [0.4, 0, 0.2, 1]} as const;
+const SECTION_TRANSITION = { duration: 0.2, ease: [0.4, 0, 0.2, 1] } as const;
 
 export interface PlaylistInfoSegmentProps {
     playlist: Playlist;
@@ -28,104 +30,35 @@ export interface PlaylistInfoSegmentProps {
     onExitEditMode: () => void;
 }
 
-export default function PlaylistInfoSegment(
-    {
-        playlist, songs, totalDuration, trackCount,
-        saved, onToggleSave, onBack, onPlay,
-        editMode, onEnterEditMode, onExitEditMode,
-    }: PlaylistInfoSegmentProps) {
-    const context = usePlaylistInfoSegment({playlist, editMode, onExitEditMode});
+export default function PlaylistInfoSegment(props: PlaylistInfoSegmentProps) {
+    const { playlist, totalDuration, onBack, editMode } = props;
+    const context = usePlaylistInfoSegment(props);
 
     return (
         <div className={cls.PlaylistInfoContainer}>
-            <BackButton onClick={onBack}/>
+            <BackButton onClick={onBack} />
 
-            <div
-                className={cn(cls.CoverWrapper,
-                    {
-                        [cls.CoverWrapperEditing]: editMode
-                    })}
-                onMouseEnter={context.handleCoverMouseEnter}
-                onMouseLeave={context.handleCoverMouseLeave}
-                onClick={context.handleCoverClick}
-            >
-                <CoverWithFallback {...playlist} coverUrl={context.displayCoverUrl} />
-                {editMode && context.coverHover && (
-                    <div className={cls.CoverChangeOverlay}>
-                        <UploadArrowIcon/>
-                        <span>Change</span>
-                    </div>
-                )}
-                <input
-                    ref={context.coverInputRef}
-                    type="file"
-                    accept="image/*"
-                    className={cls.HiddenInput}
-                    onChange={context.handleCoverFileChange}
-                />
-            </div>
+            <EditableCoverWithFallback {...context.coverProps} />
 
             <div className={cls.TitleBlock}>
                 <span className={cls.TypeLabel}>{context.playlistIsAlbum ? 'album' : 'playlist'}</span>
 
-                <EditableText
-                    displayValue={playlist.name ?? ''}
-                    editValue={context.editName}
-                    isEditing={editMode}
-                    onChange={context.setEditName}
-                    displayAs="h1"
-                    displayClassName={cls.AlbumName}
-                    inputClassName={cls.EditInputTitle}
-                    placeholder="name…"
-                />
+                <EditableAlbumName {...context.albumNameProps} />
 
                 {context.playlistIsAlbum ? (
-                    <EditableArtistPicker
-                        displayName={context.artistName}
-                        displayClassName={cls.ArtistName}
-                        artists={context.editArtists}
-                        isEditing={editMode}
-                        onChange={context.setEditArtists}
-                        loadOptions={context.loadArtistOptions}
-                        onCreateArtist={context.handleCreateArtist}
-                        preloadedArtists={context.editArtists}
-                    />
+                    <EditableArtistPicker {...context.artistPicker} />
                 ) : (
-                    <span
-                        className={cls.ArtistName}
-                        data-tooltip-id="root-tooltip"
-                        data-tooltip-content="The user who created this playlist"
-                    >
-                        Author: {playlist.ownerUsername || 'Unknown'}
-                    </span>
+                    <PlaylistOwnerLabel {...context.ownerLabelProps} />
                 )}
 
                 <div className={cls.MetaRow}>
-                    {(playlist.year != null || editMode) && (
+                    {context.showYear && (
                         <>
-                            <EditableText
-                                displayValue={String(playlist.year ?? '')}
-                                editValue={String(context.editYear ?? '')}
-                                isEditing={editMode}
-                                onChange={(v) => context.setEditYear(v ? Number(v) : undefined)}
-                                displayClassName={cls.MetaText}
-                                inputClassName={cls.EditInputMeta}
-                                type="number"
-                                placeholder="year…"
-                            />
+                            <EditableYear {...context.yearProps} />
                             <span>·</span>
                         </>
                     )}
-                    <EditableText
-                        displayValue={`${trackCount} tracks`}
-                        editValue={String(trackCount)}
-                        isEditing={editMode}
-                        onChange={() => undefined}
-                        displayClassName={cls.MetaText}
-                        inputClassName={cls.EditInputMeta}
-                        type="number"
-                        readOnly
-                    />
+                    <TrackCountLabel {...context.trackCountProps} />
                     {editMode && <span>tracks</span>}
                     <span>·</span>
                     <span>{totalDuration}</span>
@@ -138,9 +71,9 @@ export default function PlaylistInfoSegment(
                     <motion.div
                         key="genre-view"
                         layout
-                        initial={{opacity: 0}}
-                        animate={{opacity: 1}}
-                        exit={{opacity: 0}}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                         transition={SECTION_TRANSITION}
                         className={cls.GenreChipsRow}
                     >
@@ -153,27 +86,16 @@ export default function PlaylistInfoSegment(
                 ) : null}
             </AnimatePresence>
 
-            <PlaylistControls
-                playlist={playlist}
-                songs={songs}
-                onPlay={onPlay}
-                saved={saved}
-                onToggleSave={onToggleSave}
-                editMode={editMode}
-                saving={context.saving}
-                onSave={context.handleSave}
-                onCancel={context.handleCancel}
-                onEnterEditMode={onEnterEditMode}
-            />
+            <PlaylistControls {...context.controlsProps} />
 
             <AnimatePresence mode="sync" initial={false}>
                 {editMode ? (
                     <motion.div
                         key="desc-edit"
                         layout
-                        initial={{opacity: 0}}
-                        animate={{opacity: 1}}
-                        exit={{opacity: 0}}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                         transition={SECTION_TRANSITION}
                         className={cls.EditSection}
                     >
@@ -190,9 +112,9 @@ export default function PlaylistInfoSegment(
                     <motion.div
                         key="desc-view"
                         layout
-                        initial={{opacity: 0}}
-                        animate={{opacity: 1}}
-                        exit={{opacity: 0}}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                         transition={SECTION_TRANSITION}
                         className={cls.AboutSection}
                     >

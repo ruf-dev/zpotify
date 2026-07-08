@@ -12,16 +12,9 @@ interface EditableTextProps {
 }
 
 export default function EditableText({
-    displayValue,
-    editValue,
-    isEditing,
-    onChange,
-    displayClassName,
-    inputClassName,
-    placeholder,
-    displayAs = 'span',
-    type = 'text',
-    readOnly = false,
+    displayValue, editValue, isEditing, onChange,
+    displayClassName, inputClassName, placeholder, displayAs = 'span',
+    type = 'text', readOnly = false,
 }: EditableTextProps) {
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         onChange(e.target.value);
@@ -29,6 +22,7 @@ export default function EditableText({
 
     if (isEditing) {
         return (
+            // TODO: switch to chures Input once it supports a labelless mode (no floating label)
             // eslint-disable-next-line no-restricted-syntax -- this swaps a heading/text element in place for inline editing; chures Input always renders a floating label, which breaks that UX
             <input
                 type={type}
