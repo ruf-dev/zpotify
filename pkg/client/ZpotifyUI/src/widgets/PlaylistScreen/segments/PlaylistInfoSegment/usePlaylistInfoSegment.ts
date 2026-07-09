@@ -20,6 +20,7 @@ export interface UsePlaylistInfoSegmentParams {
     playlist: Playlist;
     songs: SongBase[];
     trackCount: number;
+    totalDuration: string;
     saved: boolean;
     onToggleSave: () => void;
     onPlay: () => void;
@@ -143,6 +144,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
     const trackCountProps: TrackCountLabelProps = {
         displayValue: editMode ? String(params.trackCount) : `${params.trackCount} tracks`,
         isEditing: editMode,
+        totalDuration: params.totalDuration,
     };
 
     const ownerLabelProps: PlaylistOwnerLabelProps = {

@@ -3,15 +3,21 @@ import cls from '@/widgets/PlaylistScreen/components/TrackCountLabel/TrackCountL
 export interface TrackCountLabelProps {
     displayValue: string;
     isEditing: boolean;
+    totalDuration: string;
 }
 
-export default function TrackCountLabel({ displayValue, isEditing }: TrackCountLabelProps) {
-    if (isEditing) {
-        return (
-            // eslint-disable-next-line no-restricted-syntax -- read-only numeric display matching the edit-mode meta row; chures Input has no matching labelless read-only mode
-            <input type="number" className={cls.Input} value={displayValue} readOnly />
-        );
-    }
-
-    return <span className={cls.Display}>{displayValue}</span>;
+export default function TrackCountLabel({ displayValue, isEditing, totalDuration }: TrackCountLabelProps) {
+    return (
+        <>
+            {isEditing ? (
+                // eslint-disable-next-line no-restricted-syntax -- read-only numeric display matching the edit-mode meta row; chures Input has no matching labelless read-only mode
+                <input type="number" className={cls.Input} value={displayValue} readOnly />
+            ) : (
+                <span className={cls.Display}>{displayValue}</span>
+            )}
+            {isEditing && <span>tracks</span>}
+            <span>·</span>
+            <span>{totalDuration}</span>
+        </>
+    );
 }
