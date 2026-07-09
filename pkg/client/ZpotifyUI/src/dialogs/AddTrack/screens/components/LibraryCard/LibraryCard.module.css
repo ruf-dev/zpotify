@@ -17,6 +17,12 @@
     border-color: var(--color-border-bright);
 }
 
+.CardDisabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 .IconCircle {
     width: var(--icon-circle-md);
     height: var(--icon-circle-md);
@@ -40,4 +46,10 @@
     font-size: var(--font-size-xs);
     color: var(--color-fg-tertiary);
     line-height: 1.4;
+}
+
+@media (orientation: portrait) {
+    .LibraryCardContainer {
+        order: 2;
+    }
 }

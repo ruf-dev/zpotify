@@ -1,0 +1,23 @@
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.FadeIn {
+    animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.GenreChipsRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+}
+
+.GenreChip {
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--border-radius-pill);
+    border: 0.0625rem solid var(--color-border-light);
+    background: var(--color-bg-secondary);
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-secondary);
+}

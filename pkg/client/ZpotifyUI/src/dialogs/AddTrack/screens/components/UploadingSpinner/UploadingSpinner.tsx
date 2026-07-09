@@ -1,20 +1,10 @@
+import { SpinnerIcon } from '@/assets/icons/SpinnerIcon';
 import cls from '@/dialogs/AddTrack/screens/components/UploadingSpinner/UploadingSpinner.module.css';
 
 export default function UploadingSpinner() {
     return (
-        <div className={cls.UploadingState}>
-            <svg
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-            >
-                <circle cx="16" cy="16" r="12" strokeOpacity="0.2" />
-                <path d="M16 4a12 12 0 0 1 12 12" className={cls.Spinner} />
-            </svg>
+        <div className={cls.UploadingStateContainer}>
+            <SpinnerIcon />
             <span>uploading…</span>
         </div>
     );

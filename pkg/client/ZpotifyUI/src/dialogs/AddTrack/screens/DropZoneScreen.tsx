@@ -66,9 +66,7 @@ export default function DropZoneScreen({ handleFiles, uploadError, uploading }: 
 
                 <div className={cls.CenterContent}>
                     <DropZoneIcon dragOver={dragOver} />
-                    <div className={cls.TextContent}>
-                        <DropZoneText dragOver={dragOver} />
-                    </div>
+                    <DropZoneText dragOver={dragOver} />
                 </div>
 
                 {!dragOver && <span className={cls.BottomHint}>mp3 · flac · aac</span>}

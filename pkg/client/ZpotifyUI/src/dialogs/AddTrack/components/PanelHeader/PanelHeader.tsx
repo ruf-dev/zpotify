@@ -24,7 +24,7 @@ interface PanelHeaderProps {
 
 export default function PanelHeader({ step, backStep, uploading, onBack, onClose }: PanelHeaderProps) {
     return (
-        <div className={cls.PanelHeader}>
+        <div className={cls.PanelHeaderContainer}>
             <div className={cls.HeaderLeft}>
                 {backStep && !uploading && <BackButton onClick={onBack} />}
                 <span className={cls.PanelTitle}>{STEP_TITLES[step]}</span>

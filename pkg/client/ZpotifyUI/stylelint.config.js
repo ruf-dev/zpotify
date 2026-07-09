@@ -40,6 +40,11 @@ export default {
                     'font-size': ['px', 'em'],
                 },
 
+                // Never use z-index — rely on DOM order or a portal to document.body instead (see CLAUDE.md)
+                'declaration-property-value-disallowed-list': {
+                    'z-index': [/.*/],
+                },
+
                 // PascalCase or camelCase class names (matches CSS Modules usage)
                 'selector-class-pattern': '^[A-Za-z][a-zA-Z0-9]*$',
             },

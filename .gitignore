@@ -19,6 +19,7 @@ node_modules
 # vendor/
 .idea
 proto_modules
+.DS_Store
 
 
 #Load testing

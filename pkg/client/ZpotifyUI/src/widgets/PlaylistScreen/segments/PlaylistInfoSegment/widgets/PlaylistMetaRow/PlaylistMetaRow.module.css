@@ -1,0 +1,8 @@
+.MetaRow {
+    display: flex;
+    gap: 0.375rem;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-disabled);
+}

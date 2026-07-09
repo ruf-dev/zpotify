@@ -62,6 +62,17 @@ export default tseslint.config([
             // One React component per file
             'react/no-multi-comp': ['warn', { ignoreStateless: false }],
 
+            // Catch circular imports regardless of FSD layer
+            'import/no-cycle': 'error',
+
+            // Empty catch blocks are a deliberate no-op (see promise-chain style below); other empty blocks are bugs
+            'no-empty': ['error', { allowEmptyCatch: true }],
+
+            // Split into smaller components instead of nesting DOM 4+ levels deep.
+            // 'warn' (not 'error') — 17 pre-existing violations in PlayerBarSegment/CommentsSection
+            // are a known baseline as of this rule's introduction; fix the ones you touch.
+            'react/jsx-max-depth': ['warn', { max: 3 }],
+
             // All imports must use the '@/' alias — no relative paths
             'local/no-relative-imports': 'error',
 
@@ -89,6 +100,20 @@ export default tseslint.config([
                     selector: 'ObjectPattern[properties.length>6]',
                     message:
                         'Destructuring more than 6 properties — keep the whole object as one variable (e.g. `const context = useX(...)`) instead of exploding it into separate bindings/props.',
+                },
+                {
+                    selector: 'JSXOpeningElement[name.name="div"]:not(:has(JSXAttribute[name.name="className"]))',
+                    message: '<div> must have a className (use a CSS module class).',
+                },
+                {
+                    selector: 'Property[key.name="zIndex"]',
+                    message:
+                        'Never use z-index — rely on DOM order or a portal to document.body instead (see pkg/client/ZpotifyUI/CLAUDE.md).',
+                },
+                {
+                    selector: 'CallExpression[callee.object.name="window"][callee.property.name=/^(alert|confirm)$/]',
+                    message:
+                        "Never use window.alert/window.confirm — use useToaster().catch(err) (@/shared/lib/toaster/ToasterZ.ts) for errors, or chures ConfirmDialog/InfoDialog for confirmations.",
                 },
             ],
 
@@ -148,6 +173,42 @@ export default tseslint.config([
                         },
                     ],
                     'newlines-between': 'always',
+                },
+            ],
+
+            // Enforce the Feature Slice Design layer order from CLAUDE.md:
+            // pages/dialogs -> widgets -> features -> entities -> components (shared/app importable from anywhere)
+            'import/no-restricted-paths': [
+                'error',
+                {
+                    basePath: './src',
+                    zones: [
+                        {
+                            target: './components',
+                            from: ['./widgets', './features', './entities', './pages', './dialogs'],
+                            message: 'src/components/** is the lowest FSD layer — it may not import from widgets/features/entities/pages/dialogs.',
+                        },
+                        {
+                            target: './entities',
+                            from: ['./widgets', './features', './pages', './dialogs'],
+                            message: 'src/entities/** may not import from widgets/features/pages/dialogs.',
+                        },
+                        {
+                            target: './features',
+                            from: ['./widgets', './pages', './dialogs'],
+                            message: 'src/features/** may not import from widgets/pages/dialogs.',
+                        },
+                        {
+                            target: './widgets',
+                            from: ['./pages', './dialogs'],
+                            message: 'src/widgets/** may not import from pages/dialogs.',
+                        },
+                        {
+                            target: './dialogs',
+                            from: ['./pages'],
+                            message: 'Dialogs must not import from pages — pages open dialogs via useDialog(), never the other way around.',
+                        },
+                    ],
                 },
             ],
         },

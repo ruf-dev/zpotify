@@ -21,6 +21,9 @@ Layers ordered high → low. A layer may only import from layers **below** it �
 pages / dialogs  →  widgets  →  features  →  entities  →  components  →  shared  →  app
 ```
 
+This order is enforced by `import/no-restricted-paths` in `eslint.config.js` (plus
+`import/no-cycle` catching any cycle regardless of layer) — not just documentation.
+
 | Layer | Path | Description |
 |---|---|---|
 | **pages / dialogs** | `src/pages/`, `src/dialogs/` | Route targets and modal screens. No reuse expected. |
@@ -215,7 +218,38 @@ widgets/PlaylistScreen/
 - Use `ModalActions` (from `@vervstack/chures`) to lay out a dialog's action-button row when the buttons are plain text (no icons/children) — for anything richer (icons, hint text, an existing shared `Button` component), keep custom markup.
 - For confirm ("are you sure…") or plain info/alert dialogs, use `ConfirmDialog` / `InfoDialog` from `@vervstack/chures` instead of hand-building a new one-off `dialogs/` screen.
 - The global overlay/backdrop mechanism (`useDialog`, `OpenDialog`/`CloseDialog`, the mounted `<Dialog/>`) stays as-is — `@vervstack/chures` supplies dialog *content*, not the container.
+- Split into smaller components instead of nesting DOM 4+ levels deep. Enforced by `react/jsx-max-depth` (`max: 3`) — currently `warn`, with 17 pre-existing violations in `PlayerBarSegment.tsx`/`CommentsSection.tsx` as a known baseline; fix the ones you touch, don't feel obligated to sweep the whole codebase.
 
+## Never use z-index
+
+- **`z-index` is forbidden** in every `.module.css`/`.css` file and in inline `style` props — no exceptions, no "just this once."
+- Stacking order comes from **DOM order** instead: within a stacking context, positioned elements paint in document order, so put the element that should be on top **later in the DOM** (use flexbox `order` if you need it to *look* earlier visually — `order` doesn't affect paint/stacking order, only layout position).
+- Floating UI (dropdowns, popovers, tooltips) that must render above unrelated sibling content should be **portaled to `document.body`** (`createPortal`) and positioned via `getBoundingClientRect()`, not stacked with `z-index`.
+- Enforced for JS/TSX by the `no-restricted-syntax` rule banning `zIndex` in `eslint.config.js`, and for CSS by the `declaration-property-value-disallowed-list` rule in `stylelint.config.js`.
+- **Known debt**: `components/Dropdown/Dropdown.module.css` still uses `z-index: 600` (carved out via a scoped `stylelint-disable-next-line`) to layer its popover above adjacent form fields — should be migrated to the portal pattern above, but that's a real behavior change out of scope for a lint-parity pass. Don't repeat the pattern for new floating UI.
+
+## Error and Confirmation Handling
+
+- **Never use `window.alert` or `window.confirm`** — enforced by `no-restricted-syntax`. Use project-level primitives instead:
+  - **Errors**: `useToaster()` from `@/shared/lib/toaster/ToasterZ.ts` → call `toaster.catch(err)` inside `catch`/`.catch()` blocks (or the standalone `catchServiceError(err)` outside a component), backed by chures' `useToaster`.
+  - **Confirmations**: `ConfirmDialog` / `InfoDialog` imported straight from `@vervstack/chures` (see `usePlaylistControls.tsx`, `AudioScreen.tsx` for existing usage) — no local wrapper.
+- `ConfirmDialog` props: `title`, `message`, `confirmLabel`, `cancelLabel`, `danger` (boolean), `onConfirm` (async callback).
+- The `onConfirm` callback is responsible for error handling; `ConfirmDialog` closes itself in `finally` after `onConfirm` resolves.
+
+## State ownership in components
+
+- **Private components** (file-local functions, not exported) that need to change **global state** (Zustand stores, `useDialog`, `useNavigate`, etc.) must call the relevant hook directly — do not thread the action down as a prop.
+- **Private components** that need to change **parent local state** (e.g. `useState` in the enclosing component) receive a callback prop for that change — local state belongs to whoever owns it.
+- **Public/exported components** that trigger state changes always receive a callback prop — they must not reach into a specific store themselves, because callers control which state is affected.
+
+## Async style
+
+- **Prefer promise chains over `try/catch`** — use `.then().catch().finally()` instead of `async/await` with `try/catch` blocks. This is already the dominant style in this codebase. Exception: best-effort fire-and-forget where no error surface is needed (silent `catch {}` is fine there, allowed by `no-empty`'s `allowEmptyCatch`).
+
+## Testing frontend changes
+
+- **Do not start the dev server, spin up a browser, or otherwise self-test frontend changes.** Reaching an authenticated screen requires the full Go backend + DB, which isn't worth spinning up for a UI change, and a headless smoke test is a poor substitute for a human actually looking at it.
+- Verify with `tsc -b`/`bun run build` and `bun lint` instead, then hand the change back to the user with a short note on what to click through to confirm it visually (which page/component, what interaction to try).
 
 ## Path Alias
 

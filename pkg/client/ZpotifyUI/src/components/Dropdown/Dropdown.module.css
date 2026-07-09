@@ -14,7 +14,7 @@
     left: 0;
     right: 0;
 
-    /* z-index: required — dropdown popover must layer above adjacent form fields */
+    /* stylelint-disable-next-line declaration-property-value-disallowed-list -- known debt, see CLAUDE.md "Never use z-index": should be portal-ified to document.body instead */
     z-index: 600;
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border-bright);

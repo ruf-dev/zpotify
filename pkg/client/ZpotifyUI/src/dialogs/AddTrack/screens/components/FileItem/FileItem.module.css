@@ -1,4 +1,4 @@
-.FileItem {
+.FileItemContainer {
     display: flex;
     align-items: center;
     gap: 0.625rem;
@@ -10,7 +10,7 @@
     transition: background 0.15s ease, border-color 0.15s ease;
 }
 
-.FileItem:hover {
+.FileItemContainer:hover {
     background: var(--color-bg-hover);
     border-color: var(--color-border-bright);
 }

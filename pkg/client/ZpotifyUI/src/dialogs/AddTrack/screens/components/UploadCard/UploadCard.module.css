@@ -68,3 +68,9 @@
     background: transparent;
     border-color: var(--color-error);
 }
+
+@media (orientation: portrait) {
+    .UploadCardContainer {
+        order: 1;
+    }
+}
