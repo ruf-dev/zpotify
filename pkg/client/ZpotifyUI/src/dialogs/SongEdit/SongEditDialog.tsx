@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { ModalClose } from '@vervstack/chures';
+import { Input, ModalActions, ModalClose } from '@vervstack/chures';
 
 import cls from '@/dialogs/SongEdit/SongEditDialog.module.css';
 import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
-import { Toast, useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
-import Button from '@/shared/ui/Button.tsx';
-import Input from '@/shared/ui/Input.tsx';
+import { useToaster, Toast } from '@/shared/lib/toaster/ToasterZ.ts';
+import BackButton from '@/shared/ui/BackButton';
 import Chip from '@/shared/ui/Chip.tsx';
 import MultiSelect, { Option } from '@/shared/ui/MultiSelect.tsx';
 import { artistsService } from '@/shared/api/ArtistsService.ts';
@@ -35,13 +34,13 @@ export default function SongEditDialog({
     const [title, setTitle] = useState(initialTitle);
     const [selectedArtistIds, setSelectedArtistIds] = useState<string[]>([]);
 
-    async function doListArtists(query: string): Promise<Option[]> {
-        const resp = await artistsService.ListArtist(query, 0, 20);
-
-        const artists = resp.artists || [];
-        return artists
-            .filter((a) => !!a.uuid && !!a.name)
-            .map((a) => ({ id: a.uuid as string, label: a.name as string }));
+    function doListArtists(query: string): Promise<Option[]> {
+        return artistsService.ListArtist(query, 0, 20).then((resp) => {
+            const artists = resp.artists || [];
+            return artists
+                .filter((a) => !!a.uuid && !!a.name)
+                .map((a) => ({ id: a.uuid as string, label: a.name as string }));
+        });
     }
 
     function handleSave() {
@@ -55,18 +54,16 @@ export default function SongEditDialog({
     }
 
     return (
-        <div className={cls.SongEditDialog}>
-            <div className={cls.CloseButton}>
-                <ModalClose className={modalCloseCls.ModalCloseButton} onClick={CloseDialog} />
-            </div>
+        <div className={cls.SongEditDialogContainer}>
+            <ModalClose className={modalCloseCls.ModalCloseButton} onClick={CloseDialog} />
 
             <div className={cls.Header}>
-                {previousScreen && <Button title="<" onClick={() => OpenDialog(previousScreen)} />}
+                {previousScreen && <BackButton onClick={() => OpenDialog(previousScreen)} />}
                 <div className={cls.PathContainer}>{path}</div>
             </div>
 
             <div className={cls.Form}>
-                <Input label="Title" inputValue={title} onChange={setTitle} />
+                <Input label="Title" value={title} setValue={setTitle} />
                 <MultiSelect
                     label="Artists"
                     selectedIds={selectedArtistIds}
@@ -81,9 +78,10 @@ export default function SongEditDialog({
                 </div>
             </div>
 
-            <div className={cls.Footer}>
-                <Button title="Save" onClick={handleSave} />
-            </div>
+            <ModalActions
+                buttons={[{ label: 'Save', onClick: handleSave, className: cls.SaveButton }]}
+                containerClassName={cls.Footer}
+            />
         </div>
     );
 }

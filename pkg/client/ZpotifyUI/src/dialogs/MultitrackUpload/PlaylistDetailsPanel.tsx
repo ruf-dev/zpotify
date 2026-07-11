@@ -9,6 +9,7 @@ import type { ChipEntry } from '@/widgets/ChipsField/ChipsField';
 import { formatDuration } from '@/shared/lib/time';
 import { MiniClockIcon } from '@/assets/icons/MiniClockIcon';
 import { MiniDiscIcon } from '@/assets/icons/MiniDiscIcon';
+import FieldLabelRow from '@/dialogs/MultitrackUpload/components/FieldLabelRow/FieldLabelRow';
 import cls from '@/dialogs/MultitrackUpload/PlaylistDetailsPanel.module.css';
 
 interface PlaylistDetailsPanelProps {
@@ -34,39 +35,23 @@ function formatTotalDuration(secs: number): string {
     return formatDuration(Math.round(secs));
 }
 
-export default function PlaylistDetailsPanel({
-    cover,
-    onCoverChange,
-    existingCoverUrl,
-    playlistName,
-    onNameChange,
-    albumArtists,
-    onAlbumArtistsChange,
-    totalDurationSec,
-    trackCount,
-    year,
-    onYearChange,
-    loadArtistOptions,
-    onCreateArtist,
-    chips,
-    onChipsChange,
-}: PlaylistDetailsPanelProps) {
+export default function PlaylistDetailsPanel(props: PlaylistDetailsPanelProps) {
     function handleYearChange(val: string) {
-        onYearChange(val === '' ? undefined : parseInt(val, 10));
+        props.onYearChange(val === '' ? undefined : parseInt(val, 10));
     }
 
     return (
         <div className={cls.PlaylistDetailsPanelContainer}>
-            <CoverField cover={cover} onChange={onCoverChange} existingCoverUrl={existingCoverUrl} />
+            <CoverField cover={props.cover} onChange={props.onCoverChange} existingCoverUrl={props.existingCoverUrl} />
 
             <div className={cls.FieldsStack}>
                 <div className={cls.FieldGroup}>
-                    <Input value={playlistName} setValue={onNameChange} label="name *" />
+                    <Input value={props.playlistName} setValue={props.onNameChange} label="name *" />
                 </div>
 
                 <div className={cls.FieldGroup}>
                     <Input
-                        value={year !== undefined ? String(year) : ''}
+                        value={props.year !== undefined ? String(props.year) : ''}
                         setValue={handleYearChange}
                         label="year"
                         type="number"
@@ -74,35 +59,29 @@ export default function PlaylistDetailsPanel({
                 </div>
 
                 <div className={cls.FieldGroup}>
-                    <div className={cls.FieldLabelRow}>
-                        <span className={cls.FieldLabel}>album artists</span>
-                        <span className={cls.FieldHint}>appear on every track</span>
-                    </div>
+                    <FieldLabelRow label="album artists" hint="appear on every track" />
                     <ArtistChipsField
-                        artists={albumArtists}
-                        onChange={onAlbumArtistsChange}
+                        artists={props.albumArtists}
+                        onChange={props.onAlbumArtistsChange}
                         placeholder="add album artist…"
-                        loadOptions={loadArtistOptions}
-                        onCreateArtist={onCreateArtist}
+                        loadOptions={props.loadArtistOptions}
+                        onCreateArtist={props.onCreateArtist}
                     />
                 </div>
 
                 <div className={cls.FieldGroup}>
-                    <div className={cls.FieldLabelRow}>
-                        <span className={cls.FieldLabel}>tags</span>
-                        <span className={cls.FieldHint}>genre, mood, era…</span>
-                    </div>
-                    <ChipsField chips={chips} onChange={onChipsChange} />
+                    <FieldLabelRow label="tags" hint="genre, mood, era…" />
+                    <ChipsField chips={props.chips} onChange={props.onChipsChange} />
                 </div>
 
-                {totalDurationSec !== undefined && trackCount !== undefined && (
+                {props.totalDurationSec !== undefined && props.trackCount !== undefined && (
                     <div className={cls.MetaChipsRow}>
                         <DisabledChip
                             icon={<MiniClockIcon />}
                             label="total"
-                            value={formatTotalDuration(totalDurationSec)}
+                            value={formatTotalDuration(props.totalDurationSec)}
                         />
-                        <DisabledChip icon={<MiniDiscIcon />} label="tracks" value={String(trackCount)} />
+                        <DisabledChip icon={<MiniDiscIcon />} label="tracks" value={String(props.trackCount)} />
                     </div>
                 )}
             </div>

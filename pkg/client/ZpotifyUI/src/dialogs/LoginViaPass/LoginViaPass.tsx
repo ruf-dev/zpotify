@@ -1,18 +1,20 @@
-import {KeyboardEvent, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import { KeyboardEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ModalActions, ModalClose } from '@vervstack/chures';
 
-import cls from '@/dialogs/LoginViaPass/LoginViaPass.module.css';
-import FloatInput from '@/shared/ui/FloatInput.tsx';
 import useUser from '@/entities/user/useUser.ts';
-import {authService} from '@/shared/api/Auth.ts';
-import {Path} from '@/app/routing/paths';
-import {useDialog} from '@/app/hooks/Dialog.tsx';
-import {ModalClose} from "@vervstack/chures";
-import modalCloseCls from "@/shared/ui/ModalCloseButton.module.css";
+import { authService } from '@/shared/api/Auth.ts';
+import { Path } from '@/app/routing/paths';
+import { useDialog } from '@/app/hooks/Dialog.tsx';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
+import FloatInput from '@/shared/ui/FloatInput.tsx';
+import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
+import cls from '@/dialogs/LoginViaPass/LoginViaPass.module.css';
 
 export default function LoginViaPass() {
     const navigate = useNavigate();
-    const {CloseDialog} = useDialog();
+    const { CloseDialog } = useDialog();
+    const toaster = useToaster();
     const authenticate = useUser((state) => state.authenticate);
 
     const [username, setUsername] = useState('');
@@ -29,7 +31,8 @@ export default function LoginViaPass() {
             .AuthViaPass(username.trim(), password)
             .then(authenticate)
             .then(() => navigate(Path.HomePage))
-            .then(CloseDialog);
+            .then(CloseDialog)
+            .catch(toaster.catch);
     }
 
     function handleCardKey(e: KeyboardEvent) {
@@ -37,22 +40,17 @@ export default function LoginViaPass() {
     }
 
     return (
-        <div className={cls.Card} onKeyDown={handleCardKey}>
-            <ModalClose
-                className={modalCloseCls.ModalCloseButton}
-                onClick={CloseDialog}/>
-
+        <div className={cls.LoginViaPassContainer} onKeyDown={handleCardKey}>
+            <ModalClose className={modalCloseCls.ModalCloseButton} onClick={CloseDialog} />
 
             <div className={cls.Title}>Sign in</div>
 
-            <FloatInput value={username} onChange={setUsername} label="Username" autoFocus/>
-            <FloatInput value={password} onChange={setPassword} type="password" label="Password"/>
+            <FloatInput value={username} onChange={setUsername} label="Username" autoFocus />
+            <FloatInput value={password} onChange={setPassword} type="password" label="Password" />
 
             {validationErr && <div className={cls.Error}>{validationErr}</div>}
 
-            <button className={cls.SubmitButton} onClick={handleSubmit}>
-                Sign in
-            </button>
+            <ModalActions buttons={[{ label: 'Sign in', onClick: handleSubmit, className: cls.SubmitButton }]} />
         </div>
     );
 }

@@ -22,26 +22,17 @@ interface MetaScreenProps {
     initialArtistOptions?: Option[];
 }
 
-export default function MetaScreen({
-    audioFile,
-    title,
-    onTitleChange,
-    selectedArtists,
-    onArtistsChange,
-    playlistId,
-    onPlaylistChange,
-    initialArtistOptions,
-}: MetaScreenProps) {
+export default function MetaScreen(props: MetaScreenProps) {
     const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
     const [playlistOptions, setPlaylistOptions] = useState<Option[]>([]);
 
     useEffect(() => {
-        if (!audioFile?.fileId) return;
+        if (!props.audioFile?.fileId) return;
 
-        fileService.GetFile({ fileId: audioFile.fileId }).then((res) => {
+        fileService.GetFile({ fileId: props.audioFile.fileId }).then((res) => {
             if (res.file) setFileInfo(res.file);
         });
-    }, [audioFile?.fileId]);
+    }, [props.audioFile?.fileId]);
 
     const listArtists = useCallback(
         (query: string): Promise<Option[]> =>
@@ -53,10 +44,11 @@ export default function MetaScreen({
         [],
     );
 
-    const createArtist = useCallback(async function createArtist(name: string): Promise<Option> {
-        const artist = await artistsService.CreateArtist(name);
-        return { id: artist.id, label: artist.name };
-    }, []);
+    const createArtist = useCallback(
+        (name: string): Promise<Option> =>
+            artistsService.CreateArtist(name).then((artist) => ({ id: artist.id, label: artist.name })),
+        [],
+    );
 
     const listPlaylists = useCallback(
         (query: string): Promise<Option[]> => {
@@ -68,16 +60,16 @@ export default function MetaScreen({
         [playlistOptions],
     );
 
-    const addPlaylist = useCallback(async (name: string): Promise<Option> => {
+    const addPlaylist = useCallback((name: string): Promise<Option> => {
         const opt: Option = { id: `temp-${Date.now()}`, label: name };
         setPlaylistOptions((prev) => [...prev, opt]);
-        return opt;
+        return Promise.resolve(opt);
     }, []);
 
     const displayDuration = fileInfo
         ? formatFileDuration(fileInfo.durationSec)
-        : audioFile?.durationSec != null
-          ? formatDuration(Math.round(audioFile.durationSec))
+        : props.audioFile?.durationSec != null
+          ? formatDuration(Math.round(props.audioFile.durationSec))
           : '—';
 
     return (
@@ -88,18 +80,18 @@ export default function MetaScreen({
             </div>
 
             <div className={cls.Field}>
-                <Input value={title} setValue={onTitleChange} label="title" />
+                <Input value={props.title} setValue={props.onTitleChange} label="title" />
             </div>
 
             <div className={cls.Field}>
                 <label className={cls.FieldLabel}>artist(s)</label>
                 <MultiSelect
                     placeholder="pick artist(s)…"
-                    selectedIds={selectedArtists}
-                    onChange={onArtistsChange}
+                    selectedIds={props.selectedArtists}
+                    onChange={props.onArtistsChange}
                     doList={listArtists}
                     onAdd={createArtist}
-                    initialOptions={initialArtistOptions}
+                    initialOptions={props.initialArtistOptions}
                 />
             </div>
 
@@ -121,8 +113,8 @@ export default function MetaScreen({
                 <MultiSelect
                     isMultiselect={false}
                     placeholder="pick a playlist…"
-                    selectedIds={playlistId ? [playlistId] : []}
-                    onChange={(ids) => onPlaylistChange(ids[0] ?? '')}
+                    selectedIds={props.playlistId ? [props.playlistId] : []}
+                    onChange={(ids) => props.onPlaylistChange(ids[0] ?? '')}
                     doList={listPlaylists}
                     onAdd={addPlaylist}
                 />

@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import { Button } from '@vervstack/chures';
 
 import EditableTitle from '@/components/EditableTitle/EditableTitle';
 import ArtistChipsField from '@/widgets/ArtistField/ArtistChipsField';
@@ -40,32 +41,23 @@ interface TrackRowProps {
     onCreateArtist: (name: string) => Promise<ArtistItem>;
 }
 
-export default function TrackRow({
-    track,
-    index,
-    albumArtists,
-    rowRef,
-    onHandlePointerDown,
-    dragStyle,
-    isDragging,
-    anyDragging,
-    onTitleChange,
-    onArtistsChange,
-    onRemove,
-    loadArtistOptions,
-    onCreateArtist,
-}: TrackRowProps) {
+export default function TrackRow(props: TrackRowProps) {
+    const { track } = props;
     const durationLabel = track.duration > 0 ? formatDuration(Math.round(track.duration)) : '—';
     // TODO: Make editable here and send update name for such files if changed
     const isLinked = !!track.linkedSongId;
 
     return (
         <div
-            ref={rowRef}
-            className={cn(cls.TrackRowContainer, isDragging && cls.IsDragging, anyDragging && cls.AnyDragging)}
+            ref={props.rowRef}
+            className={cn(
+                cls.TrackRowContainer,
+                props.isDragging && cls.IsDragging,
+                props.anyDragging && cls.AnyDragging,
+            )}
             style={
                 {
-                    ...(dragStyle ?? {}),
+                    ...(props.dragStyle ?? {}),
                     '--upload-pct': String(track.uploadProgress / 100),
                 } as React.CSSProperties
             }
@@ -77,26 +69,26 @@ export default function TrackRow({
                     track.uploadStatus === 'error' && cls.UploadError,
                 )}
             />
-            <span className={cls.DragHandle} onPointerDown={onHandlePointerDown} aria-label="drag to reorder">
+            <span className={cls.DragHandle} onPointerDown={props.onHandlePointerDown} aria-label="drag to reorder">
                 <DragHandleIcon />
             </span>
 
-            <span className={cls.TrackNumber}>{String(index + 1).padStart(2, '0')}</span>
+            <span className={cls.TrackNumber}>{String(props.index + 1).padStart(2, '0')}</span>
 
             <div className={cls.TitleArtistCell}>
                 <EditableTitle
                     value={track.title}
-                    onChange={(title) => onTitleChange(track.id, title)}
+                    onChange={(title) => props.onTitleChange(track.id, title)}
                     readOnly={isLinked}
                 />
                 <ArtistChipsField
-                    artists={track.artists.filter((a) => !albumArtists.some((la) => la.id === a.id))}
-                    onChange={(artists) => onArtistsChange(track.id, artists)}
-                    lockedArtists={albumArtists}
+                    artists={track.artists.filter((a) => !props.albumArtists.some((la) => la.id === a.id))}
+                    onChange={(artists) => props.onArtistsChange(track.id, artists)}
+                    lockedArtists={props.albumArtists}
                     dense
                     placeholder="add artist…"
-                    loadOptions={loadArtistOptions}
-                    onCreateArtist={onCreateArtist}
+                    loadOptions={props.loadArtistOptions}
+                    onCreateArtist={props.onCreateArtist}
                     readOnly={isLinked}
                 />
             </div>
@@ -105,14 +97,14 @@ export default function TrackRow({
 
             <UploadStatusChip uploadStatus={track.uploadStatus} isExisting={track.isExisting} />
 
-            <button
-                type="button"
+            <Button
+                variant="iconDanger"
                 className={cls.RemoveButton}
-                onClick={() => onRemove(track.id)}
+                onClick={() => props.onRemove(track.id)}
                 aria-label={`remove ${track.title}`}
             >
                 <RemoveTrackIcon />
-            </button>
+            </Button>
         </div>
     );
 }

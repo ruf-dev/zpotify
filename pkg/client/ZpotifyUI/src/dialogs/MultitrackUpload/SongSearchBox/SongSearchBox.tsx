@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
+import { Button } from '@vervstack/chures';
 
 import type { SongBase } from '@/app/api/zpotify';
 import { songsService } from '@/shared/api/Songs.ts';
@@ -91,19 +92,14 @@ export default function SongSearchBox({ excludedIds, onAddSong }: SongSearchBoxP
                                     ? formatDuration(Math.round(song.durationSec))
                                     : '—';
                             return (
-                                <button
-                                    key={song.id}
-                                    type="button"
-                                    className={cls.ResultRow}
-                                    onClick={() => handlePick(song)}
-                                >
+                                <Button key={song.id} className={cls.ResultRow} onClick={() => handlePick(song)}>
                                     <span className={cls.ResultText}>
                                         <span className={cls.ResultTitle}>{song.title || 'untitled'}</span>
                                         {artists && <span className={cls.ResultArtists}>{artists}</span>}
                                     </span>
                                     <span className={cls.ResultDuration}>{duration}</span>
                                     <span className={cn(cls.AddIcon)}>+</span>
-                                </button>
+                                </Button>
                             );
                         })
                     )}

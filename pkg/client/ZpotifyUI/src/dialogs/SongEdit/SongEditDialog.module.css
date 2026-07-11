@@ -1,27 +1,16 @@
-.SongEditDialog {
+.SongEditDialogContainer {
     padding: var(--space-2xl);
     display: flex;
     flex-direction: column;
     gap: var(--space-xl);
-    min-width: 400px;
+    min-width: 25rem;
     position: relative;
-}
-
-.CloseButton {
-    position: absolute;
-    top: 12px;
-    right: 12px;
 }
 
 .Header {
     display: flex;
     align-items: center;
     gap: var(--space-md);
-
-    .BackButton {
-        width: 1em;
-        height: 1em;
-    }
 }
 
 .PathContainer {
@@ -47,5 +36,21 @@
 .Footer {
     display: flex;
     justify-content: center;
-    margin-top: 12px;
+    margin-top: var(--space-md);
+}
+
+.SaveButton {
+    padding: var(--space-md) var(--space-2xl);
+    border-radius: var(--border-radius-pill);
+    border: 0.0625rem solid var(--color-fg-accent);
+    background: var(--color-fg-accent);
+    color: var(--color-fg-white);
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.16s ease;
+}
+
+.SaveButton:hover {
+    transform: scale(1.02);
 }

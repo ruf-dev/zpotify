@@ -29,17 +29,33 @@ export default function FilesList({ previousScreen }: FilesListProps) {
             });
     }, []);
 
+    function handleBackClick() {
+        if (previousScreen) {
+            OpenDialog(previousScreen);
+        }
+    }
+
+    function handleFileClick(file: SongFile) {
+        OpenDialog(
+            <SongEditDialog
+                fileId={file.id || ''}
+                path={file.path || ''}
+                previousScreen={<FilesList previousScreen={previousScreen} />}
+            />,
+        );
+    }
+
     if (isLoading) {
-        return <div className={cls.FilesList}>Loading...</div>;
+        return <div className={cls.FilesListContainer}>Loading...</div>;
     }
 
     return (
-        <div className={cls.FilesList}>
+        <div className={cls.FilesListContainer}>
             <div className={cls.CloseButton}>
                 <ModalClose className={modalCloseCls.ModalCloseButton} onClick={CloseDialog} />
             </div>
             <div className={cls.Header}>
-                {previousScreen && <Button title="<" onClick={() => OpenDialog(previousScreen)} />}
+                {previousScreen && <Button title="<" onClick={handleBackClick} />}
                 Choose from uploaded
             </div>
             <div className={cls.List}>
@@ -47,19 +63,7 @@ export default function FilesList({ previousScreen }: FilesListProps) {
                     <div className={cls.Empty}>No files found</div>
                 ) : (
                     files.map((file) => (
-                        <div
-                            key={file.id}
-                            className={cls.FileItem}
-                            onClick={() =>
-                                OpenDialog(
-                                    <SongEditDialog
-                                        fileId={file.id || ''}
-                                        path={file.path || ''}
-                                        previousScreen={<FilesList previousScreen={previousScreen} />}
-                                    />,
-                                )
-                            }
-                        >
+                        <div key={file.id} className={cls.FileItem} onClick={() => handleFileClick(file)}>
                             <div className={cls.FileName}>{file.path?.split('/').pop() || 'Unknown File'}</div>
                             <div className={cls.FilePath}>{file.path}</div>
                         </div>

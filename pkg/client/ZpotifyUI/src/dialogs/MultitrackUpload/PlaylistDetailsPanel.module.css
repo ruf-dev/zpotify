@@ -28,30 +28,9 @@
     gap: 0.25rem;
 }
 
-.FieldLabelRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 0.25rem;
-}
-
-.FieldLabel {
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-fg-secondary);
-}
-
 .Required {
     color: var(--color-fg-accent);
     margin-left: 0.125rem;
-}
-
-.FieldHint {
-    font-size: var(--font-size-xs);
-    color: var(--color-fg-disabled);
-    font-style: italic;
 }
 
 .MetaChipsRow {

@@ -1,20 +1,20 @@
-.FilesList {
+.FilesListContainer {
     display: flex;
     flex-direction: column;
     width: 25vw;
     max-height: 50vh;
     background: var(--color-bg-secondary);
-    border-radius: 12px;
+    border-radius: var(--border-radius);
     padding: 1.5rem;
-    box-shadow: 0 8px 32px rgb(0 0 0 / 50%);
+    box-shadow: 0 1.5rem 4rem var(--color-shadow-deep), 0 0 0 0.0625rem var(--color-bg-hover);
     color: var(--color-fg-primary);
     position: relative;
 }
 
 .CloseButton {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 0.75rem;
+    right: 0.75rem;
 }
 
 .Header {
@@ -37,14 +37,14 @@
 
 .FileItem {
     padding: 0.75rem;
-    background: rgb(255 255 255 / 5%);
-    border-radius: 8px;
+    background: var(--color-bg-hover);
+    border-radius: var(--border-radius-sm);
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background var(--ease-default);
 }
 
 .FileItem:hover {
-    background: rgb(255 255 255 / 10%);
+    background: var(--color-bg-hover-mid);
 }
 
 .FileName {

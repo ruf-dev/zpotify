@@ -38,17 +38,6 @@
     min-width: 0;
 }
 
-.SizePill {
-    font-size: var(--font-size-xs);
-    color: var(--color-fg-tertiary);
-    background: var(--color-bg-accent);
-    border: 0.0625rem solid var(--color-border);
-    border-radius: var(--border-radius-pill);
-    padding: 0.15rem 0.45rem;
-    flex-shrink: 0;
-    white-space: nowrap;
-}
-
 .Field {
     display: flex;
     flex-direction: column;

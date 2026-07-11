@@ -6,7 +6,7 @@
 .ChooseScreenContainer {
     animation: slideIn 0.2s ease both;
 
-    width: clamp(36vw, 660px);
+    width: min(36vw, 41.25rem);
 }
 
 .GridWrapper {
