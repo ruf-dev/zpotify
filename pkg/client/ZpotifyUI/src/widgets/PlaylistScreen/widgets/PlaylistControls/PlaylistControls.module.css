@@ -22,15 +22,15 @@
     &:hover {
         transform: scale(1.08);
     }
-}
 
-.PlayIcon {
-    margin-left: 0.125rem;
+    .PlayIcon {
+        margin-left: 0.125rem;
+    }
 }
 
 .IconButton {
     --progress: 0%;
-    width: 2.25rem;
+    min-width: 1.75rem;
     height: 2.25rem;
     border-radius: var(--border-radius-circle);
     border: 0.0625rem solid var(--color-border);
