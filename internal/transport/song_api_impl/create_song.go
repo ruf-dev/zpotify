@@ -17,6 +17,7 @@ func (impl *Impl) CreateSong(ctx context.Context, req *zpotify_api.CreateSong_Re
 			FileID: req.GetFileId(),
 		},
 		ArtistUuids: req.GetArtistUuids(),
+		Tags:        protoSongTagsToDomain(req.GetTags()),
 	}
 
 	id, err := impl.audioService.Create(ctx, createReq)

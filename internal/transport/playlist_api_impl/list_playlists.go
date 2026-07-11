@@ -8,7 +8,46 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/domain"
+	generated "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 )
+
+var albumTagKindProtoToDomain = map[zpotify_api.AlbumTagKind]generated.AlbumTagKind{
+	zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_GENRE:         generated.AlbumTagKindGenre,
+	zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_MOOD:          generated.AlbumTagKindMood,
+	zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_ERA:           generated.AlbumTagKindEra,
+	zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_VIBE:          generated.AlbumTagKindVibe,
+	zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_LANGUAGE:      generated.AlbumTagKindLanguage,
+	zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_THEME:         generated.AlbumTagKindTheme,
+	zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_HIT:           generated.AlbumTagKindHit,
+	zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_ALBUM_VERSION: generated.AlbumTagKindAlbumVersion,
+}
+
+var albumTagKindDomainToProto = map[generated.AlbumTagKind]zpotify_api.AlbumTagKind{
+	generated.AlbumTagKindGenre:        zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_GENRE,
+	generated.AlbumTagKindMood:         zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_MOOD,
+	generated.AlbumTagKindEra:          zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_ERA,
+	generated.AlbumTagKindVibe:         zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_VIBE,
+	generated.AlbumTagKindLanguage:     zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_LANGUAGE,
+	generated.AlbumTagKindTheme:        zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_THEME,
+	generated.AlbumTagKindHit:          zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_HIT,
+	generated.AlbumTagKindAlbumVersion: zpotify_api.AlbumTagKind_ALBUM_TAG_KIND_ALBUM_VERSION,
+}
+
+var albumVersionKindProtoToDomain = map[zpotify_api.AlbumVersionMetadata_VersionKind]generated.AlbumVersionKind{
+	zpotify_api.AlbumVersionMetadata_VERSION_KIND_DELUXE:      generated.AlbumVersionKindDeluxe,
+	zpotify_api.AlbumVersionMetadata_VERSION_KIND_EXTENDED:    generated.AlbumVersionKindExtended,
+	zpotify_api.AlbumVersionMetadata_VERSION_KIND_REMASTER:    generated.AlbumVersionKindRemaster,
+	zpotify_api.AlbumVersionMetadata_VERSION_KIND_ANNIVERSARY: generated.AlbumVersionKindAnniversary,
+	zpotify_api.AlbumVersionMetadata_VERSION_KIND_LIVE:        generated.AlbumVersionKindLive,
+}
+
+var albumVersionKindDomainToProto = map[generated.AlbumVersionKind]zpotify_api.AlbumVersionMetadata_VersionKind{
+	generated.AlbumVersionKindDeluxe:      zpotify_api.AlbumVersionMetadata_VERSION_KIND_DELUXE,
+	generated.AlbumVersionKindExtended:    zpotify_api.AlbumVersionMetadata_VERSION_KIND_EXTENDED,
+	generated.AlbumVersionKindRemaster:    zpotify_api.AlbumVersionMetadata_VERSION_KIND_REMASTER,
+	generated.AlbumVersionKindAnniversary: zpotify_api.AlbumVersionMetadata_VERSION_KIND_ANNIVERSARY,
+	generated.AlbumVersionKindLive:        zpotify_api.AlbumVersionMetadata_VERSION_KIND_LIVE,
+}
 
 func (impl *Impl) ListPlaylists(ctx context.Context, req *zpotify_api.ListPlaylists_Request) (*zpotify_api.ListPlaylists_Response, error) {
 	listReq := domain.ListPlaylists{
@@ -43,14 +82,7 @@ func toPlaylist(pl domain.Playlist) *zpotify_api.Playlist {
 		protoArtists = append(protoArtists, artist)
 	}
 
-	protoChips := make([]*zpotify_api.PlaylistChip, 0, len(pl.Chips))
-	for _, c := range pl.Chips {
-		chip := &zpotify_api.PlaylistChip{
-			Kind:  c.Kind,
-			Value: c.Value,
-		}
-		protoChips = append(protoChips, chip)
-	}
+	protoTags := domainTagsToProto(pl.Tags)
 
 	var songCount *int32
 	if pl.SongCount != nil {
@@ -86,21 +118,52 @@ func toPlaylist(pl domain.Playlist) *zpotify_api.Playlist {
 		SongCount:     songCount,
 		CoverFilePath: coverFilePath,
 		Year:          pl.Year,
-		Chips:         protoChips,
+		Tags:          protoTags,
 		CanEdit:       canEdit,
 		IsSaved:       isSaved,
 		OwnerUsername: ownerUsername,
 	}
 }
 
-func protoChipsToDomain(chips []*zpotify_api.PlaylistChip) []domain.PlaylistChip {
-	result := make([]domain.PlaylistChip, 0, len(chips))
-	for _, c := range chips {
-		chip := domain.PlaylistChip{
-			Kind:  c.GetKind(),
-			Value: c.GetValue(),
+func domainTagsToProto(tags []domain.AlbumTag) []*zpotify_api.AlbumTag {
+	result := make([]*zpotify_api.AlbumTag, 0, len(tags))
+	for _, t := range tags {
+		protoTag := &zpotify_api.AlbumTag{
+			Kind:  albumTagKindDomainToProto[t.Kind],
+			Value: t.Value,
 		}
-		result = append(result, chip)
+
+		if t.VersionKind != nil {
+			metadata := &zpotify_api.AlbumVersionMetadata{
+				VersionKind: albumVersionKindDomainToProto[*t.VersionKind],
+			}
+			if t.ParentPlaylistUuid != nil {
+				metadata.ParentPlaylistUuid = *t.ParentPlaylistUuid
+			}
+			protoTag.Metadata = &zpotify_api.AlbumTag_AlbumVersion{AlbumVersion: metadata}
+		}
+
+		result = append(result, protoTag)
+	}
+	return result
+}
+
+func protoTagsToDomain(tags []*zpotify_api.AlbumTag) []domain.AlbumTag {
+	result := make([]domain.AlbumTag, 0, len(tags))
+	for _, t := range tags {
+		tag := domain.AlbumTag{
+			Kind:  albumTagKindProtoToDomain[t.GetKind()],
+			Value: t.GetValue(),
+		}
+
+		if albumVersion := t.GetAlbumVersion(); albumVersion != nil {
+			versionKind := albumVersionKindProtoToDomain[albumVersion.GetVersionKind()]
+			tag.VersionKind = &versionKind
+			parentUuid := albumVersion.GetParentPlaylistUuid()
+			tag.ParentPlaylistUuid = &parentUuid
+		}
+
+		result = append(result, tag)
 	}
 	return result
 }

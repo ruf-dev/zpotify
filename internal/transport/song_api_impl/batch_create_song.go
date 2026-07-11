@@ -19,6 +19,7 @@ func (impl *Impl) BatchCreateSong(ctx context.Context, req *zpotify_api.BatchCre
 				FileID: s.GetFileId(),
 			},
 			ArtistUuids: s.GetArtistUuids(),
+			Tags:        protoSongTagsToDomain(s.GetTags()),
 		}
 		songs = append(songs, createReq)
 	}

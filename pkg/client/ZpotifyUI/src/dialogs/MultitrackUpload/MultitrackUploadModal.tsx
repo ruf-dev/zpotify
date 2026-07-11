@@ -35,7 +35,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
     const [playlistName, setPlaylistName] = useState('');
     const [albumArtists, setAlbumArtists] = useState<ArtistItem[]>([]);
     const [year, setYear] = useState<number | undefined>();
-    const [chips, setChips] = useState<ChipEntry[]>([]);
+    const [tags, setTags] = useState<ChipEntry[]>([]);
     const [cover, setCover] = useState<File | undefined>();
 
     const submitState = useMultitrackSubmit({
@@ -44,7 +44,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
         playlistName,
         albumArtists,
         year,
-        chips,
+        tags,
         cover,
         CloseDialog,
         LockClosing,
@@ -93,8 +93,8 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                         onYearChange={setYear}
                         loadArtistOptions={loadArtistOptions}
                         onCreateArtist={onCreateArtist}
-                        chips={chips}
-                        onChipsChange={setChips}
+                        tags={tags}
+                        onTagsChange={setTags}
                     />
                 )}
 

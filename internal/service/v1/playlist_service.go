@@ -13,6 +13,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/storage"
+	generated "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 )
 
@@ -48,9 +49,14 @@ func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistP
 		return "", rerrors.Wrap(service_errors.ErrUnauthorized)
 	}
 
+	err := p.validateAlbumTags(ctx, req.Tags)
+	if err != nil {
+		return "", rerrors.Wrap(err, "error validating album tags")
+	}
+
 	var playlistUuid string
 
-	err := p.txManager.Execute(
+	err = p.txManager.Execute(
 		func(tx *sql.Tx) error {
 			playlistStorage := p.playlistStorage.WithTx(tx)
 			fileMetaStorage := p.fileMetaStorage.WithTx(tx)
@@ -69,10 +75,10 @@ func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistP
 				}
 			}
 
-			for i, chip := range req.Chips {
-				createErr = playlistStorage.InsertPlaylistChip(ctx, playlistUuid, chip, i)
+			for i, tag := range req.Tags {
+				createErr = playlistStorage.InsertAlbumTag(ctx, playlistUuid, tag, i)
 				if createErr != nil {
-					return rerrors.Wrap(createErr, "error adding chip to playlist")
+					return rerrors.Wrap(createErr, "error adding tag to playlist")
 				}
 			}
 
@@ -106,11 +112,11 @@ func (p *PlaylistService) Get(ctx context.Context, playlistUuid string) (domain.
 
 	p.resolveCoverPath(ctx, &playlist)
 
-	chips, err := p.playlistStorage.GetPlaylistChips(ctx, playlistUuid)
+	tags, err := p.playlistStorage.GetAlbumTags(ctx, playlistUuid)
 	if err != nil {
-		return domain.Playlist{}, rerrors.Wrap(err, "error reading playlist chips")
+		return domain.Playlist{}, rerrors.Wrap(err, "error reading playlist tags")
 	}
-	playlist.Chips = chips
+	playlist.Tags = tags
 
 	permissions, err := p.userStorage.GetPermissionsOnPlaylist(ctx, userCtx.UserId, playlistUuid)
 	if err != nil {
@@ -138,6 +144,11 @@ func (p *PlaylistService) Update(ctx context.Context, req domain.UpdatePlaylistP
 		return result, rerrors.Wrap(service_errors.ErrUnauthorized)
 	}
 
+	err = p.validateAlbumTags(ctx, req.Tags)
+	if err != nil {
+		return result, rerrors.Wrap(err, "error validating album tags")
+	}
+
 	err = p.txManager.Execute(func(tx *sql.Tx) error {
 		playlistStorage := p.playlistStorage.WithTx(tx)
 		fileMetaStorage := p.fileMetaStorage.WithTx(tx)
@@ -163,16 +174,16 @@ func (p *PlaylistService) Update(ctx context.Context, req domain.UpdatePlaylistP
 			}
 		}
 
-		if req.Chips != nil {
-			clearErr := playlistStorage.ClearPlaylistChips(ctx, req.Uuid)
+		if req.Tags != nil {
+			clearErr := playlistStorage.ClearAlbumTags(ctx, req.Uuid)
 			if clearErr != nil {
-				return rerrors.Wrap(clearErr, "error clearing playlist chips")
+				return rerrors.Wrap(clearErr, "error clearing playlist tags")
 			}
 
-			for i, chip := range req.Chips {
-				addErr := playlistStorage.InsertPlaylistChip(ctx, req.Uuid, chip, i)
+			for i, tag := range req.Tags {
+				addErr := playlistStorage.InsertAlbumTag(ctx, req.Uuid, tag, i)
 				if addErr != nil {
-					return rerrors.Wrap(addErr, "error adding chip to playlist")
+					return rerrors.Wrap(addErr, "error adding tag to playlist")
 				}
 			}
 		}
@@ -438,6 +449,46 @@ func (p *PlaylistService) List(ctx context.Context, req domain.ListPlaylists) (d
 	}
 
 	return result, nil
+}
+
+// validateAlbumTags rejects album_version tags that are missing their required
+// metadata or that point at a parent playlist which doesn't look like a base
+// album (no artists) or is itself a version (no version-of-a-version chains).
+func (p *PlaylistService) validateAlbumTags(ctx context.Context, tags []domain.AlbumTag) error {
+	for _, tag := range tags {
+		if tag.Kind != generated.AlbumTagKindAlbumVersion {
+			continue
+		}
+
+		if tag.VersionKind == nil || tag.ParentPlaylistUuid == nil || *tag.ParentPlaylistUuid == "" {
+			return rerrors.Wrap(service_errors.ErrInvalidAlbumVersion,
+				"album_version tag requires a version_kind and a parent_playlist_uuid")
+		}
+
+		parentArtists, err := p.playlistStorage.GetPlaylistArtists(ctx, *tag.ParentPlaylistUuid)
+		if err != nil {
+			return rerrors.Wrap(err, "error getting parent playlist artists")
+		}
+
+		if len(parentArtists) == 0 {
+			return rerrors.Wrap(service_errors.ErrInvalidAlbumVersion,
+				"parent playlist must be a base album (have at least one artist)")
+		}
+
+		parentTags, err := p.playlistStorage.GetAlbumTags(ctx, *tag.ParentPlaylistUuid)
+		if err != nil {
+			return rerrors.Wrap(err, "error getting parent playlist tags")
+		}
+
+		for _, parentTag := range parentTags {
+			if parentTag.Kind == generated.AlbumTagKindAlbumVersion {
+				return rerrors.Wrap(service_errors.ErrInvalidAlbumVersion,
+					"parent playlist is itself an album version; version-of-a-version is not allowed")
+			}
+		}
+	}
+
+	return nil
 }
 
 func (p *PlaylistService) resolveCoverPath(ctx context.Context, pl *domain.Playlist) {

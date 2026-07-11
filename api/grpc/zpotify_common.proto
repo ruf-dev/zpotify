@@ -18,6 +18,16 @@ message ArtistBase {
   bool liked = 3;
 }
 
+enum SongTagKind {
+  SONG_TAG_KIND_UNSPECIFIED = 0;
+  SONG_TAG_KIND_SINGLE = 1;
+}
+
+message SongTag {
+  SongTagKind kind = 1;
+  string value = 2;
+}
+
 message SongBase {
   int64 id = 1;
   string title = 2;
@@ -25,11 +35,40 @@ message SongBase {
   int32 duration_sec = 4;
   string file_path = 5;
   int64 file_id = 6;
+  repeated SongTag tags = 7;
 }
 
-message PlaylistChip {
-  string kind = 1;
+enum AlbumTagKind {
+  ALBUM_TAG_KIND_UNSPECIFIED = 0;
+  ALBUM_TAG_KIND_GENRE = 1;
+  ALBUM_TAG_KIND_MOOD = 2;
+  ALBUM_TAG_KIND_ERA = 3;
+  ALBUM_TAG_KIND_VIBE = 4;
+  ALBUM_TAG_KIND_LANGUAGE = 5;
+  ALBUM_TAG_KIND_THEME = 6;
+  ALBUM_TAG_KIND_HIT = 7;
+  ALBUM_TAG_KIND_ALBUM_VERSION = 8;
+}
+
+message AlbumVersionMetadata {
+  enum VersionKind {
+    VERSION_KIND_UNSPECIFIED = 0;
+    VERSION_KIND_DELUXE = 1;
+    VERSION_KIND_EXTENDED = 2;
+    VERSION_KIND_REMASTER = 3;
+    VERSION_KIND_ANNIVERSARY = 4;
+    VERSION_KIND_LIVE = 5;
+  }
+  VersionKind version_kind = 1;
+  string parent_playlist_uuid = 2;
+}
+
+message AlbumTag {
+  AlbumTagKind kind = 1;
   string value = 2;
+  oneof metadata {
+    AlbumVersionMetadata album_version = 3;
+  }
 }
 
 message Playlist {
@@ -41,7 +80,7 @@ message Playlist {
   optional int32 song_count = 6;
   optional string cover_file_path = 7;
   optional int32 year = 8;
-  repeated PlaylistChip chips = 9;
+  repeated AlbumTag tags = 9;
   optional bool can_edit = 10;
   optional bool is_saved = 11;
   optional string owner_username = 12;

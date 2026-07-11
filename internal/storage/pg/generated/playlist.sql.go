@@ -48,21 +48,21 @@ func (q *Queries) AddSongToPlaylist(ctx context.Context, arg AddSongToPlaylistPa
 	return err
 }
 
+const clearAlbumTags = `-- name: ClearAlbumTags :exec
+DELETE FROM album_tags WHERE playlist_uuid = $1
+`
+
+func (q *Queries) ClearAlbumTags(ctx context.Context, playlistUuid uuid.UUID) error {
+	_, err := q.db.ExecContext(ctx, clearAlbumTags, playlistUuid)
+	return err
+}
+
 const clearPlaylistArtists = `-- name: ClearPlaylistArtists :exec
 DELETE FROM playlists_artists WHERE playlist_uuid = $1
 `
 
 func (q *Queries) ClearPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) error {
 	_, err := q.db.ExecContext(ctx, clearPlaylistArtists, playlistUuid)
-	return err
-}
-
-const clearPlaylistChips = `-- name: ClearPlaylistChips :exec
-DELETE FROM playlist_chips WHERE playlist_uuid = $1
-`
-
-func (q *Queries) ClearPlaylistChips(ctx context.Context, playlistUuid uuid.UUID) error {
-	_, err := q.db.ExecContext(ctx, clearPlaylistChips, playlistUuid)
 	return err
 }
 
@@ -111,6 +111,46 @@ func (q *Queries) DecrementPlaylistSongCount(ctx context.Context, argUuid uuid.U
 	return err
 }
 
+const getAlbumTags = `-- name: GetAlbumTags :many
+SELECT kind, value, version_kind, parent_playlist_uuid FROM album_tags
+WHERE playlist_uuid = $1 ORDER BY order_id
+`
+
+type GetAlbumTagsRow struct {
+	Kind               AlbumTagKind
+	Value              string
+	VersionKind        NullAlbumVersionKind
+	ParentPlaylistUuid uuid.NullUUID
+}
+
+func (q *Queries) GetAlbumTags(ctx context.Context, playlistUuid uuid.UUID) ([]GetAlbumTagsRow, error) {
+	rows, err := q.db.QueryContext(ctx, getAlbumTags, playlistUuid)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetAlbumTagsRow{}
+	for rows.Next() {
+		var i GetAlbumTagsRow
+		if err := rows.Scan(
+			&i.Kind,
+			&i.Value,
+			&i.VersionKind,
+			&i.ParentPlaylistUuid,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getPlaylistArtists = `-- name: GetPlaylistArtists :many
 SELECT a.uuid, a.name
 FROM artists a
@@ -129,39 +169,6 @@ func (q *Queries) GetPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID
 	for rows.Next() {
 		var i Artist
 		if err := rows.Scan(&i.Uuid, &i.Name); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const getPlaylistChips = `-- name: GetPlaylistChips :many
-SELECT kind, value FROM playlist_chips
-WHERE playlist_uuid = $1 ORDER BY order_id
-`
-
-type GetPlaylistChipsRow struct {
-	Kind  string
-	Value string
-}
-
-func (q *Queries) GetPlaylistChips(ctx context.Context, playlistUuid uuid.UUID) ([]GetPlaylistChipsRow, error) {
-	rows, err := q.db.QueryContext(ctx, getPlaylistChips, playlistUuid)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []GetPlaylistChipsRow{}
-	for rows.Next() {
-		var i GetPlaylistChipsRow
-		if err := rows.Scan(&i.Kind, &i.Value); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -248,24 +255,28 @@ func (q *Queries) GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAu
 	return i, err
 }
 
-const insertPlaylistChip = `-- name: InsertPlaylistChip :exec
-INSERT INTO playlist_chips (playlist_uuid, kind, value, order_id)
-VALUES ($1, $2, $3, $4)
+const insertAlbumTag = `-- name: InsertAlbumTag :exec
+INSERT INTO album_tags (playlist_uuid, kind, value, version_kind, parent_playlist_uuid, order_id)
+VALUES ($1, $2, $3, $4, $5, $6)
 ON CONFLICT (playlist_uuid, kind, value) DO NOTHING
 `
 
-type InsertPlaylistChipParams struct {
-	PlaylistUuid uuid.UUID
-	Kind         string
-	Value        string
-	OrderID      int64
+type InsertAlbumTagParams struct {
+	PlaylistUuid       uuid.UUID
+	Kind               AlbumTagKind
+	Value              string
+	VersionKind        NullAlbumVersionKind
+	ParentPlaylistUuid uuid.NullUUID
+	OrderID            int64
 }
 
-func (q *Queries) InsertPlaylistChip(ctx context.Context, arg InsertPlaylistChipParams) error {
-	_, err := q.db.ExecContext(ctx, insertPlaylistChip,
+func (q *Queries) InsertAlbumTag(ctx context.Context, arg InsertAlbumTagParams) error {
+	_, err := q.db.ExecContext(ctx, insertAlbumTag,
 		arg.PlaylistUuid,
 		arg.Kind,
 		arg.Value,
+		arg.VersionKind,
+		arg.ParentPlaylistUuid,
 		arg.OrderID,
 	)
 	return err

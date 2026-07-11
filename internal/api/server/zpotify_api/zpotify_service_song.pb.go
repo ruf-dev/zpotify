@@ -208,6 +208,7 @@ type CreateSong_Request struct {
 	Title         string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	ArtistUuids   []string               `protobuf:"bytes,2,rep,name=artist_uuids,json=artistUuids,proto3" json:"artist_uuids,omitempty"`
 	FileId        int64                  `protobuf:"varint,3,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	Tags          []*SongTag             `protobuf:"bytes,4,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -261,6 +262,13 @@ func (x *CreateSong_Request) GetFileId() int64 {
 		return x.FileId
 	}
 	return 0
+}
+
+func (x *CreateSong_Request) GetTags() []*SongTag {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
 }
 
 type CreateSong_Response struct {
@@ -400,6 +408,7 @@ type UpdateSong_Request struct {
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
 	ArtistUuids   []string               `protobuf:"bytes,3,rep,name=artist_uuids,json=artistUuids,proto3" json:"artist_uuids,omitempty"`
+	Tags          []*SongTag             `protobuf:"bytes,4,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -451,6 +460,13 @@ func (x *UpdateSong_Request) GetTitle() string {
 func (x *UpdateSong_Request) GetArtistUuids() []string {
 	if x != nil {
 		return x.ArtistUuids
+	}
+	return nil
+}
+
+func (x *UpdateSong_Request) GetTags() []*SongTag {
+	if x != nil {
+		return x.Tags
 	}
 	return nil
 }
@@ -679,26 +695,28 @@ var File_zpotify_service_song_proto protoreflect.FileDescriptor
 
 const file_zpotify_service_song_proto_rawDesc = "" +
 	"\n" +
-	"\x1azpotify_service_song.proto\x12\vzpotify_api\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\x1a\x14zpotify_common.proto\"\x85\x01\n" +
+	"\x1azpotify_service_song.proto\x12\vzpotify_api\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\x1a\x14zpotify_common.proto\"\xb0\x01\n" +
 	"\n" +
-	"CreateSong\x1a[\n" +
+	"CreateSong\x1a\x85\x01\n" +
 	"\aRequest\x12\x14\n" +
 	"\x05title\x18\x01 \x01(\tR\x05title\x12!\n" +
 	"\fartist_uuids\x18\x02 \x03(\tR\vartistUuids\x12\x17\n" +
-	"\afile_id\x18\x03 \x01(\x03R\x06fileId\x1a\x1a\n" +
+	"\afile_id\x18\x03 \x01(\x03R\x06fileId\x12(\n" +
+	"\x04tags\x18\x04 \x03(\v2\x14.zpotify_api.SongTagR\x04tags\x1a\x1a\n" +
 	"\bResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"q\n" +
 	"\x0fBatchCreateSong\x1a@\n" +
 	"\aRequest\x125\n" +
 	"\x05songs\x18\x01 \x03(\v2\x1f.zpotify_api.CreateSong.RequestR\x05songs\x1a\x1c\n" +
 	"\bResponse\x12\x10\n" +
-	"\x03ids\x18\x01 \x03(\x03R\x03ids\"l\n" +
+	"\x03ids\x18\x01 \x03(\x03R\x03ids\"\x96\x01\n" +
 	"\n" +
-	"UpdateSong\x1aR\n" +
+	"UpdateSong\x1a|\n" +
 	"\aRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12!\n" +
-	"\fartist_uuids\x18\x03 \x03(\tR\vartistUuids\x1a\n" +
+	"\fartist_uuids\x18\x03 \x03(\tR\vartistUuids\x12(\n" +
+	"\x04tags\x18\x04 \x03(\v2\x14.zpotify_api.SongTagR\x04tags\x1a\n" +
 	"\n" +
 	"\bResponse\"[\n" +
 	"\aGetSong\x1a\x19\n" +
@@ -750,29 +768,32 @@ var file_zpotify_service_song_proto_goTypes = []any{
 	(*GetSong_Response)(nil),         // 12: zpotify_api.GetSong.Response
 	(*SearchSongs_Request)(nil),      // 13: zpotify_api.SearchSongs.Request
 	(*SearchSongs_Response)(nil),     // 14: zpotify_api.SearchSongs.Response
-	(*SongBase)(nil),                 // 15: zpotify_api.SongBase
-	(*Paging)(nil),                   // 16: zpotify_api.Paging
+	(*SongTag)(nil),                  // 15: zpotify_api.SongTag
+	(*SongBase)(nil),                 // 16: zpotify_api.SongBase
+	(*Paging)(nil),                   // 17: zpotify_api.Paging
 }
 var file_zpotify_service_song_proto_depIdxs = []int32{
-	5,  // 0: zpotify_api.BatchCreateSong.Request.songs:type_name -> zpotify_api.CreateSong.Request
-	15, // 1: zpotify_api.GetSong.Response.song:type_name -> zpotify_api.SongBase
-	16, // 2: zpotify_api.SearchSongs.Request.paging:type_name -> zpotify_api.Paging
-	15, // 3: zpotify_api.SearchSongs.Response.songs:type_name -> zpotify_api.SongBase
-	5,  // 4: zpotify_api.SongAPI.CreateSong:input_type -> zpotify_api.CreateSong.Request
-	7,  // 5: zpotify_api.SongAPI.BatchCreateSong:input_type -> zpotify_api.BatchCreateSong.Request
-	9,  // 6: zpotify_api.SongAPI.UpdateSong:input_type -> zpotify_api.UpdateSong.Request
-	11, // 7: zpotify_api.SongAPI.GetSong:input_type -> zpotify_api.GetSong.Request
-	13, // 8: zpotify_api.SongAPI.SearchSongs:input_type -> zpotify_api.SearchSongs.Request
-	6,  // 9: zpotify_api.SongAPI.CreateSong:output_type -> zpotify_api.CreateSong.Response
-	8,  // 10: zpotify_api.SongAPI.BatchCreateSong:output_type -> zpotify_api.BatchCreateSong.Response
-	10, // 11: zpotify_api.SongAPI.UpdateSong:output_type -> zpotify_api.UpdateSong.Response
-	12, // 12: zpotify_api.SongAPI.GetSong:output_type -> zpotify_api.GetSong.Response
-	14, // 13: zpotify_api.SongAPI.SearchSongs:output_type -> zpotify_api.SearchSongs.Response
-	9,  // [9:14] is the sub-list for method output_type
-	4,  // [4:9] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	15, // 0: zpotify_api.CreateSong.Request.tags:type_name -> zpotify_api.SongTag
+	5,  // 1: zpotify_api.BatchCreateSong.Request.songs:type_name -> zpotify_api.CreateSong.Request
+	15, // 2: zpotify_api.UpdateSong.Request.tags:type_name -> zpotify_api.SongTag
+	16, // 3: zpotify_api.GetSong.Response.song:type_name -> zpotify_api.SongBase
+	17, // 4: zpotify_api.SearchSongs.Request.paging:type_name -> zpotify_api.Paging
+	16, // 5: zpotify_api.SearchSongs.Response.songs:type_name -> zpotify_api.SongBase
+	5,  // 6: zpotify_api.SongAPI.CreateSong:input_type -> zpotify_api.CreateSong.Request
+	7,  // 7: zpotify_api.SongAPI.BatchCreateSong:input_type -> zpotify_api.BatchCreateSong.Request
+	9,  // 8: zpotify_api.SongAPI.UpdateSong:input_type -> zpotify_api.UpdateSong.Request
+	11, // 9: zpotify_api.SongAPI.GetSong:input_type -> zpotify_api.GetSong.Request
+	13, // 10: zpotify_api.SongAPI.SearchSongs:input_type -> zpotify_api.SearchSongs.Request
+	6,  // 11: zpotify_api.SongAPI.CreateSong:output_type -> zpotify_api.CreateSong.Response
+	8,  // 12: zpotify_api.SongAPI.BatchCreateSong:output_type -> zpotify_api.BatchCreateSong.Response
+	10, // 13: zpotify_api.SongAPI.UpdateSong:output_type -> zpotify_api.UpdateSong.Response
+	12, // 14: zpotify_api.SongAPI.GetSong:output_type -> zpotify_api.GetSong.Response
+	14, // 15: zpotify_api.SongAPI.SearchSongs:output_type -> zpotify_api.SearchSongs.Response
+	11, // [11:16] is the sub-list for method output_type
+	6,  // [6:11] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_service_song_proto_init() }

@@ -369,6 +369,18 @@
     }
   },
   "definitions": {
+    "AlbumVersionMetadataVersionKind": {
+      "type": "string",
+      "enum": [
+        "VERSION_KIND_UNSPECIFIED",
+        "VERSION_KIND_DELUXE",
+        "VERSION_KIND_EXTENDED",
+        "VERSION_KIND_REMASTER",
+        "VERSION_KIND_ANNIVERSARY",
+        "VERSION_KIND_LIVE"
+      ],
+      "default": "VERSION_KIND_UNSPECIFIED"
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -430,6 +442,46 @@
     "zpotify_apiAddSongsToPlaylistResponse": {
       "type": "object"
     },
+    "zpotify_apiAlbumTag": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/zpotify_apiAlbumTagKind"
+        },
+        "value": {
+          "type": "string"
+        },
+        "albumVersion": {
+          "$ref": "#/definitions/zpotify_apiAlbumVersionMetadata"
+        }
+      }
+    },
+    "zpotify_apiAlbumTagKind": {
+      "type": "string",
+      "enum": [
+        "ALBUM_TAG_KIND_UNSPECIFIED",
+        "ALBUM_TAG_KIND_GENRE",
+        "ALBUM_TAG_KIND_MOOD",
+        "ALBUM_TAG_KIND_ERA",
+        "ALBUM_TAG_KIND_VIBE",
+        "ALBUM_TAG_KIND_LANGUAGE",
+        "ALBUM_TAG_KIND_THEME",
+        "ALBUM_TAG_KIND_HIT",
+        "ALBUM_TAG_KIND_ALBUM_VERSION"
+      ],
+      "default": "ALBUM_TAG_KIND_UNSPECIFIED"
+    },
+    "zpotify_apiAlbumVersionMetadata": {
+      "type": "object",
+      "properties": {
+        "versionKind": {
+          "$ref": "#/definitions/AlbumVersionMetadataVersionKind"
+        },
+        "parentPlaylistUuid": {
+          "type": "string"
+        }
+      }
+    },
     "zpotify_apiArtistBase": {
       "type": "object",
       "properties": {
@@ -488,11 +540,11 @@
           "type": "integer",
           "format": "int32"
         },
-        "chips": {
+        "tags": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/zpotify_apiPlaylistChip"
+            "$ref": "#/definitions/zpotify_apiAlbumTag"
           }
         }
       }
@@ -644,11 +696,11 @@
           "type": "integer",
           "format": "int32"
         },
-        "chips": {
+        "tags": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/zpotify_apiPlaylistChip"
+            "$ref": "#/definitions/zpotify_apiAlbumTag"
           }
         },
         "canEdit": {
@@ -658,17 +710,6 @@
           "type": "boolean"
         },
         "ownerUsername": {
-          "type": "string"
-        }
-      }
-    },
-    "zpotify_apiPlaylistChip": {
-      "type": "object",
-      "properties": {
-        "kind": {
-          "type": "string"
-        },
-        "value": {
           "type": "string"
         }
       }
@@ -700,8 +741,34 @@
         "fileId": {
           "type": "string",
           "format": "int64"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiSongTag"
+          }
         }
       }
+    },
+    "zpotify_apiSongTag": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/zpotify_apiSongTagKind"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiSongTagKind": {
+      "type": "string",
+      "enum": [
+        "SONG_TAG_KIND_UNSPECIFIED",
+        "SONG_TAG_KIND_SINGLE"
+      ],
+      "default": "SONG_TAG_KIND_UNSPECIFIED"
     },
     "zpotify_apiUnfollowPlaylistRequest": {
       "type": "object",
@@ -743,11 +810,11 @@
           "type": "integer",
           "format": "int32"
         },
-        "chips": {
+        "tags": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/zpotify_apiPlaylistChip"
+            "$ref": "#/definitions/zpotify_apiAlbumTag"
           }
         }
       }

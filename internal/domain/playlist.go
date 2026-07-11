@@ -1,6 +1,10 @@
 package domain
 
-import "database/sql"
+import (
+	"database/sql"
+
+	generated "go.zpotify.ru/zpotify/internal/storage/pg/generated"
+)
 
 type PlaylistPermissions struct {
 	CanDeleteSongs bool
@@ -9,9 +13,12 @@ type PlaylistPermissions struct {
 	IsSaved        bool
 }
 
-type PlaylistChip struct {
-	Kind  string
+type AlbumTag struct {
+	Kind  generated.AlbumTagKind
 	Value string
+	// VersionKind and ParentPlaylistUuid are set only when Kind == generated.AlbumTagKindAlbumVersion.
+	VersionKind        *generated.AlbumVersionKind
+	ParentPlaylistUuid *string
 }
 
 type Playlist struct {
@@ -24,7 +31,7 @@ type Playlist struct {
 	CoverFilePath string
 	SongCount     *int32
 	Year          *int32
-	Chips         []PlaylistChip
+	Tags          []AlbumTag
 	Permissions   *PlaylistPermissions
 	OwnerUsername string
 }
@@ -41,7 +48,7 @@ type CreatePlaylistParams struct {
 	ArtistUuids []string
 	CoverFileId *int64
 	Year        *int32
-	Chips       []PlaylistChip
+	Tags        []AlbumTag
 }
 
 type UpdatePlaylistParams struct {
@@ -52,7 +59,7 @@ type UpdatePlaylistParams struct {
 	ArtistUuids []string
 	CoverFileId *int64
 	Year        *int32
-	Chips       []PlaylistChip
+	Tags        []AlbumTag
 }
 
 type UpdatePlaylistResult struct {

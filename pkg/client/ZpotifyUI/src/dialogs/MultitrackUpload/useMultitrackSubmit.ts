@@ -19,7 +19,7 @@ export interface MultitrackSubmitParams {
     playlistName: string;
     albumArtists: ArtistItem[];
     year: number | undefined;
-    chips: ChipEntry[];
+    tags: ChipEntry[];
     cover: File | undefined;
     CloseDialog: () => void;
     LockClosing: () => void;
@@ -72,7 +72,7 @@ export function useMultitrackSubmit(params: MultitrackSubmitParams): MultitrackS
                     albumArtistUuids.length > 0 ? albumArtistUuids : undefined,
                     coverFileId,
                     params.year,
-                    params.chips.length > 0 ? params.chips : undefined,
+                    params.tags.length > 0 ? params.tags : undefined,
                 )
                 .then((playlist) => {
                     const playlistUuid = playlist.uuid ?? '';

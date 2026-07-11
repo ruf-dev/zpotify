@@ -107,6 +107,10 @@ type SongStorage interface {
 	ClearArtists(ctx context.Context, songId int64) error
 
 	AddArtist(ctx context.Context, songId int64, artistUuid string, order int) error
+
+	GetSongTags(ctx context.Context, songId int64) ([]domain.SongTag, error)
+	InsertSongTag(ctx context.Context, songId int64, tag domain.SongTag, orderId int) error
+	ClearSongTags(ctx context.Context, songId int64) error
 }
 
 type ArtistStorage interface {
@@ -131,9 +135,9 @@ type PlaylistStorage interface {
 	ClearPlaylistArtists(ctx context.Context, playlistUuid string) error
 	UpdateCoverFileId(ctx context.Context, playlistUuid string, coverFileId int64) error
 
-	GetPlaylistChips(ctx context.Context, playlistUuid string) ([]domain.PlaylistChip, error)
-	InsertPlaylistChip(ctx context.Context, playlistUuid string, chip domain.PlaylistChip, orderId int) error
-	ClearPlaylistChips(ctx context.Context, playlistUuid string) error
+	GetAlbumTags(ctx context.Context, playlistUuid string) ([]domain.AlbumTag, error)
+	InsertAlbumTag(ctx context.Context, playlistUuid string, tag domain.AlbumTag, orderId int) error
+	ClearAlbumTags(ctx context.Context, playlistUuid string) error
 
 	ListSongs(ctx context.Context, r domain.ListSongs) ([]domain.PlaylistSong, error)
 	CountSongs(ctx context.Context, r domain.ListSongs) (uint16, error)

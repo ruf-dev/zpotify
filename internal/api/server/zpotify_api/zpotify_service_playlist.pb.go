@@ -628,7 +628,7 @@ type CreatePlaylist_Request struct {
 	ArtistUuids   []string               `protobuf:"bytes,4,rep,name=artist_uuids,json=artistUuids,proto3" json:"artist_uuids,omitempty"`
 	CoverFileId   *int64                 `protobuf:"varint,5,opt,name=cover_file_id,json=coverFileId,proto3,oneof" json:"cover_file_id,omitempty"`
 	Year          *int32                 `protobuf:"varint,6,opt,name=year,proto3,oneof" json:"year,omitempty"`
-	Chips         []*PlaylistChip        `protobuf:"bytes,7,rep,name=chips,proto3" json:"chips,omitempty"`
+	Tags          []*AlbumTag            `protobuf:"bytes,7,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -705,9 +705,9 @@ func (x *CreatePlaylist_Request) GetYear() int32 {
 	return 0
 }
 
-func (x *CreatePlaylist_Request) GetChips() []*PlaylistChip {
+func (x *CreatePlaylist_Request) GetTags() []*AlbumTag {
 	if x != nil {
-		return x.Chips
+		return x.Tags
 	}
 	return nil
 }
@@ -765,7 +765,7 @@ type UpdatePlaylist_Request struct {
 	ArtistUuids   []string               `protobuf:"bytes,5,rep,name=artist_uuids,json=artistUuids,proto3" json:"artist_uuids,omitempty"`
 	CoverFileId   *int64                 `protobuf:"varint,6,opt,name=cover_file_id,json=coverFileId,proto3,oneof" json:"cover_file_id,omitempty"`
 	Year          *int32                 `protobuf:"varint,7,opt,name=year,proto3,oneof" json:"year,omitempty"`
-	Chips         []*PlaylistChip        `protobuf:"bytes,8,rep,name=chips,proto3" json:"chips,omitempty"`
+	Tags          []*AlbumTag            `protobuf:"bytes,8,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -849,9 +849,9 @@ func (x *UpdatePlaylist_Request) GetYear() int32 {
 	return 0
 }
 
-func (x *UpdatePlaylist_Request) GetChips() []*PlaylistChip {
+func (x *UpdatePlaylist_Request) GetTags() []*AlbumTag {
 	if x != nil {
-		return x.Chips
+		return x.Tags
 	}
 	return nil
 }
@@ -1538,22 +1538,22 @@ const file_zpotify_service_playlist_proto_rawDesc = "" +
 	"\rplaylist_uuid\x18\x01 \x01(\tR\fplaylistUuid\x12\x17\n" +
 	"\asong_id\x18\x02 \x01(\x05R\x06songId\x1a\n" +
 	"\n" +
-	"\bResponse\"\xd5\x02\n" +
-	"\x0eCreatePlaylist\x1a\xa2\x02\n" +
+	"\bResponse\"\xcf\x02\n" +
+	"\x0eCreatePlaylist\x1a\x9c\x02\n" +
 	"\aRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12%\n" +
 	"\vdescription\x18\x02 \x01(\tH\x00R\vdescription\x88\x01\x01\x12\x1b\n" +
 	"\tis_public\x18\x03 \x01(\bR\bisPublic\x12!\n" +
 	"\fartist_uuids\x18\x04 \x03(\tR\vartistUuids\x12'\n" +
 	"\rcover_file_id\x18\x05 \x01(\x03H\x01R\vcoverFileId\x88\x01\x01\x12\x17\n" +
-	"\x04year\x18\x06 \x01(\x05H\x02R\x04year\x88\x01\x01\x12/\n" +
-	"\x05chips\x18\a \x03(\v2\x19.zpotify_api.PlaylistChipR\x05chipsB\x0e\n" +
+	"\x04year\x18\x06 \x01(\x05H\x02R\x04year\x88\x01\x01\x12)\n" +
+	"\x04tags\x18\a \x03(\v2\x15.zpotify_api.AlbumTagR\x04tagsB\x0e\n" +
 	"\f_descriptionB\x10\n" +
 	"\x0e_cover_file_idB\a\n" +
 	"\x05_year\x1a\x1e\n" +
 	"\bResponse\x12\x12\n" +
-	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\xb7\x03\n" +
-	"\x0eUpdatePlaylist\x1a\xd7\x02\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"\xb1\x03\n" +
+	"\x0eUpdatePlaylist\x1a\xd1\x02\n" +
 	"\aRequest\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12%\n" +
@@ -1561,8 +1561,8 @@ const file_zpotify_service_playlist_proto_rawDesc = "" +
 	"\tis_public\x18\x04 \x01(\bH\x02R\bisPublic\x88\x01\x01\x12!\n" +
 	"\fartist_uuids\x18\x05 \x03(\tR\vartistUuids\x12'\n" +
 	"\rcover_file_id\x18\x06 \x01(\x03H\x03R\vcoverFileId\x88\x01\x01\x12\x17\n" +
-	"\x04year\x18\a \x01(\x05H\x04R\x04year\x88\x01\x01\x12/\n" +
-	"\x05chips\x18\b \x03(\v2\x19.zpotify_api.PlaylistChipR\x05chipsB\a\n" +
+	"\x04year\x18\a \x01(\x05H\x04R\x04year\x88\x01\x01\x12)\n" +
+	"\x04tags\x18\b \x03(\v2\x15.zpotify_api.AlbumTagR\x04tagsB\a\n" +
 	"\x05_nameB\x0e\n" +
 	"\f_descriptionB\f\n" +
 	"\n" +
@@ -1676,14 +1676,14 @@ var file_zpotify_service_playlist_proto_goTypes = []any{
 	(*UnfollowPlaylist_Response)(nil),   // 32: zpotify_api.UnfollowPlaylist.Response
 	(*Paging)(nil),                      // 33: zpotify_api.Paging
 	(*SongBase)(nil),                    // 34: zpotify_api.SongBase
-	(*PlaylistChip)(nil),                // 35: zpotify_api.PlaylistChip
+	(*AlbumTag)(nil),                    // 35: zpotify_api.AlbumTag
 	(*Playlist)(nil),                    // 36: zpotify_api.Playlist
 }
 var file_zpotify_service_playlist_proto_depIdxs = []int32{
 	33, // 0: zpotify_api.ListSongs.Request.paging:type_name -> zpotify_api.Paging
 	34, // 1: zpotify_api.ListSongs.Response.songs:type_name -> zpotify_api.SongBase
-	35, // 2: zpotify_api.CreatePlaylist.Request.chips:type_name -> zpotify_api.PlaylistChip
-	35, // 3: zpotify_api.UpdatePlaylist.Request.chips:type_name -> zpotify_api.PlaylistChip
+	35, // 2: zpotify_api.CreatePlaylist.Request.tags:type_name -> zpotify_api.AlbumTag
+	35, // 3: zpotify_api.UpdatePlaylist.Request.tags:type_name -> zpotify_api.AlbumTag
 	36, // 4: zpotify_api.GetPlaylist.Response.playlist:type_name -> zpotify_api.Playlist
 	33, // 5: zpotify_api.ListPlaylists.Request.paging:type_name -> zpotify_api.Paging
 	36, // 6: zpotify_api.ListPlaylists.Response.playlists:type_name -> zpotify_api.Playlist

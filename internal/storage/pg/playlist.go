@@ -358,43 +358,65 @@ func (p *PlaylistStorage) ClearPlaylistArtists(ctx context.Context, playlistUuid
 	return nil
 }
 
-func (p *PlaylistStorage) GetPlaylistChips(ctx context.Context, playlistUuid string) ([]domain.PlaylistChip, error) {
+func (p *PlaylistStorage) GetAlbumTags(ctx context.Context, playlistUuid string) ([]domain.AlbumTag, error) {
 	parsedUuid, err := uuid.Parse(playlistUuid)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error parsing playlist uuid")
 	}
 
-	rows, err := p.querier.GetPlaylistChips(ctx, parsedUuid)
+	rows, err := p.querier.GetAlbumTags(ctx, parsedUuid)
 	if err != nil {
 		return nil, wrapPgErr(err)
 	}
 
-	chips := make([]domain.PlaylistChip, 0, len(rows))
+	tags := make([]domain.AlbumTag, 0, len(rows))
 	for _, row := range rows {
-		chip := domain.PlaylistChip{
+		tag := domain.AlbumTag{
 			Kind:  row.Kind,
 			Value: row.Value,
 		}
-		chips = append(chips, chip)
+
+		if row.VersionKind.Valid {
+			tag.VersionKind = &row.VersionKind.AlbumVersionKind
+		}
+
+		if row.ParentPlaylistUuid.Valid {
+			parentUuid := row.ParentPlaylistUuid.UUID.String()
+			tag.ParentPlaylistUuid = &parentUuid
+		}
+
+		tags = append(tags, tag)
 	}
 
-	return chips, nil
+	return tags, nil
 }
 
-func (p *PlaylistStorage) InsertPlaylistChip(ctx context.Context, playlistUuid string, chip domain.PlaylistChip, orderId int) error {
+func (p *PlaylistStorage) InsertAlbumTag(ctx context.Context, playlistUuid string, tag domain.AlbumTag, orderId int) error {
 	parsedUuid, err := uuid.Parse(playlistUuid)
 	if err != nil {
 		return rerrors.Wrap(err, "error parsing playlist uuid")
 	}
 
-	insertParams := generated.InsertPlaylistChipParams{
+	insertParams := generated.InsertAlbumTagParams{
 		PlaylistUuid: parsedUuid,
-		Kind:         chip.Kind,
-		Value:        chip.Value,
+		Kind:         tag.Kind,
+		Value:        tag.Value,
 		OrderID:      int64(orderId),
 	}
 
-	err = p.querier.InsertPlaylistChip(ctx, insertParams)
+	if tag.VersionKind != nil {
+		insertParams.VersionKind = generated.NullAlbumVersionKind{AlbumVersionKind: *tag.VersionKind, Valid: true}
+	}
+
+	if tag.ParentPlaylistUuid != nil {
+		parentUuid, parseErr := uuid.Parse(*tag.ParentPlaylistUuid)
+		if parseErr != nil {
+			return rerrors.Wrap(parseErr, "error parsing parent playlist uuid")
+		}
+		insertParams.ParentPlaylistUuid = uuid.NullUUID{UUID: parentUuid, Valid: true}
+	}
+
+	err = p.querier.InsertAlbumTag(ctx, insertParams)
 	if err != nil {
 		return wrapPgErr(err)
 	}
@@ -402,13 +424,13 @@ func (p *PlaylistStorage) InsertPlaylistChip(ctx context.Context, playlistUuid s
 	return nil
 }
 
-func (p *PlaylistStorage) ClearPlaylistChips(ctx context.Context, playlistUuid string) error {
+func (p *PlaylistStorage) ClearAlbumTags(ctx context.Context, playlistUuid string) error {
 	parsedUuid, err := uuid.Parse(playlistUuid)
 	if err != nil {
 		return rerrors.Wrap(err, "error parsing playlist uuid")
 	}
 
-	err = p.querier.ClearPlaylistChips(ctx, parsedUuid)
+	err = p.querier.ClearAlbumTags(ctx, parsedUuid)
 	if err != nil {
 		return wrapPgErr(err)
 	}

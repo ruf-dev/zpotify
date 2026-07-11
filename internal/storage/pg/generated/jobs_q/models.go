@@ -14,6 +14,99 @@ import (
 	"github.com/google/uuid"
 )
 
+type AlbumTagKind string
+
+const (
+	AlbumTagKindGenre        AlbumTagKind = "genre"
+	AlbumTagKindMood         AlbumTagKind = "mood"
+	AlbumTagKindEra          AlbumTagKind = "era"
+	AlbumTagKindVibe         AlbumTagKind = "vibe"
+	AlbumTagKindLanguage     AlbumTagKind = "language"
+	AlbumTagKindTheme        AlbumTagKind = "theme"
+	AlbumTagKindHit          AlbumTagKind = "hit"
+	AlbumTagKindAlbumVersion AlbumTagKind = "album_version"
+)
+
+func (e *AlbumTagKind) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = AlbumTagKind(s)
+	case string:
+		*e = AlbumTagKind(s)
+	default:
+		return fmt.Errorf("unsupported scan type for AlbumTagKind: %T", src)
+	}
+	return nil
+}
+
+type NullAlbumTagKind struct {
+	AlbumTagKind AlbumTagKind
+	Valid        bool // Valid is true if AlbumTagKind is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullAlbumTagKind) Scan(value interface{}) error {
+	if value == nil {
+		ns.AlbumTagKind, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.AlbumTagKind.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullAlbumTagKind) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.AlbumTagKind), nil
+}
+
+type AlbumVersionKind string
+
+const (
+	AlbumVersionKindDeluxe      AlbumVersionKind = "deluxe"
+	AlbumVersionKindExtended    AlbumVersionKind = "extended"
+	AlbumVersionKindRemaster    AlbumVersionKind = "remaster"
+	AlbumVersionKindAnniversary AlbumVersionKind = "anniversary"
+	AlbumVersionKindLive        AlbumVersionKind = "live"
+)
+
+func (e *AlbumVersionKind) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = AlbumVersionKind(s)
+	case string:
+		*e = AlbumVersionKind(s)
+	default:
+		return fmt.Errorf("unsupported scan type for AlbumVersionKind: %T", src)
+	}
+	return nil
+}
+
+type NullAlbumVersionKind struct {
+	AlbumVersionKind AlbumVersionKind
+	Valid            bool // Valid is true if AlbumVersionKind is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullAlbumVersionKind) Scan(value interface{}) error {
+	if value == nil {
+		ns.AlbumVersionKind, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.AlbumVersionKind.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullAlbumVersionKind) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.AlbumVersionKind), nil
+}
+
 type FeatureFlagID string
 
 const (
@@ -141,6 +234,47 @@ func (ns NullLocale) Value() (driver.Value, error) {
 	return string(ns.Locale), nil
 }
 
+type SongTagKind string
+
+const (
+	SongTagKindSingle SongTagKind = "single"
+)
+
+func (e *SongTagKind) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = SongTagKind(s)
+	case string:
+		*e = SongTagKind(s)
+	default:
+		return fmt.Errorf("unsupported scan type for SongTagKind: %T", src)
+	}
+	return nil
+}
+
+type NullSongTagKind struct {
+	SongTagKind SongTagKind
+	Valid       bool // Valid is true if SongTagKind is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullSongTagKind) Scan(value interface{}) error {
+	if value == nil {
+		ns.SongTagKind, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.SongTagKind.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullSongTagKind) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.SongTagKind), nil
+}
+
 type UserHomeSegmentType string
 
 const (
@@ -180,6 +314,16 @@ func (ns NullUserHomeSegmentType) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return string(ns.UserHomeSegmentType), nil
+}
+
+type AlbumTag struct {
+	ID                 int32
+	PlaylistUuid       uuid.UUID
+	Kind               AlbumTagKind
+	Value              string
+	VersionKind        NullAlbumVersionKind
+	ParentPlaylistUuid uuid.NullUUID
+	OrderID            int64
 }
 
 type Artist struct {
@@ -239,14 +383,6 @@ type Playlist struct {
 	CoverFileID sql.NullInt64
 	Year        sql.NullInt32
 	SongCount   int32
-}
-
-type PlaylistChip struct {
-	ID           sql.NullInt32
-	PlaylistUuid uuid.UUID
-	Kind         string
-	Value        string
-	OrderID      int64
 }
 
 type PlaylistSong struct {
@@ -338,6 +474,14 @@ type SongSearchViewV1 struct {
 	FilePath    string
 	FileID      int64
 	TitleTsv    interface{}
+}
+
+type SongTag struct {
+	ID      int32
+	SongID  int64
+	Kind    SongTagKind
+	Value   string
+	OrderID int64
 }
 
 type SongsArtist struct {

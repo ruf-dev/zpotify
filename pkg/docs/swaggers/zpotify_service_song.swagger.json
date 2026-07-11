@@ -258,6 +258,13 @@
         "fileId": {
           "type": "string",
           "format": "int64"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiSongTag"
+          }
         }
       }
     },
@@ -341,8 +348,34 @@
         "fileId": {
           "type": "string",
           "format": "int64"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiSongTag"
+          }
         }
       }
+    },
+    "zpotify_apiSongTag": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/zpotify_apiSongTagKind"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiSongTagKind": {
+      "type": "string",
+      "enum": [
+        "SONG_TAG_KIND_UNSPECIFIED",
+        "SONG_TAG_KIND_SINGLE"
+      ],
+      "default": "SONG_TAG_KIND_UNSPECIFIED"
     },
     "zpotify_apiUpdateSongRequest": {
       "type": "object",
@@ -358,6 +391,13 @@
           "type": "array",
           "items": {
             "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiSongTag"
           }
         }
       }

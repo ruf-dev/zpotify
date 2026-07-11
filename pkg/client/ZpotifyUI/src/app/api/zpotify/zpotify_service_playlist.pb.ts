@@ -38,7 +38,7 @@ export type CreatePlaylistRequest = {
   artistUuids?: string[];
   coverFileId?: string;
   year?: number;
-  chips?: ZpotifyApiZpotifyCommon.PlaylistChip[];
+  tags?: ZpotifyApiZpotifyCommon.AlbumTag[];
 };
 
 export type CreatePlaylistResponse = {
@@ -55,7 +55,7 @@ export type UpdatePlaylistRequest = {
   artistUuids?: string[];
   coverFileId?: string;
   year?: number;
-  chips?: ZpotifyApiZpotifyCommon.PlaylistChip[];
+  tags?: ZpotifyApiZpotifyCommon.AlbumTag[];
 };
 
 export type UpdatePlaylistResponse = {

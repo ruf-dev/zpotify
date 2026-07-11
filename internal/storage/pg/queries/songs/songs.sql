@@ -48,3 +48,15 @@ FROM song_search_view_v1
 WHERE title_tsv @@ to_tsquery('simple', @query::text)
 ORDER BY ts_rank(title_tsv, to_tsquery('simple', @query::text)) DESC, id
 LIMIT @limit_ OFFSET @offset_;
+
+-- name: GetSongTags :many
+SELECT kind, value FROM song_tags
+WHERE song_id = $1 ORDER BY order_id;
+
+-- name: InsertSongTag :exec
+INSERT INTO song_tags (song_id, kind, value, order_id)
+VALUES ($1, $2, $3, $4)
+ON CONFLICT (song_id, kind, value) DO NOTHING;
+
+-- name: ClearSongTags :exec
+DELETE FROM song_tags WHERE song_id = $1;

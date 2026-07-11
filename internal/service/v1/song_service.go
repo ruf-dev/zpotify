@@ -201,6 +201,13 @@ func (s *AudioService) finalizeSong(
 		}
 	}
 
+	for i, tag := range req.Tags {
+		err = songsStorage.InsertSongTag(ctx, songId, tag, i)
+		if err != nil {
+			return rerrors.Wrap(err, "error adding tag to song")
+		}
+	}
+
 	jobStorage := s.jobStorage.WithTx(tx)
 	err = jobStorage.EnqueueGarbageFile(ctx, oldPath)
 	if err != nil {
@@ -236,6 +243,20 @@ func (s *AudioService) Update(ctx context.Context, req domain.UpdateSong) error 
 				}
 			}
 
+			if req.Tags != nil {
+				err := songsStorage.ClearSongTags(ctx, req.Id)
+				if err != nil {
+					return rerrors.Wrap(err, "error clearing song tags")
+				}
+
+				for i, tag := range req.Tags {
+					err = songsStorage.InsertSongTag(ctx, req.Id, tag, i)
+					if err != nil {
+						return rerrors.Wrap(err, "error adding tag to song")
+					}
+				}
+			}
+
 			return nil
 		})
 	if err != nil {
@@ -250,6 +271,12 @@ func (s *AudioService) GetSong(ctx context.Context, songId int64) (domain.Song, 
 	if err != nil {
 		return domain.Song{}, rerrors.Wrap(err, "error getting song from storage")
 	}
+
+	tags, err := s.songsStorage.GetSongTags(ctx, songId)
+	if err != nil {
+		return domain.Song{}, rerrors.Wrap(err, "error getting song tags")
+	}
+	song.Tags = tags
 
 	return song, nil
 }

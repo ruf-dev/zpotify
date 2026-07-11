@@ -2,10 +2,32 @@ import { useState } from 'react';
 
 import Chip from '@/components/Chip/Chip';
 import cls from '@/widgets/ChipsField/ChipsField.module.css';
+import type { AlbumTagKind } from '@/app/api/zpotify';
 
-export type ChipEntry = { kind: string; value: string };
+export type ChipEntry = { kind: AlbumTagKind; value: string };
 
-const CHIP_KINDS = ['genre', 'mood', 'era', 'vibe', 'language', 'theme'];
+// Widgets can't import gRPC-generated values (only types) — see the
+// `@/app/api/**` restriction in eslint.config.js — so the AlbumTagKind wire
+// values are duplicated here as string literals and cast to the type.
+const CHIP_KINDS = [
+    'ALBUM_TAG_KIND_GENRE',
+    'ALBUM_TAG_KIND_MOOD',
+    'ALBUM_TAG_KIND_ERA',
+    'ALBUM_TAG_KIND_VIBE',
+    'ALBUM_TAG_KIND_LANGUAGE',
+    'ALBUM_TAG_KIND_THEME',
+    'ALBUM_TAG_KIND_HIT',
+] as AlbumTagKind[];
+
+const CHIP_KIND_LABELS: Record<string, string> = {
+    ALBUM_TAG_KIND_GENRE: 'genre',
+    ALBUM_TAG_KIND_MOOD: 'mood',
+    ALBUM_TAG_KIND_ERA: 'era',
+    ALBUM_TAG_KIND_VIBE: 'vibe',
+    ALBUM_TAG_KIND_LANGUAGE: 'language',
+    ALBUM_TAG_KIND_THEME: 'theme',
+    ALBUM_TAG_KIND_HIT: 'hit',
+};
 
 export interface ChipsFieldProps {
     chips: ChipEntry[];
@@ -17,7 +39,7 @@ export default function ChipsField({ chips, onChange }: ChipsFieldProps) {
     const [value, setValue] = useState('');
 
     function handleKindChange(e: React.ChangeEvent<HTMLSelectElement>) {
-        setKind(e.target.value);
+        setKind(e.target.value as AlbumTagKind);
     }
 
     function handleValueChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -51,7 +73,7 @@ export default function ChipsField({ chips, onChange }: ChipsFieldProps) {
                     {chips.map((chip, i) => (
                         <Chip
                             key={`${chip.kind}:${chip.value}`}
-                            label={`${chip.kind}: ${chip.value}`}
+                            label={`${CHIP_KIND_LABELS[chip.kind]}: ${chip.value}`}
                             onRemove={function removeChip() {
                                 handleRemove(i);
                             }}
@@ -63,7 +85,7 @@ export default function ChipsField({ chips, onChange }: ChipsFieldProps) {
                 <select className={cls.KindSelect} value={kind} onChange={handleKindChange}>
                     {CHIP_KINDS.map((k) => (
                         <option key={k} value={k}>
-                            {k}
+                            {CHIP_KIND_LABELS[k]}
                         </option>
                     ))}
                 </select>

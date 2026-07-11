@@ -19,6 +19,15 @@ func (q *Queries) ClearSongArtists(ctx context.Context, songID int64) error {
 	return err
 }
 
+const clearSongTags = `-- name: ClearSongTags :exec
+DELETE FROM song_tags WHERE song_id = $1
+`
+
+func (q *Queries) ClearSongTags(ctx context.Context, songID int64) error {
+	_, err := q.db.ExecContext(ctx, clearSongTags, songID)
+	return err
+}
+
 const createSong = `-- name: CreateSong :one
 INSERT INTO songs
     (file_id, title)
@@ -117,6 +126,62 @@ func (q *Queries) GetSongById(ctx context.Context, id int64) (SongBaseViewV1, er
 		&i.FileID,
 	)
 	return i, err
+}
+
+const getSongTags = `-- name: GetSongTags :many
+SELECT kind, value FROM song_tags
+WHERE song_id = $1 ORDER BY order_id
+`
+
+type GetSongTagsRow struct {
+	Kind  SongTagKind
+	Value string
+}
+
+func (q *Queries) GetSongTags(ctx context.Context, songID int64) ([]GetSongTagsRow, error) {
+	rows, err := q.db.QueryContext(ctx, getSongTags, songID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetSongTagsRow{}
+	for rows.Next() {
+		var i GetSongTagsRow
+		if err := rows.Scan(&i.Kind, &i.Value); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const insertSongTag = `-- name: InsertSongTag :exec
+INSERT INTO song_tags (song_id, kind, value, order_id)
+VALUES ($1, $2, $3, $4)
+ON CONFLICT (song_id, kind, value) DO NOTHING
+`
+
+type InsertSongTagParams struct {
+	SongID  int64
+	Kind    SongTagKind
+	Value   string
+	OrderID int64
+}
+
+func (q *Queries) InsertSongTag(ctx context.Context, arg InsertSongTagParams) error {
+	_, err := q.db.ExecContext(ctx, insertSongTag,
+		arg.SongID,
+		arg.Kind,
+		arg.Value,
+		arg.OrderID,
+	)
+	return err
 }
 
 const searchSongsByTitle = `-- name: SearchSongsByTitle :many

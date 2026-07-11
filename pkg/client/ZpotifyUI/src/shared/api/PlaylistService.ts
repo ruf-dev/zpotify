@@ -17,7 +17,7 @@ import {
     UnfollowPlaylistRequest,
     ListPlaylistsRequest,
     ListPlaylistsResponse,
-    type PlaylistChip,
+    type AlbumTag,
 } from '@/app/api/zpotify';
 import { BaseService } from '@/shared/api/BaseService.ts';
 import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
@@ -108,7 +108,7 @@ export interface IPlaylistService {
         artistUuids?: string[],
         coverFileId?: string,
         year?: number,
-        chips?: PlaylistChip[],
+        tags?: AlbumTag[],
     ): Promise<CreatePlaylistResponse>;
     UpdatePlaylist(
         uuid: string,
@@ -117,7 +117,7 @@ export interface IPlaylistService {
         artistUuids?: string[],
         coverFileId?: string,
         year?: number,
-        chips?: PlaylistChip[],
+        tags?: AlbumTag[],
     ): Promise<UpdatePlaylistResponse>;
     ChangeSongsOrder(playlistUuid: string, songIds: number[]): Promise<void>;
     AddSongToPlaylist(playlistUuid: string, songId: number): Promise<void>;
@@ -161,9 +161,9 @@ export class PlaylistService extends BaseService implements IPlaylistService {
         artistUuids?: string[],
         coverFileId?: string,
         year?: number,
-        chips?: PlaylistChip[],
+        tags?: AlbumTag[],
     ): Promise<CreatePlaylistResponse> {
-        const req: CreatePlaylistRequest = { name, artistUuids, coverFileId, year, chips };
+        const req: CreatePlaylistRequest = { name, artistUuids, coverFileId, year, tags };
         return this.executeAuthApiCall(async (initReq) => {
             return PlaylistAPI.CreatePlaylist(req, initReq);
         });
@@ -176,9 +176,9 @@ export class PlaylistService extends BaseService implements IPlaylistService {
         artistUuids?: string[],
         coverFileId?: string,
         year?: number,
-        chips?: PlaylistChip[],
+        tags?: AlbumTag[],
     ): Promise<UpdatePlaylistResponse> {
-        const req: UpdatePlaylistRequest = { uuid, name, description, artistUuids, coverFileId, year, chips };
+        const req: UpdatePlaylistRequest = { uuid, name, description, artistUuids, coverFileId, year, tags };
         return this.executeAuthApiCall(async (initReq) => {
             return PlaylistAPI.UpdatePlaylist(req, initReq);
         });

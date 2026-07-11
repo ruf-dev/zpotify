@@ -25,4 +25,6 @@ var (
 	ErrUnsupportedUploadFormat = rerrors.New("unsupported file format", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
 
 	ErrInvalidImageFile = rerrors.New("uploaded file is not a valid image", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
+
+	ErrInvalidAlbumVersion = rerrors.New("invalid album version tag", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
 )

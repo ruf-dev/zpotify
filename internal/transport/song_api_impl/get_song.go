@@ -30,6 +30,7 @@ func domainSongToProto(song domain.Song) *zpotify_api.SongBase {
 		DurationSec: int32(song.Duration.Seconds()),
 		FilePath:    song.FilePath,
 		FileId:      song.FileId,
+		Tags:        domainSongTagsToProto(song.Tags),
 	}
 }
 

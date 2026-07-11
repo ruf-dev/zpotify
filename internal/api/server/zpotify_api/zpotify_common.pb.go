@@ -22,6 +22,177 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type SongTagKind int32
+
+const (
+	SongTagKind_SONG_TAG_KIND_UNSPECIFIED SongTagKind = 0
+	SongTagKind_SONG_TAG_KIND_SINGLE      SongTagKind = 1
+)
+
+// Enum value maps for SongTagKind.
+var (
+	SongTagKind_name = map[int32]string{
+		0: "SONG_TAG_KIND_UNSPECIFIED",
+		1: "SONG_TAG_KIND_SINGLE",
+	}
+	SongTagKind_value = map[string]int32{
+		"SONG_TAG_KIND_UNSPECIFIED": 0,
+		"SONG_TAG_KIND_SINGLE":      1,
+	}
+)
+
+func (x SongTagKind) Enum() *SongTagKind {
+	p := new(SongTagKind)
+	*p = x
+	return p
+}
+
+func (x SongTagKind) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SongTagKind) Descriptor() protoreflect.EnumDescriptor {
+	return file_zpotify_common_proto_enumTypes[0].Descriptor()
+}
+
+func (SongTagKind) Type() protoreflect.EnumType {
+	return &file_zpotify_common_proto_enumTypes[0]
+}
+
+func (x SongTagKind) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SongTagKind.Descriptor instead.
+func (SongTagKind) EnumDescriptor() ([]byte, []int) {
+	return file_zpotify_common_proto_rawDescGZIP(), []int{0}
+}
+
+type AlbumTagKind int32
+
+const (
+	AlbumTagKind_ALBUM_TAG_KIND_UNSPECIFIED   AlbumTagKind = 0
+	AlbumTagKind_ALBUM_TAG_KIND_GENRE         AlbumTagKind = 1
+	AlbumTagKind_ALBUM_TAG_KIND_MOOD          AlbumTagKind = 2
+	AlbumTagKind_ALBUM_TAG_KIND_ERA           AlbumTagKind = 3
+	AlbumTagKind_ALBUM_TAG_KIND_VIBE          AlbumTagKind = 4
+	AlbumTagKind_ALBUM_TAG_KIND_LANGUAGE      AlbumTagKind = 5
+	AlbumTagKind_ALBUM_TAG_KIND_THEME         AlbumTagKind = 6
+	AlbumTagKind_ALBUM_TAG_KIND_HIT           AlbumTagKind = 7
+	AlbumTagKind_ALBUM_TAG_KIND_ALBUM_VERSION AlbumTagKind = 8
+)
+
+// Enum value maps for AlbumTagKind.
+var (
+	AlbumTagKind_name = map[int32]string{
+		0: "ALBUM_TAG_KIND_UNSPECIFIED",
+		1: "ALBUM_TAG_KIND_GENRE",
+		2: "ALBUM_TAG_KIND_MOOD",
+		3: "ALBUM_TAG_KIND_ERA",
+		4: "ALBUM_TAG_KIND_VIBE",
+		5: "ALBUM_TAG_KIND_LANGUAGE",
+		6: "ALBUM_TAG_KIND_THEME",
+		7: "ALBUM_TAG_KIND_HIT",
+		8: "ALBUM_TAG_KIND_ALBUM_VERSION",
+	}
+	AlbumTagKind_value = map[string]int32{
+		"ALBUM_TAG_KIND_UNSPECIFIED":   0,
+		"ALBUM_TAG_KIND_GENRE":         1,
+		"ALBUM_TAG_KIND_MOOD":          2,
+		"ALBUM_TAG_KIND_ERA":           3,
+		"ALBUM_TAG_KIND_VIBE":          4,
+		"ALBUM_TAG_KIND_LANGUAGE":      5,
+		"ALBUM_TAG_KIND_THEME":         6,
+		"ALBUM_TAG_KIND_HIT":           7,
+		"ALBUM_TAG_KIND_ALBUM_VERSION": 8,
+	}
+)
+
+func (x AlbumTagKind) Enum() *AlbumTagKind {
+	p := new(AlbumTagKind)
+	*p = x
+	return p
+}
+
+func (x AlbumTagKind) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AlbumTagKind) Descriptor() protoreflect.EnumDescriptor {
+	return file_zpotify_common_proto_enumTypes[1].Descriptor()
+}
+
+func (AlbumTagKind) Type() protoreflect.EnumType {
+	return &file_zpotify_common_proto_enumTypes[1]
+}
+
+func (x AlbumTagKind) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AlbumTagKind.Descriptor instead.
+func (AlbumTagKind) EnumDescriptor() ([]byte, []int) {
+	return file_zpotify_common_proto_rawDescGZIP(), []int{1}
+}
+
+type AlbumVersionMetadata_VersionKind int32
+
+const (
+	AlbumVersionMetadata_VERSION_KIND_UNSPECIFIED AlbumVersionMetadata_VersionKind = 0
+	AlbumVersionMetadata_VERSION_KIND_DELUXE      AlbumVersionMetadata_VersionKind = 1
+	AlbumVersionMetadata_VERSION_KIND_EXTENDED    AlbumVersionMetadata_VersionKind = 2
+	AlbumVersionMetadata_VERSION_KIND_REMASTER    AlbumVersionMetadata_VersionKind = 3
+	AlbumVersionMetadata_VERSION_KIND_ANNIVERSARY AlbumVersionMetadata_VersionKind = 4
+	AlbumVersionMetadata_VERSION_KIND_LIVE        AlbumVersionMetadata_VersionKind = 5
+)
+
+// Enum value maps for AlbumVersionMetadata_VersionKind.
+var (
+	AlbumVersionMetadata_VersionKind_name = map[int32]string{
+		0: "VERSION_KIND_UNSPECIFIED",
+		1: "VERSION_KIND_DELUXE",
+		2: "VERSION_KIND_EXTENDED",
+		3: "VERSION_KIND_REMASTER",
+		4: "VERSION_KIND_ANNIVERSARY",
+		5: "VERSION_KIND_LIVE",
+	}
+	AlbumVersionMetadata_VersionKind_value = map[string]int32{
+		"VERSION_KIND_UNSPECIFIED": 0,
+		"VERSION_KIND_DELUXE":      1,
+		"VERSION_KIND_EXTENDED":    2,
+		"VERSION_KIND_REMASTER":    3,
+		"VERSION_KIND_ANNIVERSARY": 4,
+		"VERSION_KIND_LIVE":        5,
+	}
+)
+
+func (x AlbumVersionMetadata_VersionKind) Enum() *AlbumVersionMetadata_VersionKind {
+	p := new(AlbumVersionMetadata_VersionKind)
+	*p = x
+	return p
+}
+
+func (x AlbumVersionMetadata_VersionKind) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AlbumVersionMetadata_VersionKind) Descriptor() protoreflect.EnumDescriptor {
+	return file_zpotify_common_proto_enumTypes[2].Descriptor()
+}
+
+func (AlbumVersionMetadata_VersionKind) Type() protoreflect.EnumType {
+	return &file_zpotify_common_proto_enumTypes[2]
+}
+
+func (x AlbumVersionMetadata_VersionKind) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AlbumVersionMetadata_VersionKind.Descriptor instead.
+func (AlbumVersionMetadata_VersionKind) EnumDescriptor() ([]byte, []int) {
+	return file_zpotify_common_proto_rawDescGZIP(), []int{4, 0}
+}
+
 type Paging struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Limit         uint64                 `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
@@ -134,6 +305,58 @@ func (x *ArtistBase) GetLiked() bool {
 	return false
 }
 
+type SongTag struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Kind          SongTagKind            `protobuf:"varint,1,opt,name=kind,proto3,enum=zpotify_api.SongTagKind" json:"kind,omitempty"`
+	Value         string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SongTag) Reset() {
+	*x = SongTag{}
+	mi := &file_zpotify_common_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SongTag) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SongTag) ProtoMessage() {}
+
+func (x *SongTag) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_common_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SongTag.ProtoReflect.Descriptor instead.
+func (*SongTag) Descriptor() ([]byte, []int) {
+	return file_zpotify_common_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *SongTag) GetKind() SongTagKind {
+	if x != nil {
+		return x.Kind
+	}
+	return SongTagKind_SONG_TAG_KIND_UNSPECIFIED
+}
+
+func (x *SongTag) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
 type SongBase struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -142,13 +365,14 @@ type SongBase struct {
 	DurationSec   int32                  `protobuf:"varint,4,opt,name=duration_sec,json=durationSec,proto3" json:"duration_sec,omitempty"`
 	FilePath      string                 `protobuf:"bytes,5,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"`
 	FileId        int64                  `protobuf:"varint,6,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	Tags          []*SongTag             `protobuf:"bytes,7,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SongBase) Reset() {
 	*x = SongBase{}
-	mi := &file_zpotify_common_proto_msgTypes[2]
+	mi := &file_zpotify_common_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -160,7 +384,7 @@ func (x *SongBase) String() string {
 func (*SongBase) ProtoMessage() {}
 
 func (x *SongBase) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_common_proto_msgTypes[2]
+	mi := &file_zpotify_common_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -173,7 +397,7 @@ func (x *SongBase) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SongBase.ProtoReflect.Descriptor instead.
 func (*SongBase) Descriptor() ([]byte, []int) {
-	return file_zpotify_common_proto_rawDescGZIP(), []int{2}
+	return file_zpotify_common_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *SongBase) GetId() int64 {
@@ -218,29 +442,36 @@ func (x *SongBase) GetFileId() int64 {
 	return 0
 }
 
-type PlaylistChip struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Kind          string                 `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
-	Value         string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+func (x *SongBase) GetTags() []*SongTag {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
 }
 
-func (x *PlaylistChip) Reset() {
-	*x = PlaylistChip{}
-	mi := &file_zpotify_common_proto_msgTypes[3]
+type AlbumVersionMetadata struct {
+	state              protoimpl.MessageState           `protogen:"open.v1"`
+	VersionKind        AlbumVersionMetadata_VersionKind `protobuf:"varint,1,opt,name=version_kind,json=versionKind,proto3,enum=zpotify_api.AlbumVersionMetadata_VersionKind" json:"version_kind,omitempty"`
+	ParentPlaylistUuid string                           `protobuf:"bytes,2,opt,name=parent_playlist_uuid,json=parentPlaylistUuid,proto3" json:"parent_playlist_uuid,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *AlbumVersionMetadata) Reset() {
+	*x = AlbumVersionMetadata{}
+	mi := &file_zpotify_common_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *PlaylistChip) String() string {
+func (x *AlbumVersionMetadata) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PlaylistChip) ProtoMessage() {}
+func (*AlbumVersionMetadata) ProtoMessage() {}
 
-func (x *PlaylistChip) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_common_proto_msgTypes[3]
+func (x *AlbumVersionMetadata) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_common_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -251,24 +482,106 @@ func (x *PlaylistChip) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PlaylistChip.ProtoReflect.Descriptor instead.
-func (*PlaylistChip) Descriptor() ([]byte, []int) {
-	return file_zpotify_common_proto_rawDescGZIP(), []int{3}
+// Deprecated: Use AlbumVersionMetadata.ProtoReflect.Descriptor instead.
+func (*AlbumVersionMetadata) Descriptor() ([]byte, []int) {
+	return file_zpotify_common_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *PlaylistChip) GetKind() string {
+func (x *AlbumVersionMetadata) GetVersionKind() AlbumVersionMetadata_VersionKind {
 	if x != nil {
-		return x.Kind
+		return x.VersionKind
+	}
+	return AlbumVersionMetadata_VERSION_KIND_UNSPECIFIED
+}
+
+func (x *AlbumVersionMetadata) GetParentPlaylistUuid() string {
+	if x != nil {
+		return x.ParentPlaylistUuid
 	}
 	return ""
 }
 
-func (x *PlaylistChip) GetValue() string {
+type AlbumTag struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Kind  AlbumTagKind           `protobuf:"varint,1,opt,name=kind,proto3,enum=zpotify_api.AlbumTagKind" json:"kind,omitempty"`
+	Value string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	// Types that are valid to be assigned to Metadata:
+	//
+	//	*AlbumTag_AlbumVersion
+	Metadata      isAlbumTag_Metadata `protobuf_oneof:"metadata"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AlbumTag) Reset() {
+	*x = AlbumTag{}
+	mi := &file_zpotify_common_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AlbumTag) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AlbumTag) ProtoMessage() {}
+
+func (x *AlbumTag) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_common_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AlbumTag.ProtoReflect.Descriptor instead.
+func (*AlbumTag) Descriptor() ([]byte, []int) {
+	return file_zpotify_common_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *AlbumTag) GetKind() AlbumTagKind {
+	if x != nil {
+		return x.Kind
+	}
+	return AlbumTagKind_ALBUM_TAG_KIND_UNSPECIFIED
+}
+
+func (x *AlbumTag) GetValue() string {
 	if x != nil {
 		return x.Value
 	}
 	return ""
 }
+
+func (x *AlbumTag) GetMetadata() isAlbumTag_Metadata {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *AlbumTag) GetAlbumVersion() *AlbumVersionMetadata {
+	if x != nil {
+		if x, ok := x.Metadata.(*AlbumTag_AlbumVersion); ok {
+			return x.AlbumVersion
+		}
+	}
+	return nil
+}
+
+type isAlbumTag_Metadata interface {
+	isAlbumTag_Metadata()
+}
+
+type AlbumTag_AlbumVersion struct {
+	AlbumVersion *AlbumVersionMetadata `protobuf:"bytes,3,opt,name=album_version,json=albumVersion,proto3,oneof"`
+}
+
+func (*AlbumTag_AlbumVersion) isAlbumTag_Metadata() {}
 
 type Playlist struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -280,7 +593,7 @@ type Playlist struct {
 	SongCount     *int32                 `protobuf:"varint,6,opt,name=song_count,json=songCount,proto3,oneof" json:"song_count,omitempty"`
 	CoverFilePath *string                `protobuf:"bytes,7,opt,name=cover_file_path,json=coverFilePath,proto3,oneof" json:"cover_file_path,omitempty"`
 	Year          *int32                 `protobuf:"varint,8,opt,name=year,proto3,oneof" json:"year,omitempty"`
-	Chips         []*PlaylistChip        `protobuf:"bytes,9,rep,name=chips,proto3" json:"chips,omitempty"`
+	Tags          []*AlbumTag            `protobuf:"bytes,9,rep,name=tags,proto3" json:"tags,omitempty"`
 	CanEdit       *bool                  `protobuf:"varint,10,opt,name=can_edit,json=canEdit,proto3,oneof" json:"can_edit,omitempty"`
 	IsSaved       *bool                  `protobuf:"varint,11,opt,name=is_saved,json=isSaved,proto3,oneof" json:"is_saved,omitempty"`
 	OwnerUsername *string                `protobuf:"bytes,12,opt,name=owner_username,json=ownerUsername,proto3,oneof" json:"owner_username,omitempty"`
@@ -290,7 +603,7 @@ type Playlist struct {
 
 func (x *Playlist) Reset() {
 	*x = Playlist{}
-	mi := &file_zpotify_common_proto_msgTypes[4]
+	mi := &file_zpotify_common_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -302,7 +615,7 @@ func (x *Playlist) String() string {
 func (*Playlist) ProtoMessage() {}
 
 func (x *Playlist) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_common_proto_msgTypes[4]
+	mi := &file_zpotify_common_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -315,7 +628,7 @@ func (x *Playlist) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Playlist.ProtoReflect.Descriptor instead.
 func (*Playlist) Descriptor() ([]byte, []int) {
-	return file_zpotify_common_proto_rawDescGZIP(), []int{4}
+	return file_zpotify_common_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Playlist) GetUuid() string {
@@ -374,9 +687,9 @@ func (x *Playlist) GetYear() int32 {
 	return 0
 }
 
-func (x *Playlist) GetChips() []*PlaylistChip {
+func (x *Playlist) GetTags() []*AlbumTag {
 	if x != nil {
-		return x.Chips
+		return x.Tags
 	}
 	return nil
 }
@@ -412,7 +725,7 @@ type SongFile struct {
 
 func (x *SongFile) Reset() {
 	*x = SongFile{}
-	mi := &file_zpotify_common_proto_msgTypes[5]
+	mi := &file_zpotify_common_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -424,7 +737,7 @@ func (x *SongFile) String() string {
 func (*SongFile) ProtoMessage() {}
 
 func (x *SongFile) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_common_proto_msgTypes[5]
+	mi := &file_zpotify_common_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -437,7 +750,7 @@ func (x *SongFile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SongFile.ProtoReflect.Descriptor instead.
 func (*SongFile) Descriptor() ([]byte, []int) {
-	return file_zpotify_common_proto_rawDescGZIP(), []int{5}
+	return file_zpotify_common_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *SongFile) GetId() int64 {
@@ -466,17 +779,34 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"ArtistBase\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
-	"\x05liked\x18\x03 \x01(\bR\x05liked\"\xbc\x01\n" +
+	"\x05liked\x18\x03 \x01(\bR\x05liked\"M\n" +
+	"\aSongTag\x12,\n" +
+	"\x04kind\x18\x01 \x01(\x0e2\x18.zpotify_api.SongTagKindR\x04kind\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value\"\xe6\x01\n" +
 	"\bSongBase\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x121\n" +
 	"\aartists\x18\x03 \x03(\v2\x17.zpotify_api.ArtistBaseR\aartists\x12!\n" +
 	"\fduration_sec\x18\x04 \x01(\x05R\vdurationSec\x12\x1b\n" +
 	"\tfile_path\x18\x05 \x01(\tR\bfilePath\x12\x17\n" +
-	"\afile_id\x18\x06 \x01(\x03R\x06fileId\"8\n" +
-	"\fPlaylistChip\x12\x12\n" +
-	"\x04kind\x18\x01 \x01(\tR\x04kind\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value\"\x99\x04\n" +
+	"\afile_id\x18\x06 \x01(\x03R\x06fileId\x12(\n" +
+	"\x04tags\x18\a \x03(\v2\x14.zpotify_api.SongTagR\x04tags\"\xcc\x02\n" +
+	"\x14AlbumVersionMetadata\x12P\n" +
+	"\fversion_kind\x18\x01 \x01(\x0e2-.zpotify_api.AlbumVersionMetadata.VersionKindR\vversionKind\x120\n" +
+	"\x14parent_playlist_uuid\x18\x02 \x01(\tR\x12parentPlaylistUuid\"\xaf\x01\n" +
+	"\vVersionKind\x12\x1c\n" +
+	"\x18VERSION_KIND_UNSPECIFIED\x10\x00\x12\x17\n" +
+	"\x13VERSION_KIND_DELUXE\x10\x01\x12\x19\n" +
+	"\x15VERSION_KIND_EXTENDED\x10\x02\x12\x19\n" +
+	"\x15VERSION_KIND_REMASTER\x10\x03\x12\x1c\n" +
+	"\x18VERSION_KIND_ANNIVERSARY\x10\x04\x12\x15\n" +
+	"\x11VERSION_KIND_LIVE\x10\x05\"\xa5\x01\n" +
+	"\bAlbumTag\x12-\n" +
+	"\x04kind\x18\x01 \x01(\x0e2\x19.zpotify_api.AlbumTagKindR\x04kind\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value\x12H\n" +
+	"\ralbum_version\x18\x03 \x01(\v2!.zpotify_api.AlbumVersionMetadataH\x00R\falbumVersionB\n" +
+	"\n" +
+	"\bmetadata\"\x93\x04\n" +
 	"\bPlaylist\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
@@ -486,8 +816,8 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\n" +
 	"song_count\x18\x06 \x01(\x05H\x01R\tsongCount\x88\x01\x01\x12+\n" +
 	"\x0fcover_file_path\x18\a \x01(\tH\x02R\rcoverFilePath\x88\x01\x01\x12\x17\n" +
-	"\x04year\x18\b \x01(\x05H\x03R\x04year\x88\x01\x01\x12/\n" +
-	"\x05chips\x18\t \x03(\v2\x19.zpotify_api.PlaylistChipR\x05chips\x12\x1e\n" +
+	"\x04year\x18\b \x01(\x05H\x03R\x04year\x88\x01\x01\x12)\n" +
+	"\x04tags\x18\t \x03(\v2\x15.zpotify_api.AlbumTagR\x04tags\x12\x1e\n" +
 	"\bcan_edit\x18\n" +
 	" \x01(\bH\x04R\acanEdit\x88\x01\x01\x12\x1e\n" +
 	"\bis_saved\x18\v \x01(\bH\x05R\aisSaved\x88\x01\x01\x12*\n" +
@@ -501,7 +831,20 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\x0f_owner_username\".\n" +
 	"\bSongFile\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
-	"\x04path\x18\x02 \x01(\tR\x04pathB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\x04path\x18\x02 \x01(\tR\x04path*F\n" +
+	"\vSongTagKind\x12\x1d\n" +
+	"\x19SONG_TAG_KIND_UNSPECIFIED\x10\x00\x12\x18\n" +
+	"\x14SONG_TAG_KIND_SINGLE\x10\x01*\x83\x02\n" +
+	"\fAlbumTagKind\x12\x1e\n" +
+	"\x1aALBUM_TAG_KIND_UNSPECIFIED\x10\x00\x12\x18\n" +
+	"\x14ALBUM_TAG_KIND_GENRE\x10\x01\x12\x17\n" +
+	"\x13ALBUM_TAG_KIND_MOOD\x10\x02\x12\x16\n" +
+	"\x12ALBUM_TAG_KIND_ERA\x10\x03\x12\x17\n" +
+	"\x13ALBUM_TAG_KIND_VIBE\x10\x04\x12\x1b\n" +
+	"\x17ALBUM_TAG_KIND_LANGUAGE\x10\x05\x12\x18\n" +
+	"\x14ALBUM_TAG_KIND_THEME\x10\x06\x12\x16\n" +
+	"\x12ALBUM_TAG_KIND_HIT\x10\a\x12 \n" +
+	"\x1cALBUM_TAG_KIND_ALBUM_VERSION\x10\bB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_common_proto_rawDescOnce sync.Once
@@ -515,24 +858,35 @@ func file_zpotify_common_proto_rawDescGZIP() []byte {
 	return file_zpotify_common_proto_rawDescData
 }
 
-var file_zpotify_common_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_zpotify_common_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_zpotify_common_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_zpotify_common_proto_goTypes = []any{
-	(*Paging)(nil),       // 0: zpotify_api.Paging
-	(*ArtistBase)(nil),   // 1: zpotify_api.ArtistBase
-	(*SongBase)(nil),     // 2: zpotify_api.SongBase
-	(*PlaylistChip)(nil), // 3: zpotify_api.PlaylistChip
-	(*Playlist)(nil),     // 4: zpotify_api.Playlist
-	(*SongFile)(nil),     // 5: zpotify_api.SongFile
+	(SongTagKind)(0),                      // 0: zpotify_api.SongTagKind
+	(AlbumTagKind)(0),                     // 1: zpotify_api.AlbumTagKind
+	(AlbumVersionMetadata_VersionKind)(0), // 2: zpotify_api.AlbumVersionMetadata.VersionKind
+	(*Paging)(nil),                        // 3: zpotify_api.Paging
+	(*ArtistBase)(nil),                    // 4: zpotify_api.ArtistBase
+	(*SongTag)(nil),                       // 5: zpotify_api.SongTag
+	(*SongBase)(nil),                      // 6: zpotify_api.SongBase
+	(*AlbumVersionMetadata)(nil),          // 7: zpotify_api.AlbumVersionMetadata
+	(*AlbumTag)(nil),                      // 8: zpotify_api.AlbumTag
+	(*Playlist)(nil),                      // 9: zpotify_api.Playlist
+	(*SongFile)(nil),                      // 10: zpotify_api.SongFile
 }
 var file_zpotify_common_proto_depIdxs = []int32{
-	1, // 0: zpotify_api.SongBase.artists:type_name -> zpotify_api.ArtistBase
-	1, // 1: zpotify_api.Playlist.artists:type_name -> zpotify_api.ArtistBase
-	3, // 2: zpotify_api.Playlist.chips:type_name -> zpotify_api.PlaylistChip
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	0, // 0: zpotify_api.SongTag.kind:type_name -> zpotify_api.SongTagKind
+	4, // 1: zpotify_api.SongBase.artists:type_name -> zpotify_api.ArtistBase
+	5, // 2: zpotify_api.SongBase.tags:type_name -> zpotify_api.SongTag
+	2, // 3: zpotify_api.AlbumVersionMetadata.version_kind:type_name -> zpotify_api.AlbumVersionMetadata.VersionKind
+	1, // 4: zpotify_api.AlbumTag.kind:type_name -> zpotify_api.AlbumTagKind
+	7, // 5: zpotify_api.AlbumTag.album_version:type_name -> zpotify_api.AlbumVersionMetadata
+	4, // 6: zpotify_api.Playlist.artists:type_name -> zpotify_api.ArtistBase
+	8, // 7: zpotify_api.Playlist.tags:type_name -> zpotify_api.AlbumTag
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_common_proto_init() }
@@ -540,19 +894,23 @@ func file_zpotify_common_proto_init() {
 	if File_zpotify_common_proto != nil {
 		return
 	}
-	file_zpotify_common_proto_msgTypes[4].OneofWrappers = []any{}
+	file_zpotify_common_proto_msgTypes[5].OneofWrappers = []any{
+		(*AlbumTag_AlbumVersion)(nil),
+	}
+	file_zpotify_common_proto_msgTypes[6].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_common_proto_rawDesc), len(file_zpotify_common_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   6,
+			NumEnums:      3,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_zpotify_common_proto_goTypes,
 		DependencyIndexes: file_zpotify_common_proto_depIdxs,
+		EnumInfos:         file_zpotify_common_proto_enumTypes,
 		MessageInfos:      file_zpotify_common_proto_msgTypes,
 	}.Build()
 	File_zpotify_common_proto = out.File

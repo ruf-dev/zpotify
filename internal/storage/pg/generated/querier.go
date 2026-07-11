@@ -13,8 +13,8 @@ import (
 type Querier interface {
 	AddPlaylistArtist(ctx context.Context, arg AddPlaylistArtistParams) error
 	AddSongToPlaylist(ctx context.Context, arg AddSongToPlaylistParams) error
+	ClearAlbumTags(ctx context.Context, playlistUuid uuid.UUID) error
 	ClearPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) error
-	ClearPlaylistChips(ctx context.Context, playlistUuid uuid.UUID) error
 	CreateFile(ctx context.Context, arg CreateFileParams) (int64, error)
 	CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error)
 	DecrementPlaylistSongCount(ctx context.Context, argUuid uuid.UUID) error
@@ -22,13 +22,13 @@ type Querier interface {
 	DeleteFileById(ctx context.Context, id int64) error
 	DeleteSongById(ctx context.Context, id int64) error
 	DeleteUserPlaylist(ctx context.Context, arg DeleteUserPlaylistParams) error
+	GetAlbumTags(ctx context.Context, playlistUuid uuid.UUID) ([]GetAlbumTagsRow, error)
 	GetFileByHash(ctx context.Context, arg GetFileByHashParams) (FilesMetum, error)
 	GetFileById(ctx context.Context, id int64) (FilesMetum, error)
 	GetFileByPath(ctx context.Context, filePath string) (FilesMetum, error)
 	GetFileBySongId(ctx context.Context, id int64) (FilesMetum, error)
 	GetHomeSegments(ctx context.Context, userID int64) ([]UserHomeSegment, error)
 	GetPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) ([]Artist, error)
-	GetPlaylistChips(ctx context.Context, playlistUuid uuid.UUID) ([]GetPlaylistChipsRow, error)
 	GetPlaylistOwnerAndVisibility(ctx context.Context, argUuid uuid.UUID) (GetPlaylistOwnerAndVisibilityRow, error)
 	GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error)
 	GetTelegramIdentityByTgId(ctx context.Context, telegramID int64) (IdentityTelegram, error)
@@ -40,8 +40,8 @@ type Querier interface {
 	GetUserSessionByAccessToken(ctx context.Context, accessToken string) (UserSession, error)
 	GetUserSessionByRefreshToken(ctx context.Context, refreshToken string) (UserSession, error)
 	GetZpotifyIdentityByLogin(ctx context.Context, login string) (IdentityZpotify, error)
+	InsertAlbumTag(ctx context.Context, arg InsertAlbumTagParams) error
 	InsertHomeSegment(ctx context.Context, arg InsertHomeSegmentParams) error
-	InsertPlaylistChip(ctx context.Context, arg InsertPlaylistChipParams) error
 	InsertUser(ctx context.Context, arg InsertUserParams) (int64, error)
 	ListSessionsByUserId(ctx context.Context, userID int64) ([]UserSession, error)
 	ListUserPermissionsByUserId(ctx context.Context, userID int64) (UserPermission, error)

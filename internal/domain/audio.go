@@ -96,6 +96,12 @@ type Song struct {
 	SongBase
 	FileMeta
 	Artists []ArtistsBase
+	Tags    []SongTag
+}
+
+type SongTag struct {
+	Kind  songs_q.SongTagKind
+	Value string
 }
 
 type ArtistsBase struct {
@@ -128,12 +134,14 @@ type SeekFile struct {
 type CreateSong struct {
 	songs_q.CreateSongParams
 	ArtistUuids []string
+	Tags        []SongTag
 }
 
 type UpdateSong struct {
 	Id          int64
 	Title       string
 	ArtistUuids []string
+	Tags        []SongTag
 }
 
 type SearchSongsParams struct {

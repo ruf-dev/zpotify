@@ -26,8 +26,8 @@ interface PlaylistDetailsPanelProps {
     onYearChange: (year: number | undefined) => void;
     loadArtistOptions: (query: string) => Promise<ArtistItem[]>;
     onCreateArtist: (name: string) => Promise<ArtistItem>;
-    chips: ChipEntry[];
-    onChipsChange: (chips: ChipEntry[]) => void;
+    tags: ChipEntry[];
+    onTagsChange: (tags: ChipEntry[]) => void;
 }
 
 function formatTotalDuration(secs: number): string {
@@ -71,7 +71,7 @@ export default function PlaylistDetailsPanel(props: PlaylistDetailsPanelProps) {
 
                 <div className={cls.FieldGroup}>
                     <FieldLabelRow label="tags" hint="genre, mood, era…" />
-                    <ChipsField chips={props.chips} onChange={props.onChipsChange} />
+                    <ChipsField chips={props.tags} onChange={props.onTagsChange} />
                 </div>
 
                 {props.totalDurationSec !== undefined && props.trackCount !== undefined && (

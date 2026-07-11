@@ -183,6 +183,49 @@ func (s *SongsStorage) AddArtist(ctx context.Context, songId int64, artistUuid s
 	return nil
 }
 
+func (s *SongsStorage) GetSongTags(ctx context.Context, songId int64) ([]domain.SongTag, error) {
+	rows, err := s.querier.GetSongTags(ctx, songId)
+	if err != nil {
+		return nil, wrapPgErr(err)
+	}
+
+	tags := make([]domain.SongTag, 0, len(rows))
+	for _, row := range rows {
+		tag := domain.SongTag{
+			Kind:  row.Kind,
+			Value: row.Value,
+		}
+		tags = append(tags, tag)
+	}
+
+	return tags, nil
+}
+
+func (s *SongsStorage) InsertSongTag(ctx context.Context, songId int64, tag domain.SongTag, orderId int) error {
+	insertParams := songs_q.InsertSongTagParams{
+		SongID:  songId,
+		Kind:    tag.Kind,
+		Value:   tag.Value,
+		OrderID: int64(orderId),
+	}
+
+	err := s.querier.InsertSongTag(ctx, insertParams)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
+func (s *SongsStorage) ClearSongTags(ctx context.Context, songId int64) error {
+	err := s.querier.ClearSongTags(ctx, songId)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
 func (s *SongsStorage) listArtists(ctx context.Context, songId int64) ([]domain.ArtistsBase, error) {
 	artists, err := s.querier.GetArtistsBySongId(ctx, songId)
 	if err != nil {

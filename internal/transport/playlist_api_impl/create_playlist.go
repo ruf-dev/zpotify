@@ -15,7 +15,7 @@ func (impl *Impl) CreatePlaylist(ctx context.Context, req *zpotify_api.CreatePla
 		Description: req.GetDescription(),
 		IsPublic:    req.GetIsPublic(),
 		ArtistUuids: req.GetArtistUuids(),
-		Chips:       protoChipsToDomain(req.GetChips()),
+		Tags:        protoTagsToDomain(req.GetTags()),
 	}
 
 	if req.CoverFileId != nil {

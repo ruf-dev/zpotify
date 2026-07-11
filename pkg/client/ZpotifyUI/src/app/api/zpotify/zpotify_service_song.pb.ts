@@ -13,6 +13,7 @@ export type CreateSongRequest = {
   title?: string;
   artistUuids?: string[];
   fileId?: string;
+  tags?: ZpotifyApiZpotifyCommon.SongTag[];
 };
 
 export type CreateSongResponse = {
@@ -35,6 +36,7 @@ export type UpdateSongRequest = {
   id?: string;
   title?: string;
   artistUuids?: string[];
+  tags?: ZpotifyApiZpotifyCommon.SongTag[];
 };
 
 export type UpdateSongResponse = Record<string, never>;

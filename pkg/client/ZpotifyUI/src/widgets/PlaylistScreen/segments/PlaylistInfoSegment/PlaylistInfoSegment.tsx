@@ -53,7 +53,7 @@ export default function PlaylistInfoSegment(props: PlaylistInfoSegmentProps) {
             </div>
 
             {/* TODO: add tag editing row after release — ChipsField overflows the sidebar container in edit mode */}
-            {!editMode && (playlist.chips?.length ?? 0) > 0 ? <GenreChipsRow chips={playlist.chips!} /> : null}
+            {!editMode && (playlist.tags?.length ?? 0) > 0 ? <GenreChipsRow tags={playlist.tags!} /> : null}
 
             <PlaylistControls {...context.controlsProps} />
 

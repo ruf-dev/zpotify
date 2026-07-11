@@ -72,17 +72,17 @@ WHERE uuid = $1;
 -- name: DecrementPlaylistSongCount :exec
 UPDATE playlists SET song_count = GREATEST(song_count - 1, 0) WHERE uuid = $1;
 
--- name: GetPlaylistChips :many
-SELECT kind, value FROM playlist_chips
+-- name: GetAlbumTags :many
+SELECT kind, value, version_kind, parent_playlist_uuid FROM album_tags
 WHERE playlist_uuid = $1 ORDER BY order_id;
 
--- name: InsertPlaylistChip :exec
-INSERT INTO playlist_chips (playlist_uuid, kind, value, order_id)
-VALUES ($1, $2, $3, $4)
+-- name: InsertAlbumTag :exec
+INSERT INTO album_tags (playlist_uuid, kind, value, version_kind, parent_playlist_uuid, order_id)
+VALUES ($1, $2, $3, $4, $5, $6)
 ON CONFLICT (playlist_uuid, kind, value) DO NOTHING;
 
--- name: ClearPlaylistChips :exec
-DELETE FROM playlist_chips WHERE playlist_uuid = $1;
+-- name: ClearAlbumTags :exec
+DELETE FROM album_tags WHERE playlist_uuid = $1;
 
 -- name: SetSongOrderInPlaylist :exec
 UPDATE playlist_songs SET order_number = $1 WHERE playlist_uuid = $2 AND song_id = $3;

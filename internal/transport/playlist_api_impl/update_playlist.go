@@ -15,7 +15,7 @@ func (impl *Impl) UpdatePlaylist(ctx context.Context, req *zpotify_api.UpdatePla
 		Name:        req.GetName(),
 		Description: req.GetDescription(),
 		ArtistUuids: req.GetArtistUuids(),
-		Chips:       protoChipsToDomain(req.GetChips()),
+		Tags:        protoTagsToDomain(req.GetTags()),
 	}
 
 	if req.IsPublic != nil {

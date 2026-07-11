@@ -14,6 +14,7 @@ func (impl *Impl) UpdateSong(ctx context.Context, req *zpotify_api.UpdateSong_Re
 		Id:          req.GetId(),
 		Title:       req.GetTitle(),
 		ArtistUuids: req.GetArtistUuids(),
+		Tags:        protoSongTagsToDomain(req.GetTags()),
 	}
 
 	err := impl.audioService.Update(ctx, updateReq)

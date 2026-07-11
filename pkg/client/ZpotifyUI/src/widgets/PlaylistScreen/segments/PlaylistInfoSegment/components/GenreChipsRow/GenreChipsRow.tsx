@@ -1,18 +1,18 @@
 import cn from 'classnames';
 
 import cls from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/components/GenreChipsRow/GenreChipsRow.module.css';
-import type { PlaylistChip } from '@/app/api/zpotify';
+import type { AlbumTag } from '@/app/api/zpotify';
 
 export interface GenreChipsRowProps {
-    chips: PlaylistChip[];
+    tags: AlbumTag[];
 }
 
-export default function GenreChipsRow({ chips }: GenreChipsRowProps) {
+export default function GenreChipsRow({ tags }: GenreChipsRowProps) {
     return (
         <div className={cn(cls.GenreChipsRow, cls.FadeIn)}>
-            {chips.map((chip) => (
-                <span key={`${chip.kind}:${chip.value}`} className={cls.GenreChip}>
-                    {chip.value}
+            {tags.map((tag) => (
+                <span key={`${tag.kind}:${tag.value}`} className={cls.GenreChip}>
+                    {tag.value}
                 </span>
             ))}
         </div>
