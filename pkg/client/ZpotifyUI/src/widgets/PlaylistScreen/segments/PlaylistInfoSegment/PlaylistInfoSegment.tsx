@@ -15,8 +15,6 @@ export interface PlaylistInfoSegmentProps {
     songs: SongBase[];
     totalDuration: string;
     trackCount: number;
-    saved: boolean;
-    onToggleSave: () => void;
     onBack: () => void;
     onPlay: () => void;
     editMode: boolean;

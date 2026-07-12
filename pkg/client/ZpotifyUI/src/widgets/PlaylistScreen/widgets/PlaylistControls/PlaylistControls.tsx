@@ -1,18 +1,19 @@
-import type { Playlist, SongBase } from '@/app/api/zpotify';
+import type {Playlist, SongBase} from '@/app/api/zpotify';
 import cls from '@/widgets/PlaylistScreen/widgets/PlaylistControls/PlaylistControls.module.css';
 import PlayButton from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/PlayButton/PlayButton.tsx';
-import ShuffleButton from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/ShuffleButton/ShuffleButton.tsx';
-import SaveButton from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/SaveButton/SaveButton.tsx';
+import ShuffleButton
+    from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/ShuffleButton/ShuffleButton.tsx';
 import ShareButton from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/ShareButton/ShareButton.tsx';
 import EditControls from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/EditControls/EditControls.tsx';
-import DownloadButtonWidget from '@/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/DownloadButtonWidget/DownloadButtonWidget.tsx';
+import DownloadButtonWidget
+    from '@/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/DownloadButtonWidget/DownloadButtonWidget.tsx';
+import SaveButtonWidget
+    from '@/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/SaveButtonWidget/SaveButtonWidget.tsx';
 
 export interface PlaylistControlsProps {
     playlist: Playlist;
     songs: SongBase[];
     onPlay: () => void;
-    saved: boolean;
-    onToggleSave: () => void;
     editMode: boolean;
     saving: boolean;
     onSave: () => void;
@@ -20,25 +21,22 @@ export interface PlaylistControlsProps {
     onEnterEditMode: () => void;
 }
 
-export default function PlaylistControls({
-    playlist,
-    songs,
-    onPlay,
-    saved,
-    onToggleSave,
-    editMode,
-    saving,
-    onSave,
-    onCancel,
-    onEnterEditMode,
-}: PlaylistControlsProps) {
+export default function PlaylistControls(
+    {
+        playlist, songs, onPlay, editMode, saving, onSave, onCancel, onEnterEditMode,
+    }: PlaylistControlsProps) {
     return (
         <div className={cls.PlaylistControlsContainer}>
-            <PlayButton onClick={onPlay} />
-            <ShuffleButton />
-            <SaveButton saved={saved} onToggleSave={onToggleSave} />
-            <ShareButton />
-            <DownloadButtonWidget playlist={playlist} songs={songs} />
+            <PlayButton onClick={onPlay}/>
+
+            <ShuffleButton/>
+
+            <SaveButtonWidget uuid={playlist.uuid ?? ''} isSaved={playlist.isSaved ?? false}/>
+
+            <ShareButton/>
+
+            <DownloadButtonWidget playlist={playlist} songs={songs}/>
+
             <EditControls
                 canEdit={playlist.canEdit}
                 editMode={editMode}

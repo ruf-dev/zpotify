@@ -9,8 +9,6 @@ import NotFoundPlaylistInfoSegment from '@/widgets/PlaylistScreen/segments/NotFo
 import MainContent from '@/widgets/PlaylistScreen/components/MainContent/MainContent.tsx';
 import cls from '@/widgets/PlaylistScreen/PlaylistScreenWidget.module.css';
 import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
-import { playlistService } from '@/shared/api/PlaylistService.ts';
-import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 function computeTotalDuration(songs: SongBase[]): string {
     const totalSec = songs.reduce((acc, s) => acc + (s.durationSec ?? 0), 0);
@@ -29,8 +27,6 @@ interface Props {
 export default function PlaylistScreenWidget({ playlist, songs, username, isListEnded, onLoadMore }: Props) {
     const navigate = useNavigate();
     const audioPlayer = useAudioPlayer();
-    const toaster = useToaster();
-    const [saved, setSaved] = useState(playlist?.isSaved ?? false);
     const [editMode, setEditMode] = useState(false);
     const [orderedSongs, setOrderedSongs] = useState<SongBase[]>(songs);
 
@@ -38,26 +34,8 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
         setOrderedSongs(songs);
     }, [songs]);
 
-    useEffect(() => {
-        setSaved(playlist?.isSaved ?? false);
-    }, [playlist?.uuid, playlist?.isSaved]);
-
     function handleBack() {
         navigate(Path.HomePage);
-    }
-
-    function handleToggleSave() {
-        const uuid = playlist?.uuid;
-        if (!uuid) return;
-
-        const next = !saved;
-        setSaved(next);
-
-        const request = next ? playlistService.FollowPlaylist(uuid) : playlistService.UnfollowPlaylist(uuid);
-        void request.catch((e: unknown) => {
-            setSaved(!next);
-            toaster.catch(e as never);
-        });
     }
 
     const coverUrl = buildCoverUrl(playlist?.coverFilePath);
@@ -107,8 +85,6 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
                         songs={orderedSongs}
                         totalDuration={totalDuration}
                         trackCount={trackCount}
-                        saved={saved}
-                        onToggleSave={handleToggleSave}
                         onBack={handleBack}
                         onPlay={handlePlay}
                         editMode={editMode}

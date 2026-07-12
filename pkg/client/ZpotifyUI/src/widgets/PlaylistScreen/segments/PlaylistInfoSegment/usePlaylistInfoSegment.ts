@@ -21,8 +21,6 @@ export interface UsePlaylistInfoSegmentParams {
     songs: SongBase[];
     trackCount: number;
     totalDuration: string;
-    saved: boolean;
-    onToggleSave: () => void;
     onPlay: () => void;
     editMode: boolean;
     onEnterEditMode: () => void;
@@ -164,8 +162,6 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
         playlist,
         songs: params.songs,
         onPlay: params.onPlay,
-        saved: params.saved,
-        onToggleSave: params.onToggleSave,
         editMode,
         saving,
         onSave: handleSave,
