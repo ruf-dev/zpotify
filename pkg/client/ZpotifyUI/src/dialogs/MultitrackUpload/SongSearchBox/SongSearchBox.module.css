@@ -5,41 +5,6 @@
     gap: var(--space-xs);
 }
 
-.SearchBox {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    padding: var(--space-sm) var(--space-md);
-    border-radius: var(--border-radius-md);
-    background: var(--color-bg-accent);
-    border: 0.0625rem solid var(--color-border);
-    transition: border-color 0.15s ease;
-}
-
-.SearchBox:focus-within {
-    border-color: var(--color-border-bright);
-}
-
-.SearchIcon {
-    display: flex;
-    align-items: center;
-    color: var(--color-fg-tertiary);
-    flex-shrink: 0;
-}
-
-.SearchInput {
-    flex: 1;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: var(--color-fg-primary);
-    font-size: var(--font-size-sm);
-}
-
-.SearchInput::placeholder {
-    color: var(--color-fg-tertiary);
-}
-
 .ResultsPanel {
     display: flex;
     flex-direction: column;

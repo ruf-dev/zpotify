@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import cn from 'classnames';
+import { Input } from '@vervstack/chures';
 
 import cls from '@/shared/ui/MultiSelect.module.css';
 
@@ -193,16 +194,14 @@ export default function MultiSelect({
                         }}
                     >
                         <div className={cls.SearchRow}>
-                            {/* TODO: switch to chures Input once it supports ref/onKeyDown/onClick */}
-                            {/* eslint-disable-next-line no-restricted-syntax -- chures Input has no ref/onKeyDown/onClick support; this needs autofocus-on-open, Enter/Escape handling, and click-propagation guarding */}
-                            <input
+                            <Input
                                 ref={searchRef}
-                                className={cls.SearchInput}
                                 value={query}
-                                onChange={(e) => setQuery(e.target.value)}
+                                setValue={setQuery}
                                 onKeyDown={handleKeyDown}
                                 placeholder="search…"
                                 onClick={(e) => e.stopPropagation()}
+                                inputClassName={cls.SearchInput}
                             />
                         </div>
 

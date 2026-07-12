@@ -1,3 +1,5 @@
+import { Input } from '@vervstack/chures';
+
 import cls from '@/widgets/PlaylistScreen/components/TrackCountLabel/TrackCountLabel.module.css';
 
 export interface TrackCountLabelProps {
@@ -6,12 +8,20 @@ export interface TrackCountLabelProps {
     totalDuration: string;
 }
 
+function noop() {}
+
 export default function TrackCountLabel({ displayValue, isEditing, totalDuration }: TrackCountLabelProps) {
     return (
         <>
             {isEditing ? (
-                // eslint-disable-next-line no-restricted-syntax -- read-only numeric display matching the edit-mode meta row; chures Input has no matching labelless read-only mode
-                <input type="number" className={cls.Input} value={displayValue} readOnly />
+                <Input
+                    type="number"
+                    value={displayValue}
+                    setValue={noop}
+                    readOnly
+                    className={cls.InputWrapper}
+                    inputClassName={cls.Input}
+                />
             ) : (
                 <span className={cls.Display}>{displayValue}</span>
             )}

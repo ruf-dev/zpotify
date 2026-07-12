@@ -3,6 +3,11 @@
     color: var(--color-fg-disabled);
 }
 
+.InputWrapper {
+    width: 4rem;
+    height: auto;
+}
+
 .Input {
     background: transparent;
     border: none;

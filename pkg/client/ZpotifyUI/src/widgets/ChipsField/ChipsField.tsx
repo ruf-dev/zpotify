@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Input } from '@vervstack/chures';
 
 import Chip from '@/components/Chip/Chip';
 import cls from '@/widgets/ChipsField/ChipsField.module.css';
@@ -40,10 +41,6 @@ export default function ChipsField({ chips, onChange }: ChipsFieldProps) {
 
     function handleKindChange(e: React.ChangeEvent<HTMLSelectElement>) {
         setKind(e.target.value as AlbumTagKind);
-    }
-
-    function handleValueChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setValue(e.target.value);
     }
 
     function handleAdd() {
@@ -89,15 +86,12 @@ export default function ChipsField({ chips, onChange }: ChipsFieldProps) {
                         </option>
                     ))}
                 </select>
-                {/* TODO: switch to chures Input once it supports onKeyDown and a placeholder-only (no-label) mode */}
-                {/* eslint-disable-next-line no-restricted-syntax -- chures Input has no onKeyDown support, needed for Enter-to-add; it also has no placeholder-only mode */}
-                <input
-                    className={cls.ValueInput}
-                    type="text"
+                <Input
                     value={value}
-                    onChange={handleValueChange}
+                    setValue={setValue}
                     onKeyDown={handleKeyDown}
                     placeholder="add tag…"
+                    inputClassName={cls.ValueInput}
                 />
                 <button className={cls.AddButton} type="button" onClick={handleAdd}>
                     +

@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
-import { Button } from '@vervstack/chures';
+import { Button, Input, SearchIcon } from '@vervstack/chures';
 
 import type { SongBase } from '@/app/api/zpotify';
 import { songsService } from '@/shared/api/Songs.ts';
-import { SearchIcon } from '@/assets/icons/SearchIcon';
 import { formatDuration } from '@/shared/lib/time';
 import cls from '@/dialogs/MultitrackUpload/SongSearchBox/SongSearchBox.module.css';
 
@@ -48,10 +47,6 @@ export default function SongSearchBox({ excludedIds, onAddSong }: SongSearchBoxP
         return () => clearTimeout(handle);
     }, [query]);
 
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setQuery(e.target.value);
-    }
-
     function handlePick(song: SongBase) {
         onAddSong(song);
     }
@@ -61,19 +56,12 @@ export default function SongSearchBox({ excludedIds, onAddSong }: SongSearchBoxP
 
     return (
         <div className={cls.SongSearchBoxContainer}>
-            <div className={cls.SearchBox}>
-                <span className={cls.SearchIcon}>
-                    <SearchIcon />
-                </span>
-                {/* TODO: switch to chures Input once it supports placeholder text and an optional/no-label mode */}
-                {/* eslint-disable-next-line no-restricted-syntax -- chures Input has no placeholder and always renders a visible label; this is an icon+placeholder search box with no label */}
-                <input
-                    className={cls.SearchInput}
-                    value={query}
-                    onChange={handleChange}
-                    placeholder="search existing songs by title or artist…"
-                />
-            </div>
+            <Input
+                value={query}
+                setValue={setQuery}
+                startIcon={<SearchIcon size={14} />}
+                placeholder="search existing songs by title or artist…"
+            />
 
             {showPanel && (
                 <div className={cls.ResultsPanel}>

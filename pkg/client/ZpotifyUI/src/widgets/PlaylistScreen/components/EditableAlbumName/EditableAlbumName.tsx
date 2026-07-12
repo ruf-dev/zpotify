@@ -1,3 +1,5 @@
+import { Input } from '@vervstack/chures';
+
 import cls from '@/widgets/PlaylistScreen/components/EditableAlbumName/EditableAlbumName.module.css';
 
 export interface EditableAlbumNameProps {
@@ -7,15 +9,8 @@ export interface EditableAlbumNameProps {
 }
 
 export default function EditableAlbumName({ displayValue, isEditing, onChange }: EditableAlbumNameProps) {
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        onChange(e.target.value);
-    }
-
     if (isEditing) {
-        return (
-            // eslint-disable-next-line no-restricted-syntax -- swaps a heading for inline editing; chures Input always renders a floating label, which breaks this UX
-            <input className={cls.Input} value={displayValue} onChange={handleChange} placeholder="name…" />
-        );
+        return <Input value={displayValue} setValue={onChange} placeholder="name…" inputClassName={cls.Input} />;
     }
 
     return <h1 className={cls.Display}>{displayValue}</h1>;

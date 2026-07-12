@@ -1,13 +1,12 @@
 import { KeyboardEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ModalActions, ModalClose } from '@vervstack/chures';
+import { Input, ModalActions, ModalClose } from '@vervstack/chures';
 
 import useUser from '@/entities/user/useUser.ts';
 import { authService } from '@/shared/api/Auth.ts';
 import { Path } from '@/app/routing/paths';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
-import FloatInput from '@/shared/ui/FloatInput.tsx';
 import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
 import cls from '@/dialogs/LoginViaPass/LoginViaPass.module.css';
 
@@ -45,8 +44,8 @@ export default function LoginViaPass() {
 
             <div className={cls.Title}>Sign in</div>
 
-            <FloatInput value={username} onChange={setUsername} label="Username" autoFocus />
-            <FloatInput value={password} onChange={setPassword} type="password" label="Password" />
+            <Input value={username} setValue={setUsername} label="Username" autoFocus />
+            <Input value={password} setValue={setPassword} type="password" label="Password" />
 
             {validationErr && <div className={cls.Error}>{validationErr}</div>}
 
