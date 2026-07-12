@@ -9,8 +9,8 @@
     transition: color 0.15s ease;
 
     position: absolute;
-    top: 5%;
-    right: 5%;
+    top: 2.5%;
+    right: 2.5%;
 }
 
 .ModalCloseButton:hover {

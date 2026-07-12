@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, {useEffect, useRef} from 'react';
 
 import cls from '@/pages/dialog/Dialog.module.css';
-import { useDialog } from '@/app/hooks/Dialog.tsx';
+import {useDialog} from '@/app/hooks/Dialog.tsx';
 
 export default function Dialog() {
-    const { children, CloseDialog } = useDialog();
+    const {children, CloseDialog} = useDialog();
     const isOpen = !!children;
     const closedByPopStateRef = useRef(false);
 
@@ -12,7 +12,7 @@ export default function Dialog() {
         if (!isOpen) return;
 
         closedByPopStateRef.current = false;
-        window.history.pushState({ dialog: true }, '');
+        window.history.pushState({dialog: true}, '');
 
         function handlePopState() {
             closedByPopStateRef.current = true;
@@ -41,22 +41,14 @@ export default function Dialog() {
     if (!children) return null;
 
     return (
-        <div
-            className={cls.DialogContainer}
-            onMouseDown={(e) => {
-                if (e.target === e.currentTarget) CloseDialog();
-            }}
+        <div className={cls.DialogContainer}
+             onMouseDown={(e) => {
+                 if (e.target === e.currentTarget) CloseDialog();
+             }}
         >
-            <div
-                className={cls.ChildrenWrapper}
-                onMouseDown={(e) => {
-                    e.stopPropagation();
-                }}
-            >
                 {children.map((v, idx) => {
                     return <React.Fragment key={idx}>{v}</React.Fragment>;
                 })}
-            </div>
         </div>
     );
 }
