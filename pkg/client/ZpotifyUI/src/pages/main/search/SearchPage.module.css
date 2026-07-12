@@ -1,0 +1,43 @@
+.SearchPageContainer {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-2xl) var(--space-lg) var(--space-4xl);
+}
+
+.HeaderRow {
+    width: 100%;
+    max-width: var(--home-section-max-width);
+    margin-bottom: var(--space-lg);
+}
+
+.ResultsWrapper {
+    width: 100%;
+    max-width: var(--home-section-max-width);
+    margin-top: var(--space-2xl);
+}
+
+.Section {
+    margin-bottom: var(--space-4xl);
+}
+
+.ArtistGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: var(--space-sm);
+}
+
+.AlbumGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9.75rem, 1fr));
+    gap: var(--space-md);
+}
+
+.PlaylistGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: var(--space-md);
+}

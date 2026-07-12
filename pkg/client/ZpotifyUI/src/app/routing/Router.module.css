@@ -6,10 +6,3 @@
     flex: 1;
 }
 
-.Admins {
-    display: none;
-}
-
-.Admins.enabled {
-    display: block;
-}

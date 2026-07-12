@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import cn from 'classnames';
-import { Button, Input, SearchIcon } from '@vervstack/chures';
+import {Button, Input} from '@vervstack/chures';
 
-import type { SongBase } from '@/app/api/zpotify';
-import { songsService } from '@/shared/api/Songs.ts';
-import { formatDuration } from '@/shared/lib/time';
+import {SearchIcon} from '@/assets/icons/SearchIcon';
+import type {SongBase} from '@/app/api/zpotify';
+import {songsService} from '@/shared/api/Songs.ts';
+import {formatDuration} from '@/shared/lib/time';
 import cls from '@/dialogs/MultitrackUpload/SongSearchBox/SongSearchBox.module.css';
 
 interface SongSearchBoxProps {
@@ -14,7 +15,7 @@ interface SongSearchBoxProps {
 
 const DEBOUNCE_MS = 250;
 
-export default function SongSearchBox({ excludedIds, onAddSong }: SongSearchBoxProps) {
+export default function SongSearchBox({excludedIds, onAddSong}: SongSearchBoxProps) {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<SongBase[]>([]);
     const [loading, setLoading] = useState(false);
@@ -59,7 +60,7 @@ export default function SongSearchBox({ excludedIds, onAddSong }: SongSearchBoxP
             <Input
                 value={query}
                 setValue={setQuery}
-                startIcon={<SearchIcon size={14} />}
+                startIcon={<SearchIcon/>}
                 placeholder="search existing songs by title or artist…"
             />
 

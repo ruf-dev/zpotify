@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { Input, SearchIcon } from '@vervstack/chures';
+import {useState} from 'react';
+import {Input} from '@vervstack/chures';
 import cn from 'classnames';
 
+import {SearchIcon} from '@/assets/icons/SearchIcon';
 import cls from '@/widgets/CachedSongsAccordion/CachedSongsAccordion.module.css';
 import AccordionHeader from '@/widgets/CachedSongsAccordion/components/AccordionHeader/AccordionHeader.tsx';
 import CachedSongRow from '@/widgets/CachedSongsAccordion/components/CachedSongRow/CachedSongRow.tsx';
-import { type CachedSongEntry, useAudioCacheStore, useCachedSongs } from '@/shared/model/audioCacheStore.ts';
+import {type CachedSongEntry, useAudioCacheStore, useCachedSongs} from '@/shared/model/audioCacheStore.ts';
 
 function matchesQuery(song: CachedSongEntry, query: string): boolean {
     if (!query) return true;
@@ -57,7 +58,7 @@ export default function CachedSongsAccordion() {
                             <Input
                                 value={query}
                                 setValue={setQuery}
-                                startIcon={<SearchIcon size={14} />}
+                                startIcon={<SearchIcon/>}
                                 placeholder="Search by title, author or playlist…"
                                 className={cls.SearchInputWrapper}
                             />

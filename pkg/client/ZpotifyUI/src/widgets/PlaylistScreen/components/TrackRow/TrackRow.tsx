@@ -135,11 +135,12 @@ export default function TrackRow({
             </div>
 
             <div className={cls.TrackTitleCell}>
-                <span className={cn(cls.TrackTitle, isPlaying && cls.TrackTitlePlaying)}>{song.title}</span>
+                <span className={cn(cls.TrackTitle, isPlaying && cls.TrackTitlePlaying)}>
+                    {song.title}
+                    {isCached && <CachedIndicator />}
+                </span>
                 <span className={cls.TrackArtist}>{artistName}</span>
             </div>
-
-            <div className={cls.CachedWrapper}>{isCached && <CachedIndicator />}</div>
 
             <button
                 type="button"

@@ -1,6 +1,7 @@
 export enum Path {
     HomePage = '/',
     IntiPage = '/init',
+    SearchPage = '/search',
     PlaylistPage = '/playlist/:id',
     AlbumPage = '/album/:id',
     EarlyAccessPage = '/early_access',

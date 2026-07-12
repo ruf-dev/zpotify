@@ -1,14 +1,11 @@
 import cls from '@/shared/ui/CachedIndicator.module.css';
-import { HomeIcon } from '@/assets/icons/HomeIcon.tsx';
 
 export default function CachedIndicator() {
     return (
         <span
-            className={cls.CachedIndicatorContainer}
+            className={cls.CachedDot}
             data-tooltip-id="root-tooltip"
-            data-tooltip-content="Cached — playable without internet"
-        >
-            <HomeIcon />
-        </span>
+            data-tooltip-content="Song is cached and can be listened to without internet"
+        />
     );
 }

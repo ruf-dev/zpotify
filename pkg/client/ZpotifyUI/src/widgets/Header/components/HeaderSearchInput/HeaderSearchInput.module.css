@@ -1,0 +1,11 @@
+.SearchInputContainer {
+    --chures-input-height: calc(var(--header-height) * 0.75);
+    width: 18rem;
+}
+
+.SearchInputField {
+    width: var(--header-search-width);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-pill);
+    border: 1px solid var(--color-border);
+}

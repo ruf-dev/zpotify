@@ -2,6 +2,7 @@ import cls from '@/widgets/Header/HeaderPart.module.css';
 import UserWidget from '@/widgets/User/UserWidget.tsx';
 import AddTrackButton from '@/features/upload/AddTrackButton.tsx';
 import AddTrackDialog from '@/dialogs/AddTrack/AddTrackDialog.tsx';
+import HeaderSearchInput from '@/widgets/Header/components/HeaderSearchInput/HeaderSearchInput.tsx';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 
 export default function HeaderPart() {
@@ -13,7 +14,9 @@ export default function HeaderPart() {
 
     return (
         <div className={cls.Header}>
-            <div className={cls.SearchContainer}></div>
+            <div className={cls.SearchContainer}>
+                <HeaderSearchInput />
+            </div>
 
             <div className={cls.UserContainer}>
                 <AddTrackButton onClick={handleAddTrack} />

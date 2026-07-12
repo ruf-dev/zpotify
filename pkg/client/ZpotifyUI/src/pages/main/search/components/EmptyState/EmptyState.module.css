@@ -1,0 +1,36 @@
+.EmptyStateContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-4xl) var(--space-lg);
+    color: var(--color-fg-disabled);
+    text-align: center;
+}
+
+.Icon {
+    display: flex;
+    width: var(--icon-circle-md);
+    height: var(--icon-circle-md);
+    align-items: center;
+    justify-content: center;
+    opacity: 0.4;
+    color: var(--color-fg-tertiary);
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.Message {
+    font-size: var(--font-size-lg);
+    color: var(--color-fg-secondary);
+    margin: var(--space-sm) 0 0;
+}
+
+.Hint {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-tertiary);
+    margin: 0;
+}

@@ -1,17 +1,11 @@
-.CachedIndicatorContainer {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.CachedDot {
+  position: absolute;
+  top: var(--space-xs);
+  right: var(--space-xs);
 
-  width: var(--icon-circle-sm);
-  height: var(--icon-circle-sm);
+  width: var(--status-dot-sm);
+  height: var(--status-dot-sm);
   border-radius: 50%;
   background: var(--color-success);
-  color: var(--color-fg-white);
-
-  svg {
-    width: 60%;
-    height: 60%;
-  }
+  flex-shrink: 0;
 }

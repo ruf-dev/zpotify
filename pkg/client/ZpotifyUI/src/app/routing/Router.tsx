@@ -12,7 +12,7 @@ import AlbumPage from '@/pages/main/album/AlbumPage.tsx';
 import EarlyAccessPage from '@/pages/early_access/EarlyAccessPage.tsx';
 import useUser from '@/entities/user/useUser.ts';
 import HomePage from '@/pages/main/home/HomePage.tsx';
-import Coloring from '@/widgets/admin/coloring/Coloring.tsx';
+import SearchPage from '@/pages/main/search/SearchPage.tsx';
 import Dialog from '@/pages/dialog/Dialog.tsx';
 import MainLayout from '@/app/layouts/MainLayout.tsx';
 
@@ -43,6 +43,7 @@ export default function Router() {
 
                     <Route element={<MainLayout />} errorElement={<ErrorPage />}>
                         <Route path={Path.HomePage} element={<HomePage />} errorElement={<ErrorPage />} />
+                        <Route path={Path.SearchPage} element={<SearchPage />} errorElement={<ErrorPage />} />
                         <Route path={Path.PlaylistPage} element={<PlaylistPage />} errorElement={<ErrorPage />} />
 
                         <Route path={Path.AlbumPage} element={<AlbumPage />} errorElement={<ErrorPage />} />
@@ -56,10 +57,6 @@ export default function Router() {
                 <Dialog />
                 <Tooltip id="root-tooltip" variant={'light'} />
                 <Toaster />
-            </div>
-
-            <div className={cls.Admins}>
-                <Coloring />
             </div>
         </div>
     );

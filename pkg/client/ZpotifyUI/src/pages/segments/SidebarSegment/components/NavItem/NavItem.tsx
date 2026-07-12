@@ -16,10 +16,11 @@ interface NavItemProps {
     label: string;
     active: boolean;
     isCollapsed: boolean;
+    disabled?: boolean;
     onClick: () => void;
 }
 
-export default function NavItem({ id, label, active, isCollapsed, onClick }: NavItemProps) {
+export default function NavItem({ id, label, active, isCollapsed, disabled, onClick }: NavItemProps) {
     return (
         <div
             className={cn(cls.NavItem, {
@@ -27,7 +28,7 @@ export default function NavItem({ id, label, active, isCollapsed, onClick }: Nav
                 [cls.NavItemCollapsed]: isCollapsed,
             })}
             onClick={onClick}
-            data-tooltip-id={!active ? 'root-tooltip' : undefined}
+            data-tooltip-id={disabled ? 'root-tooltip' : undefined}
             data-tooltip-content={'Not implemented yet'}
         >
             {getNavIcon(id)}

@@ -1,6 +1,6 @@
 .TrackRow {
     display: grid;
-    grid-template-columns: 2.5rem 1fr 1.25rem 2rem 3rem 1.5rem 0;
+    grid-template-columns: 2.5rem 1fr 2rem 3rem 1.5rem 0;
     gap: 0.5rem;
     padding: 0.55rem 1rem;
     border-radius: var(--border-radius-sm);
@@ -68,6 +68,9 @@
 }
 
 .TrackTitle {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
     font-size: var(--font-size-md);
     font-weight: 600;
     color: var(--color-fg-primary);
@@ -133,14 +136,7 @@
 }
 
 .TrackRowReorderable {
-    grid-template-columns: 2.5rem 1fr 1.25rem 2rem 3rem 1.5rem 1.5rem;
-}
-
-.CachedWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+    grid-template-columns: 2.5rem 1fr 2rem 3rem 1.5rem 1.5rem;
 }
 
 .DragHandle {

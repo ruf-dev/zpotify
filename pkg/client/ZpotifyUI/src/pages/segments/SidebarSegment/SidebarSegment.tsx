@@ -11,11 +11,12 @@ import SidebarPlaylistsWidget from '@/pages/segments/SidebarSegment/Widget/Sideb
 import cls from '@/pages/segments/SidebarSegment/SidebarSegment.module.css';
 import { Path } from '@/app/routing/paths.ts';
 
-type navIdentity = 'home' | 'my_uploads';
+type navIdentity = 'home' | 'search' | 'my_uploads';
 
 const NAV_ITEMS = [
     { id: 'home', label: 'Home', active: true },
-    { id: 'my_uploads', label: 'My Uploads', active: false },
+    { id: 'search', label: 'Search', active: false },
+    { id: 'my_uploads', label: 'My Uploads', active: false, disabled: true },
 ] as const;
 
 export default function SidebarSegment() {
@@ -34,6 +35,10 @@ export default function SidebarSegment() {
             switch (ni) {
                 case 'home':
                     navigate(Path.HomePage);
+                    break;
+                case 'search':
+                    navigate(Path.SearchPage);
+                    break;
             }
         };
     }
