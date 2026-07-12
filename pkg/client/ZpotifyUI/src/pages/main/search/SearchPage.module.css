@@ -38,6 +38,12 @@
 
 .PlaylistGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--space-md);
+}
+
+@media (orientation: portrait) {
+    .PlaylistGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
