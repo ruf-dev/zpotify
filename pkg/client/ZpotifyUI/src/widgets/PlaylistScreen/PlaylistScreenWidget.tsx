@@ -103,6 +103,7 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
                     canEdit={playlist?.canEdit ?? false}
                     editMode={editMode}
                     playlistUuid={playlist?.uuid}
+                    playlistName={playlist?.name}
                     isListEnded={isListEnded}
                     onLoadMore={onLoadMore}
                 />

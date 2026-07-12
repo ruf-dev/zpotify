@@ -6,15 +6,19 @@ import { RemoveTrackIcon } from '@/assets/icons/RemoveTrackIcon.tsx';
 interface CachedSongRowProps {
     title: string;
     artist: string;
+    playlistName?: string;
     onRemove: () => void;
 }
 
-export default function CachedSongRow({ title, artist, onRemove }: CachedSongRowProps) {
+export default function CachedSongRow({ title, artist, playlistName, onRemove }: CachedSongRowProps) {
     return (
         <li className={cls.CachedSongRowContainer}>
             <div className={cls.SongInfoWrapper}>
                 <span className={cls.SongTitle}>{title}</span>
-                <span className={cls.SongArtist}>{artist}</span>
+                <span className={cls.SongArtist}>
+                    {artist}
+                    {playlistName ? ` · ${playlistName}` : ''}
+                </span>
             </div>
             <Button variant="iconDanger" aria-label={`Remove ${title} from cache`} onClick={onRemove}>
                 <RemoveTrackIcon />

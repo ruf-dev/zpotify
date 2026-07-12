@@ -23,6 +23,7 @@ function formatDuration(sec: number): string {
 
 export interface TrackRowProps {
     song: SongBase;
+    playlistName?: string;
     index: number;
     isPlaying: boolean;
     isLiked: boolean;
@@ -38,6 +39,7 @@ export interface TrackRowProps {
 
 export default function TrackRow({
     song,
+    playlistName,
     index,
     isPlaying,
     isLiked,
@@ -74,6 +76,7 @@ export default function TrackRow({
                     title: song.title || 'Track',
                     artist: song.artists?.[0]?.name ?? 'Unknown',
                     songId: song.id,
+                    playlistName,
                 });
                 toaster.bake({
                     title: 'Song downloaded',

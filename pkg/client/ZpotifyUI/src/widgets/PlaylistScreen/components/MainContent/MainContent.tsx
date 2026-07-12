@@ -30,6 +30,7 @@ export interface MainContentProps {
     canEdit?: boolean;
     editMode?: boolean;
     playlistUuid?: string;
+    playlistName?: string;
     isListEnded?: boolean;
     onLoadMore?: () => void;
 }
@@ -43,6 +44,7 @@ export default function MainContent({
     canEdit,
     editMode,
     playlistUuid,
+    playlistName,
     isListEnded,
     onLoadMore,
 }: MainContentProps) {
@@ -201,6 +203,7 @@ export default function MainContent({
                         <TrackRow
                             key={song.id}
                             song={song}
+                            playlistName={playlistName}
                             index={i + 1}
                             isPlaying={currentTrackPath === song.filePath}
                             isLiked={likedSongIds.has(song.id ?? '')}

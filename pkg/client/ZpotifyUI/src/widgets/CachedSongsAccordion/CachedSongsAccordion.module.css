@@ -24,6 +24,15 @@
     color: var(--color-fg-secondary);
 }
 
+.SearchInputWrapper {
+    margin: 0 0 var(--space-sm);
+}
+
+.SongListScroll {
+    max-height: var(--cached-songs-list-max-height);
+    overflow-y: auto;
+}
+
 .SongList {
     display: flex;
     flex-direction: column;

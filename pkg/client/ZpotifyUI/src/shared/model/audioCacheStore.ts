@@ -14,6 +14,7 @@ export interface CachedSongMeta {
     title: string;
     artist: string;
     songId?: string;
+    playlistName?: string;
 }
 
 interface AudioCacheState {
@@ -140,6 +141,7 @@ export interface CachedSongEntry {
     title: string;
     artist: string;
     songId?: string;
+    playlistName?: string;
 }
 
 export function useCachedSongs(): CachedSongEntry[] {
@@ -153,6 +155,7 @@ export function useCachedSongs(): CachedSongEntry[] {
             title: meta?.title ?? decodeURIComponent(url.split('/').pop() || url),
             artist: meta?.artist ?? 'Unknown',
             songId: meta?.songId,
+            playlistName: meta?.playlistName,
         };
     });
 }

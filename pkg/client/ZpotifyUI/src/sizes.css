@@ -27,6 +27,9 @@
     /* Player bar */
     --player-bar-height: 4.25rem;    /* 68px */
 
+    /* Cached songs accordion */
+    --cached-songs-list-max-height: 16rem;
+
     /* Header */
     --header-logo-size:  1.875rem;   /* 30px */
     --header-padding-x:  1.5rem;     /* 24px */

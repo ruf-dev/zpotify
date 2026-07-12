@@ -43,7 +43,12 @@ export function useDownloadButtonWidget({ playlist, songs }: UseDownloadButtonWi
             succeeded.forEach((url) => {
                 const song = songsByUrl.get(url);
                 const meta = song
-                    ? { title: song.title || 'Track', artist: song.artists?.[0]?.name ?? 'Unknown', songId: song.id }
+                    ? {
+                          title: song.title || 'Track',
+                          artist: song.artists?.[0]?.name ?? 'Unknown',
+                          songId: song.id,
+                          playlistName: playlist.name,
+                      }
                     : undefined;
                 useAudioCacheStore.getState().addCachedUrl(url, meta);
             });
