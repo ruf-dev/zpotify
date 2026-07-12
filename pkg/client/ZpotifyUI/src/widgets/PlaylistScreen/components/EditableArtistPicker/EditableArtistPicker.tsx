@@ -1,6 +1,6 @@
-import {AnimatePresence, motion} from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
-import type {ArtistItem} from '@/widgets/ArtistField/ArtistChipsField';
+import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import ArtistChipsField from '@/widgets/ArtistField/ArtistChipsField';
 import cls from '@/widgets/PlaylistScreen/components/EditableArtistPicker/EditableArtistPicker.module.css';
 
@@ -13,24 +13,27 @@ export interface EditableArtistPickerContext {
     onCreateArtist: (name: string) => Promise<ArtistItem>;
 }
 
-const FADE_TRANSITION = {duration: 0.18, ease: [0.4, 0, 0.2, 1]} as const;
-const HEIGHT_TRANSITION = {duration: 0.22, ease: [0.4, 0, 0.2, 1]} as const;
+const FADE_TRANSITION = { duration: 0.18, ease: [0.4, 0, 0.2, 1] } as const;
+const HEIGHT_TRANSITION = { duration: 0.22, ease: [0.4, 0, 0.2, 1] } as const;
 
-export default function EditableArtistPicker(
-    {
-        displayName, artists, isEditing,
-        onChange, loadOptions, onCreateArtist,
-    }: EditableArtistPickerContext) {
+export default function EditableArtistPicker({
+    displayName,
+    artists,
+    isEditing,
+    onChange,
+    loadOptions,
+    onCreateArtist,
+}: EditableArtistPickerContext) {
     return (
         <AnimatePresence mode="wait" initial={false}>
             {isEditing ? (
                 <motion.div
                     key="picker"
-                    initial={{opacity: 0, height: 0}}
-                    animate={{opacity: 1, height: 'auto'}}
-                    exit={{opacity: 0, height: 0}}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
                     transition={HEIGHT_TRANSITION}
-                    style={{overflow: 'hidden'}}
+                    style={{ overflow: 'hidden' }}
                 >
                     <ArtistChipsField
                         artists={artists}
@@ -45,9 +48,9 @@ export default function EditableArtistPicker(
                 <motion.span
                     key="name"
                     className={cls.ArtistName}
-                    initial={{opacity: 0}}
-                    animate={{opacity: 1}}
-                    exit={{opacity: 0}}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                     transition={FADE_TRANSITION}
                 >
                     {displayName}

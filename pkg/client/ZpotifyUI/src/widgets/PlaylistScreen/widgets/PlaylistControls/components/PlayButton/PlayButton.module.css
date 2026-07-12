@@ -1,0 +1,23 @@
+.PlayButton {
+    width: var(--icon-circle-md);
+    height: var(--icon-circle-md);
+    border-radius: var(--border-radius-circle);
+    border: none;
+    background: var(--color-fg-accent);
+    color: var(--color-fg-white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0.25rem 1.5rem var(--color-accent-shadow);
+    transition: transform var(--ease-quick);
+    flex-shrink: 0;
+
+    &:hover {
+        transform: scale(1.08);
+    }
+
+    .PlayIcon {
+        margin-left: 0.125rem;
+    }
+}

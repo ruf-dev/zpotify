@@ -12,9 +12,16 @@ interface EditableTextProps {
 }
 
 export default function EditableText({
-    displayValue, editValue, isEditing, onChange,
-    displayClassName, inputClassName, placeholder, displayAs = 'span',
-    type = 'text', readOnly = false,
+    displayValue,
+    editValue,
+    isEditing,
+    onChange,
+    displayClassName,
+    inputClassName,
+    placeholder,
+    displayAs = 'span',
+    type = 'text',
+    readOnly = false,
 }: EditableTextProps) {
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         onChange(e.target.value);

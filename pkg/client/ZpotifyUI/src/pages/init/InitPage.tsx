@@ -33,7 +33,7 @@ export default function InitPage() {
     }, [earlyAccessDenied]);
 
     function openLogoPassDialog() {
-        OpenDialog(<LoginPasswordDialog/>);
+        OpenDialog(<LoginPasswordDialog />);
     }
 
     return (

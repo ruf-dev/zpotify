@@ -1,0 +1,32 @@
+.SaveIconButton {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--border-radius-circle);
+    border: none;
+    background: var(--color-fg-accent);
+    color: var(--color-fg-white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0.25rem 1rem var(--color-accent-shadow);
+    transition: transform var(--ease-quick), opacity var(--ease-quick);
+    flex-shrink: 0;
+
+    &:hover:not(:disabled) {
+        transform: scale(1.08);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+/* ── Portrait / Mobile ───────────────────────────────────── */
+
+@media (orientation: portrait) {
+    .EditButton {
+        display: none;
+    }
+}

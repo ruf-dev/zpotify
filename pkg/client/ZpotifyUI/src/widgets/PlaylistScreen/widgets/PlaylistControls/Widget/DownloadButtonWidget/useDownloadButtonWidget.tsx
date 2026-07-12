@@ -10,12 +10,12 @@ import { useDialog } from '@/app/hooks/Dialog.tsx';
 
 const DOWNLOAD_ALL_FETCH_LIMIT = 100000;
 
-export interface UsePlaylistControlsParams {
+export interface UseDownloadButtonWidgetParams {
     playlist: Playlist;
     songs: SongBase[];
 }
 
-export function usePlaylistControls({ playlist, songs }: UsePlaylistControlsParams) {
+export function useDownloadButtonWidget({ playlist, songs }: UseDownloadButtonWidgetParams) {
     const toaster = useToaster();
     const { OpenDialog, CloseDialog } = useDialog();
     const downloadProgress = useDownloadProgress(playlist.uuid);

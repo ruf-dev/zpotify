@@ -15,9 +15,22 @@ export async function getCachedAudio(url: string): Promise<Blob | null> {
     return response.blob();
 }
 
+const inFlightCacheRequests = new Map<string, Promise<boolean>>();
+
 export async function cacheAudio(url: string): Promise<boolean> {
     if (!('caches' in window)) return false;
 
+    const inFlight = inFlightCacheRequests.get(url);
+    if (inFlight) return inFlight;
+
+    const request = cacheAudioUncoordinated(url).finally(() => {
+        inFlightCacheRequests.delete(url);
+    });
+    inFlightCacheRequests.set(url, request);
+    return request;
+}
+
+async function cacheAudioUncoordinated(url: string): Promise<boolean> {
     try {
         const cache = await caches.open(AUDIO_CACHE_NAME);
         const existing = await cache.match(url);
