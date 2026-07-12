@@ -2,7 +2,9 @@ export const AUDIO_CACHE_NAME = 'zpotify-audio-cache-v1';
 
 export function getTrackUrl(trackPath: string): string {
     const base = (import.meta.env.VITE_ZPOTIFY_WEBSERVER as string) || '';
-    return base + (trackPath.startsWith('/') ? trackPath : '/' + trackPath);
+    const rawUrl = base + (trackPath.startsWith('/') ? trackPath : '/' + trackPath);
+
+    return new URL(rawUrl, window.location.origin).href;
 }
 
 export async function getCachedAudio(url: string): Promise<Blob | null> {
