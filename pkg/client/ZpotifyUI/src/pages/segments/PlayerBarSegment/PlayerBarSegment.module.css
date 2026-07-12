@@ -64,6 +64,8 @@
 }
 
 .SongTitle {
+    position: relative;
+    display: inline-block;
     font-size: var(--font-size-sm);
     font-weight: 600;
     color: var(--color-fg-accent);
@@ -71,6 +73,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 8.125rem;
+}
+
+.SongTitleCached {
+    padding-right: calc(var(--status-dot-sm) + var(--space-xs) * 2);
 }
 
 .SongTitleEmpty {

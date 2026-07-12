@@ -74,13 +74,14 @@ export default function PlayerBarSegment() {
                             cls.SongTitle,
                             !songTitle && cls.SongTitleEmpty,
                             isPlaying && songTitle && cls.SongTitlePlaying,
+                            isCached && cls.SongTitleCached,
                         )}
                     >
                         {songTitle ?? 'nothing playing'}
+                        {isCached && <CachedIndicator />}
                     </span>
                     {songArtist && <span className={cls.SongArtist}>{songArtist}</span>}
                 </div>
-                {isCached && <CachedIndicator />}
             </div>
 
             <div className={cls.ControlsCenterWrapper}>
