@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import type { Playlist, SongBase } from '@/app/api/zpotify';
+import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import { Path } from '@/app/routing/paths.ts';
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
 import PlaylistInfoSegment from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/PlaylistInfoSegment.tsx';
@@ -9,11 +10,16 @@ import NotFoundPlaylistInfoSegment from '@/widgets/PlaylistScreen/segments/NotFo
 import MainContent from '@/widgets/PlaylistScreen/components/MainContent/MainContent.tsx';
 import cls from '@/widgets/PlaylistScreen/PlaylistScreenWidget.module.css';
 import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
+import { isAlbum } from '@/entities/playlist/isAlbum.ts';
 
 function computeTotalDuration(songs: SongBase[]): string {
     const totalSec = songs.reduce((acc, s) => acc + (s.durationSec ?? 0), 0);
     const m = Math.floor(totalSec / 60);
     return `${m} min`;
+}
+
+function mapPlaylistArtists(playlist: Playlist): ArtistItem[] {
+    return (playlist.artists ?? []).filter((a) => a.uuid && a.name).map((a) => ({ id: a.uuid!, name: a.name! }));
 }
 
 interface Props {
@@ -116,6 +122,8 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
                     editMode={editMode}
                     playlistUuid={playlist?.uuid}
                     playlistName={playlist?.name}
+                    playlistIsAlbum={playlist ? isAlbum(playlist) : false}
+                    playlistArtists={playlist ? mapPlaylistArtists(playlist) : []}
                     isListEnded={isListEnded}
                     onLoadMore={onLoadMore}
                 />

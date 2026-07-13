@@ -1,0 +1,25 @@
+.AddTracksPanelContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+
+.DropZoneWrapper {
+    display: block;
+    border-radius: var(--border-radius-md);
+    border: 0.0625rem dashed var(--color-border);
+}
+
+.DropZoneContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    color: var(--color-fg-tertiary);
+}
+
+.DropZoneLabel {
+    font-size: var(--font-size-xs);
+}

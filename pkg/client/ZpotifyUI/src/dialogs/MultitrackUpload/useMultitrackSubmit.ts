@@ -21,6 +21,7 @@ export interface MultitrackSubmitParams {
     year: number | undefined;
     tags: ChipEntry[];
     cover: File | undefined;
+    targetPlaylistUuid?: string;
     CloseDialog: () => void;
     LockClosing: () => void;
     UnlockClosing: () => void;
@@ -85,9 +86,16 @@ export function useMultitrackSubmit(params: MultitrackSubmitParams): MultitrackS
         });
     }
 
+    function addSongsToTargetPlaylist(targetPlaylistUuid: string, songIds: string[]): Promise<void> {
+        return playlistService.AddSongsToPlaylist(
+            targetPlaylistUuid,
+            songIds.map((id) => parseInt(id, 10)),
+        );
+    }
+
     function handleSubmit() {
         if (submitting || params.tracks.length === 0) return;
-        if (params.playlistMode && !params.playlistName.trim()) return;
+        if (!params.targetPlaylistUuid && params.playlistMode && !params.playlistName.trim()) return;
 
         setSubmitting(true);
         params.LockClosing();
@@ -101,6 +109,7 @@ export function useMultitrackSubmit(params: MultitrackSubmitParams): MultitrackS
         createSongs
             .then((createdIds) => {
                 const songIds = resolveSongIds(params.tracks, toCreate, createdIds);
+                if (params.targetPlaylistUuid) return addSongsToTargetPlaylist(params.targetPlaylistUuid, songIds);
                 return params.playlistMode ? createPlaylistWithSongs(songIds) : undefined;
             })
             .then(() => {
@@ -108,7 +117,7 @@ export function useMultitrackSubmit(params: MultitrackSubmitParams): MultitrackS
                     params.UnlockClosing();
                     params.CloseDialog();
                     params.refreshActive();
-                    if (params.playlistMode) params.refreshPlaylists();
+                    if (!params.targetPlaylistUuid && params.playlistMode) params.refreshPlaylists();
                 }, 800);
             })
             .catch((e) => {

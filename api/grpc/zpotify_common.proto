@@ -36,6 +36,7 @@ message SongBase {
   string file_path = 5;
   int64 file_id = 6;
   repeated SongTag tags = 7;
+  string cover_file_path = 8;
 }
 
 enum AlbumTagKind {

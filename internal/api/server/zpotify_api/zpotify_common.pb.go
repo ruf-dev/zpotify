@@ -366,6 +366,7 @@ type SongBase struct {
 	FilePath      string                 `protobuf:"bytes,5,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"`
 	FileId        int64                  `protobuf:"varint,6,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
 	Tags          []*SongTag             `protobuf:"bytes,7,rep,name=tags,proto3" json:"tags,omitempty"`
+	CoverFilePath string                 `protobuf:"bytes,8,opt,name=cover_file_path,json=coverFilePath,proto3" json:"cover_file_path,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -447,6 +448,13 @@ func (x *SongBase) GetTags() []*SongTag {
 		return x.Tags
 	}
 	return nil
+}
+
+func (x *SongBase) GetCoverFilePath() string {
+	if x != nil {
+		return x.CoverFilePath
+	}
+	return ""
 }
 
 type AlbumVersionMetadata struct {
@@ -782,7 +790,7 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\x05liked\x18\x03 \x01(\bR\x05liked\"M\n" +
 	"\aSongTag\x12,\n" +
 	"\x04kind\x18\x01 \x01(\x0e2\x18.zpotify_api.SongTagKindR\x04kind\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value\"\xe6\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value\"\x8e\x02\n" +
 	"\bSongBase\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x121\n" +
@@ -790,7 +798,8 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\fduration_sec\x18\x04 \x01(\x05R\vdurationSec\x12\x1b\n" +
 	"\tfile_path\x18\x05 \x01(\tR\bfilePath\x12\x17\n" +
 	"\afile_id\x18\x06 \x01(\x03R\x06fileId\x12(\n" +
-	"\x04tags\x18\a \x03(\v2\x14.zpotify_api.SongTagR\x04tags\"\xcc\x02\n" +
+	"\x04tags\x18\a \x03(\v2\x14.zpotify_api.SongTagR\x04tags\x12&\n" +
+	"\x0fcover_file_path\x18\b \x01(\tR\rcoverFilePath\"\xcc\x02\n" +
 	"\x14AlbumVersionMetadata\x12P\n" +
 	"\fversion_kind\x18\x01 \x01(\x0e2-.zpotify_api.AlbumVersionMetadata.VersionKindR\vversionKind\x120\n" +
 	"\x14parent_playlist_uuid\x18\x02 \x01(\tR\x12parentPlaylistUuid\"\xaf\x01\n" +

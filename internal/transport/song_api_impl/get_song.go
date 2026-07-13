@@ -24,13 +24,14 @@ func (impl *Impl) GetSong(ctx context.Context, req *zpotify_api.GetSong_Request)
 
 func domainSongToProto(song domain.Song) *zpotify_api.SongBase {
 	return &zpotify_api.SongBase{
-		Id:          song.SongBase.Id,
-		Title:       song.Title,
-		Artists:     domainArtistsToProto(song.Artists),
-		DurationSec: int32(song.Duration.Seconds()),
-		FilePath:    song.FilePath,
-		FileId:      song.FileId,
-		Tags:        domainSongTagsToProto(song.Tags),
+		Id:            song.SongBase.Id,
+		Title:         song.Title,
+		Artists:       domainArtistsToProto(song.Artists),
+		DurationSec:   int32(song.Duration.Seconds()),
+		FilePath:      song.FilePath,
+		FileId:        song.FileId,
+		Tags:          domainSongTagsToProto(song.Tags),
+		CoverFilePath: song.SongBase.CoverFilePath,
 	}
 }
 

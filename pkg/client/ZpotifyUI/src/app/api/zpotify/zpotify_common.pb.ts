@@ -65,6 +65,7 @@ export type SongBase = {
   filePath?: string;
   fileId?: string;
   tags?: SongTag[];
+  coverFilePath?: string;
 };
 
 export type AlbumVersionMetadata = {

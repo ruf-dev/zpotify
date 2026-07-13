@@ -11,7 +11,7 @@ import ChevronRightIcon from '@/assets/icons/ChevronRightIcon.tsx';
 import TrackList from '@/dialogs/MultitrackUpload/TrackList';
 import PlaylistDetailsPanel from '@/dialogs/MultitrackUpload/PlaylistDetailsPanel';
 import PlaylistToggleRow from '@/dialogs/MultitrackUpload/PlaylistToggleRow';
-import SongSearchBox from '@/dialogs/MultitrackUpload/SongSearchBox/SongSearchBox';
+import SongSearchBox from '@/widgets/SongSearchBox/SongSearchBox';
 import { useTrackDrafts } from '@/dialogs/MultitrackUpload/useTrackDrafts';
 import { useMultitrackSubmit } from '@/dialogs/MultitrackUpload/useMultitrackSubmit';
 import { useMultitrackSummary } from '@/dialogs/MultitrackUpload/useMultitrackSummary';
@@ -20,11 +20,18 @@ import { formatBytes } from '@/dialogs/MultitrackUpload/utils';
 import cls from '@/dialogs/MultitrackUpload/MultitrackUploadModal.module.css';
 import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
 
-interface MultitrackUploadModalProps {
-    files: File[];
+interface TargetPlaylist {
+    uuid: string;
+    artists: ArtistItem[];
+    existingSongIds: string[];
 }
 
-export default function MultitrackUploadModal({ files }: MultitrackUploadModalProps) {
+interface MultitrackUploadModalProps {
+    files: File[];
+    targetPlaylist?: TargetPlaylist;
+}
+
+export default function MultitrackUploadModal({ files, targetPlaylist }: MultitrackUploadModalProps) {
     const { CloseDialog, LockClosing, UnlockClosing } = useDialog();
     const refreshActive = useSongListRefresh((s) => s.refreshActive);
     const refreshPlaylists = usePlaylistListRefresh((s) => s.refresh);
@@ -33,7 +40,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
 
     const [playlistMode, setPlaylistMode] = useState(true);
     const [playlistName, setPlaylistName] = useState('');
-    const [albumArtists, setAlbumArtists] = useState<ArtistItem[]>([]);
+    const [albumArtists, setAlbumArtists] = useState<ArtistItem[]>(targetPlaylist?.artists ?? []);
     const [year, setYear] = useState<number | undefined>();
     const [tags, setTags] = useState<ChipEntry[]>([]);
     const [cover, setCover] = useState<File | undefined>();
@@ -46,6 +53,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
         year,
         tags,
         cover,
+        targetPlaylistUuid: targetPlaylist?.uuid,
         CloseDialog,
         LockClosing,
         UnlockClosing,
@@ -53,7 +61,15 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
         refreshPlaylists,
     });
 
-    const summary = useMultitrackSummary({ tracks: trackDrafts.tracks, playlistMode, playlistName, albumArtists });
+    const summary = useMultitrackSummary({
+        tracks: trackDrafts.tracks,
+        playlistMode,
+        playlistName,
+        albumArtists,
+        targetPlaylistUuid: targetPlaylist?.uuid,
+    });
+
+    const excludedSongIds = new Set([...summary.linkedSongIds, ...(targetPlaylist?.existingSongIds ?? [])]);
 
     const { loadArtistOptions, onCreateArtist } = useArtistLookup();
 
@@ -77,9 +93,9 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
             </div>
 
             <div className={cls.PanelBody}>
-                <PlaylistToggleRow checked={playlistMode} onChange={setPlaylistMode} />
+                {!targetPlaylist && <PlaylistToggleRow checked={playlistMode} onChange={setPlaylistMode} />}
 
-                {playlistMode && (
+                {playlistMode && !targetPlaylist && (
                     <PlaylistDetailsPanel
                         cover={cover}
                         onCoverChange={setCover}
@@ -98,9 +114,7 @@ export default function MultitrackUploadModal({ files }: MultitrackUploadModalPr
                     />
                 )}
 
-                {playlistMode && (
-                    <SongSearchBox excludedIds={summary.linkedSongIds} onAddSong={trackDrafts.handleAddSong} />
-                )}
+                {playlistMode && <SongSearchBox excludedIds={excludedSongIds} onAddSong={trackDrafts.handleAddSong} />}
 
                 <TrackList
                     tracks={trackDrafts.tracks}

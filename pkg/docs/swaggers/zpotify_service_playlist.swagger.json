@@ -748,6 +748,9 @@
             "type": "object",
             "$ref": "#/definitions/zpotify_apiSongTag"
           }
+        },
+        "coverFilePath": {
+          "type": "string"
         }
       }
     },

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import cls from '@/widgets/PlaylistScreen/components/MainContent/MainContent.module.css';
 import type { SongBase } from '@/app/api/zpotify';
+import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import { selectFlagEnabled, useFeatureFlags } from '@/entities/feature-flags/useFeatureFlags.ts';
 import { useLikedSongs } from '@/entities/song/useLikedSongs.ts';
 import useUser from '@/entities/user/useUser.ts';
@@ -10,6 +11,7 @@ import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import TrackRow from '@/widgets/PlaylistScreen/components/TrackRow/TrackRow.tsx';
 import CommentsSection from '@/widgets/PlaylistScreen/components/CommentsSection/CommentsSection.tsx';
+import AddTracksPanel from '@/widgets/PlaylistScreen/widgets/AddTracksPanel/AddTracksPanel.tsx';
 import ZButton from '@/shared/ui/ZButton/ZButton.tsx';
 
 type Drag = {
@@ -31,6 +33,8 @@ export interface MainContentProps {
     editMode?: boolean;
     playlistUuid?: string;
     playlistName?: string;
+    playlistIsAlbum?: boolean;
+    playlistArtists?: ArtistItem[];
     isListEnded?: boolean;
     onLoadMore?: () => void;
 }
@@ -45,6 +49,8 @@ export default function MainContent({
     editMode,
     playlistUuid,
     playlistName,
+    playlistIsAlbum,
+    playlistArtists,
     isListEnded,
     onLoadMore,
 }: MainContentProps) {
@@ -184,6 +190,15 @@ export default function MainContent({
 
     return (
         <div className={cls.MainContentContainer}>
+            {editMode && canEdit && playlistUuid && (
+                <AddTracksPanel
+                    playlistUuid={playlistUuid}
+                    existingSongIds={songs.map((s) => s.id ?? '').filter(Boolean)}
+                    playlistIsAlbum={playlistIsAlbum ?? false}
+                    playlistArtists={playlistArtists ?? []}
+                />
+            )}
+
             <div className={cls.TrackListHeader}>
                 <span className={cls.ColNum}>#</span>
                 <span className={cls.ColTitle}>title</span>
@@ -203,6 +218,7 @@ export default function MainContent({
                         <TrackRow
                             key={song.id}
                             song={song}
+                            playlistUuid={playlistUuid}
                             playlistName={playlistName}
                             index={i + 1}
                             isPlaying={currentTrackPath === song.filePath}

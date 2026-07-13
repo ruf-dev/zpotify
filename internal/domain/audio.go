@@ -85,11 +85,12 @@ const (
 )
 
 type SongBase struct {
-	Id       int64
-	Title    string
-	Duration time.Duration
-	FilePath string
-	FileId   int64
+	Id            int64
+	Title         string
+	Duration      time.Duration
+	FilePath      string
+	FileId        int64
+	CoverFilePath string
 }
 
 type Song struct {

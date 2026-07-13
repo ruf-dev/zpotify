@@ -1,12 +1,14 @@
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
-import {Button, Input} from '@vervstack/chures';
+import { Button, Input } from '@vervstack/chures';
 
-import {SearchIcon} from '@/assets/icons/SearchIcon';
-import type {SongBase} from '@/app/api/zpotify';
-import {songsService} from '@/shared/api/Songs.ts';
-import {formatDuration} from '@/shared/lib/time';
-import cls from '@/dialogs/MultitrackUpload/SongSearchBox/SongSearchBox.module.css';
+import { SearchIcon } from '@/assets/icons/SearchIcon';
+import type { SongBase } from '@/app/api/zpotify';
+import { songsService } from '@/shared/api/Songs.ts';
+import { formatDuration } from '@/shared/lib/time';
+import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
+import CoverWithFallback from '@/components/CoverWithFallback/CoverWithFallback.tsx';
+import cls from '@/widgets/SongSearchBox/SongSearchBox.module.css';
 
 interface SongSearchBoxProps {
     excludedIds: Set<string>;
@@ -15,7 +17,7 @@ interface SongSearchBoxProps {
 
 const DEBOUNCE_MS = 250;
 
-export default function SongSearchBox({excludedIds, onAddSong}: SongSearchBoxProps) {
+export default function SongSearchBox({ excludedIds, onAddSong }: SongSearchBoxProps) {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<SongBase[]>([]);
     const [loading, setLoading] = useState(false);
@@ -52,7 +54,7 @@ export default function SongSearchBox({excludedIds, onAddSong}: SongSearchBoxPro
         onAddSong(song);
     }
 
-    const visible = results.filter((s) => s.id && !excludedIds.has(s.id));
+    const visible = results.filter((s) => s.id);
     const showPanel = query.trim().length > 0;
 
     return (
@@ -60,7 +62,7 @@ export default function SongSearchBox({excludedIds, onAddSong}: SongSearchBoxPro
             <Input
                 value={query}
                 setValue={setQuery}
-                startIcon={<SearchIcon/>}
+                startIcon={<SearchIcon />}
                 placeholder="search existing songs by title or artist…"
             />
 
@@ -72,6 +74,7 @@ export default function SongSearchBox({excludedIds, onAddSong}: SongSearchBoxPro
                         <div className={cls.HintRow}>no songs found</div>
                     ) : (
                         visible.map(function renderRow(song) {
+                            const isAdded = !!song.id && excludedIds.has(song.id);
                             const artists = (song.artists ?? [])
                                 .map((a) => a.name)
                                 .filter(Boolean)
@@ -81,7 +84,21 @@ export default function SongSearchBox({excludedIds, onAddSong}: SongSearchBoxPro
                                     ? formatDuration(Math.round(song.durationSec))
                                     : '—';
                             return (
-                                <Button key={song.id} className={cls.ResultRow} onClick={() => handlePick(song)}>
+                                <Button
+                                    key={song.id}
+                                    className={cn(cls.ResultRow, isAdded && cls.ResultRowAdded)}
+                                    onClick={() => handlePick(song)}
+                                    disabled={isAdded}
+                                    title={isAdded ? 'already added to this playlist' : undefined}
+                                >
+                                    <span className={cls.ResultCover}>
+                                        <CoverWithFallback
+                                            coverUrl={buildCoverUrl(song.coverFilePath)}
+                                            coverFilePath={song.coverFilePath}
+                                            uuid={song.id}
+                                            name={song.title}
+                                        />
+                                    </span>
                                     <span className={cls.ResultText}>
                                         <span className={cls.ResultTitle}>{song.title || 'untitled'}</span>
                                         {artists && <span className={cls.ResultArtists}>{artists}</span>}

@@ -3,6 +3,7 @@ package pg
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"regexp"
 	"strings"
 	"time"
@@ -87,8 +88,15 @@ func (s *SongsStorage) SearchByTitle(ctx context.Context, query string, limit, o
 
 	songs := make([]domain.Song, len(rows))
 	for i, row := range rows {
+		var artists []domain.ArtistsBase
+		err = json.Unmarshal(row.ArtistInfo, &artists)
+		if err != nil {
+			return nil, rerrors.Wrap(err, "error unmarshalling artists info from storage json")
+		}
+
 		songs[i] = domain.Song{
 			SongBase: toSongBaseFromSearch(row),
+			Artists:  artists,
 		}
 	}
 
@@ -262,11 +270,12 @@ func toSongBase(song songs_q.SongBaseViewV1) domain.SongBase {
 
 func toSongBaseFromSearch(song songs_q.SearchSongsByTitleRow) domain.SongBase {
 	return domain.SongBase{
-		Id:       song.ID,
-		Title:    song.Title,
-		Duration: time.Duration(song.DurationSec) * time.Second,
-		FilePath: song.FilePath,
-		FileId:   song.FileID,
+		Id:            song.ID,
+		Title:         song.Title,
+		Duration:      time.Duration(song.DurationSec) * time.Second,
+		FilePath:      song.FilePath,
+		FileId:        song.FileID,
+		CoverFilePath: song.CoverFilePath.String,
 	}
 }
 

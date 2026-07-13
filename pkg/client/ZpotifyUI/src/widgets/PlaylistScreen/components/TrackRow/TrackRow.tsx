@@ -1,5 +1,6 @@
 import { type MouseEvent } from 'react';
 import cn from 'classnames';
+import { ConfirmDialog } from '@vervstack/chures';
 
 import cls from '@/widgets/PlaylistScreen/components/TrackRow/TrackRow.module.css';
 import type { SongBase } from '@/app/api/zpotify';
@@ -14,6 +15,8 @@ import { useIsSongCached, useAudioCacheStore } from '@/shared/model/audioCacheSt
 import CachedIndicator from '@/shared/ui/CachedIndicator.tsx';
 import { cacheAudio, getTrackUrl } from '@/shared/lib/audioCache.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
+import { playlistService } from '@/shared/api/PlaylistService.ts';
+import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
 
 function formatDuration(sec: number): string {
     const m = Math.floor(sec / 60);
@@ -23,6 +26,7 @@ function formatDuration(sec: number): string {
 
 export interface TrackRowProps {
     song: SongBase;
+    playlistUuid?: string;
     playlistName?: string;
     index: number;
     isPlaying: boolean;
@@ -39,6 +43,7 @@ export interface TrackRowProps {
 
 export default function TrackRow({
     song,
+    playlistUuid,
     playlistName,
     index,
     isPlaying,
@@ -52,8 +57,9 @@ export default function TrackRow({
     anyDragging,
     rowRef,
 }: TrackRowProps) {
-    const { OpenDialog } = useDialog();
+    const { OpenDialog, CloseDialog } = useDialog();
     const toaster = useToaster();
+    const refreshActive = useSongListRefresh((s) => s.refreshActive);
     const isCached = useIsSongCached(song.filePath);
 
     function handleRowClick() {
@@ -93,6 +99,30 @@ export default function TrackRow({
         });
     }
 
+    function handleDelete() {
+        if (!playlistUuid || !song.id) return;
+        const uuid = playlistUuid;
+        const songId = song.id;
+
+        function handleConfirm() {
+            return playlistService
+                .DeleteSong(uuid, parseInt(songId, 10))
+                .then(() => refreshActive())
+                .catch((e: unknown) => toaster.catch(e as never));
+        }
+
+        OpenDialog(
+            <ConfirmDialog
+                title="Delete track"
+                message={`Remove "${song.title || 'this track'}" from the playlist?`}
+                confirmLabel="Delete"
+                danger
+                onConfirm={handleConfirm}
+                onClose={CloseDialog}
+            />,
+        );
+    }
+
     const menuOps = [
         {
             label: 'Edit',
@@ -103,11 +133,7 @@ export default function TrackRow({
             onClick: handleDownload,
             disabled: isCached,
         },
-        {
-            label: 'Delete',
-            onClick: () => {},
-            disabled: true,
-        },
+        ...(canReorder ? [{ label: 'Delete', onClick: handleDelete }] : []),
     ];
 
     const artistName = song.artists?.[0]?.name ?? 'Unknown';

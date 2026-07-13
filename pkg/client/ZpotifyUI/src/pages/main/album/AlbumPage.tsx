@@ -14,7 +14,7 @@ export default function AlbumPage() {
     const navigate = useNavigate();
     const userData = useUser((state) => state.userData);
     const { playlist, isLoading: playlistLoading } = usePlaylist(id);
-    const { songs, isLoading: songsLoading, isListEnded, loadMore } = usePlaylistSongs(id);
+    const { songs, isInitialLoading: songsLoading, isListEnded, loadMore } = usePlaylistSongs(id);
 
     const notAnAlbum = !!playlist && !isAlbum(playlist);
 

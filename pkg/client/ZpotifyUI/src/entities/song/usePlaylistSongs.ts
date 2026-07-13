@@ -22,6 +22,7 @@ export function usePlaylistSongs(id: string | undefined) {
     const [totalSongs, setTotalSongs] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [isListEnded, setIsListEnded] = useState(false);
+    const loadedIdRef = useRef<string | undefined>(undefined);
 
     useEffect(() => {
         if (!id) return;
@@ -50,6 +51,7 @@ export function usePlaylistSongs(id: string | undefined) {
                 const total = resp.total ?? 0;
                 setTotalSongs(total);
                 setIsListEnded(offset + incoming.length >= total);
+                loadedIdRef.current = id;
             })
             .catch(toaster.catch)
             .finally(() => setIsLoading(false));
@@ -59,5 +61,7 @@ export function usePlaylistSongs(id: string | undefined) {
         setOffset((prev) => prev + SONGS_PER_PAGE);
     }
 
-    return { songs, totalSongs, isLoading, isListEnded, loadMore };
+    const isInitialLoading = isLoading && loadedIdRef.current !== id;
+
+    return { songs, totalSongs, isLoading, isInitialLoading, isListEnded, loadMore };
 }

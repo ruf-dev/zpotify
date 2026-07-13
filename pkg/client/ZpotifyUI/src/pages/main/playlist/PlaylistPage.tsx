@@ -16,7 +16,7 @@ export default function PlaylistPage() {
     const navigate = useNavigate();
     const userData = useUser((state) => state.userData);
     const { playlist, isLoading: playlistLoading, error: playlistError } = usePlaylist(id);
-    const { songs, isLoading: songsLoading, isListEnded, loadMore } = usePlaylistSongs(id);
+    const { songs, isInitialLoading: songsLoading, isListEnded, loadMore } = usePlaylistSongs(id);
 
     const isActuallyAlbum = !!playlist && isAlbum(playlist);
     const isNotFound = playlistError instanceof ServiceError && playlistError.code === Errors.NOT_FOUND;
