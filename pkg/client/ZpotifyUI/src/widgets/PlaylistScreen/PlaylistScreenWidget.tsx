@@ -40,11 +40,22 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
 
     const coverUrl = buildCoverUrl(playlist?.coverFilePath);
 
+    const isCurrentTrackInPlaylist = orderedSongs.some((s) => s.filePath === audioPlayer.trackPath);
+    const isPlaylistPlaying = isCurrentTrackInPlaylist && audioPlayer.isPlaying;
+
     function handlePlay() {
         const first = orderedSongs[0];
         if (!first?.filePath) return;
         audioPlayer.setSongInfo(first.title ?? null, first.artists?.[0]?.name ?? null, coverUrl);
         audioPlayer.play(first.filePath);
+    }
+
+    function handlePlayToggle() {
+        if (isCurrentTrackInPlaylist) {
+            audioPlayer.togglePlay();
+            return;
+        }
+        handlePlay();
     }
 
     function handlePlaySong(song: SongBase) {
@@ -86,7 +97,8 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
                         totalDuration={totalDuration}
                         trackCount={trackCount}
                         onBack={handleBack}
-                        onPlay={handlePlay}
+                        onPlay={handlePlayToggle}
+                        isPlaying={isPlaylistPlaying}
                         editMode={editMode}
                         onEnterEditMode={() => setEditMode(true)}
                         onExitEditMode={() => setEditMode(false)}

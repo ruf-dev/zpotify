@@ -1,19 +1,15 @@
-import type {Playlist, SongBase} from '@/app/api/zpotify';
+import type { Playlist, SongBase } from '@/app/api/zpotify';
 import cls from '@/widgets/PlaylistScreen/widgets/PlaylistControls/PlaylistControls.module.css';
 import PlayButton from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/PlayButton/PlayButton.tsx';
-import ShuffleButton
-    from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/ShuffleButton/ShuffleButton.tsx';
-import ShareButton from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/ShareButton/ShareButton.tsx';
+import InfoControls from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/InfoControls/InfoControls.tsx';
 import EditControls from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/EditControls/EditControls.tsx';
-import DownloadButtonWidget
-    from '@/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/DownloadButtonWidget/DownloadButtonWidget.tsx';
-import SaveButtonWidget
-    from '@/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/SaveButtonWidget/SaveButtonWidget.tsx';
+import PrivateLockWidget from '@/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/PrivateLockWidget/PrivateLockWidget.tsx';
 
 export interface PlaylistControlsProps {
     playlist: Playlist;
     songs: SongBase[];
     onPlay: () => void;
+    isPlaying: boolean;
     editMode: boolean;
     saving: boolean;
     onSave: () => void;
@@ -21,29 +17,30 @@ export interface PlaylistControlsProps {
     onEnterEditMode: () => void;
 }
 
-export default function PlaylistControls(
-    {
-        playlist, songs, onPlay, editMode, saving, onSave, onCancel, onEnterEditMode,
-    }: PlaylistControlsProps) {
+export default function PlaylistControls(props: PlaylistControlsProps) {
+    const { playlist, songs, editMode } = props;
+
     return (
         <div className={cls.PlaylistControlsContainer}>
-            <PlayButton onClick={onPlay}/>
+            <PlayButton onClick={props.onPlay} isPlaying={props.isPlaying} />
 
-            <ShuffleButton/>
+            {!editMode && <InfoControls playlist={playlist} songs={songs} />}
 
-            <SaveButtonWidget uuid={playlist.uuid ?? ''} isSaved={playlist.isSaved ?? false}/>
-
-            <ShareButton/>
-
-            <DownloadButtonWidget playlist={playlist} songs={songs}/>
+            {editMode && (
+                <PrivateLockWidget
+                    uuid={playlist.uuid ?? ''}
+                    isPublic={playlist.isPublic ?? false}
+                    canEdit={playlist.canEdit}
+                />
+            )}
 
             <EditControls
                 canEdit={playlist.canEdit}
                 editMode={editMode}
-                saving={saving}
-                onSave={onSave}
-                onCancel={onCancel}
-                onEnterEditMode={onEnterEditMode}
+                saving={props.saving}
+                onSave={props.onSave}
+                onCancel={props.onCancel}
+                onEnterEditMode={props.onEnterEditMode}
             />
         </div>
     );

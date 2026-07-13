@@ -22,6 +22,7 @@ export interface UsePlaylistInfoSegmentParams {
     trackCount: number;
     totalDuration: string;
     onPlay: () => void;
+    isPlaying: boolean;
     editMode: boolean;
     onEnterEditMode: () => void;
     onExitEditMode: () => void;
@@ -140,8 +141,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
     };
 
     const trackCountProps: TrackCountLabelProps = {
-        displayValue: editMode ? String(params.trackCount) : `${params.trackCount} tracks`,
-        isEditing: editMode,
+        displayValue: `${params.trackCount} tracks`,
         totalDuration: params.totalDuration,
     };
 
@@ -162,6 +162,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
         playlist,
         songs: params.songs,
         onPlay: params.onPlay,
+        isPlaying: params.isPlaying,
         editMode,
         saving,
         onSave: handleSave,

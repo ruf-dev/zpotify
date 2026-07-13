@@ -118,6 +118,7 @@ export interface IPlaylistService {
         coverFileId?: string,
         year?: number,
         tags?: AlbumTag[],
+        isPublic?: boolean,
     ): Promise<UpdatePlaylistResponse>;
     ChangeSongsOrder(playlistUuid: string, songIds: number[]): Promise<void>;
     AddSongToPlaylist(playlistUuid: string, songId: number): Promise<void>;
@@ -177,8 +178,9 @@ export class PlaylistService extends BaseService implements IPlaylistService {
         coverFileId?: string,
         year?: number,
         tags?: AlbumTag[],
+        isPublic?: boolean,
     ): Promise<UpdatePlaylistResponse> {
-        const req: UpdatePlaylistRequest = { uuid, name, description, artistUuids, coverFileId, year, tags };
+        const req: UpdatePlaylistRequest = { uuid, name, description, artistUuids, coverFileId, year, tags, isPublic };
         return this.executeAuthApiCall(async (initReq) => {
             return PlaylistAPI.UpdatePlaylist(req, initReq);
         });

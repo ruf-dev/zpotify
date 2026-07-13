@@ -203,6 +203,7 @@ p, .t-body {
     --chures-surface: var(--color-bg-secondary);
     --chures-fg: var(--color-fg-primary);
     --chures-fg-muted: var(--color-fg-secondary);
+    --chures-input-height: var(--input-height);
 }
 
 

@@ -62,6 +62,9 @@
     --auth-button-width: 10rem;
     --auth-button-height: 2.5rem;
 
+    /* Inputs */
+    --input-height: 2.6875rem; /* 43px — default chures Input height */
+
     /* Spacing scale (rem-based) */
     --space-xs:  0.25rem;   /* 4px  */
     --space-sm:  0.5rem;    /* 8px  */

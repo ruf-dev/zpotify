@@ -5,6 +5,7 @@ import cls from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/Ic
 
 export interface IconButtonProps {
     ariaLabel: string;
+    tooltip?: string;
     onClick?: () => void;
     disabled?: boolean;
     active?: boolean;
@@ -19,6 +20,8 @@ export default function IconButton(props: IconButtonProps) {
             variant="unstyled"
             className={cn(cls.IconButton, props.active && cls.IconButtonActive, props.className)}
             aria-label={props.ariaLabel}
+            data-tooltip-id={props.tooltip ? 'root-tooltip' : undefined}
+            data-tooltip-content={props.tooltip}
             onClick={props.onClick}
             disabled={props.disabled}
             // eslint-disable-next-line react/forbid-component-props -- style is a passthrough for runtime CSS vars (e.g. download progress); no static module class can express it

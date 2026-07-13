@@ -4,6 +4,7 @@ import BackButton from '@/shared/ui/BackButton.tsx';
 import EditableCoverWithFallback from '@/widgets/PlaylistScreen/components/EditableCoverWithFallback/EditableCoverWithFallback.tsx';
 import EditableAlbumName from '@/widgets/PlaylistScreen/components/EditableAlbumName/EditableAlbumName.tsx';
 import GenreChipsRow from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/components/GenreChipsRow/GenreChipsRow.tsx';
+import PrivatePlaylistIndicator from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/components/PrivatePlaylistIndicator/PrivatePlaylistIndicator.tsx';
 import ArtistOrOwnerRow from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/widgets/ArtistOrOwnerRow/ArtistOrOwnerRow.tsx';
 import PlaylistMetaRow from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/widgets/PlaylistMetaRow/PlaylistMetaRow.tsx';
 import DescriptionSection from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/widgets/DescriptionSection/DescriptionSection.tsx';
@@ -17,6 +18,7 @@ export interface PlaylistInfoSegmentProps {
     trackCount: number;
     onBack: () => void;
     onPlay: () => void;
+    isPlaying: boolean;
     editMode: boolean;
     onEnterEditMode: () => void;
     onExitEditMode: () => void;
@@ -35,7 +37,10 @@ export default function PlaylistInfoSegment(props: PlaylistInfoSegmentProps) {
             <div className={cls.TitleBlock}>
                 <span className={cls.TypeLabel}>{context.playlistIsAlbum ? 'album' : 'playlist'}</span>
 
-                <EditableAlbumName {...context.albumNameProps} />
+                <div className={cls.NameRow}>
+                    <EditableAlbumName {...context.albumNameProps} />
+                    {!playlist.isPublic && <PrivatePlaylistIndicator />}
+                </div>
 
                 <ArtistOrOwnerRow
                     playlistIsAlbum={context.playlistIsAlbum}

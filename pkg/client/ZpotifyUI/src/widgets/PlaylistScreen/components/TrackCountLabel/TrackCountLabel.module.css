@@ -2,28 +2,3 @@
     font-size: var(--font-size-sm);
     color: var(--color-fg-disabled);
 }
-
-.InputWrapper {
-    width: 4rem;
-    height: auto;
-}
-
-.Input {
-    background: transparent;
-    border: none;
-    border-bottom: 0.0625rem solid var(--color-border);
-    color: var(--color-fg-disabled);
-    font-size: var(--font-size-sm);
-    font-family: inherit;
-    padding: 0;
-    width: 4rem;
-    outline: none;
-    box-sizing: border-box;
-    -moz-appearance: textfield;
-
-    &::-webkit-inner-spin-button,
-    &::-webkit-outer-spin-button {
-        appearance: none;
-        margin: 0;
-    }
-}

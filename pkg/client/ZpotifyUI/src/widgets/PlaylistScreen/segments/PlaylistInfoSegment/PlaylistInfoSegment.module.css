@@ -19,6 +19,12 @@
     gap: 0.3rem;
 }
 
+.NameRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .TypeLabel {
     font-size: var(--font-size-xs);
     font-weight: 700;
