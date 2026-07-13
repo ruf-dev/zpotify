@@ -1040,8 +1040,8 @@
     "semantic_hash": "f7bfa1fc664dac40da2ddefe0ef52c55"
   },
   ".claude/settings.json": {
-    "mtime": 1783922428.733503,
-    "ast_hash": "8910b62820f42d5c679d6ee3a44b7c34",
+    "mtime": 1783924846.3069246,
+    "ast_hash": "5421d1fa5081a206d6c64ef711c090d9",
     "semantic_hash": ""
   },
   ".claude/settings.local.json": {
@@ -1235,8 +1235,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1783253489.8189714,
-    "ast_hash": "3b93c3472a98968452026df2f99378d4",
+    "mtime": 1783924863.5599527,
+    "ast_hash": "a02f9a212852556152807994aee5f7d0",
     "semantic_hash": ""
   },
   "config/config.yaml": {
@@ -1785,8 +1785,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/api/PlaylistService.ts": {
-    "mtime": 1783760076.556579,
-    "ast_hash": "06c33d084b6313e8b6876c07314a33c8",
+    "mtime": 1783926449.0285304,
+    "ast_hash": "25844f7290a1b64f263d9538c5a7bb5e",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/components/tabs/SegmentTabBar.tsx": {
@@ -2275,8 +2275,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/PlaylistScreenWidget.tsx": {
-    "mtime": 1783847188.80511,
-    "ast_hash": "3f08e554521747e929567f3a862f66ee",
+    "mtime": 1783926439.1923156,
+    "ast_hash": "c008b4ba2971fb75cee55216deefa723",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/screens/SkeletonLoadScreen/SkeletonLoadScreen.tsx": {
@@ -2695,13 +2695,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/TrackCountLabel/TrackCountLabel.tsx": {
-    "mtime": 1783849834.8621547,
-    "ast_hash": "adc446f4f10f1e7108f1e7c23b093576",
+    "mtime": 1783927062.5326,
+    "ast_hash": "ef5883443fae90756dbed65f0ec59063",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/EditableAlbumName/EditableAlbumName.tsx": {
-    "mtime": 1783847188.8053381,
-    "ast_hash": "c03f8a7c1d71b4d824b51b9171ef9410",
+    "mtime": 1783927052.8682058,
+    "ast_hash": "05ea919c12d92142e919af8dcee5d3fd",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/PlaylistOwnerLabel/PlaylistOwnerLabel.tsx": {
@@ -2715,18 +2715,18 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/widgets/PlaylistControls/PlaylistControls.tsx": {
-    "mtime": 1783842219.8133085,
-    "ast_hash": "300ff77a0413be380627f074fddbbcca",
+    "mtime": 1783926542.5830996,
+    "ast_hash": "714e48bee75ecbe86565978667e3b372",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/PlaylistInfoSegment.tsx": {
-    "mtime": 1783842050.0341847,
-    "ast_hash": "f242691d960af8c838b00aeeb38b9957",
+    "mtime": 1783926426.3162792,
+    "ast_hash": "828948b3f6c267149e6c4fb239aafdbe",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/usePlaylistInfoSegment.ts": {
-    "mtime": 1783842045.6026797,
-    "ast_hash": "21e73d6a17aa23293580a43370a0f795",
+    "mtime": 1783927070.994638,
+    "ast_hash": "0f2ed555d765c369fd69988957538da1",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/NotFoundPlaylistInfoSegment/NotFoundPlaylistInfoSegment.tsx": {
@@ -2965,8 +2965,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/widgets/PlaylistControls/components/PlayButton/PlayButton.tsx": {
-    "mtime": 1783838982.9979908,
-    "ast_hash": "2be838f58238ee12f43555407abb5f8a",
+    "mtime": 1783926373.0472007,
+    "ast_hash": "f2c7eb5f819c8a6502c4696c9e407369",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/widgets/PlaylistControls/components/ShareButton/ShareButton.tsx": {
@@ -2982,6 +2982,36 @@
   "docs/release_notes/v1.0.4.md": {
     "mtime": 1783921702.700696,
     "ast_hash": "11846ed0d54070e5f620bb7e5533f43a",
+    "semantic_hash": ""
+  },
+  ".claude/hooks/validate-commit-msg.py": {
+    "mtime": 1783924835.7725902,
+    "ast_hash": "4492a5e93c556cd76b263e7c7d0fc35f",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/PauseIcon.tsx": {
+    "mtime": 1783926362.0463064,
+    "ast_hash": "b746adda0de58238c91bdf1ea8d38573",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/PrivateLockIcon.tsx": {
+    "mtime": 1783926363.7194927,
+    "ast_hash": "b34b9483d171e9a9d5a9bab3a0c5ae35",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/Widget/PrivateLockWidget/PrivateLockWidget.tsx": {
+    "mtime": 1783926411.8416378,
+    "ast_hash": "0a5254916cedb61abf972f86be3daf7c",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/Widget/PrivateLockWidget/usePrivateLockWidget.ts": {
+    "mtime": 1783926517.3832948,
+    "ast_hash": "6d8a92a799dae7b66f113bba9f13acd5",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/widgets/PlaylistControls/components/InfoControls/InfoControls.tsx": {
+    "mtime": 1783926379.2150035,
+    "ast_hash": "7435f4348eae9e76aef94f77d049647a",
     "semantic_hash": ""
   }
 }
