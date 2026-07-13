@@ -20,6 +20,10 @@
     border-color: rgb(255 255 255 / 11%);
 }
 
+.PillCompact {
+    padding: 0.3125rem;
+}
+
 .AvatarContainer {
     width: 24px;
     height: 24px;
@@ -37,13 +41,32 @@
     font-size: var(--font-size-sm);
 }
 
+@keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-0.5rem); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(0.5rem); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
 .Dropdown {
     position: absolute;
-    top: calc(100% + 6px);
     right: 0;
     background: var(--secondary-bg-color);
     border: 1px solid var(--accent-bg-color);
     border-radius: 0.75em;
     padding: 0.5em;
     min-width: 130px;
+    animation: fadeSlideDown 0.18s ease both;
+}
+
+.DropdownDown {
+    top: calc(100% + 6px);
+}
+
+.DropdownUp {
+    bottom: calc(100% + 6px);
+    animation-name: fadeSlideUp;
 }

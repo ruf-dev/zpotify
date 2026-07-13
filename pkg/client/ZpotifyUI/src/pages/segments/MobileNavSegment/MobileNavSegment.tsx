@@ -1,0 +1,22 @@
+import UserWidget from '@/widgets/User/UserWidget.tsx';
+import SidebarToggleButton from '@/pages/segments/MobileNavSegment/components/SidebarToggleButton/SidebarToggleButton.tsx';
+import MobileSearchButton from '@/pages/segments/MobileNavSegment/components/MobileSearchButton/MobileSearchButton.tsx';
+import MobileCreateButton from '@/pages/segments/MobileNavSegment/components/MobileCreateButton/MobileCreateButton.tsx';
+import { useUISettings } from '@/entities/ui-settings/useUISettings.ts';
+import cls from '@/pages/segments/MobileNavSegment/MobileNavSegment.module.css';
+
+export default function MobileNavSegment() {
+    const showSidebar = useUISettings((state) => state.showSidebar);
+
+    return (
+        <div className={cls.MobileNavContainer}>
+            <div className={cls.LeftGroup}>{showSidebar && <SidebarToggleButton />}</div>
+
+            <div className={cls.RightGroup}>
+                <MobileSearchButton />
+                <MobileCreateButton />
+                <UserWidget dropdownDirection="up" showUsername={false} />
+            </div>
+        </div>
+    );
+}

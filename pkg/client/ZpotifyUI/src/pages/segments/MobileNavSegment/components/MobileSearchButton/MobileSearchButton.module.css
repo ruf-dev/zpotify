@@ -1,0 +1,17 @@
+.MobileSearchButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--mobile-nav-button-size);
+    height: var(--mobile-nav-button-size);
+    border-radius: 50%;
+    border: none;
+    background: var(--color-bg-secondary);
+    color: var(--color-fg-primary);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.MobileSearchButtonContainer:hover {
+    background: var(--color-bg-accent);
+}

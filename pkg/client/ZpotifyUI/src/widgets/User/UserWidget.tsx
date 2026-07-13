@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import cn from 'classnames';
 
 import cls from '@/widgets/User/UserWidget.module.css';
 import useUser from '@/entities/user/useUser.ts';
@@ -7,7 +8,12 @@ import Menu from '@/components/menu/Menu.tsx';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import SettingsDialog from '@/dialogs/Settings/SettingsDialog.tsx';
 
-export default function UserWidget() {
+interface UserWidgetProps {
+    dropdownDirection?: 'down' | 'up';
+    showUsername?: boolean;
+}
+
+export default function UserWidget({ dropdownDirection = 'down', showUsername = true }: UserWidgetProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const widgetRef = useRef<HTMLDivElement>(null);
 
@@ -44,15 +50,15 @@ export default function UserWidget() {
 
     return (
         <div className={cls.UserWidget} ref={widgetRef}>
-            <div className={cls.Pill} onClick={() => setIsMenuOpen((o) => !o)}>
+            <div className={cn(cls.Pill, !showUsername && cls.PillCompact)} onClick={() => setIsMenuOpen((o) => !o)}>
                 <div className={cls.AvatarContainer}>
                     <GeneratedAvatar username={userData.username} pictureUrl={userData.pictureUrl} />
                 </div>
-                <span className={cls.Username}>{userData.username}</span>
+                {showUsername && <span className={cls.Username}>{userData.username}</span>}
             </div>
 
             {isMenuOpen && (
-                <div className={cls.Dropdown}>
+                <div className={cn(cls.Dropdown, dropdownDirection === 'up' ? cls.DropdownUp : cls.DropdownDown)}>
                     <Menu options={menuOptions} />
                 </div>
             )}

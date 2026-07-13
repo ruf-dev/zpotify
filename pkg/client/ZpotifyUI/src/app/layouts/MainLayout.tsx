@@ -9,14 +9,17 @@ import HeaderPart from '@/widgets/Header/HeaderPart.tsx';
 import MusicPlayerWithLogo from '@/widgets/MusicPlayer/MusicPlayerWithLogo.tsx';
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
 import { useUISettings } from '@/entities/ui-settings/useUISettings.ts';
+import { useSidebarUI } from '@/shared/model/sidebarUIStore.ts';
 import SidebarSegment from '@/pages/segments/SidebarSegment/SidebarSegment.tsx';
 import PlayerBarSegment from '@/pages/segments/PlayerBarSegment/PlayerBarSegment.tsx';
+import MobileNavSegment from '@/pages/segments/MobileNavSegment/MobileNavSegment.tsx';
 
 export default function MainLayout() {
     const userData = useUser((state) => state.userData);
     const navigate = useNavigate();
     const showSidebar = useUISettings((state) => state.showSidebar);
     const showPlayerBar = useUISettings((state) => state.showPlayerBar);
+    const isSidebarCollapsed = useSidebarUI((state) => state.isCollapsed);
 
     const audioPlayer = useAudioPlayer();
     const effectiveShowPlayerBar = showPlayerBar && audioPlayer.trackPath !== null;
@@ -34,7 +37,9 @@ export default function MainLayout() {
     return (
         <div className={cls.MainLayoutContainer}>
             <div className={cls.MainArea}>
-                {showSidebar && <SidebarSegment />}
+                {showSidebar && (
+                    <div className={cn(cls.SidebarSpacer, isSidebarCollapsed && cls.SidebarSpacerCollapsed)} />
+                )}
 
                 <div className={cls.CenterContent}>
                     <div className={cls.Content}>
@@ -47,15 +52,20 @@ export default function MainLayout() {
             </div>
 
             <div className={cn(cls.PlayerBarSpacer, effectiveShowPlayerBar && cls.PlayerBarSpacerVisible)} />
+            <div className={cls.MobileNavSpacer} />
             <div className={cn(cls.PlayerBar, effectiveShowPlayerBar && cls.PlayerBarVisible)}>
                 <PlayerBarSegment />
             </div>
+
+            <MobileNavSegment />
 
             {!showPlayerBar && (
                 <div className={cls.Player}>
                     <MusicPlayerWithLogo audioPlayer={audioPlayer} />
                 </div>
             )}
+
+            {showSidebar && <SidebarSegment />}
         </div>
     );
 }

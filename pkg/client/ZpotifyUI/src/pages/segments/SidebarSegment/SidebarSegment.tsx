@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import cn from 'classnames';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +9,7 @@ import SidebarArtistsWidget from '@/pages/segments/SidebarSegment/Widget/Sidebar
 import SidebarPlaylistsWidget from '@/pages/segments/SidebarSegment/Widget/SidebarPlaylistsWidget/SidebarPlaylistsWidget';
 import cls from '@/pages/segments/SidebarSegment/SidebarSegment.module.css';
 import { Path } from '@/app/routing/paths.ts';
+import { useSidebarUI } from '@/shared/model/sidebarUIStore.ts';
 
 type navIdentity = 'home' | 'search' | 'my_uploads';
 
@@ -20,18 +20,19 @@ const NAV_ITEMS = [
 ] as const;
 
 export default function SidebarSegment() {
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const isCollapsed = useSidebarUI((state) => state.isCollapsed);
+    const toggleCollapse = useSidebarUI((state) => state.toggleCollapsed);
+    const isDrawerOpen = useSidebarUI((state) => state.isDrawerOpen);
+    const closeDrawer = useSidebarUI((state) => state.closeDrawer);
+
     const userData = useUser((state) => state.userData);
     const username = userData?.username ?? 'user';
 
     const navigate = useNavigate();
 
-    function toggleCollapse() {
-        setIsCollapsed((prev) => !prev);
-    }
-
     function resolveNavigation(ni: navIdentity): () => void {
         return () => {
+            closeDrawer();
             switch (ni) {
                 case 'home':
                     navigate(Path.HomePage);
@@ -44,20 +45,34 @@ export default function SidebarSegment() {
     }
 
     return (
-        <aside className={cn(cls.SidebarContainer, isCollapsed && cls.SidebarContainerCollapsed)}>
-            <LogoRow isCollapsed={isCollapsed} onToggle={toggleCollapse} />
+        <>
+            <div className={cn(cls.Backdrop, isDrawerOpen && cls.BackdropVisible)} onClick={closeDrawer} />
+            <aside
+                className={cn(
+                    cls.SidebarContainer,
+                    isCollapsed && cls.SidebarContainerCollapsed,
+                    isDrawerOpen && cls.SidebarContainerOpen,
+                )}
+            >
+                <LogoRow isCollapsed={isCollapsed} onToggle={toggleCollapse} />
 
-            <nav className={cls.NavSection}>
-                {NAV_ITEMS.map((item) => (
-                    <NavItem key={item.id} {...item} isCollapsed={isCollapsed} onClick={resolveNavigation(item.id)} />
-                ))}
-            </nav>
+                <nav className={cls.NavSection}>
+                    {NAV_ITEMS.map((item) => (
+                        <NavItem
+                            key={item.id}
+                            {...item}
+                            isCollapsed={isCollapsed}
+                            onClick={resolveNavigation(item.id)}
+                        />
+                    ))}
+                </nav>
 
-            <SidebarArtistsWidget isCollapsed={isCollapsed} />
+                <SidebarArtistsWidget isCollapsed={isCollapsed} />
 
-            <SidebarPlaylistsWidget isCollapsed={isCollapsed} />
+                <SidebarPlaylistsWidget isCollapsed={isCollapsed} />
 
-            <UserPill username={username} isCollapsed={isCollapsed} />
-        </aside>
+                <UserPill username={username} isCollapsed={isCollapsed} />
+            </aside>
+        </>
     );
 }

@@ -27,6 +27,13 @@
     /* Player bar */
     --player-bar-height: 4.25rem;    /* 68px */
 
+    /* Mobile nav bar (portrait only) */
+    --mobile-nav-height: 3.75rem;      /* 60px */
+    --mobile-nav-button-size: 2.75rem; /* 44px — minimum comfortable touch target */
+
+    /* Sidebar */
+    --sidebar-width: 13.625rem;
+
     /* Cached songs accordion */
     --cached-songs-list-max-height: 16rem;
 
