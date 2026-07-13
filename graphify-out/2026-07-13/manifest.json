@@ -1,0 +1,2987 @@
+{
+  "cmd/service/main.go": {
+    "mtime": 1783198327.6750677,
+    "ast_hash": "762532802dbd27df6a3ef0a1b30e43d0",
+    "semantic_hash": "762532802dbd27df6a3ef0a1b30e43d0"
+  },
+  "migrations/20260623000000_enqueue_unverified_audio_parse.sql": {
+    "mtime": 1782188305.1130319,
+    "ast_hash": "93b13ce0c11dbba17a2cd9003b17931a",
+    "semantic_hash": "93b13ce0c11dbba17a2cd9003b17931a"
+  },
+  "migrations/20260607130450_song_base_view.sql": {
+    "mtime": 1780664875.5336893,
+    "ast_hash": "e527e5ba96f7a95365ba85b579dad3be",
+    "semantic_hash": "e527e5ba96f7a95365ba85b579dad3be"
+  },
+  "migrations/20260621000000_jobs_queue.sql": {
+    "mtime": 1782047929.7103925,
+    "ast_hash": "8a9f014a4e62f1d3c0f0055b50c65839",
+    "semantic_hash": "8a9f014a4e62f1d3c0f0055b50c65839"
+  },
+  "migrations/20260603113843_add_link_to_avatar.sql": {
+    "mtime": 1780486749.6074142,
+    "ast_hash": "0cdd5f1dd941e0e68bc247b0006c6399",
+    "semantic_hash": "0cdd5f1dd941e0e68bc247b0006c6399"
+  },
+  "migrations/20260606000000_unique_file_id_in_songs.sql": {
+    "mtime": 1780639255.9093423,
+    "ast_hash": "ab4071e6c87fdd12eb2c5ba3e8561ab2",
+    "semantic_hash": "ab4071e6c87fdd12eb2c5ba3e8561ab2"
+  },
+  "migrations/20250627172238_init.sql": {
+    "mtime": 1776585909.9813237,
+    "ast_hash": "48b9c9902a7b3bdd9831fb3ff3621f13",
+    "semantic_hash": "48b9c9902a7b3bdd9831fb3ff3621f13"
+  },
+  "migrations/20260603130000_max_pending_tracks.sql": {
+    "mtime": 1780514427.6628783,
+    "ast_hash": "e0e7f242213c99488be7cf02efa90bc1",
+    "semantic_hash": "e0e7f242213c99488be7cf02efa90bc1"
+  },
+  "migrations/20250926175004_init_playlists.sql": {
+    "mtime": 1780640324.53758,
+    "ast_hash": "e1d86b140eb1f9330472de27ebdfa5bc",
+    "semantic_hash": "e1d86b140eb1f9330472de27ebdfa5bc"
+  },
+  "migrations/20260608000000_playlists_v1.sql": {
+    "mtime": 1780771827.6255958,
+    "ast_hash": "5b2b8be08d1b1731f035752775553309",
+    "semantic_hash": "5b2b8be08d1b1731f035752775553309"
+  },
+  "migrations/20260604120000_add_album_fields.sql": {
+    "mtime": 1780571193.9566276,
+    "ast_hash": "27c2670321d2f9b83254d46d034e7e40",
+    "semantic_hash": "27c2670321d2f9b83254d46d034e7e40"
+  },
+  "migrations/20260603121302_delete_user_unique_nickname.sql": {
+    "mtime": 1780488804.5912433,
+    "ast_hash": "6b4653d7f54bbf48c7def0e54e4dadf5",
+    "semantic_hash": "6b4653d7f54bbf48c7def0e54e4dadf5"
+  },
+  "migrations/20260427000000_add_file_id_to_playlists_songs_v1.sql": {
+    "mtime": 1777307165.1389055,
+    "ast_hash": "3dde86bef4ecefd569cfedc084c1fb6f",
+    "semantic_hash": "3dde86bef4ecefd569cfedc084c1fb6f"
+  },
+  "migrations/20260420105546_add_verified_to_files_meta.sql": {
+    "mtime": 1776671753.1991198,
+    "ast_hash": "ddf199d84794f860875aab52e9abc214",
+    "semantic_hash": "ddf199d84794f860875aab52e9abc214"
+  },
+  "migrations/20260605000000_add_content_hash_to_files_meta.sql": {
+    "mtime": 1780637170.3248158,
+    "ast_hash": "5da752c3c4dc6120c4d687d5d9ea1307",
+    "semantic_hash": "5da752c3c4dc6120c4d687d5d9ea1307"
+  },
+  "migrations/20251104062203_user_home_segments.sql": {
+    "mtime": 1776623516.7731562,
+    "ast_hash": "885bee321bf383723d7cf3c3dc6edcf4",
+    "semantic_hash": "885bee321bf383723d7cf3c3dc6edcf4"
+  },
+  "migrations/20260518000000_identity_tables.sql": {
+    "mtime": 1780640403.721576,
+    "ast_hash": "430ee716ec33ff3e8489eceb955f4799",
+    "semantic_hash": "430ee716ec33ff3e8489eceb955f4799"
+  },
+  "migrations/20260620000000_garbage_collector.sql": {
+    "mtime": 1781984008.7272375,
+    "ast_hash": "d3642f02fd6dcdf055afd1bec851b583",
+    "semantic_hash": "d3642f02fd6dcdf055afd1bec851b583"
+  },
+  "migrations/20260603000000_locale_enum.sql": {
+    "mtime": 1780486313.8082218,
+    "ast_hash": "ab0421501f17be730b39b16d70b9bda2",
+    "semantic_hash": "ab0421501f17be730b39b16d70b9bda2"
+  },
+  "tests/auth_test.go": {
+    "mtime": 1783198635.5418067,
+    "ast_hash": "7ba10ce763de8ad70eefafccf9dcfa78",
+    "semantic_hash": ""
+  },
+  "tests/main_test.go": {
+    "mtime": 1783198635.506314,
+    "ast_hash": "b3b4a324f75defcb7945c2ab6c1bd053",
+    "semantic_hash": ""
+  },
+  "internal/background/worker.go": {
+    "mtime": 1756448081.3822012,
+    "ast_hash": "0d7d63e861d7eda3c7ed23952c7bf5e3",
+    "semantic_hash": "0d7d63e861d7eda3c7ed23952c7bf5e3"
+  },
+  "internal/background/sessions_gc/task.go": {
+    "mtime": 1783198367.7967808,
+    "ast_hash": "fc07d465e0020d12ccae038f5ee9ed3c",
+    "semantic_hash": ""
+  },
+  "internal/clients/telegram/oidc.go": {
+    "mtime": 1783198939.5294714,
+    "ast_hash": "f425aee32bb4d5f6ffc059829d54f0ee",
+    "semantic_hash": ""
+  },
+  "internal/clients/telegram/api.go": {
+    "mtime": 1783198909.0292513,
+    "ast_hash": "4286b7003f135cdce583f3c22369cbe9",
+    "semantic_hash": ""
+  },
+  "internal/clients/telegram/api_model.go": {
+    "mtime": 1780478401.6539373,
+    "ast_hash": "eb0a05e100b3e22e6fa5109841cc8d41",
+    "semantic_hash": "eb0a05e100b3e22e6fa5109841cc8d41"
+  },
+  "internal/clients/telegram/conn.go": {
+    "mtime": 1780641391.9982047,
+    "ast_hash": "9b8e5f010d13a52e2887b8937dcb8ed1",
+    "semantic_hash": "9b8e5f010d13a52e2887b8937dcb8ed1"
+  },
+  "internal/clients/sqldb/postgres.go": {
+    "mtime": 1751044929.1947365,
+    "ast_hash": "d1663ed1ee789245c452011daa836cc3",
+    "semantic_hash": "d1663ed1ee789245c452011daa836cc3"
+  },
+  "internal/clients/sqldb/conn.go": {
+    "mtime": 1783198396.5596716,
+    "ast_hash": "3eb7e41a9427101647e9c55d703d924c",
+    "semantic_hash": "3eb7e41a9427101647e9c55d703d924c"
+  },
+  "internal/middleware/log.go": {
+    "mtime": 1783199183.2375517,
+    "ast_hash": "ff64450ed029e334b2c3db1d8234a637",
+    "semantic_hash": ""
+  },
+  "internal/middleware/cors.go": {
+    "mtime": 1777141208.769425,
+    "ast_hash": "33fe1d0083728930442d597bc7b808c7",
+    "semantic_hash": "33fe1d0083728930442d597bc7b808c7"
+  },
+  "internal/middleware/trace.go": {
+    "mtime": 1781896573.6830854,
+    "ast_hash": "d0dcd5c700f274c7e26024114d3def7e",
+    "semantic_hash": "d0dcd5c700f274c7e26024114d3def7e"
+  },
+  "internal/middleware/panic.go": {
+    "mtime": 1783199183.2346137,
+    "ast_hash": "2ad1526c2b49c246b5391712892a1a32",
+    "semantic_hash": ""
+  },
+  "internal/middleware/auth_interceptor.go": {
+    "mtime": 1783199183.2299104,
+    "ast_hash": "dbb07f0412074715d8a82a6d004c54a0",
+    "semantic_hash": ""
+  },
+  "internal/middleware/otel_hook.go": {
+    "mtime": 1781893520.803056,
+    "ast_hash": "9b6d325057a424b33ef6ef0a9104bc3b",
+    "semantic_hash": "9b6d325057a424b33ef6ef0a9104bc3b"
+  },
+  "internal/middleware/user_context/context.go": {
+    "mtime": 1775242757.851794,
+    "ast_hash": "80fd039c1a5c9ac2b940226415b6fede",
+    "semantic_hash": "80fd039c1a5c9ac2b940226415b6fede"
+  },
+  "internal/transport/grpc.go": {
+    "mtime": 1783199705.932967,
+    "ast_hash": "d76a7392c3fe182f6280a23353d475cb",
+    "semantic_hash": "d76a7392c3fe182f6280a23353d475cb"
+  },
+  "internal/transport/http.go": {
+    "mtime": 1782414658.1209013,
+    "ast_hash": "40d14837472326776503113466cbe786",
+    "semantic_hash": "40d14837472326776503113466cbe786"
+  },
+  "internal/transport/manager.go": {
+    "mtime": 1782414658.1209848,
+    "ast_hash": "e9396f1c0ab5c45ec93d1ec4f7347d58",
+    "semantic_hash": "e9396f1c0ab5c45ec93d1ec4f7347d58"
+  },
+  "internal/transport/ui/ui.go": {
+    "mtime": 1783196066.5237138,
+    "ast_hash": "e04c2394fc4086e49a37b2fb9c6713f5",
+    "semantic_hash": ""
+  },
+  "internal/transport/playlist_api_impl/get_playlist.go": {
+    "mtime": 1783199663.7896967,
+    "ast_hash": "9aa05fdccf66099165f5513c8100e74a",
+    "semantic_hash": ""
+  },
+  "internal/transport/playlist_api_impl/list_playlists.go": {
+    "mtime": 1783759922.94255,
+    "ast_hash": "25f0e0402352b9f7517eff2464d4731c",
+    "semantic_hash": ""
+  },
+  "internal/transport/playlist_api_impl/add_song_to_playlist.go": {
+    "mtime": 1783199663.7829301,
+    "ast_hash": "83bfb4998e3eac67f4653a79cf692deb",
+    "semantic_hash": "83bfb4998e3eac67f4653a79cf692deb"
+  },
+  "internal/transport/playlist_api_impl/list_songs.go": {
+    "mtime": 1783504064.9722629,
+    "ast_hash": "7258e38ab2dc4449ad21bb9ae541bc07",
+    "semantic_hash": ""
+  },
+  "internal/transport/playlist_api_impl/update_playlist.go": {
+    "mtime": 1783759922.9427276,
+    "ast_hash": "c658296e45ebcda08115a074c13816d8",
+    "semantic_hash": ""
+  },
+  "internal/transport/playlist_api_impl/create_playlist.go": {
+    "mtime": 1783759922.9423463,
+    "ast_hash": "2d39cc74dfc0c7b91cb5491d4748273e",
+    "semantic_hash": ""
+  },
+  "internal/transport/playlist_api_impl/impl.go": {
+    "mtime": 1783199663.7901993,
+    "ast_hash": "2a2bf58362f1249cf34f036efd2dfa22",
+    "semantic_hash": "2a2bf58362f1249cf34f036efd2dfa22"
+  },
+  "internal/transport/auth_api_impl/auth_methods.go": {
+    "mtime": 1781856848.1020253,
+    "ast_hash": "739d800e16681359c890bd9c29d2e7a3",
+    "semantic_hash": "739d800e16681359c890bd9c29d2e7a3"
+  },
+  "internal/transport/auth_api_impl/logout.go": {
+    "mtime": 1783198770.6340396,
+    "ast_hash": "571f90df4923f32560db14fcb5842636",
+    "semantic_hash": "571f90df4923f32560db14fcb5842636"
+  },
+  "internal/transport/auth_api_impl/auth.go": {
+    "mtime": 1783198763.6463332,
+    "ast_hash": "8644e25a2f1c0082e56d20afd0875e47",
+    "semantic_hash": "8644e25a2f1c0082e56d20afd0875e47"
+  },
+  "internal/transport/auth_api_impl/refresh.go": {
+    "mtime": 1783198772.818264,
+    "ast_hash": "39b748092d7e166bea3ae682835b8337",
+    "semantic_hash": "39b748092d7e166bea3ae682835b8337"
+  },
+  "internal/transport/auth_api_impl/impl.go": {
+    "mtime": 1783198767.1025813,
+    "ast_hash": "1a8b0aaae2b7f1088913db44fba1b292",
+    "semantic_hash": "1a8b0aaae2b7f1088913db44fba1b292"
+  },
+  "internal/transport/zpotify_api_impl/auth_methods.go": {
+    "mtime": 1783199700.702995,
+    "ast_hash": "8d9b9bb5cd5a71611e0887d0139b9458",
+    "semantic_hash": "8d9b9bb5cd5a71611e0887d0139b9458"
+  },
+  "internal/transport/zpotify_api_impl/list_songs.go": {
+    "mtime": 1783199743.2295465,
+    "ast_hash": "5c89f7c360454c4375ca12ab5adf77f4",
+    "semantic_hash": ""
+  },
+  "internal/transport/zpotify_api_impl/playlist_create.go": {
+    "mtime": 1783199700.703878,
+    "ast_hash": "95903929a7f94b6d9a3cb5bb095f0dcc",
+    "semantic_hash": "95903929a7f94b6d9a3cb5bb095f0dcc"
+  },
+  "internal/transport/zpotify_api_impl/playlist_get.go": {
+    "mtime": 1783199700.7043555,
+    "ast_hash": "be08940e56a8db36c2edfa0c651ca600",
+    "semantic_hash": "be08940e56a8db36c2edfa0c651ca600"
+  },
+  "internal/transport/zpotify_api_impl/impl.go": {
+    "mtime": 1783198581.2439716,
+    "ast_hash": "a38545b1ace0a439f2af07ab383a6383",
+    "semantic_hash": "a38545b1ace0a439f2af07ab383a6383"
+  },
+  "internal/transport/song_api_impl/update_song.go": {
+    "mtime": 1783759922.943856,
+    "ast_hash": "ef53b9030b2e3f48a7667744e2bdb797",
+    "semantic_hash": ""
+  },
+  "internal/transport/song_api_impl/batch_create_song.go": {
+    "mtime": 1783759922.9429395,
+    "ast_hash": "10cd1a86b42accf6a2517f77d96d628f",
+    "semantic_hash": ""
+  },
+  "internal/transport/song_api_impl/get_song.go": {
+    "mtime": 1783759922.9436855,
+    "ast_hash": "cfbd8680d250186c93471a553811a322",
+    "semantic_hash": ""
+  },
+  "internal/transport/song_api_impl/create_song.go": {
+    "mtime": 1783759922.9431856,
+    "ast_hash": "fcfec34d8762abdb4890146b456ca9cc",
+    "semantic_hash": ""
+  },
+  "internal/transport/song_api_impl/impl.go": {
+    "mtime": 1783199679.2624958,
+    "ast_hash": "8eb81b803b580c09545696b8f91d5407",
+    "semantic_hash": "8eb81b803b580c09545696b8f91d5407"
+  },
+  "internal/transport/user_api_impl/user_settings.go": {
+    "mtime": 1783198658.1288753,
+    "ast_hash": "7b18054ff643827d1352c8388cf494df",
+    "semantic_hash": ""
+  },
+  "internal/transport/user_api_impl/user_me.go": {
+    "mtime": 1783198696.3004081,
+    "ast_hash": "19a04943e8538e3b5c12a0f4b748588c",
+    "semantic_hash": ""
+  },
+  "internal/transport/user_api_impl/impl.go": {
+    "mtime": 1783198700.954753,
+    "ast_hash": "462e4e8e18eb41b040049d6c5066b6ae",
+    "semantic_hash": "462e4e8e18eb41b040049d6c5066b6ae"
+  },
+  "internal/transport/telegram/listener.go": {
+    "mtime": 1783198720.578303,
+    "ast_hash": "66a76a0206760d25bbf48c90346319ba",
+    "semantic_hash": "66a76a0206760d25bbf48c90346319ba"
+  },
+  "internal/transport/telegram/default_handler/handler.go": {
+    "mtime": 1783198794.2473052,
+    "ast_hash": "dc82d1b28d83a1173c375567f2208be6",
+    "semantic_hash": ""
+  },
+  "internal/transport/telegram/start/handler.go": {
+    "mtime": 1783198730.139423,
+    "ast_hash": "4716fb56dfd020645ae43152374e390b",
+    "semantic_hash": "4716fb56dfd020645ae43152374e390b"
+  },
+  "internal/transport/telegram/add/audio.go": {
+    "mtime": 1783198743.578128,
+    "ast_hash": "b7d00b4bd9e296fc926d9cdfbb102bd9",
+    "semantic_hash": "b7d00b4bd9e296fc926d9cdfbb102bd9"
+  },
+  "internal/transport/wapi/upload.go": {
+    "mtime": 1783198635.5397058,
+    "ast_hash": "39549864565a75a4050e887eacae0347",
+    "semantic_hash": ""
+  },
+  "internal/transport/wapi/server.go": {
+    "mtime": 1775991195.4268568,
+    "ast_hash": "0f517f9d7eafec0fef9e8a9b99ca0072",
+    "semantic_hash": "0f517f9d7eafec0fef9e8a9b99ca0072"
+  },
+  "internal/transport/wapi/common.go": {
+    "mtime": 1783198635.4920003,
+    "ast_hash": "7ed89d7bf00c6169432539371e2d6dc9",
+    "semantic_hash": ""
+  },
+  "internal/transport/wapi/get_audio.go": {
+    "mtime": 1783198880.1354504,
+    "ast_hash": "a47edc7e058c75c337847b599f082a30",
+    "semantic_hash": ""
+  },
+  "internal/transport/file_api_impl/check_files_by_hashes.go": {
+    "mtime": 1783198783.3069131,
+    "ast_hash": "ade9a5b2712f5ced60e8f1e841c8229f",
+    "semantic_hash": "ade9a5b2712f5ced60e8f1e841c8229f"
+  },
+  "internal/transport/file_api_impl/get_file.go": {
+    "mtime": 1783199485.63729,
+    "ast_hash": "aebece4a3c490c86f59b5d510bd6e359",
+    "semantic_hash": "aebece4a3c490c86f59b5d510bd6e359"
+  },
+  "internal/transport/file_api_impl/list_uploaded_files.go": {
+    "mtime": 1783199729.2286267,
+    "ast_hash": "b2a6177f5e7b7ae9d0980ece447006cc",
+    "semantic_hash": ""
+  },
+  "internal/transport/file_api_impl/impl.go": {
+    "mtime": 1783198787.3335776,
+    "ast_hash": "51bac1d0ce8cac7800c4d09aca9092cd",
+    "semantic_hash": "51bac1d0ce8cac7800c4d09aca9092cd"
+  },
+  "internal/transport/artists_api_impl/list_artist.go": {
+    "mtime": 1783512213.7143557,
+    "ast_hash": "86d6a734470d6b9a0ca3ba6d900ead90",
+    "semantic_hash": ""
+  },
+  "internal/transport/artists_api_impl/create_artist.go": {
+    "mtime": 1783198752.161133,
+    "ast_hash": "78ecb741bc413f1d483abf9a912a8a27",
+    "semantic_hash": "78ecb741bc413f1d483abf9a912a8a27"
+  },
+  "internal/transport/artists_api_impl/impl.go": {
+    "mtime": 1783198757.9691634,
+    "ast_hash": "e026a6674f2341a67053118987f91db7",
+    "semantic_hash": "e026a6674f2341a67053118987f91db7"
+  },
+  "internal/app/custom.go": {
+    "mtime": 1783198636.141079,
+    "ast_hash": "5b31cc3ed6eba68726df52917fe3ced0",
+    "semantic_hash": ""
+  },
+  "internal/app/config.go": {
+    "mtime": 1782414658.9936662,
+    "ast_hash": "d6b7acfe89603d3c385bb48d3a21b9c9",
+    "semantic_hash": "d6b7acfe89603d3c385bb48d3a21b9c9"
+  },
+  "internal/app/server.go": {
+    "mtime": 1783198878.5314717,
+    "ast_hash": "516cb4aa4a23570c2201048cf9467071",
+    "semantic_hash": ""
+  },
+  "internal/app/data_sources.go": {
+    "mtime": 1782414658.9938378,
+    "ast_hash": "925496b292a6902dad76339eb4b0831a",
+    "semantic_hash": "925496b292a6902dad76339eb4b0831a"
+  },
+  "internal/app/app.go": {
+    "mtime": 1783198878.5292344,
+    "ast_hash": "068c616fb3bf6fdd5b1d0baf3f1d7e7f",
+    "semantic_hash": ""
+  },
+  "internal/app/otel.go": {
+    "mtime": 1781880588.628459,
+    "ast_hash": "b50305d0edca416a4aad2964f52d8c67",
+    "semantic_hash": "b50305d0edca416a4aad2964f52d8c67"
+  },
+  "internal/config/servers.go": {
+    "mtime": 1782414658.9945908,
+    "ast_hash": "bd289d918f417950491034b290842f24",
+    "semantic_hash": "bd289d918f417950491034b290842f24"
+  },
+  "internal/config/data_sources.go": {
+    "mtime": 1782414658.9941769,
+    "ast_hash": "20a34a30d8763a26e3fc73785813b035",
+    "semantic_hash": "20a34a30d8763a26e3fc73785813b035"
+  },
+  "internal/config/environment.go": {
+    "mtime": 1782414658.9943147,
+    "ast_hash": "858dff8950f3155493fd90993457dbbe",
+    "semantic_hash": "858dff8950f3155493fd90993457dbbe"
+  },
+  "internal/config/load.go": {
+    "mtime": 1782414658.994429,
+    "ast_hash": "502cd52accfb292d8ad5d97af140fa24",
+    "semantic_hash": "502cd52accfb292d8ad5d97af140fa24"
+  },
+  "internal/user_errors/auth.go": {
+    "mtime": 1783197320.770535,
+    "ast_hash": "10e958d1a3c0a6945160e8bdffda90b3",
+    "semantic_hash": ""
+  },
+  "internal/user_errors/errors.go": {
+    "mtime": 1776610158.563054,
+    "ast_hash": "760d2e2274ad185aa6681d3677026a2a",
+    "semantic_hash": "760d2e2274ad185aa6681d3677026a2a"
+  },
+  "internal/async/pool.go": {
+    "mtime": 1782036831.7056684,
+    "ast_hash": "f1691c28d163546d7457b37b9ee73771",
+    "semantic_hash": "f1691c28d163546d7457b37b9ee73771"
+  },
+  "internal/async/provider/pgqueue/provider.go": {
+    "mtime": 1783198262.641271,
+    "ast_hash": "79476d44cf627b2368254434416f799b",
+    "semantic_hash": ""
+  },
+  "internal/async/handlers/audio_parser/handler.go": {
+    "mtime": 1783198106.0547311,
+    "ast_hash": "b715a5e1c533d8b9cb288174ed7c0b49",
+    "semantic_hash": "b715a5e1c533d8b9cb288174ed7c0b49"
+  },
+  "internal/async/handlers/garbage_collector/handler.go": {
+    "mtime": 1783198110.1984968,
+    "ast_hash": "0cfe4a8427ec9c60586f664ceb227dd9",
+    "semantic_hash": "0cfe4a8427ec9c60586f664ceb227dd9"
+  },
+  "internal/utils/closer.go": {
+    "mtime": 1776761845.5220456,
+    "ast_hash": "c2e06c8b92a51f2d8c8a1e68b121912d",
+    "semantic_hash": "c2e06c8b92a51f2d8c8a1e68b121912d"
+  },
+  "internal/storage/storage.go": {
+    "mtime": 1783759922.9421692,
+    "ast_hash": "bbad275d1ededbbc1c8a713637671fe5",
+    "semantic_hash": ""
+  },
+  "internal/storage/errors.go": {
+    "mtime": 1780597752.4921215,
+    "ast_hash": "bb91564e4ef67991c9230dfac8c37d0f",
+    "semantic_hash": "bb91564e4ef67991c9230dfac8c37d0f"
+  },
+  "internal/storage/files_cache/file.go": {
+    "mtime": 1783199338.202268,
+    "ast_hash": "c58c5ef3c06064451eb4ee51d2035312",
+    "semantic_hash": ""
+  },
+  "internal/storage/files_cache/files_cache.go": {
+    "mtime": 1759342497.4557097,
+    "ast_hash": "86aa91e9c64eaf1c82cf19b45d551e99",
+    "semantic_hash": "86aa91e9c64eaf1c82cf19b45d551e99"
+  },
+  "internal/storage/pg/user.go": {
+    "mtime": 1783199406.0398924,
+    "ast_hash": "2499cdb88acf17fc701fecd6f2eb63c2",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/user_settings.go": {
+    "mtime": 1783199408.9700851,
+    "ast_hash": "15b590634338c56a80293dc862e9021b",
+    "semantic_hash": "15b590634338c56a80293dc862e9021b"
+  },
+  "internal/storage/pg/identity_telegram.go": {
+    "mtime": 1783199368.526587,
+    "ast_hash": "dd288f813d26c2bdb10726cabad292d5",
+    "semantic_hash": "dd288f813d26c2bdb10726cabad292d5"
+  },
+  "internal/storage/pg/session.go": {
+    "mtime": 1783199442.8111348,
+    "ast_hash": "d3c4b213d3576732f2404f410fe303a2",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/storage.go": {
+    "mtime": 1783199442.8037684,
+    "ast_hash": "a6f2ab8d9c7cd9669eeea5b1798bceda",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/playlist.go": {
+    "mtime": 1783759922.9413989,
+    "ast_hash": "133bf01ceda46fd46d10eb256c40dd42",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/jobs.go": {
+    "mtime": 1783199375.0344234,
+    "ast_hash": "2242344f73991b1622cbff217aa7367a",
+    "semantic_hash": "2242344f73991b1622cbff217aa7367a"
+  },
+  "internal/storage/pg/artists.go": {
+    "mtime": 1783512238.2016842,
+    "ast_hash": "413869bd7ee4c92d7c03621c56d71680",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/identity_zpotify.go": {
+    "mtime": 1783195603.6624763,
+    "ast_hash": "1d4fcd9a0cc22891338288fab960ae4d",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/song.go": {
+    "mtime": 1783759922.9419484,
+    "ast_hash": "2c45d3c7bd339ffdd533d3b59b38044a",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/file_meta.go": {
+    "mtime": 1783196326.753786,
+    "ast_hash": "c45857d5f5f929e92ca001f5646e08d8",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/models.go": {
+    "mtime": 1783759922.9401438,
+    "ast_hash": "dd03d819de2f4f4e6efe983d1ee72813",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/user_playlist.sql.go": {
+    "mtime": 1783759401.799923,
+    "ast_hash": "f838f260fc016294e23048d5e74cbc21",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/playlist.sql.go": {
+    "mtime": 1783759922.9403493,
+    "ast_hash": "6b92a6d7d6e46672ab02a26a4f59c6b7",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/db.go": {
+    "mtime": 1783759401.7967954,
+    "ast_hash": "3e80311b60671ad666f99090dcaa4b65",
+    "semantic_hash": "3e80311b60671ad666f99090dcaa4b65"
+  },
+  "internal/storage/pg/generated/user_session.sql.go": {
+    "mtime": 1783759401.7956069,
+    "ast_hash": "88e9de5d488eca009a9544f32a23b56b",
+    "semantic_hash": "88e9de5d488eca009a9544f32a23b56b"
+  },
+  "internal/storage/pg/generated/user_settings.sql.go": {
+    "mtime": 1783759401.7967343,
+    "ast_hash": "0f541912f183b57e09ea4d59377fc9a4",
+    "semantic_hash": "0f541912f183b57e09ea4d59377fc9a4"
+  },
+  "internal/storage/pg/generated/user.sql.go": {
+    "mtime": 1783759401.796666,
+    "ast_hash": "2ed4a5b717e0bc1e718a26f113d537c2",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/querier.go": {
+    "mtime": 1783759922.940531,
+    "ast_hash": "ba18b675cec5b92463fa7d65d3380f21",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/identity_telegram.sql.go": {
+    "mtime": 1783759401.7954648,
+    "ast_hash": "8039c53bd72becdc2f71b59a5f64dfe1",
+    "semantic_hash": "8039c53bd72becdc2f71b59a5f64dfe1"
+  },
+  "internal/storage/pg/generated/song.sql.go": {
+    "mtime": 1783759401.7943065,
+    "ast_hash": "219070929ec1e42d35eebeaeef5d60eb",
+    "semantic_hash": "219070929ec1e42d35eebeaeef5d60eb"
+  },
+  "internal/storage/pg/generated/user_permissions.sql.go": {
+    "mtime": 1783759401.7943661,
+    "ast_hash": "e951378b8ac8170ab8516392d7e8e645",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/identity_zpotify.sql.go": {
+    "mtime": 1783759401.7955341,
+    "ast_hash": "6a83be903d5e98a93425adfda55e9872",
+    "semantic_hash": "6a83be903d5e98a93425adfda55e9872"
+  },
+  "internal/storage/pg/generated/file.sql.go": {
+    "mtime": 1783759401.7982552,
+    "ast_hash": "43998bb955b67655b18f0ffe6963da2b",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/songs_q/models.go": {
+    "mtime": 1783759922.940748,
+    "ast_hash": "43fc5ca5907b2b9282987c162f0ec10f",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/songs_q/db.go": {
+    "mtime": 1783759401.7974777,
+    "ast_hash": "41c1992fe3cd3ac629d3d3280f4009ab",
+    "semantic_hash": "41c1992fe3cd3ac629d3d3280f4009ab"
+  },
+  "internal/storage/pg/generated/songs_q/songs.sql.go": {
+    "mtime": 1783759922.9411235,
+    "ast_hash": "22e9eb7561547d58a235f5ef29386c17",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/songs_q/querier.go": {
+    "mtime": 1783759922.9409227,
+    "ast_hash": "770824b1fa4a71406519ac30e0916601",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/playlist_q/models.go": {
+    "mtime": 1775810390.4692798,
+    "ast_hash": "f322e4666c08e893f515bd8598392603",
+    "semantic_hash": "f322e4666c08e893f515bd8598392603"
+  },
+  "internal/storage/pg/generated/playlist_q/db.go": {
+    "mtime": 1775810390.4691067,
+    "ast_hash": "81843046376ddf4410fc87e1a5a6c4ee",
+    "semantic_hash": "81843046376ddf4410fc87e1a5a6c4ee"
+  },
+  "internal/storage/pg/generated/playlist_q/view.sql.go": {
+    "mtime": 1775810390.4689193,
+    "ast_hash": "2662e96ee6b4428b1c3c124e34bc5c04",
+    "semantic_hash": "2662e96ee6b4428b1c3c124e34bc5c04"
+  },
+  "internal/storage/pg/generated/playlist_q/querier.go": {
+    "mtime": 1775810390.4694507,
+    "ast_hash": "6c86570483be1337447f47ec3546e6ca",
+    "semantic_hash": "6c86570483be1337447f47ec3546e6ca"
+  },
+  "internal/storage/pg/generated/file_meta_q/models.go": {
+    "mtime": 1783759922.939713,
+    "ast_hash": "33f5ef6087e5ac020e85136458cbaed2",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/file_meta_q/db.go": {
+    "mtime": 1783759401.7972307,
+    "ast_hash": "c32bcb4d3319011b8fa7ab0c564714c9",
+    "semantic_hash": "c32bcb4d3319011b8fa7ab0c564714c9"
+  },
+  "internal/storage/pg/generated/file_meta_q/querier.go": {
+    "mtime": 1783759401.7934148,
+    "ast_hash": "a745902eebc9d3f5f1907484ba7efcfd",
+    "semantic_hash": "a745902eebc9d3f5f1907484ba7efcfd"
+  },
+  "internal/storage/pg/generated/file_meta_q/file_meta.sql.go": {
+    "mtime": 1783759401.798681,
+    "ast_hash": "f3f5f244c4105bee1aebf044a0f7c97f",
+    "semantic_hash": "f3f5f244c4105bee1aebf044a0f7c97f"
+  },
+  "internal/storage/pg/generated/jobs_q/models.go": {
+    "mtime": 1783759922.939942,
+    "ast_hash": "30cdb73ac8a6b72cf75ae5d88d12fbad",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/jobs_q/db.go": {
+    "mtime": 1783759401.7991676,
+    "ast_hash": "6491326bfe46030aef3f3aed5d3e4d5f",
+    "semantic_hash": "6491326bfe46030aef3f3aed5d3e4d5f"
+  },
+  "internal/storage/pg/generated/jobs_q/jobs.sql.go": {
+    "mtime": 1783759401.7993703,
+    "ast_hash": "fa94997a62792432da1ec0e185ce5609",
+    "semantic_hash": "fa94997a62792432da1ec0e185ce5609"
+  },
+  "internal/storage/pg/generated/jobs_q/querier.go": {
+    "mtime": 1783759401.7972968,
+    "ast_hash": "7c3ecef72c28c5b3a38b1560cca07584",
+    "semantic_hash": "7c3ecef72c28c5b3a38b1560cca07584"
+  },
+  "internal/storage/pg/queries/identity_zpotify.sql": {
+    "mtime": 1779130262.5583284,
+    "ast_hash": "3fe3224891b79b911df30b533e499e46",
+    "semantic_hash": "3fe3224891b79b911df30b533e499e46"
+  },
+  "internal/storage/pg/queries/user_session.sql": {
+    "mtime": 1775239809.391543,
+    "ast_hash": "b6d465d7d688319b3251df923c1f6081",
+    "semantic_hash": "b6d465d7d688319b3251df923c1f6081"
+  },
+  "internal/storage/pg/queries/playlist.sql": {
+    "mtime": 1783759922.9415743,
+    "ast_hash": "8dd2cd93d6348ac720bc0a6d9497b488",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/queries/song.sql": {
+    "mtime": 1780664786.415454,
+    "ast_hash": "81a71b35c058f06e6abb10a0c376a87a",
+    "semantic_hash": "81a71b35c058f06e6abb10a0c376a87a"
+  },
+  "internal/storage/pg/queries/file.sql": {
+    "mtime": 1782932989.6953266,
+    "ast_hash": "c83ebdc5e344741d84897d94c3a0a404",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/queries/user_playlist.sql": {
+    "mtime": 1783017850.8910947,
+    "ast_hash": "cefa4615b13affe3ceeced314bf95645",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/queries/user.sql": {
+    "mtime": 1783017850.8909216,
+    "ast_hash": "cbc8cee6d190fdc76e977e9fd37f3e15",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/queries/identity_telegram.sql": {
+    "mtime": 1780480237.2390845,
+    "ast_hash": "4786d4153b87d745062f6de6dd1fd63a",
+    "semantic_hash": "4786d4153b87d745062f6de6dd1fd63a"
+  },
+  "internal/storage/pg/queries/user_permissions.sql": {
+    "mtime": 1782932989.695664,
+    "ast_hash": "eb696e01d619c0315b6d4957cc708842",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/queries/user_settings.sql": {
+    "mtime": 1780488127.4957373,
+    "ast_hash": "1ce249f3d283ee6b45d46836288a7e4a",
+    "semantic_hash": "1ce249f3d283ee6b45d46836288a7e4a"
+  },
+  "internal/storage/pg/queries/songs/songs.sql": {
+    "mtime": 1783759922.941754,
+    "ast_hash": "bdc0f7ce4134cae52e8e2e97e1c3ac59",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/queries/playlist/view.sql": {
+    "mtime": 1775628060.2273414,
+    "ast_hash": "d97a3997b738e6d104934245cac97902",
+    "semantic_hash": "d97a3997b738e6d104934245cac97902"
+  },
+  "internal/storage/pg/queries/jobs/jobs.sql": {
+    "mtime": 1782047953.4005551,
+    "ast_hash": "27fcaab93973774ed49669f0f7404596",
+    "semantic_hash": "27fcaab93973774ed49669f0f7404596"
+  },
+  "internal/storage/pg/queries/file_meta/file_meta.sql": {
+    "mtime": 1782062617.6888092,
+    "ast_hash": "530849ad62863222801d4b958d1581e6",
+    "semantic_hash": "530849ad62863222801d4b958d1581e6"
+  },
+  "internal/storage/file_storage_providers/storage.go": {
+    "mtime": 1783199295.7455056,
+    "ast_hash": "e79690e2b354920da5ae80e41dcd47aa",
+    "semantic_hash": "e79690e2b354920da5ae80e41dcd47aa"
+  },
+  "internal/storage/tx_manager/tx_manager.go": {
+    "mtime": 1783199428.893775,
+    "ast_hash": "198da2d87ea47feb62bf88a3c9736d1e",
+    "semantic_hash": "198da2d87ea47feb62bf88a3c9736d1e"
+  },
+  "internal/api/server/zpotify_api/zpotify_service_user.pb.gw.go": {
+    "mtime": 1783759356.7264972,
+    "ast_hash": "9288875f525ec99f302acfd65da5855c",
+    "semantic_hash": "9288875f525ec99f302acfd65da5855c"
+  },
+  "internal/api/server/zpotify_api/zpotify_service_api.pb.go": {
+    "mtime": 1783759356.721378,
+    "ast_hash": "8f294772e2b52ee76388e35e2cdb333f",
+    "semantic_hash": "8f294772e2b52ee76388e35e2cdb333f"
+  },
+  "internal/api/server/zpotify_api/zpotify_service_song.pb.gw.go": {
+    "mtime": 1783759356.726241,
+    "ast_hash": "b6a6a6e71f69c0929dcb30e19fb12134",
+    "semantic_hash": ""
+  },
+  "internal/api/server/zpotify_api/zpotify_service_files.pb.gw.go": {
+    "mtime": 1783759356.7252176,
+    "ast_hash": "764674c92c19e6d736a1e3ef45c23f4b",
+    "semantic_hash": "764674c92c19e6d736a1e3ef45c23f4b"
+  },
+  "internal/api/server/zpotify_api/zpotify_service_api_grpc.pb.go": {
+    "mtime": 1783759356.721907,
+    "ast_hash": "dea161e1ccbd8ad59f345f97fb1141bc",
+    "semantic_hash": "dea161e1ccbd8ad59f345f97fb1141bc"
+  },
+  "internal/api/server/zpotify_api/zpotify_service_auth.pb.gw.go": {
+    "mtime": 1783759356.7227643,
+    "ast_hash": "40d0993e32c2adc36fbd78ac059528e6",
+    "semantic_hash": "40d0993e32c2adc36fbd78ac059528e6"
+  },
+  "internal/api/server/zpotify_api/zpotify_service_api.pb.gw.go": {
+    "mtime": 1783759356.7216988,
+    "ast_hash": "d80eb020f063d4fa60db54599d3fab9b",
+    "semantic_hash": "d80eb020f063d4fa60db54599d3fab9b"
+  },
+  "internal/api/server/zpotify_api/zpotify_common.pb.go": {
+    "mtime": 1783759922.936484,
+    "ast_hash": "3a0463611388110ae3dc83e0df27b50b",
+    "semantic_hash": ""
+  },
+  "internal/api/server/zpotify_api/zpotify_service_auth_grpc.pb.go": {
+    "mtime": 1783759356.7237287,
+    "ast_hash": "287212fb9959f997215ec68d0ec4539f",
+    "semantic_hash": "287212fb9959f997215ec68d0ec4539f"
+  },
+  "internal/api/server/zpotify_api/zpotify_service_file_grpc.pb.go": {
+    "mtime": 1776244779.9270077,
+    "ast_hash": "0875bdb16125ed9f592bc10d40b5ff20",
+    "semantic_hash": "0875bdb16125ed9f592bc10d40b5ff20"
+  },
+  "internal/api/server/zpotify_api/zpotify_service_files.pb.go": {
+    "mtime": 1783759356.725028,
+    "ast_hash": "299901ca21bbc0c1aa70566fbf36caea",
+    "semantic_hash": "299901ca21bbc0c1aa70566fbf36caea"
+  },
+  "internal/api/server/zpotify_api/zpotify_service_files_grpc.pb.go": {
+    "mtime": 1783759356.7253842,
+    "ast_hash": "c9615cb69f1f8c8c1b21285331a1c678",
+    "semantic_hash": "c9615cb69f1f8c8c1b21285331a1c678"
+  },
+  "internal/api/server/zpotify_api/zpotify_service_file.pb.go": {
+    "mtime": 1783199003.5246346,
+    "ast_hash": "9f7511b6270abec284e8b99d6c4250bc",
+    "semantic_hash": "9f7511b6270abec284e8b99d6c4250bc"
+  },
+  "internal/api/server/zpotify_api/zpotify_service_user.pb.go": {
+    "mtime": 1783759356.7263784,
+    "ast_hash": "bb0e89170eb9aa7c8b079768e020b4fe",
+    "semantic_hash": ""
+  },
+  "internal/api/server/zpotify_api/zpotify_user.pb.go": {
+    "mtime": 1783759356.7266533,
+    "ast_hash": "163f9520c8df3902401e6d01bf07d539",
+    "semantic_hash": "163f9520c8df3902401e6d01bf07d539"
+  },
+  "internal/api/server/zpotify_api/zpotify_service_auth.pb.go": {
+    "mtime": 1783759356.7226653,
+    "ast_hash": "23d2bc327d5498567c80671d22d8073d",
+    "semantic_hash": "23d2bc327d5498567c80671d22d8073d"
+  },
+  "internal/api/server/zpotify_api/zpotify_service_playlist_grpc.pb.go": {
+    "mtime": 1783759356.7259953,
+    "ast_hash": "82ffe9fa53d0548254d27d44485dd41e",
+    "semantic_hash": ""
+  },
+  "internal/api/server/zpotify_api/zpotify_service_playlist.pb.gw.go": {
+    "mtime": 1783759356.7259388,
+    "ast_hash": "d4bae44032b102219cf779381f45ee62",
+    "semantic_hash": ""
+  },
+  "internal/api/server/zpotify_api/zpotify_service_artists_grpc.pb.go": {
+    "mtime": 1783759356.7223146,
+    "ast_hash": "5ea1fd484ba596da51b331ab335c5c11",
+    "semantic_hash": ""
+  },
+  "internal/api/server/zpotify_api/zpotify_service_song.pb.go": {
+    "mtime": 1783759922.937035,
+    "ast_hash": "257148529a3f69275d27d4725d51494b",
+    "semantic_hash": ""
+  },
+  "internal/api/server/zpotify_api/zpotify_user_settings.pb.go": {
+    "mtime": 1783759356.7267246,
+    "ast_hash": "932ad6c903a0ad2b2bf68ff1709162dd",
+    "semantic_hash": "932ad6c903a0ad2b2bf68ff1709162dd"
+  },
+  "internal/api/server/zpotify_api/zpotify_service_artists.pb.go": {
+    "mtime": 1783759356.7221599,
+    "ast_hash": "49cb462ab8eb4d62e069a27eb134ca95",
+    "semantic_hash": ""
+  },
+  "internal/api/server/zpotify_api/zpotify_service_song_grpc.pb.go": {
+    "mtime": 1783759356.7262921,
+    "ast_hash": "9b30f9adb50d0ba7ee78e6bd03c7373c",
+    "semantic_hash": ""
+  },
+  "internal/api/server/zpotify_api/zpotify_service_playlist.pb.go": {
+    "mtime": 1783759922.936763,
+    "ast_hash": "01ec5eadcceb4bd5ff6602bcb0dafaff",
+    "semantic_hash": ""
+  },
+  "internal/api/server/zpotify_api/zpotify_service_artists.pb.gw.go": {
+    "mtime": 1783759356.722236,
+    "ast_hash": "2851f93245a6c2ebbb8be44da4f97de2",
+    "semantic_hash": ""
+  },
+  "internal/api/server/zpotify_api/zpotify_service_user_grpc.pb.go": {
+    "mtime": 1783759356.7265842,
+    "ast_hash": "92fa363748deb29993952fff8d6f2093",
+    "semantic_hash": "92fa363748deb29993952fff8d6f2093"
+  },
+  "internal/log/log.go": {
+    "mtime": 1781896558.6089537,
+    "ast_hash": "fabd70b7f363a262440e394e26156525",
+    "semantic_hash": "fabd70b7f363a262440e394e26156525"
+  },
+  "internal/service/service.go": {
+    "mtime": 1783512213.7117126,
+    "ast_hash": "0f42a8148be193bcc807c6c13003a59d",
+    "semantic_hash": ""
+  },
+  "internal/service/v1/file_service.go": {
+    "mtime": 1783199595.5376377,
+    "ast_hash": "094a09097aa469b5bf757bc1ab688a70",
+    "semantic_hash": ""
+  },
+  "internal/service/v1/user_service.go": {
+    "mtime": 1783199270.3605337,
+    "ast_hash": "8ff9dee22b978137247b12985bbbe149",
+    "semantic_hash": ""
+  },
+  "internal/service/v1/song_service.go": {
+    "mtime": 1783759922.9386034,
+    "ast_hash": "07c3a09b196ec23709c8445a31a48104",
+    "semantic_hash": ""
+  },
+  "internal/service/v1/playlist_service.go": {
+    "mtime": 1783759922.9381878,
+    "ast_hash": "66cceb71e51cda7359f0e6494ca1dc18",
+    "semantic_hash": ""
+  },
+  "internal/service/v1/artists_service.go": {
+    "mtime": 1783512213.7119098,
+    "ast_hash": "602ee4ec0e2327096b221d49d4dd34d5",
+    "semantic_hash": ""
+  },
+  "internal/service/v1/auth/auth.go": {
+    "mtime": 1783198981.0781672,
+    "ast_hash": "f85219bd04137c3dd01988fde3ab5a0c",
+    "semantic_hash": ""
+  },
+  "internal/service/v1/auth/session.go": {
+    "mtime": 1783199205.8660831,
+    "ast_hash": "7827d924ef9f13cfdd3e32e136ff6934",
+    "semantic_hash": "7827d924ef9f13cfdd3e32e136ff6934"
+  },
+  "internal/service/v1/auth/login.go": {
+    "mtime": 1783199203.0364559,
+    "ast_hash": "cca709971bc95439bfaac34c02254a52",
+    "semantic_hash": ""
+  },
+  "internal/service/service_errors/errors.go": {
+    "mtime": 1783759922.9379182,
+    "ast_hash": "450cc34433b6d38cbd4125e0d70ccb32",
+    "semantic_hash": ""
+  },
+  "internal/domain/user.go": {
+    "mtime": 1783199113.7783685,
+    "ast_hash": "36fc0efd53e7102bb7ab95d628560939",
+    "semantic_hash": ""
+  },
+  "internal/domain/playlist.go": {
+    "mtime": 1783759922.93773,
+    "ast_hash": "832748a07b5721615f832e0178305744",
+    "semantic_hash": ""
+  },
+  "internal/domain/audio.go": {
+    "mtime": 1783759922.9372687,
+    "ast_hash": "028db1173826b48f34a5887666d5b587",
+    "semantic_hash": ""
+  },
+  "internal/audio_parsers/audio_info.go": {
+    "mtime": 1782923285.0047336,
+    "ast_hash": "501d77621cdeec4d984af0189023c4a2",
+    "semantic_hash": ""
+  },
+  "internal/audio_parsers/mp3.go": {
+    "mtime": 1776762705.7220118,
+    "ast_hash": "ebcfc906f0f0ecbeb0f44d74781cbbf9",
+    "semantic_hash": "ebcfc906f0f0ecbeb0f44d74781cbbf9"
+  },
+  "internal/audio_parsers/flac.go": {
+    "mtime": 1777406776.0165555,
+    "ast_hash": "0b76aee6c9a1574b16fb859194d39922",
+    "semantic_hash": "0b76aee6c9a1574b16fb859194d39922"
+  },
+  "internal/audio_parsers/aac.go": {
+    "mtime": 1777406776.0161161,
+    "ast_hash": "68f878dcff238ea2052d43cfd9d231ca",
+    "semantic_hash": "68f878dcff238ea2052d43cfd9d231ca"
+  },
+  "internal/localization/responses_file.go": {
+    "mtime": 1758653480.9971962,
+    "ast_hash": "6dcda7a479242a3c10ca176e610075ed",
+    "semantic_hash": "6dcda7a479242a3c10ca176e610075ed"
+  },
+  "internal/localization/responses.go": {
+    "mtime": 1783195603.1934633,
+    "ast_hash": "e7c4fd4aae71281bc81842161c0de9c8",
+    "semantic_hash": ""
+  },
+  "internal/localization/locales.go": {
+    "mtime": 1752305917.989119,
+    "ast_hash": "5620278a0fbc9ca021d2fd3743eefb98",
+    "semantic_hash": "5620278a0fbc9ca021d2fd3743eefb98"
+  },
+  "internal/localization/responses_auth.go": {
+    "mtime": 1758653173.7903106,
+    "ast_hash": "3fad7a3c341f87994d23deb724891d93",
+    "semantic_hash": "3fad7a3c341f87994d23deb724891d93"
+  },
+  "internal/localization/manager.go": {
+    "mtime": 1783195604.1497986,
+    "ast_hash": "8a73cd3a332fc5c554692b9375a5723f",
+    "semantic_hash": ""
+  },
+  "internal/localization/responses/en_EN.json": {
+    "mtime": 1758653603.307976,
+    "ast_hash": "23871b2c3d797fbb7beb8d6914a9c943",
+    "semantic_hash": "23871b2c3d797fbb7beb8d6914a9c943"
+  },
+  "internal/localization/responses/ru_RU.json": {
+    "mtime": 1758653577.8820999,
+    "ast_hash": "f7bfa1fc664dac40da2ddefe0ef52c55",
+    "semantic_hash": "f7bfa1fc664dac40da2ddefe0ef52c55"
+  },
+  ".claude/settings.json": {
+    "mtime": 1782981920.5115902,
+    "ast_hash": "715a7f4301a15f2d929c9148be5a15e4",
+    "semantic_hash": ""
+  },
+  ".claude/settings.local.json": {
+    "mtime": 1782931184.1969554,
+    "ast_hash": "a153b94fa71fe08f16e6b35f98dd3ede",
+    "semantic_hash": ""
+  },
+  "examples/http-client.env.json": {
+    "mtime": 1777307265.9431064,
+    "ast_hash": "7a281cdb9908775e7c7d549ae5877853",
+    "semantic_hash": "7a281cdb9908775e7c7d549ae5877853"
+  },
+  "pkg/docs/docs.swagger_ui.go": {
+    "mtime": 1783759897.7131736,
+    "ast_hash": "aa6d55e5455c81c4229cf4e51e797aa6",
+    "semantic_hash": ""
+  },
+  "pkg/docs/swaggers/zpotify_service_auth.swagger.json": {
+    "mtime": 1783759356.718012,
+    "ast_hash": "dcda1cf2abfe71a2506e486e4b15bc7e",
+    "semantic_hash": "dcda1cf2abfe71a2506e486e4b15bc7e"
+  },
+  "pkg/docs/swaggers/zpotify_api_service.swagger.json": {
+    "mtime": 1775505264.5165484,
+    "ast_hash": "06df79697b69d295d93d14ff1012431d",
+    "semantic_hash": "06df79697b69d295d93d14ff1012431d"
+  },
+  "pkg/docs/swaggers/zpotify_auth_service.swagger.json": {
+    "mtime": 1775505264.5169737,
+    "ast_hash": "2f7541663b2751a4435151a492273330",
+    "semantic_hash": "2f7541663b2751a4435151a492273330"
+  },
+  "pkg/docs/swaggers/zpotify_user.swagger.json": {
+    "mtime": 1783759356.7200522,
+    "ast_hash": "265e1cc1dd81d2167a559126e4aafa5e",
+    "semantic_hash": "265e1cc1dd81d2167a559126e4aafa5e"
+  },
+  "pkg/docs/swaggers/zpotify_service_api.swagger.json": {
+    "mtime": 1783759356.7167037,
+    "ast_hash": "cf033b2f960dd4307ee9ce7f1fe489b3",
+    "semantic_hash": "cf033b2f960dd4307ee9ce7f1fe489b3"
+  },
+  "pkg/docs/swaggers/zpotify_user_settings.swagger.json": {
+    "mtime": 1783759356.7203891,
+    "ast_hash": "926c21db044a31166a68c4bb66256fcd",
+    "semantic_hash": "926c21db044a31166a68c4bb66256fcd"
+  },
+  "pkg/docs/swaggers/zpotify_api.swagger.json": {
+    "mtime": 1775452725.2739909,
+    "ast_hash": "c01a625a0d919ce9f3d40634219640cb",
+    "semantic_hash": "c01a625a0d919ce9f3d40634219640cb"
+  },
+  "pkg/docs/swaggers/zpotify_service_artists.swagger.json": {
+    "mtime": 1783759356.7170646,
+    "ast_hash": "a5f5763d3eb3e884457eb9049f6cce17",
+    "semantic_hash": ""
+  },
+  "pkg/docs/swaggers/zpotify_service_user.swagger.json": {
+    "mtime": 1783759356.7197983,
+    "ast_hash": "cd75dbd94cfdf335e6fb4361cfb363ad",
+    "semantic_hash": ""
+  },
+  "pkg/docs/swaggers/zpotify_common.swagger.json": {
+    "mtime": 1783759356.7159836,
+    "ast_hash": "1be98415490d6bf1f26764d448e57212",
+    "semantic_hash": "1be98415490d6bf1f26764d448e57212"
+  },
+  "pkg/docs/swaggers/zpotify_service_playlist.swagger.json": {
+    "mtime": 1783759922.944054,
+    "ast_hash": "2d294165e480e62f066da35d847fe63f",
+    "semantic_hash": ""
+  },
+  "pkg/docs/swaggers/zpotify_service_file.swagger.json": {
+    "mtime": 1776244779.9314046,
+    "ast_hash": "491318e4236b1b0a4f3415d0c33b2ef1",
+    "semantic_hash": "491318e4236b1b0a4f3415d0c33b2ef1"
+  },
+  "pkg/docs/swaggers/zpotify_service_song.swagger.json": {
+    "mtime": 1783759922.9442616,
+    "ast_hash": "599b6799b5d9909e987bacfa729046d5",
+    "semantic_hash": ""
+  },
+  "pkg/docs/swaggers/zpotify_service_files.swagger.json": {
+    "mtime": 1783759356.7188025,
+    "ast_hash": "755a20e119e769235e326404b33cebfc",
+    "semantic_hash": "755a20e119e769235e326404b33cebfc"
+  },
+  "pkg/docs/docs/docs.swagger_ui.go": {
+    "mtime": 1780554115.393071,
+    "ast_hash": "b5503333e691613e1ff8dd007931fa2e",
+    "semantic_hash": "b5503333e691613e1ff8dd007931fa2e"
+  },
+  "pkg/docs/docs/swaggers/zpotify_service_auth.swagger.json": {
+    "mtime": 1780199226.9377637,
+    "ast_hash": "9a821c774625c9ae0d523ebdb2453144",
+    "semantic_hash": "9a821c774625c9ae0d523ebdb2453144"
+  },
+  "pkg/docs/docs/swaggers/zpotify_api_service.swagger.json": {
+    "mtime": 1780199226.938521,
+    "ast_hash": "06df79697b69d295d93d14ff1012431d",
+    "semantic_hash": "06df79697b69d295d93d14ff1012431d"
+  },
+  "pkg/docs/docs/swaggers/zpotify_auth_service.swagger.json": {
+    "mtime": 1780199226.939145,
+    "ast_hash": "2f7541663b2751a4435151a492273330",
+    "semantic_hash": "2f7541663b2751a4435151a492273330"
+  },
+  "pkg/docs/docs/swaggers/zpotify_user.swagger.json": {
+    "mtime": 1780199226.9397933,
+    "ast_hash": "265e1cc1dd81d2167a559126e4aafa5e",
+    "semantic_hash": "265e1cc1dd81d2167a559126e4aafa5e"
+  },
+  "pkg/docs/docs/swaggers/zpotify_service_api.swagger.json": {
+    "mtime": 1780199226.9406033,
+    "ast_hash": "cf033b2f960dd4307ee9ce7f1fe489b3",
+    "semantic_hash": "cf033b2f960dd4307ee9ce7f1fe489b3"
+  },
+  "pkg/docs/docs/swaggers/zpotify_user_settings.swagger.json": {
+    "mtime": 1780199226.9411426,
+    "ast_hash": "926c21db044a31166a68c4bb66256fcd",
+    "semantic_hash": "926c21db044a31166a68c4bb66256fcd"
+  },
+  "pkg/docs/docs/swaggers/zpotify_api.swagger.json": {
+    "mtime": 1780199226.9417906,
+    "ast_hash": "c01a625a0d919ce9f3d40634219640cb",
+    "semantic_hash": "c01a625a0d919ce9f3d40634219640cb"
+  },
+  "pkg/docs/docs/swaggers/zpotify_service_artists.swagger.json": {
+    "mtime": 1780199226.9421778,
+    "ast_hash": "24a8f5de6dd277a9f319feed3980ec4f",
+    "semantic_hash": "24a8f5de6dd277a9f319feed3980ec4f"
+  },
+  "pkg/docs/docs/swaggers/zpotify_service_user.swagger.json": {
+    "mtime": 1780199226.942499,
+    "ast_hash": "33765247aa8b9da863b6925707f37e3f",
+    "semantic_hash": "33765247aa8b9da863b6925707f37e3f"
+  },
+  "pkg/docs/docs/swaggers/zpotify_common.swagger.json": {
+    "mtime": 1780199226.9429827,
+    "ast_hash": "1be98415490d6bf1f26764d448e57212",
+    "semantic_hash": "1be98415490d6bf1f26764d448e57212"
+  },
+  "pkg/docs/docs/swaggers/zpotify_service_playlist.swagger.json": {
+    "mtime": 1780199226.9435897,
+    "ast_hash": "7d2e461763a7711ad299bd2f731f3750",
+    "semantic_hash": "7d2e461763a7711ad299bd2f731f3750"
+  },
+  "pkg/docs/docs/swaggers/zpotify_service_file.swagger.json": {
+    "mtime": 1780199226.9440145,
+    "ast_hash": "491318e4236b1b0a4f3415d0c33b2ef1",
+    "semantic_hash": "491318e4236b1b0a4f3415d0c33b2ef1"
+  },
+  "pkg/docs/docs/swaggers/zpotify_service_song.swagger.json": {
+    "mtime": 1780199226.9445586,
+    "ast_hash": "008a7086ea289fdf50bc89c992648aac",
+    "semantic_hash": "008a7086ea289fdf50bc89c992648aac"
+  },
+  "pkg/docs/docs/swaggers/zpotify_service_files.swagger.json": {
+    "mtime": 1780199226.9448786,
+    "ast_hash": "73e8a0fa49656cae603fbe55f9c9e40d",
+    "semantic_hash": "73e8a0fa49656cae603fbe55f9c9e40d"
+  },
+  "moti.yaml": {
+    "mtime": 1775215098.3713863,
+    "ast_hash": "75ade9372a601ba41c67bfaa7bea947b",
+    "semantic_hash": "75ade9372a601ba41c67bfaa7bea947b"
+  },
+  "docker-compose.yaml": {
+    "mtime": 1783275838.3931792,
+    "ast_hash": "b2906e3ea5db6a20ff28156f7e958275",
+    "semantic_hash": ""
+  },
+  "sqlc.yaml": {
+    "mtime": 1783512213.7176642,
+    "ast_hash": "be78990452f8b46000fc11be000464d0",
+    "semantic_hash": ""
+  },
+  "easyp.yaml": {
+    "mtime": 1783252925.6270306,
+    "ast_hash": "6551dc3b2219b1f327d3b0219b091168",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1751008996.3867953,
+    "ast_hash": "466f7a0852dcc8d673f0b4d6b2443d8b",
+    "semantic_hash": "466f7a0852dcc8d673f0b4d6b2443d8b"
+  },
+  ".golangci.yaml": {
+    "mtime": 1783252996.8403783,
+    "ast_hash": "288a095c5e616bcc7b68d7c34f974cbd",
+    "semantic_hash": ""
+  },
+  "CLAUDE.md": {
+    "mtime": 1783253489.8189714,
+    "ast_hash": "3b93c3472a98968452026df2f99378d4",
+    "semantic_hash": ""
+  },
+  "config/config.yaml": {
+    "mtime": 1783919553.4726262,
+    "ast_hash": "00b00b80160bd3ae73ad15df06268d3b",
+    "semantic_hash": ""
+  },
+  "config/config_template.yaml": {
+    "mtime": 1782240369.3460386,
+    "ast_hash": "70fd9c3fb9567aa8d402668834336133",
+    "semantic_hash": "70fd9c3fb9567aa8d402668834336133"
+  },
+  "tests/config/config.yaml": {
+    "mtime": 1754810802.5910075,
+    "ast_hash": "27ca3f355cfc0cdccf3720e76340a56b",
+    "semantic_hash": "27ca3f355cfc0cdccf3720e76340a56b"
+  },
+  "tests/load/load.yaml": {
+    "mtime": 1753731309.0864139,
+    "ast_hash": "95ba1753fccba694245f901d472b8804",
+    "semantic_hash": "95ba1753fccba694245f901d472b8804"
+  },
+  ".github/workflows/branch-push.yaml": {
+    "mtime": 1751556200.4546013,
+    "ast_hash": "634184f17f1795378645abcba07b89c1",
+    "semantic_hash": "634184f17f1795378645abcba07b89c1"
+  },
+  ".github/workflows/release.yaml": {
+    "mtime": 1781851342.283749,
+    "ast_hash": "3a3151aa4781ac13d129d7d746dd8496",
+    "semantic_hash": "3a3151aa4781ac13d129d7d746dd8496"
+  },
+  ".verv/resources.yaml": {
+    "mtime": 1782983767.890052,
+    "ast_hash": "bf3d4dff26a03e0d157e33f93d1b2ac0",
+    "semantic_hash": ""
+  },
+  ".verv/vervonomicon.yaml": {
+    "mtime": 1780043957.1012428,
+    "ast_hash": "97fefbd9a770bfe6c0c5691636810bdd",
+    "semantic_hash": "97fefbd9a770bfe6c0c5691636810bdd"
+  },
+  ".verv/auth.yaml": {
+    "mtime": 1780043642.832267,
+    "ast_hash": "8ece82fb2b0f8924d31e1444ed418146",
+    "semantic_hash": "8ece82fb2b0f8924d31e1444ed418146"
+  },
+  "migrations/20260629000000_feature_flags.sql": {
+    "mtime": 1782752461.2052517,
+    "ast_hash": "8f98144257aa6e036ad7178793b167ef",
+    "semantic_hash": ""
+  },
+  "migrations/20260702000000_add_playlist_chips.sql": {
+    "mtime": 1782799023.066063,
+    "ast_hash": "ed1e143bb629917951fd36d22974acb3",
+    "semantic_hash": ""
+  },
+  "migrations/20260701000000_add_year_and_song_count_to_playlists.sql": {
+    "mtime": 1782796850.3796947,
+    "ast_hash": "d49efaa07715b2dcbde9685f8c13975f",
+    "semantic_hash": ""
+  },
+  "migrations/20260703000000_add_can_edit_to_user_playlists.sql": {
+    "mtime": 1782810595.1670625,
+    "ast_hash": "9bd06b5c24d357295a406b2eb18e603a",
+    "semantic_hash": ""
+  },
+  "internal/transport/playlist_api_impl/change_songs_order.go": {
+    "mtime": 1783199663.7846494,
+    "ast_hash": "b3995c59378e4ec778617f32ca537fe8",
+    "semantic_hash": ""
+  },
+  "internal/transport/feature_flags_api_impl/get_feature_flags.go": {
+    "mtime": 1783198776.3146017,
+    "ast_hash": "cde76b272917f5b8845de9ac11a41550",
+    "semantic_hash": ""
+  },
+  "internal/transport/feature_flags_api_impl/impl.go": {
+    "mtime": 1783198779.9064167,
+    "ast_hash": "a324e4c003d69fdbd7a410c0a84efa67",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/feature_flags.go": {
+    "mtime": 1783199358.2632403,
+    "ast_hash": "ddd11147b0a9854d4ac848931d6926f5",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/feature_flags_q/models.go": {
+    "mtime": 1783759922.9391718,
+    "ast_hash": "15e245b0c81461a4d0212c1a95f9e5f4",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/feature_flags_q/db.go": {
+    "mtime": 1783759401.7971656,
+    "ast_hash": "0a3f313a62cee0cfe7efbf337576f179",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/feature_flags_q/querier.go": {
+    "mtime": 1783759401.7931535,
+    "ast_hash": "f6f70a49522dd09c0acbbc6334606a6f",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/feature_flags_q/feature_flags.sql.go": {
+    "mtime": 1783759401.7985938,
+    "ast_hash": "f0e42ea1a5a7bd9910cb5346641defef",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/queries/feature_flags/feature_flags.sql": {
+    "mtime": 1782752461.5386124,
+    "ast_hash": "ce58a36f92a28ef05d3b636c5b8bbc7a",
+    "semantic_hash": ""
+  },
+  "internal/api/server/zpotify_api/zpotify_service_feature_flags_grpc.pb.go": {
+    "mtime": 1783759356.7246149,
+    "ast_hash": "85a451b5d61f21d46724a1965ce9e916",
+    "semantic_hash": ""
+  },
+  "internal/api/server/zpotify_api/zpotify_service_feature_flags.pb.go": {
+    "mtime": 1783759356.72415,
+    "ast_hash": "fdee042d25925feb25ebe618338847a7",
+    "semantic_hash": ""
+  },
+  "internal/api/server/zpotify_api/zpotify_service_feature_flags.pb.gw.go": {
+    "mtime": 1783759356.7242432,
+    "ast_hash": "c2fbe3118665f2e63f8a45a5634d1306",
+    "semantic_hash": ""
+  },
+  "internal/service/v1/feature_flags_service.go": {
+    "mtime": 1783199218.6415908,
+    "ast_hash": "3ec10b3d2118a426687976da9967ff5c",
+    "semantic_hash": ""
+  },
+  "internal/domain/feature_flags.go": {
+    "mtime": 1782752550.9348898,
+    "ast_hash": "3ca4398e7dfbb54c583983ef336279cd",
+    "semantic_hash": ""
+  },
+  "pkg/docs/swaggers/zpotify_service_feature_flags.swagger.json": {
+    "mtime": 1783759356.718397,
+    "ast_hash": "266bbcc9ab0d64c0fd79d4a737302b63",
+    "semantic_hash": ""
+  },
+  "internal/transport/playlist_api_impl/add_songs_to_playlist.go": {
+    "mtime": 1783199663.7838333,
+    "ast_hash": "d00bc4d9197c580aeab79f4670525e6d",
+    "semantic_hash": ""
+  },
+  "internal/transport/song_api_impl/search_songs.go": {
+    "mtime": 1783199679.263334,
+    "ast_hash": "a4fc559c1a8d52b0f6128abeb6fb4735",
+    "semantic_hash": ""
+  },
+  "migrations/20260704000000_add_song_search.sql": {
+    "mtime": 1782928609.915175,
+    "ast_hash": "f104546afe2c565274ba4d845a216b86",
+    "semantic_hash": ""
+  },
+  "migrations/20260705000000_add_upload_size_limits.sql": {
+    "mtime": 1782932805.9701543,
+    "ast_hash": "0a3bfcf2ad34b0d99a65f77fadbc9e24",
+    "semantic_hash": ""
+  },
+  "migrations/20260707000000_add_liked_playlist_to_users.sql": {
+    "mtime": 1783021322.3272295,
+    "ast_hash": "5e825234e7b24dd8b8b8541173112852",
+    "semantic_hash": ""
+  },
+  "migrations/20260706000000_backfill_verify_existing_covers.sql": {
+    "mtime": 1782971670.5223048,
+    "ast_hash": "f6425c75f5353b3212ee2fab03a83912",
+    "semantic_hash": ""
+  },
+  "internal/clients/telegram/admin_notifier.go": {
+    "mtime": 1783017850.8862915,
+    "ast_hash": "97bc1fa9324af8663bb5a41ce9500039",
+    "semantic_hash": ""
+  },
+  "internal/transport/playlist_api_impl/delete_song.go": {
+    "mtime": 1783199663.786549,
+    "ast_hash": "b3db86c8508482d2f2736595b7e70954",
+    "semantic_hash": ""
+  },
+  "internal/transport/playlist_api_impl/unfollow_playlist.go": {
+    "mtime": 1783199663.7932978,
+    "ast_hash": "f7b69dcfd22edaa774d4aa2e28c78b29",
+    "semantic_hash": ""
+  },
+  "internal/transport/playlist_api_impl/follow_playlist.go": {
+    "mtime": 1783199663.7871256,
+    "ast_hash": "6285475dfecb40ec3061691d777e885e",
+    "semantic_hash": ""
+  },
+  "internal/transport/telegram/grant_access/handler.go": {
+    "mtime": 1783198726.8775456,
+    "ast_hash": "e3a0668a5a1527d09ece5980e5ad2ff2",
+    "semantic_hash": ""
+  },
+  "internal/transport/telegram/grant_creator_access/handler.go": {
+    "mtime": 1783198723.7912402,
+    "ast_hash": "365519b43a11a4fabdb01054b57ae8ed",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/tsconfig.node.json": {
+    "mtime": 1751046077.4503915,
+    "ast_hash": "fa43e0ad6d187f90154ac2233d26e9a1",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/vite.config.d.ts": {
+    "mtime": 1783254247.9466934,
+    "ast_hash": "a137638badc2e38c72757e664cfe4036",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/vite.config.js": {
+    "mtime": 1783259584.3439817,
+    "ast_hash": "12f0d2d04af7cef5a734ace940426cb4",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/package.json": {
+    "mtime": 1783849850.6972935,
+    "ast_hash": "619836493117f9736110490f0ef7d87e",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/tsconfig.json": {
+    "mtime": 1751046073.2131863,
+    "ast_hash": "d0ddd25c6bb3f4ef694a76c53ac46a7b",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/eslint.config.js": {
+    "mtime": 1783574028.0183036,
+    "ast_hash": "7f53dfcd32584591227cdcc04cfbbd23",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/vite.config.ts": {
+    "mtime": 1783254247.9476366,
+    "ast_hash": "7db2f3a07df66c0258f28859d95d3244",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/stylelint.config.js": {
+    "mtime": 1783574035.458954,
+    "ast_hash": "4280f9af5fafe4c23af61cfa7e829fba",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/.claude/settings.json": {
+    "mtime": 1776804190.7697194,
+    "ast_hash": "101c05b77f825dad5f4c5b775c140d8a",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/.claude/settings.local.json": {
+    "mtime": 1783252944.5859706,
+    "ast_hash": "d9351533af726d46c5bb084182a9fa1c",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/main.tsx": {
+    "mtime": 1783504807.8627207,
+    "ast_hash": "a2a34b8c48c80a2e11ed06980e8abc75",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/vite-env.d.ts": {
+    "mtime": 1780682031.4888835,
+    "ast_hash": "0352474ba2918efe13895edbc3780d94",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/layouts/MainLayout.tsx": {
+    "mtime": 1783922162.2139835,
+    "ast_hash": "def0cf5a60e5479dc3e39b03f32fdeba",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/hooks/Dialog.tsx": {
+    "mtime": 1780684255.213824,
+    "ast_hash": "6293ac7bdfd8012b9108c346f112eeba",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/api/api.ts": {
+    "mtime": 1780684255.213803,
+    "ast_hash": "0ccae123b2ec36be12520ba3db3e1de5",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_song.pb.ts": {
+    "mtime": 1783759939.087753,
+    "ast_hash": "efe707b25cf5a356460e13c7a4fd3966",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_user_settings.pb.ts": {
+    "mtime": 1783759939.088072,
+    "ast_hash": "a0e2fab5d430feee18311a0b0115b408",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_artists.pb.ts": {
+    "mtime": 1783759939.0869744,
+    "ast_hash": "7e81c2463140d72e09a88d8888f79dde",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_playlist.pb.ts": {
+    "mtime": 1783759939.0876799,
+    "ast_hash": "ae680b9bd21eb998a015905c934778bb",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_user.pb.ts": {
+    "mtime": 1783759939.0878007,
+    "ast_hash": "e2ed3bd3dfeff35c1e271e49f46db0ae",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_user.pb.ts": {
+    "mtime": 1783759939.0878565,
+    "ast_hash": "59264b4bd27e8107185237dce742cd4b",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_auth.pb.ts": {
+    "mtime": 1783759939.0870347,
+    "ast_hash": "b0f6996d7061a81d76189b7832bf39c6",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_common.pb.ts": {
+    "mtime": 1783759939.0863178,
+    "ast_hash": "fc6cb37080bd860e4543dae8b6d073b0",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_files.pb.ts": {
+    "mtime": 1783759939.0871427,
+    "ast_hash": "dd9b0af34d81fbeafb3660c0cc738887",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_feature_flags.pb.ts": {
+    "mtime": 1783759939.0870905,
+    "ast_hash": "362bbfdf3de02e6851e014a5987e94d3",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/api/zpotify/index.ts": {
+    "mtime": 1783759939.0852265,
+    "ast_hash": "b503e8068c337db1601b6da3dcfc05ba",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/api/zpotify/fetch.pb.ts": {
+    "mtime": 1783838982.9978993,
+    "ast_hash": "b586cfaba73ba9684c3f98fd9d60f8a6",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_api.pb.ts": {
+    "mtime": 1783759939.0869012,
+    "ast_hash": "4ad2712ae3276253b1e570a4102bd7c1",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/routing/Router.tsx": {
+    "mtime": 1783882492.3399315,
+    "ast_hash": "1e84affe0d5d80b0a2c7b33462146c5d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/routing/paths.ts": {
+    "mtime": 1783882273.6064553,
+    "ast_hash": "64a845ad3dcade4796c39ef18b5f5369",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/features/auth/LogPassAuth.tsx": {
+    "mtime": 1780684255.2141733,
+    "ast_hash": "4b00f110c42614c059cfa3448faa91b1",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/features/auth/TelegramAuth.tsx": {
+    "mtime": 1783337978.1168294,
+    "ast_hash": "8d2856a29d675ad928c3f8e93d118e0a",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/features/upload/DropZone.tsx": {
+    "mtime": 1782923395.6982217,
+    "ast_hash": "0711b85b7ca44e874fa8db9ecec72637",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/features/upload/AddTrackButton.tsx": {
+    "mtime": 1782926426.89488,
+    "ast_hash": "f479dea40d6b1948b6e3d353d8d9e36e",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/features/upload/supportedAudio.ts": {
+    "mtime": 1782923379.9149709,
+    "ast_hash": "2686e1cee6d2dd320739fca6ddede4bb",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/ui/BackButton.tsx": {
+    "mtime": 1780684255.2142735,
+    "ast_hash": "a5e8f0e9fd4ebc20dd68eb2598d088f3",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/ui/StepDots.tsx": {
+    "mtime": 1780684255.2143106,
+    "ast_hash": "2835bfd0a5cadb122c8364ad94d7a8e8",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/ui/DisabledChip.tsx": {
+    "mtime": 1782073581.7317386,
+    "ast_hash": "3a796889a56212760e0d282508cd3593",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/ui/AuthButton.tsx": {
+    "mtime": 1780684255.2142718,
+    "ast_hash": "6aa1535f0a6efa96c49628b6f65e08e2",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/ui/Chip.tsx": {
+    "mtime": 1780684255.2142787,
+    "ast_hash": "4da90bb916ae51e69f0125b6494c7fff",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/ui/IconButton.tsx": {
+    "mtime": 1780684255.2143037,
+    "ast_hash": "a826332b7ea33abacfd718e9078e95b4",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/ui/Button.tsx": {
+    "mtime": 1780684255.2142828,
+    "ast_hash": "481915a75c06f3687d05811e2f570113",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/ui/MultiSelect.tsx": {
+    "mtime": 1783847188.8032234,
+    "ast_hash": "6d4770f813dc9216de51123d8dc66a82",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/ui/Input.tsx": {
+    "mtime": 1783849840.6724067,
+    "ast_hash": "3a7a0bf6bdb160549dcd0223bf714511",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/ui/CachedIndicator.tsx": {
+    "mtime": 1783878555.1688056,
+    "ast_hash": "e234ed864f78f990554ab407c4a2b8e9",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/ui/ZButton/ZButton.tsx": {
+    "mtime": 1780684255.2143323,
+    "ast_hash": "7946c6d17a3769808b1f43af04f224c3",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/model/Song.ts": {
+    "mtime": 1780684255.2142537,
+    "ast_hash": "01768a1af6eccd29d7eed399b2572ecd",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/model/audioCacheStore.ts": {
+    "mtime": 1783847188.802792,
+    "ast_hash": "bb85776a1a994f4a8e6d93af9a4c689b",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/model/AudioFile.ts": {
+    "mtime": 1780684255.2142646,
+    "ast_hash": "222f179ce6a660e69313c7001f670028",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/model/HomeSegments.tsx": {
+    "mtime": 1783254247.946193,
+    "ast_hash": "8edb39bf17ba24d81dcac7aec214b021",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/model/User.ts": {
+    "mtime": 1783017850.895,
+    "ast_hash": "07adea2273e365ab8d62c2f4f2a5d1ac",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/lib/coverUrl.ts": {
+    "mtime": 1782971684.0114012,
+    "ast_hash": "7e3a0490e133331bde8ec30cf1f859e2",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/lib/audioCache.ts": {
+    "mtime": 1783843641.5103528,
+    "ast_hash": "86d4d62c241b496df014959f45be0dc7",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/lib/files.ts": {
+    "mtime": 1780684255.2142537,
+    "ast_hash": "61d755cb1d90b22fa903899d7b48a519",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/lib/time.ts": {
+    "mtime": 1783256674.2036884,
+    "ast_hash": "771ba786e4d327b8e631c2e15f198254",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/lib/toaster/ToasterZ.ts": {
+    "mtime": 1783336247.3835518,
+    "ast_hash": "e8affd2e1b4b6d43e3e1fe544304ce0a",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/lib/common/Platform.ts": {
+    "mtime": 1780682031.5201511,
+    "ast_hash": "04c3b6e91ab16b20a417def7c8e26f92",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/lib/common/Link.ts": {
+    "mtime": 1780684255.2142508,
+    "ast_hash": "5b050dbed474341c1bce8fe2e846a642",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/BaseService.ts": {
+    "mtime": 1783504797.6105995,
+    "ast_hash": "5ef8ab6ea61de4327c61e02cd2d2c402",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/HomePage.ts": {
+    "mtime": 1783254247.9462032,
+    "ast_hash": "5f660351ec66b5ac1dddfa6be111c2ca",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/Errors.ts": {
+    "mtime": 1780684255.214208,
+    "ast_hash": "e2682cd133fe2783121138319298ced9",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/Api.ts": {
+    "mtime": 1780684255.2142038,
+    "ast_hash": "9c3cfb5f27b7bb566b6de71740fa0a23",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/Songs.ts": {
+    "mtime": 1782927280.754877,
+    "ast_hash": "e90a4c591b5465177fd146aaf5a010fe",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/ArtistsService.ts": {
+    "mtime": 1783512298.3901534,
+    "ast_hash": "9eaee3dcecfbd83e143e3481e9944e50",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/WebApi.ts": {
+    "mtime": 1781891178.599022,
+    "ast_hash": "ee5f778f92ffd43bc32b3b59fb804f9e",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/FileService.ts": {
+    "mtime": 1782071038.4605794,
+    "ast_hash": "446d16e7dae7af8b6bb357249dba0a09",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/FeatureFlagsService.ts": {
+    "mtime": 1783254247.9461963,
+    "ast_hash": "d1546d96251da7522c4f33fdcb7f8744",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/User.ts": {
+    "mtime": 1783017850.8948145,
+    "ast_hash": "5a5ceab0c1c9b3972159ec24e316f39d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/Auth.ts": {
+    "mtime": 1781891178.5965517,
+    "ast_hash": "d27137489f615423501046ab2024a3f1",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/PlaylistService.ts": {
+    "mtime": 1783760076.556579,
+    "ast_hash": "06c33d084b6313e8b6876c07314a33c8",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/tabs/SegmentTabBar.tsx": {
+    "mtime": 1780684255.2139258,
+    "ast_hash": "864321965628e9b849ca4fa5421db979",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/Dropdown/DropdownSearchRow.tsx": {
+    "mtime": 1783533857.8055773,
+    "ast_hash": "767de5d277f3d3b3864ef65b31af2db7",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/Dropdown/Dropdown.types.ts": {
+    "mtime": 1782120681.144161,
+    "ast_hash": "e4b509ef17a23be16efcbe10854ee5d3",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/Dropdown/DropdownSkeletonList.tsx": {
+    "mtime": 1782120701.8418834,
+    "ast_hash": "cfcd2bf6cdad98d72b346d3cbf545f5d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/Dropdown/Dropdown.tsx": {
+    "mtime": 1783254247.945868,
+    "ast_hash": "10f9e00297fa65134fb3e60ebe583a40",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/Dropdown/DropdownCreateRow.tsx": {
+    "mtime": 1783254247.9458327,
+    "ast_hash": "632a86a668384f2f5529420f9e097240",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/Dropdown/Dropdown.hooks.ts": {
+    "mtime": 1782915118.4164236,
+    "ast_hash": "391c198ee96a67f70251b83da94b14e9",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/Dropdown/DropdownOptionRow.tsx": {
+    "mtime": 1783254247.945921,
+    "ast_hash": "28930d8d98b6baf48f96314c44144378",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/Chip/Chip.tsx": {
+    "mtime": 1783512229.7530777,
+    "ast_hash": "b537c9bc0d78ff7cf2b31f89d8f01001",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/CoverField/CoverField.tsx": {
+    "mtime": 1783258172.8137095,
+    "ast_hash": "fc12bf95c4778f7cec4c2f8e086d4712",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/carousel/SegmentCarousel.tsx": {
+    "mtime": 1783256669.103049,
+    "ast_hash": "d7bb18ba90d9eec0388643ccaad49eba",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/carousel/Carousel.tsx": {
+    "mtime": 1783256653.0015142,
+    "ast_hash": "eb9520416df7fa9674ecba3bc29269e0",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/menu/Menu.tsx": {
+    "mtime": 1783258038.1331472,
+    "ast_hash": "335d94ee1dd4d1e42f2bd29e879881ff",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/menu/components/MenuOption/MenuOption.tsx": {
+    "mtime": 1783258020.8239086,
+    "ast_hash": "26af6a8ac83e78f87f28512c49360af4",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/GenerativeCover/GenerativeCover.tsx": {
+    "mtime": 1783520519.8235743,
+    "ast_hash": "a803edf332c989acab0b414c39341079",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/EditableTitle/EditableTitle.tsx": {
+    "mtime": 1783533857.8060122,
+    "ast_hash": "083b8d4b80101ff480f858db8c20d4fd",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/Settings/SettingsDialog.tsx": {
+    "mtime": 1783576953.5331676,
+    "ast_hash": "0ba907d427e20490e766aede9b455890",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/AddTrackDialog.tsx": {
+    "mtime": 1783259493.8247948,
+    "ast_hash": "864e89d1a9410510d3501da88e0973c1",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/PendingFilesScreen.tsx": {
+    "mtime": 1783258709.6067333,
+    "ast_hash": "5386abb9db05636d5140638dc4bc8b9a",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/DropZoneScreen.tsx": {
+    "mtime": 1783575382.2553506,
+    "ast_hash": "a4f22e8dab051ddd551cc92c3bc35430",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/ChooseScreen.tsx": {
+    "mtime": 1783258381.8204286,
+    "ast_hash": "ef6da043851f60865b805a6031bf1fdc",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/CreatePlaylistCard/CreatePlaylistCard.tsx": {
+    "mtime": 1783575329.7414098,
+    "ast_hash": "81a7f6fd3a31edbd77bf3afec8e4c5af",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/LibraryCard/LibraryCard.tsx": {
+    "mtime": 1783575399.1853871,
+    "ast_hash": "ec83c5f577b9b6989c464d4a21602bfe",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/UploadingSpinner/UploadingSpinner.tsx": {
+    "mtime": 1783575269.4019797,
+    "ast_hash": "65959bd1b5e951e7fac31d96dbf75590",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/IdleDecoration/IdleDecoration.tsx": {
+    "mtime": 1783577114.7355728,
+    "ast_hash": "e511b1b80951159acfab8e5ba8081a86",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/DropZoneIcon/DropZoneIcon.tsx": {
+    "mtime": 1783577112.871053,
+    "ast_hash": "1568997172a4acabc62a37d4ec7ca5b3",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/DropZoneText/DropZoneText.tsx": {
+    "mtime": 1783575378.1707635,
+    "ast_hash": "56877804fd41f062aca76efbb8b7fd2c",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/FileItem/FileItem.tsx": {
+    "mtime": 1783575284.772508,
+    "ast_hash": "6885f3379e6c843f408928a47d7162e7",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/DragOverDecoration/DragOverDecoration.tsx": {
+    "mtime": 1783258541.7793388,
+    "ast_hash": "e5a5839f5a5a42c5bdd7abaf0cb2c7e0",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/UploadCard/UploadCard.tsx": {
+    "mtime": 1783575399.1854029,
+    "ast_hash": "5b1d694e8d62308315523282bc96bd12",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/components/PanelHeader/PanelHeader.tsx": {
+    "mtime": 1783575292.41857,
+    "ast_hash": "6a4bc54377106a419d00299ffb4fd1be",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/Meta/MetaDialog.tsx": {
+    "mtime": 1783333069.8255527,
+    "ast_hash": "917c5ca6a0b362b2ebffd04c2f90e57d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/shared/screens/MetaScreen.tsx": {
+    "mtime": 1783577055.1995893,
+    "ast_hash": "0b1d27d08c44411d5f45a361d0ad6b95",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/LoginViaPass/LoginViaPass.tsx": {
+    "mtime": 1783847188.8010707,
+    "ast_hash": "8fe33e7b80fae6847597cf5b8da40ce8",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/FileList/FilesList.tsx": {
+    "mtime": 1783577240.6569562,
+    "ast_hash": "f9e999bbbcedac437bd9f0e0902637ea",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/EditTrack/EditTrackDialog.tsx": {
+    "mtime": 1783333087.1917858,
+    "ast_hash": "69cbdfcd42f06bb1f132d7dedfebb6b9",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/TrackRow.tsx": {
+    "mtime": 1783754593.1274977,
+    "ast_hash": "7cf682499336d3080aa673f8d31e5ee7",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/TrackList.tsx": {
+    "mtime": 1783754774.1235368,
+    "ast_hash": "2c0aba62c687bd5187917a657f8f1b29",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/utils.ts": {
+    "mtime": 1782072708.40818,
+    "ast_hash": "41781b2eb469c63063d3fcc181d40412",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/PlaylistDetailsPanel.tsx": {
+    "mtime": 1783760162.5235894,
+    "ast_hash": "29b5d019d46ca2236520ed88fc8193b3",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/MultitrackUploadModal.tsx": {
+    "mtime": 1783760183.1618936,
+    "ast_hash": "4a61894105285a3c893726f842f76379",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/PlaylistToggleRow.tsx": {
+    "mtime": 1783254247.9459653,
+    "ast_hash": "24b4aa0fb53ce920cc5c9ab7993c2806",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/SongSearchBox/SongSearchBox.tsx": {
+    "mtime": 1783878555.1654902,
+    "ast_hash": "38fe784687227d53b4dc71579e733482",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/components/UploadStatusChip/UploadStatusChip.tsx": {
+    "mtime": 1783258901.0637426,
+    "ast_hash": "50df624d24f61df46561d78a81dfee5c",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/SongEdit/SongEditDialog.tsx": {
+    "mtime": 1783577133.8520837,
+    "ast_hash": "e0a1c94c21c778dbd8494d4ed531fe2b",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/MoreDots.tsx": {
+    "mtime": 1780684255.2138689,
+    "ast_hash": "e394ab9035fd83ba071917d94d3d5aef",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/Bin.tsx": {
+    "mtime": 1780684255.2138698,
+    "ast_hash": "1b639cb9fc3628ea86a4fbc1387d05a9",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/TelegramLogo.tsx": {
+    "mtime": 1780684255.2138696,
+    "ast_hash": "d0a3af2f7e7d27ee4e4696a1905f7b91",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/AnimatedZ.tsx": {
+    "mtime": 1780684255.213845,
+    "ast_hash": "7d35cb5a367d0cfe279d9c9e6e9e7087",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/ChevronRightIcon.tsx": {
+    "mtime": 1782072703.727942,
+    "ast_hash": "1460c190e551e4f72469f1d413ca7a57",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/ShareIcon.tsx": {
+    "mtime": 1782756041.850573,
+    "ast_hash": "3c2fee929ac1e5c84659be7ecc2167c8",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/EditIcon.tsx": {
+    "mtime": 1782809860.0007284,
+    "ast_hash": "a477a8cd960c1fa66dfa6d287879ed48",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/SearchIcon.tsx": {
+    "mtime": 1782120024.464391,
+    "ast_hash": "d25d2eac033e13c9c76dffeb72246ec5",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/ZLogoIcon.tsx": {
+    "mtime": 1783258157.1698148,
+    "ast_hash": "49bdf7d157c10d331639c7410d293efb",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/HomeIcon.tsx": {
+    "mtime": 1782713727.2218635,
+    "ast_hash": "864eb063f59cd940c9537966f57a5de7",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/SaveIcon.tsx": {
+    "mtime": 1782812959.2315495,
+    "ast_hash": "969e16f9fa2dd610877f9eb12349af45",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/UploadArrowSmallIcon.tsx": {
+    "mtime": 1783258852.0094116,
+    "ast_hash": "adf32f43ed63c7a1cd19535b9119cc4d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/PlusIcon.tsx": {
+    "mtime": 1782073768.8085716,
+    "ast_hash": "2be1b34260bea2cacad22a0849ab2943",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/MiniClockIcon.tsx": {
+    "mtime": 1783258723.6984346,
+    "ast_hash": "5807dc98ed8c4fb4cc7f349c000429bf",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/HeartIcon.tsx": {
+    "mtime": 1782756039.151354,
+    "ast_hash": "bcc3aabb74ba8789f3be22a8f3e90987",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/MiniDiscIcon.tsx": {
+    "mtime": 1783258733.5637877,
+    "ast_hash": "f6e472e4bd2198b659a9f831d94869ca",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/GripIcon.tsx": {
+    "mtime": 1783259375.775969,
+    "ast_hash": "36afa637fa2b363d8afc763b229ab3a5",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/PlayIcon.tsx": {
+    "mtime": 1783785374.4043307,
+    "ast_hash": "c3acf48e187b540858a66423a8fbae5e",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/UploadsIcon.tsx": {
+    "mtime": 1782713744.2266252,
+    "ast_hash": "b82b030372657e718fc84c0e81145760",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/UploadArrowIcon.tsx": {
+    "mtime": 1782813508.982599,
+    "ast_hash": "b4cafd0038f9f6002023423cae501c2b",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/PlayTriangleIcon.tsx": {
+    "mtime": 1782756045.0222192,
+    "ast_hash": "676ec23a1e3d691368b990e0a69c3675",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/MusicFileIcon.tsx": {
+    "mtime": 1780684255.2138882,
+    "ast_hash": "1cccfe42a07df1541a726d10de25918d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/ClockIcon.tsx": {
+    "mtime": 1782756043.6984823,
+    "ast_hash": "fed85e13bc6cc6b85bd19bd2a30706b6",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/RemoveIcon.tsx": {
+    "mtime": 1782120034.7992423,
+    "ast_hash": "9c9eff4febde1534149129317208d145",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/UploadDoneIcon.tsx": {
+    "mtime": 1783258861.4940822,
+    "ast_hash": "d5672e1915f001c9b96a859d93b8289b",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/CheckIcon.tsx": {
+    "mtime": 1782072699.7378294,
+    "ast_hash": "45c3aba324728f0ebedf66cbc4213e71",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/DragHandleIcon.tsx": {
+    "mtime": 1783258833.774824,
+    "ast_hash": "7f9b4b4f0583793b2868c8c084c36786",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/NowPlayingBars.tsx": {
+    "mtime": 1781879213.04964,
+    "ast_hash": "a083e67e3250188134be64129e29aa3b",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/DownloadIcon.tsx": {
+    "mtime": 1783279240.2389243,
+    "ast_hash": "7c4458bf94b503f5e872e46e403ac732",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/NavSearchIcon.tsx": {
+    "mtime": 1782713735.1412172,
+    "ast_hash": "b3b91aabcdaa24c93d4b884b55ca69a9",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/RemoveTrackIcon.tsx": {
+    "mtime": 1783258842.9501774,
+    "ast_hash": "3cec6a5446cc1231feb06bb858916b13",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/LockIcon.tsx": {
+    "mtime": 1782120030.1013777,
+    "ast_hash": "421c197cd1fb07717f98e2ccb05f91c9",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/player/ShuffleArrows.tsx": {
+    "mtime": 1783785390.4386122,
+    "ast_hash": "b5695e059d33136ad53142765fabf172",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/init/InitPage.tsx": {
+    "mtime": 1783838982.9981246,
+    "ast_hash": "d353407e26c15b8dfa7d3c52abcdc42b",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/init/ZLogoLanding.tsx": {
+    "mtime": 1780684255.2142022,
+    "ast_hash": "ac9d4b93c6a18a27436d4a4a058fff95",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/dialog/Dialog.tsx": {
+    "mtime": 1783841635.5076714,
+    "ast_hash": "48209dd13a2efd014f79bf69ce7b0880",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/early_access/EarlyAccessPage.tsx": {
+    "mtime": 1780770294.2350848,
+    "ast_hash": "6b292a346eb3dd84d17139472f405552",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/main/home/HomePage.tsx": {
+    "mtime": 1783254247.94607,
+    "ast_hash": "34d3b8ae2b69404b87324592659682d3",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/main/playlist/PlaylistPage.tsx": {
+    "mtime": 1783504850.467091,
+    "ast_hash": "da03b3f187a558e4603d4db97aca5562",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/main/playlist/usePlaylist.ts": {
+    "mtime": 1783504885.129542,
+    "ast_hash": "40a278e1b6c65f24a449b8109fa24e4a",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/main/album/AlbumPage.tsx": {
+    "mtime": 1783021367.2016757,
+    "ast_hash": "5fcd49558dff10f69e540c5adba68e9b",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/error/ErrorPage.tsx": {
+    "mtime": 1780684255.2141852,
+    "ast_hash": "ecb80d95c31401c4bbac983a38bf1249",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/PlayerBarSegment/PlayerBarSegment.tsx": {
+    "mtime": 1783878598.3714023,
+    "ast_hash": "3e457d5164876a80b17184e2b6feb51f",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/PlayerBarSegment/components/VolumeControl/VolumeControl.tsx": {
+    "mtime": 1783259047.715748,
+    "ast_hash": "8ad509e3f7a128db2abc5f02f42b5bba",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/SidebarSegment.tsx": {
+    "mtime": 1783919234.976899,
+    "ast_hash": "a2105b6a4a1131cff8459eb44e772b8f",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/Widget/SidebarArtistsWidget/SidebarArtistsWidget.tsx": {
+    "mtime": 1783512220.2546673,
+    "ast_hash": "17a189435c74dcaa3fa3c8b381dd9261",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/Widget/SidebarPlaylistsWidget/SidebarPlaylistsWidget.tsx": {
+    "mtime": 1783254247.946107,
+    "ast_hash": "26ace244a98ce3d37884d0fbde998c2c",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/components/UserPill/UserPill.tsx": {
+    "mtime": 1783254247.9461277,
+    "ast_hash": "eafe88e5b4d170c4cd10365a5c1382ad",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/components/PlaylistRow/PlaylistRow.tsx": {
+    "mtime": 1783254247.9461358,
+    "ast_hash": "5dc85895e49b14ed0e5842ee0dd0dbd7",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/components/LogoRow/LogoRow.tsx": {
+    "mtime": 1783254247.9461267,
+    "ast_hash": "43382910ec0cc41fda6b4916f7c58f31",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/components/ArtistRow/ArtistRow.tsx": {
+    "mtime": 1783254247.9461074,
+    "ast_hash": "66d36d9ae1c702ff446c456678d10706",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/components/NavItem/NavItem.tsx": {
+    "mtime": 1783882427.247513,
+    "ast_hash": "f8bd4a39a171e476361544f9cb09f649",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/PlaylistScreenWidget.tsx": {
+    "mtime": 1783847188.80511,
+    "ast_hash": "3f08e554521747e929567f3a862f66ee",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/screens/SkeletonLoadScreen/SkeletonLoadScreen.tsx": {
+    "mtime": 1783021322.3333793,
+    "ast_hash": "cc027d632575d1032b852861dc79da25",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/CommentsSection/CommentsSection.tsx": {
+    "mtime": 1783021322.330747,
+    "ast_hash": "ea24710c73c843fa4ff210454a4837d1",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/EditableArtistPicker/EditableArtistPicker.tsx": {
+    "mtime": 1783838982.9978998,
+    "ast_hash": "c8cbfe8adc5c4601cdc18e182130a96f",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/TrackRow/TrackRow.tsx": {
+    "mtime": 1783878555.1717644,
+    "ast_hash": "fd49f4f260bc6b46191f56805dd41747",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/EditableText/EditableText.tsx": {
+    "mtime": 1783838982.9978995,
+    "ast_hash": "dd077ed56b2f5db511e7ac1cedaf3231",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/MainContent/MainContent.tsx": {
+    "mtime": 1783847188.8055973,
+    "ast_hash": "bf8a2e1522d8858df18730cf9bfa2f3d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/UISettings/UISettingsWidget.tsx": {
+    "mtime": 1783269069.4722812,
+    "ast_hash": "2e668093bd7f8ef6ae2ea930a87ca531",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/AudioScreen/AudioScreen.tsx": {
+    "mtime": 1783507899.1901753,
+    "ast_hash": "8f846a7a4aa854f9a4578f0ddd83f0a9",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/AppearanceScreen/AppearanceScreen.tsx": {
+    "mtime": 1783271179.7993252,
+    "ast_hash": "486ffacfe1fe71192e929e7225eef312",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/ServerScreen/ServerScreen.tsx": {
+    "mtime": 1782541067.107038,
+    "ast_hash": "6cc0aeef2246eab813e29bbdb9d126cc",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/UISettings/components/SettingsRow/SettingsRow.tsx": {
+    "mtime": 1783254247.9466968,
+    "ast_hash": "d6787a1fe5f421faae281cbc814047bf",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/UISettings/components/SettingsTabButton/SettingsTabButton.tsx": {
+    "mtime": 1783254409.5258844,
+    "ast_hash": "236f27d8ce8742a95b222f535914209e",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/User/UserWidget.tsx": {
+    "mtime": 1783919234.9768853,
+    "ast_hash": "cc9564ef7251420e07d02a62e43b337f",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/AuthWidgets/LogPassWidget.tsx": {
+    "mtime": 1783333169.6433907,
+    "ast_hash": "ffccce6df7feec498feb7ad24104b74b",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistHomeSegment/PlaylistHomeSegment.tsx": {
+    "mtime": 1783254247.9463003,
+    "ast_hash": "751743adb96d8c09e5122b668aba0adb",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/MusicPlayerWithLogo.tsx": {
+    "mtime": 1781879105.048573,
+    "ast_hash": "829981425a01a9cf64cc3322c96acedf",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/usePlayer.ts": {
+    "mtime": 1783506531.8142762,
+    "ast_hash": "8e988fa3a745f16b9d4c3c43da5fbc59",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/PlayerControls.tsx": {
+    "mtime": 1780684255.2143843,
+    "ast_hash": "20f9e18709c7dd80d246a572af003036",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/buttons/TrackProgressControls.tsx": {
+    "mtime": 1781879213.0193415,
+    "ast_hash": "b6ed6c0d713525ff50020c338aa241df",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/buttons/TrackRewindButton.tsx": {
+    "mtime": 1781879213.0565171,
+    "ast_hash": "0ffba68ec4f651a8b5c094629da3fb11",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/buttons/ShuffleTracksButton.tsx": {
+    "mtime": 1781879213.07104,
+    "ast_hash": "0265671243a8863e5e7e0c8e6bd4de62",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/buttons/PlayPauseButton.tsx": {
+    "mtime": 1781879213.0631237,
+    "ast_hash": "ef2e59475fdf014d3be759f6756386e5",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/buttons/components/VolumeBar/VolumeBar.tsx": {
+    "mtime": 1783259347.6264932,
+    "ast_hash": "34293ef298c36993f7cfe5dadc9eca3e",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/buttons/components/VolumeDisplay/VolumeDisplay.tsx": {
+    "mtime": 1783259312.8716645,
+    "ast_hash": "779e36ef599b39ca929ad7f16a7200db",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/TrackList/LazyLoadSongsList.tsx": {
+    "mtime": 1783254247.946359,
+    "ast_hash": "966101dc27e9f46ce490d1d14e29f09c",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/TrackList/TrackListWidget.tsx": {
+    "mtime": 1783506550.531208,
+    "ast_hash": "5c8ae6da69ec6c05735389d7771d4800",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/AuthMethods/AuthMethodsWidget.tsx": {
+    "mtime": 1780684255.214396,
+    "ast_hash": "0e43f0eee96e51c314418fd6cca6671d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/ArtistField/ArtistChipsField.tsx": {
+    "mtime": 1783512405.869246,
+    "ast_hash": "b378796ff52a7af0422ba60dbecdab01",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/ChipsField/ChipsField.tsx": {
+    "mtime": 1783847188.8047576,
+    "ast_hash": "a4656dccfa8330280e59434335a97b77",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/HomeSegments/useHomeSegments.ts": {
+    "mtime": 1783254247.946254,
+    "ast_hash": "e5760e15d282b40ec5f442ccb6588797",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/Header/HeaderPart.tsx": {
+    "mtime": 1783882412.0828073,
+    "ast_hash": "24a9f4f3d418c88fcc23c5e3e82e10b8",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistsLibrarySegment/model.ts": {
+    "mtime": 1783254247.9462683,
+    "ast_hash": "d4df623bf2b69e9ce7954509560f65ef",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistsLibrarySegment/PlaylistsLibrarySegment.tsx": {
+    "mtime": 1783254247.946296,
+    "ast_hash": "24800601fa4921d56b66419cbb6cd81f",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistsLibrarySegment/screens/LibraryGridScreen/LibraryGridScreen.tsx": {
+    "mtime": 1783254247.9463584,
+    "ast_hash": "aa85be2ff94effeb4b6a7b4b6e1542db",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistsLibrarySegment/screens/LibraryGridScreen/LibraryGridScreenSkeleton.tsx": {
+    "mtime": 1782549711.4978268,
+    "ast_hash": "4ddd015e3b6cdd72ea695fc401c58ef5",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistsLibrarySegment/components/AlbumCard/AlbumCardSkeleton.tsx": {
+    "mtime": 1782543387.9248638,
+    "ast_hash": "59b98864f2bbdf2bc130fcbfac54303c",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistsLibrarySegment/components/AlbumCard/AlbumCard.tsx": {
+    "mtime": 1783521080.379849,
+    "ast_hash": "88b0e9abb09b6e736b1ab2f679f3d59a",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistsLibrarySegment/components/PlaylistCardWide/PlaylistCardWide.tsx": {
+    "mtime": 1783521084.484581,
+    "ast_hash": "f68312d4a7852d4e11ec00ae220b079a",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistsLibrarySegment/components/PlaylistCardWide/PlaylistCardWideSkeleton.tsx": {
+    "mtime": 1782543379.0265808,
+    "ast_hash": "00e6a30babe3f121bf65f69b1b7d19e0",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistsLibrarySegment/components/PlaylistCardWide/components/TrackRow/TrackRow.tsx": {
+    "mtime": 1783259428.999069,
+    "ast_hash": "54b2f7e7bc3624f0ba75542c700486b9",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/ManagementHomeSegment/ManagementHomeSegment.tsx": {
+    "mtime": 1783259229.5875235,
+    "ast_hash": "afdf55cefd4d9479c71f01af00de7526",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/ManagementHomeSegment/components/DisplayKeys/DisplayKeys.tsx": {
+    "mtime": 1783259193.589795,
+    "ast_hash": "3c1da92b137d1201f97d0ae070497050",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/playlist/isAlbum.ts": {
+    "mtime": 1782922005.662175,
+    "ast_hash": "e705da4b2fcdb8e6304c572e7831ab9c",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/playlist/usePlaylistListRefresh.ts": {
+    "mtime": 1782916213.0034487,
+    "ast_hash": "92e40afae5fcdc6b94671abc19605683",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/feature-flags/useFeatureFlags.ts": {
+    "mtime": 1782753309.9191515,
+    "ast_hash": "ac9d6bfe4c4dff24a54a8b5bb6decd49",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/feature-flags/useFeatureFlagsQuery.ts": {
+    "mtime": 1782753314.942083,
+    "ast_hash": "1031f75a56be6e614fb95005329a5a31",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/song/useListSongs.ts": {
+    "mtime": 1783254247.9460182,
+    "ast_hash": "9ca410919e84ccda6759742beb8c2c08",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/song/useLikedSongs.ts": {
+    "mtime": 1783017641.6725624,
+    "ast_hash": "f33a16ee385737a28e6a1b16569fcda1",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/song/useSongListRefresh.ts": {
+    "mtime": 1782057263.2571485,
+    "ast_hash": "0e2e5f108fb791a0faa34be355023508",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/song/usePlaylistSongs.ts": {
+    "mtime": 1783020736.471683,
+    "ast_hash": "99c91b401bef55c59e8331791ed85829",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/song/GhostSong.tsx": {
+    "mtime": 1780684255.2141616,
+    "ast_hash": "6752e9ad3d2e82d29cab100e233fbc31",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/song/more/MoreButton.tsx": {
+    "mtime": 1781879083.300314,
+    "ast_hash": "adda9af884db2b53b35060ce9b0191ea",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/user/GeneratedAvatar.tsx": {
+    "mtime": 1780684255.2141588,
+    "ast_hash": "1f77c4bac7d2f37c56e33826c7c52370",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/user/User.tsx": {
+    "mtime": 1780684255.214155,
+    "ast_hash": "b3120c8242e3425d8a18813d4e05831a",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/user/useUser.ts": {
+    "mtime": 1783336255.9417355,
+    "ast_hash": "cbe90606128710e5d0fab406f7673a15",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/ui-settings/useUISettings.ts": {
+    "mtime": 1783271170.0940971,
+    "ast_hash": "5c57753c98a876901698ca665ee1aadb",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/audio-settings/useAudioSettings.ts": {
+    "mtime": 1783269049.2555752,
+    "ast_hash": "226dba56a4bb8a0cff93b98f0ed8ac9e",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/moti.yaml": {
+    "mtime": 1775468209.7676072,
+    "ast_hash": "f171e9b72d5a6d377a243023e5c9a9cb",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/index.html": {
+    "mtime": 1751555286.4464295,
+    "ast_hash": "1818d72147974d7fb66fe2aa2c2f3b31",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/README.md": {
+    "mtime": 1751045989.0182083,
+    "ast_hash": "bc5635d768227ab0d338f67fa70b991d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/CLAUDE.md": {
+    "mtime": 1783574091.128873,
+    "ast_hash": "10a44906eecb34c71488724043460f3d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/.agents/manifesto.md": {
+    "mtime": 1775540340.8459032,
+    "ast_hash": "2892491dbe37417b3a1c7debeab21739",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/type-scale.html": {
+    "mtime": 1780571581.305457,
+    "ast_hash": "9f761ff8790fa7a110bcfb7df4cc5a85",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/public/logo.svg": {
+    "mtime": 1751964094.1081064,
+    "ast_hash": "704bc38e48d69d44956e90dee1a37b9b",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/pen.svg": {
+    "mtime": 1775762528.1295059,
+    "ast_hash": "1d217b4786b0fb7ad413ffda18ba36d5",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/TgLogo.png": {
+    "mtime": 1573766876.0,
+    "ast_hash": "08412639439510ebb7b148b44ce6778b",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/github.svg": {
+    "mtime": 1776838013.9214365,
+    "ast_hash": "2d4166a34e3de4fca0fcdfd61090b502",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/lock.svg": {
+    "mtime": 1776837999.365861,
+    "ast_hash": "4cdda691bf488eb9f4e2fb1f3d779bce",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/telegram.svg": {
+    "mtime": 1776837997.801699,
+    "ast_hash": "d9cc8f2d01120631456a99e3a2209a5a",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/google.svg": {
+    "mtime": 1776838004.1622987,
+    "ast_hash": "e2b3b1582ca38a0cfe0d75f121590e27",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/apple.svg": {
+    "mtime": 1776838009.2770326,
+    "ast_hash": "4642100e5cc8217b86a89463064c1c03",
+    "semantic_hash": ""
+  },
+  "migrations/20260708000000_add_is_public_to_playlists_songs_v3.sql": {
+    "mtime": 1783503383.4219904,
+    "ast_hash": "804917353235d285ad01c048da96f1f9",
+    "semantic_hash": ""
+  },
+  "migrations/20260708120000_add_user_artists.sql": {
+    "mtime": 1783512213.7357519,
+    "ast_hash": "0c2f729cca64ade9b903460b6baadc58",
+    "semantic_hash": ""
+  },
+  "internal/transport/artists_api_impl/unlike_artist.go": {
+    "mtime": 1783512213.7356129,
+    "ast_hash": "17c16536930b289fce8e669638441ebc",
+    "semantic_hash": ""
+  },
+  "internal/transport/artists_api_impl/like_artist.go": {
+    "mtime": 1783512213.7354813,
+    "ast_hash": "bcdd2466efdfd90cfbf5fe90cc05559a",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/artists_q/models.go": {
+    "mtime": 1783759922.9388983,
+    "ast_hash": "ced729fc9e611fceec038c3e93845460",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/artists_q/db.go": {
+    "mtime": 1783759401.7959478,
+    "ast_hash": "a9f4743f6ae65d17f2daec3f6ca9944c",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/artists_q/artists.sql.go": {
+    "mtime": 1783759401.7958932,
+    "ast_hash": "74724159fbfc4dad317aa4ac2fc88be7",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/generated/artists_q/querier.go": {
+    "mtime": 1783759401.7977724,
+    "ast_hash": "e3cb1fb912f86c0287be982d75a14f6b",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/queries/artists/artists.sql": {
+    "mtime": 1783512213.7353392,
+    "ast_hash": "35732fea6c277fa2b2c2e51632aa9a97",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/lib/coverSeed.ts": {
+    "mtime": 1783521055.2777278,
+    "ast_hash": "48d0c3919ca246e4726412208717b19e",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/CoverWithFallback/CoverWithFallback.tsx": {
+    "mtime": 1783521055.277728,
+    "ast_hash": "7867e2e3ba728e4fd60914f2ac771455",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/screens/NotFoundScreen/NotFoundScreen.tsx": {
+    "mtime": 1783504827.8774052,
+    "ast_hash": "207efb8542b09aeec1da5212e21e1b5a",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/TrackCountLabel/TrackCountLabel.tsx": {
+    "mtime": 1783849834.8621547,
+    "ast_hash": "adc446f4f10f1e7108f1e7c23b093576",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/EditableAlbumName/EditableAlbumName.tsx": {
+    "mtime": 1783847188.8053381,
+    "ast_hash": "c03f8a7c1d71b4d824b51b9171ef9410",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/PlaylistOwnerLabel/PlaylistOwnerLabel.tsx": {
+    "mtime": 1783533750.8347998,
+    "ast_hash": "93299d0ae2cece248d072e4984fb02a8",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/EditableYear/EditableYear.tsx": {
+    "mtime": 1783537381.6828108,
+    "ast_hash": "67d780217ab7dba068018efd07b7941d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/widgets/PlaylistControls/PlaylistControls.tsx": {
+    "mtime": 1783842219.8133085,
+    "ast_hash": "300ff77a0413be380627f074fddbbcca",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/PlaylistInfoSegment.tsx": {
+    "mtime": 1783842050.0341847,
+    "ast_hash": "f242691d960af8c838b00aeeb38b9957",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/usePlaylistInfoSegment.ts": {
+    "mtime": 1783842045.6026797,
+    "ast_hash": "21e73d6a17aa23293580a43370a0f795",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/NotFoundPlaylistInfoSegment/NotFoundPlaylistInfoSegment.tsx": {
+    "mtime": 1783519388.970078,
+    "ast_hash": "9b36a46c878d0d013cf79165e841e77d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/CachedSongsAccordion/CachedSongsAccordion.tsx": {
+    "mtime": 1783878555.1706476,
+    "ast_hash": "c5822cf1448c5cb525ef9897119b3979",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/CachedSongsAccordion/components/AccordionHeader/AccordionHeader.tsx": {
+    "mtime": 1783512213.7366788,
+    "ast_hash": "a741c644e3afaa18644a348f67a539ef",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/CachedSongsAccordion/components/CachedSongRow/CachedSongRow.tsx": {
+    "mtime": 1783847188.804426,
+    "ast_hash": "f0ce6a26caa000504fd59846a44cfda4",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/artist/useLikedArtists.ts": {
+    "mtime": 1783512213.7360291,
+    "ast_hash": "451b41f8c5c0d33034867a2ee8ce4674",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/EditableCoverWithFallback/EditableCoverWithFallback.tsx": {
+    "mtime": 1783533802.34742,
+    "ast_hash": "7417207c720e3392d3b3f2743f0359a8",
+    "semantic_hash": ""
+  },
+  "go.mod": {
+    "mtime": 1782239557.2871556,
+    "ast_hash": "dd85fb8bb5390c5c8ee631bc670a8588",
+    "semantic_hash": ""
+  },
+  "internal/transport/song_api_impl/song_tags.go": {
+    "mtime": 1783759922.9589138,
+    "ast_hash": "a3625b31f75982edfbd287adf7abe7eb",
+    "semantic_hash": ""
+  },
+  "migrations/20260711000000_replace_playlist_chips_with_tags.sql": {
+    "mtime": 1783759922.9590714,
+    "ast_hash": "e19ad1b8bc7ddea66cba8f8dbd8f17ed",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/CreatePlaylistIcon.tsx": {
+    "mtime": 1783575253.846553,
+    "ast_hash": "27c274b7059620c573258f394b0d1705",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/DashedRingIcon.tsx": {
+    "mtime": 1783577108.474519,
+    "ast_hash": "7447b2000c7ea467677fb457b2d6af13",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/DropZoneTargetIcon.tsx": {
+    "mtime": 1783577106.4459088,
+    "ast_hash": "ee566e746e4c457bac3d4895aa7519fc",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/DropZoneUploadIcon.tsx": {
+    "mtime": 1783577104.6165075,
+    "ast_hash": "4dfdea2f17e60c55e71e99eb6e3c5447",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/SidebarToggleIcon.tsx": {
+    "mtime": 1783885931.7654169,
+    "ast_hash": "ca6f635432f4bfd4e867e7bc9bad7a2e",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/SpinnerIcon.tsx": {
+    "mtime": 1783575399.1854258,
+    "ast_hash": "38cff6cdfb091936e162d65b3265aea5",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/UploadArrowLargeIcon.tsx": {
+    "mtime": 1783575250.7560308,
+    "ast_hash": "af4f2506b29860b61f71c1d6af9fcd55",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/components/FieldLabelRow/FieldLabelRow.tsx": {
+    "mtime": 1783754557.2522998,
+    "ast_hash": "4b7d6852c1f7cbbc8df1e01cdf0529d7",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/useArtistLookup.ts": {
+    "mtime": 1783754519.733824,
+    "ast_hash": "64413bfcde38c6fc013f5da397c5f896",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/useMultitrackSubmit.ts": {
+    "mtime": 1783760201.4439394,
+    "ast_hash": "1b7d213cd7f07a5e3a4a283866be4308",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/useMultitrackSummary.ts": {
+    "mtime": 1783754043.3787107,
+    "ast_hash": "90b48c983b80265f0ce922ba3b98fe87",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/useTrackDrafts.ts": {
+    "mtime": 1783754043.3787308,
+    "ast_hash": "825ab0d9be2f6aff1c9dcf7b62907516",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/useTrackDrag.ts": {
+    "mtime": 1783754806.4291048,
+    "ast_hash": "cf0442bd7a8cecb0b60fa9b64be7afb5",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/useUploadQueue.ts": {
+    "mtime": 1783577445.6592782,
+    "ast_hash": "378267a4c63b5ec1c473a99c38adfc27",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/entities/search/useSearchQuery.ts": {
+    "mtime": 1783882283.7582963,
+    "ast_hash": "cba9b0dae1e51b390d6a7b541743fb16",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/main/search/SearchPage.tsx": {
+    "mtime": 1783882868.4633522,
+    "ast_hash": "2a471b8380d1c786acc287730fc076cc",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/main/search/components/ArtistCard/ArtistCard.tsx": {
+    "mtime": 1783882337.8170712,
+    "ast_hash": "2f28702cde1ce03a214fd98ef1de74f6",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/main/search/components/EmptyState/EmptyState.tsx": {
+    "mtime": 1783882329.2174795,
+    "ast_hash": "07e5e7202c5bd1314f4b227692696fef",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/main/search/components/FilterChips/FilterChips.tsx": {
+    "mtime": 1783882503.0346289,
+    "ast_hash": "2f918de455b126b36acaf5089196b6a3",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/main/search/components/SectionLabel/SectionLabel.tsx": {
+    "mtime": 1783882316.7328434,
+    "ast_hash": "50e93b16292fe3910e45c2d617393400",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/main/search/useSearchPage.ts": {
+    "mtime": 1783882507.176436,
+    "ast_hash": "ebcecc2ed8eaf0911883eaaf3639e098",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/MobileNavSegment/MobileNavSegment.tsx": {
+    "mtime": 1783919019.1194503,
+    "ast_hash": "2d0ed18bcd2d7e80a43b5791e53a89fe",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/MobileNavSegment/components/MobileCreateButton/MobileCreateButton.tsx": {
+    "mtime": 1783918990.4768944,
+    "ast_hash": "a5dfbdf07ae686810ff548146f9dd00f",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/MobileNavSegment/components/MobileSearchButton/MobileSearchButton.tsx": {
+    "mtime": 1783918986.6641023,
+    "ast_hash": "f847d0b77dcb8d9eda8d2c90a91f34d5",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/MobileNavSegment/components/SidebarToggleButton/SidebarToggleButton.tsx": {
+    "mtime": 1783919118.3547468,
+    "ast_hash": "bd30efe1de29540866fe44b34f5bf05f",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/SearchService.ts": {
+    "mtime": 1783882300.6635244,
+    "ast_hash": "57710b076d94347b69b0d07f5650eda2",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/model/sidebarUIStore.ts": {
+    "mtime": 1783919098.3300314,
+    "ast_hash": "98adb698f403e66746996aededb976f7",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/Header/components/HeaderSearchInput/HeaderSearchInput.tsx": {
+    "mtime": 1783883476.150889,
+    "ast_hash": "e3373036796d86c534f81a73fae3e33a",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/components/GenreChipsRow/GenreChipsRow.tsx": {
+    "mtime": 1783760090.9368455,
+    "ast_hash": "eb56097a28761b63b5396169f5d3876c",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/widgets/ArtistOrOwnerRow/ArtistOrOwnerRow.tsx": {
+    "mtime": 1783537294.3117967,
+    "ast_hash": "9aeb338e5a23ba57122c9972d76d370f",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/widgets/DescriptionSection/DescriptionSection.tsx": {
+    "mtime": 1783537544.8951778,
+    "ast_hash": "18c8f930e63f1f464608ce2efbb6fd12",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/widgets/PlaylistMetaRow/PlaylistMetaRow.tsx": {
+    "mtime": 1783537303.9612849,
+    "ast_hash": "55ed388bf4c81b4165f0a3496e622d4f",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/DownloadButtonWidget/DownloadButtonWidget.tsx": {
+    "mtime": 1783839814.3722396,
+    "ast_hash": "e472ed0acd3c86df5c7a8b529779a1a2",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/DownloadButtonWidget/useDownloadButtonWidget.tsx": {
+    "mtime": 1783847188.8062284,
+    "ast_hash": "ecabcffd430576bee57128b3446d8418",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/SaveButtonWidget/SaveButtonWidget.tsx": {
+    "mtime": 1783842102.3729758,
+    "ast_hash": "0a695ab9edcef521263e13ef98344732",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/SaveButtonWidget/useSaveButtonWidget.ts": {
+    "mtime": 1783842029.016435,
+    "ast_hash": "1983ae0d9e78cf3f9d465056c4c088e1",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/widgets/PlaylistControls/components/EditControls/EditControls.tsx": {
+    "mtime": 1783838982.9979267,
+    "ast_hash": "8cf9b8d03d3719e597a9d30a5ffa5585",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/widgets/PlaylistControls/components/IconButton/IconButton.tsx": {
+    "mtime": 1783839023.8992958,
+    "ast_hash": "9b31d854819d86a0d70abaf284d9d9bf",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/widgets/PlaylistControls/components/PlayButton/PlayButton.tsx": {
+    "mtime": 1783838982.9979908,
+    "ast_hash": "2be838f58238ee12f43555407abb5f8a",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/widgets/PlaylistControls/components/ShareButton/ShareButton.tsx": {
+    "mtime": 1783838982.99802,
+    "ast_hash": "6697f91d5af8b7b40035eb4d9441d21d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/widgets/PlaylistControls/components/ShuffleButton/ShuffleButton.tsx": {
+    "mtime": 1783838982.9980104,
+    "ast_hash": "054be2a0fd93fe736d8abf98e31e6ee5",
+    "semantic_hash": ""
+  },
+  "docs/release_notes/v1.0.4.md": {
+    "mtime": 1783921702.700696,
+    "ast_hash": "11846ed0d54070e5f620bb7e5533f43a",
+    "semantic_hash": ""
+  }
+}

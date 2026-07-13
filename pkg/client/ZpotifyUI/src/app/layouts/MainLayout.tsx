@@ -49,6 +49,8 @@ export default function MainLayout() {
                         <HeaderPart />
                     </div>
                 </div>
+
+                {showSidebar && <SidebarSegment />}
             </div>
 
             <div className={cn(cls.PlayerBarSpacer, effectiveShowPlayerBar && cls.PlayerBarSpacerVisible)} />
@@ -64,8 +66,6 @@ export default function MainLayout() {
                     <MusicPlayerWithLogo audioPlayer={audioPlayer} />
                 </div>
             )}
-
-            {showSidebar && <SidebarSegment />}
         </div>
     );
 }
