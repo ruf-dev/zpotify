@@ -2355,8 +2355,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/usePlayer.ts": {
-    "mtime": 1783506531.8142762,
-    "ast_hash": "8e988fa3a745f16b9d4c3c43da5fbc59",
+    "mtime": 1783974739.3543751,
+    "ast_hash": "58ab95a0b277fc78d459c228ef63e8a6",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/PlayerControls.tsx": {
@@ -2400,8 +2400,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/TrackList/TrackListWidget.tsx": {
-    "mtime": 1783951059.516911,
-    "ast_hash": "5c8ae6da69ec6c05735389d7771d4800",
+    "mtime": 1783974554.3917723,
+    "ast_hash": "bdf35bda8ffd22bf52c4c0aa240d449b",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/AuthMethods/AuthMethodsWidget.tsx": {
