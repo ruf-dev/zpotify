@@ -26,6 +26,7 @@ type Drag = {
 export interface MainContentProps {
     songs: SongBase[];
     currentTrackPath: string | null;
+    isAudioPlaying: boolean;
     onPlaySong: (song: SongBase) => void;
     onReorder: (songs: SongBase[]) => void;
     username: string;
@@ -42,6 +43,7 @@ export interface MainContentProps {
 export default function MainContent({
     songs,
     currentTrackPath,
+    isAudioPlaying,
     onPlaySong,
     onReorder,
     username,
@@ -222,7 +224,8 @@ export default function MainContent({
                             playlistName={playlistName}
                             playlistIsAlbum={playlistIsAlbum}
                             index={i + 1}
-                            isPlaying={currentTrackPath === song.filePath}
+                            isCurrent={currentTrackPath === song.filePath}
+                            isPlaying={isAudioPlaying}
                             isLiked={likedSongIds.has(song.id ?? '')}
                             isHeartAnimating={animatingHeartId === song.id}
                             onPlay={() => onPlaySong(song)}

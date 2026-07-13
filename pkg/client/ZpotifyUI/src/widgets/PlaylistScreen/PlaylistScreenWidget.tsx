@@ -66,6 +66,10 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
 
     function handlePlaySong(song: SongBase) {
         if (!song.filePath) return;
+        if (song.filePath === audioPlayer.trackPath) {
+            audioPlayer.togglePlay();
+            return;
+        }
         audioPlayer.setSongInfo(song.title ?? null, song.artists?.[0]?.name ?? null, coverUrl);
         audioPlayer.play(song.filePath);
     }
@@ -115,6 +119,7 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
                 <MainContent
                     songs={orderedSongs}
                     currentTrackPath={audioPlayer.trackPath}
+                    isAudioPlaying={audioPlayer.isPlaying}
                     onPlaySong={handlePlaySong}
                     onReorder={setOrderedSongs}
                     username={username}

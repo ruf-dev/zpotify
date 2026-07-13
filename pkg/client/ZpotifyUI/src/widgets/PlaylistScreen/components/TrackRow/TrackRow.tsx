@@ -30,6 +30,7 @@ export interface TrackRowProps {
     playlistName?: string;
     playlistIsAlbum?: boolean;
     index: number;
+    isCurrent: boolean;
     isPlaying: boolean;
     isLiked: boolean;
     isHeartAnimating: boolean;
@@ -48,6 +49,7 @@ export default function TrackRow({
     playlistName,
     playlistIsAlbum,
     index,
+    isCurrent,
     isPlaying,
     isLiked,
     isHeartAnimating,
@@ -145,14 +147,14 @@ export default function TrackRow({
 
     return (
         <div
-            className={cn(cls.TrackRow, isPlaying && cls.TrackRowPlaying, canReorder && cls.TrackRowReorderable)}
+            className={cn(cls.TrackRow, isCurrent && cls.TrackRowPlaying, canReorder && cls.TrackRowReorderable)}
             onClick={handleRowClick}
             style={dragStyle}
             ref={rowRef}
             role="row"
         >
             <div className={cls.TrackNumCell}>
-                {isPlaying ? (
+                {isCurrent && isPlaying ? (
                     <NowPlayingBars />
                 ) : (
                     <>
@@ -165,7 +167,7 @@ export default function TrackRow({
             </div>
 
             <div className={cls.TrackTitleCell}>
-                <span className={cn(cls.TrackTitle, isPlaying && cls.TrackTitlePlaying)}>
+                <span className={cn(cls.TrackTitle, isCurrent && cls.TrackTitlePlaying)}>
                     {song.title}
                     {isCached && <CachedIndicator />}
                 </span>

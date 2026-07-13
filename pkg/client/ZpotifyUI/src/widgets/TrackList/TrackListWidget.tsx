@@ -75,6 +75,11 @@ export default function SongListWidget({ songs, audioPlayer, coverUrl }: SongLis
 
         if (!song.filePath) throw 'No song url path';
 
+        if (song.filePath === audioPlayer.trackPath) {
+            audioPlayer.togglePlay();
+            return;
+        }
+
         audioPlayer.setSongInfo(song.title || null, song.artists?.[0]?.name || null, coverUrl);
         audioPlayer.play(song.filePath);
     }
@@ -94,7 +99,8 @@ export default function SongListWidget({ songs, audioPlayer, coverUrl }: SongLis
                     key={s.id}
                     song={s}
                     index={idx + 1}
-                    isPlaying={audioPlayer.trackPath === s.filePath}
+                    isCurrent={audioPlayer.trackPath === s.filePath}
+                    isPlaying={audioPlayer.isPlaying}
                     isLiked={likedSongIds.has(s.id ?? '')}
                     isHeartAnimating={animatingHeartId === s.id}
                     onPlay={() => playSongAtIndex(idx)}
