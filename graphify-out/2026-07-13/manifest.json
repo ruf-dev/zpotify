@@ -940,8 +940,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/playlist_service.go": {
-    "mtime": 1783759922.9381878,
-    "ast_hash": "66cceb71e51cda7359f0e6494ca1dc18",
+    "mtime": 1783940160.12149,
+    "ast_hash": "b81d6e72a86c29a00f9adee256304e13",
     "semantic_hash": ""
   },
   "internal/service/v1/artists_service.go": {
@@ -965,8 +965,8 @@
     "semantic_hash": ""
   },
   "internal/service/service_errors/errors.go": {
-    "mtime": 1783759922.9379182,
-    "ast_hash": "450cc34433b6d38cbd4125e0d70ccb32",
+    "mtime": 1783940160.1197224,
+    "ast_hash": "a75e6de51efbf4a543e329ecceb664b6",
     "semantic_hash": ""
   },
   "internal/domain/user.go": {
@@ -3017,6 +3017,11 @@
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/components/PrivatePlaylistIndicator/PrivatePlaylistIndicator.tsx": {
     "mtime": 1783930668.4395974,
     "ast_hash": "63a2171f7cab212b1b9410898619ca30",
+    "semantic_hash": ""
+  },
+  "migrations/20260713000000_dedupe_playlist_songs_unique_song.sql": {
+    "mtime": 1783940160.1417127,
+    "ast_hash": "f6c6fc83ea7629293c23ff34a026fc33",
     "semantic_hash": ""
   }
 }
