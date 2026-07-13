@@ -11,6 +11,8 @@ import (
 
 func (impl *Impl) ListSongs(ctx context.Context, req *zpotify_api.ListSongs_Request) (
 	*zpotify_api.ListSongs_Response, error) {
+	isGlobalQueue := req.PlaylistUuid == nil || req.GetPlaylistUuid() == domain.GlobalPlaylistUuid
+
 	listReq := domain.ListSongs{
 		ListSongsFilters: domain.ListSongsFilters{
 			PlaylistUuid: req.GetPlaylistUuid(),
@@ -21,7 +23,7 @@ func (impl *Impl) ListSongs(ctx context.Context, req *zpotify_api.ListSongs_Requ
 		RandomHash: req.RandomHash,
 
 		OrderBy: domain.SongsOrderByOrderNumber,
-		Desc:    req.PlaylistUuid == nil,
+		Desc:    isGlobalQueue,
 	}
 
 	list, err := impl.playlistService.ListSongs(ctx, listReq)
