@@ -298,12 +298,11 @@ class AudioPlayerImpl implements AudioPlayer {
         }
 
         if ('mediaSession' in navigator) {
-            // Ideally we should set metadata here, but we only have trackUrl
+            const { songTitle, songArtist, songCover } = useAudioStore.getState();
             navigator.mediaSession.metadata = new MediaMetadata({
-                title: trackUrl.split('/').pop() || 'Unknown Track',
-                // artist: '...',
-                // album: '...',
-                // artwork: [...]
+                title: songTitle || trackUrl.split('/').pop() || 'Unknown Track',
+                artist: songArtist || '',
+                artwork: songCover ? [{ src: songCover }] : [],
             });
         }
     }

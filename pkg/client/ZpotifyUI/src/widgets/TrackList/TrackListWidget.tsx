@@ -75,8 +75,8 @@ export default function SongListWidget({ songs, audioPlayer, coverUrl }: SongLis
 
         if (!song.filePath) throw 'No song url path';
 
-        audioPlayer.play(song.filePath);
         audioPlayer.setSongInfo(song.title || null, song.artists?.[0]?.name || null, coverUrl);
+        audioPlayer.play(song.filePath);
     }
 
     function handleToggleLike(songId: string) {
