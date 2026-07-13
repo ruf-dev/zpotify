@@ -530,8 +530,8 @@
     "semantic_hash": ""
   },
   "internal/storage/pg/playlist.go": {
-    "mtime": 1783759922.9413989,
-    "ast_hash": "133bf01ceda46fd46d10eb256c40dd42",
+    "mtime": 1783973895.9573972,
+    "ast_hash": "a358aaa408a4d348a8c5eb19b230c97c",
     "semantic_hash": ""
   },
   "internal/storage/pg/jobs.go": {
@@ -560,87 +560,87 @@
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/models.go": {
-    "mtime": 1783947132.4071946,
+    "mtime": 1783973888.5166192,
     "ast_hash": "acda3972f12a999304640d966ec86dd8",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/user_playlist.sql.go": {
-    "mtime": 1783947132.40918,
+    "mtime": 1783973888.5203085,
     "ast_hash": "f838f260fc016294e23048d5e74cbc21",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/playlist.sql.go": {
-    "mtime": 1783947132.409509,
-    "ast_hash": "6b92a6d7d6e46672ab02a26a4f59c6b7",
+    "mtime": 1783973888.5204856,
+    "ast_hash": "f8249bb318c1a4cbab11cad32ab9904a",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/db.go": {
-    "mtime": 1783947132.4092312,
+    "mtime": 1783973888.5209615,
     "ast_hash": "3e80311b60671ad666f99090dcaa4b65",
     "semantic_hash": "3e80311b60671ad666f99090dcaa4b65"
   },
   "internal/storage/pg/generated/user_session.sql.go": {
-    "mtime": 1783947132.4054174,
+    "mtime": 1783973888.514443,
     "ast_hash": "88e9de5d488eca009a9544f32a23b56b",
     "semantic_hash": "88e9de5d488eca009a9544f32a23b56b"
   },
   "internal/storage/pg/generated/user_settings.sql.go": {
-    "mtime": 1783947132.407119,
+    "mtime": 1783973888.5159404,
     "ast_hash": "0f541912f183b57e09ea4d59377fc9a4",
     "semantic_hash": "0f541912f183b57e09ea4d59377fc9a4"
   },
   "internal/storage/pg/generated/user.sql.go": {
-    "mtime": 1783947132.4065409,
+    "mtime": 1783973888.5164766,
     "ast_hash": "2ed4a5b717e0bc1e718a26f113d537c2",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/querier.go": {
-    "mtime": 1783947132.409619,
+    "mtime": 1783973888.5140328,
     "ast_hash": "ba18b675cec5b92463fa7d65d3380f21",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/identity_telegram.sql.go": {
-    "mtime": 1783947132.4082944,
+    "mtime": 1783973888.5204155,
     "ast_hash": "8039c53bd72becdc2f71b59a5f64dfe1",
     "semantic_hash": "8039c53bd72becdc2f71b59a5f64dfe1"
   },
   "internal/storage/pg/generated/song.sql.go": {
-    "mtime": 1783947132.405226,
+    "mtime": 1783973888.5149338,
     "ast_hash": "219070929ec1e42d35eebeaeef5d60eb",
     "semantic_hash": "219070929ec1e42d35eebeaeef5d60eb"
   },
   "internal/storage/pg/generated/user_permissions.sql.go": {
-    "mtime": 1783947132.4085777,
+    "mtime": 1783973888.5199518,
     "ast_hash": "e951378b8ac8170ab8516392d7e8e645",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/identity_zpotify.sql.go": {
-    "mtime": 1783947132.4049082,
+    "mtime": 1783973888.5158687,
     "ast_hash": "6a83be903d5e98a93425adfda55e9872",
     "semantic_hash": "6a83be903d5e98a93425adfda55e9872"
   },
   "internal/storage/pg/generated/file.sql.go": {
-    "mtime": 1783947132.4097896,
+    "mtime": 1783973888.5192633,
     "ast_hash": "43998bb955b67655b18f0ffe6963da2b",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/songs_q/models.go": {
-    "mtime": 1783947132.4057503,
+    "mtime": 1783973888.5142298,
     "ast_hash": "a17be84875c8fb9ad721b828b4d774c0",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/songs_q/db.go": {
-    "mtime": 1783947132.4081793,
+    "mtime": 1783973888.5137422,
     "ast_hash": "41c1992fe3cd3ac629d3d3280f4009ab",
     "semantic_hash": "41c1992fe3cd3ac629d3d3280f4009ab"
   },
   "internal/storage/pg/generated/songs_q/songs.sql.go": {
-    "mtime": 1783947132.4079313,
+    "mtime": 1783973888.5195491,
     "ast_hash": "14c7df4dec2a30883ae076a0d8ed8a91",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/songs_q/querier.go": {
-    "mtime": 1783947132.4045515,
+    "mtime": 1783973888.5143838,
     "ast_hash": "770824b1fa4a71406519ac30e0916601",
     "semantic_hash": ""
   },
@@ -665,42 +665,42 @@
     "semantic_hash": "6c86570483be1337447f47ec3546e6ca"
   },
   "internal/storage/pg/generated/file_meta_q/models.go": {
-    "mtime": 1783947132.4069018,
+    "mtime": 1783973888.515625,
     "ast_hash": "6b8440c6e22f0f02d6bc0b83b4cccb93",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/file_meta_q/db.go": {
-    "mtime": 1783947132.4094594,
+    "mtime": 1783973888.5194788,
     "ast_hash": "c32bcb4d3319011b8fa7ab0c564714c9",
     "semantic_hash": "c32bcb4d3319011b8fa7ab0c564714c9"
   },
   "internal/storage/pg/generated/file_meta_q/querier.go": {
-    "mtime": 1783947132.406365,
+    "mtime": 1783973888.5160313,
     "ast_hash": "a745902eebc9d3f5f1907484ba7efcfd",
     "semantic_hash": "a745902eebc9d3f5f1907484ba7efcfd"
   },
   "internal/storage/pg/generated/file_meta_q/file_meta.sql.go": {
-    "mtime": 1783947132.408237,
+    "mtime": 1783973888.514992,
     "ast_hash": "f3f5f244c4105bee1aebf044a0f7c97f",
     "semantic_hash": "f3f5f244c4105bee1aebf044a0f7c97f"
   },
   "internal/storage/pg/generated/jobs_q/models.go": {
-    "mtime": 1783947132.4087057,
+    "mtime": 1783973888.5151792,
     "ast_hash": "e7f7b270389e8c4f58471d060264158c",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/jobs_q/db.go": {
-    "mtime": 1783947132.4062934,
+    "mtime": 1783973888.513962,
     "ast_hash": "6491326bfe46030aef3f3aed5d3e4d5f",
     "semantic_hash": "6491326bfe46030aef3f3aed5d3e4d5f"
   },
   "internal/storage/pg/generated/jobs_q/jobs.sql.go": {
-    "mtime": 1783947132.4066012,
+    "mtime": 1783973888.5197146,
     "ast_hash": "fa94997a62792432da1ec0e185ce5609",
     "semantic_hash": "fa94997a62792432da1ec0e185ce5609"
   },
   "internal/storage/pg/generated/jobs_q/querier.go": {
-    "mtime": 1783947132.405487,
+    "mtime": 1783973888.51978,
     "ast_hash": "7c3ecef72c28c5b3a38b1560cca07584",
     "semantic_hash": "7c3ecef72c28c5b3a38b1560cca07584"
   },
@@ -715,8 +715,8 @@
     "semantic_hash": "b6d465d7d688319b3251df923c1f6081"
   },
   "internal/storage/pg/queries/playlist.sql": {
-    "mtime": 1783759922.9415743,
-    "ast_hash": "8dd2cd93d6348ac720bc0a6d9497b488",
+    "mtime": 1783973885.8136885,
+    "ast_hash": "84037a02921a6ec84fdba7b68c92c195",
     "semantic_hash": ""
   },
   "internal/storage/pg/queries/song.sql": {
@@ -1325,22 +1325,22 @@
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/feature_flags_q/models.go": {
-    "mtime": 1783947132.4060454,
+    "mtime": 1783973888.5162075,
     "ast_hash": "1dfedd48f2dd4e62ac3aed6957e6c058",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/feature_flags_q/db.go": {
-    "mtime": 1783947132.4086394,
+    "mtime": 1783973888.5161378,
     "ast_hash": "0a3f313a62cee0cfe7efbf337576f179",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/feature_flags_q/querier.go": {
-    "mtime": 1783947132.4094012,
+    "mtime": 1783973888.5163538,
     "ast_hash": "f6f70a49522dd09c0acbbc6334606a6f",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/feature_flags_q/feature_flags.sql.go": {
-    "mtime": 1783947132.4074812,
+    "mtime": 1783973888.519896,
     "ast_hash": "f0e42ea1a5a7bd9910cb5346641defef",
     "semantic_hash": ""
   },
@@ -2650,22 +2650,22 @@
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/artists_q/models.go": {
-    "mtime": 1783947132.4075615,
+    "mtime": 1783973888.515495,
     "ast_hash": "0aaeb4be6ad7e62839540682fb72e764",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/artists_q/db.go": {
-    "mtime": 1783947132.406794,
+    "mtime": 1783973888.5165513,
     "ast_hash": "a9f4743f6ae65d17f2daec3f6ca9944c",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/artists_q/artists.sql.go": {
-    "mtime": 1783947132.4089308,
+    "mtime": 1783973888.51984,
     "ast_hash": "74724159fbfc4dad317aa4ac2fc88be7",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/artists_q/querier.go": {
-    "mtime": 1783947132.4068468,
+    "mtime": 1783973888.519416,
     "ast_hash": "e3cb1fb912f86c0287be982d75a14f6b",
     "semantic_hash": ""
   },
