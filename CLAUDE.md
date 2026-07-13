@@ -7,6 +7,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **zpotify** is a Spotify-like music streaming service with a Go backend and React/TypeScript frontend. The backend
 exposes both gRPC and REST (via grpc-gateway) APIs, backed by PostgreSQL, with Telegram bot integration.
 
+## Commit Message Convention
+
+Commit messages must follow `[Area] Category: description`:
+
+- `Area` — the part of the system changed, e.g. `Sidebar`, `Player`, `Auth`. Free-form, pick per commit.
+- `Category` — either a fixed keyword (`bug fixed`, `refactor`, `docs`, `chore`, `perf`), or for feature work, a
+  Capitalized sub-area/feature name instead of the literal word "feature" (e.g. `Player`, `Sidebar`).
+
+Examples:
+
+```
+[Sidebar] bug fixed: sidebar overlapping player bar
+[Player] Caching: added scroll and search to cached-songs accordion
+```
+
+This is enforced automatically by a `PreToolUse` hook in `.claude/settings.json` (`.claude/hooks/validate-commit-msg.py`),
+which blocks non-conforming `git commit` calls. Since `.claude/settings.json` is committed to the repo, no per-clone
+activation step is needed.
+
 ## graphify
 
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
