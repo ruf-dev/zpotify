@@ -27,4 +27,6 @@ var (
 	ErrInvalidImageFile = rerrors.New("uploaded file is not a valid image", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
 
 	ErrInvalidAlbumVersion = rerrors.New("invalid album version tag", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
+
+	ErrSongAlreadyInPlaylist = rerrors.New("song is already in playlist", codes.AlreadyExists, rerrors.WithHttpStatus(http.StatusConflict))
 )

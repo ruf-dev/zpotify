@@ -3,6 +3,7 @@ package v1
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"path"
 
@@ -276,6 +277,9 @@ func (p *PlaylistService) AddSong(ctx context.Context, req domain.AddSongToPlayl
 
 	err = p.playlistStorage.AddSong(ctx, req.PlaylistUuid, req.SongId)
 	if err != nil {
+		if errors.Is(err, storage.ErrAlreadyExists) {
+			return rerrors.Wrap(service_errors.ErrSongAlreadyInPlaylist)
+		}
 		return rerrors.Wrap(err, "error saving song to playlist")
 	}
 
@@ -379,6 +383,9 @@ func (p *PlaylistService) AddSongs(ctx context.Context, req domain.AddSongsToPla
 		for _, songId := range req.SongIds {
 			addErr := playlistStorage.AddSong(ctx, req.PlaylistUuid, songId)
 			if addErr != nil {
+				if errors.Is(addErr, storage.ErrAlreadyExists) {
+					return rerrors.Wrap(service_errors.ErrSongAlreadyInPlaylist)
+				}
 				return rerrors.Wrap(addErr, "error saving song to playlist")
 			}
 		}
