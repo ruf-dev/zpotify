@@ -285,6 +285,62 @@ func (s *FileService) ListUploadedFiles(ctx context.Context, req domain.ListUplo
 	return res, nil
 }
 
+func (s *FileService) DeleteUploadedFile(ctx context.Context, fileId int64) error {
+	err := s.deleteUploadedFile(ctx, fileId)
+	if err != nil {
+		return rerrors.Wrap(err)
+	}
+
+	return nil
+}
+
+func (s *FileService) DeleteUploadedFiles(ctx context.Context, fileIds []int64) error {
+	for _, fileId := range fileIds {
+		err := s.deleteUploadedFile(ctx, fileId)
+		if err != nil {
+			return rerrors.Wrap(err, "error deleting file", fileId)
+		}
+	}
+
+	return nil
+}
+
+func (s *FileService) deleteUploadedFile(ctx context.Context, fileId int64) error {
+	uCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return rerrors.Wrap(user_errors.ErrUnauthenticated)
+	}
+
+	file, err := s.storage.Get(ctx, fileId)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting file meta")
+	}
+
+	if file.AddedById != uCtx.UserId {
+		return rerrors.Wrap(user_errors.ErrPermissionDenied, "not allowed to delete this file")
+	}
+
+	_, err = s.songStorage.GetByFileId(ctx, fileId)
+	if err == nil {
+		return rerrors.Wrap(service_errors.ErrFileAlreadyUsed)
+	}
+	if !errors.Is(err, storage.ErrNotFound) {
+		return rerrors.Wrap(err, "error checking if file is attached to a song")
+	}
+
+	err = s.storage.Delete(ctx, fileId)
+	if err != nil {
+		return rerrors.Wrap(err, "error deleting file meta")
+	}
+
+	err = s.binaryStorage.DeleteTempFile(ctx, file.FilePath)
+	if err != nil {
+		return rerrors.Wrap(err, "error deleting temp file")
+	}
+
+	return nil
+}
+
 func (s *FileService) GetFile(ctx context.Context, fileId int64) (domain.FileMeta, error) {
 	file, err := s.storage.Get(ctx, fileId)
 	if err != nil {

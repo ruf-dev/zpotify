@@ -15,6 +15,12 @@
     border-color: var(--color-border-bright);
 }
 
+.CheckboxWrapper {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
 .FileIcon {
     color: var(--color-fg-secondary);
     display: flex;
@@ -23,6 +29,8 @@
 }
 
 .FileName {
+    flex: 1;
+    min-width: 0;
     font-size: var(--font-size-sm);
     color: var(--color-fg-primary);
     white-space: nowrap;

@@ -32,6 +32,19 @@ service FileMetaAPI {
       body: "*",
     };
   }
+
+  rpc DeleteFile(DeleteFile.Request) returns (DeleteFile.Response) {
+    option (google.api.http) = {
+      delete: "/api/file_meta/{file_id}"
+    };
+  }
+
+  rpc BatchDeleteFiles(BatchDeleteFiles.Request) returns (BatchDeleteFiles.Response) {
+    option (google.api.http) = {
+      post: "/api/file_meta/batch_delete"
+      body: "*",
+    };
+  }
 }
 
 message ListUploadedFiles {
@@ -75,4 +88,20 @@ message CheckFilesByHashes {
   message Response {
     repeated FoundFileByHash found = 1;
   }
+}
+
+message DeleteFile {
+  message Request {
+    int64 file_id = 1;
+  }
+
+  message Response {}
+}
+
+message BatchDeleteFiles {
+  message Request {
+    repeated int64 file_ids = 1;
+  }
+
+  message Response {}
 }

@@ -1,23 +1,14 @@
-import { useEffect, useState } from 'react';
+import { Button, Toggle } from '@vervstack/chures';
 
 import cls from '@/dialogs/AddTrack/screens/PendingFilesScreen.module.css';
-import type { SongFile } from '@/app/api/zpotify';
-import { fileService } from '@/shared/api/FileService.ts';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 import FileItem from '@/dialogs/AddTrack/screens/components/FileItem/FileItem';
+import { usePendingFiles } from '@/dialogs/AddTrack/screens/usePendingFiles.tsx';
 
 export default function PendingFilesScreen({ handleSelectFromLibrary }: AddTrackContext) {
-    const [files, setFiles] = useState<SongFile[]>([]);
-    const [loading, setLoading] = useState(true);
+    const pendingFiles = usePendingFiles();
 
-    useEffect(() => {
-        fileService
-            .ListUploadedFiles({ temporaryOnly: true })
-            .then((res) => setFiles(res.files || []))
-            .finally(() => setLoading(false));
-    }, []);
-
-    if (loading) {
+    if (pendingFiles.loading) {
         return (
             <div className={cls.PendingFilesScreenContainer}>
                 <div className={cls.Loading}>loading files…</div>
@@ -27,14 +18,37 @@ export default function PendingFilesScreen({ handleSelectFromLibrary }: AddTrack
 
     return (
         <div className={cls.PendingFilesScreenContainer}>
-            {files.length === 0 ? (
+            {pendingFiles.files.length === 0 ? (
                 <div className={cls.Empty}>no pending uploads found</div>
             ) : (
-                <div className={cls.FileList}>
-                    {files.map((file) => (
-                        <FileItem key={file.id} file={file} onSelect={handleSelectFromLibrary} />
-                    ))}
-                </div>
+                <>
+                    <div className={cls.ActionsRow}>
+                        <Toggle
+                            checked={pendingFiles.allSelected}
+                            onChange={pendingFiles.handleToggleSelectAll}
+                            label="Select all"
+                        />
+                        <Button
+                            variant="danger"
+                            disabled={pendingFiles.selectedIds.size === 0}
+                            onClick={pendingFiles.handleDeleteSelected}
+                        >
+                            Delete selected ({pendingFiles.selectedIds.size})
+                        </Button>
+                    </div>
+                    <div className={cls.FileList}>
+                        {pendingFiles.files.map((file) => (
+                            <FileItem
+                                key={file.id}
+                                file={file}
+                                selected={pendingFiles.selectedIds.has(file.id ?? '')}
+                                onSelect={handleSelectFromLibrary}
+                                onDelete={pendingFiles.handleDelete}
+                                onToggleSelect={pendingFiles.handleToggleSelect}
+                            />
+                        ))}
+                    </div>
+                </>
             )}
         </div>
     );

@@ -52,6 +52,22 @@ export type CheckFilesByHashesResponse = {
 
 export type CheckFilesByHashes = Record<string, never>;
 
+export type DeleteFileRequest = {
+  fileId?: string;
+};
+
+export type DeleteFileResponse = Record<string, never>;
+
+export type DeleteFile = Record<string, never>;
+
+export type BatchDeleteFilesRequest = {
+  fileIds?: string[];
+};
+
+export type BatchDeleteFilesResponse = Record<string, never>;
+
+export type BatchDeleteFiles = Record<string, never>;
+
 export class FileMetaAPI {
   static ListUploadedFiles(this:void, req: ListUploadedFilesRequest, initReq?: fm.InitReq): Promise<ListUploadedFilesResponse> {
     return fm.fetchRequest<ListUploadedFilesResponse>(`/api/file_meta/list`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
@@ -61,5 +77,11 @@ export class FileMetaAPI {
   }
   static CheckFilesByHashes(this:void, req: CheckFilesByHashesRequest, initReq?: fm.InitReq): Promise<CheckFilesByHashesResponse> {
     return fm.fetchRequest<CheckFilesByHashesResponse>(`/api/file_meta/check_hashes`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static DeleteFile(this:void, req: DeleteFileRequest, initReq?: fm.InitReq): Promise<DeleteFileResponse> {
+    return fm.fetchRequest<DeleteFileResponse>(`/api/file_meta/${req.fileId}?${fm.renderURLSearchParams(req, ["fileId"])}`, {...initReq, method: "DELETE"});
+  }
+  static BatchDeleteFiles(this:void, req: BatchDeleteFilesRequest, initReq?: fm.InitReq): Promise<BatchDeleteFilesResponse> {
+    return fm.fetchRequest<BatchDeleteFilesResponse>(`/api/file_meta/batch_delete`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }

@@ -29,4 +29,6 @@ var (
 	ErrInvalidAlbumVersion = rerrors.New("invalid album version tag", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
 
 	ErrSongAlreadyInPlaylist = rerrors.New("song is already in playlist", codes.AlreadyExists, rerrors.WithHttpStatus(http.StatusConflict))
+
+	ErrFileAlreadyUsed = rerrors.New("file is already attached to a song", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusConflict))
 )

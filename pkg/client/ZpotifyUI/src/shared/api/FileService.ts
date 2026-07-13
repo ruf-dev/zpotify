@@ -1,4 +1,8 @@
 import {
+    BatchDeleteFilesRequest,
+    BatchDeleteFilesResponse,
+    DeleteFileRequest,
+    DeleteFileResponse,
     FileMetaAPI,
     GetFileRequest,
     GetFileResponse,
@@ -16,6 +20,8 @@ export interface IFileService {
     ListUploadedFiles(req: ListUploadedFilesRequest): Promise<ListUploadedFilesResponse>;
     GetFile(req: GetFileRequest): Promise<GetFileResponse>;
     checkByHashes(hashes: string[]): Promise<Map<string, FileHashResult>>;
+    DeleteFile(req: DeleteFileRequest): Promise<DeleteFileResponse>;
+    BatchDeleteFiles(req: BatchDeleteFilesRequest): Promise<BatchDeleteFilesResponse>;
 }
 
 export class FileService extends BaseService implements IFileService {
@@ -28,6 +34,18 @@ export class FileService extends BaseService implements IFileService {
     async GetFile(req: GetFileRequest): Promise<GetFileResponse> {
         return this.executeAuthApiCall(async (initReq) => {
             return FileMetaAPI.GetFile(req, initReq);
+        });
+    }
+
+    async DeleteFile(req: DeleteFileRequest): Promise<DeleteFileResponse> {
+        return this.executeAuthApiCall(async (initReq) => {
+            return FileMetaAPI.DeleteFile(req, initReq);
+        });
+    }
+
+    async BatchDeleteFiles(req: BatchDeleteFilesRequest): Promise<BatchDeleteFilesResponse> {
+        return this.executeAuthApiCall(async (initReq) => {
+            return FileMetaAPI.BatchDeleteFiles(req, initReq);
         });
     }
 
