@@ -28,6 +28,40 @@
     margin: 0 0 var(--space-sm);
 }
 
+.FilterRow {
+    display: flex;
+    gap: var(--space-sm);
+    margin: 0 0 var(--space-sm);
+}
+
+.AlbumsChip {
+    padding: var(--space-xs) var(--space-lg);
+    border-radius: var(--border-radius-pill);
+    border: 1px solid var(--color-border);
+    background: transparent;
+    color: var(--color-fg-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--ease-quick);
+
+    &:hover {
+        background: var(--color-bg-hover);
+        border-color: var(--color-border-light);
+    }
+}
+
+.AlbumsChipActive {
+    border-color: var(--color-accent-border);
+    background: var(--color-accent-dim);
+    color: var(--color-fg-primary);
+
+    &:hover {
+        background: var(--color-accent-dim-hover);
+        border-color: var(--color-accent-border);
+    }
+}
+
 .SongListScroll {
     max-height: var(--cached-songs-list-max-height);
     overflow-y: auto;

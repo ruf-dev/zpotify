@@ -220,6 +220,7 @@ export default function MainContent({
                             song={song}
                             playlistUuid={playlistUuid}
                             playlistName={playlistName}
+                            playlistIsAlbum={playlistIsAlbum}
                             index={i + 1}
                             isPlaying={currentTrackPath === song.filePath}
                             isLiked={likedSongIds.has(song.id ?? '')}

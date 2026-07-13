@@ -48,6 +48,8 @@ export function useDownloadButtonWidget({ playlist, songs }: UseDownloadButtonWi
                           artist: song.artists?.[0]?.name ?? 'Unknown',
                           songId: song.id,
                           playlistName: playlist.name,
+                          playlistUuid: playlist.uuid,
+                          isAlbum: isAlbum(playlist),
                       }
                     : undefined;
                 useAudioCacheStore.getState().addCachedUrl(url, meta);

@@ -15,6 +15,8 @@ export interface CachedSongMeta {
     artist: string;
     songId?: string;
     playlistName?: string;
+    playlistUuid?: string;
+    isAlbum?: boolean;
 }
 
 interface AudioCacheState {
@@ -142,6 +144,8 @@ export interface CachedSongEntry {
     artist: string;
     songId?: string;
     playlistName?: string;
+    playlistUuid?: string;
+    isAlbum?: boolean;
 }
 
 export function useCachedSongs(): CachedSongEntry[] {
@@ -156,6 +160,8 @@ export function useCachedSongs(): CachedSongEntry[] {
             artist: meta?.artist ?? 'Unknown',
             songId: meta?.songId,
             playlistName: meta?.playlistName,
+            playlistUuid: meta?.playlistUuid,
+            isAlbum: meta?.isAlbum,
         };
     });
 }

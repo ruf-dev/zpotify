@@ -28,6 +28,7 @@ export interface TrackRowProps {
     song: SongBase;
     playlistUuid?: string;
     playlistName?: string;
+    playlistIsAlbum?: boolean;
     index: number;
     isPlaying: boolean;
     isLiked: boolean;
@@ -45,6 +46,7 @@ export default function TrackRow({
     song,
     playlistUuid,
     playlistName,
+    playlistIsAlbum,
     index,
     isPlaying,
     isLiked,
@@ -83,6 +85,8 @@ export default function TrackRow({
                     artist: song.artists?.[0]?.name ?? 'Unknown',
                     songId: song.id,
                     playlistName,
+                    playlistUuid,
+                    isAlbum: playlistIsAlbum,
                 });
                 toaster.bake({
                     title: 'Song downloaded',
