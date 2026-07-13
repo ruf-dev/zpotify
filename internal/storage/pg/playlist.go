@@ -272,16 +272,14 @@ func (p *PlaylistStorage) Update(ctx context.Context, params domain.UpdatePlayli
 		return rerrors.Wrap(err, "error parsing playlist uuid")
 	}
 
-	isPublic := false
-	if params.IsPublic != nil {
-		isPublic = *params.IsPublic
+	updateParams := generated.UpdatePlaylistParams{
+		Uuid:    parsedUuid,
+		Column2: params.Name,
+		Column3: params.Description,
 	}
 
-	updateParams := generated.UpdatePlaylistParams{
-		Uuid:     parsedUuid,
-		Column2:  params.Name,
-		Column3:  params.Description,
-		IsPublic: isPublic,
+	if params.IsPublic != nil {
+		updateParams.IsPublic = sql.NullBool{Bool: *params.IsPublic, Valid: true}
 	}
 
 	if params.Year != nil {

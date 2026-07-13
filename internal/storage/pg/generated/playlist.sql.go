@@ -319,7 +319,7 @@ const updatePlaylist = `-- name: UpdatePlaylist :exec
 UPDATE playlists
 SET name        = CASE WHEN $2::text != '' THEN $2::text ELSE name END,
     description = CASE WHEN $3::text != '' THEN $3::text ELSE description END,
-    is_public   = CASE WHEN $4 THEN $4 ELSE is_public END,
+    is_public   = COALESCE($4::bool, is_public),
     year        = COALESCE($5::int4, year)
 WHERE uuid = $1
 `
@@ -328,7 +328,7 @@ type UpdatePlaylistParams struct {
 	Uuid     uuid.UUID
 	Column2  string
 	Column3  string
-	IsPublic bool
+	IsPublic sql.NullBool
 	Year     sql.NullInt32
 }
 

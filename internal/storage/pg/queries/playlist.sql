@@ -65,7 +65,7 @@ UPDATE playlists SET cover_file_id = $2 WHERE uuid = $1;
 UPDATE playlists
 SET name        = CASE WHEN $2::text != '' THEN $2::text ELSE name END,
     description = CASE WHEN $3::text != '' THEN $3::text ELSE description END,
-    is_public   = CASE WHEN $4 THEN $4 ELSE is_public END,
+    is_public   = COALESCE(sqlc.narg('is_public')::bool, is_public),
     year        = COALESCE(sqlc.narg('year')::int4, year)
 WHERE uuid = $1;
 
