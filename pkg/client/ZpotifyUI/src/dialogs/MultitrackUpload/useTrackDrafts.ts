@@ -23,6 +23,8 @@ export interface TrackDraftsState {
     handleReorder: (fromIdx: number, toIdx: number) => void;
     handleAddFiles: (incomingFiles: File[]) => void;
     handleAddSong: (song: SongBase) => void;
+    handleRetry: (id: string) => void;
+    handleRetryAll: () => void;
 }
 
 interface ClassifiedFile {
@@ -222,6 +224,18 @@ export function useTrackDrafts(files: File[]): TrackDraftsState {
         setTracks((prev) => prev.filter((t) => t.id !== id));
     }
 
+    function handleRetry(id: string) {
+        const track = tracksRef.current.find((t) => t.id === id);
+        if (!track?.file) return;
+        uploadQueue.startUpload(track);
+    }
+
+    function handleRetryAll() {
+        tracksRef.current
+            .filter((t) => t.uploadStatus === 'error' && t.file)
+            .forEach((t) => uploadQueue.startUpload(t));
+    }
+
     function handleReorder(fromIdx: number, toIdx: number) {
         setTracks((prev) => {
             const next = [...prev];
@@ -272,5 +286,7 @@ export function useTrackDrafts(files: File[]): TrackDraftsState {
         handleReorder,
         handleAddFiles,
         handleAddSong,
+        handleRetry,
+        handleRetryAll,
     };
 }

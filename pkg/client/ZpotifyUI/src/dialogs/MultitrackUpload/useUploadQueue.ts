@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import { webApiService } from '@/shared/api/WebApi.ts';
+import { ServiceError } from '@/shared/api/Errors.ts';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 
 // Upload strictly one file at a time so a batch does not saturate the uplink
@@ -47,7 +48,11 @@ export function useUploadQueue(setTracks: React.Dispatch<React.SetStateAction<Tr
         const controller = new AbortController();
         activeControllersRef.current.set(t.id, controller);
 
-        setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadStatus: 'uploading' } : p)));
+        setTracks((prev) =>
+            prev.map((p) =>
+                p.id === t.id ? { ...p, uploadStatus: 'uploading', uploadError: undefined, uploadProgress: 0 } : p,
+            ),
+        );
         webApiService
             .UploadFileWithProgress(
                 file,
@@ -61,8 +66,11 @@ export function useUploadQueue(setTracks: React.Dispatch<React.SetStateAction<Tr
                     prev.map((p) => (p.id === t.id ? { ...p, fileId, uploadProgress: 100, uploadStatus: 'done' } : p)),
                 );
             })
-            .catch(() => {
-                setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadStatus: 'error' } : p)));
+            .catch((e: unknown) => {
+                const message = e instanceof ServiceError ? e.title : 'upload failed';
+                setTracks((prev) =>
+                    prev.map((p) => (p.id === t.id ? { ...p, uploadStatus: 'error', uploadError: message } : p)),
+                );
             })
             .finally(() => {
                 activeControllersRef.current.delete(t.id);

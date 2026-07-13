@@ -20,6 +20,7 @@ export interface TrackDraft {
     size?: number;
     uploadStatus: 'pending' | 'uploading' | 'done' | 'error';
     uploadProgress: number;
+    uploadError?: string;
     fileId?: string;
     isExisting?: boolean;
     linkedSongId?: string;
@@ -37,6 +38,7 @@ interface TrackRowProps {
     onTitleChange: (id: string, title: string) => void;
     onArtistsChange: (id: string, artists: ArtistItem[]) => void;
     onRemove: (id: string) => void;
+    onRetry: (id: string) => void;
     loadArtistOptions: (query: string) => Promise<ArtistItem[]>;
     onCreateArtist: (name: string) => Promise<ArtistItem>;
 }
@@ -95,7 +97,12 @@ export default function TrackRow(props: TrackRowProps) {
 
             <span className={cls.DurationBadge}>{durationLabel}</span>
 
-            <UploadStatusChip uploadStatus={track.uploadStatus} isExisting={track.isExisting} />
+            <UploadStatusChip
+                uploadStatus={track.uploadStatus}
+                isExisting={track.isExisting}
+                uploadError={track.uploadError}
+                onRetry={() => props.onRetry(track.id)}
+            />
 
             <Button
                 variant="iconDanger"

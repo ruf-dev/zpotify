@@ -8,10 +8,10 @@ import { usePlaylistListRefresh } from '@/entities/playlist/usePlaylistListRefre
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import type { ChipEntry } from '@/widgets/ChipsField/ChipsField';
 import ChevronRightIcon from '@/assets/icons/ChevronRightIcon.tsx';
+import { RetryAllIcon } from '@/assets/icons/RetryAllIcon';
 import TrackList from '@/dialogs/MultitrackUpload/TrackList';
 import PlaylistDetailsPanel from '@/dialogs/MultitrackUpload/PlaylistDetailsPanel';
 import PlaylistToggleRow from '@/dialogs/MultitrackUpload/PlaylistToggleRow';
-import SongSearchBox from '@/widgets/SongSearchBox/SongSearchBox';
 import { useTrackDrafts } from '@/dialogs/MultitrackUpload/useTrackDrafts';
 import { useMultitrackSubmit } from '@/dialogs/MultitrackUpload/useMultitrackSubmit';
 import { useMultitrackSummary } from '@/dialogs/MultitrackUpload/useMultitrackSummary';
@@ -70,6 +70,7 @@ export default function MultitrackUploadModal({ files, targetPlaylist }: Multitr
     });
 
     const excludedSongIds = new Set([...summary.linkedSongIds, ...(targetPlaylist?.existingSongIds ?? [])]);
+    const failedCount = trackDrafts.tracks.filter((t) => t.uploadStatus === 'error').length;
 
     const { loadArtistOptions, onCreateArtist } = useArtistLookup();
 
@@ -114,23 +115,37 @@ export default function MultitrackUploadModal({ files, targetPlaylist }: Multitr
                     />
                 )}
 
-                {playlistMode && <SongSearchBox excludedIds={excludedSongIds} onAddSong={trackDrafts.handleAddSong} />}
-
                 <TrackList
                     tracks={trackDrafts.tracks}
                     albumArtists={playlistMode ? albumArtists : []}
                     onTitleChange={trackDrafts.handleTitleChange}
                     onArtistsChange={trackDrafts.handleArtistsChange}
                     onRemove={trackDrafts.handleRemove}
+                    onRetry={trackDrafts.handleRetry}
                     onReorder={trackDrafts.handleReorder}
                     onAddFiles={trackDrafts.handleAddFiles}
                     loadArtistOptions={loadArtistOptions}
                     onCreateArtist={onCreateArtist}
+                    showSearchBox={playlistMode}
+                    excludedSongIds={excludedSongIds}
+                    onAddSong={trackDrafts.handleAddSong}
                 />
             </div>
 
             <div className={cls.PanelFooter}>
                 <span className={cls.ValidationHint}>{summary.validationHint}</span>
+                {failedCount > 0 && (
+                    <Button
+                        type="button"
+                        variant="danger"
+                        className={cls.RetryAllButton}
+                        onClick={trackDrafts.handleRetryAll}
+                        aria-label={`retry ${failedCount} failed ${failedCount === 1 ? 'track' : 'tracks'}`}
+                    >
+                        <RetryAllIcon />
+                        {failedCount}
+                    </Button>
+                )}
                 <Button
                     type="button"
                     variant="primary"

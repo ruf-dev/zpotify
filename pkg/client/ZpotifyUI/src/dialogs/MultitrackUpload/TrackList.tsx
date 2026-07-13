@@ -1,7 +1,9 @@
 import { createPortal } from 'react-dom';
 
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
+import type { SongBase } from '@/app/api/zpotify';
 import DropZone from '@/features/upload/DropZone';
+import SongSearchBox from '@/widgets/SongSearchBox/SongSearchBox';
 import TrackRow from '@/dialogs/MultitrackUpload/TrackRow';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { useTrackDrag } from '@/dialogs/MultitrackUpload/useTrackDrag';
@@ -13,10 +15,14 @@ interface TrackListProps {
     onTitleChange: (id: string, title: string) => void;
     onArtistsChange: (id: string, artists: ArtistItem[]) => void;
     onRemove: (id: string) => void;
+    onRetry: (id: string) => void;
     onReorder: (fromIdx: number, toIdx: number) => void;
     onAddFiles: (files: File[]) => void;
     loadArtistOptions: (query: string) => Promise<ArtistItem[]>;
     onCreateArtist: (name: string) => Promise<ArtistItem>;
+    showSearchBox: boolean;
+    excludedSongIds: Set<string>;
+    onAddSong: (song: SongBase) => void;
 }
 
 function noop() {}
@@ -53,6 +59,7 @@ export default function TrackList(props: TrackListProps) {
                         onTitleChange={props.onTitleChange}
                         onArtistsChange={props.onArtistsChange}
                         onRemove={props.onRemove}
+                        onRetry={props.onRetry}
                         loadArtistOptions={props.loadArtistOptions}
                         onCreateArtist={props.onCreateArtist}
                     />
@@ -73,11 +80,14 @@ export default function TrackList(props: TrackListProps) {
                         onTitleChange={props.onTitleChange}
                         onArtistsChange={props.onArtistsChange}
                         onRemove={props.onRemove}
+                        onRetry={props.onRetry}
                         loadArtistOptions={props.loadArtistOptions}
                         onCreateArtist={props.onCreateArtist}
                     />,
                     document.body,
                 )}
+
+            {props.showSearchBox && <SongSearchBox excludedIds={props.excludedSongIds} onAddSong={props.onAddSong} />}
 
             <DropZone onFiles={props.onAddFiles} className={cls.EmptyStateWrapper}>
                 <div className={cls.EmptyStateContent}>
