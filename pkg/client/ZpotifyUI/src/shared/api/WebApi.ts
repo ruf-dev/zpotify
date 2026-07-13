@@ -1,9 +1,16 @@
 import { BaseService } from '@/shared/api/BaseService.ts';
-import { ServiceError, WithDescription, WithHttpStatus, WithStatusCode, WithTitle } from '@/shared/api/Errors.ts';
+import {
+    ServiceError,
+    WithDescription,
+    WithHttpStatus,
+    WithIsNonRetryable,
+    WithStatusCode,
+    WithTitle,
+} from '@/shared/api/Errors.ts';
 
 export interface WebApi {
-    UploadFile(file: File): Promise<string>;
-    UploadFileWithProgress(file: File, onProgress: (pct: number) => void): Promise<string>;
+    UploadFile(file: File, signal?: AbortSignal): Promise<string>;
+    UploadFileWithProgress(file: File, onProgress: (pct: number) => void, signal?: AbortSignal): Promise<string>;
 }
 
 enum WebApiUriPath {
@@ -11,7 +18,7 @@ enum WebApiUriPath {
 }
 
 export class WebApiImpl extends BaseService implements WebApi {
-    UploadFile(file: File): Promise<string> {
+    UploadFile(file: File, signal?: AbortSignal): Promise<string> {
         return this.executeAuthApiCall(async (initReq) => {
             const formData = new FormData();
             formData.append('file', file, file.name);
@@ -25,6 +32,7 @@ export class WebApiImpl extends BaseService implements WebApi {
                 method: 'POST',
                 headers,
                 body: formData,
+                signal,
             });
 
             if (response.ok) {
@@ -36,7 +44,7 @@ export class WebApiImpl extends BaseService implements WebApi {
         });
     }
 
-    UploadFileWithProgress(file: File, onProgress: (pct: number) => void): Promise<string> {
+    UploadFileWithProgress(file: File, onProgress: (pct: number) => void, signal?: AbortSignal): Promise<string> {
         return this.executeAuthApiCall((initReq) => {
             return new Promise<string>((resolve, reject) => {
                 const formData = new FormData();
@@ -78,6 +86,18 @@ export class WebApiImpl extends BaseService implements WebApi {
                 xhr.onerror = () => {
                     reject(new ServiceError(WithTitle('Server is not available. Try again later')));
                 };
+
+                xhr.onabort = () => {
+                    reject(new ServiceError(WithTitle('Upload cancelled'), WithIsNonRetryable(true)));
+                };
+
+                if (signal) {
+                    if (signal.aborted) {
+                        xhr.abort();
+                    } else {
+                        signal.addEventListener('abort', () => xhr.abort());
+                    }
+                }
 
                 xhr.send(formData);
             });

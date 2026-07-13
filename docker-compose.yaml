@@ -21,4 +21,4 @@ services:
       - '8085:8085'
     volumes:
       - ./data/angie:/data/nginx
-      - ./.verv/template/webserver.conf:/etc/nginx/nginx.conf:ro
+      - ./.verv/template/local-ingress.conf:/etc/nginx/nginx.conf:ro

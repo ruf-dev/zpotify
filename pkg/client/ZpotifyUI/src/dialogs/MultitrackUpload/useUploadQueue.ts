@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { webApiService } from '@/shared/api/WebApi.ts';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
@@ -16,6 +16,18 @@ export interface UploadQueue {
 export function useUploadQueue(setTracks: React.Dispatch<React.SetStateAction<TrackDraft[]>>): UploadQueue {
     const uploadQueueRef = useRef<TrackDraft[]>([]);
     const activeUploadsRef = useRef(0);
+    const activeControllersRef = useRef<Map<string, AbortController>>(new Map());
+
+    // Leaving the page/closing the dialog must not leave uploads running
+    // against a connection nobody is watching anymore: drop anything still
+    // queued and abort every in-flight request.
+    useEffect(() => {
+        return function cancelAllUploads() {
+            uploadQueueRef.current = [];
+            activeControllersRef.current.forEach((controller) => controller.abort());
+            activeControllersRef.current.clear();
+        };
+    }, []);
 
     function pumpUploadQueue() {
         while (activeUploadsRef.current < MAX_CONCURRENT_UPLOADS && uploadQueueRef.current.length > 0) {
@@ -32,11 +44,18 @@ export function useUploadQueue(setTracks: React.Dispatch<React.SetStateAction<Tr
             return;
         }
         const file = t.file;
+        const controller = new AbortController();
+        activeControllersRef.current.set(t.id, controller);
+
         setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadStatus: 'uploading' } : p)));
         webApiService
-            .UploadFileWithProgress(file, (pct) => {
-                setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadProgress: pct } : p)));
-            })
+            .UploadFileWithProgress(
+                file,
+                (pct) => {
+                    setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadProgress: pct } : p)));
+                },
+                controller.signal,
+            )
             .then((fileId) => {
                 setTracks((prev) =>
                     prev.map((p) => (p.id === t.id ? { ...p, fileId, uploadProgress: 100, uploadStatus: 'done' } : p)),
@@ -46,6 +65,7 @@ export function useUploadQueue(setTracks: React.Dispatch<React.SetStateAction<Tr
                 setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadStatus: 'error' } : p)));
             })
             .finally(() => {
+                activeControllersRef.current.delete(t.id);
                 activeUploadsRef.current -= 1;
                 pumpUploadQueue();
             });

@@ -5,9 +5,19 @@ import (
 	"net"
 	"net/http"
 	"text/template"
+	"time"
 
 	"github.com/rs/cors"
 	"go.redsock.ru/rerrors"
+)
+
+// ReadTimeout/WriteTimeout are deliberately left unset here: they'd bound the
+// entire request/response body (including large audio uploads/downloads).
+// Per-request stall protection for uploads is set via ResponseController in
+// the wapi upload handler instead.
+const (
+	httpReadHeaderTimeout = 30 * time.Second
+	httpIdleTimeout       = 120 * time.Second
 )
 
 type httpServer struct {
@@ -22,7 +32,9 @@ type httpServer struct {
 func newHttpServer(listener net.Listener, httpMux *http.ServeMux) httpServer {
 	return httpServer{
 		server: &http.Server{
-			Handler: setUpCors().Handler(httpMux),
+			Handler:           setUpCors().Handler(httpMux),
+			ReadHeaderTimeout: httpReadHeaderTimeout,
+			IdleTimeout:       httpIdleTimeout,
 		},
 		registeredPaths: make(map[string]struct{}),
 		listener:        listener,

@@ -6,12 +6,19 @@ import (
 	"mime"
 	"mime/multipart"
 	"net/http"
+	"time"
 
 	"github.com/rs/zerolog"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/log"
 )
+
+// uploadReadDeadline bounds how long an upload request body may go without
+// the client sending any data. Without it, a client that vanishes mid-upload
+// (dropped wifi, sleeping laptop, killed tab) without a clean TCP close
+// leaves the handler goroutine blocked in an unbounded Read forever.
+const uploadReadDeadline = 5 * time.Minute
 
 func (s *Server) Upload(writer http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
@@ -20,6 +27,12 @@ func (s *Server) Upload(writer http.ResponseWriter, r *http.Request) {
 	if method != http.MethodPost {
 		writer.WriteHeader(http.StatusMethodNotAllowed)
 		return
+	}
+
+	rc := http.NewResponseController(writer)
+	err := rc.SetReadDeadline(time.Now().Add(uploadReadDeadline))
+	if err != nil {
+		log.Warn(ctx).Err(err).Msg("failed to set upload read deadline")
 	}
 
 	filename, filePart, err := extractFilePart(r)
