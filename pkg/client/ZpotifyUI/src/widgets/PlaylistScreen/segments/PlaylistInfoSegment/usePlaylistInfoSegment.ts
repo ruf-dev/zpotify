@@ -41,6 +41,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
     const [editYear, setEditYear] = useState<number | undefined>();
     const [editArtists, setEditArtists] = useState<ArtistItem[]>([]);
     const [editCover, setEditCover] = useState<File | undefined>();
+    const [coverUploadProgress, setCoverUploadProgress] = useState<number | undefined>();
 
     useEffect(() => {
         if (!editMode) return;
@@ -51,6 +52,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
             (playlist.artists ?? []).filter((a) => a.uuid && a.name).map((a) => ({ id: a.uuid!, name: a.name! })),
         );
         setEditCover(undefined);
+        setCoverUploadProgress(undefined);
     }, [editMode]);
 
     const loadArtistOptions = useCallback(
@@ -74,7 +76,8 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
         try {
             let coverFileId: string | undefined;
             if (editCover) {
-                coverFileId = await webApiService.UploadFile(editCover);
+                setCoverUploadProgress(0);
+                coverFileId = await webApiService.UploadFileWithProgress(editCover, setCoverUploadProgress);
             }
             const artistUuids = editArtists.map((a) => a.id);
             const response = await playlistService.UpdatePlaylist(
@@ -98,6 +101,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
             toaster.catch(e as never);
         } finally {
             setSaving(false);
+            setCoverUploadProgress(undefined);
         }
     }
 
@@ -126,6 +130,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
         name: playlist.name,
         isEditing: editMode,
         onFileSelect: handleCoverFileSelect,
+        uploadProgress: coverUploadProgress,
     };
 
     const albumNameProps: EditableAlbumNameProps = {

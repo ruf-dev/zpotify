@@ -21,6 +21,7 @@ export interface MultitrackSubmitParams {
     year: number | undefined;
     tags: ChipEntry[];
     cover: File | undefined;
+    onCoverUploadProgress: (progress: number | undefined) => void;
     targetPlaylistUuid?: string;
     CloseDialog: () => void;
     LockClosing: () => void;
@@ -63,9 +64,16 @@ export function useMultitrackSubmit(params: MultitrackSubmitParams): MultitrackS
     const [submitting, setSubmitting] = useState(false);
 
     function createPlaylistWithSongs(songIds: string[]): Promise<void> {
-        const coverUpload = params.cover ? webApiService.UploadFile(params.cover) : Promise.resolve(undefined);
+        let coverUpload: Promise<string | undefined>;
+        if (params.cover) {
+            params.onCoverUploadProgress(0);
+            coverUpload = webApiService.UploadFileWithProgress(params.cover, params.onCoverUploadProgress);
+        } else {
+            coverUpload = Promise.resolve(undefined);
+        }
 
         return coverUpload.then((coverFileId) => {
+            params.onCoverUploadProgress(undefined);
             const albumArtistUuids = params.albumArtists.map((a) => a.id);
             return playlistService
                 .CreatePlaylist(
@@ -123,6 +131,7 @@ export function useMultitrackSubmit(params: MultitrackSubmitParams): MultitrackS
             .catch((e) => {
                 setSubmitting(false);
                 params.UnlockClosing();
+                params.onCoverUploadProgress(undefined);
                 toaster.catch(e as never);
             });
     }

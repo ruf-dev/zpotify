@@ -16,6 +16,7 @@ interface PlaylistDetailsPanelProps {
     cover?: File;
     onCoverChange: (file: File) => void;
     existingCoverUrl?: string;
+    coverUploadProgress?: number;
     playlistName: string;
     onNameChange: (name: string) => void;
     albumArtists: ArtistItem[];
@@ -42,7 +43,12 @@ export default function PlaylistDetailsPanel(props: PlaylistDetailsPanelProps) {
 
     return (
         <div className={cls.PlaylistDetailsPanelContainer}>
-            <CoverField cover={props.cover} onChange={props.onCoverChange} existingCoverUrl={props.existingCoverUrl} />
+            <CoverField
+                cover={props.cover}
+                onChange={props.onCoverChange}
+                existingCoverUrl={props.existingCoverUrl}
+                uploadProgress={props.coverUploadProgress}
+            />
 
             <div className={cls.FieldsStack}>
                 <div className={cls.FieldGroup}>

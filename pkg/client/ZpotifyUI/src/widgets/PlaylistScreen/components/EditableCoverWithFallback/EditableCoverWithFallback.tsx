@@ -3,6 +3,7 @@ import cn from 'classnames';
 
 import cls from '@/widgets/PlaylistScreen/components/EditableCoverWithFallback/EditableCoverWithFallback.module.css';
 import CoverWithFallback from '@/components/CoverWithFallback/CoverWithFallback.tsx';
+import CoverUploadProgress from '@/components/CoverUploadProgress/CoverUploadProgress.tsx';
 import { UploadArrowIcon } from '@/assets/icons/UploadArrowIcon.tsx';
 import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
 
@@ -12,6 +13,7 @@ export interface EditableCoverWithFallbackProps {
     name?: string;
     isEditing: boolean;
     onFileSelect: (file: File) => void;
+    uploadProgress?: number;
 }
 
 export default function EditableCoverWithFallback({
@@ -20,6 +22,7 @@ export default function EditableCoverWithFallback({
     name,
     isEditing,
     onFileSelect,
+    uploadProgress,
 }: EditableCoverWithFallbackProps) {
     const [hover, setHover] = useState(false);
     const [previewUrl, setPreviewUrl] = useState<string | undefined>();
@@ -62,6 +65,7 @@ export default function EditableCoverWithFallback({
                 uuid={uuid}
                 name={name}
             />
+            {uploadProgress !== undefined && <CoverUploadProgress progress={uploadProgress} />}
             {isEditing && hover && (
                 <div className={cls.ChangeOverlay}>
                     <UploadArrowIcon />

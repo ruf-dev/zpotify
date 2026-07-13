@@ -44,6 +44,7 @@ export default function MultitrackUploadModal({ files, targetPlaylist }: Multitr
     const [year, setYear] = useState<number | undefined>();
     const [tags, setTags] = useState<ChipEntry[]>([]);
     const [cover, setCover] = useState<File | undefined>();
+    const [coverUploadProgress, setCoverUploadProgress] = useState<number | undefined>();
 
     const submitState = useMultitrackSubmit({
         tracks: trackDrafts.tracks,
@@ -53,6 +54,7 @@ export default function MultitrackUploadModal({ files, targetPlaylist }: Multitr
         year,
         tags,
         cover,
+        onCoverUploadProgress: setCoverUploadProgress,
         targetPlaylistUuid: targetPlaylist?.uuid,
         CloseDialog,
         LockClosing,
@@ -100,6 +102,7 @@ export default function MultitrackUploadModal({ files, targetPlaylist }: Multitr
                     <PlaylistDetailsPanel
                         cover={cover}
                         onCoverChange={setCover}
+                        coverUploadProgress={coverUploadProgress}
                         playlistName={playlistName}
                         onNameChange={setPlaylistName}
                         albumArtists={albumArtists}

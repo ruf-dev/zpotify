@@ -4,14 +4,16 @@ import cn from 'classnames';
 import cls from '@/components/CoverField/CoverField.module.css';
 import { UploadArrowIcon } from '@/assets/icons/UploadArrowIcon.tsx';
 import { ZLogoIcon } from '@/assets/icons/ZLogoIcon.tsx';
+import CoverUploadProgress from '@/components/CoverUploadProgress/CoverUploadProgress.tsx';
 
 interface CoverFieldProps {
     cover?: File;
     onChange: (file: File) => void;
     existingCoverUrl?: string;
+    uploadProgress?: number;
 }
 
-export default function CoverField({ cover, onChange, existingCoverUrl }: CoverFieldProps) {
+export default function CoverField({ cover, onChange, existingCoverUrl, uploadProgress }: CoverFieldProps) {
     const inputRef = useRef<HTMLInputElement>(null);
     const [hover, setHover] = useState(false);
     const [previewUrl, setPreviewUrl] = useState<string | undefined>();
@@ -49,6 +51,8 @@ export default function CoverField({ cover, onChange, existingCoverUrl }: CoverF
             <input ref={inputRef} type="file" accept="image/*" className={cls.HiddenInput} onChange={handleChange} />
 
             {hasImage ? <img src={displayUrl} alt="playlist cover" className={cls.CoverImage} /> : <ZLogoIcon />}
+
+            {uploadProgress !== undefined && <CoverUploadProgress progress={uploadProgress} />}
 
             {hover && (
                 <div className={cn(cls.HoverOverlay, hasImage ? cls.OverlayRounded : cls.OverlayCircle)}>

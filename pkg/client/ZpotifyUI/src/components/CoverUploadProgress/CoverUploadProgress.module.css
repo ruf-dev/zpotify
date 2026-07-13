@@ -1,0 +1,27 @@
+.ProgressOverlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.ProgressFill {
+    position: absolute;
+    inset: 0;
+    background: rgb(120 120 120 / 45%);
+    transform: scaleY(var(--upload-pct, 0));
+    transform-origin: bottom;
+    transition: transform 0.2s ease;
+}
+
+.ProgressLabel {
+    position: relative;
+    color: var(--color-fg-white);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0.0625rem 0.125rem rgb(0 0 0 / 60%);
+}
