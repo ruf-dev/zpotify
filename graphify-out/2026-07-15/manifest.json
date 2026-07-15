@@ -775,9 +775,9 @@
     "semantic_hash": "530849ad62863222801d4b958d1581e6"
   },
   "internal/storage/file_storage_providers/storage.go": {
-    "mtime": 1783199295.7455056,
-    "ast_hash": "e79690e2b354920da5ae80e41dcd47aa",
-    "semantic_hash": "e79690e2b354920da5ae80e41dcd47aa"
+    "mtime": 1784107001.4591076,
+    "ast_hash": "31747e57ae2ecfb9a9cf9043b2cc9a4a",
+    "semantic_hash": ""
   },
   "internal/storage/tx_manager/tx_manager.go": {
     "mtime": 1783199428.893775,
@@ -935,8 +935,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/song_service.go": {
-    "mtime": 1783759922.9386034,
-    "ast_hash": "07c3a09b196ec23709c8445a31a48104",
+    "mtime": 1784106971.0536177,
+    "ast_hash": "44a9e8a194007c61746f177929fa112e",
     "semantic_hash": ""
   },
   "internal/service/v1/playlist_service.go": {
@@ -1240,8 +1240,8 @@
     "semantic_hash": ""
   },
   "config/config.yaml": {
-    "mtime": 1783922295.4219058,
-    "ast_hash": "934dc8ec92f69b11d7567ae703be9fa6",
+    "mtime": 1784103713.3405852,
+    "ast_hash": "c7c85e91089c654084f6ddafc8e0d4d3",
     "semantic_hash": ""
   },
   "config/config_template.yaml": {
@@ -3067,6 +3067,11 @@
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/usePendingFiles.tsx": {
     "mtime": 1783978617.6640086,
     "ast_hash": "15791735ea466be2e3ed513d2d792868",
+    "semantic_hash": ""
+  },
+  "migrations/20260715000000_add_unique_index_files_meta_file_path.sql": {
+    "mtime": 1784106961.6667612,
+    "ast_hash": "f81fd7f928b0481c9d490befa534c5c6",
     "semantic_hash": ""
   }
 }
