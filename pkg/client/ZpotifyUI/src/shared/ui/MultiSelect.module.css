@@ -241,6 +241,11 @@
     background: var(--color-accent-dim);
 }
 
+.CreateOptionDisabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
 .CreateLabel {
     font-size: var(--font-size-base);
     color: var(--color-fg-accent);

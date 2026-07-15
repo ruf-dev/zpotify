@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { Input } from '@vervstack/chures';
 
 import cls from '@/shared/ui/MultiSelect.module.css';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 export interface Option {
     id: string;
@@ -35,11 +36,15 @@ export default function MultiSelect({
     const [query, setQuery] = useState('');
     const [options, setOptions] = useState<Option[]>(initialOptions ?? []);
     const [isLoading, setIsLoading] = useState(false);
+    const [isAdding, setIsAdding] = useState(false);
     const [dropdownRect, setDropdownRect] = useState<DOMRect | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const searchRef = useRef<HTMLInputElement>(null);
+    const addLockRef = useRef(false);
+    const toggleLockRef = useRef(false);
+    const toaster = useToaster();
 
     function findOption(id: string) {
         return options.find((o) => o.id === id) ?? initialOptions?.find((o) => o.id === id) ?? { id, label: id };
@@ -94,6 +99,12 @@ export default function MultiSelect({
 
     const toggleOption = useCallback(
         (id: string) => {
+            if (toggleLockRef.current) return;
+            toggleLockRef.current = true;
+            queueMicrotask(() => {
+                toggleLockRef.current = false;
+            });
+
             if (!isMultiselect) {
                 onChange(selectedIds[0] === id ? [] : [id]);
                 setIsOpen(false);
@@ -116,12 +127,22 @@ export default function MultiSelect({
         if (e.key === 'Escape') setIsOpen(false);
     }
 
-    async function handleAdd() {
-        if (!onAdd || !query.trim()) return;
-        const newOpt = await onAdd(query.trim());
-        setOptions((prev) => [...prev, newOpt]);
-        toggleOption(newOpt.id);
-        setQuery('');
+    function handleAdd() {
+        if (!onAdd || !query.trim() || addLockRef.current) return;
+        addLockRef.current = true;
+        setIsAdding(true);
+
+        onAdd(query.trim())
+            .then((newOpt) => {
+                setOptions((prev) => [...prev, newOpt]);
+                toggleOption(newOpt.id);
+                setQuery('');
+            })
+            .catch((e: unknown) => toaster.catch(e as never))
+            .finally(() => {
+                addLockRef.current = false;
+                setIsAdding(false);
+            });
     }
 
     const trimmed = query.trim();
@@ -259,11 +280,20 @@ export default function MultiSelect({
                         ))}
 
                         {canCreate && (
-                            <div className={cn(cls.Option, cls.CreateOption)} onClick={handleAdd}>
+                            <div
+                                className={cn(cls.Option, cls.CreateOption, isAdding && cls.CreateOptionDisabled)}
+                                onClick={isAdding ? undefined : handleAdd}
+                            >
                                 <span className={cls.CreateLabel}>
-                                    create {'"'}
-                                    {trimmed}
-                                    {'"'}
+                                    {isAdding ? (
+                                        'creating…'
+                                    ) : (
+                                        <>
+                                            create {'"'}
+                                            {trimmed}
+                                            {'"'}
+                                        </>
+                                    )}
                                 </span>
                             </div>
                         )}

@@ -48,6 +48,8 @@ export default function Dropdown({
 
     const inputRef = useRef<HTMLInputElement>(null);
     const panelRef = useRef<HTMLDivElement>(null);
+    const creatingRef = useRef(false);
+    const pickedRef = useRef(false);
 
     const hasSearch = Boolean(onSearch);
     const { searchResults, isSearching } = useSearchResults(query, onSearch, initialOptions);
@@ -66,16 +68,24 @@ export default function Dropdown({
     const showCreate = Boolean(onCreate) && trimmedQuery.length > 0 && !exactMatch;
 
     async function handleCreate() {
-        if (!trimmedQuery || creating || !onCreate) return;
+        if (!trimmedQuery || creatingRef.current || !onCreate) return;
+        creatingRef.current = true;
         setCreating(true);
 
         onCreate(trimmedQuery)
             .then(handlePick)
             .catch(toaster.catch)
-            .finally(() => setCreating(false));
+            .finally(() => {
+                creatingRef.current = false;
+                setCreating(false);
+            });
     }
 
     function handlePick(opt: DropdownOption) {
+        if (!multiSelect) {
+            if (pickedRef.current) return;
+            pickedRef.current = true;
+        }
         onPick(opt);
         if (!multiSelect) onClose();
     }
@@ -127,6 +137,7 @@ export default function Dropdown({
                                 query={trimmedQuery}
                                 withBorder={visibleOptions.length > 0}
                                 onCreate={handleCreate}
+                                disabled={creating}
                             />
                         )}
                         {visibleOptions.length === 0 && !showCreate && <div className={cls.EmptyHint}>{emptyHint}</div>}
