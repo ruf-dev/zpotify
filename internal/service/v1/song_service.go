@@ -177,8 +177,13 @@ func (s *AudioService) finalizeSong(
 		return rerrors.Wrap(fmt.Errorf("artist not found: %s", req.ArtistUuids[0]))
 	}
 
+	hashSuffix := fileMeta.ContentHash
+	if len(hashSuffix) > 8 {
+		hashSuffix = hashSuffix[:8]
+	}
+
 	ext := path.Ext(fileMeta.FilePath)
-	newPath := fmt.Sprintf("%s/%s%s", artists[0].Name, req.Title, ext)
+	newPath := fmt.Sprintf("%s/%s-%s%s", artists[0].Name, req.Title, hashSuffix, ext)
 	newPath = strings.ReplaceAll(newPath, " ", "_")
 	oldPath := fileMeta.FilePath
 	fileMeta.FilePath = newPath

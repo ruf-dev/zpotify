@@ -7,6 +7,7 @@ import (
 	"path"
 	"strconv"
 
+	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/storage"
@@ -76,31 +77,14 @@ func (l LocalStorageProvider) Move(_ context.Context, fromPath, newPath string) 
 	fullFromPath := path.Join(l.root, fromPath)
 	fullNewPath := path.Join(l.root, newPath)
 
-	err := verifyFolderExists(path.Dir(fullNewPath))
+	err := copyFileAtomic(fullFromPath, fullNewPath)
 	if err != nil {
-		return rerrors.Wrap(err, "error verifying destination folder exists")
-	}
-
-	src, err := os.Open(fullFromPath)
-	if err != nil {
-		return rerrors.Wrap(err, "error opening source file: "+fullFromPath)
-	}
-	defer utils.CloseWithLog(src, "source file in Move")
-
-	dst, err := os.Create(fullNewPath)
-	if err != nil {
-		return rerrors.Wrap(err, "error creating destination file: "+fullNewPath)
-	}
-	defer utils.CloseWithLog(dst, "destination file in Move")
-
-	_, err = io.Copy(dst, src)
-	if err != nil {
-		return rerrors.Wrap(err, "error copying file")
+		return rerrors.Wrap(err, "error moving file")
 	}
 
 	err = os.Remove(fullFromPath)
 	if err != nil {
-		return rerrors.Wrap(err, "error removing source file after copy")
+		return rerrors.Wrap(err, "error removing source file after move")
 	}
 
 	return nil
@@ -110,6 +94,19 @@ func (l LocalStorageProvider) Copy(_ context.Context, fromPath, toPath string) e
 	fullFromPath := path.Join(l.root, fromPath)
 	fullToPath := path.Join(l.root, toPath)
 
+	err := copyFileAtomic(fullFromPath, fullToPath)
+	if err != nil {
+		return rerrors.Wrap(err, "error copying file")
+	}
+
+	return nil
+}
+
+// copyFileAtomic copies fullFromPath into fullToPath by writing to a temp
+// file in the destination directory and renaming it into place, so a crash
+// or concurrent reader can never observe a partially-written file at
+// fullToPath.
+func copyFileAtomic(fullFromPath, fullToPath string) error {
 	err := verifyFolderExists(path.Dir(fullToPath))
 	if err != nil {
 		return rerrors.Wrap(err, "error verifying destination folder exists")
@@ -119,20 +116,51 @@ func (l LocalStorageProvider) Copy(_ context.Context, fromPath, toPath string) e
 	if err != nil {
 		return rerrors.Wrap(err, "error opening source file: "+fullFromPath)
 	}
-	defer utils.CloseWithLog(src, "source file in Copy")
+	defer utils.CloseWithLog(src, "source file in copyFileAtomic")
 
-	dst, err := os.Create(fullToPath)
+	dst, err := os.CreateTemp(path.Dir(fullToPath), ".upload-*.tmp")
 	if err != nil {
-		return rerrors.Wrap(err, "error creating destination file: "+fullToPath)
+		return rerrors.Wrap(err, "error creating temp destination file")
 	}
-	defer utils.CloseWithLog(dst, "destination file in Copy")
+	tmpPath := dst.Name()
 
 	_, err = io.Copy(dst, src)
 	if err != nil {
+		utils.CloseWithLog(dst, "temp destination file in copyFileAtomic")
+		removeTempFile(tmpPath)
 		return rerrors.Wrap(err, "error copying file content")
 	}
 
+	err = dst.Sync()
+	if err != nil {
+		utils.CloseWithLog(dst, "temp destination file in copyFileAtomic")
+		removeTempFile(tmpPath)
+		return rerrors.Wrap(err, "error syncing destination file")
+	}
+
+	err = dst.Close()
+	if err != nil {
+		removeTempFile(tmpPath)
+		return rerrors.Wrap(err, "error closing destination file")
+	}
+
+	err = os.Rename(tmpPath, fullToPath)
+	if err != nil {
+		removeTempFile(tmpPath)
+		return rerrors.Wrap(err, "error renaming temp file into place")
+	}
+
 	return nil
+}
+
+func removeTempFile(tmpPath string) {
+	err := os.Remove(tmpPath)
+	if err != nil && !os.IsNotExist(err) {
+		log.Error().
+			Err(err).
+			Str("path", tmpPath).
+			Msg("error removing leftover temp file")
+	}
 }
 
 func (l LocalStorageProvider) Delete(_ context.Context, filePath string) error {
