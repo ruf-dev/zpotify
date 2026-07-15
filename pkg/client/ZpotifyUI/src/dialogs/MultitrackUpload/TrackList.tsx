@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { createPortal } from 'react-dom';
+import { Button } from '@vervstack/chures';
 
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import type { SongBase } from '@/app/api/zpotify';
@@ -7,6 +9,7 @@ import SongSearchBox from '@/widgets/SongSearchBox/SongSearchBox';
 import TrackRow from '@/dialogs/MultitrackUpload/TrackRow';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { useTrackDrag } from '@/dialogs/MultitrackUpload/useTrackDrag';
+import { canCleanTrackNumbers } from '@/dialogs/MultitrackUpload/utils';
 import cls from '@/dialogs/MultitrackUpload/TrackList.module.css';
 
 interface TrackListProps {
@@ -18,6 +21,7 @@ interface TrackListProps {
     onRetry: (id: string) => void;
     onReorder: (fromIdx: number, toIdx: number) => void;
     onAddFiles: (files: File[]) => void;
+    onCleanNames: () => void;
     loadArtistOptions: (query: string) => Promise<ArtistItem[]>;
     onCreateArtist: (name: string) => Promise<ArtistItem>;
     showSearchBox: boolean;
@@ -25,20 +29,51 @@ interface TrackListProps {
     onAddSong: (song: SongBase) => void;
 }
 
+const CLEAN_NUMBERS_ANIMATION_MS = 220;
+
 function noop() {}
 
 export default function TrackList(props: TrackListProps) {
     const drag = useTrackDrag(props.tracks.length, props.onReorder);
+    const [isHoveringClean, setIsHoveringClean] = useState(false);
+    const [isCleaningNumbers, setIsCleaningNumbers] = useState(false);
 
     const count = props.tracks.length;
     const headerLabel = count === 1 ? 'TRACK · 1' : `TRACKS · ${count}`;
     const ghostTrack = drag.draggedIdx !== null ? props.tracks[drag.draggedIdx] : undefined;
+    const canCleanNames = canCleanTrackNumbers(props.tracks.map((t) => t.title));
+    const previewCleanNumbers = canCleanNames && isHoveringClean;
+    const cleaningNumbers = canCleanNames && isCleaningNumbers;
+
+    function handleCleanNamesClick() {
+        setIsHoveringClean(false);
+        setIsCleaningNumbers(true);
+        window.setTimeout(() => {
+            props.onCleanNames();
+            setIsCleaningNumbers(false);
+        }, CLEAN_NUMBERS_ANIMATION_MS);
+    }
 
     return (
         <div className={cls.TrackListContainer}>
             <div className={cls.ListHeader}>
                 <span className={cls.HeaderLabel}>{headerLabel}</span>
-                <span className={cls.HeaderHint}>drag rows to reorder · click name to rename</span>
+                <div className={cls.HeaderRight}>
+                    <span className={cls.HeaderHint}>drag rows to reorder · click name to rename</span>
+                    {canCleanNames && (
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            className={cls.CleanNamesButton}
+                            onClick={handleCleanNamesClick}
+                            onMouseEnter={() => setIsHoveringClean(true)}
+                            onMouseLeave={() => setIsHoveringClean(false)}
+                            disabled={isCleaningNumbers}
+                        >
+                            clean names
+                        </Button>
+                    )}
+                </div>
             </div>
 
             <div className={cls.RowsWrapper}>
@@ -62,6 +97,8 @@ export default function TrackList(props: TrackListProps) {
                         onRetry={props.onRetry}
                         loadArtistOptions={props.loadArtistOptions}
                         onCreateArtist={props.onCreateArtist}
+                        previewCleanNumbers={previewCleanNumbers}
+                        isCleaningNumbers={cleaningNumbers}
                     />
                 ))}
             </div>
@@ -83,6 +120,8 @@ export default function TrackList(props: TrackListProps) {
                         onRetry={props.onRetry}
                         loadArtistOptions={props.loadArtistOptions}
                         onCreateArtist={props.onCreateArtist}
+                        previewCleanNumbers={previewCleanNumbers}
+                        isCleaningNumbers={cleaningNumbers}
                     />,
                     document.body,
                 )}

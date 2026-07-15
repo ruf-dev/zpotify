@@ -18,10 +18,25 @@
     color: var(--color-fg-tertiary);
 }
 
+.HeaderRight {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+}
+
 .HeaderHint {
     font-size: var(--font-size-xs);
     color: var(--color-fg-disabled);
     font-style: italic;
+}
+
+.CleanNamesButton {
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--border-radius-pill);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--color-fg-accent);
+    cursor: pointer;
 }
 
 .RowsWrapper {

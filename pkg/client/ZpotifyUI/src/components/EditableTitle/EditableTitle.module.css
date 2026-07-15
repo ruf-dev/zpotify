@@ -34,6 +34,24 @@
     }
 }
 
+.RemovablePrefix {
+    display: inline-block;
+    vertical-align: top;
+    max-width: 12rem;
+    overflow: hidden;
+    white-space: pre;
+    color: var(--color-error);
+    transform: translateX(0);
+    opacity: 1;
+    transition: max-width 0.22s ease, transform 0.22s ease, opacity 0.22s ease;
+}
+
+.RemovablePrefixExit {
+    max-width: 0;
+    transform: translateX(-0.5rem);
+    opacity: 0;
+}
+
 .Input {
     width: 100%;
     background: var(--color-bg-base);

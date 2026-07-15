@@ -11,7 +11,7 @@ import { isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import type { SongBase } from '@/app/api/zpotify';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
-import { cleanTitle, computeHash } from '@/dialogs/MultitrackUpload/utils';
+import { cleanTitle, cleanTrackNumber, computeHash } from '@/dialogs/MultitrackUpload/utils';
 import type { UploadQueue } from '@/dialogs/MultitrackUpload/useUploadQueue';
 import { useUploadQueue } from '@/dialogs/MultitrackUpload/useUploadQueue';
 
@@ -25,6 +25,7 @@ export interface TrackDraftsState {
     handleAddSong: (song: SongBase) => void;
     handleRetry: (id: string) => void;
     handleRetryAll: () => void;
+    handleCleanNumbers: () => void;
 }
 
 interface ClassifiedFile {
@@ -236,6 +237,10 @@ export function useTrackDrafts(files: File[]): TrackDraftsState {
             .forEach((t) => uploadQueue.startUpload(t));
     }
 
+    function handleCleanNumbers() {
+        setTracks((prev) => prev.map((t) => ({ ...t, title: cleanTrackNumber(t.title) })));
+    }
+
     function handleReorder(fromIdx: number, toIdx: number) {
         setTracks((prev) => {
             const next = [...prev];
@@ -288,5 +293,6 @@ export function useTrackDrafts(files: File[]): TrackDraftsState {
         handleAddSong,
         handleRetry,
         handleRetryAll,
+        handleCleanNumbers,
     };
 }

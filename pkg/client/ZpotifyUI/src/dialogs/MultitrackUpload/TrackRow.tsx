@@ -5,6 +5,7 @@ import EditableTitle from '@/components/EditableTitle/EditableTitle';
 import ArtistChipsField from '@/widgets/ArtistField/ArtistChipsField';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import { formatDuration } from '@/shared/lib/time';
+import { getCleanablePrefixLength } from '@/dialogs/MultitrackUpload/utils';
 import cls from '@/dialogs/MultitrackUpload/TrackRow.module.css';
 import { DragHandleIcon } from '@/assets/icons/DragHandleIcon';
 import { RemoveTrackIcon } from '@/assets/icons/RemoveTrackIcon';
@@ -41,6 +42,8 @@ interface TrackRowProps {
     onRetry: (id: string) => void;
     loadArtistOptions: (query: string) => Promise<ArtistItem[]>;
     onCreateArtist: (name: string) => Promise<ArtistItem>;
+    previewCleanNumbers: boolean;
+    isCleaningNumbers: boolean;
 }
 
 export default function TrackRow(props: TrackRowProps) {
@@ -48,6 +51,8 @@ export default function TrackRow(props: TrackRowProps) {
     const durationLabel = track.duration > 0 ? formatDuration(Math.round(track.duration)) : '—';
     // TODO: Make editable here and send update name for such files if changed
     const isLinked = !!track.linkedSongId;
+    const highlightPrefixLength =
+        props.previewCleanNumbers || props.isCleaningNumbers ? getCleanablePrefixLength(track.title) : 0;
 
     return (
         <div
@@ -82,6 +87,8 @@ export default function TrackRow(props: TrackRowProps) {
                     value={track.title}
                     onChange={(title) => props.onTitleChange(track.id, title)}
                     readOnly={isLinked}
+                    highlightPrefixLength={highlightPrefixLength}
+                    isRemovingPrefix={props.isCleaningNumbers}
                 />
                 <ArtistChipsField
                     artists={track.artists.filter((a) => !props.albumArtists.some((la) => la.id === a.id))}

@@ -8,9 +8,20 @@ interface EditableTitleProps {
     onChange: (value: string) => void;
     placeholder?: string;
     readOnly?: boolean;
+    // Length of a leading substring of `value` to render as removable (e.g. previewing a strip-able prefix).
+    highlightPrefixLength?: number;
+    // When true, the highlighted prefix animates out (slide + fade) instead of just being shown.
+    isRemovingPrefix?: boolean;
 }
 
-export default function EditableTitle({ value, onChange, placeholder = 'untitled', readOnly }: EditableTitleProps) {
+export default function EditableTitle({
+    value,
+    onChange,
+    placeholder = 'untitled',
+    readOnly,
+    highlightPrefixLength = 0,
+    isRemovingPrefix,
+}: EditableTitleProps) {
     const [editing, setEditing] = useState(false);
     const [draft, setDraft] = useState(value);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -59,13 +70,29 @@ export default function EditableTitle({ value, onChange, placeholder = 'untitled
         );
     }
 
+    const prefix = value.slice(0, highlightPrefixLength);
+    const rest = value.slice(highlightPrefixLength);
+
     return (
         <span
             className={cn(cls.Display, !value && cls.Empty, readOnly && cls.ReadOnly)}
             onClick={handleClick}
             title={readOnly ? undefined : 'click to rename'}
         >
-            {value || placeholder}
+            {value ? (
+                highlightPrefixLength > 0 ? (
+                    <>
+                        <span className={cn(cls.RemovablePrefix, isRemovingPrefix && cls.RemovablePrefixExit)}>
+                            {prefix}
+                        </span>
+                        {rest}
+                    </>
+                ) : (
+                    value
+                )
+            ) : (
+                placeholder
+            )}
         </span>
     );
 }

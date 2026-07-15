@@ -127,6 +127,7 @@ export default function MultitrackUploadModal({ files, targetPlaylist }: Multitr
                     onRetry={trackDrafts.handleRetry}
                     onReorder={trackDrafts.handleReorder}
                     onAddFiles={trackDrafts.handleAddFiles}
+                    onCleanNames={trackDrafts.handleCleanNumbers}
                     loadArtistOptions={loadArtistOptions}
                     onCreateArtist={onCreateArtist}
                     showSearchBox={playlistMode}
