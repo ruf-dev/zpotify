@@ -20,6 +20,7 @@ export default function SegmentCarousel({ activeIdx, count, onChange, renderSlid
     const prevCountRef = useRef(0);
 
     const swipeEnabled = useUISettings((s) => s.swipeEnabled);
+    const showPlayerBar = useUISettings((s) => s.showPlayerBar);
 
     useEffect(() => {
         const container = containerRef.current;
@@ -102,6 +103,7 @@ export default function SegmentCarousel({ activeIdx, count, onChange, renderSlid
                         <div
                             className={cn(cls.CardContent, {
                                 [cls.Scrollable]: isActive,
+                                [cls.NoBottomPadding]: showPlayerBar,
                             })}
                             style={isActive ? undefined : { pointerEvents: 'none' }}
                         >

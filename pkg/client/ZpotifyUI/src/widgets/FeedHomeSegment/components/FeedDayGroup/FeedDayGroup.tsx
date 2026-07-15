@@ -24,7 +24,11 @@ export default function FeedDayGroup({ day }: Props) {
 
     return (
         <div className={cls.FeedDayGroupContainer}>
-            <p className={cls.DateHeading}>{new Date(day.date).toLocaleDateString()}</p>
+            <div className={cls.DateHeadingRow}>
+                <span className={cls.DateHeadingLine} />
+                <p className={cls.DateHeading}>{new Date(day.date).toLocaleDateString()}</p>
+                <span className={cls.DateHeadingLine} />
+            </div>
             {hasPlaylists ? (
                 <div className={cls.Section}>
                     <p className={cls.SectionTitle}>Playlists &amp; albums</p>
