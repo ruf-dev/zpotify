@@ -1685,8 +1685,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/model/HomeSegments.tsx": {
-    "mtime": 1783254247.946193,
-    "ast_hash": "8edb39bf17ba24d81dcac7aec214b021",
+    "mtime": 1784132403.0213807,
+    "ast_hash": "0d5b4cc29af3e844b07ef952bf499fc5",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/model/User.ts": {
@@ -1735,8 +1735,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/api/HomePage.ts": {
-    "mtime": 1783254247.9462032,
-    "ast_hash": "5f660351ec66b5ac1dddfa6be111c2ca",
+    "mtime": 1784132409.5480487,
+    "ast_hash": "0ca99db765ea27b2acec3e337c77647a",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/api/Errors.ts": {
@@ -3157,6 +3157,41 @@
   "internal/transport/home_api_impl/impl.go": {
     "mtime": 1784132188.1631575,
     "ast_hash": "1855f29449fd010dc2a4c5d5b7348ff8",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/FeedService.ts": {
+    "mtime": 1784132336.4837377,
+    "ast_hash": "31c8681f1adb89a90898074a4f13a552",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/FeedHomeSegment/FeedHomeSegment.tsx": {
+    "mtime": 1784132383.4415095,
+    "ast_hash": "2b3860e980b2d647a16b69f63bbb0f0e",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/FeedHomeSegment/FeedHomeSegmentSkeleton.tsx": {
+    "mtime": 1784132389.5141098,
+    "ast_hash": "97ceca6268e84bd2a437ffa38e305e5d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/FeedHomeSegment/components/FeedArtistChip/FeedArtistChip.tsx": {
+    "mtime": 1784132352.2456439,
+    "ast_hash": "b1912253e5ae79f26a6fe0d54f7a7a67",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/FeedHomeSegment/components/FeedDayGroup/FeedDayGroup.tsx": {
+    "mtime": 1784132366.94981,
+    "ast_hash": "b59577a3a09a7f724f815e80f2825778",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/FeedHomeSegment/components/FeedSongRow/FeedSongRow.tsx": {
+    "mtime": 1784132341.8806682,
+    "ast_hash": "a22bee35d92e6909a069c968cd06f34c",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/FeedHomeSegment/model.ts": {
+    "mtime": 1784132326.0082302,
+    "ast_hash": "dfb4653e0209448bbe034f5c4990fc8b",
     "semantic_hash": ""
   }
 }
