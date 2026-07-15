@@ -4,6 +4,7 @@ import { ConfirmDialog } from '@vervstack/chures';
 
 import cls from '@/widgets/PlaylistScreen/components/TrackRow/TrackRow.module.css';
 import type { SongBase } from '@/app/api/zpotify';
+import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import NowPlayingBars from '@/assets/icons/NowPlayingBars.tsx';
 import { HeartIcon } from '@/assets/icons/HeartIcon.tsx';
 import { PlayTriangleIcon } from '@/assets/icons/PlayTriangleIcon.tsx';
@@ -29,6 +30,7 @@ export interface TrackRowProps {
     playlistUuid?: string;
     playlistName?: string;
     playlistIsAlbum?: boolean;
+    playlistArtists?: ArtistItem[];
     index: number;
     isCurrent: boolean;
     isPlaying: boolean;
@@ -48,6 +50,7 @@ export default function TrackRow({
     playlistUuid,
     playlistName,
     playlistIsAlbum,
+    playlistArtists,
     index,
     isCurrent,
     isPlaying,
@@ -84,7 +87,11 @@ export default function TrackRow({
             if (cached) {
                 useAudioCacheStore.getState().addCachedUrl(trackUrl, {
                     title: song.title || 'Track',
-                    artist: song.artists?.[0]?.name ?? 'Unknown',
+                    artist:
+                        song.artists
+                            ?.map((a) => a.name ?? '')
+                            .filter(Boolean)
+                            .join(', ') || 'Unknown',
                     songId: song.id,
                     playlistName,
                     playlistUuid,
@@ -142,7 +149,31 @@ export default function TrackRow({
         ...(canReorder ? [{ label: 'Delete', onClick: handleDelete }] : []),
     ];
 
-    const artistName = song.artists?.[0]?.name ?? 'Unknown';
+    function computeArtistName(): string {
+        if (!playlistIsAlbum) {
+            return (
+                song.artists
+                    ?.map((a) => a.name ?? '')
+                    .filter(Boolean)
+                    .join(', ') || 'Unknown'
+            );
+        }
+
+        if ((playlistArtists?.length ?? 0) > 1) {
+            return '';
+        }
+
+        const albumArtistIds = new Set((playlistArtists ?? []).map((a) => a.id));
+        const featuredNames = (song.artists ?? [])
+            .filter((a) => a.uuid && !albumArtistIds.has(a.uuid))
+            .map((a) => a.name ?? '')
+            .filter(Boolean)
+            .join(', ');
+
+        return featuredNames ? `feat: ${featuredNames}` : '';
+    }
+
+    const artistName = computeArtistName();
     const duration = formatDuration(song.durationSec ?? 0);
 
     return (

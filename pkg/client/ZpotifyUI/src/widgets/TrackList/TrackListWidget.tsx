@@ -55,9 +55,18 @@ export default function SongListWidget({ songs, audioPlayer, coverUrl }: SongLis
         return songs[currentIdx - 1];
     }
 
+    function joinArtistNames(artists: SongBase['artists']): string {
+        return (
+            artists
+                ?.map((a) => a.name ?? '')
+                .filter(Boolean)
+                .join(', ') || ''
+        );
+    }
+
     function toTrackInfo(song: SongBase | undefined): TrackInfo | undefined {
         if (!song) return undefined;
-        return { title: song.title || null, artist: song.artists?.[0]?.name || null, cover: coverUrl ?? null };
+        return { title: song.title || null, artist: joinArtistNames(song.artists) || null, cover: coverUrl ?? null };
     }
 
     useEffect(() => {
@@ -80,7 +89,7 @@ export default function SongListWidget({ songs, audioPlayer, coverUrl }: SongLis
             return;
         }
 
-        audioPlayer.setSongInfo(song.title || null, song.artists?.[0]?.name || null, coverUrl);
+        audioPlayer.setSongInfo(song.title || null, joinArtistNames(song.artists) || null, coverUrl);
         audioPlayer.play(song.filePath);
     }
 

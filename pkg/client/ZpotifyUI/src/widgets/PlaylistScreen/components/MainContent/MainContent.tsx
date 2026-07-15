@@ -223,6 +223,7 @@ export default function MainContent({
                             playlistUuid={playlistUuid}
                             playlistName={playlistName}
                             playlistIsAlbum={playlistIsAlbum}
+                            playlistArtists={playlistArtists}
                             index={i + 1}
                             isCurrent={currentTrackPath === song.filePath}
                             isPlaying={isAudioPlaying}

@@ -22,6 +22,15 @@ function mapPlaylistArtists(playlist: Playlist): ArtistItem[] {
     return (playlist.artists ?? []).filter((a) => a.uuid && a.name).map((a) => ({ id: a.uuid!, name: a.name! }));
 }
 
+function joinArtistNames(artists: SongBase['artists']): string {
+    return (
+        artists
+            ?.map((a) => a.name ?? '')
+            .filter(Boolean)
+            .join(', ') || ''
+    );
+}
+
 interface Props {
     playlist: Playlist | null;
     songs: SongBase[];
@@ -52,7 +61,7 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
     function handlePlay() {
         const first = orderedSongs[0];
         if (!first?.filePath) return;
-        audioPlayer.setSongInfo(first.title ?? null, first.artists?.[0]?.name ?? null, coverUrl);
+        audioPlayer.setSongInfo(first.title ?? null, joinArtistNames(first.artists) || null, coverUrl);
         audioPlayer.play(first.filePath);
     }
 
@@ -70,7 +79,7 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
             audioPlayer.togglePlay();
             return;
         }
-        audioPlayer.setSongInfo(song.title ?? null, song.artists?.[0]?.name ?? null, coverUrl);
+        audioPlayer.setSongInfo(song.title ?? null, joinArtistNames(song.artists) || null, coverUrl);
         audioPlayer.play(song.filePath);
     }
 
@@ -82,13 +91,13 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
         audioPlayer.setNext(
             next?.filePath,
             next
-                ? { title: next.title ?? null, artist: next.artists?.[0]?.name ?? null, cover: coverUrl ?? null }
+                ? { title: next.title ?? null, artist: joinArtistNames(next.artists) || null, cover: coverUrl ?? null }
                 : undefined,
         );
         audioPlayer.setPrev(
             prev?.filePath,
             prev
-                ? { title: prev.title ?? null, artist: prev.artists?.[0]?.name ?? null, cover: coverUrl ?? null }
+                ? { title: prev.title ?? null, artist: joinArtistNames(prev.artists) || null, cover: coverUrl ?? null }
                 : undefined,
         );
     }, [orderedSongs, audioPlayer.trackPath]);
