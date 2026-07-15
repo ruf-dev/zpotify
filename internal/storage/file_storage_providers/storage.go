@@ -124,6 +124,13 @@ func copyFileAtomic(fullFromPath, fullToPath string) error {
 	}
 	tmpPath := dst.Name()
 
+	err = dst.Chmod(0644)
+	if err != nil {
+		utils.CloseWithLog(dst, "temp destination file in copyFileAtomic")
+		removeTempFile(tmpPath)
+		return rerrors.Wrap(err, "error setting destination file permissions")
+	}
+
 	_, err = io.Copy(dst, src)
 	if err != nil {
 		utils.CloseWithLog(dst, "temp destination file in copyFileAtomic")
