@@ -3,6 +3,7 @@ import {
     LibrarySegmentInfo,
     ManagementSegmentInfo,
     PlaylistSegmentInfo,
+    FeedSegmentInfo,
 } from '@/shared/model/HomeSegments.tsx';
 import { BaseService } from '@/shared/api/BaseService.ts';
 import { HomePageSegment, InitReq, UserAPI } from '@/app/api/zpotify';
@@ -34,6 +35,10 @@ function parseHomePageSegment(seg: HomePageSegment): HomeSegment | undefined {
 
     if (seg.librarySegment) {
         return new LibrarySegmentInfo();
+    }
+
+    if (seg.feedSegment) {
+        return new FeedSegmentInfo();
     }
 
     return;

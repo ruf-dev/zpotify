@@ -1,0 +1,326 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "zpotify_service_home.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "HomeAPI"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/home/feed": {
+      "post": {
+        "operationId": "HomeAPI_GetFeed",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetFeedResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetFeedRequest"
+            }
+          }
+        ],
+        "tags": [
+          "HomeAPI"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AlbumVersionMetadataVersionKind": {
+      "type": "string",
+      "enum": [
+        "VERSION_KIND_UNSPECIFIED",
+        "VERSION_KIND_DELUXE",
+        "VERSION_KIND_EXTENDED",
+        "VERSION_KIND_REMASTER",
+        "VERSION_KIND_ANNIVERSARY",
+        "VERSION_KIND_LIVE"
+      ],
+      "default": "VERSION_KIND_UNSPECIFIED"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "zpotify_apiAlbumTag": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/zpotify_apiAlbumTagKind"
+        },
+        "value": {
+          "type": "string"
+        },
+        "albumVersion": {
+          "$ref": "#/definitions/zpotify_apiAlbumVersionMetadata"
+        }
+      }
+    },
+    "zpotify_apiAlbumTagKind": {
+      "type": "string",
+      "enum": [
+        "ALBUM_TAG_KIND_UNSPECIFIED",
+        "ALBUM_TAG_KIND_GENRE",
+        "ALBUM_TAG_KIND_MOOD",
+        "ALBUM_TAG_KIND_ERA",
+        "ALBUM_TAG_KIND_VIBE",
+        "ALBUM_TAG_KIND_LANGUAGE",
+        "ALBUM_TAG_KIND_THEME",
+        "ALBUM_TAG_KIND_HIT",
+        "ALBUM_TAG_KIND_ALBUM_VERSION"
+      ],
+      "default": "ALBUM_TAG_KIND_UNSPECIFIED"
+    },
+    "zpotify_apiAlbumVersionMetadata": {
+      "type": "object",
+      "properties": {
+        "versionKind": {
+          "$ref": "#/definitions/AlbumVersionMetadataVersionKind"
+        },
+        "parentPlaylistUuid": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiArtistBase": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "liked": {
+          "type": "boolean"
+        }
+      }
+    },
+    "zpotify_apiFeedDay": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "playlistsAdded": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiPlaylist"
+          }
+        },
+        "songsAdded": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiSongBase"
+          }
+        },
+        "artistsAdded": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiArtistBase"
+          }
+        }
+      }
+    },
+    "zpotify_apiGetFeedRequest": {
+      "type": "object",
+      "properties": {
+        "paging": {
+          "$ref": "#/definitions/zpotify_apiPaging",
+          "description": "paging.limit / paging.offset count DISTINCT DAYS of activity, not rows."
+        }
+      }
+    },
+    "zpotify_apiGetFeedResponse": {
+      "type": "object",
+      "properties": {
+        "days": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiFeedDay"
+          }
+        },
+        "totalDays": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "zpotify_apiPaging": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "offset": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "zpotify_apiPlaylist": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "artists": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiArtistBase"
+          }
+        },
+        "songCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "coverFilePath": {
+          "type": "string"
+        },
+        "year": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiAlbumTag"
+          }
+        },
+        "canEdit": {
+          "type": "boolean"
+        },
+        "isSaved": {
+          "type": "boolean"
+        },
+        "ownerUsername": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiSongBase": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string"
+        },
+        "artists": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiArtistBase"
+          }
+        },
+        "durationSec": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "filePath": {
+          "type": "string"
+        },
+        "fileId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiSongTag"
+          }
+        },
+        "coverFilePath": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiSongTag": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/zpotify_apiSongTagKind"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiSongTagKind": {
+      "type": "string",
+      "enum": [
+        "SONG_TAG_KIND_UNSPECIFIED",
+        "SONG_TAG_KIND_SINGLE"
+      ],
+      "default": "SONG_TAG_KIND_UNSPECIFIED"
+    }
+  }
+}

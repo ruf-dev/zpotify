@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"io"
+	"time"
 
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage/pg/generated/songs_q"
@@ -25,6 +26,7 @@ type Storage interface {
 	FileMeta() FileMetaStorage
 	Jobs() JobStorage
 	FeatureFlags() FeatureFlagsStorage
+	Home() HomeStorage
 
 	TxManager() *tx_manager.TxManager
 }
@@ -149,6 +151,15 @@ type PlaylistStorage interface {
 	CountPlaylists(ctx context.Context, req domain.ListPlaylists) (uint32, error)
 
 	GetOwnerAndVisibility(ctx context.Context, playlistUuid string) (ownerId int64, isPublic bool, err error)
+}
+
+type HomeStorage interface {
+	WithTx(tx *sql.Tx) HomeStorage
+
+	ListFeedDays(ctx context.Context, limit, offset uint64) (days []time.Time, total uint32, err error)
+	ListPlaylistsByDays(ctx context.Context, days []time.Time) ([]domain.Playlist, error)
+	ListSongsByDays(ctx context.Context, days []time.Time) ([]domain.FeedSong, error)
+	ListArtistsByDays(ctx context.Context, days []time.Time) ([]domain.ArtistsBase, error)
 }
 
 type UserSettingsStorage interface {

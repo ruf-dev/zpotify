@@ -38,13 +38,13 @@ type PlaylistData = {
     coverFilePath?: string;
 };
 
-function uuidToSeed(uuid: string): number {
+export function uuidToSeed(uuid: string): number {
     let sum = 0;
     for (const ch of uuid) sum += ch.charCodeAt(0);
     return (sum % 7) + 1;
 }
 
-function toAlbumItem(a: PlaylistData): LibraryItem & { kind: 'album' } {
+export function toAlbumItem(a: PlaylistData): LibraryItem & { kind: 'album' } {
     const uuid = a.uuid ?? '';
     return {
         kind: 'album',
@@ -56,7 +56,7 @@ function toAlbumItem(a: PlaylistData): LibraryItem & { kind: 'album' } {
     };
 }
 
-function toPlaylistItem(p: PlaylistData, tracks: TrackPreview[]): LibraryItem & { kind: 'playlist' } {
+export function toPlaylistItem(p: PlaylistData, tracks: TrackPreview[]): LibraryItem & { kind: 'playlist' } {
     const uuid = p.uuid ?? '';
     return {
         kind: 'playlist',

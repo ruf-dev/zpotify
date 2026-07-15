@@ -28,7 +28,7 @@ type Querier interface {
 	GetFileByPath(ctx context.Context, filePath string) (FilesMetum, error)
 	GetFileBySongId(ctx context.Context, id int64) (FilesMetum, error)
 	GetHomeSegments(ctx context.Context, userID int64) ([]UserHomeSegment, error)
-	GetPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) ([]Artist, error)
+	GetPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) ([]GetPlaylistArtistsRow, error)
 	GetPlaylistOwnerAndVisibility(ctx context.Context, argUuid uuid.UUID) (GetPlaylistOwnerAndVisibilityRow, error)
 	GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAuthParams) (GetPlaylistWithAuthRow, error)
 	GetTelegramIdentityByTgId(ctx context.Context, telegramID int64) (IdentityTelegram, error)

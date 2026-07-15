@@ -18,6 +18,7 @@ message HomePageSegment {
     Management management_segment = 2;
     // TODO: Implement — include LibrarySegment in GetUserSettings response
     LibrarySegment library_segment = 3;
+    FeedSegment feed_segment = 4;
   }
 
   message PlaylistSegment {
@@ -29,6 +30,10 @@ message HomePageSegment {
   }
 
   message LibrarySegment {
+
+  }
+
+  message FeedSegment {
 
   }
 }

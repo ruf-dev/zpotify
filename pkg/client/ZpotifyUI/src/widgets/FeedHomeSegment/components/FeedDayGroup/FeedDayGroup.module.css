@@ -1,0 +1,51 @@
+.FeedDayGroupContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.DateHeading {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-fg-primary);
+    margin: 0;
+}
+
+.Section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.SectionTitle {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--color-fg-tertiary);
+    margin: 0;
+}
+
+.PlaylistsStrip {
+    display: flex;
+    gap: var(--space-md);
+    overflow-x: auto;
+    padding-bottom: var(--space-xs);
+}
+
+.PlaylistsStrip > * {
+    flex: 0 0 auto;
+    width: 13rem;
+}
+
+.ArtistsStrip {
+    display: flex;
+    gap: var(--space-lg);
+    overflow-x: auto;
+    padding-bottom: var(--space-xs);
+}
+
+.SongsList {
+    display: flex;
+    flex-direction: column;
+}

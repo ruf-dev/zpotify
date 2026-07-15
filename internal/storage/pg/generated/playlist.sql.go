@@ -159,15 +159,20 @@ WHERE pa.playlist_uuid = $1
 ORDER BY pa.order_id
 `
 
-func (q *Queries) GetPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) ([]Artist, error) {
+type GetPlaylistArtistsRow struct {
+	Uuid uuid.UUID
+	Name string
+}
+
+func (q *Queries) GetPlaylistArtists(ctx context.Context, playlistUuid uuid.UUID) ([]GetPlaylistArtistsRow, error) {
 	rows, err := q.db.QueryContext(ctx, getPlaylistArtists, playlistUuid)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []Artist{}
+	items := []GetPlaylistArtistsRow{}
 	for rows.Next() {
-		var i Artist
+		var i GetPlaylistArtistsRow
 		if err := rows.Scan(&i.Uuid, &i.Name); err != nil {
 			return nil, err
 		}

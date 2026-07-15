@@ -3,6 +3,7 @@ import React, { JSX } from 'react';
 import PlaylistHomeSegment from '@/widgets/PlaylistHomeSegment/PlaylistHomeSegment.tsx';
 import ManagementHomeSegment from '@/widgets/ManagementHomeSegment/ManagementHomeSegment.tsx';
 import PlaylistsLibrarySegment from '@/widgets/PlaylistsLibrarySegment/PlaylistsLibrarySegment.tsx';
+import FeedHomeSegment from '@/widgets/FeedHomeSegment/FeedHomeSegment.tsx';
 
 export interface HomeSegment {
     id: string;
@@ -40,5 +41,14 @@ export class LibrarySegmentInfo implements HomeSegment {
 
     buildComponent(): React.JSX.Element {
         return <PlaylistsLibrarySegment />;
+    }
+}
+
+export class FeedSegmentInfo implements HomeSegment {
+    readonly id = 'feed';
+    readonly label = 'feed';
+
+    buildComponent(): React.JSX.Element {
+        return <FeedHomeSegment />;
     }
 }

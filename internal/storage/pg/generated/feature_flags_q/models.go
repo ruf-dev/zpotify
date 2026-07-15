@@ -327,8 +327,9 @@ type AlbumTag struct {
 }
 
 type Artist struct {
-	Uuid uuid.UUID
-	Name string
+	Uuid      uuid.UUID
+	Name      string
+	CreatedAt time.Time
 }
 
 type FeatureFlag struct {
@@ -383,6 +384,7 @@ type Playlist struct {
 	CoverFileID sql.NullInt64
 	Year        sql.NullInt32
 	SongCount   int32
+	CreatedAt   time.Time
 }
 
 type PlaylistSong struct {
@@ -447,6 +449,17 @@ type PlaylistsV2 struct {
 	CoverFileID sql.NullInt64
 	SongCount   int32
 	Year        sql.NullInt32
+}
+
+type PlaylistsV3 struct {
+	Uuid        uuid.UUID
+	Name        string
+	Description string
+	IsPublic    bool
+	CoverFileID sql.NullInt64
+	SongCount   int32
+	Year        sql.NullInt32
+	CreatedAt   time.Time
 }
 
 type Song struct {

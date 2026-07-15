@@ -2,6 +2,7 @@ package domain
 
 import (
 	"database/sql"
+	"time"
 
 	generated "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 )
@@ -34,6 +35,7 @@ type Playlist struct {
 	Tags          []AlbumTag
 	Permissions   *PlaylistPermissions
 	OwnerUsername string
+	CreatedAt     time.Time
 }
 
 type ChangeSongsOrderParams struct {

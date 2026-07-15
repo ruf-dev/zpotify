@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package zpotify_api;
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "npm.proto";
+import "zpotify_common.proto";
+
+option go_package = "/zpotify_api;zpotify_api";
+option (npm_package) = "@zpotify/api";
+
+service HomeAPI {
+  rpc GetFeed(GetFeed.Request) returns (GetFeed.Response) {
+    option (google.api.http) = {
+      post: "/api/home/feed"
+      body: "*",
+    };
+  };
+}
+
+message FeedDay {
+  google.protobuf.Timestamp date = 1;
+  repeated Playlist playlists_added = 2;
+  repeated SongBase songs_added = 3;
+  repeated ArtistBase artists_added = 4;
+}
+
+message GetFeed {
+  message Request {
+    // paging.limit / paging.offset count DISTINCT DAYS of activity, not rows.
+    Paging paging = 1;
+  }
+
+  message Response {
+    repeated FeedDay days = 1;
+    uint32 total_days = 2;
+  }
+}

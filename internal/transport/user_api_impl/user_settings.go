@@ -61,6 +61,11 @@ func toPbHomeSegments(segment []domain.UserHomeSegment) ([]*zpotify_api.HomePage
 	// TODO move to database and give customization options
 	out = append(out,
 		&zpotify_api.HomePageSegment{
+			Segment: &zpotify_api.HomePageSegment_FeedSegment_{
+				FeedSegment: &zpotify_api.HomePageSegment_FeedSegment{},
+			},
+		},
+		&zpotify_api.HomePageSegment{
 			Segment: &zpotify_api.HomePageSegment_LibrarySegment_{
 				LibrarySegment: &zpotify_api.HomePageSegment_LibrarySegment{},
 			},

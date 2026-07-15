@@ -23,6 +23,7 @@ type Service interface {
 	ArtistsService() ArtistsService
 	FileService() FileService
 	FeatureFlagsService() FeatureFlagsService
+	HomeService() HomeService
 }
 
 type service struct {
@@ -33,6 +34,7 @@ type service struct {
 	artistsService      ArtistsService
 	fileService         FileService
 	featureFlagsService FeatureFlagsService
+	homeService         HomeService
 }
 
 func New(dataStorage storage.Storage, cache files_cache.FilesCache,
@@ -57,6 +59,7 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 		artistsService:      v1.NewArtistsService(dataStorage),
 		fileService:         v1.NewFileService(dataStorage, fileStorage),
 		featureFlagsService: v1.NewFeatureFlagsService(dataStorage),
+		homeService:         v1.NewHomeService(dataStorage),
 	}, nil
 }
 
@@ -86,6 +89,10 @@ func (s *service) FileService() FileService {
 
 func (s *service) FeatureFlagsService() FeatureFlagsService {
 	return s.featureFlagsService
+}
+
+func (s *service) HomeService() HomeService {
+	return s.homeService
 }
 
 type AudioService interface {
@@ -177,4 +184,8 @@ type FileService interface {
 
 type FeatureFlagsService interface {
 	GetAll(ctx context.Context) ([]domain.FeatureFlag, error)
+}
+
+type HomeService interface {
+	GetFeed(ctx context.Context, req domain.GetFeedRequest) (domain.GetFeedResult, error)
 }

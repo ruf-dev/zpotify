@@ -81,6 +81,7 @@ type HomePageSegment struct {
 	//	*HomePageSegment_PlaylistSegment_
 	//	*HomePageSegment_ManagementSegment
 	//	*HomePageSegment_LibrarySegment_
+	//	*HomePageSegment_FeedSegment_
 	Segment       isHomePageSegment_Segment `protobuf_oneof:"segment"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -150,6 +151,15 @@ func (x *HomePageSegment) GetLibrarySegment() *HomePageSegment_LibrarySegment {
 	return nil
 }
 
+func (x *HomePageSegment) GetFeedSegment() *HomePageSegment_FeedSegment {
+	if x != nil {
+		if x, ok := x.Segment.(*HomePageSegment_FeedSegment_); ok {
+			return x.FeedSegment
+		}
+	}
+	return nil
+}
+
 type isHomePageSegment_Segment interface {
 	isHomePageSegment_Segment()
 }
@@ -167,11 +177,17 @@ type HomePageSegment_LibrarySegment_ struct {
 	LibrarySegment *HomePageSegment_LibrarySegment `protobuf:"bytes,3,opt,name=library_segment,json=librarySegment,proto3,oneof"`
 }
 
+type HomePageSegment_FeedSegment_ struct {
+	FeedSegment *HomePageSegment_FeedSegment `protobuf:"bytes,4,opt,name=feed_segment,json=feedSegment,proto3,oneof"`
+}
+
 func (*HomePageSegment_PlaylistSegment_) isHomePageSegment_Segment() {}
 
 func (*HomePageSegment_ManagementSegment) isHomePageSegment_Segment() {}
 
 func (*HomePageSegment_LibrarySegment_) isHomePageSegment_Segment() {}
+
+func (*HomePageSegment_FeedSegment_) isHomePageSegment_Segment() {}
 
 type UiSettings struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -333,6 +349,42 @@ func (*HomePageSegment_LibrarySegment) Descriptor() ([]byte, []int) {
 	return file_zpotify_user_settings_proto_rawDescGZIP(), []int{1, 2}
 }
 
+type HomePageSegment_FeedSegment struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HomePageSegment_FeedSegment) Reset() {
+	*x = HomePageSegment_FeedSegment{}
+	mi := &file_zpotify_user_settings_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HomePageSegment_FeedSegment) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HomePageSegment_FeedSegment) ProtoMessage() {}
+
+func (x *HomePageSegment_FeedSegment) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_user_settings_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HomePageSegment_FeedSegment.ProtoReflect.Descriptor instead.
+func (*HomePageSegment_FeedSegment) Descriptor() ([]byte, []int) {
+	return file_zpotify_user_settings_proto_rawDescGZIP(), []int{1, 3}
+}
+
 var File_zpotify_user_settings_proto protoreflect.FileDescriptor
 
 const file_zpotify_user_settings_proto_rawDesc = "" +
@@ -340,17 +392,19 @@ const file_zpotify_user_settings_proto_rawDesc = "" +
 	"\x1bzpotify_user_settings.proto\x12\vzpotify_api\x1a\tnpm.proto\"z\n" +
 	"\fUserSettings\x12A\n" +
 	"\rhome_segments\x18\x01 \x03(\v2\x1c.zpotify_api.HomePageSegmentR\fhomeSegments\x12'\n" +
-	"\x02ui\x18\x02 \x01(\v2\x17.zpotify_api.UiSettingsR\x02ui\"\xfd\x02\n" +
+	"\x02ui\x18\x02 \x01(\v2\x17.zpotify_api.UiSettingsR\x02ui\"\xdb\x03\n" +
 	"\x0fHomePageSegment\x12Y\n" +
 	"\x10playlist_segment\x18\x01 \x01(\v2,.zpotify_api.HomePageSegment.PlaylistSegmentH\x00R\x0fplaylistSegment\x12X\n" +
 	"\x12management_segment\x18\x02 \x01(\v2'.zpotify_api.HomePageSegment.ManagementH\x00R\x11managementSegment\x12V\n" +
-	"\x0flibrary_segment\x18\x03 \x01(\v2+.zpotify_api.HomePageSegment.LibrarySegmentH\x00R\x0elibrarySegment\x1a2\n" +
+	"\x0flibrary_segment\x18\x03 \x01(\v2+.zpotify_api.HomePageSegment.LibrarySegmentH\x00R\x0elibrarySegment\x12M\n" +
+	"\ffeed_segment\x18\x04 \x01(\v2(.zpotify_api.HomePageSegment.FeedSegmentH\x00R\vfeedSegment\x1a2\n" +
 	"\x0fPlaylistSegment\x12\x1f\n" +
 	"\vplaylist_id\x18\x01 \x01(\tR\n" +
 	"playlistId\x1a\f\n" +
 	"\n" +
 	"Management\x1a\x10\n" +
-	"\x0eLibrarySegmentB\t\n" +
+	"\x0eLibrarySegment\x1a\r\n" +
+	"\vFeedSegmentB\t\n" +
 	"\asegment\"$\n" +
 	"\n" +
 	"UiSettings\x12\x16\n" +
@@ -368,7 +422,7 @@ func file_zpotify_user_settings_proto_rawDescGZIP() []byte {
 	return file_zpotify_user_settings_proto_rawDescData
 }
 
-var file_zpotify_user_settings_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_zpotify_user_settings_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_zpotify_user_settings_proto_goTypes = []any{
 	(*UserSettings)(nil),                    // 0: zpotify_api.UserSettings
 	(*HomePageSegment)(nil),                 // 1: zpotify_api.HomePageSegment
@@ -376,6 +430,7 @@ var file_zpotify_user_settings_proto_goTypes = []any{
 	(*HomePageSegment_PlaylistSegment)(nil), // 3: zpotify_api.HomePageSegment.PlaylistSegment
 	(*HomePageSegment_Management)(nil),      // 4: zpotify_api.HomePageSegment.Management
 	(*HomePageSegment_LibrarySegment)(nil),  // 5: zpotify_api.HomePageSegment.LibrarySegment
+	(*HomePageSegment_FeedSegment)(nil),     // 6: zpotify_api.HomePageSegment.FeedSegment
 }
 var file_zpotify_user_settings_proto_depIdxs = []int32{
 	1, // 0: zpotify_api.UserSettings.home_segments:type_name -> zpotify_api.HomePageSegment
@@ -383,11 +438,12 @@ var file_zpotify_user_settings_proto_depIdxs = []int32{
 	3, // 2: zpotify_api.HomePageSegment.playlist_segment:type_name -> zpotify_api.HomePageSegment.PlaylistSegment
 	4, // 3: zpotify_api.HomePageSegment.management_segment:type_name -> zpotify_api.HomePageSegment.Management
 	5, // 4: zpotify_api.HomePageSegment.library_segment:type_name -> zpotify_api.HomePageSegment.LibrarySegment
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	6, // 5: zpotify_api.HomePageSegment.feed_segment:type_name -> zpotify_api.HomePageSegment.FeedSegment
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_user_settings_proto_init() }
@@ -399,6 +455,7 @@ func file_zpotify_user_settings_proto_init() {
 		(*HomePageSegment_PlaylistSegment_)(nil),
 		(*HomePageSegment_ManagementSegment)(nil),
 		(*HomePageSegment_LibrarySegment_)(nil),
+		(*HomePageSegment_FeedSegment_)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -406,7 +463,7 @@ func file_zpotify_user_settings_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_user_settings_proto_rawDesc), len(file_zpotify_user_settings_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -1,0 +1,29 @@
+.FeedArtistChipContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    width: 5.5rem;
+}
+
+.CoverWrapper {
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.CoverImage {
+    border-radius: 50%;
+}
+
+.Name {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-secondary);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    margin: 0;
+}

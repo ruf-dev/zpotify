@@ -10,6 +10,8 @@ import (
 	"database/sql"
 	"encoding/json"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 const clearSongArtists = `-- name: ClearSongArtists :exec
@@ -57,15 +59,20 @@ WHERE sa.song_id = $1
 ORDER BY sa.order_id
 `
 
-func (q *Queries) GetArtistsBySongId(ctx context.Context, songID int64) ([]Artist, error) {
+type GetArtistsBySongIdRow struct {
+	Uuid uuid.UUID
+	Name string
+}
+
+func (q *Queries) GetArtistsBySongId(ctx context.Context, songID int64) ([]GetArtistsBySongIdRow, error) {
 	rows, err := q.db.QueryContext(ctx, getArtistsBySongId, songID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []Artist{}
+	items := []GetArtistsBySongIdRow{}
 	for rows.Next() {
-		var i Artist
+		var i GetArtistsBySongIdRow
 		if err := rows.Scan(&i.Uuid, &i.Name); err != nil {
 			return nil, err
 		}

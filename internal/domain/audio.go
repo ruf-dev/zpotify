@@ -106,9 +106,10 @@ type SongTag struct {
 }
 
 type ArtistsBase struct {
-	Uuid  string `json:"uuid"`
-	Name  string `json:"name"`
-	Liked bool   `json:"liked"`
+	Uuid      string    `json:"uuid"`
+	Name      string    `json:"name"`
+	Liked     bool      `json:"liked"`
+	CreatedAt time.Time `json:"-"`
 }
 
 type SongsList struct {
