@@ -2270,8 +2270,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/PlaylistScreenWidget.tsx": {
-    "mtime": 1784128193.9575927,
-    "ast_hash": "00a33c66afb2da8e106e7f703ea79525",
+    "mtime": 1784129123.9380088,
+    "ast_hash": "2f9b7b0147b7ae0605cbe36b4f0f3270",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/screens/SkeletonLoadScreen/SkeletonLoadScreen.tsx": {
@@ -2355,8 +2355,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/usePlayer.ts": {
-    "mtime": 1784128193.9572392,
-    "ast_hash": "5b6550f170e869f896fcf0fefa665c97",
+    "mtime": 1784128953.2123451,
+    "ast_hash": "9c022c5e1f5424204a9d52b0898f7184",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/PlayerControls.tsx": {
@@ -2395,13 +2395,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/TrackList/LazyLoadSongsList.tsx": {
-    "mtime": 1783254247.946359,
-    "ast_hash": "966101dc27e9f46ce490d1d14e29f09c",
+    "mtime": 1784129193.714858,
+    "ast_hash": "2efdb86c5faffe7ff637d429833e246b",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/TrackList/TrackListWidget.tsx": {
-    "mtime": 1784128193.9578094,
-    "ast_hash": "0c7aa1eb726b2a236edb15248f3e3776",
+    "mtime": 1784129158.4001944,
+    "ast_hash": "25dbff4a1264e59cfe3976face16e5cc",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/AuthMethods/AuthMethodsWidget.tsx": {
@@ -2505,8 +2505,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/entities/song/useListSongs.ts": {
-    "mtime": 1783254247.9460182,
-    "ast_hash": "9ca410919e84ccda6759742beb8c2c08",
+    "mtime": 1784129170.506799,
+    "ast_hash": "7a33d0d594c9e6e1214afcede2580882",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/entities/song/useLikedSongs.ts": {
@@ -2720,8 +2720,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/usePlaylistInfoSegment.ts": {
-    "mtime": 1783956828.4672287,
-    "ast_hash": "3242953097613be7d931e649832c864e",
+    "mtime": 1784129550.6444323,
+    "ast_hash": "147c5b1fa684d4ea6b878038241df189",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/NotFoundPlaylistInfoSegment/NotFoundPlaylistInfoSegment.tsx": {
@@ -3072,6 +3072,11 @@
   "migrations/20260715000000_add_unique_index_files_meta_file_path.sql": {
     "mtime": 1784106961.6667612,
     "ast_hash": "f81fd7f928b0481c9d490befa534c5c6",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/toQueueTracks.ts": {
+    "mtime": 1784129086.6578326,
+    "ast_hash": "7e03127a0507005b8b35203b8c9e132d",
     "semantic_hash": ""
   }
 }
