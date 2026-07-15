@@ -12,6 +12,11 @@ export interface TrackInfo {
     cover: string | null;
 }
 
+export interface QueueTrack {
+    filePath: string;
+    info: TrackInfo;
+}
+
 export interface AudioPlayer {
     isPlaying: boolean;
 
@@ -40,8 +45,8 @@ export interface AudioPlayer {
     playNext: () => void;
     playPrev: () => void;
 
-    setNext: (val: string | undefined, info?: TrackInfo) => void;
-    setPrev: (val: string | undefined, info?: TrackInfo) => void;
+    queueSourceId: string | null;
+    setQueue: (tracks: QueueTrack[], startIndex: number, sourceId: string) => void;
 
     shuffleHash: number | null;
     setShuffleHash: (hash: number | null) => void;
@@ -62,10 +67,9 @@ interface AudioStoreState {
     currentTime: number;
     duration: number;
 
-    nextTrackUrl: string | undefined;
-    prevTrackUrl: string | undefined;
-    nextTrackInfo: TrackInfo | undefined;
-    prevTrackInfo: TrackInfo | undefined;
+    queue: QueueTrack[];
+    queueIndex: number;
+    queueSourceId: string | null;
     shuffleHash: number | null;
 }
 
@@ -82,10 +86,9 @@ const useAudioStore = create<AudioStoreState>()(
             progress: 0,
             currentTime: 0,
             duration: 0,
-            nextTrackUrl: undefined,
-            prevTrackUrl: undefined,
-            nextTrackInfo: undefined,
-            prevTrackInfo: undefined,
+            queue: [],
+            queueIndex: -1,
+            queueSourceId: null,
             shuffleHash: null,
         }),
         {
@@ -97,6 +100,9 @@ const useAudioStore = create<AudioStoreState>()(
                 songCover: state.songCover,
                 progress: state.progress,
                 volume: state.volume,
+                queue: state.queue,
+                queueIndex: state.queueIndex,
+                queueSourceId: state.queueSourceId,
             }),
         },
     ),
@@ -236,6 +242,10 @@ class AudioPlayerImpl implements AudioPlayer {
         return useAudioStore.getState().shuffleHash;
     }
 
+    get queueSourceId() {
+        return useAudioStore.getState().queueSourceId;
+    }
+
     private startPlay() {
         this.audio
             .play()
@@ -336,28 +346,28 @@ class AudioPlayerImpl implements AudioPlayer {
         }
     }
 
+    private playQueueIndex(index: number): void {
+        const { queue } = useAudioStore.getState();
+        const target = queue[index];
+        if (!target) return;
+
+        useAudioStore.setState({ queueIndex: index });
+        this.setSongInfo(target.info.title, target.info.artist, target.info.cover);
+        this.play(target.filePath);
+    }
+
     playNext(): void {
-        const { nextTrackUrl, nextTrackInfo } = useAudioStore.getState();
-        if (nextTrackUrl) {
-            if (nextTrackInfo) this.setSongInfo(nextTrackInfo.title, nextTrackInfo.artist, nextTrackInfo.cover);
-            this.play(nextTrackUrl);
-        }
+        const { queueIndex } = useAudioStore.getState();
+        this.playQueueIndex(queueIndex + 1);
     }
 
     playPrev(): void {
-        const { prevTrackUrl, prevTrackInfo } = useAudioStore.getState();
-        if (prevTrackUrl) {
-            if (prevTrackInfo) this.setSongInfo(prevTrackInfo.title, prevTrackInfo.artist, prevTrackInfo.cover);
-            this.play(prevTrackUrl);
-        }
+        const { queueIndex } = useAudioStore.getState();
+        this.playQueueIndex(queueIndex - 1);
     }
 
-    setNext(val: string | undefined, info?: TrackInfo): void {
-        useAudioStore.setState({ nextTrackUrl: val, nextTrackInfo: info });
-    }
-
-    setPrev(val: string | undefined, info?: TrackInfo): void {
-        useAudioStore.setState({ prevTrackUrl: val, prevTrackInfo: info });
+    setQueue(tracks: QueueTrack[], startIndex: number, sourceId: string): void {
+        useAudioStore.setState({ queue: tracks, queueIndex: startIndex, queueSourceId: sourceId });
     }
 
     setShuffleHash(hash: number | null): void {

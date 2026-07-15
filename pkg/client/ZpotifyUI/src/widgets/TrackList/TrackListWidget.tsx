@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 
 import type { SongBase } from '@/app/api/zpotify';
 import cls from '@/widgets/TrackList/TrackListWidget.module.css';
-import { AudioPlayer, TrackInfo } from '@/widgets/MusicPlayer/usePlayer.ts';
+import { AudioPlayer } from '@/widgets/MusicPlayer/usePlayer.ts';
+import { toQueueTracks } from '@/widgets/MusicPlayer/toQueueTracks.ts';
 import { SongListPermissions } from '@/shared/model/User.ts';
 import TrackRow from '@/widgets/PlaylistScreen/components/TrackRow/TrackRow.tsx';
 import { useLikedSongs } from '@/entities/song/useLikedSongs.ts';
@@ -14,9 +15,10 @@ type SongListWidgetProps = {
     permissions?: SongListPermissions;
     audioPlayer: AudioPlayer;
     coverUrl?: string;
+    queueSourceId: string;
 };
 
-export default function SongListWidget({ songs, audioPlayer, coverUrl }: SongListWidgetProps) {
+export default function SongListWidget({ songs, audioPlayer, coverUrl, queueSourceId }: SongListWidgetProps) {
     const [animatingHeartId, setAnimatingHeartId] = useState<string | null>(null);
 
     const toaster = useToaster();
@@ -31,51 +33,13 @@ export default function SongListWidget({ songs, audioPlayer, coverUrl }: SongLis
         void fetchLikedSongs(likedPlaylistId);
     }, [likedPlaylistId, fetchLikedSongs]);
 
-    function getNext(currentIdx: number): SongBase | undefined {
-        if (songs.length == 0 || currentIdx == -1) {
-            return;
-        }
-
-        if (currentIdx < 0 || currentIdx + 1 >= songs.length) {
-            return songs[0];
-        }
-
-        return songs[currentIdx + 1];
-    }
-
-    function getPrev(currentIdx: number): SongBase | undefined {
-        if (songs.length == 0 || currentIdx == -1) {
-            return;
-        }
-
-        if (currentIdx === 0) {
-            return songs[songs.length - 1];
-        }
-
-        return songs[currentIdx - 1];
-    }
-
-    function joinArtistNames(artists: SongBase['artists']): string {
-        return (
-            artists
-                ?.map((a) => a.name ?? '')
-                .filter(Boolean)
-                .join(', ') || ''
-        );
-    }
-
-    function toTrackInfo(song: SongBase | undefined): TrackInfo | undefined {
-        if (!song) return undefined;
-        return { title: song.title || null, artist: joinArtistNames(song.artists) || null, cover: coverUrl ?? null };
-    }
-
     useEffect(() => {
-        const currentSongIdx = songs.findIndex((s) => s.filePath == audioPlayer.trackPath);
-        const next = getNext(currentSongIdx);
-        const prev = getPrev(currentSongIdx);
-        audioPlayer.setNext(next?.filePath, toTrackInfo(next));
-        audioPlayer.setPrev(prev?.filePath, toTrackInfo(prev));
-    }, [audioPlayer.trackPath, songs]);
+        if (audioPlayer.queueSourceId !== queueSourceId) return;
+        const queueTracks = toQueueTracks(songs, coverUrl);
+        const idx = queueTracks.findIndex((t) => t.filePath === audioPlayer.trackPath);
+        if (idx === -1) return;
+        audioPlayer.setQueue(queueTracks, idx, queueSourceId);
+    }, [audioPlayer.trackPath, audioPlayer.queueSourceId, songs]);
 
     function playSongAtIndex(idx: number) {
         const song = songs[idx];
@@ -89,8 +53,13 @@ export default function SongListWidget({ songs, audioPlayer, coverUrl }: SongLis
             return;
         }
 
-        audioPlayer.setSongInfo(song.title || null, joinArtistNames(song.artists) || null, coverUrl);
-        audioPlayer.play(song.filePath);
+        const queueTracks = toQueueTracks(songs, coverUrl);
+        const queueIdx = queueTracks.findIndex((t) => t.filePath === song.filePath);
+        const target = queueTracks[queueIdx];
+        if (!target) return;
+        audioPlayer.setQueue(queueTracks, queueIdx, queueSourceId);
+        audioPlayer.setSongInfo(target.info.title, target.info.artist, target.info.cover);
+        audioPlayer.play(target.filePath);
     }
 
     function handleToggleLike(songId: string) {

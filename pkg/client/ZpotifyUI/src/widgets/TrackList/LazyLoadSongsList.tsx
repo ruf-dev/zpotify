@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import cls from '@/widgets/TrackList/InfiniteSongsList.module.css';
 import { useListSongs } from '@/entities/song/useListSongs.ts';
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
+import { toQueueTracks } from '@/widgets/MusicPlayer/toQueueTracks.ts';
 import SongListWidget from '@/widgets/TrackList/TrackListWidget.tsx';
 import ZButton from '@/shared/ui/ZButton/ZButton.tsx';
 
@@ -28,14 +29,19 @@ export default function LazyLoadSongsList({
     useEffect(() => {
         const hash = audioPlayer.shuffleHash?.toString();
         if (!hash) return;
-        loadShuffled(hash).then((firstSongId) => {
-            if (firstSongId) audioPlayer.play(firstSongId);
+        loadShuffled(hash).then((shuffledSongs) => {
+            const queueTracks = toQueueTracks(shuffledSongs, coverUrl);
+            const first = queueTracks[0];
+            if (!first) return;
+            audioPlayer.setQueue(queueTracks, 0, playlistId);
+            audioPlayer.setSongInfo(first.info.title, first.info.artist, first.info.cover);
+            audioPlayer.play(first.filePath);
         });
     }, [audioPlayer.shuffleHash]);
 
     return (
         <div className={cn(cls.InfiniteSongsListContainer, { [cls.scrollable]: fixedSize })}>
-            <SongListWidget songs={songs} audioPlayer={audioPlayer} coverUrl={coverUrl} />
+            <SongListWidget songs={songs} audioPlayer={audioPlayer} coverUrl={coverUrl} queueSourceId={playlistId} />
             {!autoLoadAll && !isListEnded ? <ZButton title={'Load more'} onClick={loadMore} /> : null}
         </div>
     );

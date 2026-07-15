@@ -5,6 +5,7 @@ import type { Playlist, SongBase } from '@/app/api/zpotify';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import { Path } from '@/app/routing/paths.ts';
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
+import { toQueueTracks } from '@/widgets/MusicPlayer/toQueueTracks.ts';
 import PlaylistInfoSegment from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/PlaylistInfoSegment.tsx';
 import NotFoundPlaylistInfoSegment from '@/widgets/PlaylistScreen/segments/NotFoundPlaylistInfoSegment/NotFoundPlaylistInfoSegment.tsx';
 import MainContent from '@/widgets/PlaylistScreen/components/MainContent/MainContent.tsx';
@@ -20,15 +21,6 @@ function computeTotalDuration(songs: SongBase[]): string {
 
 function mapPlaylistArtists(playlist: Playlist): ArtistItem[] {
     return (playlist.artists ?? []).filter((a) => a.uuid && a.name).map((a) => ({ id: a.uuid!, name: a.name! }));
-}
-
-function joinArtistNames(artists: SongBase['artists']): string {
-    return (
-        artists
-            ?.map((a) => a.name ?? '')
-            .filter(Boolean)
-            .join(', ') || ''
-    );
 }
 
 interface Props {
@@ -54,14 +46,18 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
     }
 
     const coverUrl = buildCoverUrl(playlist?.coverFilePath);
+    const queueSourceId = playlist?.uuid;
 
     const isCurrentTrackInPlaylist = orderedSongs.some((s) => s.filePath === audioPlayer.trackPath);
     const isPlaylistPlaying = isCurrentTrackInPlaylist && audioPlayer.isPlaying;
 
     function handlePlay() {
-        const first = orderedSongs[0];
-        if (!first?.filePath) return;
-        audioPlayer.setSongInfo(first.title ?? null, joinArtistNames(first.artists) || null, coverUrl);
+        if (!queueSourceId) return;
+        const queueTracks = toQueueTracks(orderedSongs, coverUrl);
+        const first = queueTracks[0];
+        if (!first) return;
+        audioPlayer.setQueue(queueTracks, 0, queueSourceId);
+        audioPlayer.setSongInfo(first.info.title, first.info.artist, first.info.cover);
         audioPlayer.play(first.filePath);
     }
 
@@ -74,33 +70,27 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
     }
 
     function handlePlaySong(song: SongBase) {
-        if (!song.filePath) return;
+        if (!song.filePath || !queueSourceId) return;
         if (song.filePath === audioPlayer.trackPath) {
             audioPlayer.togglePlay();
             return;
         }
-        audioPlayer.setSongInfo(song.title ?? null, joinArtistNames(song.artists) || null, coverUrl);
-        audioPlayer.play(song.filePath);
+        const queueTracks = toQueueTracks(orderedSongs, coverUrl);
+        const idx = queueTracks.findIndex((t) => t.filePath === song.filePath);
+        const target = queueTracks[idx];
+        if (!target) return;
+        audioPlayer.setQueue(queueTracks, idx, queueSourceId);
+        audioPlayer.setSongInfo(target.info.title, target.info.artist, target.info.cover);
+        audioPlayer.play(target.filePath);
     }
 
     useEffect(() => {
-        const idx = orderedSongs.findIndex((s) => s.filePath === audioPlayer.trackPath);
+        if (!queueSourceId || audioPlayer.queueSourceId !== queueSourceId) return;
+        const queueTracks = toQueueTracks(orderedSongs, coverUrl);
+        const idx = queueTracks.findIndex((t) => t.filePath === audioPlayer.trackPath);
         if (idx === -1) return;
-        const next = orderedSongs[idx + 1];
-        const prev = idx > 0 ? orderedSongs[idx - 1] : undefined;
-        audioPlayer.setNext(
-            next?.filePath,
-            next
-                ? { title: next.title ?? null, artist: joinArtistNames(next.artists) || null, cover: coverUrl ?? null }
-                : undefined,
-        );
-        audioPlayer.setPrev(
-            prev?.filePath,
-            prev
-                ? { title: prev.title ?? null, artist: joinArtistNames(prev.artists) || null, cover: coverUrl ?? null }
-                : undefined,
-        );
-    }, [orderedSongs, audioPlayer.trackPath]);
+        audioPlayer.setQueue(queueTracks, idx, queueSourceId);
+    }, [orderedSongs, audioPlayer.trackPath, audioPlayer.queueSourceId]);
 
     const totalDuration = computeTotalDuration(songs);
     const trackCount = songs.length > 0 ? songs.length : (playlist?.songCount ?? 0);

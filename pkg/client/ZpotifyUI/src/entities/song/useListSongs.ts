@@ -70,17 +70,17 @@ export function useListSongs(playlistId: string, options: UseListSongsOptions = 
         setOffset((prev) => prev + SONGS_PER_PAGE);
     }
 
-    function loadShuffled(hash: string): Promise<string> {
+    function loadShuffled(hash: string): Promise<SongBase[]> {
         return playlistService
             .ListSongs(playlistId, 0, songs.length, hash)
             .then((resp) => {
-                if (!resp.songs) return '';
-                setSongs(resp.songs);
-                setIsListEnded(resp.total === resp.songs.length);
-                return resp.songs[0]?.id ?? '';
+                const shuffled = resp.songs ?? [];
+                setSongs(shuffled);
+                setIsListEnded(resp.total === shuffled.length);
+                return shuffled;
             })
             .catch(toaster.catch)
-            .then((id) => id ?? '');
+            .then((shuffled) => shuffled ?? []);
     }
 
     return { songs, totalSongs, isListEnded, loadMore, loadShuffled };
