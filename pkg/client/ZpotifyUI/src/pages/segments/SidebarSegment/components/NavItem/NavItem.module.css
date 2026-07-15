@@ -47,3 +47,13 @@
     opacity: 0;
     max-width: 0;
 }
+
+.NavItemHiddenDesktop {
+    display: none;
+}
+
+@media (orientation: portrait) {
+    .NavItemHiddenDesktop {
+        display: flex;
+    }
+}

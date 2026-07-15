@@ -28,6 +28,7 @@
         overflow: hidden;
         max-width: 8rem;
         opacity: 1;
+        cursor: pointer;
         transition: opacity var(--ease-quick), max-width var(--ease-quick);
 
         &.hidden {

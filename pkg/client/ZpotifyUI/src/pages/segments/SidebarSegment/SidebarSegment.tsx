@@ -14,8 +14,8 @@ import { useSidebarUI } from '@/shared/model/sidebarUIStore.ts';
 type navIdentity = 'home' | 'search' | 'my_uploads';
 
 const NAV_ITEMS = [
-    { id: 'home', label: 'Home', active: true },
-    { id: 'search', label: 'Search', active: false },
+    { id: 'home', label: 'Home', active: true, hideOnDesktop: true },
+    { id: 'search', label: 'Search', active: false, hideOnDesktop: true },
     { id: 'my_uploads', label: 'My Uploads', active: false, disabled: true },
 ] as const;
 
@@ -54,7 +54,7 @@ export default function SidebarSegment() {
                     isDrawerOpen && cls.SidebarContainerOpen,
                 )}
             >
-                <LogoRow isCollapsed={isCollapsed} onToggle={toggleCollapse} />
+                <LogoRow isCollapsed={isCollapsed} onToggle={toggleCollapse} onLogoClick={resolveNavigation('home')} />
 
                 <nav className={cls.NavSection}>
                     {NAV_ITEMS.map((item) => (
