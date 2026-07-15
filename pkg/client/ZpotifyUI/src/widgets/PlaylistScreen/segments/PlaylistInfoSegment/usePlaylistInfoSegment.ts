@@ -11,6 +11,7 @@ import type { TrackCountLabelProps } from '@/widgets/PlaylistScreen/components/T
 import type { PlaylistOwnerLabelProps } from '@/widgets/PlaylistScreen/components/PlaylistOwnerLabel/PlaylistOwnerLabel.tsx';
 import type { PlaylistControlsProps } from '@/widgets/PlaylistScreen/widgets/PlaylistControls/PlaylistControls.tsx';
 import { isAlbum } from '@/entities/playlist/isAlbum.ts';
+import { usePlaylistListRefresh } from '@/entities/playlist/usePlaylistListRefresh.ts';
 import { artistsService } from '@/shared/api/ArtistsService.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { webApiService } from '@/shared/api/WebApi.ts';
@@ -35,6 +36,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
     const [saving, setSaving] = useState(false);
     const queryClient = useQueryClient();
     const toaster = useToaster();
+    const refreshPlaylists = usePlaylistListRefresh((s) => s.refresh);
 
     const [editName, setEditName] = useState('');
     const [editDesc, setEditDesc] = useState('');
@@ -96,6 +98,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
             }
             setEditCover(undefined);
             await queryClient.invalidateQueries({ queryKey: ['playlist', playlist.uuid] });
+            refreshPlaylists();
             params.onExitEditMode();
         } catch (e) {
             toaster.catch(e as never);
