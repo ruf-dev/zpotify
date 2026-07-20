@@ -10,6 +10,7 @@ import { songsService } from '@/shared/api/Songs.ts';
 import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
 import { AudioFile } from '@/shared/model/AudioFile.ts';
 import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
+import { useFeedRefresh } from '@/entities/feed/useFeedRefresh.ts';
 
 interface MetaDialogProps {
     audioFile: AudioFile;
@@ -20,6 +21,7 @@ export default function MetaDialog({ audioFile, initialTitle }: MetaDialogProps)
     const { CloseDialog } = useDialog();
     const toaster = useToaster();
     const refreshActive = useSongListRefresh((s) => s.refreshActive);
+    const bumpFeed = useFeedRefresh((s) => s.bump);
 
     const [title, setTitle] = useState(initialTitle);
     const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
@@ -35,6 +37,7 @@ export default function MetaDialog({ audioFile, initialTitle }: MetaDialogProps)
                 setTimeout(() => {
                     CloseDialog();
                     refreshActive();
+                    bumpFeed();
                 }, 1100),
             )
             .catch((e) => {

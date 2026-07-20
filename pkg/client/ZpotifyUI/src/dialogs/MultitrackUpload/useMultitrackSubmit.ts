@@ -4,6 +4,7 @@ import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { webApiService } from '@/shared/api/WebApi.ts';
 import { songsService } from '@/shared/api/Songs.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
+import { useFeedRefresh } from '@/entities/feed/useFeedRefresh.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import type { ChipEntry } from '@/widgets/ChipsField/ChipsField';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
@@ -61,6 +62,7 @@ function resolveSongIds(tracks: TrackDraft[], toCreate: ToCreateTrack[], created
 
 export function useMultitrackSubmit(params: MultitrackSubmitParams): MultitrackSubmitState {
     const toaster = useToaster();
+    const bumpFeed = useFeedRefresh((s) => s.bump);
     const [submitting, setSubmitting] = useState(false);
 
     function createPlaylistWithSongs(songIds: string[]): Promise<void> {
@@ -126,6 +128,7 @@ export function useMultitrackSubmit(params: MultitrackSubmitParams): MultitrackS
                     params.CloseDialog();
                     params.refreshActive();
                     if (!params.targetPlaylistUuid && params.playlistMode) params.refreshPlaylists();
+                    bumpFeed();
                 }, 800);
             })
             .catch((e) => {

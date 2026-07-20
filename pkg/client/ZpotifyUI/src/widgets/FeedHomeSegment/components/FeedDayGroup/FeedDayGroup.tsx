@@ -1,4 +1,5 @@
 import { type ComponentType } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import type { LibraryItem } from '@/widgets/PlaylistsLibrarySegment/model.ts';
 import AlbumCard from '@/widgets/PlaylistsLibrarySegment/components/AlbumCard/AlbumCard.tsx';
@@ -17,6 +18,8 @@ function choosePlaylistComponent(kind: LibraryItem['kind']): ComponentType<Libra
     return PlaylistCardWide as ComponentType<LibraryItem>;
 }
 
+const feedItemTransition = { type: 'spring' as const, stiffness: 400, damping: 36 };
+
 export default function FeedDayGroup({ day }: Props) {
     const hasPlaylists = day.playlistsAdded.length > 0;
     const hasSongs = day.songsAdded.length > 0;
@@ -33,10 +36,23 @@ export default function FeedDayGroup({ day }: Props) {
                 <div className={cls.Section}>
                     <p className={cls.SectionTitle}>Playlists &amp; albums</p>
                     <div className={cls.PlaylistsStrip}>
-                        {day.playlistsAdded.map((item) => {
-                            const Component = choosePlaylistComponent(item.kind);
-                            return <Component key={item.uuid} {...item} />;
-                        })}
+                        <AnimatePresence initial={false}>
+                            {day.playlistsAdded.map((item) => {
+                                const Component = choosePlaylistComponent(item.kind);
+                                return (
+                                    <motion.div
+                                        key={item.uuid}
+                                        layout
+                                        initial={{ opacity: 0, y: -16 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={feedItemTransition}
+                                    >
+                                        <Component {...item} />
+                                    </motion.div>
+                                );
+                            })}
+                        </AnimatePresence>
                     </div>
                 </div>
             ) : null}
@@ -44,9 +60,20 @@ export default function FeedDayGroup({ day }: Props) {
                 <div className={cls.Section}>
                     <p className={cls.SectionTitle}>Songs</p>
                     <div className={cls.SongsList}>
-                        {day.songsAdded.map((song) => (
-                            <FeedSongRow key={song.id} {...song} />
-                        ))}
+                        <AnimatePresence initial={false}>
+                            {day.songsAdded.map((song) => (
+                                <motion.div
+                                    key={song.id}
+                                    layout
+                                    initial={{ opacity: 0, y: -16 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={feedItemTransition}
+                                >
+                                    <FeedSongRow {...song} />
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
                     </div>
                 </div>
             ) : null}
@@ -54,9 +81,20 @@ export default function FeedDayGroup({ day }: Props) {
                 <div className={cls.Section}>
                     <p className={cls.SectionTitle}>Artists</p>
                     <div className={cls.ArtistsStrip}>
-                        {day.artistsAdded.map((artist) => (
-                            <FeedArtistChip key={artist.uuid} {...artist} />
-                        ))}
+                        <AnimatePresence initial={false}>
+                            {day.artistsAdded.map((artist) => (
+                                <motion.div
+                                    key={artist.uuid}
+                                    layout
+                                    initial={{ opacity: 0, y: -16 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={feedItemTransition}
+                                >
+                                    <FeedArtistChip {...artist} />
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
                     </div>
                 </div>
             ) : null}

@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { feedService } from '@/shared/api/FeedService.ts';
 import ZButton from '@/shared/ui/ZButton/ZButton.tsx';
+import { useFeedRefresh } from '@/entities/feed/useFeedRefresh.ts';
 import type { FeedDay } from '@/widgets/FeedHomeSegment/model.ts';
 import FeedDayGroup from '@/widgets/FeedHomeSegment/components/FeedDayGroup/FeedDayGroup.tsx';
 import FeedHomeSegmentSkeleton from '@/widgets/FeedHomeSegment/FeedHomeSegmentSkeleton.tsx';
@@ -17,7 +19,16 @@ export default function FeedHomeSegment() {
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
 
+    const refreshVersion = useFeedRefresh((s) => s.version);
+    const prevRefreshVersion = useRef(refreshVersion);
+
     useEffect(fetchFeed, []);
+
+    useEffect(() => {
+        if (refreshVersion === prevRefreshVersion.current) return;
+        prevRefreshVersion.current = refreshVersion;
+        refreshFeed();
+    }, [refreshVersion]);
 
     function fetchFeed() {
         feedService
@@ -28,6 +39,16 @@ export default function FeedHomeSegment() {
             })
             .catch(toaster.catch)
             .finally(() => setLoading(false));
+    }
+
+    function refreshFeed() {
+        feedService
+            .GetFeed(Math.max(days.length, PAGE_SIZE_DAYS), 0)
+            .then((result) => {
+                setDays(result.days);
+                setTotalDays(result.totalDays);
+            })
+            .catch(toaster.catch);
     }
 
     function loadMore() {
@@ -59,9 +80,20 @@ export default function FeedHomeSegment() {
     return (
         <div className={cls.FeedHomeSegmentContainer}>
             <div className={cls.DayList}>
-                {days.map((day) => (
-                    <FeedDayGroup key={day.date} day={day} />
-                ))}
+                <AnimatePresence initial={false}>
+                    {days.map((day) => (
+                        <motion.div
+                            key={day.date}
+                            layout
+                            initial={{ opacity: 0, y: -16 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ type: 'spring', stiffness: 400, damping: 36 }}
+                        >
+                            <FeedDayGroup day={day} />
+                        </motion.div>
+                    ))}
+                </AnimatePresence>
             </div>
             {days.length < totalDays ? (
                 <div className={cls.LoadMoreWrapper}>
