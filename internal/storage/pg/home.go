@@ -61,11 +61,12 @@ func (h *HomeStorage) ListPlaylistsByDays(ctx context.Context, days []time.Time)
 		"description",
 		"is_public",
 		"cover_file_id",
+		"cover_file_path",
 		"song_count",
 		"year",
 		"created_at",
 	).
-		From("playlists_v3").
+		From("playlists_v4").
 		Where(sq.Eq{"is_public": true}).
 		Where(sq.Eq{createdAtDateColumn: days}).
 		PlaceholderFormat(sq.Dollar)
@@ -84,17 +85,18 @@ func (h *HomeStorage) ListPlaylistsByDays(ctx context.Context, days []time.Time)
 	var playlists []domain.Playlist
 	for rows.Next() {
 		var (
-			id          uuid.UUID
-			name        string
-			description string
-			isPublic    bool
-			coverFileID sql.NullInt64
-			songCount   int32
-			year        sql.NullInt32
-			createdAt   time.Time
+			id            uuid.UUID
+			name          string
+			description   string
+			isPublic      bool
+			coverFileID   sql.NullInt64
+			coverFilePath sql.NullString
+			songCount     int32
+			year          sql.NullInt32
+			createdAt     time.Time
 		)
 
-		err = rows.Scan(&id, &name, &description, &isPublic, &coverFileID, &songCount, &year, &createdAt)
+		err = rows.Scan(&id, &name, &description, &isPublic, &coverFileID, &coverFilePath, &songCount, &year, &createdAt)
 		if err != nil {
 			return nil, wrapPgErr(err)
 		}
@@ -110,6 +112,10 @@ func (h *HomeStorage) ListPlaylistsByDays(ctx context.Context, days []time.Time)
 
 		if coverFileID.Valid {
 			playlist.CoverFileId = &coverFileID.Int64
+		}
+
+		if coverFilePath.Valid {
+			playlist.CoverFilePath = coverFilePath.String
 		}
 
 		if year.Valid {
