@@ -6,6 +6,7 @@ import LogoRow from '@/pages/segments/SidebarSegment/components/LogoRow/LogoRow'
 import NavItem from '@/pages/segments/SidebarSegment/components/NavItem/NavItem';
 import UserPill from '@/pages/segments/SidebarSegment/components/UserPill/UserPill';
 import SidebarArtistsWidget from '@/pages/segments/SidebarSegment/Widget/SidebarArtistsWidget/SidebarArtistsWidget';
+import NotificationBellWidget from '@/pages/segments/SidebarSegment/Widget/NotificationBellWidget/NotificationBellWidget';
 import SidebarPlaylistsWidget from '@/pages/segments/SidebarSegment/Widget/SidebarPlaylistsWidget/SidebarPlaylistsWidget';
 import cls from '@/pages/segments/SidebarSegment/SidebarSegment.module.css';
 import { Path } from '@/app/routing/paths.ts';
@@ -71,7 +72,10 @@ export default function SidebarSegment() {
 
                 <SidebarPlaylistsWidget isCollapsed={isCollapsed} />
 
-                <UserPill username={username} isCollapsed={isCollapsed} />
+                <div className={cls.SidebarFooter}>
+                    <UserPill username={username} isCollapsed={isCollapsed} />
+                    <NotificationBellWidget />
+                </div>
             </aside>
         </>
     );

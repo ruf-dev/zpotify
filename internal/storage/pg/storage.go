@@ -31,6 +31,7 @@ type dataStorage struct {
 	jobsStorage         *jobsStorage
 	featureFlagsStorage *FeatureFlagsStorage
 	homeStorage         *HomeStorage
+	notificationStorage *NotificationStorage
 
 	conn *sql.DB
 }
@@ -51,6 +52,7 @@ func NewStorage(conn *sql.DB) storage.Storage {
 		jobsStorage:             newJobsStorage(conn),
 		featureFlagsStorage:     NewFeatureFlagsStorage(conn),
 		homeStorage:             NewHomeStorage(conn, playlistStorage),
+		notificationStorage:     NewNotificationStorage(conn),
 		conn:                    conn,
 	}
 }
@@ -101,6 +103,10 @@ func (d *dataStorage) FeatureFlags() storage.FeatureFlagsStorage {
 
 func (d *dataStorage) Home() storage.HomeStorage {
 	return d.homeStorage
+}
+
+func (d *dataStorage) Notification() storage.NotificationStorage {
+	return d.notificationStorage
 }
 
 func (d *dataStorage) TxManager() *tx_manager.TxManager {

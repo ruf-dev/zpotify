@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package zpotify_api;
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "npm.proto";
+import "zpotify_common.proto";
+
+option go_package = "/zpotify_api;zpotify_api";
+option (npm_package) = "@zpotify/api";
+
+service NotificationAPI {
+  rpc GetNotificationSummary(GetNotificationSummary.Request) returns (GetNotificationSummary.Response) {
+    option (google.api.http) = {
+      get: "/api/notification/summary"
+    };
+  };
+
+  rpc ListNotifications(ListNotifications.Request) returns (ListNotifications.Response) {
+    option (google.api.http) = {
+      post: "/api/notification/list"
+      body: "*"
+    };
+  };
+
+  rpc MarkNotificationRead(MarkNotificationRead.Request) returns (MarkNotificationRead.Response) {
+    option (google.api.http) = {
+      post: "/api/notification/mark_read"
+      body: "*"
+    };
+  };
+
+  rpc ConsentNotification(ConsentNotification.Request) returns (ConsentNotification.Response) {
+    option (google.api.http) = {
+      post: "/api/notification/consent"
+      body: "*"
+    };
+  };
+}
+
+message Notification {
+  int64 id = 1;
+  string title = 2;
+  string body_markdown = 3;
+  bool requires_consent = 4;
+  google.protobuf.Timestamp created_at = 5;
+  bool is_read = 6;
+  bool consented = 7;
+}
+
+message GetNotificationSummary {
+  message Request {}
+
+  message Response {
+    uint32 unread_count = 1;
+  }
+}
+
+message ListNotifications {
+  message Request {
+    Paging paging = 1;
+  }
+
+  message Response {
+    repeated Notification notifications = 1;
+    uint32 total = 2;
+  }
+}
+
+message MarkNotificationRead {
+  message Request {
+    int64 id = 1;
+  }
+
+  message Response {}
+}
+
+message ConsentNotification {
+  message Request {
+    int64 id = 1;
+  }
+
+  message Response {}
+}

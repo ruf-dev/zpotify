@@ -27,6 +27,7 @@ type Storage interface {
 	Jobs() JobStorage
 	FeatureFlags() FeatureFlagsStorage
 	Home() HomeStorage
+	Notification() NotificationStorage
 
 	TxManager() *tx_manager.TxManager
 }
@@ -160,6 +161,26 @@ type HomeStorage interface {
 	ListPlaylistsByDays(ctx context.Context, days []time.Time) ([]domain.Playlist, error)
 	ListSongsByDays(ctx context.Context, days []time.Time) ([]domain.FeedSong, error)
 	ListArtistsByDays(ctx context.Context, days []time.Time) ([]domain.ArtistsBase, error)
+}
+
+// NotificationStorage manages notifications and each user's per-notification
+// read/consent state (notification_recipients).
+type NotificationStorage interface {
+	WithTx(tx *sql.Tx) NotificationStorage
+
+	// Create inserts a new notification. It does not snapshot recipients -
+	// callers must also call SnapshotRecipients within the same transaction.
+	Create(ctx context.Context, title, bodyMarkdown string, requiresConsent bool) (domain.Notification, error)
+	// SnapshotRecipients inserts one notification_recipients row per current user
+	// for the given notification.
+	SnapshotRecipients(ctx context.Context, notificationID int64) error
+
+	List(ctx context.Context, userId int64, limit, offset uint64) ([]domain.Notification, error)
+	Count(ctx context.Context, userId int64) (int64, error)
+	GetUnreadCount(ctx context.Context, userId int64) (int64, error)
+
+	MarkRead(ctx context.Context, userId, notificationID int64) error
+	Consent(ctx context.Context, userId, notificationID int64) error
 }
 
 type UserSettingsStorage interface {

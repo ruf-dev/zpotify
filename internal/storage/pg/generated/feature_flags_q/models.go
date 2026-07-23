@@ -375,6 +375,21 @@ type Job struct {
 	LastError       sql.NullString
 }
 
+type Notification struct {
+	ID              int64
+	Title           string
+	BodyMarkdown    string
+	RequiresConsent bool
+	CreatedAt       time.Time
+}
+
+type NotificationRecipient struct {
+	NotificationID int64
+	UserID         int64
+	ReadAt         sql.NullTime
+	ConsentedAt    sql.NullTime
+}
+
 type Playlist struct {
 	Uuid        uuid.UUID
 	Name        string
@@ -460,6 +475,18 @@ type PlaylistsV3 struct {
 	SongCount   int32
 	Year        sql.NullInt32
 	CreatedAt   time.Time
+}
+
+type PlaylistsV4 struct {
+	Uuid          uuid.UUID
+	Name          string
+	Description   string
+	IsPublic      bool
+	CoverFileID   sql.NullInt64
+	CoverFilePath sql.NullString
+	SongCount     int32
+	Year          sql.NullInt32
+	CreatedAt     time.Time
 }
 
 type Song struct {

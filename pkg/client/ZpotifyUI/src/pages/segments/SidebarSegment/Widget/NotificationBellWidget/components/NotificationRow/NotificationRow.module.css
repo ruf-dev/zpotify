@@ -1,0 +1,50 @@
+.NotificationRowContainer {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.625rem 0.875rem;
+    cursor: pointer;
+    transition: background 0.1s ease;
+}
+
+.NotificationRowContainer:hover {
+    background: var(--color-bg-accent);
+}
+
+.UnreadDot {
+    margin-top: 0.3125rem;
+    width: var(--status-dot-sm);
+    height: var(--status-dot-sm);
+    border-radius: 50%;
+    background: var(--color-fg-accent);
+    flex-shrink: 0;
+}
+
+.NotificationRowBody {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+}
+
+.NotificationRowTitle {
+    font-size: var(--font-size-base);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.TitleUnread {
+    color: var(--color-fg-primary);
+    font-weight: 700;
+}
+
+.TitleRead {
+    color: var(--color-fg-tertiary);
+    font-weight: 400;
+}
+
+.NotificationRowDate {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+}

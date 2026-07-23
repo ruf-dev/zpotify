@@ -1,0 +1,106 @@
+@keyframes scaleIn {
+    from { transform: scale(0.95) translateY(0.75rem); opacity: 0; }
+    to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.NotificationDialogContainer {
+    width: 26rem;
+    max-width: 90vw;
+    background: var(--color-bg-secondary);
+    border: 0.0625rem solid var(--color-border-light);
+    border-radius: var(--border-radius);
+    box-shadow: 0 1.5rem 4rem var(--color-shadow-deep), 0 0 0 0.0625rem var(--color-bg-hover);
+    animation: scaleIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+    overflow: hidden;
+}
+
+.PanelHeader {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem 0.75rem 1rem;
+    border-bottom: 0.0625rem solid var(--color-border);
+    min-height: 3rem;
+}
+
+.PanelTitle {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-fg-primary);
+}
+
+.PanelBody {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+}
+
+.MarkdownBody {
+    max-height: 24rem;
+    overflow-y: auto;
+    font-size: var(--font-size-base);
+    color: var(--color-fg-secondary);
+    line-height: 1.5;
+
+    & p {
+        margin: 0 0 0.75rem;
+    }
+
+    & p:last-child {
+        margin-bottom: 0;
+    }
+
+    & h1,
+    & h2,
+    & h3 {
+        color: var(--color-fg-primary);
+        margin: 0 0 0.5rem;
+    }
+
+    & a {
+        color: var(--color-fg-accent);
+    }
+
+    & ul,
+    & ol {
+        margin: 0 0 0.75rem;
+        padding-left: 1.25rem;
+    }
+
+    & code {
+        background: var(--color-bg-accent);
+        border-radius: var(--border-radius-sm);
+        padding: 0.0625rem 0.3125rem;
+        font-size: var(--font-size-md);
+    }
+}
+
+.AgreeButton {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border-radius: var(--border-radius-pill);
+    text-align: center;
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    font-family: Comfortaa, sans-serif;
+    border: 0.0625rem solid var(--color-fg-accent);
+    background: var(--color-fg-accent);
+    color: var(--color-fg-white);
+    box-shadow: 0 0.25rem 1.25rem var(--color-accent-shadow);
+    cursor: pointer;
+    transition: all 0.22s ease;
+}
+
+.AgreeButton:hover:not(:disabled) {
+    transform: scale(1.02);
+}
+
+.AgreeButton:disabled {
+    background: var(--color-bg-submitted);
+    border-color: var(--color-border-light);
+    color: var(--color-fg-tertiary);
+    cursor: default;
+    transform: none;
+}

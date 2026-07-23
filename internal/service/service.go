@@ -24,6 +24,7 @@ type Service interface {
 	FileService() FileService
 	FeatureFlagsService() FeatureFlagsService
 	HomeService() HomeService
+	NotificationService() NotificationService
 }
 
 type service struct {
@@ -35,6 +36,7 @@ type service struct {
 	fileService         FileService
 	featureFlagsService FeatureFlagsService
 	homeService         HomeService
+	notificationService NotificationService
 }
 
 func New(dataStorage storage.Storage, cache files_cache.FilesCache,
@@ -60,6 +62,7 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 		fileService:         v1.NewFileService(dataStorage, fileStorage),
 		featureFlagsService: v1.NewFeatureFlagsService(dataStorage),
 		homeService:         v1.NewHomeService(dataStorage),
+		notificationService: v1.NewNotificationService(dataStorage),
 	}, nil
 }
 
@@ -93,6 +96,10 @@ func (s *service) FeatureFlagsService() FeatureFlagsService {
 
 func (s *service) HomeService() HomeService {
 	return s.homeService
+}
+
+func (s *service) NotificationService() NotificationService {
+	return s.notificationService
 }
 
 type AudioService interface {
@@ -188,4 +195,20 @@ type FeatureFlagsService interface {
 
 type HomeService interface {
 	GetFeed(ctx context.Context, req domain.GetFeedRequest) (domain.GetFeedResult, error)
+}
+
+type NotificationService interface {
+	// GetSummary returns the number of unread notifications for the caller.
+	GetSummary(ctx context.Context) (unreadCount int64, err error)
+	// List returns a page of notifications for the caller along with the total count.
+	List(ctx context.Context, limit, offset uint64) (notifications []domain.Notification, total int64, err error)
+	// MarkRead marks a notification as read for the caller. Idempotent.
+	MarkRead(ctx context.Context, notificationID int64) error
+	// Consent records the caller's consent to a notification, also marking it read.
+	Consent(ctx context.Context, notificationID int64) error
+
+	// CreateAndBroadcast creates a new notification and snapshots the current
+	// set of users as its recipients. Called by the Telegram bot's admin
+	// notify commands - not exposed over gRPC.
+	CreateAndBroadcast(ctx context.Context, title, body string, requiresConsent bool) error
 }
