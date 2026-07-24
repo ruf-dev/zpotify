@@ -1,0 +1,7 @@
+version: v2.12.2
+name: custom-gcl
+destination: .
+plugins:
+  - module: callfence
+    import: callfence/plugin
+    path: /Users/alexbukov/verv/callfence

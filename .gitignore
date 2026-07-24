@@ -21,6 +21,10 @@ node_modules
 proto_modules
 .DS_Store
 
+# golangci-lint custom build (see .custom-gcl.yml) — has the callfence plugin compiled in,
+# rebuild locally with `golangci-lint custom -v`
+/custom-gcl
+
 
 #Load testing
 tests/load/tank_errors.log

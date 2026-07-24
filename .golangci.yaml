@@ -17,6 +17,11 @@ output:
 linters:
   default: none
   settings:
+#    custom:
+#      callfence:
+#        type: module
+#        description: flags cross-visibility calls within the same struct/package
+#        original-url: callfence
     depguard:
       rules:
         no-direct-zerolog-log:
@@ -41,6 +46,7 @@ linters:
   enable:
     - varnamelen
     - govet
+#    - callfence
 
     - asasalint
     - asciicheck

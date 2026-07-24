@@ -31,7 +31,7 @@ func domainSongToProto(song domain.Song) *zpotify_api.SongBase {
 		FilePath:      song.FilePath,
 		FileId:        song.FileId,
 		Tags:          domainSongTagsToProto(song.Tags),
-		CoverFilePath: song.SongBase.CoverFilePath,
+		CoverFilePath: song.CoverFilePath,
 	}
 }
 

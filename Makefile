@@ -8,8 +8,13 @@ codegen:
 
 lint:
 	go fmt ./...
-	golangci-lint run ./...
+	./custom-gcl run ./...
 	cd pkg/client/ZpotifyUI && bun lint
+
+# Rebuild the custom-gcl binary (golangci-lint + callfence plugin), needed after
+# bumping the golangci-lint version in .custom-gcl.yml or updating the callfence module.
+custom-gcl:
+	golangci-lint custom -v
 
 reload-webserver:
 	docker compose exec -it nginx nginx -s reload
