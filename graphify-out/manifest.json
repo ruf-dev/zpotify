@@ -2285,8 +2285,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/EditableArtistPicker/EditableArtistPicker.tsx": {
-    "mtime": 1783838982.9978998,
-    "ast_hash": "c8cbfe8adc5c4601cdc18e182130a96f",
+    "mtime": 1784966308.1759205,
+    "ast_hash": "dff926101325240f19bc50f9c8733f6e",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/TrackRow/TrackRow.tsx": {
