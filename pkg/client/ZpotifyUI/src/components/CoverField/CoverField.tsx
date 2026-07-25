@@ -7,18 +7,19 @@ import { ZLogoIcon } from '@/assets/icons/ZLogoIcon.tsx';
 import CoverUploadProgress from '@/components/CoverUploadProgress/CoverUploadProgress.tsx';
 
 interface CoverFieldProps {
-    cover?: File;
     onChange: (file: File) => void;
     existingCoverUrl?: string;
     uploadProgress?: number;
+    disabled?: boolean;
 }
 
-export default function CoverField({ cover, onChange, existingCoverUrl, uploadProgress }: CoverFieldProps) {
+export default function CoverField({ onChange, existingCoverUrl, uploadProgress, disabled }: CoverFieldProps) {
     const inputRef = useRef<HTMLInputElement>(null);
     const [hover, setHover] = useState(false);
     const [previewUrl, setPreviewUrl] = useState<string | undefined>();
 
     function handleClick() {
+        if (disabled) return;
         inputRef.current?.click();
     }
 
@@ -38,8 +39,8 @@ export default function CoverField({ cover, onChange, existingCoverUrl, uploadPr
         setPreviewUrl(url);
     }
 
-    const hasImage = Boolean((cover && previewUrl) || existingCoverUrl);
-    const displayUrl = previewUrl ?? existingCoverUrl;
+    const hasBaseImage = Boolean(existingCoverUrl);
+    const hasImage = hasBaseImage || Boolean(previewUrl);
 
     return (
         <div
@@ -48,9 +49,29 @@ export default function CoverField({ cover, onChange, existingCoverUrl, uploadPr
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <input ref={inputRef} type="file" accept="image/*" className={cls.HiddenInput} onChange={handleChange} />
+            <input
+                ref={inputRef}
+                type="file"
+                accept="image/*"
+                className={cls.HiddenInput}
+                onChange={handleChange}
+                disabled={disabled}
+            />
 
-            {hasImage ? <img src={displayUrl} alt="playlist cover" className={cls.CoverImage} /> : <ZLogoIcon />}
+            {hasBaseImage ? (
+                <img src={existingCoverUrl} alt="playlist cover" className={cls.CoverImage} />
+            ) : (
+                <ZLogoIcon />
+            )}
+
+            {previewUrl && (
+                <img
+                    key={previewUrl}
+                    src={previewUrl}
+                    alt="playlist cover"
+                    className={cn(cls.CoverImage, cls.PreviewImage)}
+                />
+            )}
 
             {uploadProgress !== undefined && <CoverUploadProgress progress={uploadProgress} />}
 

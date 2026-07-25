@@ -79,6 +79,7 @@ export default function SongListWidget({ songs, audioPlayer, coverUrl, queueSour
                     index={idx + 1}
                     isCurrent={audioPlayer.trackPath === s.filePath}
                     isPlaying={audioPlayer.isPlaying}
+                    isLoading={audioPlayer.isLoading}
                     isLiked={likedSongIds.has(s.id ?? '')}
                     isHeartAnimating={animatingHeartId === s.id}
                     onPlay={() => playSongAtIndex(idx)}

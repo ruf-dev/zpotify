@@ -14,7 +14,7 @@ import { isAlbum } from '@/entities/playlist/isAlbum.ts';
 import { usePlaylistListRefresh } from '@/entities/playlist/usePlaylistListRefresh.ts';
 import { artistsService } from '@/shared/api/ArtistsService.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
-import { webApiService } from '@/shared/api/WebApi.ts';
+import { useEagerFileUpload } from '@/shared/lib/useEagerFileUpload.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 export interface UsePlaylistInfoSegmentParams {
@@ -43,7 +43,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
     const [editYear, setEditYear] = useState<number | undefined>();
     const [editArtists, setEditArtists] = useState<ArtistItem[]>([]);
     const [editCover, setEditCover] = useState<File | undefined>();
-    const [coverUploadProgress, setCoverUploadProgress] = useState<number | undefined>();
+    const coverUpload = useEagerFileUpload();
 
     useEffect(() => {
         if (!editMode) return;
@@ -54,7 +54,6 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
             (playlist.artists ?? []).filter((a) => a.uuid && a.name).map((a) => ({ id: a.uuid!, name: a.name! })),
         );
         setEditCover(undefined);
-        setCoverUploadProgress(undefined);
     }, [editMode]);
 
     const loadArtistOptions = useCallback(
@@ -76,11 +75,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
         if (saving) return;
         setSaving(true);
         try {
-            let coverFileId: string | undefined;
-            if (editCover) {
-                setCoverUploadProgress(0);
-                coverFileId = await webApiService.UploadFileWithProgress(editCover, setCoverUploadProgress);
-            }
+            const coverFileId = editCover ? await coverUpload.resolveFileId() : undefined;
             const artistUuids = editArtists.map((a) => a.id);
             const response = await playlistService.UpdatePlaylist(
                 playlist.uuid ?? '',
@@ -104,11 +99,11 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
             toaster.catch(e as never);
         } finally {
             setSaving(false);
-            setCoverUploadProgress(undefined);
         }
     }
 
     function handleCancel() {
+        coverUpload.cancel();
         params.onExitEditMode();
     }
 
@@ -118,6 +113,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
 
     function handleCoverFileSelect(file: File) {
         setEditCover(file);
+        coverUpload.startUpload(file);
     }
 
     function handleYearChange(value: string) {
@@ -133,7 +129,8 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
         name: playlist.name,
         isEditing: editMode,
         onFileSelect: handleCoverFileSelect,
-        uploadProgress: coverUploadProgress,
+        uploadProgress: coverUpload.progress,
+        disabled: saving,
     };
 
     const albumNameProps: EditableAlbumNameProps = {

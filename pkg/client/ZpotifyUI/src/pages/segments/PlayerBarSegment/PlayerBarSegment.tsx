@@ -105,8 +105,7 @@ export default function PlayerBarSegment() {
                     >
                         {isPlaying ? (
                             <svg
-                                width="13"
-                                height="13"
+                                className={cls.PlayPauseIcon}
                                 viewBox="0 0 16 16"
                                 fill="currentColor"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -116,8 +115,7 @@ export default function PlayerBarSegment() {
                             </svg>
                         ) : (
                             <svg
-                                width="13"
-                                height="13"
+                                className={cls.PlayPauseIcon}
                                 viewBox="0 0 16 16"
                                 fill="currentColor"
                                 xmlns="http://www.w3.org/2000/svg"

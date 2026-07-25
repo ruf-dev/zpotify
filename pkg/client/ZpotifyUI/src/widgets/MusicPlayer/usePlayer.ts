@@ -19,6 +19,7 @@ export interface QueueTrack {
 
 export interface AudioPlayer {
     isPlaying: boolean;
+    isLoading: boolean;
 
     togglePlay: () => boolean;
     preload: (id: string) => Promise<void>;
@@ -54,6 +55,7 @@ export interface AudioPlayer {
 
 interface AudioStoreState {
     isPlaying: boolean;
+    isLoading: boolean;
     volume: number;
     isMuted: boolean;
 
@@ -77,6 +79,7 @@ const useAudioStore = create<AudioStoreState>()(
     persist(
         (): AudioStoreState => ({
             isPlaying: false,
+            isLoading: false,
             volume: 36,
             trackPath: null,
             isMuted: false,
@@ -112,6 +115,8 @@ class AudioPlayerImpl implements AudioPlayer {
     private audio: HTMLAudioElement;
     private pendingRestoreProgress: number | null = null;
     private currentObjectUrl: string | null = null;
+    private opToken = 0;
+    private loadedTrackPath: string | null = null;
 
     constructor() {
         this.audio = new Audio();
@@ -166,11 +171,27 @@ class AudioPlayerImpl implements AudioPlayer {
             }
         });
 
+        this.audio.addEventListener('playing', () => {
+            if (this.loadedTrackPath !== useAudioStore.getState().trackPath) return;
+            useAudioStore.setState({ isLoading: false });
+        });
+
+        this.audio.addEventListener('waiting', () => {
+            if (this.loadedTrackPath !== useAudioStore.getState().trackPath) return;
+            useAudioStore.setState({ isLoading: true });
+        });
+
         this.audio.addEventListener('pause', () => {
-            useAudioStore.setState({ isPlaying: false });
+            useAudioStore.setState({ isPlaying: false, isLoading: false });
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.playbackState = 'paused';
             }
+        });
+
+        this.audio.addEventListener('error', (e) => {
+            if (this.loadedTrackPath !== useAudioStore.getState().trackPath) return;
+            console.error(`Error during playing!!!!!!`, e);
+            useAudioStore.setState({ isPlaying: false, isLoading: false });
         });
 
         this.audio.addEventListener('ended', () => {
@@ -196,6 +217,10 @@ class AudioPlayerImpl implements AudioPlayer {
 
     get isPlaying() {
         return useAudioStore.getState().isPlaying;
+    }
+
+    get isLoading() {
+        return useAudioStore.getState().isLoading;
     }
 
     get volume() {
@@ -256,11 +281,12 @@ class AudioPlayerImpl implements AudioPlayer {
     }
 
     togglePlay(): boolean {
-        const { trackPath, isPlaying } = useAudioStore.getState();
+        const { trackPath, isPlaying, isLoading } = useAudioStore.getState();
         if (trackPath == null) return false;
-        if (isPlaying) {
+        if (isPlaying || isLoading) {
+            this.opToken++;
             this.audio.pause();
-            useAudioStore.setState({ isPlaying: false });
+            useAudioStore.setState({ isPlaying: false, isLoading: false });
         } else {
             this.startPlay();
         }
@@ -276,9 +302,12 @@ class AudioPlayerImpl implements AudioPlayer {
     }
 
     async preload(trackPath: string): Promise<void> {
+        const token = ++this.opToken;
         const trackUrl = getTrackUrl(trackPath);
 
         this.revokeCurrentObjectUrl();
+
+        useAudioStore.setState({ trackPath, isLoading: true, progress: 0, currentTime: 0, duration: 0 });
 
         const cacheSongs = useAudioSettings.getState().cacheSongs;
         let src = trackUrl;
@@ -291,9 +320,11 @@ class AudioPlayerImpl implements AudioPlayer {
             }
         }
 
+        if (token !== this.opToken) return;
+
         this.audio.src = src;
         this.audio.load();
-        useAudioStore.setState({ trackPath: trackPath, currentTime: 0, duration: 0 });
+        this.loadedTrackPath = trackPath;
 
         if (cacheSongs && src === trackUrl) {
             const { songTitle, songArtist } = useAudioStore.getState();
@@ -318,14 +349,18 @@ class AudioPlayerImpl implements AudioPlayer {
     }
 
     unload(): void {
+        this.opToken++;
         this.revokeCurrentObjectUrl();
         this.audio.src = '';
-        useAudioStore.setState({ trackPath: null, isPlaying: false, currentTime: 0, duration: 0 });
+        useAudioStore.setState({ trackPath: null, isPlaying: false, isLoading: false, currentTime: 0, duration: 0 });
     }
 
     async play(trackUrl: string): Promise<void> {
         this.pendingRestoreProgress = null;
-        await this.preload(trackUrl);
+        const preloadPromise = this.preload(trackUrl);
+        const token = this.opToken;
+        await preloadPromise;
+        if (token !== this.opToken) return;
         this.startPlay();
     }
 

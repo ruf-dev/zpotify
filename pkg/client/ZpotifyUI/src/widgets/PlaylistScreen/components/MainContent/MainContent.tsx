@@ -27,6 +27,7 @@ export interface MainContentProps {
     songs: SongBase[];
     currentTrackPath: string | null;
     isAudioPlaying: boolean;
+    isAudioLoading: boolean;
     onPlaySong: (song: SongBase) => void;
     onReorder: (songs: SongBase[]) => void;
     username: string;
@@ -44,6 +45,7 @@ export default function MainContent({
     songs,
     currentTrackPath,
     isAudioPlaying,
+    isAudioLoading,
     onPlaySong,
     onReorder,
     username,
@@ -227,6 +229,7 @@ export default function MainContent({
                             index={i + 1}
                             isCurrent={currentTrackPath === song.filePath}
                             isPlaying={isAudioPlaying}
+                            isLoading={isAudioLoading}
                             isLiked={likedSongIds.has(song.id ?? '')}
                             isHeartAnimating={animatingHeartId === song.id}
                             onPlay={() => onPlaySong(song)}

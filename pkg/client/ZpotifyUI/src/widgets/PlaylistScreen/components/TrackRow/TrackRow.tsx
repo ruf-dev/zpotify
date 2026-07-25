@@ -8,6 +8,7 @@ import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import NowPlayingBars from '@/assets/icons/NowPlayingBars.tsx';
 import { HeartIcon } from '@/assets/icons/HeartIcon.tsx';
 import { PlayTriangleIcon } from '@/assets/icons/PlayTriangleIcon.tsx';
+import { SpinnerIcon } from '@/assets/icons/SpinnerIcon.tsx';
 import { GripIcon } from '@/assets/icons/GripIcon.tsx';
 import MoreButton from '@/entities/song/more/MoreButton.tsx';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
@@ -34,6 +35,7 @@ export interface TrackRowProps {
     index: number;
     isCurrent: boolean;
     isPlaying: boolean;
+    isLoading: boolean;
     isLiked: boolean;
     isHeartAnimating: boolean;
     onPlay: () => void;
@@ -54,6 +56,7 @@ export default function TrackRow({
     index,
     isCurrent,
     isPlaying,
+    isLoading,
     isLiked,
     isHeartAnimating,
     onPlay,
@@ -185,7 +188,11 @@ export default function TrackRow({
             role="row"
         >
             <div className={cls.TrackNumCell}>
-                {isCurrent && isPlaying ? (
+                {isCurrent && isLoading ? (
+                    <span className={cls.LoadingSpinner}>
+                        <SpinnerIcon />
+                    </span>
+                ) : isCurrent && isPlaying ? (
                     <NowPlayingBars />
                 ) : (
                     <>

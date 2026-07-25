@@ -119,6 +119,7 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
                     songs={orderedSongs}
                     currentTrackPath={audioPlayer.trackPath}
                     isAudioPlaying={audioPlayer.isPlaying}
+                    isAudioLoading={audioPlayer.isLoading}
                     onPlaySong={handlePlaySong}
                     onReorder={setOrderedSongs}
                     username={username}

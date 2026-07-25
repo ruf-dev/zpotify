@@ -14,23 +14,17 @@ export interface EditableCoverWithFallbackProps {
     isEditing: boolean;
     onFileSelect: (file: File) => void;
     uploadProgress?: number;
+    disabled?: boolean;
 }
 
-export default function EditableCoverWithFallback({
-    coverFilePath,
-    uuid,
-    name,
-    isEditing,
-    onFileSelect,
-    uploadProgress,
-}: EditableCoverWithFallbackProps) {
+export default function EditableCoverWithFallback(props: EditableCoverWithFallbackProps) {
     const [hover, setHover] = useState(false);
     const [previewUrl, setPreviewUrl] = useState<string | undefined>();
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        if (isEditing) setPreviewUrl(undefined);
-    }, [isEditing]);
+        if (props.isEditing) setPreviewUrl(undefined);
+    }, [props.isEditing]);
 
     function handleMouseEnter() {
         setHover(true);
@@ -41,7 +35,7 @@ export default function EditableCoverWithFallback({
     }
 
     function handleClick() {
-        if (!isEditing) return;
+        if (!props.isEditing || props.disabled) return;
         inputRef.current?.click();
     }
 
@@ -49,24 +43,27 @@ export default function EditableCoverWithFallback({
         const file = e.target.files?.[0];
         if (!file) return;
         setPreviewUrl(URL.createObjectURL(file));
-        onFileSelect(file);
+        props.onFileSelect(file);
     }
 
     return (
         <div
-            className={cn(cls.Wrapper, { [cls.WrapperEditing]: isEditing })}
+            className={cn(cls.Wrapper, { [cls.WrapperEditing]: props.isEditing })}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={handleClick}
         >
             <CoverWithFallback
-                coverUrl={previewUrl ?? buildCoverUrl(coverFilePath)}
-                coverFilePath={coverFilePath}
-                uuid={uuid}
-                name={name}
+                coverUrl={buildCoverUrl(props.coverFilePath)}
+                coverFilePath={props.coverFilePath}
+                uuid={props.uuid}
+                name={props.name}
             />
-            {uploadProgress !== undefined && <CoverUploadProgress progress={uploadProgress} />}
-            {isEditing && hover && (
+            {previewUrl && (
+                <img key={previewUrl} src={previewUrl} alt={props.name ?? ''} className={cls.PreviewImage} />
+            )}
+            {props.uploadProgress !== undefined && <CoverUploadProgress progress={props.uploadProgress} />}
+            {props.isEditing && hover && (
                 <div className={cls.ChangeOverlay}>
                     <UploadArrowIcon />
                     <span>Change</span>
@@ -79,6 +76,7 @@ export default function EditableCoverWithFallback({
                 accept="image/*"
                 className={cls.HiddenInput}
                 onChange={handleFileChange}
+                disabled={props.disabled}
             />
         </div>
     );

@@ -17,6 +17,7 @@ import { useMultitrackSubmit } from '@/dialogs/MultitrackUpload/useMultitrackSub
 import { useMultitrackSummary } from '@/dialogs/MultitrackUpload/useMultitrackSummary';
 import { useArtistLookup } from '@/dialogs/MultitrackUpload/useArtistLookup';
 import { formatBytes } from '@/dialogs/MultitrackUpload/utils';
+import { useEagerFileUpload } from '@/shared/lib/useEagerFileUpload.ts';
 import cls from '@/dialogs/MultitrackUpload/MultitrackUploadModal.module.css';
 import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
 
@@ -44,7 +45,12 @@ export default function MultitrackUploadModal({ files, targetPlaylist }: Multitr
     const [year, setYear] = useState<number | undefined>();
     const [tags, setTags] = useState<ChipEntry[]>([]);
     const [cover, setCover] = useState<File | undefined>();
-    const [coverUploadProgress, setCoverUploadProgress] = useState<number | undefined>();
+    const coverUpload = useEagerFileUpload();
+
+    function handleCoverChange(file: File) {
+        setCover(file);
+        coverUpload.startUpload(file);
+    }
 
     const submitState = useMultitrackSubmit({
         tracks: trackDrafts.tracks,
@@ -53,8 +59,8 @@ export default function MultitrackUploadModal({ files, targetPlaylist }: Multitr
         albumArtists,
         year,
         tags,
-        cover,
-        onCoverUploadProgress: setCoverUploadProgress,
+        hasCover: cover !== undefined,
+        resolveCoverFileId: coverUpload.resolveFileId,
         targetPlaylistUuid: targetPlaylist?.uuid,
         CloseDialog,
         LockClosing,
@@ -100,9 +106,9 @@ export default function MultitrackUploadModal({ files, targetPlaylist }: Multitr
 
                 {playlistMode && !targetPlaylist && (
                     <PlaylistDetailsPanel
-                        cover={cover}
-                        onCoverChange={setCover}
-                        coverUploadProgress={coverUploadProgress}
+                        onCoverChange={handleCoverChange}
+                        coverUploadProgress={coverUpload.progress}
+                        disabled={submitState.submitting}
                         playlistName={playlistName}
                         onNameChange={setPlaylistName}
                         albumArtists={albumArtists}

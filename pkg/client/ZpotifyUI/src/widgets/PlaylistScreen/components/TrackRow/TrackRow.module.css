@@ -60,6 +60,20 @@
     justify-content: center;
 }
 
+.LoadingSpinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--track-row-spinner-size);
+    height: var(--track-row-spinner-size);
+    color: var(--color-fg-accent);
+
+    & svg {
+        width: 100%;
+        height: 100%;
+    }
+}
+
 .TrackTitleCell {
     display: flex;
     flex-direction: column;

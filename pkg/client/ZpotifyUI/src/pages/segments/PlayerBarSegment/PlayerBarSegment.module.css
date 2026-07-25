@@ -153,6 +153,11 @@
     animation: pPulse 2s ease-in-out infinite;
 }
 
+.PlayPauseIcon {
+    width: var(--player-bar-icon-size);
+    height: var(--player-bar-icon-size);
+}
+
 .ProgressRow {
     display: flex;
     gap: var(--space-sm);

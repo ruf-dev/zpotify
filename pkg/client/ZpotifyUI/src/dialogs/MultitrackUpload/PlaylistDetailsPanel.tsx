@@ -13,10 +13,10 @@ import FieldLabelRow from '@/dialogs/MultitrackUpload/components/FieldLabelRow/F
 import cls from '@/dialogs/MultitrackUpload/PlaylistDetailsPanel.module.css';
 
 interface PlaylistDetailsPanelProps {
-    cover?: File;
     onCoverChange: (file: File) => void;
     existingCoverUrl?: string;
     coverUploadProgress?: number;
+    disabled?: boolean;
     playlistName: string;
     onNameChange: (name: string) => void;
     albumArtists: ArtistItem[];
@@ -44,10 +44,10 @@ export default function PlaylistDetailsPanel(props: PlaylistDetailsPanelProps) {
     return (
         <div className={cls.PlaylistDetailsPanelContainer}>
             <CoverField
-                cover={props.cover}
                 onChange={props.onCoverChange}
                 existingCoverUrl={props.existingCoverUrl}
                 uploadProgress={props.coverUploadProgress}
+                disabled={props.disabled}
             />
 
             <div className={cls.FieldsStack}>

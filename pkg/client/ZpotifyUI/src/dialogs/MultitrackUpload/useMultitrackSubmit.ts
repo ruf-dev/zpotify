@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
-import { webApiService } from '@/shared/api/WebApi.ts';
 import { songsService } from '@/shared/api/Songs.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { useFeedRefresh } from '@/entities/feed/useFeedRefresh.ts';
@@ -21,8 +20,8 @@ export interface MultitrackSubmitParams {
     albumArtists: ArtistItem[];
     year: number | undefined;
     tags: ChipEntry[];
-    cover: File | undefined;
-    onCoverUploadProgress: (progress: number | undefined) => void;
+    hasCover: boolean;
+    resolveCoverFileId: () => Promise<string | undefined>;
     targetPlaylistUuid?: string;
     CloseDialog: () => void;
     LockClosing: () => void;
@@ -66,16 +65,11 @@ export function useMultitrackSubmit(params: MultitrackSubmitParams): MultitrackS
     const [submitting, setSubmitting] = useState(false);
 
     function createPlaylistWithSongs(songIds: string[]): Promise<void> {
-        let coverUpload: Promise<string | undefined>;
-        if (params.cover) {
-            params.onCoverUploadProgress(0);
-            coverUpload = webApiService.UploadFileWithProgress(params.cover, params.onCoverUploadProgress);
-        } else {
-            coverUpload = Promise.resolve(undefined);
-        }
+        const coverFileIdPromise = params.hasCover
+            ? params.resolveCoverFileId()
+            : Promise.resolve<string | undefined>(undefined);
 
-        return coverUpload.then((coverFileId) => {
-            params.onCoverUploadProgress(undefined);
+        return coverFileIdPromise.then((coverFileId) => {
             const albumArtistUuids = params.albumArtists.map((a) => a.id);
             return playlistService
                 .CreatePlaylist(
@@ -134,7 +128,6 @@ export function useMultitrackSubmit(params: MultitrackSubmitParams): MultitrackS
             .catch((e) => {
                 setSubmitting(false);
                 params.UnlockClosing();
-                params.onCoverUploadProgress(undefined);
                 toaster.catch(e as never);
             });
     }
