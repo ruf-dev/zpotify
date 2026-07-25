@@ -5,6 +5,7 @@
     color: var(--color-fg-primary);
     line-height: 1.1;
     overflow-wrap: anywhere;
+    padding-top: 4rem;
 }
 
 .Input {
