@@ -606,6 +606,12 @@ type playlistsListBuilder struct {
 }
 
 func (b playlistsListBuilder) applyFilters(req domain.ListPlaylists) playlistsListBuilder {
+	if req.Filter.ArtistUuid.Valid {
+		b.SelectBuilder = b.Join(
+			"playlists_artists pa ON pa.playlist_uuid = v.uuid AND pa.artist_uuid = ? AND pa.order_id = 0",
+			req.Filter.ArtistUuid.V)
+	}
+
 	if !req.Filter.UserId.Valid {
 		b.SelectBuilder = b.Where(sq.Eq{"v.is_public": true})
 		return b

@@ -327,9 +327,11 @@ type AlbumTag struct {
 }
 
 type Artist struct {
-	Uuid      uuid.UUID
-	Name      string
-	CreatedAt time.Time
+	Uuid                  uuid.UUID
+	Name                  string
+	CreatedAt             time.Time
+	AvatarFileID          sql.NullInt64
+	BackgroundCoverFileID sql.NullInt64
 }
 
 type FeatureFlag struct {
@@ -570,6 +572,7 @@ type UserPermission struct {
 	MaxPendingTracks    int64
 	MaxSongSizeBytes    int64
 	MaxTotalUploadBytes int64
+	CanEditArtists      bool
 }
 
 type UserPlaylist struct {

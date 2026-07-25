@@ -1,3 +1,6 @@
+import { useNavigate } from 'react-router-dom';
+
+import { artistPath } from '@/app/routing/paths.ts';
 import CoverWithFallback from '@/components/CoverWithFallback/CoverWithFallback.tsx';
 import cls from '@/pages/main/search/components/ArtistCard/ArtistCard.module.css';
 
@@ -9,13 +12,15 @@ interface ArtistCardProps {
     coverUrl?: string;
 }
 
-export default function ArtistCard({ name, seed, trackCount, coverUrl }: ArtistCardProps) {
+export default function ArtistCard({ uuid, name, seed, trackCount, coverUrl }: ArtistCardProps) {
+    const navigate = useNavigate();
+
+    function handleClick() {
+        navigate(artistPath(uuid));
+    }
+
     return (
-        <div
-            className={cls.ArtistCardContainer}
-            data-tooltip-id="root-tooltip"
-            data-tooltip-content="Artist's page not implemented yet"
-        >
+        <div className={cls.ArtistCardContainer} onClick={handleClick}>
             <div className={cls.CoverWrapper}>
                 <CoverWithFallback coverUrl={coverUrl} seed={seed} name={name} className={cls.CoverImage} />
             </div>

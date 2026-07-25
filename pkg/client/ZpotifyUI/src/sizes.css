@@ -48,6 +48,17 @@
     /* Home page */
     --home-section-max-width: 56rem;  /* ~896px */
 
+    /* Artist page */
+    --artist-hero-avatar-size:     9rem;      /* 144px — circular artist avatar overlapping the hero cover */
+    --artist-hero-avatar-size-sm:  6rem;      /* 96px — hero avatar size in portrait orientation */
+    --artist-cover-aspect-ratio:   16 / 5;    /* background-cover banner aspect ratio */
+    --artist-track-card-width:     20rem;     /* width of a single track card inside a CardRow */
+    --artist-album-card-width:     11rem;     /* width of a single album card inside a CardRow */
+    --card-row-gap:                0.75rem;   /* gap between cards inside a CardRow */
+
+    /* Album card */
+    --album-card-footer-height: 4rem;
+
     /* Border radius (additional) */
     --border-radius-sm: 0.5rem;
     --border-radius-md: 0.875rem;

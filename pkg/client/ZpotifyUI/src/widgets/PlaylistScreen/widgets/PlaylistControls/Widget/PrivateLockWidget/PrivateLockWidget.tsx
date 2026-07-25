@@ -1,4 +1,4 @@
-import IconButton from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/IconButton/IconButton.tsx';
+import IconButton from '@/components/IconButton/IconButton.tsx';
 import { usePrivateLockWidget } from '@/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/PrivateLockWidget/usePrivateLockWidget.ts';
 import PrivateLockIcon from '@/assets/icons/PrivateLockIcon.tsx';
 

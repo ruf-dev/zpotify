@@ -105,6 +105,16 @@
     text-overflow: ellipsis;
 }
 
+.ArtistLink {
+    cursor: pointer;
+    transition: color var(--ease-quick);
+
+    &:hover {
+        color: var(--color-fg-secondary);
+        text-decoration: underline;
+    }
+}
+
 .HeartIcon {
     display: flex;
     align-items: center;

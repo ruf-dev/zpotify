@@ -48,6 +48,38 @@
         ]
       }
     },
+    "/api/artists/get_page": {
+      "post": {
+        "operationId": "ArtistsAPI_GetArtistPage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetArtistPageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetArtistPageRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ArtistsAPI"
+        ]
+      }
+    },
     "/api/artists/like": {
       "post": {
         "operationId": "ArtistsAPI_LikeArtist",
@@ -143,9 +175,53 @@
           "ArtistsAPI"
         ]
       }
+    },
+    "/api/artists/update": {
+      "post": {
+        "operationId": "ArtistsAPI_UpdateArtist",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiUpdateArtistResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiUpdateArtistRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ArtistsAPI"
+        ]
+      }
     }
   },
   "definitions": {
+    "AlbumVersionMetadataVersionKind": {
+      "type": "string",
+      "enum": [
+        "VERSION_KIND_UNSPECIFIED",
+        "VERSION_KIND_DELUXE",
+        "VERSION_KIND_EXTENDED",
+        "VERSION_KIND_REMASTER",
+        "VERSION_KIND_ANNIVERSARY",
+        "VERSION_KIND_LIVE"
+      ],
+      "default": "VERSION_KIND_UNSPECIFIED"
+    },
     "ListArtistFilters": {
       "type": "object",
       "properties": {
@@ -185,6 +261,69 @@
         }
       }
     },
+    "zpotify_apiAlbumTag": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/zpotify_apiAlbumTagKind"
+        },
+        "value": {
+          "type": "string"
+        },
+        "albumVersion": {
+          "$ref": "#/definitions/zpotify_apiAlbumVersionMetadata"
+        }
+      }
+    },
+    "zpotify_apiAlbumTagKind": {
+      "type": "string",
+      "enum": [
+        "ALBUM_TAG_KIND_UNSPECIFIED",
+        "ALBUM_TAG_KIND_GENRE",
+        "ALBUM_TAG_KIND_MOOD",
+        "ALBUM_TAG_KIND_ERA",
+        "ALBUM_TAG_KIND_VIBE",
+        "ALBUM_TAG_KIND_LANGUAGE",
+        "ALBUM_TAG_KIND_THEME",
+        "ALBUM_TAG_KIND_HIT",
+        "ALBUM_TAG_KIND_ALBUM_VERSION"
+      ],
+      "default": "ALBUM_TAG_KIND_UNSPECIFIED"
+    },
+    "zpotify_apiAlbumVersionMetadata": {
+      "type": "object",
+      "properties": {
+        "versionKind": {
+          "$ref": "#/definitions/AlbumVersionMetadataVersionKind"
+        },
+        "parentPlaylistUuid": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiArtist": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "liked": {
+          "type": "boolean"
+        },
+        "avatarFilePath": {
+          "type": "string"
+        },
+        "backgroundCoverFilePath": {
+          "type": "string"
+        },
+        "canEdit": {
+          "type": "boolean"
+        }
+      }
+    },
     "zpotify_apiArtistBase": {
       "type": "object",
       "properties": {
@@ -212,6 +351,43 @@
       "properties": {
         "artist": {
           "$ref": "#/definitions/zpotify_apiArtistBase"
+        }
+      }
+    },
+    "zpotify_apiGetArtistPageRequest": {
+      "type": "object",
+      "properties": {
+        "artistUuid": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiGetArtistPageResponse": {
+      "type": "object",
+      "properties": {
+        "artist": {
+          "$ref": "#/definitions/zpotify_apiArtist"
+        },
+        "albums": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiPlaylist"
+          }
+        },
+        "singles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiSongBase"
+          }
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiSongBase"
+          }
         }
       }
     },
@@ -262,6 +438,116 @@
         }
       }
     },
+    "zpotify_apiPlaylist": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "artists": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiArtistBase"
+          }
+        },
+        "songCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "coverFilePath": {
+          "type": "string"
+        },
+        "year": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiAlbumTag"
+          }
+        },
+        "canEdit": {
+          "type": "boolean"
+        },
+        "isSaved": {
+          "type": "boolean"
+        },
+        "ownerUsername": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiSongBase": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string"
+        },
+        "artists": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiArtistBase"
+          }
+        },
+        "durationSec": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "filePath": {
+          "type": "string"
+        },
+        "fileId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiSongTag"
+          }
+        },
+        "coverFilePath": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiSongTag": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/zpotify_apiSongTagKind"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiSongTagKind": {
+      "type": "string",
+      "enum": [
+        "SONG_TAG_KIND_UNSPECIFIED",
+        "SONG_TAG_KIND_SINGLE"
+      ],
+      "default": "SONG_TAG_KIND_UNSPECIFIED"
+    },
     "zpotify_apiUnlikeArtistRequest": {
       "type": "object",
       "properties": {
@@ -272,6 +558,36 @@
     },
     "zpotify_apiUnlikeArtistResponse": {
       "type": "object"
+    },
+    "zpotify_apiUpdateArtistRequest": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "avatarFileId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "backgroundCoverFileId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "zpotify_apiUpdateArtistResponse": {
+      "type": "object",
+      "properties": {
+        "avatarFilePath": {
+          "type": "string"
+        },
+        "backgroundCoverFilePath": {
+          "type": "string"
+        }
+      }
     }
   }
 }

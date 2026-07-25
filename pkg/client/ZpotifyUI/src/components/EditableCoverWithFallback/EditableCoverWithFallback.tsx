@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 
-import cls from '@/widgets/PlaylistScreen/components/EditableCoverWithFallback/EditableCoverWithFallback.module.css';
+import cls from '@/components/EditableCoverWithFallback/EditableCoverWithFallback.module.css';
 import CoverWithFallback from '@/components/CoverWithFallback/CoverWithFallback.tsx';
 import CoverUploadProgress from '@/components/CoverUploadProgress/CoverUploadProgress.tsx';
 import { UploadArrowIcon } from '@/assets/icons/UploadArrowIcon.tsx';
@@ -15,6 +15,8 @@ export interface EditableCoverWithFallbackProps {
     onFileSelect: (file: File) => void;
     uploadProgress?: number;
     disabled?: boolean;
+    shape?: 'circle' | 'rect';
+    className?: string;
 }
 
 export default function EditableCoverWithFallback(props: EditableCoverWithFallbackProps) {
@@ -48,7 +50,11 @@ export default function EditableCoverWithFallback(props: EditableCoverWithFallba
 
     return (
         <div
-            className={cn(cls.Wrapper, { [cls.WrapperEditing]: props.isEditing })}
+            className={cn(
+                cls.Wrapper,
+                { [cls.WrapperEditing]: props.isEditing, [cls.WrapperCircle]: props.shape === 'circle' },
+                props.className,
+            )}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={handleClick}

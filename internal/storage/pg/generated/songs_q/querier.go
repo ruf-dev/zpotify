@@ -17,6 +17,12 @@ type Querier interface {
 	GetSongById(ctx context.Context, id int64) (SongBaseViewV1, error)
 	GetSongTags(ctx context.Context, songID int64) ([]GetSongTagsRow, error)
 	InsertSongTag(ctx context.Context, arg InsertSongTagParams) error
+	// Features: tracks where the given artist appears but is not the primary
+	// artist (order_id != 0).
+	ListArtistFeaturedSongs(ctx context.Context, arg ListArtistFeaturedSongsParams) ([]ListArtistFeaturedSongsRow, error)
+	// Singles: standalone tracks (not attached to any album playlist) where the
+	// given artist is the primary artist (order_id = 0).
+	ListArtistPrimarySongs(ctx context.Context, arg ListArtistPrimarySongsParams) ([]ListArtistPrimarySongsRow, error)
 	SearchSongsByTitle(ctx context.Context, arg SearchSongsByTitleParams) ([]SearchSongsByTitleRow, error)
 	UpdateSongTitle(ctx context.Context, arg UpdateSongTitleParams) error
 }

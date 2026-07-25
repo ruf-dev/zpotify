@@ -4,6 +4,7 @@ export enum Path {
     SearchPage = '/search',
     PlaylistPage = '/playlist/:id',
     AlbumPage = '/album/:id',
+    ArtistPage = '/artist/:id',
     EarlyAccessPage = '/early_access',
 }
 
@@ -13,4 +14,8 @@ export function playlistPath(id: string): string {
 
 export function albumPath(id: string): string {
     return `/album/${id}`;
+}
+
+export function artistPath(id: string): string {
+    return `/artist/${id}`;
 }

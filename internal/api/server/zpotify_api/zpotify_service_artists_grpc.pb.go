@@ -19,10 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ArtistsAPI_ListArtist_FullMethodName   = "/zpotify_api.ArtistsAPI/ListArtist"
-	ArtistsAPI_CreateArtist_FullMethodName = "/zpotify_api.ArtistsAPI/CreateArtist"
-	ArtistsAPI_LikeArtist_FullMethodName   = "/zpotify_api.ArtistsAPI/LikeArtist"
-	ArtistsAPI_UnlikeArtist_FullMethodName = "/zpotify_api.ArtistsAPI/UnlikeArtist"
+	ArtistsAPI_ListArtist_FullMethodName    = "/zpotify_api.ArtistsAPI/ListArtist"
+	ArtistsAPI_CreateArtist_FullMethodName  = "/zpotify_api.ArtistsAPI/CreateArtist"
+	ArtistsAPI_LikeArtist_FullMethodName    = "/zpotify_api.ArtistsAPI/LikeArtist"
+	ArtistsAPI_UnlikeArtist_FullMethodName  = "/zpotify_api.ArtistsAPI/UnlikeArtist"
+	ArtistsAPI_GetArtistPage_FullMethodName = "/zpotify_api.ArtistsAPI/GetArtistPage"
+	ArtistsAPI_UpdateArtist_FullMethodName  = "/zpotify_api.ArtistsAPI/UpdateArtist"
 )
 
 // ArtistsAPIClient is the client API for ArtistsAPI service.
@@ -33,6 +35,8 @@ type ArtistsAPIClient interface {
 	CreateArtist(ctx context.Context, in *CreateArtist_Request, opts ...grpc.CallOption) (*CreateArtist_Response, error)
 	LikeArtist(ctx context.Context, in *LikeArtist_Request, opts ...grpc.CallOption) (*LikeArtist_Response, error)
 	UnlikeArtist(ctx context.Context, in *UnlikeArtist_Request, opts ...grpc.CallOption) (*UnlikeArtist_Response, error)
+	GetArtistPage(ctx context.Context, in *GetArtistPage_Request, opts ...grpc.CallOption) (*GetArtistPage_Response, error)
+	UpdateArtist(ctx context.Context, in *UpdateArtist_Request, opts ...grpc.CallOption) (*UpdateArtist_Response, error)
 }
 
 type artistsAPIClient struct {
@@ -83,6 +87,26 @@ func (c *artistsAPIClient) UnlikeArtist(ctx context.Context, in *UnlikeArtist_Re
 	return out, nil
 }
 
+func (c *artistsAPIClient) GetArtistPage(ctx context.Context, in *GetArtistPage_Request, opts ...grpc.CallOption) (*GetArtistPage_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetArtistPage_Response)
+	err := c.cc.Invoke(ctx, ArtistsAPI_GetArtistPage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *artistsAPIClient) UpdateArtist(ctx context.Context, in *UpdateArtist_Request, opts ...grpc.CallOption) (*UpdateArtist_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateArtist_Response)
+	err := c.cc.Invoke(ctx, ArtistsAPI_UpdateArtist_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ArtistsAPIServer is the server API for ArtistsAPI service.
 // All implementations must embed UnimplementedArtistsAPIServer
 // for forward compatibility.
@@ -91,6 +115,8 @@ type ArtistsAPIServer interface {
 	CreateArtist(context.Context, *CreateArtist_Request) (*CreateArtist_Response, error)
 	LikeArtist(context.Context, *LikeArtist_Request) (*LikeArtist_Response, error)
 	UnlikeArtist(context.Context, *UnlikeArtist_Request) (*UnlikeArtist_Response, error)
+	GetArtistPage(context.Context, *GetArtistPage_Request) (*GetArtistPage_Response, error)
+	UpdateArtist(context.Context, *UpdateArtist_Request) (*UpdateArtist_Response, error)
 	mustEmbedUnimplementedArtistsAPIServer()
 }
 
@@ -112,6 +138,12 @@ func (UnimplementedArtistsAPIServer) LikeArtist(context.Context, *LikeArtist_Req
 }
 func (UnimplementedArtistsAPIServer) UnlikeArtist(context.Context, *UnlikeArtist_Request) (*UnlikeArtist_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method UnlikeArtist not implemented")
+}
+func (UnimplementedArtistsAPIServer) GetArtistPage(context.Context, *GetArtistPage_Request) (*GetArtistPage_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetArtistPage not implemented")
+}
+func (UnimplementedArtistsAPIServer) UpdateArtist(context.Context, *UpdateArtist_Request) (*UpdateArtist_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateArtist not implemented")
 }
 func (UnimplementedArtistsAPIServer) mustEmbedUnimplementedArtistsAPIServer() {}
 func (UnimplementedArtistsAPIServer) testEmbeddedByValue()                    {}
@@ -206,6 +238,42 @@ func _ArtistsAPI_UnlikeArtist_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ArtistsAPI_GetArtistPage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetArtistPage_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtistsAPIServer).GetArtistPage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ArtistsAPI_GetArtistPage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtistsAPIServer).GetArtistPage(ctx, req.(*GetArtistPage_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ArtistsAPI_UpdateArtist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateArtist_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArtistsAPIServer).UpdateArtist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ArtistsAPI_UpdateArtist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArtistsAPIServer).UpdateArtist(ctx, req.(*UpdateArtist_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ArtistsAPI_ServiceDesc is the grpc.ServiceDesc for ArtistsAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -228,6 +296,14 @@ var ArtistsAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UnlikeArtist",
 			Handler:    _ArtistsAPI_UnlikeArtist_Handler,
+		},
+		{
+			MethodName: "GetArtistPage",
+			Handler:    _ArtistsAPI_GetArtistPage_Handler,
+		},
+		{
+			MethodName: "UpdateArtist",
+			Handler:    _ArtistsAPI_UpdateArtist_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

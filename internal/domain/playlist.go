@@ -95,6 +95,9 @@ type DeleteSongFromPlaylist struct {
 
 type PlaylistFilter struct {
 	UserId sql.Null[int64]
+	// ArtistUuid scopes results to albums where this artist is the primary
+	// artist (playlists_artists.order_id = 0).
+	ArtistUuid sql.Null[string]
 }
 
 type ListPlaylists struct {

@@ -1,0 +1,36 @@
+.ArtistScreenContainer {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background: var(--color-bg-base);
+    position: relative;
+    animation: fadeIn 0.3s ease;
+}
+
+.Separator {
+    height: 0.0625rem;
+    background: var(--color-border);
+    margin: 0 var(--space-2xl);
+}
+
+.Rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+    padding: var(--space-2xl);
+    box-sizing: border-box;
+}
+
+.AlbumCardWrapper {
+    width: var(--artist-album-card-width);
+}
+
+.EmptyState {
+    color: var(--color-fg-tertiary);
+    font-size: var(--font-size-lg);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}

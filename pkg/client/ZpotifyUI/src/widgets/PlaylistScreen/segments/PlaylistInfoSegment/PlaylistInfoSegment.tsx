@@ -1,7 +1,7 @@
 import cls from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/PlaylistInfoSegment.module.css';
 import type { Playlist, SongBase } from '@/app/api/zpotify';
 import BackButton from '@/shared/ui/BackButton.tsx';
-import EditableCoverWithFallback from '@/widgets/PlaylistScreen/components/EditableCoverWithFallback/EditableCoverWithFallback.tsx';
+import EditableCoverWithFallback from '@/components/EditableCoverWithFallback/EditableCoverWithFallback.tsx';
 import EditableAlbumName from '@/widgets/PlaylistScreen/components/EditableAlbumName/EditableAlbumName.tsx';
 import GenreChipsRow from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/components/GenreChipsRow/GenreChipsRow.tsx';
 import PrivatePlaylistIndicator from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/components/PrivatePlaylistIndicator/PrivatePlaylistIndicator.tsx';

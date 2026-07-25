@@ -1,0 +1,19 @@
+.HeroSkeleton {
+    width: 100%;
+    aspect-ratio: var(--artist-cover-aspect-ratio);
+    background: var(--color-bg-card);
+    animation: pulse 1.4s ease-in-out infinite;
+}
+
+.RowsSkeleton {
+    height: 16rem;
+    margin: var(--space-2xl);
+    border-radius: var(--border-radius-md);
+    background: var(--color-bg-card);
+    animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50%      { opacity: 1; }
+}

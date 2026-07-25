@@ -44,6 +44,8 @@ type UserPermissions struct {
 
 	CanCreatePlaylist bool
 
+	CanEditArtists bool
+
 	MaxPendingTracks int64
 
 	MaxSongSizeBytes int64

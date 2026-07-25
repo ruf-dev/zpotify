@@ -202,12 +202,15 @@ func (ac *authMiddleware) authWithDebugHeaders(ctx context.Context, md metadata.
 			return nil, rerrors.Wrap(err, "resolving telegram id in debug auth")
 		}
 
+		debugPermissions := domain.UserPermissions{
+			CanUpload:      true,
+			EarlyAccess:    true,
+			CanEditArtists: true,
+		}
+
 		return &user_context.UserContext{
-			UserId: internalUserId,
-			Permissions: domain.UserPermissions{
-				CanUpload:   true,
-				EarlyAccess: true,
-			},
+			UserId:      internalUserId,
+			Permissions: debugPermissions,
 		}, nil
 	}
 

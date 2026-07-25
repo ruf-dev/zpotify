@@ -9,6 +9,7 @@ import InitPage from '@/pages/init/InitPage.tsx';
 import ErrorPage from '@/pages/error/ErrorPage.tsx';
 import PlaylistPage from '@/pages/main/playlist/PlaylistPage.tsx';
 import AlbumPage from '@/pages/main/album/AlbumPage.tsx';
+import ArtistPage from '@/pages/main/artist/ArtistPage.tsx';
 import EarlyAccessPage from '@/pages/early_access/EarlyAccessPage.tsx';
 import useUser from '@/entities/user/useUser.ts';
 import HomePage from '@/pages/main/home/HomePage.tsx';
@@ -47,6 +48,7 @@ export default function Router() {
                         <Route path={Path.PlaylistPage} element={<PlaylistPage />} errorElement={<ErrorPage />} />
 
                         <Route path={Path.AlbumPage} element={<AlbumPage />} errorElement={<ErrorPage />} />
+                        <Route path={Path.ArtistPage} element={<ArtistPage />} errorElement={<ErrorPage />} />
                     </Route>
 
                     <Route path={Path.EarlyAccessPage} element={<EarlyAccessPage />} errorElement={<ErrorPage />} />

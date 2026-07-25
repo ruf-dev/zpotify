@@ -1,7 +1,7 @@
 import { Button } from '@vervstack/chures';
 
-import IconButton from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/IconButton/IconButton.tsx';
-import cls from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/EditControls/EditControls.module.css';
+import IconButton from '@/components/IconButton/IconButton.tsx';
+import cls from '@/components/EditControls/EditControls.module.css';
 import EditIcon from '@/assets/icons/EditIcon.tsx';
 import SaveIcon from '@/assets/icons/SaveIcon.tsx';
 import { RemoveIcon } from '@/assets/icons/RemoveIcon.tsx';

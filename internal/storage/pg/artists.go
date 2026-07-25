@@ -15,7 +15,10 @@ import (
 	"go.zpotify.ru/zpotify/internal/utils"
 )
 
-const artistNameColumn = "name"
+const (
+	artistUuidColumn = "uuid"
+	artistNameColumn = "name"
+)
 
 type ArtistsStorage struct {
 	db      sqldb.DB
@@ -117,7 +120,7 @@ func (a *ArtistsStorage) Upsert(ctx context.Context, artists []domain.ArtistsBas
 }
 
 func (a *ArtistsStorage) List(ctx context.Context, req domain.ListArtists) ([]domain.ArtistsBase, error) {
-	columns := []string{"uuid", artistNameColumn}
+	columns := []string{artistUuidColumn, artistNameColumn}
 	if req.UserId != 0 {
 		columns = append(columns, "(ua.user_id IS NOT NULL) AS liked")
 	}
@@ -178,7 +181,7 @@ func (a *ArtistsStorage) List(ctx context.Context, req domain.ListArtists) ([]do
 
 func (a *ArtistsStorage) applyListQueryFilters(builder sq.SelectBuilder, listReq domain.ListArtists) sq.SelectBuilder {
 	if len(listReq.Uuid) > 0 {
-		builder = builder.Where(sq.Eq{"uuid": listReq.Uuid})
+		builder = builder.Where(sq.Eq{artistUuidColumn: listReq.Uuid})
 	}
 
 	if len(listReq.Name) > 0 {
@@ -198,6 +201,112 @@ func (a *ArtistsStorage) applyListQueryFilters(builder sq.SelectBuilder, listReq
 	}
 
 	return builder
+}
+
+func (a *ArtistsStorage) Get(ctx context.Context, artistUuid string, userId int64) (domain.Artist, error) {
+	columns := []string{artistUuidColumn, artistNameColumn, "avatar_file_id", "background_cover_file_id"}
+	if userId != 0 {
+		columns = append(columns, "(ua.user_id IS NOT NULL) AS liked")
+	}
+
+	builder := sq.Select().
+		Columns(columns...).
+		From("artists").
+		Where(sq.Eq{artistUuidColumn: artistUuid}).
+		PlaceholderFormat(sq.Dollar)
+
+	if userId != 0 {
+		builder = builder.LeftJoin("user_artists ua ON ua.artist_id = artists.uuid AND ua.user_id = ?", userId)
+	}
+
+	query, args, err := builder.ToSql()
+	if err != nil {
+		return domain.Artist{}, rerrors.Wrap(err)
+	}
+
+	var artist domain.Artist
+	var avatarFileId, backgroundCoverFileId sql.NullInt64
+
+	row := a.db.QueryRowContext(ctx, query, args...)
+	if userId != 0 {
+		err = row.Scan(&artist.Uuid, &artist.Name, &avatarFileId, &backgroundCoverFileId, &artist.Liked)
+	} else {
+		err = row.Scan(&artist.Uuid, &artist.Name, &avatarFileId, &backgroundCoverFileId)
+	}
+	if err != nil {
+		return domain.Artist{}, wrapPgErr(err)
+	}
+
+	if avatarFileId.Valid {
+		artist.AvatarFileId = &avatarFileId.Int64
+	}
+
+	if backgroundCoverFileId.Valid {
+		artist.BackgroundCoverFileId = &backgroundCoverFileId.Int64
+	}
+
+	return artist, nil
+}
+
+func (a *ArtistsStorage) Update(ctx context.Context, params domain.UpdateArtistParams) error {
+	if params.Name == "" {
+		return nil
+	}
+
+	builder := sq.Update("artists").
+		Set(artistNameColumn, params.Name).
+		Where(sq.Eq{artistUuidColumn: params.Uuid}).
+		PlaceholderFormat(sq.Dollar)
+
+	query, args, err := builder.ToSql()
+	if err != nil {
+		return rerrors.Wrap(err)
+	}
+
+	_, err = a.db.ExecContext(ctx, query, args...)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
+func (a *ArtistsStorage) UpdateAvatarFileId(ctx context.Context, artistUuid string, fileId int64) error {
+	builder := sq.Update("artists").
+		Set("avatar_file_id", fileId).
+		Where(sq.Eq{artistUuidColumn: artistUuid}).
+		PlaceholderFormat(sq.Dollar)
+
+	query, args, err := builder.ToSql()
+	if err != nil {
+		return rerrors.Wrap(err)
+	}
+
+	_, err = a.db.ExecContext(ctx, query, args...)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
+func (a *ArtistsStorage) UpdateBackgroundCoverFileId(ctx context.Context, artistUuid string, fileId int64) error {
+	builder := sq.Update("artists").
+		Set("background_cover_file_id", fileId).
+		Where(sq.Eq{artistUuidColumn: artistUuid}).
+		PlaceholderFormat(sq.Dollar)
+
+	query, args, err := builder.ToSql()
+	if err != nil {
+		return rerrors.Wrap(err)
+	}
+
+	_, err = a.db.ExecContext(ctx, query, args...)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
 }
 
 func (a *ArtistsStorage) LikeArtist(ctx context.Context, userId int64, artistUuid string) error {

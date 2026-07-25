@@ -1,0 +1,5 @@
+.TrackCardWrapper {
+    width: var(--artist-track-card-width);
+    border: 0.0625rem solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+}

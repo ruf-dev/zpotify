@@ -2,7 +2,7 @@ import type { Playlist, SongBase } from '@/app/api/zpotify';
 import cls from '@/widgets/PlaylistScreen/widgets/PlaylistControls/PlaylistControls.module.css';
 import PlayButton from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/PlayButton/PlayButton.tsx';
 import InfoControls from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/InfoControls/InfoControls.tsx';
-import EditControls from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/EditControls/EditControls.tsx';
+import EditControls from '@/components/EditControls/EditControls.tsx';
 import PrivateLockWidget from '@/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/PrivateLockWidget/PrivateLockWidget.tsx';
 
 export interface PlaylistControlsProps {

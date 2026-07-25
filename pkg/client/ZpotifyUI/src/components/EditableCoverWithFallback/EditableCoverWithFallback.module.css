@@ -7,8 +7,12 @@
         0 0 0 0.0625rem var(--color-border);
     align-self: flex-start;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: var(--cover-aspect-ratio, 1 / 1);
     position: relative;
+}
+
+.WrapperCircle {
+    border-radius: var(--border-radius-circle);
 }
 
 .WrapperEditing {

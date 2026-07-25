@@ -114,6 +114,8 @@ type SongStorage interface {
 	GetSongTags(ctx context.Context, songId int64) ([]domain.SongTag, error)
 	InsertSongTag(ctx context.Context, songId int64, tag domain.SongTag, orderId int) error
 	ClearSongTags(ctx context.Context, songId int64) error
+
+	ListByArtist(ctx context.Context, req domain.ListSongsByArtist) ([]domain.Song, error)
 }
 
 type ArtistStorage interface {
@@ -121,6 +123,10 @@ type ArtistStorage interface {
 
 	Return(ctx context.Context, artists []string) ([]domain.ArtistsBase, error)
 	List(ctx context.Context, req domain.ListArtists) ([]domain.ArtistsBase, error)
+	Get(ctx context.Context, artistUuid string, userId int64) (domain.Artist, error)
+	Update(ctx context.Context, params domain.UpdateArtistParams) error
+	UpdateAvatarFileId(ctx context.Context, artistUuid string, fileId int64) error
+	UpdateBackgroundCoverFileId(ctx context.Context, artistUuid string, fileId int64) error
 
 	LikeArtist(ctx context.Context, userId int64, artistUuid string) error
 	UnlikeArtist(ctx context.Context, userId int64, artistUuid string) error

@@ -1,4 +1,4 @@
-import IconButton from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/IconButton/IconButton.tsx';
+import IconButton from '@/components/IconButton/IconButton.tsx';
 import { useSaveButtonWidget } from '@/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/SaveButtonWidget/useSaveButtonWidget.ts';
 import { HeartIcon } from '@/assets/icons/HeartIcon.tsx';
 

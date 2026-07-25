@@ -58,7 +58,7 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 		userService:         v1.NewUserService(dataStorage),
 		authService:         authSvc,
 		playlistService:     v1.NewPlaylistService(dataStorage, fileStorage),
-		artistsService:      v1.NewArtistsService(dataStorage),
+		artistsService:      v1.NewArtistsService(dataStorage, fileStorage),
 		fileService:         v1.NewFileService(dataStorage, fileStorage),
 		featureFlagsService: v1.NewFeatureFlagsService(dataStorage),
 		homeService:         v1.NewHomeService(dataStorage),
@@ -178,6 +178,13 @@ type ArtistsService interface {
 	LikeArtist(ctx context.Context, artistUuid string) error
 	// UnlikeArtist removes an artist from the caller's liked artists.
 	UnlikeArtist(ctx context.Context, artistUuid string) error
+
+	// GetArtistPage returns the artist header plus its albums/singles/features
+	// rows for the artist detail page.
+	GetArtistPage(ctx context.Context, artistUuid string) (domain.ArtistPage, error)
+	// Update edits an artist's name and/or avatar/background-cover images.
+	// Requires the caller to have CanEditArtists permission.
+	Update(ctx context.Context, req domain.UpdateArtistParams) (domain.UpdateArtistResult, error)
 }
 
 type FileService interface {

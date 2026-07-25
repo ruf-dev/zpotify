@@ -143,6 +143,60 @@ func local_request_ArtistsAPI_UnlikeArtist_0(ctx context.Context, marshaler runt
 	return msg, metadata, err
 }
 
+func request_ArtistsAPI_GetArtistPage_0(ctx context.Context, marshaler runtime.Marshaler, client ArtistsAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq GetArtistPage_Request
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	msg, err := client.GetArtistPage(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_ArtistsAPI_GetArtistPage_0(ctx context.Context, marshaler runtime.Marshaler, server ArtistsAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq GetArtistPage_Request
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.GetArtistPage(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+func request_ArtistsAPI_UpdateArtist_0(ctx context.Context, marshaler runtime.Marshaler, client ArtistsAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq UpdateArtist_Request
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	msg, err := client.UpdateArtist(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_ArtistsAPI_UpdateArtist_0(ctx context.Context, marshaler runtime.Marshaler, server ArtistsAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq UpdateArtist_Request
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.UpdateArtist(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 // RegisterArtistsAPIHandlerServer registers the http handlers for service ArtistsAPI to "mux".
 // UnaryRPC     :call ArtistsAPIServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -228,6 +282,46 @@ func RegisterArtistsAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 			return
 		}
 		forward_ArtistsAPI_UnlikeArtist_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_ArtistsAPI_GetArtistPage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zpotify_api.ArtistsAPI/GetArtistPage", runtime.WithHTTPPathPattern("/api/artists/get_page"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ArtistsAPI_GetArtistPage_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ArtistsAPI_GetArtistPage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_ArtistsAPI_UpdateArtist_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zpotify_api.ArtistsAPI/UpdateArtist", runtime.WithHTTPPathPattern("/api/artists/update"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ArtistsAPI_UpdateArtist_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ArtistsAPI_UpdateArtist_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -337,19 +431,57 @@ func RegisterArtistsAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux,
 		}
 		forward_ArtistsAPI_UnlikeArtist_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodPost, pattern_ArtistsAPI_GetArtistPage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zpotify_api.ArtistsAPI/GetArtistPage", runtime.WithHTTPPathPattern("/api/artists/get_page"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ArtistsAPI_GetArtistPage_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ArtistsAPI_GetArtistPage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_ArtistsAPI_UpdateArtist_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zpotify_api.ArtistsAPI/UpdateArtist", runtime.WithHTTPPathPattern("/api/artists/update"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ArtistsAPI_UpdateArtist_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_ArtistsAPI_UpdateArtist_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	return nil
 }
 
 var (
-	pattern_ArtistsAPI_ListArtist_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "artists", "list"}, ""))
-	pattern_ArtistsAPI_CreateArtist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "artists", "create"}, ""))
-	pattern_ArtistsAPI_LikeArtist_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "artists", "like"}, ""))
-	pattern_ArtistsAPI_UnlikeArtist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "artists", "unlike"}, ""))
+	pattern_ArtistsAPI_ListArtist_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "artists", "list"}, ""))
+	pattern_ArtistsAPI_CreateArtist_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "artists", "create"}, ""))
+	pattern_ArtistsAPI_LikeArtist_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "artists", "like"}, ""))
+	pattern_ArtistsAPI_UnlikeArtist_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "artists", "unlike"}, ""))
+	pattern_ArtistsAPI_GetArtistPage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "artists", "get_page"}, ""))
+	pattern_ArtistsAPI_UpdateArtist_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "artists", "update"}, ""))
 )
 
 var (
-	forward_ArtistsAPI_ListArtist_0   = runtime.ForwardResponseMessage
-	forward_ArtistsAPI_CreateArtist_0 = runtime.ForwardResponseMessage
-	forward_ArtistsAPI_LikeArtist_0   = runtime.ForwardResponseMessage
-	forward_ArtistsAPI_UnlikeArtist_0 = runtime.ForwardResponseMessage
+	forward_ArtistsAPI_ListArtist_0    = runtime.ForwardResponseMessage
+	forward_ArtistsAPI_CreateArtist_0  = runtime.ForwardResponseMessage
+	forward_ArtistsAPI_LikeArtist_0    = runtime.ForwardResponseMessage
+	forward_ArtistsAPI_UnlikeArtist_0  = runtime.ForwardResponseMessage
+	forward_ArtistsAPI_GetArtistPage_0 = runtime.ForwardResponseMessage
+	forward_ArtistsAPI_UpdateArtist_0  = runtime.ForwardResponseMessage
 )

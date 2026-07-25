@@ -3,3 +3,11 @@
     font-weight: 700;
     color: var(--color-fg-accent);
 }
+
+.ArtistNameClickable {
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

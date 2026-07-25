@@ -1,4 +1,4 @@
-import IconButton from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/IconButton/IconButton.tsx';
+import IconButton from '@/components/IconButton/IconButton.tsx';
 import { ShareIcon } from '@/assets/icons/ShareIcon.tsx';
 
 export default function ShareButton() {

@@ -1,7 +1,7 @@
 import { Button } from '@vervstack/chures';
 import cn from 'classnames';
 
-import cls from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/IconButton/IconButton.module.css';
+import cls from '@/components/IconButton/IconButton.module.css';
 
 export interface IconButtonProps {
     ariaLabel: string;

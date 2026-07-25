@@ -51,6 +51,42 @@ export type UnlikeArtistResponse = Record<string, never>;
 
 export type UnlikeArtist = Record<string, never>;
 
+export type Artist = {
+  uuid?: string;
+  name?: string;
+  liked?: boolean;
+  avatarFilePath?: string;
+  backgroundCoverFilePath?: string;
+  canEdit?: boolean;
+};
+
+export type GetArtistPageRequest = {
+  artistUuid?: string;
+};
+
+export type GetArtistPageResponse = {
+  artist?: Artist;
+  albums?: ZpotifyApiZpotifyCommon.Playlist[];
+  singles?: ZpotifyApiZpotifyCommon.SongBase[];
+  features?: ZpotifyApiZpotifyCommon.SongBase[];
+};
+
+export type GetArtistPage = Record<string, never>;
+
+export type UpdateArtistRequest = {
+  uuid?: string;
+  name?: string;
+  avatarFileId?: string;
+  backgroundCoverFileId?: string;
+};
+
+export type UpdateArtistResponse = {
+  avatarFilePath?: string;
+  backgroundCoverFilePath?: string;
+};
+
+export type UpdateArtist = Record<string, never>;
+
 export class ArtistsAPI {
   static ListArtist(this:void, req: ListArtistRequest, initReq?: fm.InitReq): Promise<ListArtistResponse> {
     return fm.fetchRequest<ListArtistResponse>(`/api/artists/list`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
@@ -63,5 +99,11 @@ export class ArtistsAPI {
   }
   static UnlikeArtist(this:void, req: UnlikeArtistRequest, initReq?: fm.InitReq): Promise<UnlikeArtistResponse> {
     return fm.fetchRequest<UnlikeArtistResponse>(`/api/artists/unlike`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static GetArtistPage(this:void, req: GetArtistPageRequest, initReq?: fm.InitReq): Promise<GetArtistPageResponse> {
+    return fm.fetchRequest<GetArtistPageResponse>(`/api/artists/get_page`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static UpdateArtist(this:void, req: UpdateArtistRequest, initReq?: fm.InitReq): Promise<UpdateArtistResponse> {
+    return fm.fetchRequest<UpdateArtistResponse>(`/api/artists/update`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }

@@ -5,7 +5,7 @@
     gap: var(--space-sm);
     padding: var(--space-lg) var(--space-md);
     border-radius: var(--border-radius-md);
-    cursor: default;
+    cursor: pointer;
     transition: background var(--ease-quick);
 
     &:hover {

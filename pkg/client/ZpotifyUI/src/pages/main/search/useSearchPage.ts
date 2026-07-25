@@ -20,7 +20,11 @@ function matchesArtist(item: SearchArtistResult, q: string): boolean {
 }
 
 function matchesAlbum(item: SearchAlbumResult, q: string): boolean {
-    return q.length === 0 || item.name.toLowerCase().includes(q) || item.artistNames.toLowerCase().includes(q);
+    return (
+        q.length === 0 ||
+        item.name.toLowerCase().includes(q) ||
+        item.artists.some((a) => a.name.toLowerCase().includes(q))
+    );
 }
 
 function matchesPlaylist(item: SearchPlaylistResult, q: string): boolean {

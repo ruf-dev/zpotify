@@ -9,7 +9,7 @@ export interface SearchArtistResult {
 export interface SearchAlbumResult {
     uuid: string;
     name: string;
-    artistNames: string;
+    artists: Array<{ uuid: string; name: string }>;
     seed: number;
     coverUrl?: string;
 }
@@ -45,11 +45,11 @@ const MOCK_ARTISTS: SearchArtistResult[] = [
 ];
 
 const MOCK_ALBUMS: SearchAlbumResult[] = [
-    { uuid: 'album-1', name: 'Dark Matter', artistNames: 'Axiom Drive', seed: 1 },
-    { uuid: 'album-2', name: 'Structures', artistNames: 'Vela', seed: 2 },
-    { uuid: 'album-3', name: 'Soft Machinery', artistNames: 'Lumine', seed: 3 },
-    { uuid: 'album-4', name: 'Threshold EP', artistNames: 'Cold Type', seed: 4 },
-    { uuid: 'album-5', name: 'Depths', artistNames: 'Deep Signal', seed: 5 },
+    { uuid: 'album-1', name: 'Dark Matter', artists: [{ uuid: 'artist-1', name: 'Axiom Drive' }], seed: 1 },
+    { uuid: 'album-2', name: 'Structures', artists: [{ uuid: 'artist-2', name: 'Vela' }], seed: 2 },
+    { uuid: 'album-3', name: 'Soft Machinery', artists: [{ uuid: 'artist-3', name: 'Lumine' }], seed: 3 },
+    { uuid: 'album-4', name: 'Threshold EP', artists: [{ uuid: 'artist-4', name: 'Cold Type' }], seed: 4 },
+    { uuid: 'album-5', name: 'Depths', artists: [{ uuid: 'artist-5', name: 'Deep Signal' }], seed: 5 },
 ];
 
 const MOCK_PLAYLISTS: SearchPlaylistResult[] = [

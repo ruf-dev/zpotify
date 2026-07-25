@@ -16,7 +16,8 @@ SELECT user_id,
        can_create_playlist,
        max_pending_tracks,
        max_song_size_bytes,
-       max_total_upload_bytes
+       max_total_upload_bytes,
+       can_edit_artists
 FROM user_permissions
 WHERE user_id = $1
 `
@@ -32,6 +33,7 @@ func (q *Queries) ListUserPermissionsByUserId(ctx context.Context, userID int64)
 		&i.MaxPendingTracks,
 		&i.MaxSongSizeBytes,
 		&i.MaxTotalUploadBytes,
+		&i.CanEditArtists,
 	)
 	return i, err
 }

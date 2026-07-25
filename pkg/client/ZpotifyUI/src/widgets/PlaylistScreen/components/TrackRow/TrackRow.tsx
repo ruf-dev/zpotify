@@ -1,10 +1,12 @@
 import { type MouseEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 import { ConfirmDialog } from '@vervstack/chures';
 
 import cls from '@/widgets/PlaylistScreen/components/TrackRow/TrackRow.module.css';
 import type { SongBase } from '@/app/api/zpotify';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
+import { artistPath } from '@/app/routing/paths.ts';
 import NowPlayingBars from '@/assets/icons/NowPlayingBars.tsx';
 import { HeartIcon } from '@/assets/icons/HeartIcon.tsx';
 import { PlayTriangleIcon } from '@/assets/icons/PlayTriangleIcon.tsx';
@@ -24,6 +26,11 @@ function formatDuration(sec: number): string {
     const m = Math.floor(sec / 60);
     const s = sec % 60;
     return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+interface ArtistNamePart {
+    uuid?: string;
+    name: string;
 }
 
 export interface TrackRowProps {
@@ -67,6 +74,7 @@ export default function TrackRow({
     anyDragging,
     rowRef,
 }: TrackRowProps) {
+    const navigate = useNavigate();
     const { OpenDialog, CloseDialog } = useDialog();
     const toaster = useToaster();
     const refreshActive = useSongListRefresh((s) => s.refreshActive);
@@ -152,31 +160,30 @@ export default function TrackRow({
         ...(canReorder ? [{ label: 'Delete', onClick: handleDelete }] : []),
     ];
 
-    function computeArtistName(): string {
+    function computeArtistParts(): { prefix: string; parts: ArtistNamePart[] } {
         if (!playlistIsAlbum) {
-            return (
-                song.artists
-                    ?.map((a) => a.name ?? '')
-                    .filter(Boolean)
-                    .join(', ') || 'Unknown'
-            );
+            const parts = (song.artists ?? []).filter((a) => a.name).map((a) => ({ uuid: a.uuid, name: a.name ?? '' }));
+            return { prefix: '', parts: parts.length > 0 ? parts : [{ name: 'Unknown' }] };
         }
 
         if ((playlistArtists?.length ?? 0) > 1) {
-            return '';
+            return { prefix: '', parts: [] };
         }
 
         const albumArtistIds = new Set((playlistArtists ?? []).map((a) => a.id));
-        const featuredNames = (song.artists ?? [])
-            .filter((a) => a.uuid && !albumArtistIds.has(a.uuid))
-            .map((a) => a.name ?? '')
-            .filter(Boolean)
-            .join(', ');
+        const featuredParts = (song.artists ?? [])
+            .filter((a) => a.uuid && !albumArtistIds.has(a.uuid) && a.name)
+            .map((a) => ({ uuid: a.uuid, name: a.name ?? '' }));
 
-        return featuredNames ? `feat: ${featuredNames}` : '';
+        return featuredParts.length > 0 ? { prefix: 'feat: ', parts: featuredParts } : { prefix: '', parts: [] };
     }
 
-    const artistName = computeArtistName();
+    function handleArtistClick(e: MouseEvent, artistUuid?: string) {
+        e.stopPropagation();
+        if (artistUuid) navigate(artistPath(artistUuid));
+    }
+
+    const artistParts = computeArtistParts();
     const duration = formatDuration(song.durationSec ?? 0);
 
     return (
@@ -209,7 +216,21 @@ export default function TrackRow({
                     {song.title}
                     {isCached && <CachedIndicator />}
                 </span>
-                <span className={cls.TrackArtist}>{artistName}</span>
+                <span className={cls.TrackArtist}>
+                    {artistParts.prefix}
+                    {artistParts.parts.map((a, idx) => (
+                        <span key={a.uuid ?? `${a.name}-${idx}`}>
+                            {idx > 0 && ', '}
+                            {a.uuid ? (
+                                <span className={cls.ArtistLink} onClick={(e) => handleArtistClick(e, a.uuid)}>
+                                    {a.name}
+                                </span>
+                            ) : (
+                                a.name
+                            )}
+                        </span>
+                    ))}
+                </span>
             </div>
 
             <button

@@ -260,6 +260,7 @@ func toDomainUserPermissions(p querier.UserPermission) domain.UserPermissions {
 		CanUpload:           p.CanUpload,
 		EarlyAccess:         p.EarlyAccess,
 		CanCreatePlaylist:   p.CanCreatePlaylist,
+		CanEditArtists:      p.CanEditArtists,
 		MaxPendingTracks:    p.MaxPendingTracks,
 		MaxSongSizeBytes:    p.MaxSongSizeBytes,
 		MaxTotalUploadBytes: p.MaxTotalUploadBytes,

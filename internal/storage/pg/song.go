@@ -251,6 +251,78 @@ func (s *SongsStorage) listArtists(ctx context.Context, songId int64) ([]domain.
 	return domainArtists, nil
 }
 
+func (s *SongsStorage) ListByArtist(ctx context.Context, req domain.ListSongsByArtist) ([]domain.Song, error) {
+	artistUuid, err := uuid.Parse(req.ArtistUuid)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error parsing artist uuid")
+	}
+
+	switch {
+	case req.Role == domain.ArtistSongRolePrimary && req.StandaloneOnly:
+		return s.listArtistPrimarySongs(ctx, artistUuid, req.Limit)
+	case req.Role == domain.ArtistSongRoleFeatured:
+		return s.listArtistFeaturedSongs(ctx, artistUuid, req.Limit)
+	default:
+		return nil, rerrors.New("unsupported ListSongsByArtist combination of role and standalone_only")
+	}
+}
+
+func (s *SongsStorage) listArtistPrimarySongs(ctx context.Context, artistUuid uuid.UUID, limit uint64) ([]domain.Song, error) {
+	params := songs_q.ListArtistPrimarySongsParams{
+		ArtistUuid: artistUuid,
+		Limit:      int32(limit),
+	}
+
+	rows, err := s.querier.ListArtistPrimarySongs(ctx, params)
+	if err != nil {
+		return nil, wrapPgErr(err)
+	}
+
+	songs := make([]domain.Song, len(rows))
+	for i, row := range rows {
+		var artists []domain.ArtistsBase
+		err = json.Unmarshal(row.ArtistInfo, &artists)
+		if err != nil {
+			return nil, rerrors.Wrap(err, "error unmarshalling artists info from storage json")
+		}
+
+		songs[i] = domain.Song{
+			SongBase: toSongBaseFromArtistPrimary(row),
+			Artists:  artists,
+		}
+	}
+
+	return songs, nil
+}
+
+func (s *SongsStorage) listArtistFeaturedSongs(ctx context.Context, artistUuid uuid.UUID, limit uint64) ([]domain.Song, error) {
+	params := songs_q.ListArtistFeaturedSongsParams{
+		ArtistUuid: artistUuid,
+		Limit:      int32(limit),
+	}
+
+	rows, err := s.querier.ListArtistFeaturedSongs(ctx, params)
+	if err != nil {
+		return nil, wrapPgErr(err)
+	}
+
+	songs := make([]domain.Song, len(rows))
+	for i, row := range rows {
+		var artists []domain.ArtistsBase
+		err = json.Unmarshal(row.ArtistInfo, &artists)
+		if err != nil {
+			return nil, rerrors.Wrap(err, "error unmarshalling artists info from storage json")
+		}
+
+		songs[i] = domain.Song{
+			SongBase: toSongBaseFromArtistFeatured(row),
+			Artists:  artists,
+		}
+	}
+
+	return songs, nil
+}
+
 func (s *SongsStorage) WithTx(tx *sql.Tx) storage.SongStorage {
 	return &SongsStorage{
 		db:      &txWrapper{tx},
@@ -269,6 +341,28 @@ func toSongBase(song songs_q.SongBaseViewV1) domain.SongBase {
 }
 
 func toSongBaseFromSearch(song songs_q.SearchSongsByTitleRow) domain.SongBase {
+	return domain.SongBase{
+		Id:            song.ID,
+		Title:         song.Title,
+		Duration:      time.Duration(song.DurationSec) * time.Second,
+		FilePath:      song.FilePath,
+		FileId:        song.FileID,
+		CoverFilePath: song.CoverFilePath.String,
+	}
+}
+
+func toSongBaseFromArtistPrimary(song songs_q.ListArtistPrimarySongsRow) domain.SongBase {
+	return domain.SongBase{
+		Id:            song.ID,
+		Title:         song.Title,
+		Duration:      time.Duration(song.DurationSec) * time.Second,
+		FilePath:      song.FilePath,
+		FileId:        song.FileID,
+		CoverFilePath: song.CoverFilePath.String,
+	}
+}
+
+func toSongBaseFromArtistFeatured(song songs_q.ListArtistFeaturedSongsRow) domain.SongBase {
 	return domain.SongBase{
 		Id:            song.ID,
 		Title:         song.Title,

@@ -39,6 +39,20 @@ service ArtistsAPI {
     };
   };
 
+  rpc GetArtistPage(GetArtistPage.Request) returns (GetArtistPage.Response) {
+    option (google.api.http) = {
+      post: "/api/artists/get_page"
+      body: "*",
+    };
+  };
+
+  rpc UpdateArtist(UpdateArtist.Request) returns (UpdateArtist.Response) {
+    option (google.api.http) = {
+      post: "/api/artists/update"
+      body: "*",
+    };
+  };
+
 }
 
 message ListArtist {
@@ -81,4 +95,38 @@ message UnlikeArtist {
   }
 
   message Response {}
+}
+
+message Artist {
+  string uuid = 1;
+  string name = 2;
+  bool liked = 3;
+  optional string avatar_file_path = 4;
+  optional string background_cover_file_path = 5;
+  optional bool can_edit = 6;
+}
+
+message GetArtistPage {
+  message Request {
+    string artist_uuid = 1;
+  }
+  message Response {
+    Artist artist = 1;
+    repeated Playlist albums = 2;
+    repeated SongBase singles = 3;
+    repeated SongBase features = 4;
+  }
+}
+
+message UpdateArtist {
+  message Request {
+    string uuid = 1;
+    optional string name = 2;
+    optional int64 avatar_file_id = 3;
+    optional int64 background_cover_file_id = 4;
+  }
+  message Response {
+    optional string avatar_file_path = 1;
+    optional string background_cover_file_path = 2;
+  }
 }

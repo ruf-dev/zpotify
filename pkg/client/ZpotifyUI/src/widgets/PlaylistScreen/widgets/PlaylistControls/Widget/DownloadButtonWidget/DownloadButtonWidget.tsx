@@ -1,7 +1,7 @@
 import cn from 'classnames';
 
 import type { Playlist, SongBase } from '@/app/api/zpotify';
-import IconButton from '@/widgets/PlaylistScreen/widgets/PlaylistControls/components/IconButton/IconButton.tsx';
+import IconButton from '@/components/IconButton/IconButton.tsx';
 import cls from '@/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/DownloadButtonWidget/DownloadButtonWidget.module.css';
 import { useDownloadButtonWidget } from '@/widgets/PlaylistScreen/widgets/PlaylistControls/Widget/DownloadButtonWidget/useDownloadButtonWidget.tsx';
 import { DownloadIcon } from '@/assets/icons/DownloadIcon.tsx';

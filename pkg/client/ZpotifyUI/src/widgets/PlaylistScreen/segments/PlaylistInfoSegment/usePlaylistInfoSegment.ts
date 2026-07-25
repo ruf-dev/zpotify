@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import type { Playlist, SongBase } from '@/app/api/zpotify';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import type { EditableArtistPickerContext } from '@/widgets/PlaylistScreen/components/EditableArtistPicker/EditableArtistPicker.tsx';
-import type { EditableCoverWithFallbackProps } from '@/widgets/PlaylistScreen/components/EditableCoverWithFallback/EditableCoverWithFallback.tsx';
+import type { EditableCoverWithFallbackProps } from '@/components/EditableCoverWithFallback/EditableCoverWithFallback.tsx';
 import type { EditableAlbumNameProps } from '@/widgets/PlaylistScreen/components/EditableAlbumName/EditableAlbumName.tsx';
 import type { EditableYearProps } from '@/widgets/PlaylistScreen/components/EditableYear/EditableYear.tsx';
 import type { TrackCountLabelProps } from '@/widgets/PlaylistScreen/components/TrackCountLabel/TrackCountLabel.tsx';
@@ -32,6 +32,7 @@ export interface UsePlaylistInfoSegmentParams {
 export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
     const { playlist, editMode } = params;
     const artistName = playlist.artists?.[0]?.name ?? 'Unknown Artist';
+    const artistUuid = playlist.artists?.[0]?.uuid;
     const [aboutExpanded, setAboutExpanded] = useState(false);
     const [saving, setSaving] = useState(false);
     const queryClient = useQueryClient();
@@ -156,6 +157,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
 
     const artistPicker: EditableArtistPickerContext = {
         displayName: artistName,
+        displayUuid: artistUuid,
         isEditing: editMode,
         artists: editArtists,
         onChange: setEditArtists,

@@ -3,7 +3,7 @@ export type TrackPreview = { title: string; artist: string };
 export type AlbumCardProps = {
     uuid: string;
     name: string;
-    artistNames: string;
+    artists: Array<{ uuid: string; name: string }>;
     seed: number;
     coverUrl?: string;
 };

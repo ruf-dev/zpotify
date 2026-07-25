@@ -1,0 +1,70 @@
+.ArtistHeroContainer {
+    position: relative;
+    width: 100%;
+}
+
+.BackButtonWrapper {
+    position: absolute;
+    top: var(--space-lg);
+    left: var(--space-lg);
+}
+
+.CoverWrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--artist-cover-aspect-ratio);
+    overflow: hidden;
+}
+
+.CoverInner {
+    width: 100%;
+    height: 100%;
+}
+
+.CoverDissolve {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, var(--color-bg-base) 100%);
+    pointer-events: none;
+}
+
+.HeroContent {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-lg);
+    padding: 0 var(--space-2xl) var(--space-xl);
+    margin-top: calc(-1 * var(--artist-hero-avatar-size) / 2);
+}
+
+.AvatarWrapper {
+    width: var(--artist-hero-avatar-size);
+    flex-shrink: 0;
+    border-radius: var(--border-radius-circle);
+    box-shadow: 0 0 0 0.25rem var(--color-bg-base);
+}
+
+.NameRow {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    min-width: 0;
+    padding-bottom: var(--space-sm);
+}
+
+.EditControlsWrapper {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+@media (orientation: portrait) {
+    .HeroContent {
+        margin-top: calc(-1 * var(--artist-hero-avatar-size-sm) / 2);
+        padding: 0 var(--space-lg) var(--space-lg);
+        gap: var(--space-md);
+    }
+
+    .AvatarWrapper {
+        width: var(--artist-hero-avatar-size-sm);
+    }
+}

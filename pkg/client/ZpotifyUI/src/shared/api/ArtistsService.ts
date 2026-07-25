@@ -1,4 +1,13 @@
-import { ArtistsAPI, Paging, ListArtistRequest, ListArtistResponse } from '@/app/api/zpotify';
+import {
+    ArtistsAPI,
+    Paging,
+    ListArtistRequest,
+    ListArtistResponse,
+    GetArtistPageRequest,
+    GetArtistPageResponse,
+    UpdateArtistRequest,
+    UpdateArtistResponse,
+} from '@/app/api/zpotify';
 import { BaseService } from '@/shared/api/BaseService.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 
@@ -7,6 +16,13 @@ export interface IArtistsService {
     CreateArtist(name: string): Promise<ArtistItem>;
     LikeArtist(artistUuid: string): Promise<void>;
     UnlikeArtist(artistUuid: string): Promise<void>;
+    GetArtistPage(uuid: string): Promise<GetArtistPageResponse>;
+    UpdateArtist(
+        uuid: string,
+        name?: string,
+        avatarFileId?: string,
+        backgroundCoverFileId?: string,
+    ): Promise<UpdateArtistResponse>;
 }
 
 export class ArtistsService extends BaseService implements IArtistsService {
@@ -43,6 +59,25 @@ export class ArtistsService extends BaseService implements IArtistsService {
     async UnlikeArtist(artistUuid: string): Promise<void> {
         await this.executeAuthApiCall(async (initReq) => {
             return ArtistsAPI.UnlikeArtist({ artistUuid }, initReq);
+        });
+    }
+
+    async GetArtistPage(uuid: string): Promise<GetArtistPageResponse> {
+        const req = { artistUuid: uuid } as GetArtistPageRequest;
+        return this.executeAuthApiCall(async (initReq) => {
+            return ArtistsAPI.GetArtistPage(req, initReq);
+        });
+    }
+
+    async UpdateArtist(
+        uuid: string,
+        name?: string,
+        avatarFileId?: string,
+        backgroundCoverFileId?: string,
+    ): Promise<UpdateArtistResponse> {
+        const req: UpdateArtistRequest = { uuid, name, avatarFileId, backgroundCoverFileId };
+        return this.executeAuthApiCall(async (initReq) => {
+            return ArtistsAPI.UpdateArtist(req, initReq);
         });
     }
 }

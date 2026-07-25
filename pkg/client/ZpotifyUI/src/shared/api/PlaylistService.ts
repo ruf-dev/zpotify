@@ -33,7 +33,7 @@ type PlaylistData = {
     uuid?: string;
     name?: string;
     description?: string;
-    artists?: Array<{ name?: string }>;
+    artists?: Array<{ uuid?: string; name?: string }>;
     songCount?: number;
     coverFilePath?: string;
 };
@@ -50,7 +50,9 @@ export function toAlbumItem(a: PlaylistData): LibraryItem & { kind: 'album' } {
         kind: 'album',
         uuid,
         name: a.name ?? '',
-        artistNames: (a.artists ?? []).map((ar) => ar.name ?? '').join(', '),
+        artists: (a.artists ?? [])
+            .filter((ar): ar is { uuid: string; name: string } => !!ar.uuid && !!ar.name)
+            .map((ar) => ({ uuid: ar.uuid, name: ar.name })),
         seed: uuidToSeed(uuid),
         coverUrl: buildCoverUrl(a.coverFilePath),
     };
