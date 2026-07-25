@@ -1915,7 +1915,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_artists_pb",
-      "community": 129,
+      "community": 217,
       "norm_label": "zpotify_service_artists.pb.go"
     },
     {
@@ -2325,7 +2325,7 @@
       "source_location": "L255",
       "_origin": "ast",
       "id": "zpotify_api_getartistpage",
-      "community": 129,
+      "community": 427,
       "norm_label": "getartistpage"
     },
     {
@@ -2335,7 +2335,7 @@
       "source_location": "L261",
       "_origin": "ast",
       "id": "zpotify_api_getartistpage_reset",
-      "community": 129,
+      "community": 427,
       "norm_label": ".reset()"
     },
     {
@@ -2345,7 +2345,7 @@
       "source_location": "L268",
       "_origin": "ast",
       "id": "zpotify_api_getartistpage_string",
-      "community": 129,
+      "community": 427,
       "norm_label": ".string()"
     },
     {
@@ -2355,7 +2355,7 @@
       "source_location": "L272",
       "_origin": "ast",
       "id": "zpotify_api_getartistpage_protomessage",
-      "community": 129,
+      "community": 427,
       "norm_label": ".protomessage()"
     },
     {
@@ -2365,7 +2365,7 @@
       "source_location": "L274",
       "_origin": "ast",
       "id": "zpotify_api_getartistpage_protoreflect",
-      "community": 129,
+      "community": 603,
       "norm_label": ".protoreflect()"
     },
     {
@@ -2375,7 +2375,7 @@
       "source_location": "L287",
       "_origin": "ast",
       "id": "zpotify_api_getartistpage_descriptor",
-      "community": 129,
+      "community": 275,
       "norm_label": ".descriptor()"
     },
     {
@@ -3045,7 +3045,7 @@
       "source_location": "L687",
       "_origin": "ast",
       "id": "zpotify_api_unlikeartist_response",
-      "community": 427,
+      "community": 141,
       "norm_label": "unlikeartist_response"
     },
     {
@@ -3055,7 +3055,7 @@
       "source_location": "L693",
       "_origin": "ast",
       "id": "zpotify_api_unlikeartist_response_reset",
-      "community": 427,
+      "community": 141,
       "norm_label": ".reset()"
     },
     {
@@ -3065,7 +3065,7 @@
       "source_location": "L700",
       "_origin": "ast",
       "id": "zpotify_api_unlikeartist_response_string",
-      "community": 427,
+      "community": 141,
       "norm_label": ".string()"
     },
     {
@@ -3075,7 +3075,7 @@
       "source_location": "L704",
       "_origin": "ast",
       "id": "zpotify_api_unlikeartist_response_protomessage",
-      "community": 427,
+      "community": 141,
       "norm_label": ".protomessage()"
     },
     {
@@ -3085,7 +3085,7 @@
       "source_location": "L706",
       "_origin": "ast",
       "id": "zpotify_api_unlikeartist_response_protoreflect",
-      "community": 603,
+      "community": 141,
       "norm_label": ".protoreflect()"
     },
     {
@@ -3095,7 +3095,7 @@
       "source_location": "L719",
       "_origin": "ast",
       "id": "zpotify_api_unlikeartist_response_descriptor",
-      "community": 275,
+      "community": 141,
       "norm_label": ".descriptor()"
     },
     {
@@ -3485,7 +3485,7 @@
       "source_location": "L1102",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_artists_pb_init",
-      "community": 129,
+      "community": 217,
       "norm_label": "init()"
     },
     {
@@ -3495,7 +3495,7 @@
       "source_location": "L1103",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_artists_pb_file_zpotify_service_artists_proto_init",
-      "community": 129,
+      "community": 217,
       "norm_label": "file_zpotify_service_artists_proto_init()"
     },
     {
@@ -4195,7 +4195,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "zpotify_api_getauthmethods",
-      "community": 57,
+      "community": 29,
       "norm_label": "getauthmethods"
     },
     {
@@ -4235,7 +4235,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "zpotify_api_getauthmethods_reset",
-      "community": 57,
+      "community": 29,
       "norm_label": ".reset()"
     },
     {
@@ -4245,7 +4245,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "zpotify_api_getauthmethods_string",
-      "community": 57,
+      "community": 29,
       "norm_label": ".string()"
     },
     {
@@ -4255,7 +4255,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "zpotify_api_getauthmethods_protomessage",
-      "community": 57,
+      "community": 29,
       "norm_label": ".protomessage()"
     },
     {
@@ -4265,7 +4265,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "zpotify_api_getauthmethods_protoreflect",
-      "community": 57,
+      "community": 29,
       "norm_label": ".protoreflect()"
     },
     {
@@ -4285,7 +4285,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "zpotify_api_getauthmethods_descriptor",
-      "community": 57,
+      "community": 29,
       "norm_label": ".descriptor()"
     },
     {
@@ -4295,7 +4295,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "zpotify_api_authviaasync",
-      "community": 29,
+      "community": 57,
       "norm_label": "authviaasync"
     },
     {
@@ -4305,7 +4305,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "zpotify_api_authviaasync_reset",
-      "community": 29,
+      "community": 57,
       "norm_label": ".reset()"
     },
     {
@@ -4315,7 +4315,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "zpotify_api_authviaasync_string",
-      "community": 29,
+      "community": 57,
       "norm_label": ".string()"
     },
     {
@@ -4325,7 +4325,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "zpotify_api_authviaasync_protomessage",
-      "community": 29,
+      "community": 57,
       "norm_label": ".protomessage()"
     },
     {
@@ -4335,7 +4335,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "zpotify_api_authviaasync_protoreflect",
-      "community": 29,
+      "community": 57,
       "norm_label": ".protoreflect()"
     },
     {
@@ -4345,7 +4345,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "zpotify_api_authviaasync_descriptor",
-      "community": 29,
+      "community": 57,
       "norm_label": ".descriptor()"
     },
     {
@@ -7275,7 +7275,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_files_pb_go_sizecache",
-      "community": 194,
+      "community": 609,
       "norm_label": "sizecache"
     },
     {
@@ -7315,7 +7315,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "zpotify_api_listuploadedfiles_protoreflect",
-      "community": 491,
+      "community": 194,
       "norm_label": ".protoreflect()"
     },
     {
@@ -7335,7 +7335,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "zpotify_api_listuploadedfiles_descriptor",
-      "community": 609,
+      "community": 194,
       "norm_label": ".descriptor()"
     },
     {
@@ -7455,7 +7455,7 @@
       "source_location": "L134",
       "_origin": "ast",
       "id": "zpotify_api_fileinfo_descriptor",
-      "community": 609,
+      "community": 409,
       "norm_label": ".descriptor()"
     },
     {
@@ -7665,7 +7665,7 @@
       "source_location": "L257",
       "_origin": "ast",
       "id": "zpotify_api_batchdeletefiles_protoreflect",
-      "community": 609,
+      "community": 491,
       "norm_label": ".protoreflect()"
     },
     {
@@ -7675,7 +7675,7 @@
       "source_location": "L270",
       "_origin": "ast",
       "id": "zpotify_api_batchdeletefiles_descriptor",
-      "community": 609,
+      "community": 409,
       "norm_label": ".descriptor()"
     },
     {
@@ -7955,7 +7955,7 @@
       "source_location": "L439",
       "_origin": "ast",
       "id": "zpotify_api_getfile_response_descriptor",
-      "community": 609,
+      "community": 409,
       "norm_label": ".descriptor()"
     },
     {
@@ -8385,7 +8385,7 @@
       "source_location": "L711",
       "_origin": "ast",
       "id": "zpotify_api_batchdeletefiles_request_descriptor",
-      "community": 609,
+      "community": 409,
       "norm_label": ".descriptor()"
     },
     {
@@ -8465,7 +8465,7 @@
       "source_location": "L814",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_files_pb_file_zpotify_service_files_proto_rawdescgzip",
-      "community": 609,
+      "community": 409,
       "norm_label": "file_zpotify_service_files_proto_rawdescgzip()"
     },
     {
@@ -9875,7 +9875,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_notification_pb",
-      "community": 435,
+      "community": 258,
       "norm_label": "zpotify_service_notification.pb.go"
     },
     {
@@ -10185,7 +10185,7 @@
       "source_location": "L191",
       "_origin": "ast",
       "id": "zpotify_api_marknotificationread",
-      "community": 142,
+      "community": 129,
       "norm_label": "marknotificationread"
     },
     {
@@ -10195,7 +10195,7 @@
       "source_location": "L197",
       "_origin": "ast",
       "id": "zpotify_api_marknotificationread_reset",
-      "community": 142,
+      "community": 129,
       "norm_label": ".reset()"
     },
     {
@@ -10205,7 +10205,7 @@
       "source_location": "L204",
       "_origin": "ast",
       "id": "zpotify_api_marknotificationread_string",
-      "community": 142,
+      "community": 129,
       "norm_label": ".string()"
     },
     {
@@ -10215,7 +10215,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "zpotify_api_marknotificationread_protomessage",
-      "community": 142,
+      "community": 129,
       "norm_label": ".protomessage()"
     },
     {
@@ -10225,7 +10225,7 @@
       "source_location": "L210",
       "_origin": "ast",
       "id": "zpotify_api_marknotificationread_protoreflect",
-      "community": 448,
+      "community": 129,
       "norm_label": ".protoreflect()"
     },
     {
@@ -10235,7 +10235,7 @@
       "source_location": "L223",
       "_origin": "ast",
       "id": "zpotify_api_marknotificationread_descriptor",
-      "community": 446,
+      "community": 129,
       "norm_label": ".descriptor()"
     },
     {
@@ -10795,7 +10795,7 @@
       "source_location": "L563",
       "_origin": "ast",
       "id": "zpotify_api_consentnotification_response",
-      "community": 219,
+      "community": 142,
       "norm_label": "consentnotification_response"
     },
     {
@@ -10805,7 +10805,7 @@
       "source_location": "L569",
       "_origin": "ast",
       "id": "zpotify_api_consentnotification_response_reset",
-      "community": 219,
+      "community": 142,
       "norm_label": ".reset()"
     },
     {
@@ -10815,7 +10815,7 @@
       "source_location": "L576",
       "_origin": "ast",
       "id": "zpotify_api_consentnotification_response_string",
-      "community": 219,
+      "community": 142,
       "norm_label": ".string()"
     },
     {
@@ -10825,7 +10825,7 @@
       "source_location": "L580",
       "_origin": "ast",
       "id": "zpotify_api_consentnotification_response_protomessage",
-      "community": 219,
+      "community": 142,
       "norm_label": ".protomessage()"
     },
     {
@@ -10835,7 +10835,7 @@
       "source_location": "L582",
       "_origin": "ast",
       "id": "zpotify_api_consentnotification_response_protoreflect",
-      "community": 219,
+      "community": 448,
       "norm_label": ".protoreflect()"
     },
     {
@@ -10845,7 +10845,7 @@
       "source_location": "L595",
       "_origin": "ast",
       "id": "zpotify_api_consentnotification_response_descriptor",
-      "community": 219,
+      "community": 446,
       "norm_label": ".descriptor()"
     },
     {
@@ -10865,7 +10865,7 @@
       "source_location": "L688",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_notification_pb_init",
-      "community": 435,
+      "community": 258,
       "norm_label": "init()"
     },
     {
@@ -10875,7 +10875,7 @@
       "source_location": "L689",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_notification_pb_file_zpotify_service_notification_proto_init",
-      "community": 435,
+      "community": 258,
       "norm_label": "file_zpotify_service_notification_proto_init()"
     },
     {
@@ -11425,7 +11425,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb",
-      "community": 562,
+      "community": 208,
       "norm_label": "zpotify_service_playlist.pb.go"
     },
     {
@@ -11445,7 +11445,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb_go_messagestate",
-      "community": 454,
+      "community": 104,
       "norm_label": "messagestate"
     },
     {
@@ -11455,7 +11455,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb_go_unknownfields",
-      "community": 282,
+      "community": 454,
       "norm_label": "unknownfields"
     },
     {
@@ -11465,7 +11465,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb_go_sizecache",
-      "community": 616,
+      "community": 412,
       "norm_label": "sizecache"
     },
     {
@@ -11515,7 +11515,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb_go_message",
-      "community": 104,
+      "community": 282,
       "norm_label": "message"
     },
     {
@@ -11535,7 +11535,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "zpotify_api_deletesong",
-      "community": 454,
+      "community": 104,
       "norm_label": "deletesong"
     },
     {
@@ -11545,7 +11545,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "zpotify_api_deletesong_reset",
-      "community": 454,
+      "community": 104,
       "norm_label": ".reset()"
     },
     {
@@ -11555,7 +11555,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "zpotify_api_deletesong_string",
-      "community": 454,
+      "community": 104,
       "norm_label": ".string()"
     },
     {
@@ -11565,7 +11565,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "zpotify_api_deletesong_protomessage",
-      "community": 454,
+      "community": 104,
       "norm_label": ".protomessage()"
     },
     {
@@ -11575,7 +11575,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "zpotify_api_deletesong_protoreflect",
-      "community": 104,
+      "community": 282,
       "norm_label": ".protoreflect()"
     },
     {
@@ -11585,7 +11585,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "zpotify_api_deletesong_descriptor",
-      "community": 412,
+      "community": 533,
       "norm_label": ".descriptor()"
     },
     {
@@ -13115,7 +13115,7 @@
       "source_location": "L1043",
       "_origin": "ast",
       "id": "zpotify_api_changesongsorder_response",
-      "community": 282,
+      "community": 454,
       "norm_label": "changesongsorder_response"
     },
     {
@@ -13125,7 +13125,7 @@
       "source_location": "L1049",
       "_origin": "ast",
       "id": "zpotify_api_changesongsorder_response_reset",
-      "community": 282,
+      "community": 454,
       "norm_label": ".reset()"
     },
     {
@@ -13135,7 +13135,7 @@
       "source_location": "L1056",
       "_origin": "ast",
       "id": "zpotify_api_changesongsorder_response_string",
-      "community": 282,
+      "community": 454,
       "norm_label": ".string()"
     },
     {
@@ -13145,7 +13145,7 @@
       "source_location": "L1060",
       "_origin": "ast",
       "id": "zpotify_api_changesongsorder_response_protomessage",
-      "community": 282,
+      "community": 454,
       "norm_label": ".protomessage()"
     },
     {
@@ -13155,7 +13155,7 @@
       "source_location": "L1062",
       "_origin": "ast",
       "id": "zpotify_api_changesongsorder_response_protoreflect",
-      "community": 104,
+      "community": 282,
       "norm_label": ".protoreflect()"
     },
     {
@@ -13165,7 +13165,7 @@
       "source_location": "L1075",
       "_origin": "ast",
       "id": "zpotify_api_changesongsorder_response_descriptor",
-      "community": 412,
+      "community": 533,
       "norm_label": ".descriptor()"
     },
     {
@@ -13395,7 +13395,7 @@
       "source_location": "L1219",
       "_origin": "ast",
       "id": "zpotify_api_addsongstoplaylist_response",
-      "community": 616,
+      "community": 412,
       "norm_label": "addsongstoplaylist_response"
     },
     {
@@ -13405,7 +13405,7 @@
       "source_location": "L1225",
       "_origin": "ast",
       "id": "zpotify_api_addsongstoplaylist_response_reset",
-      "community": 616,
+      "community": 412,
       "norm_label": ".reset()"
     },
     {
@@ -13415,7 +13415,7 @@
       "source_location": "L1232",
       "_origin": "ast",
       "id": "zpotify_api_addsongstoplaylist_response_string",
-      "community": 616,
+      "community": 412,
       "norm_label": ".string()"
     },
     {
@@ -13425,7 +13425,7 @@
       "source_location": "L1236",
       "_origin": "ast",
       "id": "zpotify_api_addsongstoplaylist_response_protomessage",
-      "community": 616,
+      "community": 412,
       "norm_label": ".protomessage()"
     },
     {
@@ -13435,7 +13435,7 @@
       "source_location": "L1238",
       "_origin": "ast",
       "id": "zpotify_api_addsongstoplaylist_response_protoreflect",
-      "community": 104,
+      "community": 282,
       "norm_label": ".protoreflect()"
     },
     {
@@ -13445,7 +13445,7 @@
       "source_location": "L1251",
       "_origin": "ast",
       "id": "zpotify_api_addsongstoplaylist_response_descriptor",
-      "community": 412,
+      "community": 533,
       "norm_label": ".descriptor()"
     },
     {
@@ -13875,7 +13875,7 @@
       "source_location": "L1635",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb_file_zpotify_service_playlist_proto_rawdescgzip",
-      "community": 412,
+      "community": 533,
       "norm_label": "file_zpotify_service_playlist_proto_rawdescgzip()"
     },
     {
@@ -13885,7 +13885,7 @@
       "source_location": "L1719",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb_init",
-      "community": 562,
+      "community": 208,
       "norm_label": "init()"
     },
     {
@@ -13895,7 +13895,7 @@
       "source_location": "L1720",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb_file_zpotify_service_playlist_proto_init",
-      "community": 562,
+      "community": 208,
       "norm_label": "file_zpotify_service_playlist_proto_init()"
     },
     {
@@ -16715,7 +16715,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_user_pb",
-      "community": 141,
+      "community": 144,
       "norm_label": "zpotify_service_user.pb.go"
     },
     {
@@ -17125,7 +17125,7 @@
       "source_location": "L246",
       "_origin": "ast",
       "id": "zpotify_api_getusersettings_request",
-      "community": 141,
+      "community": 115,
       "norm_label": "getusersettings_request"
     },
     {
@@ -17135,7 +17135,7 @@
       "source_location": "L252",
       "_origin": "ast",
       "id": "zpotify_api_getusersettings_request_reset",
-      "community": 141,
+      "community": 115,
       "norm_label": ".reset()"
     },
     {
@@ -17145,7 +17145,7 @@
       "source_location": "L259",
       "_origin": "ast",
       "id": "zpotify_api_getusersettings_request_string",
-      "community": 141,
+      "community": 115,
       "norm_label": ".string()"
     },
     {
@@ -17155,7 +17155,7 @@
       "source_location": "L263",
       "_origin": "ast",
       "id": "zpotify_api_getusersettings_request_protomessage",
-      "community": 141,
+      "community": 115,
       "norm_label": ".protomessage()"
     },
     {
@@ -17165,7 +17165,7 @@
       "source_location": "L265",
       "_origin": "ast",
       "id": "zpotify_api_getusersettings_request_protoreflect",
-      "community": 141,
+      "community": 416,
       "norm_label": ".protoreflect()"
     },
     {
@@ -17175,7 +17175,7 @@
       "source_location": "L278",
       "_origin": "ast",
       "id": "zpotify_api_getusersettings_request_descriptor",
-      "community": 141,
+      "community": 417,
       "norm_label": ".descriptor()"
     },
     {
@@ -17185,7 +17185,7 @@
       "source_location": "L282",
       "_origin": "ast",
       "id": "zpotify_api_getusersettings_response",
-      "community": 115,
+      "community": 88,
       "norm_label": "getusersettings_response"
     },
     {
@@ -17195,7 +17195,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_user_pb_go_usersettings",
-      "community": 115,
+      "community": 88,
       "norm_label": "usersettings"
     },
     {
@@ -17205,7 +17205,7 @@
       "source_location": "L289",
       "_origin": "ast",
       "id": "zpotify_api_getusersettings_response_reset",
-      "community": 115,
+      "community": 88,
       "norm_label": ".reset()"
     },
     {
@@ -17215,7 +17215,7 @@
       "source_location": "L296",
       "_origin": "ast",
       "id": "zpotify_api_getusersettings_response_string",
-      "community": 115,
+      "community": 88,
       "norm_label": ".string()"
     },
     {
@@ -17225,7 +17225,7 @@
       "source_location": "L300",
       "_origin": "ast",
       "id": "zpotify_api_getusersettings_response_protomessage",
-      "community": 115,
+      "community": 88,
       "norm_label": ".protomessage()"
     },
     {
@@ -17235,7 +17235,7 @@
       "source_location": "L302",
       "_origin": "ast",
       "id": "zpotify_api_getusersettings_response_protoreflect",
-      "community": 416,
+      "community": 88,
       "norm_label": ".protoreflect()"
     },
     {
@@ -17245,7 +17245,7 @@
       "source_location": "L315",
       "_origin": "ast",
       "id": "zpotify_api_getusersettings_response_descriptor",
-      "community": 417,
+      "community": 88,
       "norm_label": ".descriptor()"
     },
     {
@@ -17255,7 +17255,7 @@
       "source_location": "L319",
       "_origin": "ast",
       "id": "zpotify_api_getusersettings_response_getsettings",
-      "community": 115,
+      "community": 88,
       "norm_label": ".getsettings()"
     },
     {
@@ -17275,7 +17275,7 @@
       "source_location": "L389",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_user_pb_init",
-      "community": 141,
+      "community": 144,
       "norm_label": "init()"
     },
     {
@@ -17285,7 +17285,7 @@
       "source_location": "L390",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_user_pb_file_zpotify_service_user_proto_init",
-      "community": 141,
+      "community": 144,
       "norm_label": "file_zpotify_service_user_proto_init()"
     },
     {
@@ -21045,7 +21045,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_domain_user",
-      "community": 88,
+      "community": 55,
       "norm_label": "user.go"
     },
     {
@@ -21055,7 +21055,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "domain_user",
-      "community": 88,
+      "community": 55,
       "norm_label": "user"
     },
     {
@@ -21065,7 +21065,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_domain_user_go_userpermissions",
-      "community": 88,
+      "community": 55,
       "norm_label": "userpermissions"
     },
     {
@@ -21075,7 +21075,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "domain_getuserfilter",
-      "community": 88,
+      "community": 55,
       "norm_label": "getuserfilter"
     },
     {
@@ -21105,7 +21105,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "domain_useruisettings",
-      "community": 88,
+      "community": 55,
       "norm_label": "useruisettings"
     },
     {
@@ -21115,7 +21115,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "domain_usersettings",
-      "community": 88,
+      "community": 55,
       "norm_label": "usersettings"
     },
     {
@@ -21125,7 +21125,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_domain_user_go_userhomesegment",
-      "community": 88,
+      "community": 55,
       "norm_label": "userhomesegment"
     },
     {
@@ -21135,7 +21135,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "domain_userpermissions",
-      "community": 88,
+      "community": 55,
       "norm_label": "userpermissions"
     },
     {
@@ -21145,7 +21145,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "domain_usersession",
-      "community": 88,
+      "community": 55,
       "norm_label": "usersession"
     },
     {
@@ -21155,7 +21155,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_domain_user_go_time",
-      "community": 88,
+      "community": 55,
       "norm_label": "time"
     },
     {
@@ -21165,7 +21165,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "domain_userhomesegment",
-      "community": 88,
+      "community": 55,
       "norm_label": "userhomesegment"
     },
     {
@@ -21175,7 +21175,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "domain_playlistsegment",
-      "community": 88,
+      "community": 55,
       "norm_label": "playlistsegment"
     },
     {
@@ -21185,7 +21185,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "internal_domain_user_defaultsegments",
-      "community": 88,
+      "community": 55,
       "norm_label": "defaultsegments()"
     },
     {
@@ -35735,7 +35735,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "pg_homestorage_listfeeddays",
-      "community": 31,
+      "community": 86,
       "norm_label": ".listfeeddays()"
     },
     {
@@ -35745,7 +35745,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_storage_pg_home_go_context",
-      "community": 31,
+      "community": 86,
       "norm_label": "context"
     },
     {
@@ -35755,7 +35755,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_storage_pg_home_go_time",
-      "community": 31,
+      "community": 86,
       "norm_label": "time"
     },
     {
@@ -35765,7 +35765,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "pg_homestorage_listplaylistsbydays",
-      "community": 31,
+      "community": 86,
       "norm_label": ".listplaylistsbydays()"
     },
     {
@@ -35775,7 +35775,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_storage_pg_home_go_playlist",
-      "community": 31,
+      "community": 86,
       "norm_label": "playlist"
     },
     {
@@ -35785,7 +35785,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "pg_homestorage_listsongsbydays",
-      "community": 31,
+      "community": 86,
       "norm_label": ".listsongsbydays()"
     },
     {
@@ -35795,7 +35795,7 @@
       "source_location": "L216",
       "_origin": "ast",
       "id": "pg_homestorage_listartistsbydays",
-      "community": 31,
+      "community": 86,
       "norm_label": ".listartistsbydays()"
     },
     {
@@ -37815,7 +37815,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_storage_pg_user_settings",
-      "community": 88,
+      "community": 31,
       "norm_label": "user_settings.go"
     },
     {
@@ -37825,7 +37825,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "pg_usersettingsstorage",
-      "community": 88,
+      "community": 31,
       "norm_label": "usersettingsstorage"
     },
     {
@@ -37835,7 +37835,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_storage_pg_user_settings_go_querier",
-      "community": 88,
+      "community": 31,
       "norm_label": "querier"
     },
     {
@@ -37845,7 +37845,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "internal_storage_pg_user_settings_newusersettingsstorage",
-      "community": 88,
+      "community": 31,
       "norm_label": "newusersettingsstorage()"
     },
     {
@@ -37855,7 +37855,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "pg_usersettingsstorage_gethomesegments",
-      "community": 88,
+      "community": 31,
       "norm_label": ".gethomesegments()"
     },
     {
@@ -37865,7 +37865,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_storage_pg_user_settings_go_context",
-      "community": 88,
+      "community": 31,
       "norm_label": "context"
     },
     {
@@ -37875,7 +37875,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_storage_pg_user_settings_go_userhomesegment",
-      "community": 88,
+      "community": 31,
       "norm_label": "userhomesegment"
     },
     {
@@ -37885,7 +37885,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "pg_usersettingsstorage_getuisettings",
-      "community": 88,
+      "community": 55,
       "norm_label": ".getuisettings()"
     },
     {
@@ -37895,7 +37895,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "pg_usersettingsstorage_sethomesegment",
-      "community": 88,
+      "community": 31,
       "norm_label": ".sethomesegment()"
     },
     {
@@ -37905,7 +37905,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "pg_usersettingsstorage_withtx",
-      "community": 88,
+      "community": 31,
       "norm_label": ".withtx()"
     },
     {
@@ -37915,7 +37915,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_storage_pg_user_settings_go_tx",
-      "community": 88,
+      "community": 31,
       "norm_label": "tx"
     },
     {
@@ -43735,7 +43735,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_utils_closer",
-      "community": 31,
+      "community": 86,
       "norm_label": "closer.go"
     },
     {
@@ -43745,7 +43745,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "internal_utils_closer_closewithlog",
-      "community": 31,
+      "community": 86,
       "norm_label": "closewithlog()"
     },
     {
@@ -43755,7 +43755,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "closer",
-      "community": 31,
+      "community": 86,
       "norm_label": "closer"
     },
     {
@@ -45755,7 +45755,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_app_api_zpotify_zpotify_service_notification_pb_notification",
-      "community": 66,
+      "community": 15,
       "norm_label": "notification"
     },
     {
@@ -50005,7 +50005,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_notification_notificationdialog_notificationdialogprops",
-      "community": 66,
+      "community": 15,
       "norm_label": "notificationdialogprops"
     },
     {
@@ -50255,7 +50255,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_entities_notification_usenotifications",
-      "community": 66,
+      "community": 15,
       "norm_label": "usenotifications.ts"
     },
     {
@@ -50265,7 +50265,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_entities_notification_usenotifications_notificationsstate",
-      "community": 66,
+      "community": 15,
       "norm_label": "notificationsstate"
     },
     {
@@ -51485,7 +51485,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_pages_segments_sidebarsegment_widget_notificationbellwidget_components_notificationrow_notificationrow",
-      "community": 66,
+      "community": 15,
       "norm_label": "notificationrow.tsx"
     },
     {
@@ -51495,7 +51495,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_pages_segments_sidebarsegment_widget_notificationbellwidget_components_notificationrow_notificationrow_formatnotificationdate",
-      "community": 66,
+      "community": 15,
       "norm_label": "formatnotificationdate()"
     },
     {
@@ -51505,7 +51505,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_pages_segments_sidebarsegment_widget_notificationbellwidget_components_notificationrow_notificationrow_notificationrowprops",
-      "community": 66,
+      "community": 15,
       "norm_label": "notificationrowprops"
     },
     {
@@ -51515,7 +51515,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_pages_segments_sidebarsegment_widget_notificationbellwidget_components_notificationrow_notificationrow_notificationrow",
-      "community": 66,
+      "community": 15,
       "norm_label": "notificationrow()"
     },
     {
@@ -54669,64 +54669,64 @@
       "norm_label": "skeletonloadscreen()"
     },
     {
-      "label": "ArtistInfoSegment.tsx",
+      "label": "ArtistHeroSegment.tsx",
       "file_type": "code",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
+      "id": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
       "community": 295,
-      "norm_label": "artistinfosegment.tsx"
+      "norm_label": "artistherosegment.tsx"
     },
     {
-      "label": "ArtistInfoSegmentProps",
+      "label": "ArtistHeroSegmentProps",
       "file_type": "code",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L9",
       "_origin": "ast",
-      "id": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment_artistinfosegmentprops",
+      "id": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment_artistherosegmentprops",
       "community": 295,
-      "norm_label": "artistinfosegmentprops"
+      "norm_label": "artistherosegmentprops"
     },
     {
-      "label": "ArtistInfoSegment()",
+      "label": "ArtistHeroSegment()",
       "file_type": "code",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L17",
       "_origin": "ast",
-      "id": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment_artistinfosegment",
+      "id": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment_artistherosegment",
       "community": 295,
-      "norm_label": "artistinfosegment()"
+      "norm_label": "artistherosegment()"
     },
     {
-      "label": "useArtistInfoSegment.ts",
+      "label": "useArtistHeroSegment.ts",
       "file_type": "code",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "id": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "community": 295,
-      "norm_label": "useartistinfosegment.ts"
+      "norm_label": "useartistherosegment.ts"
     },
     {
-      "label": "UseArtistInfoSegmentParams",
+      "label": "UseArtistHeroSegmentParams",
       "file_type": "code",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L12",
       "_origin": "ast",
-      "id": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment_useartistinfosegmentparams",
+      "id": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment_useartistherosegmentparams",
       "community": 295,
-      "norm_label": "useartistinfosegmentparams"
+      "norm_label": "useartistherosegmentparams"
     },
     {
-      "label": "useArtistInfoSegment()",
+      "label": "useArtistHeroSegment()",
       "file_type": "code",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L19",
       "_origin": "ast",
-      "id": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment_useartistinfosegment",
+      "id": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment_useartistherosegment",
       "community": 295,
-      "norm_label": "useartistinfosegment()"
+      "norm_label": "useartistherosegment()"
     },
     {
       "label": "ArtistSongsRow.tsx",
@@ -61362,15 +61362,6 @@
       "id": "pkg_docs_swaggers_zpotify_service_auth_swagger_json_swaggers_zpotify_service_auth_swagger_definitions_zpotify_apilogoutrequest"
     },
     {
-      "label": "type",
-      "file_type": "code",
-      "source_file": "pkg/docs/swaggers/zpotify_service_auth.swagger.json",
-      "source_location": "L304",
-      "community": 2365,
-      "norm_label": "type",
-      "id": "pkg_docs_swaggers_zpotify_service_auth_swagger_json_swaggers_zpotify_service_auth_swagger_zpotify_apilogoutrequest_type"
-    },
-    {
       "label": "zpotify_apiLogoutResponse",
       "file_type": "code",
       "source_file": "pkg/docs/swaggers/zpotify_service_auth.swagger.json",
@@ -64161,15 +64152,6 @@
       "id": "pkg_docs_swaggers_zpotify_service_artists_swagger_properties_onlyliked"
     },
     {
-      "label": "type",
-      "file_type": "code",
-      "source_file": "pkg/docs/swaggers/zpotify_service_artists.swagger.json",
-      "source_location": "L173",
-      "community": 2232,
-      "norm_label": "type",
-      "id": "pkg_docs_swaggers_zpotify_service_artists_swagger_json_swaggers_zpotify_service_artists_swagger_code_type"
-    },
-    {
       "label": "details",
       "file_type": "code",
       "source_file": "pkg/docs/swaggers/zpotify_service_artists.swagger.json",
@@ -66366,15 +66348,6 @@
       "id": "pkg_docs_swaggers_zpotify_service_files_swagger_json_swaggers_zpotify_service_files_swagger_properties_message"
     },
     {
-      "label": "type",
-      "file_type": "code",
-      "source_file": "pkg/docs/swaggers/zpotify_service_files.swagger.json",
-      "source_location": "L152",
-      "community": 2444,
-      "norm_label": "type",
-      "id": "pkg_docs_swaggers_zpotify_service_files_swagger_json_swaggers_zpotify_service_files_swagger_details_type"
-    },
-    {
       "label": "zpotify_apiCheckFilesByHashesRequest",
       "file_type": "code",
       "source_file": "pkg/docs/swaggers/zpotify_service_files.swagger.json",
@@ -67122,15 +67095,6 @@
       "id": "pkg_docs_docs_swaggers_zpotify_api_service_swagger_json_swaggers_zpotify_api_service_swagger_definitions_zpotify_apigetplaylistresponse"
     },
     {
-      "label": "type",
-      "file_type": "code",
-      "source_file": "pkg/docs/docs/swaggers/zpotify_api_service.swagger.json",
-      "source_location": "L287",
-      "community": 1024,
-      "norm_label": "type",
-      "id": "pkg_docs_docs_swaggers_zpotify_api_service_swagger_json_swaggers_zpotify_api_service_swagger_zpotify_apigetplaylistresponse_type"
-    },
-    {
       "label": "zpotify_apiGetUserSettingsResponse",
       "file_type": "code",
       "source_file": "pkg/docs/docs/swaggers/zpotify_api_service.swagger.json",
@@ -67687,15 +67651,6 @@
       "community": 1251,
       "norm_label": "type",
       "id": "pkg_docs_docs_swaggers_zpotify_auth_service_swagger_json_swaggers_zpotify_auth_service_swagger_message_type"
-    },
-    {
-      "label": "type",
-      "file_type": "code",
-      "source_file": "pkg/docs/docs/swaggers/zpotify_auth_service.swagger.json",
-      "source_location": "L181",
-      "community": 1249,
-      "norm_label": "type",
-      "id": "pkg_docs_docs_swaggers_zpotify_auth_service_swagger_json_swaggers_zpotify_auth_service_swagger_items_type"
     },
     {
       "label": "$ref",
@@ -68526,15 +68481,6 @@
       "id": "pkg_docs_docs_swaggers_zpotify_api_swagger_json_swaggers_zpotify_api_swagger_zpotify_apiauthrequest_type"
     },
     {
-      "label": "properties",
-      "file_type": "code",
-      "source_file": "pkg/docs/docs/swaggers/zpotify_api.swagger.json",
-      "source_location": "L401",
-      "community": 1186,
-      "norm_label": "properties",
-      "id": "pkg_docs_docs_swaggers_zpotify_api_swagger_json_swaggers_zpotify_api_swagger_zpotify_apiauthrequest_properties"
-    },
-    {
       "label": "isUsingTelegram",
       "file_type": "code",
       "source_file": "pkg/docs/docs/swaggers/zpotify_api.swagger.json",
@@ -69039,15 +68985,6 @@
       "id": "pkg_docs_docs_swaggers_zpotify_api_swagger_json_swaggers_zpotify_api_swagger_zpotify_apiusersettings_properties"
     },
     {
-      "label": "type",
-      "file_type": "code",
-      "source_file": "pkg/docs/docs/swaggers/zpotify_api.swagger.json",
-      "source_location": "L633",
-      "community": 1097,
-      "norm_label": "type",
-      "id": "pkg_docs_docs_swaggers_zpotify_api_swagger_json_swaggers_zpotify_api_swagger_homesegments_type"
-    },
-    {
       "label": "ui",
       "file_type": "code",
       "source_file": "pkg/docs/docs/swaggers/zpotify_api.swagger.json",
@@ -69498,15 +69435,6 @@
       "id": "pkg_docs_docs_swaggers_zpotify_service_user_swagger_json_swaggers_zpotify_service_user_swagger_properties_locale"
     },
     {
-      "label": "type",
-      "file_type": "code",
-      "source_file": "pkg/docs/docs/swaggers/zpotify_service_user.swagger.json",
-      "source_location": "L155",
-      "community": 438,
-      "norm_label": "type",
-      "id": "pkg_docs_docs_swaggers_zpotify_service_user_swagger_json_swaggers_zpotify_service_user_swagger_locale_type"
-    },
-    {
       "label": "ui",
       "file_type": "code",
       "source_file": "pkg/docs/docs/swaggers/zpotify_service_user.swagger.json",
@@ -69892,15 +69820,6 @@
       "community": 1542,
       "norm_label": "zpotify_apideletesongrequest",
       "id": "pkg_docs_docs_swaggers_zpotify_service_playlist_swagger_json_swaggers_zpotify_service_playlist_swagger_definitions_zpotify_apideletesongrequest"
-    },
-    {
-      "label": "type",
-      "file_type": "code",
-      "source_file": "pkg/docs/docs/swaggers/zpotify_service_playlist.swagger.json",
-      "source_location": "L291",
-      "community": 1620,
-      "norm_label": "type",
-      "id": "pkg_docs_docs_swaggers_zpotify_service_playlist_swagger_json_swaggers_zpotify_service_playlist_swagger_zpotify_apideletesongrequest_type"
     },
     {
       "label": "zpotify_apiDeleteSongResponse",
@@ -70486,15 +70405,6 @@
       "community": 189,
       "norm_label": "zpotify_apisongbase",
       "id": "pkg_docs_docs_swaggers_zpotify_service_song_swagger_json_swaggers_zpotify_service_song_swagger_definitions_zpotify_apisongbase"
-    },
-    {
-      "label": "type",
-      "file_type": "code",
-      "source_file": "pkg/docs/docs/swaggers/zpotify_service_song.swagger.json",
-      "source_location": "L191",
-      "community": 1691,
-      "norm_label": "type",
-      "id": "pkg_docs_docs_swaggers_zpotify_service_song_swagger_json_swaggers_zpotify_service_song_swagger_zpotify_apisongbase_type"
     },
     {
       "label": "durationSec",
@@ -71366,7 +71276,7 @@
       "contributor": null,
       "community": 374,
       "norm_label": "runtime application config",
-      "id": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml"
+      "id": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml"
     },
     {
       "label": "Application Config Template",
@@ -156117,10 +156027,10 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L2",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
       "target": "pkg_client_zpotifyui_src_app_api_zpotify_index",
       "confidence_score": 1.0
     },
@@ -156128,10 +156038,10 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L4",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_app_api_zpotify_index",
       "confidence_score": 1.0
     },
@@ -157705,10 +157615,10 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L2",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
       "target": "pkg_client_zpotifyui_src_app_api_zpotify_zpotify_service_artists_pb_artist",
       "confidence_score": 1.0
     },
@@ -157716,10 +157626,10 @@
       "relation": "references",
       "context": "field",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment_artistinfosegmentprops",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment_artistherosegmentprops",
       "target": "pkg_client_zpotifyui_src_app_api_zpotify_zpotify_service_artists_pb_artist",
       "confidence_score": 1.0
     },
@@ -157727,10 +157637,10 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L4",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_app_api_zpotify_zpotify_service_artists_pb_artist",
       "confidence_score": 1.0
     },
@@ -157738,10 +157648,10 @@
       "relation": "references",
       "context": "field",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L13",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment_useartistinfosegmentparams",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment_useartistherosegmentparams",
       "target": "pkg_client_zpotifyui_src_app_api_zpotify_zpotify_service_artists_pb_artist",
       "confidence_score": 1.0
     },
@@ -157826,10 +157736,10 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L4",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_app_api_zpotify_zpotify_service_artists_pb_getartistpageresponse",
       "confidence_score": 1.0
     },
@@ -165971,10 +165881,10 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L5",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
       "target": "pkg_client_zpotifyui_src_components_editcontrols_editcontrols",
       "confidence_score": 1.0
     },
@@ -165982,10 +165892,10 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L6",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_components_editcontrols_editcontrols",
       "confidence_score": 1.0
     },
@@ -166004,10 +165914,10 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L6",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_components_editcontrols_editcontrols_editcontrolsprops",
       "confidence_score": 1.0
     },
@@ -166015,10 +165925,10 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L5",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
       "target": "pkg_client_zpotifyui_src_components_editcontrols_editcontrols_editcontrols",
       "confidence_score": 1.0
     },
@@ -166079,10 +165989,10 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L4",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
       "target": "pkg_client_zpotifyui_src_components_editablecoverwithfallback_editablecoverwithfallback",
       "confidence_score": 1.0
     },
@@ -166090,10 +166000,10 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L5",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_components_editablecoverwithfallback_editablecoverwithfallback",
       "confidence_score": 1.0
     },
@@ -166123,10 +166033,10 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L5",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_components_editablecoverwithfallback_editablecoverwithfallback_editablecoverwithfallbackprops",
       "confidence_score": 1.0
     },
@@ -176295,10 +176205,10 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L8",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_shared_api_artistsservice",
       "confidence_score": 1.0
     },
@@ -176470,10 +176380,10 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L8",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_shared_api_artistsservice_artistsservice",
       "confidence_score": 1.0
     },
@@ -180556,10 +180466,10 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L10",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_shared_lib_toaster_toasterz",
       "confidence_score": 1.0
     },
@@ -180754,10 +180664,10 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L10",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_shared_lib_toaster_toasterz_usetoaster",
       "confidence_score": 1.0
     },
@@ -180766,10 +180676,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L23",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_shared_lib_toaster_toasterz_usetoaster"
     },
     {
@@ -181125,10 +181035,10 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L9",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_shared_lib_useeagerfileupload",
       "confidence_score": 1.0
     },
@@ -181147,10 +181057,10 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L9",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_shared_lib_useeagerfileupload_useeagerfileupload",
       "confidence_score": 1.0
     },
@@ -181159,10 +181069,10 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L28",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_shared_lib_useeagerfileupload_useeagerfileupload"
     },
     {
@@ -181994,10 +181904,10 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L3",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
       "target": "pkg_client_zpotifyui_src_shared_ui_backbutton",
       "confidence_score": 1.0
     },
@@ -182027,10 +181937,10 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L3",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
       "target": "pkg_client_zpotifyui_src_shared_ui_backbutton_backbutton",
       "confidence_score": 1.0
     },
@@ -182633,7 +182543,7 @@
       "source_location": "L11",
       "weight": 1.0,
       "source": "pkg_client_zpotifyui_src_widgets_artistscreen_artistscreenwidget",
-      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
+      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
       "confidence_score": 1.0
     },
     {
@@ -182644,7 +182554,7 @@
       "source_location": "L11",
       "weight": 1.0,
       "source": "pkg_client_zpotifyui_src_widgets_artistscreen_artistscreenwidget",
-      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment_artistinfosegment",
+      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment_artistherosegment",
       "confidence_score": 1.0
     },
     {
@@ -182748,10 +182658,10 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
       "target": "pkg_client_zpotifyui_src_widgets_artistscreen_components_editableartistname_editableartistname",
       "confidence_score": 1.0
     },
@@ -182759,10 +182669,10 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L7",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_widgets_artistscreen_components_editableartistname_editableartistname",
       "confidence_score": 1.0
     },
@@ -182770,10 +182680,10 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L7",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "target": "pkg_client_zpotifyui_src_widgets_artistscreen_components_editableartistname_editableartistname_editableartistnameprops",
       "confidence_score": 1.0
     },
@@ -182781,10 +182691,10 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L6",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
       "target": "pkg_client_zpotifyui_src_widgets_artistscreen_components_editableartistname_editableartistname_editableartistname",
       "confidence_score": 1.0
     },
@@ -182811,43 +182721,43 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L17",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
-      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment_artistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
+      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment_artistherosegment",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L9",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
-      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment_artistinfosegmentprops",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
+      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment_artistherosegmentprops",
       "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
-      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
+      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
       "confidence_score": 1.0
     },
     {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment",
-      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment",
+      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment_useartistherosegment",
       "confidence_score": 1.0
     },
     {
@@ -182855,30 +182765,30 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx",
       "source_location": "L19",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_artistinfosegment_artistinfosegment",
-      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment_useartistinfosegment"
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_artistherosegment_artistherosegment",
+      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment_useartistherosegment"
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L19",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
-      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment_useartistinfosegment",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
+      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment_useartistherosegment",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts",
+      "source_file": "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts",
       "source_location": "L12",
       "weight": 1.0,
-      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment",
-      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistinfosegment_useartistinfosegment_useartistinfosegmentparams",
+      "source": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment",
+      "target": "pkg_client_zpotifyui_src_widgets_artistscreen_segments_artistherosegment_useartistherosegment_useartistherosegmentparams",
       "confidence_score": 1.0
     },
     {
@@ -188511,7 +188421,7 @@
       "source_location": null,
       "weight": 0.75,
       "source": "docker_compose_yaml",
-      "target": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml"
+      "target": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml"
     },
     {
       "relation": "implements",
@@ -188551,7 +188461,7 @@
       "source_location": null,
       "weight": 0.75,
       "source": "verv_resources_yaml",
-      "target": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml"
+      "target": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml"
     },
     {
       "relation": "references",
@@ -188580,7 +188490,7 @@
       "source_file": "config/config.yaml",
       "source_location": null,
       "weight": 0.85,
-      "source": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml",
+      "source": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml",
       "target": "config_config_template_yaml"
     },
     {
@@ -188736,5 +188646,5 @@
       "source_file": "pkg/web/ZpotifyUI/src/assets/icons/github.svg"
     }
   ],
-  "built_at_commit": "eea00271724f6b10b077c01f28c2ede505946165"
+  "built_at_commit": "0b54373d8352178ce13e08db43cc6ebe0591de1b"
 }
