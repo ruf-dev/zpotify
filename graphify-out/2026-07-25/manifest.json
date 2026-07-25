@@ -3420,13 +3420,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/ArtistScreenWidget.tsx": {
-    "mtime": 1784966365.8571022,
-    "ast_hash": "26c940ec8313dd16456bb11267cc71f1",
+    "mtime": 1784969235.930302,
+    "ast_hash": "04a7a78e5170362a9e1782ecae7b15ae",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/screens/SkeletonLoadScreen/SkeletonLoadScreen.tsx": {
-    "mtime": 1784966386.4719143,
-    "ast_hash": "7db1e2138756e9473f544a66ee79c665",
+    "mtime": 1784969283.2365918,
+    "ast_hash": "25a246fefd951277001ad8d2ca0959e9",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/components/EditableArtistName/EditableArtistName.tsx": {
@@ -3435,23 +3435,23 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/screens/NotFoundScreen/NotFoundScreen.tsx": {
-    "mtime": 1784966387.7077599,
-    "ast_hash": "f98e4bb6b978e1063724086b798c3760",
-    "semantic_hash": ""
-  },
-  "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/ArtistInfoSegment.tsx": {
-    "mtime": 1784966437.2288659,
-    "ast_hash": "ee0a7dcecfcf6b0a1718f8728998185d",
-    "semantic_hash": ""
-  },
-  "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistInfoSegment/useArtistInfoSegment.ts": {
-    "mtime": 1784966422.9549205,
-    "ast_hash": "5998e3df835a3a7338a85135cfc89404",
+    "mtime": 1784969287.5748887,
+    "ast_hash": "0adb37d57765a5f4753181fbedfee1c5",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/widgets/ArtistSongsRow/ArtistSongsRow.tsx": {
     "mtime": 1784966505.2346199,
     "ast_hash": "6f2b001d261e6db15187a9f28d7453ed",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx": {
+    "mtime": 1784969209.019755,
+    "ast_hash": "8f7c7a73264e686a9c4876cec7d280f0",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts": {
+    "mtime": 1784969225.484571,
+    "ast_hash": "d006998e2a144abdadd9865ae84d669d",
     "semantic_hash": ""
   }
 }
