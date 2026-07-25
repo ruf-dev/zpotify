@@ -57,7 +57,7 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
         const first = queueTracks[0];
         if (!first) return;
         audioPlayer.setQueue(queueTracks, 0, queueSourceId);
-        audioPlayer.setSongInfo(first.info.title, first.info.artist, first.info.cover);
+        audioPlayer.setSongInfo(first.info.title, first.info.artist, first.info.cover, first.info.artists);
         audioPlayer.play(first.filePath);
     }
 
@@ -80,7 +80,7 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
         const target = queueTracks[idx];
         if (!target) return;
         audioPlayer.setQueue(queueTracks, idx, queueSourceId);
-        audioPlayer.setSongInfo(target.info.title, target.info.artist, target.info.cover);
+        audioPlayer.setSongInfo(target.info.title, target.info.artist, target.info.cover, target.info.artists);
         audioPlayer.play(target.filePath);
     }
 

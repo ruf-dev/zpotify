@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { BellIcon } from '@/assets/icons/BellIcon.tsx';
-import NotificationRow from '@/pages/segments/SidebarSegment/Widget/NotificationBellWidget/components/NotificationRow/NotificationRow';
-import cls from '@/pages/segments/SidebarSegment/Widget/NotificationBellWidget/NotificationBellWidget.module.css';
+import NotificationRow from '@/widgets/NotificationBell/components/NotificationRow/NotificationRow';
+import cls from '@/widgets/NotificationBell/NotificationBellWidget.module.css';
 import useNotifications from '@/entities/notification/useNotifications.ts';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import NotificationDialog from '@/dialogs/Notification/NotificationDialog';
@@ -12,19 +12,21 @@ import type { Notification } from '@/app/api/zpotify';
 const LIST_LIMIT = 20;
 
 export default function NotificationBellWidget() {
-    const [isOpen, setIsOpen] = useState(false);
     const [hasLoadedList, setHasLoadedList] = useState(false);
     const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null);
 
     const bellRef = useRef<HTMLDivElement>(null);
     const panelRef = useRef<HTMLDivElement>(null);
 
+    const isPanelOpen = useNotifications((s) => s.isPanelOpen);
     const unreadCount = useNotifications((s) => s.unreadCount);
     const notifications = useNotifications((s) => s.notifications);
     const isLoading = useNotifications((s) => s.isLoading);
     const fetchSummary = useNotifications((s) => s.fetchSummary);
     const fetchList = useNotifications((s) => s.fetchList);
     const markRead = useNotifications((s) => s.markRead);
+    const togglePanel = useNotifications((s) => s.togglePanel);
+    const closePanel = useNotifications((s) => s.closePanel);
 
     const { OpenDialog } = useDialog();
 
@@ -36,28 +38,26 @@ export default function NotificationBellWidget() {
         function handleClickOutside(event: MouseEvent) {
             const target = event.target as Node;
             if (bellRef.current?.contains(target)) return;
-            if (!panelRef.current?.contains(target)) setIsOpen(false);
+            if (!panelRef.current?.contains(target)) closePanel();
         }
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+    }, [closePanel]);
 
-    function handleToggle() {
-        const nextIsOpen = !isOpen;
-        setIsOpen(nextIsOpen);
+    useEffect(() => {
+        if (!isPanelOpen) return;
 
-        if (nextIsOpen) {
-            setAnchorRect(bellRef.current?.getBoundingClientRect() ?? null);
-            if (!hasLoadedList) {
-                setHasLoadedList(true);
-                fetchList({ limit: String(LIST_LIMIT), offset: '0' }).catch(() => {});
-            }
+        setAnchorRect(bellRef.current?.getBoundingClientRect() ?? null);
+
+        if (!hasLoadedList) {
+            setHasLoadedList(true);
+            fetchList({ limit: String(LIST_LIMIT), offset: '0' }).catch(() => {});
         }
-    }
+    }, [isPanelOpen, hasLoadedList, fetchList]);
 
     function handleRowClick(notification: Notification) {
-        setIsOpen(false);
+        closePanel();
         if (notification.id && !notification.isRead) {
             markRead(notification.id).catch(() => {});
         }
@@ -65,11 +65,11 @@ export default function NotificationBellWidget() {
     }
 
     return (
-        <div ref={bellRef} className={cls.BellButtonContainer} onClick={handleToggle}>
+        <div ref={bellRef} className={cls.BellButtonContainer} onClick={togglePanel}>
             <BellIcon />
             {unreadCount > 0 && <span className={cls.UnreadBadge} />}
 
-            {isOpen &&
+            {isPanelOpen &&
                 anchorRect &&
                 createPortal(
                     <div
@@ -77,8 +77,8 @@ export default function NotificationBellWidget() {
                         className={cls.DropdownPanel}
                         style={{
                             position: 'fixed',
-                            bottom: window.innerHeight - anchorRect.top + 8,
-                            left: anchorRect.left,
+                            top: anchorRect.bottom + 8,
+                            right: window.innerWidth - anchorRect.right,
                         }}
                     >
                         <div className={cls.PanelHeader}>

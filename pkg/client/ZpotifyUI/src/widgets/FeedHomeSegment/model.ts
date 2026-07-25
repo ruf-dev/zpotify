@@ -1,9 +1,14 @@
 import type { LibraryItem } from '@/widgets/PlaylistsLibrarySegment/model.ts';
 
+export type FeedSongArtist = {
+    uuid?: string;
+    name: string;
+};
+
 export type FeedSongItem = {
     id: string;
     title: string;
-    artistNames: string;
+    artists: FeedSongArtist[];
     coverUrl?: string;
     durationSec: number;
 };

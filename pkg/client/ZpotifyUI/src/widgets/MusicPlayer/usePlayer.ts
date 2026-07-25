@@ -6,9 +6,15 @@ import { cacheAudio, getCachedAudio, getTrackUrl } from '@/shared/lib/audioCache
 import { useAudioSettings } from '@/entities/audio-settings/useAudioSettings.ts';
 import { useAudioCacheStore } from '@/shared/model/audioCacheStore.ts';
 
+export interface ArtistNamePart {
+    uuid?: string;
+    name: string;
+}
+
 export interface TrackInfo {
     title: string | null;
     artist: string | null;
+    artists: ArtistNamePart[];
     cover: string | null;
 }
 
@@ -34,8 +40,14 @@ export interface AudioPlayer {
     trackPath: string | null;
     songTitle: string | null;
     songArtist: string | null;
+    songArtists: ArtistNamePart[];
     songCover: string | null;
-    setSongInfo: (title: string | null, artist: string | null, cover?: string | null) => void;
+    setSongInfo: (
+        title: string | null,
+        artist: string | null,
+        cover?: string | null,
+        artists?: ArtistNamePart[],
+    ) => void;
 
     progress: number;
     setProgress: (percent: number) => void;
@@ -63,6 +75,7 @@ interface AudioStoreState {
 
     songTitle: string | null;
     songArtist: string | null;
+    songArtists: ArtistNamePart[];
     songCover: string | null;
 
     progress: number;
@@ -85,6 +98,7 @@ const useAudioStore = create<AudioStoreState>()(
             isMuted: false,
             songTitle: null,
             songArtist: null,
+            songArtists: [],
             songCover: null,
             progress: 0,
             currentTime: 0,
@@ -100,6 +114,7 @@ const useAudioStore = create<AudioStoreState>()(
                 trackPath: state.trackPath,
                 songTitle: state.songTitle,
                 songArtist: state.songArtist,
+                songArtists: state.songArtists,
                 songCover: state.songCover,
                 progress: state.progress,
                 volume: state.volume,
@@ -243,12 +258,21 @@ class AudioPlayerImpl implements AudioPlayer {
         return useAudioStore.getState().songArtist;
     }
 
+    get songArtists() {
+        return useAudioStore.getState().songArtists;
+    }
+
     get songCover() {
         return useAudioStore.getState().songCover;
     }
 
-    setSongInfo(title: string | null, artist: string | null, cover?: string | null): void {
-        useAudioStore.setState({ songTitle: title, songArtist: artist, songCover: cover ?? null });
+    setSongInfo(title: string | null, artist: string | null, cover?: string | null, artists?: ArtistNamePart[]): void {
+        useAudioStore.setState({
+            songTitle: title,
+            songArtist: artist,
+            songArtists: artists ?? [],
+            songCover: cover ?? null,
+        });
     }
 
     get progress() {
@@ -387,7 +411,7 @@ class AudioPlayerImpl implements AudioPlayer {
         if (!target) return;
 
         useAudioStore.setState({ queueIndex: index });
-        this.setSongInfo(target.info.title, target.info.artist, target.info.cover);
+        this.setSongInfo(target.info.title, target.info.artist, target.info.cover, target.info.artists);
         this.play(target.filePath);
     }
 

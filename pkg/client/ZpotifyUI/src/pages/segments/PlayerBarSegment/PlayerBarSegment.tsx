@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer';
@@ -7,6 +8,7 @@ import cls from '@/pages/segments/PlayerBarSegment/PlayerBarSegment.module.css';
 import VolumeControl from '@/pages/segments/PlayerBarSegment/components/VolumeControl/VolumeControl';
 import { useIsSongCached } from '@/shared/model/audioCacheStore.ts';
 import CachedIndicator from '@/shared/ui/CachedIndicator.tsx';
+import { artistPath } from '@/app/routing/paths.ts';
 
 const COVER_COLORS: readonly string[] = [
     'rgba(217,0,127,0.9)',
@@ -34,9 +36,11 @@ function formatTime(secs: number): string {
 
 export default function PlayerBarSegment() {
     const audioPlayer = useAudioPlayer();
+    const navigate = useNavigate();
     const progressTrackRef = useRef<HTMLDivElement>(null);
 
-    const { isPlaying, songTitle, songArtist, songCover, progress, currentTime, duration, trackPath } = audioPlayer;
+    const { isPlaying, songTitle, songArtist, songArtists, songCover, progress, currentTime, duration, trackPath } =
+        audioPlayer;
     const coverColor = computeCoverColor(songTitle);
     const isCached = useIsSongCached(trackPath);
 
@@ -46,6 +50,10 @@ export default function PlayerBarSegment() {
         const rect = el.getBoundingClientRect();
         const percent = ((e.clientX - rect.left) / rect.width) * 100;
         audioPlayer.setProgress(Math.max(0, Math.min(100, percent)));
+    }
+
+    function handleArtistClick(artistUuid?: string) {
+        if (artistUuid) navigate(artistPath(artistUuid));
     }
 
     function handleTogglePlay() {
@@ -80,7 +88,24 @@ export default function PlayerBarSegment() {
                         {songTitle ?? 'nothing playing'}
                         {isCached && <CachedIndicator />}
                     </span>
-                    {songArtist && <span className={cls.SongArtist}>{songArtist}</span>}
+                    {songArtists.length > 0 ? (
+                        <span className={cls.SongArtist}>
+                            {songArtists.map((a, idx) => (
+                                <span key={a.uuid ?? `${a.name}-${idx}`}>
+                                    {idx > 0 && ', '}
+                                    {a.uuid ? (
+                                        <span className={cls.ArtistLink} onClick={() => handleArtistClick(a.uuid)}>
+                                            {a.name}
+                                        </span>
+                                    ) : (
+                                        a.name
+                                    )}
+                                </span>
+                            ))}
+                        </span>
+                    ) : (
+                        songArtist && <span className={cls.SongArtist}>{songArtist}</span>
+                    )}
                 </div>
             </div>
 

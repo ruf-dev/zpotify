@@ -44,6 +44,7 @@ export default function SidebarArtistsWidget({ isCollapsed }: SidebarArtistsWidg
             {artists.map((artist) => (
                 <ArtistRow
                     key={artist.uuid}
+                    uuid={artist.uuid ?? ''}
                     name={artist.name ?? ''}
                     seed={uuidToHslSeed(artist.uuid ?? '')}
                     isCollapsed={isCollapsed}

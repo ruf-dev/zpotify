@@ -4,6 +4,7 @@
     align-items: center;
     gap: var(--space-xs);
     width: 5.5rem;
+    cursor: pointer;
 }
 
 .CoverWrapper {

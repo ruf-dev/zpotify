@@ -44,7 +44,7 @@ function toFeedSongItem(s: WireSongBase): FeedSongItem {
     return {
         id: s.id ?? '',
         title: s.title ?? '',
-        artistNames: (s.artists ?? []).map((a) => a.name ?? '').join(', '),
+        artists: (s.artists ?? []).filter((a) => a.name).map((a) => ({ uuid: a.uuid, name: a.name ?? '' })),
         coverUrl: buildCoverUrl(s.coverFilePath),
         durationSec: s.durationSec ?? 0,
     };

@@ -1,6 +1,6 @@
 import cn from 'classnames';
 
-import cls from '@/pages/segments/SidebarSegment/Widget/NotificationBellWidget/components/NotificationRow/NotificationRow.module.css';
+import cls from '@/widgets/NotificationBell/components/NotificationRow/NotificationRow.module.css';
 import type { Notification } from '@/app/api/zpotify';
 
 function formatNotificationDate(createdAt: unknown): string {

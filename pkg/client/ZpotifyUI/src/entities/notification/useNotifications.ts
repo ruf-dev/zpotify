@@ -10,11 +10,15 @@ export interface NotificationsState {
     unreadCount: number;
     total: number;
     isLoading: boolean;
+    isPanelOpen: boolean;
 
     fetchSummary: () => Promise<void>;
     fetchList: (paging: Paging) => Promise<void>;
     markRead: (id: string) => Promise<void>;
     consent: (id: string) => Promise<void>;
+    openPanel: () => void;
+    closePanel: () => void;
+    togglePanel: () => void;
 }
 
 const useNotifications = create<NotificationsState>((set, get) => ({
@@ -22,6 +26,7 @@ const useNotifications = create<NotificationsState>((set, get) => ({
     unreadCount: 0,
     total: 0,
     isLoading: false,
+    isPanelOpen: false,
 
     fetchSummary: () => {
         return notificationsService
@@ -73,6 +78,12 @@ const useNotifications = create<NotificationsState>((set, get) => ({
                 throw err;
             });
     },
+
+    openPanel: () => set({ isPanelOpen: true }),
+
+    closePanel: () => set({ isPanelOpen: false }),
+
+    togglePanel: () => set({ isPanelOpen: !get().isPanelOpen }),
 }));
 
 export default useNotifications;

@@ -96,6 +96,16 @@
     text-overflow: ellipsis;
 }
 
+.ArtistLink {
+    cursor: pointer;
+    transition: color var(--ease-quick);
+
+    &:hover {
+        color: var(--color-fg-primary);
+        text-decoration: underline;
+    }
+}
+
 /* ── Center: Controls + Progress ── */
 
 .ControlsCenterWrapper {

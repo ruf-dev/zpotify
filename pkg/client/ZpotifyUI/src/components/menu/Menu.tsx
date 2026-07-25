@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import cls from '@/components/menu/Menu.module.css';
 import MenuOption from '@/components/menu/components/MenuOption/MenuOption.tsx';
 
@@ -7,6 +9,7 @@ interface MenuProps {
 
 export interface MenuOption {
     label?: string;
+    icon?: ReactNode;
     onClick?: () => void;
     disabled?: boolean;
 }

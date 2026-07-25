@@ -1,12 +1,9 @@
 import cn from 'classnames';
 import { useNavigate } from 'react-router-dom';
 
-import useUser from '@/entities/user/useUser';
 import LogoRow from '@/pages/segments/SidebarSegment/components/LogoRow/LogoRow';
 import NavItem from '@/pages/segments/SidebarSegment/components/NavItem/NavItem';
-import UserPill from '@/pages/segments/SidebarSegment/components/UserPill/UserPill';
 import SidebarArtistsWidget from '@/pages/segments/SidebarSegment/Widget/SidebarArtistsWidget/SidebarArtistsWidget';
-import NotificationBellWidget from '@/pages/segments/SidebarSegment/Widget/NotificationBellWidget/NotificationBellWidget';
 import SidebarPlaylistsWidget from '@/pages/segments/SidebarSegment/Widget/SidebarPlaylistsWidget/SidebarPlaylistsWidget';
 import cls from '@/pages/segments/SidebarSegment/SidebarSegment.module.css';
 import { Path } from '@/app/routing/paths.ts';
@@ -25,9 +22,6 @@ export default function SidebarSegment() {
     const toggleCollapse = useSidebarUI((state) => state.toggleCollapsed);
     const isDrawerOpen = useSidebarUI((state) => state.isDrawerOpen);
     const closeDrawer = useSidebarUI((state) => state.closeDrawer);
-
-    const userData = useUser((state) => state.userData);
-    const username = userData?.username ?? 'user';
 
     const navigate = useNavigate();
 
@@ -71,11 +65,6 @@ export default function SidebarSegment() {
                 <SidebarArtistsWidget isCollapsed={isCollapsed} />
 
                 <SidebarPlaylistsWidget isCollapsed={isCollapsed} />
-
-                <div className={cls.SidebarFooter}>
-                    <UserPill username={username} isCollapsed={isCollapsed} />
-                    <NotificationBellWidget />
-                </div>
             </aside>
         </>
     );

@@ -48,6 +48,16 @@
     margin: 0.1rem 0 0;
 }
 
+.ArtistLink {
+    cursor: pointer;
+    transition: color var(--ease-quick);
+
+    &:hover {
+        color: var(--color-fg-secondary);
+        text-decoration: underline;
+    }
+}
+
 .Duration {
     flex-shrink: 0;
     font-size: var(--font-size-xs);

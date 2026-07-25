@@ -1,5 +1,6 @@
 import cls from '@/widgets/Header/HeaderPart.module.css';
 import UserWidget from '@/widgets/User/UserWidget.tsx';
+import NotificationBellWidget from '@/widgets/NotificationBell/NotificationBellWidget.tsx';
 import AddTrackButton from '@/features/upload/AddTrackButton.tsx';
 import AddTrackDialog from '@/dialogs/AddTrack/AddTrackDialog.tsx';
 import HeaderSearchInput from '@/widgets/Header/components/HeaderSearchInput/HeaderSearchInput.tsx';
@@ -20,6 +21,7 @@ export default function HeaderPart() {
 
             <div className={cls.UserContainer}>
                 <AddTrackButton onClick={handleAddTrack} />
+                <NotificationBellWidget />
                 <UserWidget />
             </div>
         </div>

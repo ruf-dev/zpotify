@@ -34,7 +34,7 @@ export default function LazyLoadSongsList({
             const first = queueTracks[0];
             if (!first) return;
             audioPlayer.setQueue(queueTracks, 0, playlistId);
-            audioPlayer.setSongInfo(first.info.title, first.info.artist, first.info.cover);
+            audioPlayer.setSongInfo(first.info.title, first.info.artist, first.info.cover, first.info.artists);
             audioPlayer.play(first.filePath);
         });
     }, [audioPlayer.shuffleHash]);

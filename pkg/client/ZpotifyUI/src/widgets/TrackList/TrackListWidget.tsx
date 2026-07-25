@@ -58,7 +58,7 @@ export default function SongListWidget({ songs, audioPlayer, coverUrl, queueSour
         const target = queueTracks[queueIdx];
         if (!target) return;
         audioPlayer.setQueue(queueTracks, queueIdx, queueSourceId);
-        audioPlayer.setSongInfo(target.info.title, target.info.artist, target.info.cover);
+        audioPlayer.setSongInfo(target.info.title, target.info.artist, target.info.cover, target.info.artists);
         audioPlayer.play(target.filePath);
     }
 

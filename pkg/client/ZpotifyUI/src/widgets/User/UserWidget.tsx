@@ -7,6 +7,8 @@ import GeneratedAvatar from '@/entities/user/GeneratedAvatar.tsx';
 import Menu from '@/components/menu/Menu.tsx';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import SettingsDialog from '@/dialogs/Settings/SettingsDialog.tsx';
+import useNotifications from '@/entities/notification/useNotifications.ts';
+import { BellIcon } from '@/assets/icons/BellIcon.tsx';
 
 interface UserWidgetProps {
     dropdownDirection?: 'down' | 'up';
@@ -19,6 +21,7 @@ export default function UserWidget({ dropdownDirection = 'down', showUsername = 
 
     const userData = useUser((state) => state.userData);
     const logout = useUser((state) => state.logout);
+    const openNotificationsPanel = useNotifications((state) => state.openPanel);
     const { OpenDialog } = useDialog();
 
     function openSettings() {
@@ -26,9 +29,15 @@ export default function UserWidget({ dropdownDirection = 'down', showUsername = 
         OpenDialog(<SettingsDialog />);
     }
 
+    function openNotifications() {
+        setIsMenuOpen(false);
+        openNotificationsPanel();
+    }
+
     const menuOptions = [
         { label: 'Profile', disabled: true },
         { label: 'Settings', onClick: openSettings },
+        { label: 'Notifications', icon: <BellIcon />, onClick: openNotifications },
         {},
         { label: 'Logout', onClick: logout },
     ];

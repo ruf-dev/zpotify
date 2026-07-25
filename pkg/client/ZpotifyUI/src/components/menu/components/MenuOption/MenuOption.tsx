@@ -21,6 +21,7 @@ export default function MenuOption({ props }: MenuOptionProps) {
             onPointerLeave={() => setIsSelected(false)}
             onClick={props.onClick}
         >
+            {props.icon && <span className={cls.Icon}>{props.icon}</span>}
             {props.label}
         </div>
     );
