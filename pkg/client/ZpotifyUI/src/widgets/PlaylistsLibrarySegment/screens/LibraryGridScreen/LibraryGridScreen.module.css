@@ -18,6 +18,12 @@
     }
 }
 
+@media (orientation: portrait) {
+    .Grid.smallGridBox {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 .Empty {
     display: block;
     font-size: var(--font-size-sm);

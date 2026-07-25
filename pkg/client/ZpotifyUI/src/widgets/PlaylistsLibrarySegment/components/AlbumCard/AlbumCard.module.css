@@ -22,12 +22,6 @@
         width: 100%;
         height: 100%;
         border-radius: var(--border-radius-md);
-        transition: transform var(--ease-quick), border-radius var(--ease-quick-half);
-    }
-
-    &:hover .CoverImage {
-        transform: translateY(calc(-1 * var(--album-card-footer-height)));
-        border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
     }
 
 
@@ -36,14 +30,18 @@
 
         width: 100%;
         bottom: 0;
-        background: var(--album-footer-bg);
+        background: transparent;
         flex-shrink: 0;
         padding: 0.4rem 0.55rem 0.5rem;
         max-height: var(--album-card-footer-height);
         overflow: hidden;
 
         border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
-        box-shadow: 0 -0.5rem 1.5rem var(--color-shadow-deep);
+        transition: background var(--ease-quick);
+    }
+
+    &:hover .Footer {
+        background: var(--color-shadow-deep);
     }
 
 }
