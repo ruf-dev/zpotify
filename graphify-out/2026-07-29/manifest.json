@@ -925,8 +925,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/file_service.go": {
-    "mtime": 1785273242.246628,
-    "ast_hash": "f0ec6fccb4fac881824dc1f84ee73e1b",
+    "mtime": 1783978318.9119039,
+    "ast_hash": "02187f005f96ee0c0d34d212ebebfa44",
     "semantic_hash": ""
   },
   "internal/service/v1/user_service.go": {
@@ -985,8 +985,8 @@
     "semantic_hash": ""
   },
   "internal/audio_parsers/audio_info.go": {
-    "mtime": 1785273242.2462227,
-    "ast_hash": "a29c8535b56c51e98fb51d542e19b982",
+    "mtime": 1782923285.0047336,
+    "ast_hash": "501d77621cdeec4d984af0189023c4a2",
     "semantic_hash": ""
   },
   "internal/audio_parsers/mp3.go": {
@@ -1240,8 +1240,8 @@
     "semantic_hash": ""
   },
   "config/config.yaml": {
-    "mtime": 1785134029.6132276,
-    "ast_hash": "0d3860c4508d7f255d9f5fddbd46105e",
+    "mtime": 1784541170.6371245,
+    "ast_hash": "7641b4cfeacfc7c456b1c49fc34baa87",
     "semantic_hash": ""
   },
   "config/config_template.yaml": {
@@ -1610,8 +1610,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/features/upload/supportedAudio.ts": {
-    "mtime": 1785273242.2469423,
-    "ast_hash": "a069a3d37ca6d819dec329a62c3e04c0",
+    "mtime": 1782923379.9149709,
+    "ast_hash": "2686e1cee6d2dd320739fca6ddede4bb",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/ui/BackButton.tsx": {
@@ -3447,26 +3447,6 @@
   "pkg/client/ZpotifyUI/src/widgets/NotificationBell/components/NotificationRow/NotificationRow.tsx": {
     "mtime": 1785007557.3738189,
     "ast_hash": "c9cc634c0d85fe1e47f8dd785f7d3d7c",
-    "semantic_hash": ""
-  },
-  "internal/audio_parsers/audio_info_test.go": {
-    "mtime": 1785273037.871005,
-    "ast_hash": "8cf107a5cee320ef269bbf76927971b1",
-    "semantic_hash": ""
-  },
-  "internal/audio_parsers/m4a.go": {
-    "mtime": 1785272854.4564326,
-    "ast_hash": "d4dc6524495ed825c7ddbb7755dd9a5e",
-    "semantic_hash": ""
-  },
-  "internal/audio_parsers/m4a_test.go": {
-    "mtime": 1785273096.788197,
-    "ast_hash": "02a603819538f9adfc81215712ceb1f3",
-    "semantic_hash": ""
-  },
-  "docs/release_notes/v1.0.10.md": {
-    "mtime": 1785134306.8988764,
-    "ast_hash": "ad74328ec1f577e9cea9b0400d15dc46",
     "semantic_hash": ""
   }
 }
