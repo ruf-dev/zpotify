@@ -17,6 +17,7 @@ var supportedExtensions = map[string]struct{}{
 	".mp3":  {},
 	".flac": {},
 	".aac":  {},
+	".m4a":  {},
 }
 
 // IsSupported reports whether the file extension is a parsable audio format.
@@ -44,6 +45,8 @@ func Parse(filePath string, r io.Reader) (AudioInfo, error) {
 		return ParseFLAC(r)
 	case ".aac":
 		return ParseAAC(r)
+	case ".m4a":
+		return ParseM4A(r)
 	default:
 		return AudioInfo{}, rerrors.Wrap(ErrUnsupportedFormat, ext)
 	}

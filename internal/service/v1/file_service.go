@@ -72,7 +72,7 @@ var coverImageExtensions = map[string]struct{}{
 }
 
 // isSupportedUpload reports whether the file may be uploaded: a parsable audio
-// format (mp3/flac/aac) or a supported cover image.
+// format (mp3/flac/aac/m4a) or a supported cover image.
 func isSupportedUpload(name string) bool {
 	if audio_parsers.IsSupported(name) {
 		return true
