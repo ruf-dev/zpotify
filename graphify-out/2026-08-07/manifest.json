@@ -1240,8 +1240,8 @@
     "semantic_hash": ""
   },
   "config/config.yaml": {
-    "mtime": 1785134029.6132276,
-    "ast_hash": "0d3860c4508d7f255d9f5fddbd46105e",
+    "mtime": 1785789847.6944604,
+    "ast_hash": "1498a9ccb29a00404daf58b0f02aa086",
     "semantic_hash": ""
   },
   "config/config_template.yaml": {
@@ -2305,8 +2305,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/AudioScreen/AudioScreen.tsx": {
-    "mtime": 1783507899.1901753,
-    "ast_hash": "8f846a7a4aa854f9a4578f0ddd83f0a9",
+    "mtime": 1786050166.0762875,
+    "ast_hash": "2c5cf7d896b67a2e22b5cee2429db818",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/AppearanceScreen/AppearanceScreen.tsx": {
@@ -2675,8 +2675,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/components/CoverWithFallback/CoverWithFallback.tsx": {
-    "mtime": 1783521055.277728,
-    "ast_hash": "7867e2e3ba728e4fd60914f2ac771455",
+    "mtime": 1786050166.0758953,
+    "ast_hash": "659d9441fbc61778fdeecd51caf35ba4",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/screens/NotFoundScreen/NotFoundScreen.tsx": {
@@ -3467,6 +3467,21 @@
   "docs/release_notes/v1.0.10.md": {
     "mtime": 1785134306.8988764,
     "ast_hash": "ad74328ec1f577e9cea9b0400d15dc46",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/lib/coverCache.ts": {
+    "mtime": 1786049955.499493,
+    "ast_hash": "7d052ceffe0a335b64c7d1f5f30c1e57",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/model/coverCacheStore.ts": {
+    "mtime": 1786049957.8090882,
+    "ast_hash": "3c2156933ba760110f6a8b7013f0dcfb",
+    "semantic_hash": ""
+  },
+  "docs/release_notes/v1.0.12.md": {
+    "mtime": 1785789773.0469713,
+    "ast_hash": "0c0390453c69a623b46874bc04409544",
     "semantic_hash": ""
   }
 }
