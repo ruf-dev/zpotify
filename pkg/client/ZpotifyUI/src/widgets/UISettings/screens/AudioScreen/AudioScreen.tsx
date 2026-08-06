@@ -7,6 +7,7 @@ import SettingsRow from '@/widgets/UISettings/components/SettingsRow/SettingsRow
 import CachedSongsAccordion from '@/widgets/CachedSongsAccordion/CachedSongsAccordion.tsx';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useAudioCacheStore } from '@/shared/model/audioCacheStore.ts';
+import { useCoverCacheStore } from '@/shared/model/coverCacheStore.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 export default function AudioScreen() {
@@ -38,6 +39,29 @@ export default function AudioScreen() {
         );
     }
 
+    function handleClearImageCache() {
+        async function handleConfirm() {
+            await useCoverCacheStore.getState().clearAll();
+            toaster.bake({
+                title: 'Image cache cleared',
+                description: 'All cached cover images have been removed from this device',
+                level: 'Info',
+            });
+            CloseDialog();
+        }
+
+        OpenDialog(
+            <ConfirmDialog
+                title="Clear image cache"
+                message="This will remove all cover images cached on this device. They will be re-downloaded as needed."
+                confirmLabel="Clear image cache"
+                danger
+                onConfirm={handleConfirm}
+                onClose={CloseDialog}
+            />,
+        );
+    }
+
     return (
         <div className={cls.SettingsGroup}>
             <SettingsRow
@@ -60,6 +84,12 @@ export default function AudioScreen() {
                     <CachedSongsAccordion />
                 </>
             )}
+
+            <SettingsRow label="Clear Image Cache" description="Remove all cached cover images from this device">
+                <Button variant="danger" onClick={handleClearImageCache}>
+                    Clear Image Cache
+                </Button>
+            </SettingsRow>
         </div>
     );
 }
