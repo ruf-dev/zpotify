@@ -1450,13 +1450,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/vite.config.js": {
-    "mtime": 1783259584.3439817,
-    "ast_hash": "12f0d2d04af7cef5a734ace940426cb4",
+    "mtime": 1786051665.6505616,
+    "ast_hash": "0875a933b6bb223fbd8ed9857ded0c61",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/package.json": {
-    "mtime": 1784812919.731038,
-    "ast_hash": "c190814f05b2ed3c940474f9c49d8b5b",
+    "mtime": 1786051665.647144,
+    "ast_hash": "6395fd19d7198b179aea7437e71df8e4",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/tsconfig.json": {
@@ -1470,8 +1470,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/vite.config.ts": {
-    "mtime": 1783254247.9476366,
-    "ast_hash": "7db2f3a07df66c0258f28859d95d3244",
+    "mtime": 1786051665.6509473,
+    "ast_hash": "4563dc6b77b0305511ae0295421b3df3",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/stylelint.config.js": {
@@ -1490,13 +1490,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/main.tsx": {
-    "mtime": 1783504807.8627207,
-    "ast_hash": "a2a34b8c48c80a2e11ed06980e8abc75",
+    "mtime": 1786051665.6479807,
+    "ast_hash": "0209a1c6e2a7171e15a8c76d33dd2bac",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/vite-env.d.ts": {
-    "mtime": 1780682031.4888835,
-    "ast_hash": "0352474ba2918efe13895edbc3780d94",
+    "mtime": 1786051665.6486936,
+    "ast_hash": "11ecfcbd6f7344db8ce9e9ae76e70a6c",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/layouts/MainLayout.tsx": {
@@ -2560,8 +2560,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/index.html": {
-    "mtime": 1751555286.4464295,
-    "ast_hash": "1818d72147974d7fb66fe2aa2c2f3b31",
+    "mtime": 1786051665.6458054,
+    "ast_hash": "a367c334a6df5883ad8fee857337e151",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/README.md": {
@@ -3482,6 +3482,11 @@
   "docs/release_notes/v1.0.12.md": {
     "mtime": 1785789773.0469713,
     "ast_hash": "0c0390453c69a623b46874bc04409544",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/app/registerSW.ts": {
+    "mtime": 1786051542.640127,
+    "ast_hash": "6439a5c6ca95df2a82e01e857565eb23",
     "semantic_hash": ""
   }
 }
