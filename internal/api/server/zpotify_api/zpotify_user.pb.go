@@ -157,7 +157,8 @@ const file_zpotify_user_proto_rawDesc = "" +
 	"\vAuthMethods\x12\x1b\n" +
 	"\x17AuthMethod_NotSpecified\x10\x00\x12\x16\n" +
 	"\x12AuthMethod_Offline\x10\x01\x12\x17\n" +
-	"\x13AuthMethod_Telegram\x10\x02B*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\x13AuthMethod_Telegram\x10\x02BA\x92\x82\x19\f@zpotify/api\n" +
+	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_user_proto_rawDescOnce sync.Once

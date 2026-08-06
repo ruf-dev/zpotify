@@ -1625,7 +1625,8 @@ const file_zpotify_service_playlist_proto_rawDesc = "" +
 	"\x0eUpdatePlaylist\x12#.zpotify_api.UpdatePlaylist.Request\x1a$.zpotify_api.UpdatePlaylist.Response\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/playlist/update\x12w\n" +
 	"\rListPlaylists\x12\".zpotify_api.ListPlaylists.Request\x1a#.zpotify_api.ListPlaylists.Response\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/playlist/list\x12|\n" +
 	"\x0eFollowPlaylist\x12#.zpotify_api.FollowPlaylist.Request\x1a$.zpotify_api.FollowPlaylist.Response\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/playlist/follow\x12\x84\x01\n" +
-	"\x10UnfollowPlaylist\x12%.zpotify_api.UnfollowPlaylist.Request\x1a&.zpotify_api.UnfollowPlaylist.Response\"!\x82\xd3\xe4\x93\x02\x1b:\x01*\"\x16/api/playlist/unfollowB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\x10UnfollowPlaylist\x12%.zpotify_api.UnfollowPlaylist.Request\x1a&.zpotify_api.UnfollowPlaylist.Response\"!\x82\xd3\xe4\x93\x02\x1b:\x01*\"\x16/api/playlist/unfollowBA\x92\x82\x19\f@zpotify/api\n" +
+	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_playlist_proto_rawDescOnce sync.Once

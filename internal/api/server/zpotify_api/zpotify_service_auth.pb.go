@@ -907,7 +907,8 @@ const file_zpotify_service_auth_proto_rawDesc = "" +
 	"\x04Auth\x12\x19.zpotify_api.Auth.Request\x1a\x1a.zpotify_api.Auth.Response\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/auth/sync\x12p\n" +
 	"\tAuthAsync\x12!.zpotify_api.AuthViaAsync.Request\x1a\".zpotify_api.AuthViaAsync.Response\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/auth/async0\x01\x12o\n" +
 	"\fRefreshToken\x12\x1c.zpotify_api.Refresh.Request\x1a\x1d.zpotify_api.Refresh.Response\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/api/auth/refresh_token\x12`\n" +
-	"\x06Logout\x12\x1b.zpotify_api.Logout.Request\x1a\x1c.zpotify_api.Logout.Response\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/auth/logoutB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\x06Logout\x12\x1b.zpotify_api.Logout.Request\x1a\x1c.zpotify_api.Logout.Response\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/auth/logoutBA\x92\x82\x19\f@zpotify/api\n" +
+	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_auth_proto_rawDescOnce sync.Once

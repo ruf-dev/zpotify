@@ -804,7 +804,8 @@ const file_zpotify_service_files_proto_rawDesc = "" +
 	"\x12CheckFilesByHashes\x12'.zpotify_api.CheckFilesByHashes.Request\x1a(.zpotify_api.CheckFilesByHashes.Response\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/file_meta/check_hashes\x12q\n" +
 	"\n" +
 	"DeleteFile\x12\x1f.zpotify_api.DeleteFile.Request\x1a .zpotify_api.DeleteFile.Response\" \x82\xd3\xe4\x93\x02\x1a*\x18/api/file_meta/{file_id}\x12\x89\x01\n" +
-	"\x10BatchDeleteFiles\x12%.zpotify_api.BatchDeleteFiles.Request\x1a&.zpotify_api.BatchDeleteFiles.Response\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/file_meta/batch_deleteB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\x10BatchDeleteFiles\x12%.zpotify_api.BatchDeleteFiles.Request\x1a&.zpotify_api.BatchDeleteFiles.Response\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/file_meta/batch_deleteBA\x92\x82\x19\f@zpotify/api\n" +
+	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_files_proto_rawDescOnce sync.Once

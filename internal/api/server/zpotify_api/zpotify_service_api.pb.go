@@ -160,7 +160,8 @@ const file_zpotify_service_api_proto_rawDesc = "" +
 	"\x10client_timestamp\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x0fclientTimestamp2j\n" +
 	"\n" +
 	"ZpotifyAPI\x12\\\n" +
-	"\aVersion\x12\x1c.zpotify_api.Version.Request\x1a\x1d.zpotify_api.Version.Response\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/api/versionB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\aVersion\x12\x1c.zpotify_api.Version.Request\x1a\x1d.zpotify_api.Version.Response\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/api/versionBA\x92\x82\x19\f@zpotify/api\n" +
+	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_api_proto_rawDescOnce sync.Once

@@ -634,7 +634,8 @@ const file_zpotify_service_notification_proto_rawDesc = "" +
 	"\x16GetNotificationSummary\x12+.zpotify_api.GetNotificationSummary.Request\x1a,.zpotify_api.GetNotificationSummary.Response\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/api/notification/summary\x12\x87\x01\n" +
 	"\x11ListNotifications\x12&.zpotify_api.ListNotifications.Request\x1a'.zpotify_api.ListNotifications.Response\"!\x82\xd3\xe4\x93\x02\x1b:\x01*\"\x16/api/notification/list\x12\x95\x01\n" +
 	"\x14MarkNotificationRead\x12).zpotify_api.MarkNotificationRead.Request\x1a*.zpotify_api.MarkNotificationRead.Response\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/notification/mark_read\x12\x90\x01\n" +
-	"\x13ConsentNotification\x12(.zpotify_api.ConsentNotification.Request\x1a).zpotify_api.ConsentNotification.Response\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/api/notification/consentB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\x13ConsentNotification\x12(.zpotify_api.ConsentNotification.Request\x1a).zpotify_api.ConsentNotification.Response\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/api/notification/consentBA\x92\x82\x19\f@zpotify/api\n" +
+	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_notification_proto_rawDescOnce sync.Once

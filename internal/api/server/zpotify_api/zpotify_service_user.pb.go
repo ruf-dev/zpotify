@@ -345,7 +345,8 @@ const file_zpotify_service_user_proto_rawDesc = "" +
 	"\bsettings\x18\x01 \x01(\v2\x19.zpotify_api.UserSettingsR\bsettings2\xd4\x01\n" +
 	"\aUserAPI\x12M\n" +
 	"\x02Me\x12\x17.zpotify_api.Me.Request\x1a\x18.zpotify_api.Me.Response\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/api/user/me\x12z\n" +
-	"\x0fGetUserSettings\x12$.zpotify_api.GetUserSettings.Request\x1a%.zpotify_api.GetUserSettings.Response\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/user/settingsB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\x0fGetUserSettings\x12$.zpotify_api.GetUserSettings.Request\x1a%.zpotify_api.GetUserSettings.Response\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/user/settingsBA\x92\x82\x19\f@zpotify/api\n" +
+	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_user_proto_rawDescOnce sync.Once

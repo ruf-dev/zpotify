@@ -6,6 +6,8 @@ import "npm.proto";
 
 option go_package = "/zpotify_api;zpotify_api";
 option (npm_package) = "@zpotify/api";
+option java_package = "ru.zpotify.api.grpc";
+option java_multiple_files = true;
 
 message Paging {
   uint64 limit = 1;

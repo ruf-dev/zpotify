@@ -737,7 +737,8 @@ const file_zpotify_service_song_proto_rawDesc = "" +
 	"\n" +
 	"UpdateSong\x12\x1f.zpotify_api.UpdateSong.Request\x1a .zpotify_api.UpdateSong.Response\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/song/update\x12^\n" +
 	"\aGetSong\x12\x1c.zpotify_api.GetSong.Request\x1a\x1d.zpotify_api.GetSong.Response\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/api/song/{id}\x12o\n" +
-	"\vSearchSongs\x12 .zpotify_api.SearchSongs.Request\x1a!.zpotify_api.SearchSongs.Response\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/song/searchB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\vSearchSongs\x12 .zpotify_api.SearchSongs.Request\x1a!.zpotify_api.SearchSongs.Response\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/song/searchBA\x92\x82\x19\f@zpotify/api\n" +
+	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_song_proto_rawDescOnce sync.Once

@@ -244,7 +244,8 @@ const file_zpotify_service_home_proto_rawDesc = "" +
 	"\n" +
 	"total_days\x18\x02 \x01(\rR\ttotalDays2l\n" +
 	"\aHomeAPI\x12a\n" +
-	"\aGetFeed\x12\x1c.zpotify_api.GetFeed.Request\x1a\x1d.zpotify_api.GetFeed.Response\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/home/feedB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\aGetFeed\x12\x1c.zpotify_api.GetFeed.Request\x1a\x1d.zpotify_api.GetFeed.Response\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/home/feedBA\x92\x82\x19\f@zpotify/api\n" +
+	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_home_proto_rawDescOnce sync.Once

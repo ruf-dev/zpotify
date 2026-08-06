@@ -1030,7 +1030,8 @@ const file_zpotify_service_artists_proto_rawDesc = "" +
 	"LikeArtist\x12\x1f.zpotify_api.LikeArtist.Request\x1a .zpotify_api.LikeArtist.Response\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/api/artists/like\x12u\n" +
 	"\fUnlikeArtist\x12!.zpotify_api.UnlikeArtist.Request\x1a\".zpotify_api.UnlikeArtist.Response\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/artists/unlike\x12z\n" +
 	"\rGetArtistPage\x12\".zpotify_api.GetArtistPage.Request\x1a#.zpotify_api.GetArtistPage.Response\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/artists/get_page\x12u\n" +
-	"\fUpdateArtist\x12!.zpotify_api.UpdateArtist.Request\x1a\".zpotify_api.UpdateArtist.Response\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/artists/updateB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\fUpdateArtist\x12!.zpotify_api.UpdateArtist.Request\x1a\".zpotify_api.UpdateArtist.Response\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/artists/updateBA\x92\x82\x19\f@zpotify/api\n" +
+	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_artists_proto_rawDescOnce sync.Once

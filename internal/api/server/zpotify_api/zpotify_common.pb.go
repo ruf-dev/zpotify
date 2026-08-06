@@ -853,7 +853,8 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\x17ALBUM_TAG_KIND_LANGUAGE\x10\x05\x12\x18\n" +
 	"\x14ALBUM_TAG_KIND_THEME\x10\x06\x12\x16\n" +
 	"\x12ALBUM_TAG_KIND_HIT\x10\a\x12 \n" +
-	"\x1cALBUM_TAG_KIND_ALBUM_VERSION\x10\bB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\x1cALBUM_TAG_KIND_ALBUM_VERSION\x10\bBA\x92\x82\x19\f@zpotify/api\n" +
+	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_common_proto_rawDescOnce sync.Once

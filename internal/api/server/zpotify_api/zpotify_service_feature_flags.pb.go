@@ -263,7 +263,8 @@ const file_zpotify_service_feature_flags_proto_rawDesc = "" +
 	"\x1bFEATURE_FLAG_ID_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cIS_COMMENTS_ON_ALBUM_ENABLED\x10\x012\x8d\x01\n" +
 	"\x0fFeatureFlagsAPI\x12z\n" +
-	"\x0fGetFeatureFlags\x12$.zpotify_api.GetFeatureFlags.Request\x1a%.zpotify_api.GetFeatureFlags.Response\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/feature-flagsB*\x92\x82\x19\f@zpotify/apiZ\x18/zpotify_api;zpotify_apib\x06proto3"
+	"\x0fGetFeatureFlags\x12$.zpotify_api.GetFeatureFlags.Request\x1a%.zpotify_api.GetFeatureFlags.Response\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/feature-flagsBA\x92\x82\x19\f@zpotify/api\n" +
+	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
 	file_zpotify_service_feature_flags_proto_rawDescOnce sync.Once
