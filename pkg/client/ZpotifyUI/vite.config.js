@@ -12,12 +12,36 @@ var __assign = (this && this.__assign) || function () {
 import { fileURLToPath, URL } from 'node:url';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
+import { VitePWA } from 'vite-plugin-pwa';
 export default (function (_a) {
     var mode = _a.mode;
     process.env = __assign(__assign({}, process.env), loadEnv(mode, process.cwd()));
     var uc = defineConfig({
         base: '/',
-        plugins: [react()],
+        plugins: [
+            react(),
+            VitePWA({
+                registerType: 'autoUpdate',
+                includeAssets: ['logo.svg'],
+                manifest: {
+                    name: 'Zpotify',
+                    short_name: 'Zpotify',
+                    theme_color: '#0a0a0a',
+                    background_color: '#0a0a0a',
+                    display: 'standalone',
+                    start_url: '/',
+                },
+                pwaAssets: {
+                    preset: 'minimal-2023',
+                    image: 'public/logo.svg',
+                },
+                workbox: {
+                    globPatterns: ['**/*.{js,css,html,svg,woff2}'],
+                    cleanupOutdatedCaches: true,
+                    navigateFallback: 'index.html',
+                },
+            }),
+        ],
         resolve: {
             alias: {
                 '@': fileURLToPath(new URL('./src', import.meta.url)),
