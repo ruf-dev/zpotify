@@ -7,6 +7,7 @@ import {
     ServiceError,
     WithCode,
     WithIsNonRetryable,
+    WithReason,
     WithTitle,
 } from '@/shared/api/Errors.ts';
 import { InitReq } from '@/app/api/zpotify';
@@ -41,9 +42,12 @@ export class BaseService {
 
                         if (err.code == Errors.UNAUTHENTICATED) {
                             if (isReason(err.details, ErrorReason.ACCESS_TOKEN_NOT_FOUND)) {
+                                getAuth().invalidateSession();
+
                                 throw new ServiceError(
                                     WithTitle('Session expired. Login again'),
                                     WithIsNonRetryable(true),
+                                    WithReason(ErrorReason.ACCESS_TOKEN_NOT_FOUND),
                                 );
                             }
 
@@ -53,6 +57,7 @@ export class BaseService {
                                 throw new ServiceError(
                                     WithTitle('Session expired. Refreshing'),
                                     WithIsNonRetryable(false),
+                                    WithReason(ErrorReason.ACCESS_TOKEN_EXPIRED),
                                 );
                             }
                         }

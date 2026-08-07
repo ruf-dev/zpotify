@@ -15,7 +15,7 @@ import PlayerBarSegment from '@/pages/segments/PlayerBarSegment/PlayerBarSegment
 import MobileNavSegment from '@/pages/segments/MobileNavSegment/MobileNavSegment.tsx';
 
 export default function MainLayout() {
-    const userData = useUser((state) => state.userData);
+    const authStatus = useUser((state) => state.authStatus);
     const navigate = useNavigate();
     const showSidebar = useUISettings((state) => state.showSidebar);
     const showPlayerBar = useUISettings((state) => state.showPlayerBar);
@@ -25,14 +25,18 @@ export default function MainLayout() {
     const effectiveShowPlayerBar = showPlayerBar && audioPlayer.trackPath !== null;
 
     useEffect(() => {
-        if (!userData) {
+        if (authStatus === 'unauthenticated') {
             const path = window.location.pathname;
             if (path !== Path.HomePage && path !== Path.IntiPage) {
                 sessionStorage.setItem('zpotify-return-path', path);
             }
             navigate(Path.IntiPage);
         }
-    }, [userData]);
+    }, [authStatus]);
+
+    if (authStatus === 'unauthenticated') {
+        return null;
+    }
 
     return (
         <div className={cls.MainLayoutContainer}>

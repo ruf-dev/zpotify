@@ -11,6 +11,13 @@ import {
 } from '@/shared/api/Errors.ts';
 import { apiPrefix } from '@/shared/api/Api.ts';
 
+type SessionInvalidatedCallback = () => void;
+let onSessionInvalidated: SessionInvalidatedCallback | null = null;
+
+export function setOnSessionInvalidated(cb: SessionInvalidatedCallback) {
+    onSessionInvalidated = cb;
+}
+
 export interface IAuthService {
     AuthViaPass: (login: string, password: string) => Promise<AuthData>;
 }
@@ -114,8 +121,12 @@ export class AuthMiddleware {
         }
 
         if (new Date(this.session.refreshExpiresAt as string) < new Date()) {
-            this.logout();
-            throw new ServiceError(WithTitle('Session expired. Please log in again.'), WithIsNonRetryable(true));
+            this.invalidateSession();
+            throw new ServiceError(
+                WithTitle('Session expired. Please log in again.'),
+                WithIsNonRetryable(true),
+                WithReason(ErrorReason.REFRESH_TOKEN_NOT_FOUND),
+            );
         }
 
         const req: RefreshRequest = {
@@ -124,7 +135,7 @@ export class AuthMiddleware {
 
         const newSession = await AuthAPI.RefreshToken(req, apiPrefix()).catch((e: GrpcError) => {
             if (e.details.find((d) => d.reason == ErrorReason.REFRESH_TOKEN_NOT_FOUND)) {
-                this.logout();
+                this.invalidateSession();
             }
 
             throw new ServiceError(
@@ -146,6 +157,11 @@ export class AuthMiddleware {
 
     logout() {
         clearLocalStorage();
+    }
+
+    invalidateSession() {
+        this.logout();
+        onSessionInvalidated?.();
     }
 }
 

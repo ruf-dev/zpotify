@@ -9,7 +9,11 @@ export interface Toaster extends ToasterStore {
     catch: (e: ServiceError) => void;
 }
 
-const internalErrors: ErrorReason[] = [ErrorReason.ACCESS_TOKEN_NOT_FOUND, ErrorReason.REFRESH_TOKEN_NOT_FOUND];
+const internalErrors: ErrorReason[] = [
+    ErrorReason.ACCESS_TOKEN_NOT_FOUND,
+    ErrorReason.REFRESH_TOKEN_NOT_FOUND,
+    ErrorReason.ACCESS_TOKEN_EXPIRED,
+];
 
 export function catchServiceError(e: ServiceError) {
     if (e.reason && internalErrors.includes(e.reason)) return;
