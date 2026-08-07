@@ -1500,8 +1500,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/layouts/MainLayout.tsx": {
-    "mtime": 1783922162.2139835,
-    "ast_hash": "def0cf5a60e5479dc3e39b03f32fdeba",
+    "mtime": 1786088369.2697275,
+    "ast_hash": "559f9777309cc97c7abeae5276c38ac6",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/hooks/Dialog.tsx": {
@@ -1715,8 +1715,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/lib/toaster/ToasterZ.ts": {
-    "mtime": 1783336247.3835518,
-    "ast_hash": "e8affd2e1b4b6d43e3e1fe544304ce0a",
+    "mtime": 1786088369.2706354,
+    "ast_hash": "9c945773d8145bd7d9f57040a6647b02",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/lib/common/Platform.ts": {
@@ -1730,8 +1730,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/api/BaseService.ts": {
-    "mtime": 1783504797.6105995,
-    "ast_hash": "5ef8ab6ea61de4327c61e02cd2d2c402",
+    "mtime": 1786088369.2704492,
+    "ast_hash": "d3bcae7ac0644ea9195bfa5f95087a84",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/api/HomePage.ts": {
@@ -1780,8 +1780,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/api/Auth.ts": {
-    "mtime": 1781891178.5965517,
-    "ast_hash": "d27137489f615423501046ab2024a3f1",
+    "mtime": 1786088369.270231,
+    "ast_hash": "8070a5c5c349017d22cc515246655047",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/api/PlaylistService.ts": {
@@ -2540,8 +2540,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/entities/user/useUser.ts": {
-    "mtime": 1783336255.9417355,
-    "ast_hash": "cbe90606128710e5d0fab406f7673a15",
+    "mtime": 1786088369.2699633,
+    "ast_hash": "8614e1743caa52595c34d740878fbcec",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/entities/ui-settings/useUISettings.ts": {
