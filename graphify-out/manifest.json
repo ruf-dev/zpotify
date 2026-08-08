@@ -1440,7 +1440,7 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/tsconfig.node.json": {
-    "mtime": 1786170094.6606252,
+    "mtime": 1786208494.1132317,
     "ast_hash": "7dbc67ed81b7cbdd58c18c23ad81ac27",
     "semantic_hash": ""
   },
@@ -1460,7 +1460,7 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/vite.config.ts": {
-    "mtime": 1786169917.6057634,
+    "mtime": 1786208494.1134477,
     "ast_hash": "02e01acade9812071dadd32429d9fa97",
     "semantic_hash": ""
   },
@@ -2295,8 +2295,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/AudioScreen/AudioScreen.tsx": {
-    "mtime": 1786050166.0762875,
-    "ast_hash": "2c5cf7d896b67a2e22b5cee2429db818",
+    "mtime": 1786208494.1130188,
+    "ast_hash": "d8ecdce8066d2fa41ef9dc4e2667faee",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/AppearanceScreen/AppearanceScreen.tsx": {
@@ -2340,8 +2340,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/usePlayer.ts": {
-    "mtime": 1785007557.3725274,
-    "ast_hash": "094ec7b4fb2251644e526f54363d3fbd",
+    "mtime": 1786208494.1127822,
+    "ast_hash": "71f439ec03678e121a3dfd90a13917c2",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/PlayerControls.tsx": {
@@ -2540,8 +2540,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/entities/audio-settings/useAudioSettings.ts": {
-    "mtime": 1783269049.2555752,
-    "ast_hash": "226dba56a4bb8a0cff93b98f0ed8ac9e",
+    "mtime": 1786208494.1124942,
+    "ast_hash": "9946bcd700b19c9ed7542e474a078425",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/moti.yaml": {

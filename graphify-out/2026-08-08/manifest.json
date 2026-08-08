@@ -1440,18 +1440,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/tsconfig.node.json": {
-    "mtime": 1751046077.4503915,
-    "ast_hash": "fa43e0ad6d187f90154ac2233d26e9a1",
-    "semantic_hash": ""
-  },
-  "pkg/client/ZpotifyUI/vite.config.d.ts": {
-    "mtime": 1783254247.9466934,
-    "ast_hash": "a137638badc2e38c72757e664cfe4036",
-    "semantic_hash": ""
-  },
-  "pkg/client/ZpotifyUI/vite.config.js": {
-    "mtime": 1786051665.6505616,
-    "ast_hash": "0875a933b6bb223fbd8ed9857ded0c61",
+    "mtime": 1786170094.6606252,
+    "ast_hash": "7dbc67ed81b7cbdd58c18c23ad81ac27",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/package.json": {
