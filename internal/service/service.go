@@ -25,6 +25,7 @@ type Service interface {
 	FeatureFlagsService() FeatureFlagsService
 	HomeService() HomeService
 	NotificationService() NotificationService
+	SearchService() SearchService
 }
 
 type service struct {
@@ -37,6 +38,7 @@ type service struct {
 	featureFlagsService FeatureFlagsService
 	homeService         HomeService
 	notificationService NotificationService
+	searchService       SearchService
 }
 
 func New(dataStorage storage.Storage, cache files_cache.FilesCache,
@@ -53,16 +55,21 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 		return nil, rerrors.Wrap(err, "error initializing auth service")
 	}
 
+	audioService := v1.NewAudioService(dataStorage, cache, fileStorage)
+	playlistService := v1.NewPlaylistService(dataStorage, fileStorage)
+	artistsService := v1.NewArtistsService(dataStorage, fileStorage)
+
 	return &service{
-		audioService:        v1.NewAudioService(dataStorage, cache, fileStorage),
+		audioService:        audioService,
 		userService:         v1.NewUserService(dataStorage),
 		authService:         authSvc,
-		playlistService:     v1.NewPlaylistService(dataStorage, fileStorage),
-		artistsService:      v1.NewArtistsService(dataStorage, fileStorage),
+		playlistService:     playlistService,
+		artistsService:      artistsService,
 		fileService:         v1.NewFileService(dataStorage, fileStorage),
 		featureFlagsService: v1.NewFeatureFlagsService(dataStorage),
 		homeService:         v1.NewHomeService(dataStorage),
 		notificationService: v1.NewNotificationService(dataStorage),
+		searchService:       v1.NewSearchService(audioService, artistsService, playlistService),
 	}, nil
 }
 
@@ -100,6 +107,10 @@ func (s *service) HomeService() HomeService {
 
 func (s *service) NotificationService() NotificationService {
 	return s.notificationService
+}
+
+func (s *service) SearchService() SearchService {
+	return s.searchService
 }
 
 type AudioService interface {
@@ -168,6 +179,10 @@ type PlaylistService interface {
 	Follow(ctx context.Context, playlistUuid string) error
 	// Unfollow removes a previously followed playlist from the caller's library.
 	Unfollow(ctx context.Context, playlistUuid string) error
+
+	// Search finds playlists/albums by name, ranked by full-text relevance,
+	// split into albums (results with artists attached) vs plain playlists.
+	Search(ctx context.Context, query string, limit, offset uint64) (albums, playlists []domain.PlaylistSearchResult, err error)
 }
 
 type ArtistsService interface {
@@ -185,6 +200,9 @@ type ArtistsService interface {
 	// Update edits an artist's name and/or avatar/background-cover images.
 	// Requires the caller to have CanEditArtists permission.
 	Update(ctx context.Context, req domain.UpdateArtistParams) (domain.UpdateArtistResult, error)
+
+	// Search finds artists by name, ranked by full-text relevance.
+	Search(ctx context.Context, query string, limit, offset uint64) ([]domain.ArtistSearchResult, error)
 }
 
 type FileService interface {
@@ -218,4 +236,11 @@ type NotificationService interface {
 	// set of users as its recipients. Called by the Telegram bot's admin
 	// notify commands - not exposed over gRPC.
 	CreateAndBroadcast(ctx context.Context, title, body string, requiresConsent bool) error
+}
+
+// SearchService fans a single free-text query out across tracks, artists,
+// albums and playlists. It composes AudioService, ArtistsService and
+// PlaylistService rather than duplicating any of their search SQL.
+type SearchService interface {
+	Search(ctx context.Context, req domain.SearchParams) (domain.SearchResult, error)
 }

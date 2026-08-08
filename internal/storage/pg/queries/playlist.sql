@@ -96,3 +96,19 @@ UPDATE playlists SET song_count = GREATEST(song_count - 1, 0) WHERE uuid = $1;
 
 -- name: GetPlaylistOwnerAndVisibility :one
 SELECT owner_id, is_public FROM playlists WHERE uuid = $1;
+
+-- name: SearchPlaylistsByName :many
+SELECT uuid,
+       name,
+       description,
+       is_public,
+       cover_file_id,
+       cover_file_path,
+       song_count,
+       year,
+       artist_info,
+       ts_rank(name_tsv, to_tsquery('simple', @query::text)) AS score
+FROM playlist_search_view_v1
+WHERE name_tsv @@ to_tsquery('simple', @query::text)
+ORDER BY ts_rank(name_tsv, to_tsquery('simple', @query::text)) DESC, uuid
+LIMIT @limit_ OFFSET @offset_;

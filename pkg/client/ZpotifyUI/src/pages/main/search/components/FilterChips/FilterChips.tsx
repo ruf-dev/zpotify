@@ -7,6 +7,7 @@ import cls from '@/pages/main/search/components/FilterChips/FilterChips.module.c
 export type FilterKey = keyof SearchFilters;
 
 const FILTER_LABELS: { key: FilterKey; label: string }[] = [
+    { key: 'tracks', label: 'Tracks' },
     { key: 'artists', label: 'Artists' },
     { key: 'albums', label: 'Albums' },
     { key: 'playlists', label: 'Playlists' },

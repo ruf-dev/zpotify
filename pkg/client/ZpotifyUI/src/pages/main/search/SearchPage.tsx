@@ -6,6 +6,7 @@ import FilterChips from '@/pages/main/search/components/FilterChips/FilterChips.
 import SectionLabel from '@/pages/main/search/components/SectionLabel/SectionLabel.tsx';
 import EmptyState from '@/pages/main/search/components/EmptyState/EmptyState.tsx';
 import ArtistCard from '@/pages/main/search/components/ArtistCard/ArtistCard.tsx';
+import TrackRow from '@/pages/main/search/components/TrackRow/TrackRow.tsx';
 import { useSearchPage } from '@/pages/main/search/useSearchPage.ts';
 import { Path } from '@/app/routing/paths.ts';
 import BackButton from '@/shared/ui/BackButton.tsx';
@@ -17,6 +18,20 @@ export default function SearchPage() {
 
     function handleBack() {
         navigate(Path.HomePage);
+    }
+
+    function renderTracks() {
+        if (!page.filters.tracks || page.visibleTracks.length === 0) return null;
+        return (
+            <div className={cls.Section}>
+                <SectionLabel label="Tracks" count={page.visibleTracks.length} />
+                <div className={cls.TrackList}>
+                    {page.visibleTracks.map((track) => (
+                        <TrackRow key={track.uuid} {...track} />
+                    ))}
+                </div>
+            </div>
+        );
     }
 
     function renderArtists() {
@@ -68,6 +83,7 @@ export default function SearchPage() {
 
         return (
             <>
+                {renderTracks()}
                 {renderArtists()}
                 {renderAlbums()}
                 {renderPlaylists()}

@@ -640,6 +640,62 @@ func (b playlistsListBuilder) applySorting(req domain.ListPlaylists) playlistsLi
 	return b
 }
 
+func (p *PlaylistStorage) Search(ctx context.Context, query string, limit, offset uint64) ([]domain.PlaylistSearchResult, error) {
+	tsQuery := toPrefixTSQuery(query)
+	if tsQuery == "" {
+		return []domain.PlaylistSearchResult{}, nil
+	}
+
+	params := generated.SearchPlaylistsByNameParams{
+		Query:  tsQuery,
+		Limit:  int32(limit),
+		Offset: int32(offset),
+	}
+
+	rows, err := p.querier.SearchPlaylistsByName(ctx, params)
+	if err != nil {
+		return nil, wrapPgErr(err)
+	}
+
+	results := make([]domain.PlaylistSearchResult, len(rows))
+	for i, row := range rows {
+		var artists []domain.ArtistsBase
+		err = json.Unmarshal(row.ArtistInfo, &artists)
+		if err != nil {
+			return nil, rerrors.Wrap(err, "error unmarshalling artists info from storage json")
+		}
+
+		songCount := row.SongCount
+		playlist := domain.Playlist{
+			Uuid:        row.Uuid.String(),
+			Name:        row.Name,
+			Description: row.Description,
+			IsPublic:    row.IsPublic,
+			Artists:     artists,
+			SongCount:   &songCount,
+		}
+
+		if row.CoverFileID.Valid {
+			playlist.CoverFileId = &row.CoverFileID.Int64
+		}
+
+		if row.CoverFilePath.Valid {
+			playlist.CoverFilePath = row.CoverFilePath.String
+		}
+
+		if row.Year.Valid {
+			playlist.Year = &row.Year.Int32
+		}
+
+		results[i] = domain.PlaylistSearchResult{
+			Playlist: playlist,
+			Score:    float64(row.Score),
+		}
+	}
+
+	return results, nil
+}
+
 func (p *PlaylistStorage) CountPlaylists(ctx context.Context, req domain.ListPlaylists) (uint32, error) {
 	builder := playlistsListBuilder{
 		sq.Select("COUNT(v.uuid)").

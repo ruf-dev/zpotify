@@ -4,8 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
-	"regexp"
-	"strings"
 	"time"
 
 	sq "github.com/Masterminds/squirrel"
@@ -97,6 +95,7 @@ func (s *SongsStorage) SearchByTitle(ctx context.Context, query string, limit, o
 		songs[i] = domain.Song{
 			SongBase: toSongBaseFromSearch(row),
 			Artists:  artists,
+			Score:    float64(row.Score),
 		}
 	}
 
@@ -373,21 +372,3 @@ func toSongBaseFromArtistFeatured(song songs_q.ListArtistFeaturedSongsRow) domai
 	}
 }
 
-var tsQueryTokenRe = regexp.MustCompile(`[\p{L}\p{N}]+`)
-
-// toPrefixTSQuery turns raw user input into a prefix-matching tsquery string
-// (e.g. "love story" -> "love:* & story:*"). Non-word characters are dropped so
-// the result is always safe to pass to to_tsquery. Returns "" when there are no
-// usable tokens.
-func toPrefixTSQuery(raw string) string {
-	tokens := tsQueryTokenRe.FindAllString(raw, -1)
-	if len(tokens) == 0 {
-		return ""
-	}
-
-	for i, t := range tokens {
-		tokens[i] = t + ":*"
-	}
-
-	return strings.Join(tokens, " & ")
-}

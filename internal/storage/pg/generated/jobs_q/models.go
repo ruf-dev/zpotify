@@ -332,6 +332,15 @@ type Artist struct {
 	CreatedAt             time.Time
 	AvatarFileID          sql.NullInt64
 	BackgroundCoverFileID sql.NullInt64
+	NameTsv               interface{}
+}
+
+type ArtistSearchViewV1 struct {
+	Uuid           uuid.UUID
+	Name           string
+	CreatedAt      time.Time
+	NameTsv        interface{}
+	AvatarFilePath sql.NullString
 }
 
 type FeatureFlag struct {
@@ -402,6 +411,21 @@ type Playlist struct {
 	Year        sql.NullInt32
 	SongCount   int32
 	CreatedAt   time.Time
+	NameTsv     interface{}
+}
+
+type PlaylistSearchViewV1 struct {
+	Uuid          uuid.UUID
+	Name          string
+	Description   string
+	IsPublic      bool
+	CoverFileID   sql.NullInt64
+	CoverFilePath sql.NullString
+	SongCount     int32
+	Year          sql.NullInt32
+	CreatedAt     time.Time
+	NameTsv       interface{}
+	ArtistInfo    json.RawMessage
 }
 
 type PlaylistSong struct {

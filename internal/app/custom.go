@@ -38,6 +38,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/transport/home_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/notification_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/playlist_api_impl"
+	"go.zpotify.ru/zpotify/internal/transport/search_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/song_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/grant_access"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/grant_creator_access"
@@ -67,6 +68,7 @@ type Custom struct {
 	SongApiImpl      *song_api_impl.Impl
 	HomeApiImpl      *home_api_impl.Impl
 	NotificationImpl *notification_api_impl.Impl
+	SearchApiImpl    *search_api_impl.Impl
 
 	ServerManager *transport.ServersManager
 }
@@ -145,6 +147,7 @@ func (c *Custom) Init(app *App) (err error) {
 	c.SongApiImpl = song_api_impl.New(c.Service)
 	c.HomeApiImpl = home_api_impl.New(c.Service)
 	c.NotificationImpl = notification_api_impl.New(c.Service)
+	c.SearchApiImpl = search_api_impl.New(c.Service)
 
 	c.ServerManager, err = transport.NewServerManager(app.Ctx, app.MASTER)
 	if err != nil {
@@ -180,6 +183,7 @@ func (c *Custom) Init(app *App) (err error) {
 		c.PlaylistApiImpl,
 		c.HomeApiImpl,
 		c.NotificationImpl,
+		c.SearchApiImpl,
 	)
 
 	c.ServerManager.AddHttpHandler(docs.Swagger())

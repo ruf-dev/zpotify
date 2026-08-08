@@ -75,6 +75,52 @@ func TestArtistsService_GetArtistPage_SetsCanEditFromUserPermissions(t *testing.
 	}
 }
 
+func TestArtistsService_Search_DelegatesToStorage(t *testing.T) {
+	expected := []domain.ArtistsBase{{Uuid: "artist-uuid", Name: "Some Artist"}}
+
+	var capturedQuery string
+	var capturedLimit, capturedOffset uint64
+	fakeArtist := &fakeArtistStorage{
+		searchFn: func(_ context.Context, query string, limit, offset uint64) ([]domain.ArtistSearchResult, error) {
+			capturedQuery = query
+			capturedLimit = limit
+			capturedOffset = offset
+
+			results := make([]domain.ArtistSearchResult, len(expected))
+			for i, a := range expected {
+				results[i] = domain.ArtistSearchResult{ArtistsBase: a, Score: 0.75}
+			}
+			return results, nil
+		},
+	}
+
+	svc := &ArtistsService{artistStorage: fakeArtist}
+
+	results, err := svc.Search(context.Background(), "some", 20, 5)
+	require.NoError(t, err)
+
+	assert.Equal(t, "some", capturedQuery)
+	assert.Equal(t, uint64(20), capturedLimit)
+	assert.Equal(t, uint64(5), capturedOffset)
+
+	require.Len(t, results, 1)
+	assert.Equal(t, "artist-uuid", results[0].Uuid)
+	assert.Equal(t, 0.75, results[0].Score)
+}
+
+func TestArtistsService_Search_PropagatesStorageError(t *testing.T) {
+	fakeArtist := &fakeArtistStorage{
+		searchFn: func(_ context.Context, _ string, _, _ uint64) ([]domain.ArtistSearchResult, error) {
+			return nil, assert.AnError
+		},
+	}
+
+	svc := &ArtistsService{artistStorage: fakeArtist}
+
+	_, err := svc.Search(context.Background(), "some", 20, 0)
+	require.Error(t, err)
+}
+
 func TestArtistsService_GetArtistPage_UsesRoleAndStandaloneFiltersPerRow(t *testing.T) {
 	fakeArtist := &fakeArtistStorage{
 		getFn: func(_ context.Context, artistUuid string, _ int64) (domain.Artist, error) {

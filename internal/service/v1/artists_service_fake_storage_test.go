@@ -17,6 +17,7 @@ type fakeArtistStorage struct {
 	updateFn                      func(ctx context.Context, params domain.UpdateArtistParams) error
 	updateAvatarFileIdFn          func(ctx context.Context, artistUuid string, fileId int64) error
 	updateBackgroundCoverFileIdFn func(ctx context.Context, artistUuid string, fileId int64) error
+	searchFn                      func(ctx context.Context, query string, limit, offset uint64) ([]domain.ArtistSearchResult, error)
 }
 
 func (f *fakeArtistStorage) Return(_ context.Context, _ []string) ([]domain.ArtistsBase, error) {
@@ -59,6 +60,13 @@ func (f *fakeArtistStorage) LikeArtist(_ context.Context, _ int64, _ string) err
 	return nil
 }
 
+func (f *fakeArtistStorage) Search(ctx context.Context, query string, limit, offset uint64) ([]domain.ArtistSearchResult, error) {
+	if f.searchFn == nil {
+		return nil, nil
+	}
+	return f.searchFn(ctx, query, limit, offset)
+}
+
 func (f *fakeArtistStorage) UnlikeArtist(_ context.Context, _ int64, _ string) error {
 	return nil
 }
@@ -71,7 +79,8 @@ func (f *fakeArtistStorage) WithTx(_ *sql.Tx) storage.ArtistStorage {
 // Only List is exercised by ArtistsService tests; every other method is a
 // harmless no-op/zero-value implementation to satisfy the interface.
 type fakePlaylistStorage struct {
-	listFn func(ctx context.Context, req domain.ListPlaylists) ([]domain.Playlist, error)
+	listFn   func(ctx context.Context, req domain.ListPlaylists) ([]domain.Playlist, error)
+	searchFn func(ctx context.Context, query string, limit, offset uint64) ([]domain.PlaylistSearchResult, error)
 }
 
 func (f *fakePlaylistStorage) Create(_ context.Context, _ domain.CreatePlaylistParams, _ int64) (string, error) {
@@ -147,6 +156,13 @@ func (f *fakePlaylistStorage) CountPlaylists(_ context.Context, _ domain.ListPla
 
 func (f *fakePlaylistStorage) GetOwnerAndVisibility(_ context.Context, _ string) (int64, bool, error) {
 	return 0, false, nil
+}
+
+func (f *fakePlaylistStorage) Search(ctx context.Context, query string, limit, offset uint64) ([]domain.PlaylistSearchResult, error) {
+	if f.searchFn == nil {
+		return nil, nil
+	}
+	return f.searchFn(ctx, query, limit, offset)
 }
 
 func (f *fakePlaylistStorage) WithTx(_ *sql.Tx) storage.PlaylistStorage {

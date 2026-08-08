@@ -48,6 +48,7 @@ type Querier interface {
 	RemoveSongFromPlaylist(ctx context.Context, arg RemoveSongFromPlaylistParams) error
 	SaveUserPermissions(ctx context.Context, arg SaveUserPermissionsParams) error
 	SaveUserSettings(ctx context.Context, arg SaveUserSettingsParams) error
+	SearchPlaylistsByName(ctx context.Context, arg SearchPlaylistsByNameParams) ([]SearchPlaylistsByNameRow, error)
 	SetSongOrderInPlaylist(ctx context.Context, arg SetSongOrderInPlaylistParams) error
 	SetUserLikedPlaylist(ctx context.Context, arg SetUserLikedPlaylistParams) error
 	UpdateFile(ctx context.Context, arg UpdateFileParams) error

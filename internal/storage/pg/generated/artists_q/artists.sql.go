@@ -7,6 +7,7 @@ package artists_q
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -25,6 +26,58 @@ type LikeArtistParams struct {
 func (q *Queries) LikeArtist(ctx context.Context, arg LikeArtistParams) error {
 	_, err := q.db.ExecContext(ctx, likeArtist, arg.UserID, arg.ArtistID)
 	return err
+}
+
+const searchArtistsByName = `-- name: SearchArtistsByName :many
+SELECT uuid,
+       name,
+       created_at,
+       ts_rank(name_tsv, to_tsquery('simple', $1::text)) AS score
+FROM artist_search_view_v1
+WHERE name_tsv @@ to_tsquery('simple', $1::text)
+ORDER BY ts_rank(name_tsv, to_tsquery('simple', $1::text)) DESC, uuid
+LIMIT $3 OFFSET $2
+`
+
+type SearchArtistsByNameParams struct {
+	Query  string
+	Offset int32
+	Limit  int32
+}
+
+type SearchArtistsByNameRow struct {
+	Uuid      uuid.UUID
+	Name      string
+	CreatedAt time.Time
+	Score     float32
+}
+
+func (q *Queries) SearchArtistsByName(ctx context.Context, arg SearchArtistsByNameParams) ([]SearchArtistsByNameRow, error) {
+	rows, err := q.db.QueryContext(ctx, searchArtistsByName, arg.Query, arg.Offset, arg.Limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []SearchArtistsByNameRow{}
+	for rows.Next() {
+		var i SearchArtistsByNameRow
+		if err := rows.Scan(
+			&i.Uuid,
+			&i.Name,
+			&i.CreatedAt,
+			&i.Score,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const unlikeArtist = `-- name: UnlikeArtist :exec

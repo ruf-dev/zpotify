@@ -57,3 +57,11 @@ type ListSongsByArtist struct {
 	StandaloneOnly bool
 	Limit          uint64
 }
+
+// ArtistSearchResult pairs an artist with its full-text search relevance
+// rank. Score is only meaningful for results coming out of
+// ArtistStorage.Search / ArtistsService.Search.
+type ArtistSearchResult struct {
+	ArtistsBase
+	Score float64
+}

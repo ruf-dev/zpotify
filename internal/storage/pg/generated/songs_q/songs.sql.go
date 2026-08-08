@@ -201,7 +201,8 @@ SELECT id,
        file_path,
        file_id,
        artist_info,
-       cover_file_path
+       cover_file_path,
+       ts_rank(title_tsv, to_tsquery('simple', $1::text)) AS score
 FROM song_search_view_v2
 WHERE title_tsv @@ to_tsquery('simple', $1::text)
 ORDER BY ts_rank(title_tsv, to_tsquery('simple', $1::text)) DESC, id
@@ -223,6 +224,7 @@ type SearchSongsByTitleRow struct {
 	FileID        int64
 	ArtistInfo    json.RawMessage
 	CoverFilePath sql.NullString
+	Score         float32
 }
 
 func (q *Queries) SearchSongsByTitle(ctx context.Context, arg SearchSongsByTitleParams) ([]SearchSongsByTitleRow, error) {
@@ -243,6 +245,7 @@ func (q *Queries) SearchSongsByTitle(ctx context.Context, arg SearchSongsByTitle
 			&i.FileID,
 			&i.ArtistInfo,
 			&i.CoverFilePath,
+			&i.Score,
 		); err != nil {
 			return nil, err
 		}

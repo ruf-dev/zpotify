@@ -24,6 +24,11 @@
     margin-bottom: var(--space-4xl);
 }
 
+.TrackList {
+    display: flex;
+    flex-direction: column;
+}
+
 .ArtistGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));

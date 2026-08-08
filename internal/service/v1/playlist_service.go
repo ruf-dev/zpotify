@@ -458,6 +458,29 @@ func (p *PlaylistService) List(ctx context.Context, req domain.ListPlaylists) (d
 	return result, nil
 }
 
+// Search finds playlists/albums by name, ranked by full-text relevance, and
+// splits results into albums (results with artists attached) vs plain
+// playlists (results without any), per playlist_search_view_v1's
+// artist_info discriminator - there is no separate boolean column.
+func (p *PlaylistService) Search(ctx context.Context, query string, limit, offset uint64) (albums, playlists []domain.PlaylistSearchResult, err error) {
+	results, err := p.playlistStorage.Search(ctx, query, limit, offset)
+	if err != nil {
+		return nil, nil, rerrors.Wrap(err, "error searching playlists by name")
+	}
+
+	for i := range results {
+		p.resolveCoverPath(ctx, &results[i].Playlist)
+
+		if len(results[i].Artists) > 0 {
+			albums = append(albums, results[i])
+		} else {
+			playlists = append(playlists, results[i])
+		}
+	}
+
+	return albums, playlists, nil
+}
+
 // validateAlbumTags rejects album_version tags that are missing their required
 // metadata or that point at a parent playlist which doesn't look like a base
 // album (no artists) or is itself a version (no version-of-a-version chains).

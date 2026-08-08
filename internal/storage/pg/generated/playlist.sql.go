@@ -8,6 +8,7 @@ package querier
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 
 	"github.com/google/uuid"
 )
@@ -303,6 +304,76 @@ type RemoveSongFromPlaylistParams struct {
 func (q *Queries) RemoveSongFromPlaylist(ctx context.Context, arg RemoveSongFromPlaylistParams) error {
 	_, err := q.db.ExecContext(ctx, removeSongFromPlaylist, arg.Uuid, arg.SongID)
 	return err
+}
+
+const searchPlaylistsByName = `-- name: SearchPlaylistsByName :many
+SELECT uuid,
+       name,
+       description,
+       is_public,
+       cover_file_id,
+       cover_file_path,
+       song_count,
+       year,
+       artist_info,
+       ts_rank(name_tsv, to_tsquery('simple', $1::text)) AS score
+FROM playlist_search_view_v1
+WHERE name_tsv @@ to_tsquery('simple', $1::text)
+ORDER BY ts_rank(name_tsv, to_tsquery('simple', $1::text)) DESC, uuid
+LIMIT $3 OFFSET $2
+`
+
+type SearchPlaylistsByNameParams struct {
+	Query  string
+	Offset int32
+	Limit  int32
+}
+
+type SearchPlaylistsByNameRow struct {
+	Uuid          uuid.UUID
+	Name          string
+	Description   string
+	IsPublic      bool
+	CoverFileID   sql.NullInt64
+	CoverFilePath sql.NullString
+	SongCount     int32
+	Year          sql.NullInt32
+	ArtistInfo    json.RawMessage
+	Score         float32
+}
+
+func (q *Queries) SearchPlaylistsByName(ctx context.Context, arg SearchPlaylistsByNameParams) ([]SearchPlaylistsByNameRow, error) {
+	rows, err := q.db.QueryContext(ctx, searchPlaylistsByName, arg.Query, arg.Offset, arg.Limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []SearchPlaylistsByNameRow{}
+	for rows.Next() {
+		var i SearchPlaylistsByNameRow
+		if err := rows.Scan(
+			&i.Uuid,
+			&i.Name,
+			&i.Description,
+			&i.IsPublic,
+			&i.CoverFileID,
+			&i.CoverFilePath,
+			&i.SongCount,
+			&i.Year,
+			&i.ArtistInfo,
+			&i.Score,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const setSongOrderInPlaylist = `-- name: SetSongOrderInPlaylist :exec

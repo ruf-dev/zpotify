@@ -7,35 +7,21 @@ import type {
     SearchFilters,
     SearchPlaylistResult,
     SearchResponse,
+    SearchTrackResult,
 } from '@/shared/api/SearchService.ts';
 import { searchService } from '@/shared/api/SearchService.ts';
 import type { FilterKey } from '@/pages/main/search/components/FilterChips/FilterChips.tsx';
 
 const DEBOUNCE_MS = 250;
 
-const EMPTY_RESPONSE: SearchResponse = { artists: [], albums: [], playlists: [] };
-
-function matchesArtist(item: SearchArtistResult, q: string): boolean {
-    return q.length === 0 || item.name.toLowerCase().includes(q);
-}
-
-function matchesAlbum(item: SearchAlbumResult, q: string): boolean {
-    return (
-        q.length === 0 ||
-        item.name.toLowerCase().includes(q) ||
-        item.artists.some((a) => a.name.toLowerCase().includes(q))
-    );
-}
-
-function matchesPlaylist(item: SearchPlaylistResult, q: string): boolean {
-    return q.length === 0 || item.name.toLowerCase().includes(q) || (item.description ?? '').toLowerCase().includes(q);
-}
+const EMPTY_RESPONSE: SearchResponse = { tracks: [], artists: [], albums: [], playlists: [] };
 
 interface UseSearchPageResult {
     query: string;
     filters: SearchFilters;
     toggleFilter: (key: FilterKey) => void;
     loading: boolean;
+    visibleTracks: SearchTrackResult[];
     visibleArtists: SearchArtistResult[];
     visibleAlbums: SearchAlbumResult[];
     visiblePlaylists: SearchPlaylistResult[];
@@ -44,7 +30,12 @@ interface UseSearchPageResult {
 
 export function useSearchPage(): UseSearchPageResult {
     const query = useSearchQuery((state) => state.query);
-    const [filters, setFilters] = useState<SearchFilters>({ artists: true, albums: true, playlists: true });
+    const [filters, setFilters] = useState<SearchFilters>({
+        tracks: true,
+        artists: true,
+        albums: true,
+        playlists: true,
+    });
     const [response, setResponse] = useState<SearchResponse>(EMPTY_RESPONSE);
     const [loading, setLoading] = useState(false);
     const reqIdRef = useRef(0);
@@ -81,17 +72,18 @@ export function useSearchPage(): UseSearchPageResult {
         });
     }
 
-    const q = query.trim().toLowerCase();
-    const visibleArtists = filters.artists ? response.artists.filter((a) => matchesArtist(a, q)) : [];
-    const visibleAlbums = filters.albums ? response.albums.filter((a) => matchesAlbum(a, q)) : [];
-    const visiblePlaylists = filters.playlists ? response.playlists.filter((p) => matchesPlaylist(p, q)) : [];
-    const totalResults = visibleArtists.length + visibleAlbums.length + visiblePlaylists.length;
+    const visibleTracks = filters.tracks ? response.tracks : [];
+    const visibleArtists = filters.artists ? response.artists : [];
+    const visibleAlbums = filters.albums ? response.albums : [];
+    const visiblePlaylists = filters.playlists ? response.playlists : [];
+    const totalResults = visibleTracks.length + visibleArtists.length + visibleAlbums.length + visiblePlaylists.length;
 
     return {
         query,
         filters,
         toggleFilter,
         loading,
+        visibleTracks,
         visibleArtists,
         visibleAlbums,
         visiblePlaylists,

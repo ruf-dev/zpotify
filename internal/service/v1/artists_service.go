@@ -54,6 +54,18 @@ func (s *ArtistsService) List(ctx context.Context, req domain.ListArtists) ([]do
 	return artists, nil
 }
 
+// Search finds artists by name, ranked by full-text relevance. Mirrors
+// AudioService.Search's shape (thin passthrough to storage, no default limit
+// applied here - callers/SearchService own that policy).
+func (s *ArtistsService) Search(ctx context.Context, query string, limit, offset uint64) ([]domain.ArtistSearchResult, error) {
+	artists, err := s.artistStorage.Search(ctx, query, limit, offset)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error searching artists by name")
+	}
+
+	return artists, nil
+}
+
 func (s *ArtistsService) Create(ctx context.Context, name string) (domain.ArtistsBase, error) {
 	artists, err := s.artistStorage.Return(ctx, []string{name})
 	if err != nil {

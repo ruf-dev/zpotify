@@ -98,6 +98,9 @@ type Song struct {
 	FileMeta
 	Artists []ArtistsBase
 	Tags    []SongTag
+	// Score is the full-text search relevance rank. Only populated by
+	// SongStorage.SearchByTitle / AudioService.Search - zero everywhere else.
+	Score float64
 }
 
 type SongTag struct {

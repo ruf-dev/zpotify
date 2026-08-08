@@ -347,6 +347,38 @@ func (a *ArtistsStorage) UnlikeArtist(ctx context.Context, userId int64, artistU
 	return nil
 }
 
+func (a *ArtistsStorage) Search(ctx context.Context, query string, limit, offset uint64) ([]domain.ArtistSearchResult, error) {
+	tsQuery := toPrefixTSQuery(query)
+	if tsQuery == "" {
+		return []domain.ArtistSearchResult{}, nil
+	}
+
+	params := artists_q.SearchArtistsByNameParams{
+		Query:  tsQuery,
+		Limit:  int32(limit),
+		Offset: int32(offset),
+	}
+
+	rows, err := a.querier.SearchArtistsByName(ctx, params)
+	if err != nil {
+		return nil, wrapPgErr(err)
+	}
+
+	artists := make([]domain.ArtistSearchResult, len(rows))
+	for i, row := range rows {
+		artists[i] = domain.ArtistSearchResult{
+			ArtistsBase: domain.ArtistsBase{
+				Uuid:      row.Uuid.String(),
+				Name:      row.Name,
+				CreatedAt: row.CreatedAt,
+			},
+			Score: float64(row.Score),
+		}
+	}
+
+	return artists, nil
+}
+
 func (a *ArtistsStorage) WithTx(tx *sql.Tx) storage.ArtistStorage {
 	return &ArtistsStorage{
 		db:      &txWrapper{tx},

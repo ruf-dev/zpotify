@@ -10,6 +10,7 @@ import (
 
 type Querier interface {
 	LikeArtist(ctx context.Context, arg LikeArtistParams) error
+	SearchArtistsByName(ctx context.Context, arg SearchArtistsByNameParams) ([]SearchArtistsByNameRow, error)
 	UnlikeArtist(ctx context.Context, arg UnlikeArtistParams) error
 }
 

@@ -1,3 +1,14 @@
+import {
+    SearchAPI,
+    type SearchRequest,
+    type SearchResponse as WireSearchResponse,
+    type SearchFilters as ProtoSearchFilters,
+    type Paging,
+} from '@/app/api/zpotify';
+import { BaseService } from '@/shared/api/BaseService.ts';
+import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
+import { uuidToSeed } from '@/shared/api/PlaylistService.ts';
+
 export interface SearchArtistResult {
     uuid: string;
     name: string;
@@ -24,107 +35,112 @@ export interface SearchPlaylistResult {
     tracks: { title: string; artist: string }[];
 }
 
+export interface SearchTrackResult {
+    uuid: string;
+    title: string;
+    artists: Array<{ uuid?: string; name: string }>;
+    coverUrl?: string;
+    durationSec: number;
+    filePath?: string;
+}
+
 export interface SearchFilters {
+    tracks: boolean;
     artists: boolean;
     albums: boolean;
     playlists: boolean;
 }
 
 export interface SearchResponse {
+    tracks: SearchTrackResult[];
     artists: SearchArtistResult[];
     albums: SearchAlbumResult[];
     playlists: SearchPlaylistResult[];
 }
 
-const MOCK_ARTISTS: SearchArtistResult[] = [
-    { uuid: 'artist-1', name: 'Axiom Drive', seed: 1, trackCount: 14 },
-    { uuid: 'artist-2', name: 'Vela', seed: 2, trackCount: 9 },
-    { uuid: 'artist-3', name: 'Lumine', seed: 3, trackCount: 18 },
-    { uuid: 'artist-4', name: 'Cold Type', seed: 4, trackCount: 6 },
-    { uuid: 'artist-5', name: 'Deep Signal', seed: 7, trackCount: 41 },
-];
+const DEFAULT_PAGE_LIMIT = 20;
 
-const MOCK_ALBUMS: SearchAlbumResult[] = [
-    { uuid: 'album-1', name: 'Dark Matter', artists: [{ uuid: 'artist-1', name: 'Axiom Drive' }], seed: 1 },
-    { uuid: 'album-2', name: 'Structures', artists: [{ uuid: 'artist-2', name: 'Vela' }], seed: 2 },
-    { uuid: 'album-3', name: 'Soft Machinery', artists: [{ uuid: 'artist-3', name: 'Lumine' }], seed: 3 },
-    { uuid: 'album-4', name: 'Threshold EP', artists: [{ uuid: 'artist-4', name: 'Cold Type' }], seed: 4 },
-    { uuid: 'album-5', name: 'Depths', artists: [{ uuid: 'artist-5', name: 'Deep Signal' }], seed: 5 },
-];
-
-const MOCK_PLAYLISTS: SearchPlaylistResult[] = [
-    {
-        uuid: 'playlist-1',
-        name: 'Late Night Coding',
-        songCount: 34,
-        description: 'ruf',
-        seed: 3,
-        tracks: [
-            { title: 'Night Drive', artist: 'Axiom Drive' },
-            { title: 'Static Bloom', artist: 'Vela' },
-            { title: 'Glass Halls', artist: 'Lumine' },
-        ],
-    },
-    {
-        uuid: 'playlist-2',
-        name: 'Focus Mode',
-        songCount: 21,
-        description: 'ruf',
-        seed: 5,
-        tracks: [
-            { title: 'Signal Path', artist: 'Deep Signal' },
-            { title: 'Low Light', artist: 'Cold Type' },
-        ],
-    },
-    {
-        uuid: 'playlist-3',
-        name: 'Soft Architecture',
-        songCount: 18,
-        description: 'zpotify editorial',
-        seed: 2,
-        tracks: [
-            { title: 'Frame', artist: 'Vela' },
-            { title: 'Corridor', artist: 'Lumine' },
-        ],
-    },
-    {
-        uuid: 'playlist-4',
-        name: 'Raw Frequencies',
-        songCount: 44,
-        description: 'noisefloor.club',
-        seed: 6,
-        tracks: [
-            { title: 'Static Bloom', artist: 'Vela' },
-            { title: 'Undertow', artist: 'Deep Signal' },
-        ],
-    },
-    {
-        uuid: 'playlist-5',
-        name: 'Morning Ritual',
-        songCount: 12,
-        description: 'ruf',
-        seed: 4,
-        tracks: [
-            { title: 'First Light', artist: 'Cold Type' },
-            { title: 'Slow Wake', artist: 'Axiom Drive' },
-        ],
-    },
-];
+type WireTrackResult = NonNullable<WireSearchResponse['tracks']>[number];
+type WireArtistResult = NonNullable<WireSearchResponse['artists']>[number];
+type WireAlbumResult = NonNullable<WireSearchResponse['albums']>[number];
+type WirePlaylistResult = NonNullable<WireSearchResponse['playlists']>[number];
 
 export interface ISearchService {
     Search(query: string, filters: SearchFilters): Promise<SearchResponse>;
 }
 
-export class SearchService implements ISearchService {
+export class SearchService extends BaseService implements ISearchService {
     async Search(query: string, filters: SearchFilters): Promise<SearchResponse> {
-        // TODO: no unified search endpoint exists server-side yet — SongAPI.SearchSongs and
-        // ArtistsAPI.ListArtist(filters.search) exist individually, and ListPlaylistsRequest has
-        // no search field at all. This stub returns constant mock data; replace with a real call
-        // once a combined artists/albums/playlists search endpoint is added to the backend.
-        void query;
+        // filters here only controls which sections are shown client-side (see useSearchPage);
+        // the backend's SearchFilters.tags is reserved for future genre/mood chips, always sent empty.
         void filters;
-        return Promise.resolve({ artists: MOCK_ARTISTS, albums: MOCK_ALBUMS, playlists: MOCK_PLAYLISTS });
+        const protoFilters: ProtoSearchFilters = { tags: [] };
+        const req: SearchRequest = {
+            query,
+            paging: { limit: DEFAULT_PAGE_LIMIT.toString(), offset: '0' } as Paging,
+            filters: protoFilters,
+        };
+
+        return this.executeAuthApiCall((initReq) => SearchAPI.Search(req, initReq)).then(toSearchResponse);
     }
+}
+
+function toSearchResponse(resp: WireSearchResponse): SearchResponse {
+    return {
+        tracks: (resp.tracks ?? []).map(toSearchTrackResult),
+        artists: (resp.artists ?? []).map(toSearchArtistResult),
+        albums: (resp.albums ?? []).map(toSearchAlbumResult),
+        playlists: (resp.playlists ?? []).map(toSearchPlaylistResult),
+    };
+}
+
+function toSearchTrackResult(t: WireTrackResult): SearchTrackResult {
+    const song = t.song;
+    return {
+        uuid: song?.id ?? '',
+        title: song?.title ?? '',
+        artists: (song?.artists ?? []).filter((a) => a.name).map((a) => ({ uuid: a.uuid, name: a.name ?? '' })),
+        coverUrl: buildCoverUrl(song?.coverFilePath),
+        durationSec: song?.durationSec ?? 0,
+        filePath: song?.filePath,
+    };
+}
+
+function toSearchArtistResult(a: WireArtistResult): SearchArtistResult {
+    const uuid = a.artist?.uuid ?? '';
+    return {
+        uuid,
+        name: a.artist?.name ?? '',
+        seed: uuidToSeed(uuid),
+    };
+}
+
+function toSearchAlbumResult(a: WireAlbumResult): SearchAlbumResult {
+    const playlist = a.playlist;
+    const uuid = playlist?.uuid ?? '';
+    return {
+        uuid,
+        name: playlist?.name ?? '',
+        artists: (playlist?.artists ?? [])
+            .filter((ar): ar is { uuid: string; name: string } => !!ar.uuid && !!ar.name)
+            .map((ar) => ({ uuid: ar.uuid, name: ar.name })),
+        seed: uuidToSeed(uuid),
+        coverUrl: buildCoverUrl(playlist?.coverFilePath),
+    };
+}
+
+function toSearchPlaylistResult(p: WirePlaylistResult): SearchPlaylistResult {
+    const playlist = p.playlist;
+    const uuid = playlist?.uuid ?? '';
+    return {
+        uuid,
+        name: playlist?.name ?? '',
+        songCount: playlist?.songCount,
+        description: playlist?.description,
+        seed: uuidToSeed(uuid),
+        coverUrl: buildCoverUrl(playlist?.coverFilePath),
+        tracks: [],
+    };
 }
 
 export const searchService = new SearchService();

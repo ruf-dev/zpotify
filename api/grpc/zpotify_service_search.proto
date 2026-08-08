@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package zpotify_api;
+
+import "google/api/annotations.proto";
+import "npm.proto";
+import "zpotify_common.proto";
+
+option go_package = "/zpotify_api;zpotify_api";
+option (npm_package) = "@zpotify/api";
+option java_package = "ru.zpotify.api.grpc";
+option java_multiple_files = true;
+
+service SearchAPI {
+  rpc Search(Search.Request) returns (Search.Response) {
+    option (google.api.http) = {
+      post: "/api/search"
+      body: "*"
+    };
+  };
+}
+
+message Search {
+  message Request {
+    string query = 1;
+    Paging paging = 2;
+    SearchFilters filters = 3;
+  }
+
+  message Response {
+    repeated TrackResult tracks = 1;
+    repeated ArtistResult artists = 2;
+    repeated AlbumResult albums = 3;
+    repeated PlaylistResult playlists = 4;
+  }
+
+  message TrackResult {
+    SongBase song = 1;
+    double score = 2;
+  }
+
+  message ArtistResult {
+    ArtistBase artist = 1;
+    double score = 2;
+  }
+
+  message AlbumResult {
+    Playlist playlist = 1;
+    double score = 2;
+  }
+
+  message PlaylistResult {
+    Playlist playlist = 1;
+    double score = 2;
+  }
+}
+
+message SearchFilters {
+  // Reserved for future genre/mood facet chips (reuses AlbumTag kinds). Unused server-side in v1 — accepted but ignored.
+  repeated string tags = 1;
+}

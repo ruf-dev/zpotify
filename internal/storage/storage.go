@@ -130,6 +130,9 @@ type ArtistStorage interface {
 
 	LikeArtist(ctx context.Context, userId int64, artistUuid string) error
 	UnlikeArtist(ctx context.Context, userId int64, artistUuid string) error
+
+	// Search finds artists by full-text prefix match on name, ranked by relevance.
+	Search(ctx context.Context, query string, limit, offset uint64) ([]domain.ArtistSearchResult, error)
 }
 
 type PlaylistStorage interface {
@@ -158,6 +161,11 @@ type PlaylistStorage interface {
 	CountPlaylists(ctx context.Context, req domain.ListPlaylists) (uint32, error)
 
 	GetOwnerAndVisibility(ctx context.Context, playlistUuid string) (ownerId int64, isPublic bool, err error)
+
+	// Search finds playlists/albums by full-text prefix match on name, ranked
+	// by relevance. Whether a result is an album or a plain playlist is
+	// determined by the caller from PlaylistSearchResult.Artists.
+	Search(ctx context.Context, query string, limit, offset uint64) ([]domain.PlaylistSearchResult, error)
 }
 
 type HomeStorage interface {

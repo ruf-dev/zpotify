@@ -111,3 +111,13 @@ type ListPlaylistsResult struct {
 	Playlists []Playlist
 	Total     uint32
 }
+
+// PlaylistSearchResult pairs a playlist/album with its full-text search
+// relevance rank. Score is only meaningful for results coming out of
+// PlaylistStorage.Search / PlaylistService.Search. Whether a result is an
+// album or a plain playlist is determined by whether Artists is non-empty
+// (see playlist_search_view_v1) - there is no separate discriminator field.
+type PlaylistSearchResult struct {
+	Playlist
+	Score float64
+}

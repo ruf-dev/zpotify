@@ -9,6 +9,7 @@ export * from './zpotify_service_files.pb';
 export * from './zpotify_service_home.pb';
 export * from './zpotify_service_notification.pb';
 export * from './zpotify_service_playlist.pb';
+export * from './zpotify_service_search.pb';
 export * from './zpotify_service_song.pb';
 export * from './zpotify_service_user.pb';
 
@@ -20,6 +21,7 @@ export { FileMetaAPI } from './zpotify_service_files.pb';
 export { HomeAPI } from './zpotify_service_home.pb';
 export { NotificationAPI } from './zpotify_service_notification.pb';
 export { PlaylistAPI } from './zpotify_service_playlist.pb';
+export { SearchAPI } from './zpotify_service_search.pb';
 export { SongAPI } from './zpotify_service_song.pb';
 export { UserAPI } from './zpotify_service_user.pb';
 

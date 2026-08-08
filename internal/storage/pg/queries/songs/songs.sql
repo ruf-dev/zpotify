@@ -45,7 +45,8 @@ SELECT id,
        file_path,
        file_id,
        artist_info,
-       cover_file_path
+       cover_file_path,
+       ts_rank(title_tsv, to_tsquery('simple', @query::text)) AS score
 FROM song_search_view_v2
 WHERE title_tsv @@ to_tsquery('simple', @query::text)
 ORDER BY ts_rank(title_tsv, to_tsquery('simple', @query::text)) DESC, id
