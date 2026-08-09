@@ -132,6 +132,7 @@ class AudioPlayerImpl implements AudioPlayer {
     private currentObjectUrl: string | null = null;
     private opToken = 0;
     private loadedTrackPath: string | null = null;
+    private preloadedNextForTrack: string | null = null;
 
     constructor() {
         this.audio = new Audio();
@@ -161,11 +162,13 @@ class AudioPlayerImpl implements AudioPlayer {
     private setupEventListeners() {
         this.audio.addEventListener('timeupdate', () => {
             if (!this.audio.duration) return;
+            const progress = (this.audio.currentTime / this.audio.duration) * 100;
             useAudioStore.setState({
-                progress: (this.audio.currentTime / this.audio.duration) * 100,
+                progress,
                 currentTime: this.audio.currentTime,
                 duration: this.audio.duration,
             });
+            this.maybePreloadNextTrack(progress);
         });
 
         this.audio.addEventListener('loadedmetadata', () => {
@@ -325,23 +328,38 @@ class AudioPlayerImpl implements AudioPlayer {
         }
     }
 
+    private maybePreloadNextTrack(progress: number): void {
+        const { preloadNextTrack, preloadNextTrackPercent } = useAudioSettings.getState();
+        if (!preloadNextTrack) return;
+        if (this.loadedTrackPath === null) return;
+        if (this.loadedTrackPath === this.preloadedNextForTrack) return;
+        if (progress < preloadNextTrackPercent) return;
+
+        this.preloadedNextForTrack = this.loadedTrackPath;
+
+        const { queue, queueIndex } = useAudioStore.getState();
+        const next = queue[queueIndex + 1];
+        if (!next) return;
+
+        cacheAudio(getTrackUrl(next.filePath)).catch(() => {});
+    }
+
     async preload(trackPath: string): Promise<void> {
         const token = ++this.opToken;
         const trackUrl = getTrackUrl(trackPath);
 
         this.revokeCurrentObjectUrl();
+        this.preloadedNextForTrack = null;
 
         useAudioStore.setState({ trackPath, isLoading: true, progress: 0, currentTime: 0, duration: 0 });
 
         const cacheSongs = useAudioSettings.getState().cacheSongs;
         let src = trackUrl;
 
-        if (cacheSongs) {
-            const cachedBlob = await getCachedAudio(trackUrl);
-            if (cachedBlob) {
-                src = URL.createObjectURL(cachedBlob);
-                this.currentObjectUrl = src;
-            }
+        const cachedBlob = await getCachedAudio(trackUrl);
+        if (cachedBlob) {
+            src = URL.createObjectURL(cachedBlob);
+            this.currentObjectUrl = src;
         }
 
         if (token !== this.opToken) return;

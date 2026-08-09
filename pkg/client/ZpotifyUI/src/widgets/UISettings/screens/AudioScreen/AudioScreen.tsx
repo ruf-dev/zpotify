@@ -1,4 +1,4 @@
-import { Button, ConfirmDialog, Toggle } from '@vervstack/chures';
+import { Button, ConfirmDialog, Input, Toggle } from '@vervstack/chures';
 
 import cls from '@/widgets/UISettings/UISettingsWidget.module.css';
 import audioScreenCls from '@/widgets/UISettings/screens/AudioScreen/AudioScreen.module.css';
@@ -11,10 +11,23 @@ import { useCoverCacheStore } from '@/shared/model/coverCacheStore.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 
 export default function AudioScreen() {
-    const { cacheSongs, setCacheSongs } = useAudioSettings();
+    const {
+        cacheSongs,
+        setCacheSongs,
+        preloadNextTrack,
+        setPreloadNextTrack,
+        preloadNextTrackPercent,
+        setPreloadNextTrackPercent,
+    } = useAudioSettings();
     const { OpenDialog, CloseDialog } = useDialog();
     const toaster = useToaster();
     const cachedCount = useAudioCacheStore((state) => state.cachedUrls.size);
+
+    function handlePreloadPercentChange(value: string) {
+        const parsed = Number(value);
+        if (Number.isNaN(parsed)) return;
+        setPreloadNextTrackPercent(Math.min(100, Math.max(1, parsed)));
+    }
 
     function handleClearCache() {
         async function handleConfirm() {
@@ -64,6 +77,25 @@ export default function AudioScreen() {
 
     return (
         <div className={cls.SettingsGroup}>
+            <SettingsRow
+                label="Preload Next Track"
+                description="Start fetching the next queued track's audio before the current one finishes"
+            >
+                <Toggle checked={preloadNextTrack} onChange={setPreloadNextTrack} />
+            </SettingsRow>
+
+            <SettingsRow
+                label="Preload At (%)"
+                description="Progress into the current track at which preloading starts"
+            >
+                <Input
+                    value={String(preloadNextTrackPercent)}
+                    setValue={handlePreloadPercentChange}
+                    type="number"
+                    disabled={!preloadNextTrack}
+                />
+            </SettingsRow>
+
             <SettingsRow
                 label="Cache Songs"
                 description="Store played songs on this device so they don't need to be downloaded again"
