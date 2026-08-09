@@ -23,6 +23,13 @@ reload-webserver:
 client:
 	cd pkg/client/ZpotifyUI && vite
 
+# Run Go dev server and React dev server together
+serve:
+	@trap 'kill 0' EXIT; \
+	go run ./cmd/service -dev & \
+	cd pkg/client/ZpotifyUI && bun dev & \
+	wait
+
 # Build UI part of project
 client-build: codegen .build-ui
 

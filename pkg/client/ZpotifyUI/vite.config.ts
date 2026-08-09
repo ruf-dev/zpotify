@@ -41,7 +41,7 @@ export default ({ mode }: { mode: string }) => {
 
     uc.server = {
         host: true, // allows access from network IPs
-        allowedHosts: ['.loca.lt', 'localhost', '127.0.0.1'],
+        allowedHosts: ['.loca.lt', 'localhost', '127.0.0.1', ''],
     };
 
     return uc;
