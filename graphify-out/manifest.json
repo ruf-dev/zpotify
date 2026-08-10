@@ -2220,8 +2220,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/SidebarSegment.tsx": {
-    "mtime": 1785007557.3657885,
-    "ast_hash": "4ee3c14100ee12de04c615959604f2ee",
+    "mtime": 1786356564.2748272,
+    "ast_hash": "f0c6f6355d53762d9c7b5a0c4a5565b1",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/Widget/SidebarArtistsWidget/SidebarArtistsWidget.tsx": {
@@ -2855,13 +2855,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/MobileNavSegment/MobileNavSegment.tsx": {
-    "mtime": 1783919019.1194503,
-    "ast_hash": "2d0ed18bcd2d7e80a43b5791e53a89fe",
-    "semantic_hash": ""
-  },
-  "pkg/client/ZpotifyUI/src/pages/segments/MobileNavSegment/components/MobileCreateButton/MobileCreateButton.tsx": {
-    "mtime": 1783918990.4768944,
-    "ast_hash": "a5dfbdf07ae686810ff548146f9dd00f",
+    "mtime": 1786356564.2744162,
+    "ast_hash": "0e37ed94077eda54565ec0ecd19a8f4b",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/MobileNavSegment/components/MobileSearchButton/MobileSearchButton.tsx": {
