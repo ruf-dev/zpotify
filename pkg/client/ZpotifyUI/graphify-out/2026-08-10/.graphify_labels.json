@@ -69,8 +69,10 @@
   "67": "zpotify_common.pb.ts",
   "68": "supportedAudio.ts",
   "69": "ZpotifyUI Development Manifesto",
+  "70": "DropZoneIcon.tsx",
   "71": "LibraryGridScreenSkeleton.tsx",
   "72": "package.json",
+  "73": "zpotify_common.pb.ts",
   "74": "Link.ts",
   "75": "EditableText.tsx",
   "76": "React + TypeScript + Vite",
@@ -85,5 +87,11 @@
   "85": "stylelint.config.js",
   "86": "vite.config.d.ts",
   "87": "vite.config.js",
-  "88": "vite.config.ts"
+  "88": "vite.config.ts",
+  "89": "MusicFileIcon.tsx",
+  "90": "zpotify_service_feature_flags.pb.ts",
+  "91": "IdleDecoration.tsx",
+  "92": "UploadCard.tsx",
+  "93": "GeneratedAvatar.tsx",
+  "94": ".preload"
 }

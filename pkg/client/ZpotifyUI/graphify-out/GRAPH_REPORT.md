@@ -1,16 +1,16 @@
 # Graph Report - ZpotifyUI  (2026-08-10)
 
 ## Corpus Check
-- 328 files · ~59,280 words
+- 328 files · ~59,272 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1489 nodes · 3256 edges · 95 communities (86 shown, 9 thin omitted)
+- 1489 nodes · 3256 edges · 96 communities (86 shown, 10 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.52)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `362d3796`
+- Built from commit: `2bf99df9`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -101,6 +101,7 @@
 - UploadCard.tsx
 - GeneratedAvatar.tsx
 - .preload
+- DescriptionSection.tsx
 
 ## God Nodes (most connected - your core abstractions)
 1. `useToaster()` - 60 edges
@@ -129,7 +130,7 @@
 ## Import Cycles
 - 3-file cycle: `src/entities/artist/useLikedArtists.ts -> src/shared/api/ArtistsService.ts -> src/widgets/ArtistField/ArtistChipsField.tsx -> src/entities/artist/useLikedArtists.ts`
 
-## Communities (95 total, 9 thin omitted)
+## Communities (96 total, 10 thin omitted)
 
 ### Community 0 - "zpotify_service_files.pb.ts"
 Cohesion: 0.10
@@ -196,8 +197,8 @@ Cohesion: 0.40
 Nodes (4): BackButton(), BackButtonProps, NotFoundPlaylistInfoSegment(), NotFoundPlaylistInfoSegmentProps
 
 ### Community 17 - "usePlaylistInfoSegment.ts"
-Cohesion: 0.44
-Nodes (4): EditableYearProps, TrackCountLabel(), TrackCountLabelProps, PlaylistMetaRowProps
+Cohesion: 0.25
+Nodes (9): EditableAlbumName(), EditableAlbumNameProps, EditableYearProps, TrackCountLabel(), TrackCountLabelProps, PlaylistInfoSegment(), usePlaylistInfoSegment(), PlaylistMetaRow() (+1 more)
 
 ### Community 18 - "ArtistsService.ts"
 Cohesion: 0.06
@@ -360,8 +361,8 @@ Cohesion: 0.29
 Nodes (5): PlayPauseButton(), PlayPauseButtonProps, TrackRewindButton, PlayerControls(), PlayerProps
 
 ### Community 59 - "SearchPage.tsx"
-Cohesion: 0.19
-Nodes (9): AlbumTag, EditableAlbumName(), EditableAlbumNameProps, GenreChipsRow(), GenreChipsRowProps, PlaylistInfoSegment(), usePlaylistInfoSegment(), DescriptionSectionProps (+1 more)
+Cohesion: 0.67
+Nodes (3): AlbumTag, GenreChipsRow(), GenreChipsRowProps
 
 ### Community 60 - "EditableArtistPicker.tsx"
 Cohesion: 0.27
@@ -442,12 +443,12 @@ Nodes (4): AvatarProps, generateColor(), GeneratedAvatar(), generateHash()
 ## Knowledge Gaps
 - **391 isolated node(s):** `localPlugin`, `name`, `private`, `version`, `type` (+386 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **9 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `useToaster()` connect `LibraryGridScreenSkeleton.tsx` to `Dropdown.tsx`, `HomePage.ts`, `MainLayout.tsx`, `useToaster`, `usePlaylistInfoSegment.ts`, `MultitrackUploadModal.tsx`, `ArtistItem`, `CachedSongsAccordion.tsx`, `useTrackDrafts.ts`, `audioCacheStore.ts`, `LazyLoadSongsList.tsx`, `MainContent.tsx`, `InfoControls.tsx`, `BaseService.ts`, `PlaylistControls.tsx`, `InitPage.tsx`, `PrivateLockWidget.tsx`, `.ListLibrary`, `SearchPage.tsx`, `zpotify_common.pb.ts`, `supportedAudio.ts`, `EditableText.tsx`?**
+- **Why does `useToaster()` connect `LibraryGridScreenSkeleton.tsx` to `Dropdown.tsx`, `HomePage.ts`, `MainLayout.tsx`, `useToaster`, `usePlaylistInfoSegment.ts`, `MultitrackUploadModal.tsx`, `ArtistItem`, `CachedSongsAccordion.tsx`, `useTrackDrafts.ts`, `audioCacheStore.ts`, `LazyLoadSongsList.tsx`, `MainContent.tsx`, `InfoControls.tsx`, `BaseService.ts`, `PlaylistControls.tsx`, `InitPage.tsx`, `PrivateLockWidget.tsx`, `.ListLibrary`, `zpotify_common.pb.ts`, `supportedAudio.ts`, `EditableText.tsx`?**
   _High betweenness centrality (0.056) - this node is a cross-community bridge._
 - **Why does `AudioPlayerImpl` connect `AudioPlayerImpl` to `LazyLoadSongsList.tsx`, `PlayerBarSegment.tsx`, `usePlayer.ts`, `.preload`?**
   _High betweenness centrality (0.045) - this node is a cross-community bridge._
