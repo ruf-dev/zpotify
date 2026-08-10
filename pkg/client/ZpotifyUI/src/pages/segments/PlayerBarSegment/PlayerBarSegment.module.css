@@ -224,7 +224,7 @@
     pointer-events: none;
 }
 
-.ProgressFill {
+.BufferedFill {
     position: absolute;
     top: 50%;
     left: 0;
@@ -232,12 +232,20 @@
     transform: translateY(-50%);
     background: var(--color-fg-disabled);
     border-radius: 0.125rem;
-    transition: background-color var(--ease-quick), width var(--ease-quick);
+    transition: width var(--ease-quick);
     pointer-events: none;
 }
 
-.ProgressTrackWrapper:hover .ProgressFill {
-    background: var(--color-fg-accent);
+.ProgressFill {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 0.25rem;
+    transform: translateY(-50%);
+    background: var(--color-fg-primary);
+    border-radius: 0.125rem;
+    transition: background-color var(--ease-quick), width var(--ease-quick);
+    pointer-events: none;
 }
 
 /* ── Right: Now Playing Indicator ── */
@@ -311,11 +319,6 @@
 
     .ButtonsRow {
         flex: 0 0 auto;
-    }
-
-    /* Only the play/pause button remains visible on the right of row 1 */
-    .ControlButton {
-        display: none;
     }
 
     /* Volume control is not adjustable on mobile */

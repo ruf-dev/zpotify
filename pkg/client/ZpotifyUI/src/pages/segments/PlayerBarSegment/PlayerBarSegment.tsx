@@ -44,8 +44,18 @@ export default function PlayerBarSegment() {
     const navigate = useNavigate();
     const progressTrackRef = useRef<HTMLDivElement>(null);
 
-    const { isPlaying, songTitle, songArtist, songArtists, songCover, progress, currentTime, duration, trackPath } =
-        audioPlayer;
+    const {
+        isPlaying,
+        songTitle,
+        songArtist,
+        songArtists,
+        songCover,
+        progress,
+        buffered,
+        currentTime,
+        duration,
+        trackPath,
+    } = audioPlayer;
     const coverColor = computeCoverColor(songTitle);
     const isCached = useIsSongCached(trackPath);
 
@@ -188,6 +198,7 @@ export default function PlayerBarSegment() {
                 <div className={cls.ProgressRow}>
                     <span className={cls.TimeLabel}>{formatTime(currentTime)}</span>
                     <div className={cls.ProgressTrackWrapper} ref={progressTrackRef} onClick={handleProgressClick}>
+                        <div className={cls.BufferedFill} style={{ width: `${buffered}%` }} />
                         <div className={cls.ProgressFill} style={{ width: `${progress}%` }} />
                     </div>
                     <span className={cls.TimeLabel}>{formatTime(duration)}</span>

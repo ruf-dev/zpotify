@@ -54,6 +54,7 @@ export interface AudioPlayer {
 
     currentTime: number;
     duration: number;
+    buffered: number;
 
     playNext: () => void;
     playPrev: () => void;
@@ -81,6 +82,7 @@ interface AudioStoreState {
     progress: number;
     currentTime: number;
     duration: number;
+    buffered: number;
 
     queue: QueueTrack[];
     queueIndex: number;
@@ -103,6 +105,7 @@ const useAudioStore = create<AudioStoreState>()(
             progress: 0,
             currentTime: 0,
             duration: 0,
+            buffered: 0,
             queue: [],
             queueIndex: -1,
             queueSourceId: null,
@@ -169,6 +172,11 @@ class AudioPlayerImpl implements AudioPlayer {
                 duration: this.audio.duration,
             });
             this.maybePreloadNextTrack(progress);
+            this.updateBuffered();
+        });
+
+        this.audio.addEventListener('progress', () => {
+            this.updateBuffered();
         });
 
         this.audio.addEventListener('loadedmetadata', () => {
@@ -290,6 +298,10 @@ class AudioPlayerImpl implements AudioPlayer {
         return useAudioStore.getState().duration;
     }
 
+    get buffered() {
+        return useAudioStore.getState().buffered;
+    }
+
     get shuffleHash() {
         return useAudioStore.getState().shuffleHash;
     }
@@ -319,6 +331,18 @@ class AudioPlayerImpl implements AudioPlayer {
         }
 
         return useAudioStore.getState().isPlaying;
+    }
+
+    private updateBuffered(): void {
+        const buffered = this.audio.buffered;
+        if (buffered.length === 0 || !this.audio.duration) {
+            useAudioStore.setState({ buffered: 0 });
+            return;
+        }
+
+        const bufferedEnd = buffered.end(buffered.length - 1);
+        const percent = (bufferedEnd / this.audio.duration) * 100;
+        useAudioStore.setState({ buffered: Math.max(0, Math.min(100, percent)) });
     }
 
     private revokeCurrentObjectUrl(): void {
@@ -351,7 +375,7 @@ class AudioPlayerImpl implements AudioPlayer {
         this.revokeCurrentObjectUrl();
         this.preloadedNextForTrack = null;
 
-        useAudioStore.setState({ trackPath, isLoading: true, progress: 0, currentTime: 0, duration: 0 });
+        useAudioStore.setState({ trackPath, isLoading: true, progress: 0, currentTime: 0, duration: 0, buffered: 0 });
 
         const cacheSongs = useAudioSettings.getState().cacheSongs;
         let src = trackUrl;
@@ -394,7 +418,14 @@ class AudioPlayerImpl implements AudioPlayer {
         this.opToken++;
         this.revokeCurrentObjectUrl();
         this.audio.src = '';
-        useAudioStore.setState({ trackPath: null, isPlaying: false, isLoading: false, currentTime: 0, duration: 0 });
+        useAudioStore.setState({
+            trackPath: null,
+            isPlaying: false,
+            isLoading: false,
+            currentTime: 0,
+            duration: 0,
+            buffered: 0,
+        });
     }
 
     async play(trackUrl: string): Promise<void> {
