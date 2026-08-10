@@ -43,6 +43,22 @@
     flex: 0 0 auto;
     min-width: 10rem;
     max-width: 13.75rem;
+    height: 2.25rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.TrackInfoSlideWrapper {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.TrackInfoSlide {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: row;
     gap: var(--space-sm);

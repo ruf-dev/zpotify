@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'classnames';
 
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer';
@@ -32,6 +33,10 @@ function computeCoverColor(title: string | null): string {
 function formatTime(secs: number): string {
     if (!Number.isFinite(secs) || secs < 0) return '0:00';
     return formatDuration(Math.floor(secs));
+}
+
+function trackInfoKey(trackPath: string | null, songTitle: string | null): string {
+    return trackPath ?? songTitle ?? 'empty-track';
 }
 
 export default function PlayerBarSegment() {
@@ -71,41 +76,57 @@ export default function PlayerBarSegment() {
     return (
         <div className={cls.PlayerBarContainer}>
             <div className={cls.TrackInfoWrapper}>
-                {songCover ? (
-                    <img src={songCover} alt={songTitle ?? ''} className={cls.CoverPlaceholder} />
-                ) : (
-                    <div className={cls.CoverPlaceholder} style={{ backgroundColor: coverColor }} />
-                )}
-                <div className={cls.TrackTextWrapper}>
-                    <span
-                        className={cn(
-                            cls.SongTitle,
-                            !songTitle && cls.SongTitleEmpty,
-                            isPlaying && songTitle && cls.SongTitlePlaying,
-                            isCached && cls.SongTitleCached,
-                        )}
-                    >
-                        {songTitle ?? 'nothing playing'}
-                        {isCached && <CachedIndicator />}
-                    </span>
-                    {songArtists.length > 0 ? (
-                        <span className={cls.SongArtist}>
-                            {songArtists.map((a, idx) => (
-                                <span key={a.uuid ?? `${a.name}-${idx}`}>
-                                    {idx > 0 && ', '}
-                                    {a.uuid ? (
-                                        <span className={cls.ArtistLink} onClick={() => handleArtistClick(a.uuid)}>
-                                            {a.name}
-                                        </span>
-                                    ) : (
-                                        a.name
+                <div className={cls.TrackInfoSlideWrapper}>
+                    <AnimatePresence initial={false}>
+                        <motion.div
+                            key={trackInfoKey(trackPath, songTitle)}
+                            className={cls.TrackInfoSlide}
+                            initial={{ x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '-100%' }}
+                            transition={{ duration: 0.25, ease: 'easeInOut' }}
+                        >
+                            {songCover ? (
+                                <img src={songCover} alt={songTitle ?? ''} className={cls.CoverPlaceholder} />
+                            ) : (
+                                <div className={cls.CoverPlaceholder} style={{ backgroundColor: coverColor }} />
+                            )}
+                            <div className={cls.TrackTextWrapper}>
+                                <span
+                                    className={cn(
+                                        cls.SongTitle,
+                                        !songTitle && cls.SongTitleEmpty,
+                                        isPlaying && songTitle && cls.SongTitlePlaying,
+                                        isCached && cls.SongTitleCached,
                                     )}
+                                >
+                                    {songTitle ?? 'nothing playing'}
+                                    {isCached && <CachedIndicator />}
                                 </span>
-                            ))}
-                        </span>
-                    ) : (
-                        songArtist && <span className={cls.SongArtist}>{songArtist}</span>
-                    )}
+                                {songArtists.length > 0 ? (
+                                    <span className={cls.SongArtist}>
+                                        {songArtists.map((a, idx) => (
+                                            <span key={a.uuid ?? `${a.name}-${idx}`}>
+                                                {idx > 0 && ', '}
+                                                {a.uuid ? (
+                                                    <span
+                                                        className={cls.ArtistLink}
+                                                        onClick={() => handleArtistClick(a.uuid)}
+                                                    >
+                                                        {a.name}
+                                                    </span>
+                                                ) : (
+                                                    a.name
+                                                )}
+                                            </span>
+                                        ))}
+                                    </span>
+                                ) : (
+                                    songArtist && <span className={cls.SongArtist}>{songArtist}</span>
+                                )}
+                            </div>
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
             </div>
 

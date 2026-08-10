@@ -7,7 +7,7 @@
     cursor: pointer;
     align-items: center;
     border-left: 0.125rem solid transparent;
-    transition: background var(--ease-quick);
+    transition: background var(--ease-quick), transform 0.1s ease;
 
     &:hover {
         background: var(--color-bg-hover);
@@ -27,6 +27,11 @@
         & .OverflowBtn {
             opacity: 0.5;
         }
+    }
+
+    &:active {
+        transform: scale(0.98);
+        background: var(--color-bg-hover);
     }
 }
 

@@ -15,6 +15,10 @@
         border-color: var(--color-border-light);
         transform: translateY(-1px);
     }
+
+    &:active {
+        transform: scale(0.98);
+    }
 }
 
 .CoverWrapper {
