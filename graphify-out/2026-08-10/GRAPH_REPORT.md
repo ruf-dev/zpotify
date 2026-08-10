@@ -1,16 +1,16 @@
 # Graph Report - zpotify  (2026-08-10)
 
 ## Corpus Check
-- 690 files · ~198,362 words
+- 690 files · ~198,366 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 7531 nodes · 11823 edges · 1716 communities (451 shown, 1265 thin omitted)
+- 7528 nodes · 11823 edges · 1712 communities (450 shown, 1262 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 421 edges (avg confidence: 0.79)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `59e4547d`
+- Built from commit: `170f4f4b`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -420,7 +420,6 @@
 - Docs Swaggers Zpotify
 - Docs Swaggers Zpotify
 - Docs Swaggers Zpotify
-- Docs Swaggers Zpotify
 - AudioInfo
 - .WithTx
 - ListNotifications
@@ -428,7 +427,6 @@
 - Provider[T]
 - Docs Swaggers Zpotify
 - useHomeSegments.ts
-- SearchResult
 - ShuffleTracksButton.tsx
 - Swaggers Zpotify Api
 - Swaggers Zpotify Api
@@ -787,7 +785,6 @@
 - @type
 - ui
 - userCanDelete
-- type
 - type
 - type
 - 200
@@ -1356,7 +1353,6 @@
 - type
 - info
 - type
-- type
 - /api/playlist/create
 - /api/playlist/delete_song
 - /api/playlist/{uuid}
@@ -1577,7 +1573,7 @@
 - **Verv Service Deployment Configuration Bundle** — verv_resources_yaml, verv_vervonomicon_yaml, verv_auth_yaml [INFERRED 0.95]
 - **OAuth Social Login Provider Icons Set (GitHub, Telegram, Google, Apple)** — pkg_web_zpotifyui_src_assets_icons_github, pkg_web_zpotifyui_src_assets_icons_telegram, pkg_web_zpotifyui_src_assets_icons_google, pkg_web_zpotifyui_src_assets_icons_apple [INFERRED 0.85]
 
-## Communities (1716 total, 1265 thin omitted)
+## Communities (1712 total, 1262 thin omitted)
 
 ### Community 0 - "Audio Parser & Core Infra"
 Cohesion: 0.07
@@ -1604,16 +1600,16 @@ Cohesion: 0.08
 Nodes (27): Handler, Audio, auth, Handler, Context, Responses, LangFromCtx(), LangToCtx() (+19 more)
 
 ### Community 6 - "Auth UI Components"
-Cohesion: 0.08
-Nodes (21): HeartIcon(), HeartIconProps, PrivateLockIcon(), PrivateLockIconProps, ShareIcon(), IconButton(), IconButtonProps, CommentsSectionProps (+13 more)
+Cohesion: 0.12
+Nodes (14): HeartIcon(), HeartIconProps, ShareIcon(), IconButton(), IconButtonProps, CommentsSectionProps, MOCK_COMMENTS, MockComment (+6 more)
 
 ### Community 7 - "Artists Proto Types"
 Cohesion: 0.15
 Nodes (3): ArtistBase, CreateArtist_Response, ListArtist_Response
 
 ### Community 8 - "Add Track Modal"
-Cohesion: 0.14
-Nodes (9): AlbumTag, Context, CreatePlaylistParams, ListPlaylists, ListSongs, Playlist, PlaylistSong, UpdatePlaylistParams (+1 more)
+Cohesion: 0.10
+Nodes (12): UpdateArtistParams, AlbumTag, Artist, Context, CreatePlaylistParams, ListPlaylists, ListSongs, Playlist (+4 more)
 
 ### Community 12 - "Artists gRPC Service"
 Cohesion: 0.07
@@ -1636,8 +1632,8 @@ Cohesion: 0.06
 Nodes (37): AddSongsToPlaylist, AddSongsToPlaylistRequest, AddSongsToPlaylistResponse, AddSongToPlaylist, AddSongToPlaylistRequest, AddSongToPlaylistResponse, ChangeSongsOrder, ChangeSongsOrderRequest (+29 more)
 
 ### Community 17 - "Playlist Service & Proto"
-Cohesion: 0.07
-Nodes (40): AddTrackDialog(), BACK_STEPS, SCREENS, EditTrackDialog(), EditTrackDialogProps, MetaDialog(), MetaDialogProps, MultitrackUploadModal() (+32 more)
+Cohesion: 0.06
+Nodes (48): PrivateLockIcon(), PrivateLockIconProps, EditTrackDialog(), EditTrackDialogProps, MetaDialog(), MetaDialogProps, MultitrackUploadModal(), useMultitrackSubmit() (+40 more)
 
 ### Community 18 - "API Gateway gRPC"
 Cohesion: 0.08
@@ -1668,8 +1664,8 @@ Cohesion: 0.05
 Nodes (57): NullInt32, NullInt64, NullString, NullTime, NullUUID, RawMessage, Time, UUID (+49 more)
 
 ### Community 27 - "Playlist Swagger Docs"
-Cohesion: 0.14
-Nodes (14): SongFile, CreatePlaylistIcon(), MusicFileIcon(), MusicFileIconProps, AddTrackContext, ChooseScreen(), CreatePlaylistCard(), CreatePlaylistCardProps (+6 more)
+Cohesion: 0.15
+Nodes (15): FeatureFlag, FeatureFlagId, FeatureFlagsAPI, GetFeatureFlags, GetFeatureFlagsRequest, GetFeatureFlagsResponse, ClockIcon(), FeatureFlagsStore (+7 more)
 
 ### Community 28 - "Localization & Transport"
 Cohesion: 0.15
@@ -1757,7 +1753,7 @@ Nodes (20): BatchDeleteFiles, BatchDeleteFilesRequest, BatchDeleteFilesResponse,
 
 ### Community 57 - "Auth Proto Types"
 Cohesion: 0.12
-Nodes (7): MessageState, SizeCache, UnknownFields, Auth, AuthViaAsync, AuthViaAsync_Request, GetAuthMethods_Request
+Nodes (7): MessageState, SizeCache, UnknownFields, Auth, AuthViaAsync_Request, GetAuthMethods, GetAuthMethods_Request
 
 ### Community 58 - "Auth Service Core"
 Cohesion: 0.07
@@ -1844,8 +1840,8 @@ Cohesion: 0.12
 Nodes (14): App, App, ResponseWriter, WithDebug(), WithIgnoredPathAuthOption(), writeError(), buildOriginSet(), CorsMiddleware() (+6 more)
 
 ### Community 89 - "Auth Swagger (pkg2)"
-Cohesion: 0.04
-Nodes (55): InitReq, AuthAPI, AuthData, SongAPI, UserAPI, User, apiPrefix(), InitReq (+47 more)
+Cohesion: 0.05
+Nodes (49): InitReq, AuthAPI, AuthData, SongAPI, UserAPI, User, apiPrefix(), InitReq (+41 more)
 
 ### Community 91 - "Playlist Swagger (pkg)"
 Cohesion: 0.13
@@ -1901,7 +1897,7 @@ Nodes (3): UnknownFields, FileInfo, GetFile_Response
 
 ### Community 112 - "Api Server Zpotify"
 Cohesion: 0.17
-Nodes (6): MessageState, SizeCache, UnknownFields, GetSong, SearchSongs, SendSongToTelegram
+Nodes (6): MessageState, SizeCache, UnknownFields, BatchCreateSong, CreateSong, GetSong
 
 ### Community 113 - "Transport Zpotify Api"
 Cohesion: 0.27
@@ -1913,7 +1909,7 @@ Nodes (7): file_zpotify_user_proto_init(), file_zpotify_user_proto_rawDescGZIP()
 
 ### Community 115 - "Api Server Zpotify"
 Cohesion: 0.17
-Nodes (6): MessageState, SizeCache, UnknownFields, GetUserSettings, Me, Me_Request
+Nodes (6): MessageState, SizeCache, UnknownFields, GetUserSettings, GetUserSettings_Request, Me_Request
 
 ### Community 116 - "Auth Api Impl"
 Cohesion: 0.14
@@ -1977,7 +1973,7 @@ Nodes (11): Context, GetUserSettings_Request, GetUserSettings_Response, HomePage
 
 ### Community 142 - "FilesCache"
 Cohesion: 0.17
-Nodes (6): MessageState, SizeCache, UnknownFields, ConsentNotification, GetNotificationSummary, MarkNotificationRead
+Nodes (6): MessageState, SizeCache, UnknownFields, ConsentNotification, ConsentNotification_Response, GetNotificationSummary
 
 ### Community 144 - "AudioInfo"
 Cohesion: 0.29
@@ -2000,8 +1996,8 @@ Cohesion: 0.23
 Nodes (3): Song, SongTag, fakeSongStorage
 
 ### Community 151 - "FollowPlaylist_Response"
-Cohesion: 0.25
-Nodes (3): file_zpotify_service_playlist_proto_init(), init(), ChangeSongsOrder
+Cohesion: 0.18
+Nodes (3): SizeCache, AddSongsToPlaylist_Response, ChangeSongsOrder
 
 ### Community 152 - "AudioPlayer"
 Cohesion: 0.14
@@ -2044,8 +2040,8 @@ Cohesion: 0.28
 Nodes (6): PauseIcon(), PauseIconProps, PlayIcon(), PlayIconProps, PlayButton(), PlayButtonProps
 
 ### Community 166 - "UserHomeSegmentType"
-Cohesion: 0.06
-Nodes (36): Paging, Notification, NotificationAPI, DialogManager, useDialog, BellIcon(), BellIconProps, FilesList() (+28 more)
+Cohesion: 0.05
+Nodes (49): SongFile, DialogManager, useDialog, BellIcon(), BellIconProps, CreatePlaylistIcon(), MusicFileIcon(), MusicFileIconProps (+41 more)
 
 ### Community 167 - "Swaggers Zpotify Api"
 Cohesion: 0.09
@@ -2100,8 +2096,8 @@ Cohesion: 0.09
 Nodes (19): GetUserSettings, GetUserSettingsRequest, GetUserSettingsResponse, Me, MeRequest, MeResponse, UserData, AuthMethods (+11 more)
 
 ### Community 204 - "Src Shared Generativecover"
-Cohesion: 0.33
-Nodes (7): PlaylistSearchResult, SearchSongsParams, Context, Song, fakeArtistsSearcher, fakeAudioSearcher, fakePlaylistSearcher
+Cohesion: 0.15
+Nodes (13): ArtistSearchResult, PlaylistSearchResult, SearchFilters, SearchParams, SearchResult, SearchSongsParams, Song, Context (+5 more)
 
 ### Community 205 - "Transport User Api"
 Cohesion: 0.20
@@ -2160,12 +2156,12 @@ Cohesion: 0.13
 Nodes (14): DashedRingIcon(), DashedRingIconProps, SpinnerIcon(), DragOverDecoration(), DropZoneText(), DropZoneTextProps, IdleDecoration(), UploadingSpinner() (+6 more)
 
 ### Community 223 - "FollowPlaylist_Response"
-Cohesion: 0.17
-Nodes (5): Playlist, SizeCache, UnknownFields, Search_AlbumResult, Search_PlaylistResult
+Cohesion: 0.15
+Nodes (4): Playlist, SizeCache, Search_AlbumResult, Search_PlaylistResult
 
 ### Community 225 - "DropZoneIcon.tsx"
-Cohesion: 0.09
-Nodes (24): MainLayout(), SidebarToggleIcon(), SegmentCarousel(), SegmentCarouselProps, UISettings, useUISettings, AddTrackButton(), AddTrackButtonProps (+16 more)
+Cohesion: 0.12
+Nodes (18): MainLayout(), SidebarToggleIcon(), SegmentCarousel(), SegmentCarouselProps, UISettings, useUISettings, MobileSearchButton(), SidebarToggleButton() (+10 more)
 
 ### Community 226 - "GetUserSettings"
 Cohesion: 0.33
@@ -2183,6 +2179,10 @@ Nodes (6): App, Context, Listener, New(), App, App
 Cohesion: 0.40
 Nodes (4): Context, DeleteFile_Request, DeleteFile_Response, Impl
 
+### Community 234 - "Service Artists Service"
+Cohesion: 0.25
+Nodes (3): file_zpotify_service_files_proto_init(), init(), DeleteFile_Response
+
 ### Community 235 - "Generated Getuserpermissionsonplaylistparams"
 Cohesion: 0.31
 Nodes (7): DeleteUserPlaylistParams, GetUserPermissionsOnPlaylistParams, GetUserPermissionsOnPlaylistRow, UpsertUserPlaylistParams, Context, Queries, UUID
@@ -2195,13 +2195,13 @@ Nodes (12): NewSearchService(), T, TestSearchService_Search_AlbumPlaylistSplitIs
 Cohesion: 0.40
 Nodes (4): BatchDeleteFiles_Request, BatchDeleteFiles_Response, Context, Impl
 
+### Community 248 - "Value"
+Cohesion: 0.18
+Nodes (3): MessageState, AddSongsToPlaylist, DeleteSong
+
 ### Community 250 - "Tsconfig Node Json"
 Cohesion: 0.20
 Nodes (9): compilerOptions, allowSyntheticDefaultImports, composite, module, moduleResolution, outDir, skipLibCheck, strict (+1 more)
-
-### Community 254 - "SizeCache"
-Cohesion: 0.25
-Nodes (3): file_zpotify_service_files_proto_init(), init(), GetFile
 
 ### Community 258 - "Zpotify: что нового с v1.0.10"
 Cohesion: 0.50
@@ -2244,12 +2244,12 @@ Cohesion: 0.25
 Nodes (8): ClientConnInterface, ServiceRegistrar, NewHomeAPIClient(), RegisterHomeAPIServer(), HomeAPIClient, HomeAPIServer, UnimplementedHomeAPIServer, UnsafeHomeAPIServer
 
 ### Community 275 - "RawMessage"
-Cohesion: 0.07
-Nodes (36): FeatureFlag, FeatureFlagId, FeatureFlagsAPI, GetFeatureFlags, GetFeatureFlagsRequest, GetFeatureFlagsResponse, ClockIcon(), FeatureFlagsStore (+28 more)
+Cohesion: 0.14
+Nodes (19): LikedSongsState, useLikedSongs, useListSongs(), SongListPermissions, UserPermissions, ActionButtonProps, IconButton(), ArtistSongsRow() (+11 more)
 
 ### Community 276 - "EditableText.tsx"
-Cohesion: 0.15
-Nodes (3): Paging, Search_Request, SearchFilters
+Cohesion: 0.16
+Nodes (4): Paging, UnknownFields, Search_Request, SearchFilters
 
 ### Community 278 - "FilesCache"
 Cohesion: 0.24
@@ -2274,6 +2274,10 @@ Nodes (4): Context, Impl, GetFile_Request, GetFile_Response
 ### Community 286 - "GetUserSettings"
 Cohesion: 0.26
 Nodes (10): Context, NullString, RawMessage, Queries, Time, UUID, ListArtistFeaturedSongsParams, ListArtistFeaturedSongsRow (+2 more)
+
+### Community 290 - "Refresh"
+Cohesion: 0.17
+Nodes (10): Paging, Notification, NotificationAPI, NotificationDialogProps, NotificationsState, INotificationsService, NotificationsService, formatNotificationDate() (+2 more)
 
 ### Community 293 - "Impl"
 Cohesion: 0.29
@@ -2345,15 +2349,15 @@ Nodes (4): UpsertSongArtistParams, Context, Queries, UUID
 
 ### Community 332 - "Me"
 Cohesion: 0.25
-Nodes (3): file_zpotify_service_user_proto_init(), init(), GetUserSettings_Request
+Nodes (3): file_zpotify_service_user_proto_init(), init(), Me
 
 ### Community 338 - "GetNotificationSummary_Request"
 Cohesion: 0.43
 Nodes (5): Context, GetFeed_Request, GetFeed_Response, UnaryServerInterceptor, _HomeAPI_GetFeed_Handler()
 
 ### Community 341 - "MetaScreen.tsx"
-Cohesion: 0.31
-Nodes (9): MetaScreen(), MetaScreenProps, TrackRow(), formatFileBytes(), formatFileDuration(), formatFileSize(), formatDuration(), SongSearchBox() (+1 more)
+Cohesion: 0.33
+Nodes (7): PlaylistRow(), PlaylistRowData, PlaylistRowProps, PlaylistItem, SidebarPlaylistsWidget(), SidebarPlaylistsWidgetProps, uuidToHslColor()
 
 ### Community 354 - "playlist_service_test.go"
 Cohesion: 0.60
@@ -2409,7 +2413,7 @@ Nodes (4): Context, Queries, UUID, ListSongsRow
 
 ### Community 405 - "zpotify_service_notification.pb.go"
 Cohesion: 0.25
-Nodes (3): file_zpotify_service_notification_proto_init(), init(), ConsentNotification_Response
+Nodes (3): file_zpotify_service_notification_proto_init(), init(), MarkNotificationRead
 
 ### Community 406 - "UploadStatusChip.tsx"
 Cohesion: 0.12
@@ -2418,10 +2422,6 @@ Nodes (19): DragHandleIcon(), EditableTitleProps, TODO: switch to chures Input o
 ### Community 411 - "DropZoneIcon.tsx"
 Cohesion: 0.28
 Nodes (6): DropZoneTargetIcon(), DropZoneTargetIconProps, DropZoneUploadIcon(), DropZoneUploadIconProps, DropZoneIcon(), DropZoneIconProps
-
-### Community 412 - "Zpotify Api Deletesong"
-Cohesion: 0.18
-Nodes (3): MessageState, AddSongsToPlaylist, DeleteSong_Response
 
 ### Community 413 - "UploadStatusChip.tsx"
 Cohesion: 0.31
@@ -2434,10 +2434,6 @@ Nodes (22): Architecture — Feature Slice Design, Async style, Barrel / index.t
 ### Community 419 - "Artists Api Impl"
 Cohesion: 0.40
 Nodes (4): Impl, Context, CreateArtist_Request, CreateArtist_Response
-
-### Community 420 - "Tx"
-Cohesion: 0.18
-Nodes (4): ArtistSearchResult, UpdateArtistParams, Artist, fakeArtistStorage
 
 ### Community 421 - "Auth Api Impl"
 Cohesion: 0.40
@@ -2476,12 +2472,8 @@ Cohesion: 0.39
 Nodes (3): backoff(), Job, Provider[T]
 
 ### Community 438 - "useHomeSegments.ts"
-Cohesion: 0.39
-Nodes (4): SegmentTabBarProps, Tab, HomePage(), useHomeSegments()
-
-### Community 439 - "SearchResult"
-Cohesion: 0.38
-Nodes (5): SearchFilters, SearchParams, SearchResult, Song, Context
+Cohesion: 0.11
+Nodes (10): SegmentTabBarProps, Tab, HomePage(), FeedSegmentInfo, HomeSegment, LibrarySegmentInfo, ManagementSegmentInfo, PlaylistSegmentInfo (+2 more)
 
 ### Community 440 - "ShuffleTracksButton.tsx"
 Cohesion: 0.38
@@ -2495,9 +2487,9 @@ Nodes (4): Version, VersionRequest, VersionResponse, ZpotifyAPI
 Cohesion: 0.40
 Nodes (4): Impl, Context, ListArtist_Request, ListArtist_Response
 
-### Community 450 - "Swaggers Zpotify Service"
-Cohesion: 0.18
-Nodes (3): SizeCache, AddSongsToPlaylist_Response, FollowPlaylist
+### Community 454 - "Icons Checkicon Checkicon"
+Cohesion: 0.25
+Nodes (3): file_zpotify_service_playlist_proto_init(), init(), ListSongs
 
 ### Community 456 - "Transport Playlist Api"
 Cohesion: 0.40
@@ -2589,7 +2581,7 @@ Nodes (5): AI Assistant Guidelines, Development Principles, Styling, Tech Stack 
 
 ### Community 562 - "Community 562"
 Cohesion: 0.18
-Nodes (3): UnknownFields, AddSongToPlaylist_Response, DeleteSong
+Nodes (3): UnknownFields, AddSongToPlaylist_Response, ChangeSongsOrder_Response
 
 ### Community 565 - "Community 565"
 Cohesion: 0.40
@@ -2640,24 +2632,24 @@ Nodes (4): Impl, Context, UnlikeArtist_Request, UnlikeArtist_Response
   pkg/web/ZpotifyUI/src/assets/pen.svg · relation: semantically_similar_to
 
 ## Knowledge Gaps
-- **1707 isolated node(s):** `go.zpotify.ru/zpotify`, `UnsafeZpotifyAPIServer`, `UnsafeArtistsAPIServer`, `UnsafeAuthAPIServer`, `UnsafeFeatureFlagsAPIServer` (+1702 more)
+- **1704 isolated node(s):** `go.zpotify.ru/zpotify`, `UnsafeZpotifyAPIServer`, `UnsafeArtistsAPIServer`, `UnsafeAuthAPIServer`, `UnsafeFeatureFlagsAPIServer` (+1699 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **1265 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **1262 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **What is the exact relationship between `Pen Edit Action Icon SVG` and `Lock Security Icon SVG (padlock, white, 16x16)`?**
   _Edge tagged AMBIGUOUS (relation: semantically_similar_to) - confidence is low._
-- **Why does `file_zpotify_common_proto_init()` connect `Song Management Frontend` to `Telegram OIDC Client`, `file_zpotify_service_artists_proto_rawDescGZIP`, `zpotify_service_search.pb.go`, `zpotify_service_notification.pb.go`, `FollowPlaylist_Response`, `File Meta SQL Queries`, `SizeCache`?**
+- **Why does `file_zpotify_common_proto_init()` connect `Song Management Frontend` to `Telegram OIDC Client`, `Icons Checkicon Checkicon`, `Service Artists Service`, `file_zpotify_service_artists_proto_rawDescGZIP`, `zpotify_service_search.pb.go`, `zpotify_service_notification.pb.go`, `File Meta SQL Queries`?**
   _High betweenness centrality (0.032) - this node is a cross-community bridge._
-- **Why does `file_zpotify_service_files_proto_init()` connect `SizeCache` to `Enumdescriptor`, `Song Management Frontend`, `Homepagesegment Management`?**
+- **Why does `file_zpotify_service_files_proto_init()` connect `Service Artists Service` to `Enumdescriptor`, `Song Management Frontend`, `Homepagesegment Management`?**
   _High betweenness centrality (0.022) - this node is a cross-community bridge._
 - **Why does `CloseWithLog()` connect `Storage Identity Zpotify` to `Song Service Business Logic`, `Song Storage Layer`, `Module 132`, `Docs Swaggers Zpotify`, `.GetFile`, `Transport Wapi Common`, `Provider[T]`, `Auth Service Swagger (docs)`, `Playlist Swagger (docs extra2)`, `Service File Service`, `Docs Swaggers Zpotify`?**
   _High betweenness centrality (0.015) - this node is a cross-community bridge._
 - **Are the 74 inferred relationships involving `wrapPgErr()` (e.g. with `.Get()` and `.Search()`) actually correct?**
   _`wrapPgErr()` has 74 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `go.zpotify.ru/zpotify`, `UnsafeZpotifyAPIServer`, `UnsafeArtistsAPIServer` to the rest of the system?**
-  _1715 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1712 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Audio Parser & Core Infra` be split into smaller, more focused modules?**
   _Cohesion score 0.06533646322378717 - nodes in this community are weakly interconnected._
