@@ -27,6 +27,7 @@
 
     /* Player bar */
     --player-bar-height: 4.25rem;    /* 68px */
+    --player-bar-height-mobile: 5.75rem; /* 92px — portrait bar wraps to 2 rows (info+play, then progress) */
     --player-bar-icon-size: 1rem;    /* 16px — play/pause SVG inside the round player-bar button */
 
     /* Mobile nav bar (portrait only) */

@@ -8,6 +8,9 @@ import SidebarPlaylistsWidget from '@/pages/segments/SidebarSegment/Widget/Sideb
 import cls from '@/pages/segments/SidebarSegment/SidebarSegment.module.css';
 import { Path } from '@/app/routing/paths.ts';
 import { useSidebarUI } from '@/shared/model/sidebarUIStore.ts';
+import AddTrackButton from '@/features/upload/AddTrackButton.tsx';
+import AddTrackDialog from '@/dialogs/AddTrack/AddTrackDialog.tsx';
+import { useDialog } from '@/app/hooks/Dialog.tsx';
 
 type navIdentity = 'home' | 'search' | 'my_uploads';
 
@@ -24,6 +27,7 @@ export default function SidebarSegment() {
     const closeDrawer = useSidebarUI((state) => state.closeDrawer);
 
     const navigate = useNavigate();
+    const { OpenDialog } = useDialog();
 
     function resolveNavigation(ni: navIdentity): () => void {
         return () => {
@@ -37,6 +41,10 @@ export default function SidebarSegment() {
                     break;
             }
         };
+    }
+
+    function handleAddTrack() {
+        OpenDialog(<AddTrackDialog />);
     }
 
     return (
@@ -65,6 +73,10 @@ export default function SidebarSegment() {
                 <SidebarArtistsWidget isCollapsed={isCollapsed} />
 
                 <SidebarPlaylistsWidget isCollapsed={isCollapsed} />
+
+                <div className={cls.SidebarFooter}>
+                    <AddTrackButton onClick={handleAddTrack} />
+                </div>
             </aside>
         </>
     );

@@ -259,3 +259,80 @@
 .Bar3 {
     animation: npb3 0.9s ease-in-out infinite 0.35s;
 }
+
+/* ── Portrait (mobile) layout ── */
+
+@media (orientation: portrait) {
+    .PlayerBarContainer {
+        height: auto;
+        min-height: var(--player-bar-height-mobile);
+        flex-wrap: wrap;
+        align-content: center;
+    }
+
+    /* Row 1: track info (grows) + play/pause button, top-aligned together */
+    .TrackInfoWrapper {
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: none;
+    }
+
+    .SongTitle {
+        max-width: none;
+    }
+
+    /* Suppress navigation on tap — CSS-only, JS handler left untouched */
+    .ArtistLink {
+        pointer-events: none;
+    }
+
+    /* Unwrap the column so ButtonsRow/ProgressRow become direct flex items
+       of PlayerBarContainer — lets ProgressRow's width:100% force it onto
+       its own wrapped line below row 1. */
+    .ControlsCenterWrapper {
+        display: contents;
+    }
+
+    .ButtonsRow {
+        flex: 0 0 auto;
+    }
+
+    /* Only the play/pause button remains visible on the right of row 1 */
+    .ControlButton {
+        display: none;
+    }
+
+    /* Volume control is not adjustable on mobile */
+    .NowPlayingWrapper {
+        display: none;
+    }
+
+    /* Row 2: full-bleed, read-only progress strip */
+    .ProgressRow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+    }
+
+    .TimeLabel:first-child {
+        grid-row: 1;
+        grid-column: 1;
+        justify-self: start;
+        text-align: left;
+    }
+
+    .TimeLabel:last-child {
+        grid-row: 1;
+        grid-column: 2;
+        justify-self: end;
+    }
+
+    .ProgressTrackWrapper {
+        grid-row: 2;
+        grid-column: 1 / -1;
+        margin: 0 calc(-1 * var(--space-2xl));
+        width: calc(100% + var(--space-2xl) * 2);
+        pointer-events: none;
+        cursor: default;
+    }
+}
