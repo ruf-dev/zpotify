@@ -400,7 +400,7 @@
     "semantic_hash": "e026a6674f2341a67053118987f91db7"
   },
   "internal/app/custom.go": {
-    "mtime": 1786353922.425926,
+    "mtime": 1786354095.3575945,
     "ast_hash": "c707f0d7aeabd432c818e799eeb33586",
     "semantic_hash": ""
   },
@@ -485,7 +485,7 @@
     "semantic_hash": "c2e06c8b92a51f2d8c8a1e68b121912d"
   },
   "internal/storage/storage.go": {
-    "mtime": 1786353836.2916214,
+    "mtime": 1786354095.3612475,
     "ast_hash": "dbdf141aaaa29cbcb7f64cc1a99a40fb",
     "semantic_hash": ""
   },
@@ -515,7 +515,7 @@
     "semantic_hash": "15b590634338c56a80293dc862e9021b"
   },
   "internal/storage/pg/identity_telegram.go": {
-    "mtime": 1786353839.978686,
+    "mtime": 1786354095.3606524,
     "ast_hash": "cb74237ce637e83243d5706703fb9489",
     "semantic_hash": ""
   },
@@ -595,12 +595,12 @@
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/querier.go": {
-    "mtime": 1786353821.2503505,
+    "mtime": 1786354095.3603122,
     "ast_hash": "098866e956a30c455358226f6529948b",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/identity_telegram.sql.go": {
-    "mtime": 1786353821.2445838,
+    "mtime": 1786354095.3596067,
     "ast_hash": "12d05ae309004e14c1796180e27f58a3",
     "semantic_hash": ""
   },
@@ -740,7 +740,7 @@
     "semantic_hash": ""
   },
   "internal/storage/pg/queries/identity_telegram.sql": {
-    "mtime": 1786353814.4252448,
+    "mtime": 1786354095.3609886,
     "ast_hash": "7fa1214f168e2a1037393a0dfbb35a83",
     "semantic_hash": ""
   },
@@ -795,7 +795,7 @@
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_song.pb.gw.go": {
-    "mtime": 1786353859.6363583,
+    "mtime": 1786354095.35687,
     "ast_hash": "cb54cf21c7e6cac9098b858056bbe504",
     "semantic_hash": ""
   },
@@ -880,7 +880,7 @@
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_song.pb.go": {
-    "mtime": 1786353859.636104,
+    "mtime": 1786354095.3565607,
     "ast_hash": "47a5322ac0a5c9bd401f68828ff4d35b",
     "semantic_hash": ""
   },
@@ -895,7 +895,7 @@
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_song_grpc.pb.go": {
-    "mtime": 1786353859.636414,
+    "mtime": 1786354095.3572726,
     "ast_hash": "8fbee9b162104930bae3a535f0d9ed40",
     "semantic_hash": ""
   },
@@ -920,7 +920,7 @@
     "semantic_hash": "fabd70b7f363a262440e394e26156525"
   },
   "internal/service/service.go": {
-    "mtime": 1786353914.7975564,
+    "mtime": 1786354095.3582656,
     "ast_hash": "2aa699530991604ebace7b528a51c4f9",
     "semantic_hash": ""
   },
@@ -935,7 +935,7 @@
     "semantic_hash": ""
   },
   "internal/service/v1/song_service.go": {
-    "mtime": 1786353900.106291,
+    "mtime": 1786354095.359393,
     "ast_hash": "873e96b6051e6aba041fe224e1782641",
     "semantic_hash": ""
   },
@@ -965,7 +965,7 @@
     "semantic_hash": ""
   },
   "internal/service/service_errors/errors.go": {
-    "mtime": 1786353869.3346322,
+    "mtime": 1786354095.3586743,
     "ast_hash": "cf542a3992915ce05294ac51d2e985b0",
     "semantic_hash": ""
   },
@@ -1120,7 +1120,7 @@
     "semantic_hash": "491318e4236b1b0a4f3415d0c33b2ef1"
   },
   "pkg/docs/swaggers/zpotify_service_song.swagger.json": {
-    "mtime": 1786353859.6294277,
+    "mtime": 1786354095.3631651,
     "ast_hash": "d98831c050d306d0e3e78bb0cd5944de",
     "semantic_hash": ""
   },
@@ -2515,7 +2515,7 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/entities/song/more/MoreButton.tsx": {
-    "mtime": 1786353787.8770418,
+    "mtime": 1786354095.3623157,
     "ast_hash": "667969d73d7d69b3e4ad49bc0a6ecb2a",
     "semantic_hash": ""
   },
@@ -3335,8 +3335,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/artists_service_fake_storage_test.go": {
-    "mtime": 1786097764.5580542,
-    "ast_hash": "b9c1ca7246325888a3f3cc44c653e8b9",
+    "mtime": 1786354095.3589752,
+    "ast_hash": "eda39fccd9a4441f5eb7fa8a9c02e42d",
     "semantic_hash": ""
   },
   "internal/service/v1/artists_service_test.go": {
@@ -3572,6 +3572,16 @@
   "pkg/client/ZpotifyUI/vite.config.js": {
     "mtime": 1786265380.0792687,
     "ast_hash": "30c7d46985d20c9e860c771ee04a1b07",
+    "semantic_hash": ""
+  },
+  "internal/service/v1/song_service_test.go": {
+    "mtime": 1786354027.0823193,
+    "ast_hash": "494028f7deca4331120e1b71fb8c0147",
+    "semantic_hash": ""
+  },
+  "internal/transport/song_api_impl/send_song_to_telegram.go": {
+    "mtime": 1786353928.8285532,
+    "ast_hash": "56dbef01561e61ed8d5a6b508f433d96",
     "semantic_hash": ""
   }
 }
