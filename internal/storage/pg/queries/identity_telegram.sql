@@ -17,3 +17,8 @@ SELECT telegram_id, user_id, login, last_logged_at
 FROM identity_telegram
 WHERE telegram_id = $1
 FOR UPDATE;
+
+-- name: GetTelegramIdentityByUserId :one
+SELECT telegram_id, user_id, login, last_logged_at
+FROM identity_telegram
+WHERE user_id = $1;

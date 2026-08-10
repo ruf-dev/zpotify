@@ -1,14 +1,16 @@
 .BackButtonContainer {
-    background: none;
+    background: rgb(0 0 0 / 35%);
     border: none;
-    padding: 0.25rem;
+    border-radius: var(--border-radius-circle);
+    padding: 0.5rem;
     cursor: pointer;
-    color: var(--color-fg-tertiary);
+    color: var(--color-fg-primary);
     display: flex;
     align-items: center;
-    transition: color 0.15s ease;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
 }
 
 .BackButtonContainer:hover {
-    color: var(--color-fg-primary);
+    background: rgb(0 0 0 / 50%);
 }

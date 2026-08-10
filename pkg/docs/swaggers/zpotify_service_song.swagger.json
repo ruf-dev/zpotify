@@ -174,6 +174,45 @@
           "SongAPI"
         ]
       }
+    },
+    "/api/song/{id}/send_to_telegram": {
+      "post": {
+        "operationId": "SongAPI_SendSongToTelegram",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiSendSongToTelegramResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiSongAPISendSongToTelegramBody"
+            }
+          }
+        ],
+        "tags": [
+          "SongAPI"
+        ]
+      }
     }
   },
   "definitions": {
@@ -320,6 +359,12 @@
           }
         }
       }
+    },
+    "zpotify_apiSendSongToTelegramResponse": {
+      "type": "object"
+    },
+    "zpotify_apiSongAPISendSongToTelegramBody": {
+      "type": "object"
     },
     "zpotify_apiSongBase": {
       "type": "object",

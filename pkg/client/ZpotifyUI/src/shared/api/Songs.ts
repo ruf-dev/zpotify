@@ -7,6 +7,7 @@ export interface ISongsService {
     UpdateSong: (id: string, title: string, artistUuids: string[]) => Promise<void>;
     GetSong: (id: string) => Promise<SongBase>;
     SearchSongs: (query: string, offset?: number, limit?: number) => Promise<SongBase[]>;
+    SendToTelegram: (id: string) => Promise<void>;
 }
 
 export class SongsService extends BaseService implements ISongsService {
@@ -38,6 +39,12 @@ export class SongsService extends BaseService implements ISongsService {
         return this.executeAuthApiCall((initReq: InitReq) => {
             const paging = { offset: String(offset), limit: String(limit) };
             return SongAPI.SearchSongs({ query, paging }, initReq).then((resp) => resp.songs ?? []);
+        });
+    }
+
+    async SendToTelegram(id: string): Promise<void> {
+        return this.executeAuthApiCall((initReq: InitReq) => {
+            return SongAPI.SendSongToTelegram({ id }, initReq).then(() => undefined);
         });
     }
 }

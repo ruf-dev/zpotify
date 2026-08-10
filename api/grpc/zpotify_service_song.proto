@@ -39,6 +39,13 @@ service SongAPI {
     };
   };
 
+  rpc SendSongToTelegram(SendSongToTelegram.Request) returns (SendSongToTelegram.Response) {
+    option (google.api.http) = {
+      post: "/api/song/{id}/send_to_telegram",
+      body: "*"
+    };
+  };
+
   rpc SearchSongs(SearchSongs.Request) returns (SearchSongs.Response) {
     option (google.api.http) = {
       post: "/api/song/search",
@@ -89,6 +96,14 @@ message GetSong {
   message Response {
     SongBase song = 1;
   }
+}
+
+message SendSongToTelegram {
+  message Request {
+    int64 id = 1;
+  }
+
+  message Response {}
 }
 
 message SearchSongs {

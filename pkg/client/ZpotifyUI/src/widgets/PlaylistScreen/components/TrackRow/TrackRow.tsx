@@ -20,7 +20,11 @@ import CachedIndicator from '@/shared/ui/CachedIndicator.tsx';
 import { cacheAudio, getTrackUrl } from '@/shared/lib/audioCache.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
+import { songsService } from '@/shared/api/Songs.ts';
 import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
+import { ServiceError } from '@/shared/api/Errors.ts';
+
+const TELEGRAM_NOT_LINKED_MESSAGE = 'telegram account is not linked';
 
 function formatDuration(sec: number): string {
     const m = Math.floor(sec / 60);
@@ -123,6 +127,32 @@ export default function TrackRow({
         });
     }
 
+    function handleSendToTelegram() {
+        if (!song.id) return;
+
+        songsService
+            .SendToTelegram(song.id)
+            .then(() => {
+                toaster.bake({
+                    title: 'Sent to Telegram',
+                    description: `${song.title || 'Track'} was sent to your Telegram chat`,
+                    level: 'Info',
+                });
+            })
+            .catch((e: unknown) => {
+                if (e instanceof ServiceError && e.title === TELEGRAM_NOT_LINKED_MESSAGE) {
+                    toaster.bake({
+                        title: 'Telegram not linked',
+                        description: 'Link your Telegram account first',
+                        level: 'Error',
+                    });
+                    return;
+                }
+
+                toaster.catch(e as never);
+            });
+    }
+
     function handleDelete() {
         if (!playlistUuid || !song.id) return;
         const uuid = playlistUuid;
@@ -156,6 +186,10 @@ export default function TrackRow({
             label: isCached ? 'Downloaded' : 'Download',
             onClick: handleDownload,
             disabled: isCached,
+        },
+        {
+            label: 'Send to Telegram',
+            onClick: handleSendToTelegram,
         },
         ...(canReorder ? [{ label: 'Delete', onClick: handleDelete }] : []),
     ];

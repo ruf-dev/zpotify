@@ -53,6 +53,14 @@ export type GetSongResponse = {
 
 export type GetSong = Record<string, never>;
 
+export type SendSongToTelegramRequest = {
+  id?: string;
+};
+
+export type SendSongToTelegramResponse = Record<string, never>;
+
+export type SendSongToTelegram = Record<string, never>;
+
 export type SearchSongsRequest = {
   query?: string;
   paging?: ZpotifyApiZpotifyCommon.Paging;
@@ -76,6 +84,9 @@ export class SongAPI {
   }
   static GetSong(this:void, req: GetSongRequest, initReq?: fm.InitReq): Promise<GetSongResponse> {
     return fm.fetchRequest<GetSongResponse>(`/api/song/${req.id}?${fm.renderURLSearchParams(req, ["id"])}`, {...initReq, method: "GET"});
+  }
+  static SendSongToTelegram(this:void, req: SendSongToTelegramRequest, initReq?: fm.InitReq): Promise<SendSongToTelegramResponse> {
+    return fm.fetchRequest<SendSongToTelegramResponse>(`/api/song/${req.id}/send_to_telegram`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
   static SearchSongs(this:void, req: SearchSongsRequest, initReq?: fm.InitReq): Promise<SearchSongsResponse> {
     return fm.fetchRequest<SearchSongsResponse>(`/api/song/search`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});

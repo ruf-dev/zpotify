@@ -20,13 +20,13 @@ export default function ArtistHeroSegment(props: ArtistHeroSegmentProps) {
 
     return (
         <div className={cls.ArtistHeroContainer}>
-            <div className={cls.BackButtonWrapper}>
-                <BackButton onClick={onBack} />
-            </div>
-
             <div className={cls.CoverWrapper}>
                 <EditableCoverWithFallback {...context.backgroundCoverProps} className={cls.CoverInner} />
                 <div className={cls.CoverDissolve} />
+            </div>
+
+            <div className={cls.BackButtonWrapper}>
+                <BackButton onClick={onBack} />
             </div>
 
             <div className={cls.HeroContent}>

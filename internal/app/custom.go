@@ -98,13 +98,14 @@ func (c *Custom) Init(app *App) (err error) {
 	}
 
 	adminNotifier := tgclient.NewAdminNotifier(c.tgConn, int64(app.Cfg.Environment.TelegramNotificationsChatID))
+	trackSender := tgclient.NewTrackSender(c.tgConn)
 
 	fc, err := files_cache.New()
 	if err != nil {
 		return rerrors.Wrap(err, "error creating files cache")
 	}
 
-	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, adminNotifier, app.Cfg)
+	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, adminNotifier, trackSender, app.Cfg)
 	if err != nil {
 		return rerrors.Wrap(err, "error creating service")
 	}

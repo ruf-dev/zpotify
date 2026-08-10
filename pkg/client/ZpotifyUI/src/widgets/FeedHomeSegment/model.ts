@@ -11,6 +11,7 @@ export type FeedSongItem = {
     artists: FeedSongArtist[];
     coverUrl?: string;
     durationSec: number;
+    filePath?: string;
 };
 
 export type FeedArtistItem = {

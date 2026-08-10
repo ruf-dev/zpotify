@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SongAPI_CreateSong_FullMethodName      = "/zpotify_api.SongAPI/CreateSong"
-	SongAPI_BatchCreateSong_FullMethodName = "/zpotify_api.SongAPI/BatchCreateSong"
-	SongAPI_UpdateSong_FullMethodName      = "/zpotify_api.SongAPI/UpdateSong"
-	SongAPI_GetSong_FullMethodName         = "/zpotify_api.SongAPI/GetSong"
-	SongAPI_SearchSongs_FullMethodName     = "/zpotify_api.SongAPI/SearchSongs"
+	SongAPI_CreateSong_FullMethodName         = "/zpotify_api.SongAPI/CreateSong"
+	SongAPI_BatchCreateSong_FullMethodName    = "/zpotify_api.SongAPI/BatchCreateSong"
+	SongAPI_UpdateSong_FullMethodName         = "/zpotify_api.SongAPI/UpdateSong"
+	SongAPI_GetSong_FullMethodName            = "/zpotify_api.SongAPI/GetSong"
+	SongAPI_SendSongToTelegram_FullMethodName = "/zpotify_api.SongAPI/SendSongToTelegram"
+	SongAPI_SearchSongs_FullMethodName        = "/zpotify_api.SongAPI/SearchSongs"
 )
 
 // SongAPIClient is the client API for SongAPI service.
@@ -34,6 +35,7 @@ type SongAPIClient interface {
 	BatchCreateSong(ctx context.Context, in *BatchCreateSong_Request, opts ...grpc.CallOption) (*BatchCreateSong_Response, error)
 	UpdateSong(ctx context.Context, in *UpdateSong_Request, opts ...grpc.CallOption) (*UpdateSong_Response, error)
 	GetSong(ctx context.Context, in *GetSong_Request, opts ...grpc.CallOption) (*GetSong_Response, error)
+	SendSongToTelegram(ctx context.Context, in *SendSongToTelegram_Request, opts ...grpc.CallOption) (*SendSongToTelegram_Response, error)
 	SearchSongs(ctx context.Context, in *SearchSongs_Request, opts ...grpc.CallOption) (*SearchSongs_Response, error)
 }
 
@@ -85,6 +87,16 @@ func (c *songAPIClient) GetSong(ctx context.Context, in *GetSong_Request, opts .
 	return out, nil
 }
 
+func (c *songAPIClient) SendSongToTelegram(ctx context.Context, in *SendSongToTelegram_Request, opts ...grpc.CallOption) (*SendSongToTelegram_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SendSongToTelegram_Response)
+	err := c.cc.Invoke(ctx, SongAPI_SendSongToTelegram_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *songAPIClient) SearchSongs(ctx context.Context, in *SearchSongs_Request, opts ...grpc.CallOption) (*SearchSongs_Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SearchSongs_Response)
@@ -103,6 +115,7 @@ type SongAPIServer interface {
 	BatchCreateSong(context.Context, *BatchCreateSong_Request) (*BatchCreateSong_Response, error)
 	UpdateSong(context.Context, *UpdateSong_Request) (*UpdateSong_Response, error)
 	GetSong(context.Context, *GetSong_Request) (*GetSong_Response, error)
+	SendSongToTelegram(context.Context, *SendSongToTelegram_Request) (*SendSongToTelegram_Response, error)
 	SearchSongs(context.Context, *SearchSongs_Request) (*SearchSongs_Response, error)
 	mustEmbedUnimplementedSongAPIServer()
 }
@@ -125,6 +138,9 @@ func (UnimplementedSongAPIServer) UpdateSong(context.Context, *UpdateSong_Reques
 }
 func (UnimplementedSongAPIServer) GetSong(context.Context, *GetSong_Request) (*GetSong_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetSong not implemented")
+}
+func (UnimplementedSongAPIServer) SendSongToTelegram(context.Context, *SendSongToTelegram_Request) (*SendSongToTelegram_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method SendSongToTelegram not implemented")
 }
 func (UnimplementedSongAPIServer) SearchSongs(context.Context, *SearchSongs_Request) (*SearchSongs_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method SearchSongs not implemented")
@@ -222,6 +238,24 @@ func _SongAPI_GetSong_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SongAPI_SendSongToTelegram_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendSongToTelegram_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SongAPIServer).SendSongToTelegram(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SongAPI_SendSongToTelegram_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SongAPIServer).SendSongToTelegram(ctx, req.(*SendSongToTelegram_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SongAPI_SearchSongs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SearchSongs_Request)
 	if err := dec(in); err != nil {
@@ -262,6 +296,10 @@ var SongAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSong",
 			Handler:    _SongAPI_GetSong_Handler,
+		},
+		{
+			MethodName: "SendSongToTelegram",
+			Handler:    _SongAPI_SendSongToTelegram_Handler,
 		},
 		{
 			MethodName: "SearchSongs",

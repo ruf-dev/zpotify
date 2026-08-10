@@ -46,6 +46,18 @@ func (s *TelegramIdentityStorage) GetByTgId(ctx context.Context, tgId int64) (do
 	}, nil
 }
 
+func (s *TelegramIdentityStorage) GetByUserId(ctx context.Context, userId int64) (domain.TelegramIdentity, error) {
+	row, err := s.q.GetTelegramIdentityByUserId(ctx, userId)
+	if err != nil {
+		return domain.TelegramIdentity{}, wrapPgErr(err)
+	}
+	return domain.TelegramIdentity{
+		TelegramId: row.TelegramID,
+		UserId:     row.UserID,
+		Login:      row.Login,
+	}, nil
+}
+
 func (s *TelegramIdentityStorage) WithTx(tx *sql.Tx) storage.TelegramIdentityStorage {
 	return NewTelegramIdentityStorage(tx)
 }

@@ -5,15 +5,17 @@ import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { feedService } from '@/shared/api/FeedService.ts';
 import ZButton from '@/shared/ui/ZButton/ZButton.tsx';
 import { useFeedRefresh } from '@/entities/feed/useFeedRefresh.ts';
-import type { FeedDay } from '@/widgets/FeedHomeSegment/model.ts';
+import type { FeedDay, FeedSongItem } from '@/widgets/FeedHomeSegment/model.ts';
 import FeedDayGroup from '@/widgets/FeedHomeSegment/components/FeedDayGroup/FeedDayGroup.tsx';
 import FeedHomeSegmentSkeleton from '@/widgets/FeedHomeSegment/FeedHomeSegmentSkeleton.tsx';
 import cls from '@/widgets/FeedHomeSegment/FeedHomeSegment.module.css';
+import useAudioPlayer, { QueueTrack } from '@/widgets/MusicPlayer/usePlayer.ts';
 
 const PAGE_SIZE_DAYS = 14;
 
 export default function FeedHomeSegment() {
     const toaster = useToaster();
+    const audioPlayer = useAudioPlayer();
     const [days, setDays] = useState<FeedDay[]>([]);
     const [totalDays, setTotalDays] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -49,6 +51,29 @@ export default function FeedHomeSegment() {
                 setTotalDays(result.totalDays);
             })
             .catch(toaster.catch);
+    }
+
+    function playFeedSong(song: FeedSongItem) {
+        if (!song.filePath) return;
+
+        if (song.filePath === audioPlayer.trackPath) {
+            audioPlayer.togglePlay();
+            return;
+        }
+
+        const track: QueueTrack = {
+            filePath: song.filePath,
+            info: {
+                title: song.title || null,
+                artist: song.artists.map((a) => a.name).join(', ') || null,
+                artists: song.artists,
+                cover: song.coverUrl ?? null,
+            },
+        };
+
+        audioPlayer.setQueue([track], 0, `feed-song-${song.id}`);
+        audioPlayer.setSongInfo(track.info.title, track.info.artist, track.info.cover, track.info.artists);
+        void audioPlayer.play(track.filePath);
     }
 
     function loadMore() {
@@ -90,7 +115,7 @@ export default function FeedHomeSegment() {
                             exit={{ opacity: 0 }}
                             transition={{ type: 'spring', stiffness: 400, damping: 36 }}
                         >
-                            <FeedDayGroup day={day} />
+                            <FeedDayGroup day={day} onPlaySong={playFeedSong} />
                         </motion.div>
                     ))}
                 </AnimatePresence>

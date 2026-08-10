@@ -170,13 +170,19 @@ func (f *fakePlaylistStorage) WithTx(_ *sql.Tx) storage.PlaylistStorage {
 }
 
 // fakeSongStorage is an in-memory test double for storage.SongStorage. Only
-// ListByArtist is exercised by ArtistsService tests.
+// ListByArtist is exercised by ArtistsService tests; getByIdFn/getSongTagsFn
+// are additionally used by AudioService tests.
 type fakeSongStorage struct {
 	listByArtistFn func(ctx context.Context, req domain.ListSongsByArtist) ([]domain.Song, error)
+	getByIdFn      func(ctx context.Context, songId int64) (domain.Song, error)
+	getSongTagsFn  func(ctx context.Context, songId int64) ([]domain.SongTag, error)
 }
 
-func (f *fakeSongStorage) GetById(_ context.Context, _ int64) (domain.Song, error) {
-	return domain.Song{}, nil
+func (f *fakeSongStorage) GetById(ctx context.Context, songId int64) (domain.Song, error) {
+	if f.getByIdFn == nil {
+		return domain.Song{}, nil
+	}
+	return f.getByIdFn(ctx, songId)
 }
 
 func (f *fakeSongStorage) GetByFileId(_ context.Context, _ int64) (domain.Song, error) {
@@ -207,8 +213,11 @@ func (f *fakeSongStorage) AddArtist(_ context.Context, _ int64, _ string, _ int)
 	return nil
 }
 
-func (f *fakeSongStorage) GetSongTags(_ context.Context, _ int64) ([]domain.SongTag, error) {
-	return nil, nil
+func (f *fakeSongStorage) GetSongTags(ctx context.Context, songId int64) ([]domain.SongTag, error) {
+	if f.getSongTagsFn == nil {
+		return nil, nil
+	}
+	return f.getSongTagsFn(ctx, songId)
 }
 
 func (f *fakeSongStorage) InsertSongTag(_ context.Context, _ int64, _ domain.SongTag, _ int) error {

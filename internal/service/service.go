@@ -43,6 +43,7 @@ type service struct {
 
 func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 	fileStorage storage.BinaryFileStorage, adminNotifier auth.AdminNotifier,
+	telegramSender v1.TelegramSender,
 	cfg config.Config,
 ) (Service, error) {
 	tokenParser := telegram.NewTokenParser(
@@ -55,7 +56,7 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 		return nil, rerrors.Wrap(err, "error initializing auth service")
 	}
 
-	audioService := v1.NewAudioService(dataStorage, cache, fileStorage)
+	audioService := v1.NewAudioService(dataStorage, cache, fileStorage, telegramSender)
 	playlistService := v1.NewPlaylistService(dataStorage, fileStorage)
 	artistsService := v1.NewArtistsService(dataStorage, fileStorage)
 
@@ -115,6 +116,10 @@ func (s *service) SearchService() SearchService {
 
 type AudioService interface {
 	GetSong(ctx context.Context, songId int64) (domain.Song, error)
+
+	// SendToTelegram delivers a track's audio file to the requesting user's
+	// own linked Telegram chat (bot DM).
+	SendToTelegram(ctx context.Context, songId int64) error
 
 	GetInfo(ctx context.Context, fileId int64) (domain.Song, error)
 	Save(ctx context.Context, req domain.AddAudio) (domain.SaveFileMetaResp, error)

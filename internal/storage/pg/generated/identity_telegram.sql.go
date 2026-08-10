@@ -46,6 +46,24 @@ func (q *Queries) GetTelegramIdentityByTgIdForUpdate(ctx context.Context, telegr
 	return i, err
 }
 
+const getTelegramIdentityByUserId = `-- name: GetTelegramIdentityByUserId :one
+SELECT telegram_id, user_id, login, last_logged_at
+FROM identity_telegram
+WHERE user_id = $1
+`
+
+func (q *Queries) GetTelegramIdentityByUserId(ctx context.Context, userID int64) (IdentityTelegram, error) {
+	row := q.db.QueryRowContext(ctx, getTelegramIdentityByUserId, userID)
+	var i IdentityTelegram
+	err := row.Scan(
+		&i.TelegramID,
+		&i.UserID,
+		&i.Login,
+		&i.LastLoggedAt,
+	)
+	return i, err
+}
+
 const upsertTelegramIdentity = `-- name: UpsertTelegramIdentity :one
 INSERT INTO identity_telegram (telegram_id, user_id, login, last_logged_at)
 VALUES ($1, $2, $3, now())

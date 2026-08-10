@@ -30,8 +30,15 @@ export default function MoreButton({ onOpen, onClose, ops }: MoreButtonProps) {
             if (buttonRef.current?.contains(target)) return;
             if (!dropdownRef.current?.contains(target)) setIsMenuOpen(false);
         }
+        function handleScroll() {
+            setIsMenuOpen(false);
+        }
         document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+        window.addEventListener('scroll', handleScroll, { capture: true });
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            window.removeEventListener('scroll', handleScroll, { capture: true });
+        };
     }, []);
 
     function handleToggle(event: ReactMouseEvent) {

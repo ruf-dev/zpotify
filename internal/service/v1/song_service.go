@@ -11,13 +11,23 @@ import (
 
 	"go.redsock.ru/rerrors"
 
+	tgclient "go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
 	"go.zpotify.ru/zpotify/internal/storage/pg/generated/songs_q"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
+	"go.zpotify.ru/zpotify/internal/utils"
 )
+
+// TelegramSender delivers a track's audio file to a user's Telegram chat.
+// Defined here (consumer side) rather than in the telegram client package
+// so AudioService only depends on the shape it actually needs.
+type TelegramSender interface {
+	SendTrack(chatId int64, audio tgclient.TrackAudio) error
+}
 
 // defaultSearchLimit caps song search results when the request omits paging,
 // guarding against LIMIT 0 (which returns nothing).
@@ -33,6 +43,9 @@ type AudioService struct {
 	binaryStorage   storage.BinaryFileStorage
 	jobStorage      storage.JobStorage
 
+	telegramIdentityStorage storage.TelegramIdentityStorage
+	telegramSender          TelegramSender
+
 	filesCache files_cache.FilesCache
 }
 
@@ -40,6 +53,7 @@ func NewAudioService(
 	dataStorage storage.Storage,
 	filesCache files_cache.FilesCache,
 	binaryStorage storage.BinaryFileStorage,
+	telegramSender TelegramSender,
 ) *AudioService {
 	return &AudioService{
 		txManager: dataStorage.TxManager(),
@@ -50,6 +64,9 @@ func NewAudioService(
 		artistStorage:   dataStorage.ArtistStorage(),
 		binaryStorage:   binaryStorage,
 		jobStorage:      dataStorage.Jobs(),
+
+		telegramIdentityStorage: dataStorage.TelegramIdentity(),
+		telegramSender:          telegramSender,
 
 		filesCache: filesCache,
 	}
@@ -272,6 +289,17 @@ func (s *AudioService) Update(ctx context.Context, req domain.UpdateSong) error 
 }
 
 func (s *AudioService) GetSong(ctx context.Context, songId int64) (domain.Song, error) {
+	song, err := s.getSongWithTags(ctx, songId)
+	if err != nil {
+		return domain.Song{}, rerrors.Wrap(err)
+	}
+
+	return song, nil
+}
+
+// getSongWithTags fetches a song and its tags. Extracted so SendToTelegram
+// can reuse it without calling the public GetSong method.
+func (s *AudioService) getSongWithTags(ctx context.Context, songId int64) (domain.Song, error) {
 	song, err := s.songsStorage.GetById(ctx, songId)
 	if err != nil {
 		return domain.Song{}, rerrors.Wrap(err, "error getting song from storage")
@@ -284,6 +312,55 @@ func (s *AudioService) GetSong(ctx context.Context, songId int64) (domain.Song, 
 	song.Tags = tags
 
 	return song, nil
+}
+
+// SendToTelegram delivers a track's audio file to the requesting user's own
+// linked Telegram chat (bot DM) via the Telegram bot.
+func (s *AudioService) SendToTelegram(ctx context.Context, songId int64) error {
+	userCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return rerrors.Wrap(service_errors.ErrUnauthenticated)
+	}
+
+	identity, err := s.telegramIdentityStorage.GetByUserId(ctx, userCtx.UserId)
+	if err != nil {
+		if errors.Is(err, storage.ErrNotFound) {
+			return rerrors.Wrap(service_errors.ErrTelegramNotLinked)
+		}
+		return rerrors.Wrap(err, "error getting telegram identity")
+	}
+
+	song, err := s.getSongWithTags(ctx, songId)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting song")
+	}
+
+	file, err := s.binaryStorage.GetFile(ctx, song.FilePath)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting song file")
+	}
+	defer utils.CloseWithLog(file, song.FilePath)
+
+	performer := ""
+	if len(song.Artists) > 0 {
+		performer = song.Artists[0].Name
+	}
+
+	audio := tgclient.TrackAudio{
+		FileName:    path.Base(song.FilePath),
+		Content:     file,
+		Caption:     song.Title,
+		Performer:   performer,
+		Title:       song.Title,
+		DurationSec: int(song.Duration.Seconds()),
+	}
+
+	err = s.telegramSender.SendTrack(identity.TelegramId, audio)
+	if err != nil {
+		return rerrors.Wrap(err, "error sending track to telegram")
+	}
+
+	return nil
 }
 
 func (s *AudioService) Delete(ctx context.Context, id int64) error {
