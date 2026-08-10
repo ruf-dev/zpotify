@@ -6,18 +6,32 @@ import FilterChips from '@/pages/main/search/components/FilterChips/FilterChips.
 import SectionLabel from '@/pages/main/search/components/SectionLabel/SectionLabel.tsx';
 import EmptyState from '@/pages/main/search/components/EmptyState/EmptyState.tsx';
 import ArtistCard from '@/pages/main/search/components/ArtistCard/ArtistCard.tsx';
-import TrackRow from '@/pages/main/search/components/TrackRow/TrackRow.tsx';
+import SongRow from '@/components/SongRow/SongRow.tsx';
 import { useSearchPage } from '@/pages/main/search/useSearchPage.ts';
-import { Path } from '@/app/routing/paths.ts';
+import type { SearchTrackResult } from '@/shared/api/SearchService.ts';
+import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
+import { Path, artistPath } from '@/app/routing/paths.ts';
 import BackButton from '@/shared/ui/BackButton.tsx';
 import cls from '@/pages/main/search/SearchPage.module.css';
 
 export default function SearchPage() {
     const page = useSearchPage();
     const navigate = useNavigate();
+    const player = useAudioPlayer();
 
     function handleBack() {
         navigate(Path.HomePage);
+    }
+
+    function handlePlayTrack(track: SearchTrackResult) {
+        if (!track.filePath) return;
+        const artistName = track.artists.map((a) => a.name).join(', ') || null;
+        player.setSongInfo(track.title, artistName, track.coverUrl ?? null, track.artists);
+        player.play(track.filePath);
+    }
+
+    function handleArtistClick(artistUuid: string) {
+        navigate(artistPath(artistUuid));
     }
 
     function renderTracks() {
@@ -27,7 +41,16 @@ export default function SearchPage() {
                 <SectionLabel label="Tracks" count={page.visibleTracks.length} />
                 <div className={cls.TrackList}>
                     {page.visibleTracks.map((track) => (
-                        <TrackRow key={track.uuid} {...track} />
+                        <SongRow
+                            key={track.uuid}
+                            id={track.uuid}
+                            title={track.title}
+                            artists={track.artists}
+                            coverUrl={track.coverUrl}
+                            durationSec={track.durationSec}
+                            onPlay={() => handlePlayTrack(track)}
+                            onArtistClick={handleArtistClick}
+                        />
                     ))}
                 </div>
             </div>

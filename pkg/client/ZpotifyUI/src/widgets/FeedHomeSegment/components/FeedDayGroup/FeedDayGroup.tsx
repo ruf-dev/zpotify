@@ -1,12 +1,14 @@
 import { type ComponentType } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 import type { LibraryItem } from '@/widgets/PlaylistsLibrarySegment/model.ts';
 import AlbumCard from '@/widgets/PlaylistsLibrarySegment/components/AlbumCard/AlbumCard.tsx';
 import PlaylistCardWide from '@/widgets/PlaylistsLibrarySegment/components/PlaylistCardWide/PlaylistCardWide.tsx';
 import type { FeedDay, FeedSongItem } from '@/widgets/FeedHomeSegment/model.ts';
-import FeedSongRow from '@/widgets/FeedHomeSegment/components/FeedSongRow/FeedSongRow.tsx';
+import SongRow from '@/components/SongRow/SongRow.tsx';
 import FeedArtistChip from '@/widgets/FeedHomeSegment/components/FeedArtistChip/FeedArtistChip.tsx';
+import { artistPath } from '@/app/routing/paths.ts';
 import cls from '@/widgets/FeedHomeSegment/components/FeedDayGroup/FeedDayGroup.module.css';
 
 interface Props {
@@ -22,9 +24,14 @@ function choosePlaylistComponent(kind: LibraryItem['kind']): ComponentType<Libra
 const feedItemTransition = { type: 'spring' as const, stiffness: 400, damping: 36 };
 
 export default function FeedDayGroup({ day, onPlaySong }: Props) {
+    const navigate = useNavigate();
     const hasPlaylists = day.playlistsAdded.length > 0;
     const hasSongs = day.songsAdded.length > 0;
     const hasArtists = day.artistsAdded.length > 0;
+
+    function handleArtistClick(artistUuid: string) {
+        navigate(artistPath(artistUuid));
+    }
 
     return (
         <div className={cls.FeedDayGroupContainer}>
@@ -71,7 +78,15 @@ export default function FeedDayGroup({ day, onPlaySong }: Props) {
                                     exit={{ opacity: 0 }}
                                     transition={feedItemTransition}
                                 >
-                                    <FeedSongRow {...song} onPlay={() => onPlaySong(song)} />
+                                    <SongRow
+                                        id={song.id}
+                                        title={song.title}
+                                        artists={song.artists}
+                                        coverUrl={song.coverUrl}
+                                        durationSec={song.durationSec}
+                                        onPlay={() => onPlaySong(song)}
+                                        onArtistClick={handleArtistClick}
+                                    />
                                 </motion.div>
                             ))}
                         </AnimatePresence>
