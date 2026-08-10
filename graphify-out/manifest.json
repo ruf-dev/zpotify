@@ -1240,8 +1240,8 @@
     "semantic_hash": ""
   },
   "config/config.yaml": {
-    "mtime": 1786051994.4005942,
-    "ast_hash": "1498a9ccb29a00404daf58b0f02aa086",
+    "mtime": 1786362841.8659132,
+    "ast_hash": "78591b91258661ed4226a15a18ee374d",
     "semantic_hash": ""
   },
   "config/config_template.yaml": {
@@ -2700,8 +2700,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/PlaylistInfoSegment.tsx": {
-    "mtime": 1784966779.4239862,
-    "ast_hash": "9f052c9f0810a799ccfd8539ac8b76f6",
+    "mtime": 1786375835.6309593,
+    "ast_hash": "ee517887e2867cc4ad0f54b668f8aa60",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/segments/PlaylistInfoSegment/usePlaylistInfoSegment.ts": {
@@ -3572,6 +3572,11 @@
   "pkg/client/ZpotifyUI/src/components/SongRow/SongRow.tsx": {
     "mtime": 1786361331.0228472,
     "ast_hash": "ad1c7a4764f21b4433a6f3c3bd0c99a2",
+    "semantic_hash": ""
+  },
+  "docs/release_notes/v1.0.13.md": {
+    "mtime": 1786362922.0202255,
+    "ast_hash": "a372bd96e7f6a659cae7c3fb39753dfc",
     "semantic_hash": ""
   }
 }
