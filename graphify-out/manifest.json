@@ -2210,8 +2210,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/PlayerBarSegment/PlayerBarSegment.tsx": {
-    "mtime": 1786361803.3577,
-    "ast_hash": "2fa57c7b4fb5114f42f16ae525cba170",
+    "mtime": 1786385059.866015,
+    "ast_hash": "67f8dd511ecf7c82af64abcb056e8568",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/PlayerBarSegment/components/VolumeControl/VolumeControl.tsx": {
@@ -2340,8 +2340,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/usePlayer.ts": {
-    "mtime": 1786208494.1127822,
-    "ast_hash": "71f439ec03678e121a3dfd90a13917c2",
+    "mtime": 1786385059.8663187,
+    "ast_hash": "f19464f5d5a67b8d92afd813b3fc2c14",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/PlayerControls.tsx": {
