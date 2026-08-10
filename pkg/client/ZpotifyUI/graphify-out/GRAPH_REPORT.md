@@ -1,16 +1,16 @@
 # Graph Report - ZpotifyUI  (2026-08-10)
 
 ## Corpus Check
-- 328 files · ~59,272 words
+- 328 files · ~59,375 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1489 nodes · 3256 edges · 96 communities (86 shown, 10 thin omitted)
+- 1490 nodes · 3265 edges · 103 communities (93 shown, 10 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.52)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `2bf99df9`
+- Built from commit: `484307b9`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -102,6 +102,13 @@
 - GeneratedAvatar.tsx
 - .preload
 - DescriptionSection.tsx
+- zpotify_service_search.pb.ts
+- EditControls.tsx
+- ArtistPage.tsx
+- GetArtistPageResponse
+- PlaylistHomeSegment.tsx
+- Input.tsx
+- EditableText.tsx
 
 ## God Nodes (most connected - your core abstractions)
 1. `useToaster()` - 60 edges
@@ -116,57 +123,57 @@
 10. `buildCoverUrl()` - 20 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `EditTrackDialogProps` --references--> `SongBase`  [EXTRACTED]
+  src/dialogs/EditTrack/EditTrackDialog.tsx → src/app/api/zpotify/zpotify_common.pb.ts
+- `SongSearchBoxProps` --references--> `SongBase`  [EXTRACTED]
+  src/widgets/SongSearchBox/SongSearchBox.tsx → src/app/api/zpotify/zpotify_common.pb.ts
 - `NotificationRowProps` --references--> `Notification`  [EXTRACTED]
   src/widgets/NotificationBell/components/NotificationRow/NotificationRow.tsx → src/app/api/zpotify/zpotify_service_notification.pb.ts
-- `FilesList()` --calls--> `useDialog`  [EXTRACTED]
-  src/dialogs/FileList/FilesList.tsx → src/app/hooks/Dialog.tsx
-- `LogPassAuth()` --calls--> `useDialog`  [EXTRACTED]
-  src/features/auth/LogPassAuth.tsx → src/app/hooks/Dialog.tsx
-- `EditableCoverWithFallback()` --calls--> `buildCoverUrl()`  [EXTRACTED]
-  src/components/EditableCoverWithFallback/EditableCoverWithFallback.tsx → src/shared/lib/coverUrl.ts
-- `TargetPlaylist` --references--> `ArtistItem`  [EXTRACTED]
-  src/dialogs/MultitrackUpload/MultitrackUploadModal.tsx → src/widgets/ArtistField/ArtistChipsField.tsx
+- `HeaderPart()` --calls--> `useDialog`  [EXTRACTED]
+  src/widgets/Header/HeaderPart.tsx → src/app/hooks/Dialog.tsx
+- `UploadStatusChipProps` --references--> `TrackDraft`  [EXTRACTED]
+  src/dialogs/MultitrackUpload/components/UploadStatusChip/UploadStatusChip.tsx → src/dialogs/MultitrackUpload/TrackRow.tsx
 
 ## Import Cycles
 - 3-file cycle: `src/entities/artist/useLikedArtists.ts -> src/shared/api/ArtistsService.ts -> src/widgets/ArtistField/ArtistChipsField.tsx -> src/entities/artist/useLikedArtists.ts`
 
-## Communities (96 total, 10 thin omitted)
+## Communities (103 total, 10 thin omitted)
 
 ### Community 0 - "zpotify_service_files.pb.ts"
 Cohesion: 0.10
 Nodes (20): BatchDeleteFiles, BatchDeleteFilesRequest, BatchDeleteFilesResponse, CheckFilesByHashes, CheckFilesByHashesFoundFileByHash, CheckFilesByHashesRequest, CheckFilesByHashesResponse, DeleteFile (+12 more)
 
 ### Community 1 - "Dropdown.tsx"
-Cohesion: 0.11
-Nodes (20): SearchIcon(), Dropdown(), DropdownProps, useDropdownClose(), useSearchResults(), DropdownOption, getOptionId(), getOptionLabel() (+12 more)
+Cohesion: 0.24
+Nodes (11): Dropdown(), DropdownProps, useDropdownClose(), useSearchResults(), DropdownOption, getOptionId(), getOptionLabel(), DropdownCreateRow() (+3 more)
 
 ### Community 2 - "HomePage.ts"
-Cohesion: 0.12
-Nodes (12): UserAPI, ISettingsService, parseHomePageSegment(), SettingsService, toHomeSegments(), FeedSegmentInfo, HomeSegment, LibrarySegmentInfo (+4 more)
+Cohesion: 0.15
+Nodes (10): HomePageSegment, ISettingsService, parseHomePageSegment(), SettingsService, toHomeSegments(), FeedSegmentInfo, HomeSegment, LibrarySegmentInfo (+2 more)
 
 ### Community 3 - "MainLayout.tsx"
-Cohesion: 0.08
-Nodes (35): initServiceWorker(), albumPath(), Path, playlistPath(), Router(), LoginViaPass(), isAlbum(), usePlaylistSongs() (+27 more)
+Cohesion: 0.25
+Nodes (12): albumPath(), isAlbum(), usePlaylistSongs(), User(), AuthStatus, useUser, AlbumPage(), PlaylistPage() (+4 more)
 
 ### Community 4 - "fetch.pb.ts"
-Cohesion: 0.13
-Nodes (16): b64, b64Encode(), fetchStreamingRequest(), FlattenedRequestPayload, flattenRequestPayload(), getNewLineDelimitedJSONDecodingStream(), getNotifyEntityArrivalSink(), isPlainObject() (+8 more)
+Cohesion: 0.06
+Nodes (32): b64, b64Encode(), fetchStreamingRequest(), FlattenedRequestPayload, flattenRequestPayload(), getNewLineDelimitedJSONDecodingStream(), getNotifyEntityArrivalSink(), isPlainObject() (+24 more)
 
 ### Community 5 - "usePlayer.ts"
-Cohesion: 0.21
-Nodes (6): AnimatedZ(), LogoRow(), LogoRowProps, ShuffleTracksButton(), ShuffleTracksButtonProps, TrackProgressControls()
+Cohesion: 0.22
+Nodes (15): cacheAudio(), cacheAudioUncoordinated(), cacheTracks(), clearAudioCache(), getTrackUrl(), inFlightCacheRequests, listCachedUrls(), uncacheAudio() (+7 more)
 
 ### Community 7 - "useToaster"
-Cohesion: 0.25
-Nodes (8): EditTrackDialog(), MetaDialog(), MetaDialogProps, FeedRefreshState, useFeedRefresh, SongListRefreshState, useSongListRefresh, AudioFile
+Cohesion: 0.24
+Nodes (11): LikedSongsState, useLikedSongs, catchServiceError(), internalErrors, useToaster(), MultiSelect(), MultiSelectProps, ArtistSongsRow() (+3 more)
 
 ### Community 8 - "Auth.ts"
-Cohesion: 0.10
-Nodes (21): AuthAPI, AuthData, AuthRequest, GetAuthMethodsRequest, RefreshRequest, apiPrefix(), InitReq, options (+13 more)
+Cohesion: 0.16
+Nodes (14): AuthData, AuthRequest, GetAuthMethodsRequest, RefreshRequest, AuthService, clearLocalStorage(), fromLocalStorage(), getLocalStorageAuthInfoKey() (+6 more)
 
 ### Community 9 - "DropZoneScreen.tsx"
-Cohesion: 0.25
-Nodes (6): SpinnerIcon(), DragOverDecoration(), DropZoneText(), DropZoneTextProps, UploadingSpinner(), DropZoneScreen()
+Cohesion: 0.19
+Nodes (8): DashedRingIcon(), DashedRingIconProps, SpinnerIcon(), DragOverDecoration(), DropZoneText(), DropZoneTextProps, IdleDecoration(), UploadingSpinner()
 
 ### Community 10 - "compilerOptions"
 Cohesion: 0.08
@@ -185,92 +192,92 @@ Cohesion: 0.11
 Nodes (18): Absent, Auth, AuthLogPass, AuthResponse, AuthTelegramOAuth, AuthViaAsync, AuthViaAsyncRequest, AuthViaAsyncResponse (+10 more)
 
 ### Community 14 - "useUser"
-Cohesion: 0.13
-Nodes (17): MainLayout(), SidebarToggleIcon(), SegmentCarousel(), SegmentCarouselProps, UISettings, useUISettings, SidebarToggleButton(), MobileNavSegment() (+9 more)
+Cohesion: 0.08
+Nodes (27): CoverWithFallback(), CoverWithFallbackProps, GenerativeCover(), GenerativeCoverProps, PALETTES, ShapeFn, SHAPES, AudioSettings (+19 more)
 
 ### Community 15 - "useSearchPage.ts"
 Cohesion: 0.24
 Nodes (11): FILTER_LABELS, FilterChipsProps, FilterKey, EMPTY_RESPONSE, UseSearchPageResult, SearchAlbumResult, SearchArtistResult, SearchFilters (+3 more)
 
 ### Community 16 - "SongEditDialog.tsx"
-Cohesion: 0.40
-Nodes (4): BackButton(), BackButtonProps, NotFoundPlaylistInfoSegment(), NotFoundPlaylistInfoSegmentProps
+Cohesion: 0.29
+Nodes (7): BackButton(), BackButtonProps, computeTotalDuration(), mapPlaylistArtists(), PlaylistScreenWidget(), NotFoundPlaylistInfoSegment(), NotFoundPlaylistInfoSegmentProps
 
 ### Community 17 - "usePlaylistInfoSegment.ts"
-Cohesion: 0.25
-Nodes (9): EditableAlbumName(), EditableAlbumNameProps, EditableYearProps, TrackCountLabel(), TrackCountLabelProps, PlaylistInfoSegment(), usePlaylistInfoSegment(), PlaylistMetaRow() (+1 more)
+Cohesion: 0.10
+Nodes (20): PrivateLockIcon(), PrivateLockIconProps, EditableAlbumName(), EditableAlbumNameProps, EditableArtistPickerContext, FADE_TRANSITION, HEIGHT_TRANSITION, EditableYearProps (+12 more)
 
 ### Community 18 - "ArtistsService.ts"
-Cohesion: 0.06
-Nodes (30): ArtistBase, ArtistsAPI, CreateArtist, CreateArtistRequest, CreateArtistResponse, GetArtistPage, GetArtistPageRequest, GetArtistPageResponse (+22 more)
+Cohesion: 0.11
+Nodes (18): CreateArtist, CreateArtistRequest, CreateArtistResponse, GetArtistPage, GetArtistPageRequest, LikeArtist, LikeArtistRequest, LikeArtistResponse (+10 more)
 
 ### Community 19 - "FilesList.tsx"
 Cohesion: 0.18
-Nodes (13): useDialog, SettingsDialog(), GhostSong(), AddTrackButton(), AddTrackButtonProps, Dialog(), NAV_ITEMS, navIdentity (+5 more)
+Nodes (10): SidebarToggleIcon(), AddTrackButton(), AddTrackButtonProps, SidebarToggleButton(), NAV_ITEMS, navIdentity, SidebarSegment(), SidebarUIState (+2 more)
 
 ### Community 20 - "MultitrackUploadModal.tsx"
 Cohesion: 0.15
-Nodes (13): CheckIcon(), ChevronRightIcon(), RetryAllIcon(), MultitrackUploadModal(), MultitrackUploadModalProps, TargetPlaylist, PlaylistToggleRow(), PlaylistToggleRowProps (+5 more)
+Nodes (13): CheckIcon(), ChevronRightIcon(), RetryAllIcon(), MultitrackUploadModal(), MultitrackUploadModalProps, PlaylistToggleRow(), PlaylistToggleRowProps, useArtistLookup() (+5 more)
 
 ### Community 21 - "ArtistItem"
-Cohesion: 0.23
-Nodes (11): PlaylistDetailsPanelProps, TrackListProps, TrackDraft, MultitrackSubmitParams, MultitrackSubmitState, ToCreateTrack, MultitrackSummary, MultitrackSummaryParams (+3 more)
+Cohesion: 0.21
+Nodes (8): PlaylistDetailsPanelProps, MultitrackSubmitParams, MultitrackSubmitState, ToCreateTrack, useMultitrackSubmit(), FeedRefreshState, useFeedRefresh, ChipEntry
 
 ### Community 22 - "zpotify_service_playlist.pb.ts"
-Cohesion: 0.08
-Nodes (31): AddSongsToPlaylist, AddSongsToPlaylistRequest, AddSongsToPlaylistResponse, AddSongToPlaylist, AddSongToPlaylistRequest, AddSongToPlaylistResponse, ChangeSongsOrder, ChangeSongsOrderRequest (+23 more)
+Cohesion: 0.11
+Nodes (17): AddSongsToPlaylist, AddSongsToPlaylistResponse, AddSongToPlaylist, AddSongToPlaylistResponse, ChangeSongsOrder, ChangeSongsOrderResponse, CreatePlaylist, DeleteSong (+9 more)
 
 ### Community 23 - "PlaylistService.ts"
-Cohesion: 0.14
+Cohesion: 0.13
 Nodes (18): FeedDay, GetFeed, GetFeedRequest, GetFeedResponse, HomeAPI, FeedService, IFeedService, toFeedArtistItem() (+10 more)
 
 ### Community 24 - "useDialog"
-Cohesion: 0.11
-Nodes (21): Search, SearchAlbumResult, SearchAPI, SearchArtistResult, SearchFilters, SearchPlaylistResult, SearchRequest, SearchResponse (+13 more)
+Cohesion: 0.19
+Nodes (13): SearchAPI, uuidToSeed(), ISearchService, SearchService, toSearchAlbumResult(), toSearchArtistResult(), toSearchPlaylistResult(), toSearchResponse() (+5 more)
 
 ### Community 25 - "CachedSongsAccordion.tsx"
-Cohesion: 0.06
-Nodes (41): SongFile, DownloadIcon(), HomeIcon(), NavSearchIcon(), RemoveTrackIcon(), UploadsIcon(), FileItemProps, AudioSettings (+33 more)
+Cohesion: 0.20
+Nodes (12): RemoveTrackIcon(), CachedSongEntry, useCachedSongs(), AlbumGroup, CachedSongsAccordion(), groupSongsByAlbum(), matchesQuery(), AccordionHeader() (+4 more)
 
 ### Community 26 - "useTrackDrafts.ts"
-Cohesion: 0.18
-Nodes (19): buildNewTracksFromFresh(), ClassifiedFile, classifyIncomingFiles(), createInitialTracks(), InitialTrackMeta, loadInitialTrackMeta(), mapArtists(), mergeInitialTrack() (+11 more)
+Cohesion: 0.17
+Nodes (20): buildNewTracksFromFresh(), ClassifiedFile, classifyIncomingFiles(), createInitialTracks(), InitialTrackMeta, loadInitialTrackMeta(), mapArtists(), mergeInitialTrack() (+12 more)
 
 ### Community 27 - "PlaylistsLibrarySegment.tsx"
-Cohesion: 0.05
-Nodes (47): artistPath(), CoverWithFallback(), CoverWithFallbackProps, GenerativeCover(), GenerativeCoverProps, PALETTES, ShapeFn, SHAPES (+39 more)
+Cohesion: 0.08
+Nodes (31): artistPath(), CardRow(), CardRowProps, MetaScreen(), MetaScreenProps, TrackRow(), ArtistRowProps, formatFileBytes() (+23 more)
 
 ### Community 28 - "dependencies"
 Cohesion: 0.11
 Nodes (19): dependencies, classnames, framer-motion, grpc-web, @hookstate/core, music-metadata-browser, react, react-dom (+11 more)
 
 ### Community 29 - "index.ts"
-Cohesion: 0.20
-Nodes (9): Playlist, Props, PlaylistInfoSegmentProps, UsePlaylistInfoSegmentParams, InfoControls(), InfoControlsProps, PlaylistControlsProps, DownloadButtonWidgetProps (+1 more)
+Cohesion: 0.22
+Nodes (13): Playlist, SongBase, DownloadIcon(), ArtistSongsRowProps, Props, PlaylistInfoSegmentProps, UsePlaylistInfoSegmentParams, InfoControls() (+5 more)
 
 ### Community 30 - "useUser.ts"
-Cohesion: 0.17
-Nodes (15): InitReq, AuthStatus, User, BaseService, getAuth(), setAuthMiddleware(), WebApiParams, withRetries() (+7 more)
+Cohesion: 0.31
+Nodes (8): InitReq, getAuth(), setAuthMiddleware(), WebApiParams, withRetries(), isReason(), WithCode(), WithReason()
 
 ### Community 31 - "CommentsSection.tsx"
-Cohesion: 0.09
-Nodes (19): GetUserSettings, GetUserSettingsRequest, GetUserSettingsResponse, Me, MeRequest, MeResponse, UserData, AuthMethods (+11 more)
+Cohesion: 0.13
+Nodes (14): GetUserSettings, GetUserSettingsRequest, GetUserSettingsResponse, Me, MeRequest, MeResponse, UserAPI, UserData (+6 more)
 
 ### Community 32 - "audioCacheStore.ts"
-Cohesion: 0.23
-Nodes (6): GripIcon(), PlayTriangleIcon(), CachedIndicator(), ArtistNamePart, formatDuration(), TrackRow()
+Cohesion: 0.15
+Nodes (12): GripIcon(), PlayTriangleIcon(), EditTrackDialog(), computeCoverColor(), COVER_COLORS, formatTime(), PlayerBarSegment(), useIsSongCached() (+4 more)
 
 ### Community 33 - "zpotify_service_feature_flags.pb.ts"
-Cohesion: 0.36
-Nodes (6): FeatureFlag, FeatureFlagsAPI, FeatureFlagsStore, useFeatureFlags, useFeatureFlagsQuery(), fetchFeatureFlags()
+Cohesion: 0.16
+Nodes (13): FeatureFlag, FeatureFlagId, FeatureFlagsAPI, GetFeatureFlags, GetFeatureFlagsRequest, GetFeatureFlagsResponse, FeatureFlagsStore, useFeatureFlags (+5 more)
 
 ### Community 34 - "ChooseScreen.tsx"
-Cohesion: 0.26
-Nodes (9): PlaylistListRefreshState, usePlaylistListRefresh, PlaylistRow(), PlaylistRowData, PlaylistRowProps, PlaylistItem, SidebarPlaylistsWidget(), SidebarPlaylistsWidgetProps (+1 more)
+Cohesion: 0.33
+Nodes (7): PlaylistRow(), PlaylistRowData, PlaylistRowProps, PlaylistItem, SidebarPlaylistsWidget(), SidebarPlaylistsWidgetProps, uuidToHslColor()
 
 ### Community 35 - "TrackRow.tsx"
-Cohesion: 0.22
-Nodes (7): DragHandleIcon(), EditableTitleProps, TODO: switch to chures Input once it supports ref/onKeyDown, TODO: Make editable here and send update name for such files if changed, TrackRow(), TrackRowProps, getCleanablePrefixLength()
+Cohesion: 0.14
+Nodes (11): DragHandleIcon(), UploadDoneIcon(), UploadErrorIcon(), EditableTitleProps, TODO: switch to chures Input once it supports ref/onKeyDown, UploadStatusChip(), UploadStatusChipProps, TODO: Make editable here and send update name for such files if changed (+3 more)
 
 ### Community 36 - "WebApi.ts"
 Cohesion: 0.24
@@ -280,93 +287,93 @@ Nodes (11): GrpcErrorDetails, isHttpCodeRetryable(), WithDescription(), WithHttp
 Cohesion: 0.11
 Nodes (18): BatchCreateSong, BatchCreateSongRequest, BatchCreateSongResponse, CreateSong, CreateSongRequest, CreateSongResponse, GetSong, GetSongRequest (+10 more)
 
+### Community 38 - "PlaylistAPI"
+Cohesion: 0.13
+Nodes (3): PlaylistAPI, mapToTrackPreviews(), PlaylistService
+
 ### Community 39 - "SongsService"
-Cohesion: 0.14
-Nodes (9): SongBase, SongAPI, EditTrackDialogProps, ISongsService, SongsService, ArtistSongsRowProps, TrackRowProps, SongSearchBox() (+1 more)
+Cohesion: 0.15
+Nodes (5): SongAPI, EditTrackDialogProps, ISongsService, SongsService, SongSearchBoxProps
 
 ### Community 40 - "LazyLoadSongsList.tsx"
-Cohesion: 0.13
-Nodes (21): CardRow(), CardRowProps, LikedSongsState, useLikedSongs, useListSongs(), UseListSongsOptions, SongListPermissions, ArtistSongsRow() (+13 more)
+Cohesion: 0.33
+Nodes (7): useListSongs(), UseListSongsOptions, joinArtistNames(), toArtistNameParts(), toQueueTracks(), InfiniteSongsListProps, LazyLoadSongsList()
 
 ### Community 41 - "MainContent.tsx"
-Cohesion: 0.22
-Nodes (8): ClockIcon(), selectFlagEnabled(), ZButton(), ZButtonProps, FeedHomeSegmentSkeleton(), Drag, MainContent(), MainContentProps
+Cohesion: 0.31
+Nodes (6): ClockIcon(), selectFlagEnabled(), ZButton(), ZButtonProps, Drag, MainContent()
 
 ### Community 42 - "InfoControls.tsx"
-Cohesion: 0.22
-Nodes (9): ShareIcon(), RandomArrows(), IconButton(), IconButtonProps, ShareButton(), ShuffleButton(), SaveButtonWidget(), SaveButtonWidgetProps (+1 more)
+Cohesion: 0.25
+Nodes (6): ShareIcon(), RandomArrows(), IconButton(), IconButtonProps, ShareButton(), ShuffleButton()
 
 ### Community 43 - "UserWidget.tsx"
 Cohesion: 0.21
 Nodes (7): MiniClockIcon(), MiniDiscIcon(), FieldLabelRow(), FieldLabelRowProps, formatTotalDuration(), PlaylistDetailsPanel(), DisabledChipProps
 
 ### Community 44 - "BaseService.ts"
-Cohesion: 0.08
-Nodes (26): Artist, EditIcon(), EditIconProps, RemoveIcon(), SaveIcon(), UploadArrowIcon(), ZLogoIcon(), CoverFieldProps (+18 more)
+Cohesion: 0.21
+Nodes (8): UploadArrowIcon(), ZLogoIcon(), CoverFieldProps, CoverUploadProgress(), CoverUploadProgressProps, EditableCoverWithFallback(), buildCoverUrl(), SongSearchBox()
 
 ### Community 45 - "AlbumTag"
-Cohesion: 0.13
-Nodes (3): CreatePlaylistResponse, UpdatePlaylistResponse, IPlaylistService
+Cohesion: 0.21
+Nodes (5): AlbumTag, CreatePlaylistResponse, UpdatePlaylistResponse, GenreChipsRow(), GenreChipsRowProps
 
 ### Community 46 - "usePendingFiles.tsx"
-Cohesion: 0.28
-Nodes (7): ModalStep, DOT_STEPS, PanelHeader(), PanelHeaderProps, STEP_TITLES, StepDots(), StepDotsProps
+Cohesion: 0.15
+Nodes (14): AddTrackDialog(), BACK_STEPS, ModalStep, SCREENS, DOT_STEPS, PanelHeader(), PanelHeaderProps, STEP_TITLES (+6 more)
 
 ### Community 47 - "zpotify_service_artists.pb.ts"
-Cohesion: 0.13
-Nodes (9): FilesList(), FilesListProps, LogPassAuth(), Button(), ButtonProps, InputProps, StyleProps, LogPassWidget() (+1 more)
+Cohesion: 0.11
+Nodes (18): DialogManager, useDialog, FilesList(), FilesListProps, LoginViaPass(), SongEditDialog(), SongEditDialogProps, GhostSong() (+10 more)
 
 ### Community 48 - "PlaylistControls.tsx"
-Cohesion: 0.19
-Nodes (9): DialogManager, BellIcon(), BellIconProps, NotificationDialog(), useNotifications, formatNotificationDate(), NotificationRow(), NotificationRowProps (+1 more)
+Cohesion: 0.31
+Nodes (7): NotificationDialog(), useNotifications, ServiceError, formatNotificationDate(), NotificationRow(), NotificationRowProps, NotificationBellWidget()
 
 ### Community 49 - "MoreButton.tsx"
 Cohesion: 0.30
 Nodes (8): MoreDots(), MenuOption(), MenuOptionProps, Menu(), MenuOption, MenuProps, MoreButton(), MoreButtonProps
 
 ### Community 50 - "CoverWithFallback.tsx"
-Cohesion: 0.15
-Nodes (12): ConsentNotification, ConsentNotificationRequest, ConsentNotificationResponse, GetNotificationSummary, GetNotificationSummaryRequest, GetNotificationSummaryResponse, ListNotifications, ListNotificationsRequest (+4 more)
+Cohesion: 0.13
+Nodes (14): AddSongsToPlaylistRequest, AddSongToPlaylistRequest, ChangeSongsOrderRequest, CreatePlaylistRequest, DeleteSongRequest, FollowPlaylistRequest, GetPlaylistRequest, ListPlaylistsRequest (+6 more)
 
 ### Community 51 - "InitPage.tsx"
-Cohesion: 0.21
-Nodes (7): Version, VersionRequest, VersionResponse, ZpotifyAPI, FileItem(), PendingFilesScreen(), usePendingFiles()
+Cohesion: 0.18
+Nodes (10): ArtistCard(), ArtistCardProps, EmptyState(), SectionLabel(), SectionLabelProps, SearchPage(), useSearchPage(), TrackRow() (+2 more)
 
 ### Community 52 - "ChipsField.tsx"
-Cohesion: 0.16
-Nodes (10): AlbumTagKind, LockIcon(), PlusIcon(), PlusIconProps, Chip(), ChipProps, ArtistChipsFieldProps, CHIP_KIND_LABELS (+2 more)
+Cohesion: 0.14
+Nodes (11): AlbumTagKind, LockIcon(), PlusIcon(), PlusIconProps, RemoveIcon(), Chip(), ChipProps, ArtistChipsFieldProps (+3 more)
 
 ### Community 53 - "PrivateLockWidget.tsx"
-Cohesion: 0.31
-Nodes (6): PrivateLockIcon(), PrivateLockIconProps, PrivatePlaylistIndicator(), PrivateLockWidget(), PrivateLockWidgetProps, usePrivateLockWidget()
+Cohesion: 0.47
+Nodes (4): PrivateLockWidget(), PrivateLockWidgetProps, usePrivateLockWidget(), UsePrivateLockWidgetParams
 
 ### Community 54 - "IPlaylistService"
-Cohesion: 0.20
-Nodes (3): ListPlaylistsResponse, ListSongsResponse, mapToTrackPreviews()
+Cohesion: 0.17
+Nodes (4): GetPlaylistResponse, ListPlaylistsResponse, ListSongsResponse, IPlaylistService
 
 ### Community 55 - ".ListLibrary"
-Cohesion: 0.23
-Nodes (8): CreatePlaylistIcon(), AddTrackContext, AddTrackDialog(), BACK_STEPS, SCREENS, ChooseScreen(), CreatePlaylistCard(), CreatePlaylistCardProps
+Cohesion: 0.11
+Nodes (16): SongFile, CreatePlaylistIcon(), MusicFileIcon(), MusicFileIconProps, UploadArrowLargeIcon(), AddTrackContext, ChooseScreen(), CreatePlaylistCard() (+8 more)
 
 ### Community 56 - "TrackList.tsx"
-Cohesion: 0.31
-Nodes (7): TrackList(), computeGhostStyle(), computeRowStyle(), Drag, TrackDragApi, useTrackDrag(), canCleanTrackNumbers()
+Cohesion: 0.14
+Nodes (18): TargetPlaylist, TrackList(), TrackListProps, TrackDraft, ArtistLookup, buildValidationHint(), MultitrackSummary, MultitrackSummaryParams (+10 more)
 
 ### Community 57 - "PlaylistScreenWidget.tsx"
-Cohesion: 0.22
-Nodes (7): HeartIcon(), HeartIconProps, CommentsSectionProps, MOCK_COMMENTS, MockComment, TODO: implement comments API — no backend endpoint exists yet, TODO: implement comments API — no backend endpoint exists yet
-
-### Community 58 - "HeaderSearchInput.tsx"
-Cohesion: 0.29
-Nodes (5): PlayPauseButton(), PlayPauseButtonProps, TrackRewindButton, PlayerControls(), PlayerProps
+Cohesion: 0.16
+Nodes (11): HeartIcon(), HeartIconProps, CommentsSectionProps, MOCK_COMMENTS, MockComment, TODO: implement comments API — no backend endpoint exists yet, TODO: implement comments API — no backend endpoint exists yet, SaveButtonWidget() (+3 more)
 
 ### Community 59 - "SearchPage.tsx"
-Cohesion: 0.67
-Nodes (3): AlbumTag, GenreChipsRow(), GenreChipsRowProps
+Cohesion: 0.18
+Nodes (6): AuthAPI, TelegramAuth(), AuthViaTelegram(), GetTelegramBotId(), AuthButton(), AuthButtonProps
 
 ### Community 60 - "EditableArtistPicker.tsx"
-Cohesion: 0.27
-Nodes (7): EditableArtistPickerContext, FADE_TRANSITION, HEIGHT_TRANSITION, PlaylistOwnerLabel(), PlaylistOwnerLabelProps, ArtistOrOwnerRow(), ArtistOrOwnerRowProps
+Cohesion: 0.21
+Nodes (8): SearchIcon(), DropdownSearchRow(), DropdownSearchRowProps, SearchQueryState, useSearchQuery, EmptyStateProps, MobileSearchButton(), HeaderSearchInput()
 
 ### Community 61 - "scripts"
 Cohesion: 0.22
@@ -377,28 +384,28 @@ Cohesion: 0.28
 Nodes (6): PauseIcon(), PauseIconProps, PlayIcon(), PlayIconProps, PlayButton(), PlayButtonProps
 
 ### Community 63 - "UploadStatusChip.tsx"
-Cohesion: 0.31
-Nodes (5): UploadArrowSmallIcon(), UploadDoneIcon(), UploadErrorIcon(), UploadStatusChip(), UploadStatusChipProps
+Cohesion: 0.27
+Nodes (6): initServiceWorker(), Path, Router(), queryClient, EarlyAccessPage(), ErrorPage()
 
 ### Community 64 - "AddTrackDialog.tsx"
-Cohesion: 0.25
-Nodes (13): MetaScreen(), MetaScreenProps, TrackRow(), computeCoverColor(), COVER_COLORS, formatTime(), PlayerBarSegment(), formatFileBytes() (+5 more)
+Cohesion: 0.24
+Nodes (9): FeedHomeSegment(), FeedHomeSegmentSkeleton(), ArtistNamePart, AudioStoreState, playerInstance, QueueTrack, TrackInfo, useAudioPlayer() (+1 more)
 
 ### Community 65 - "PlayerBarSegment.tsx"
-Cohesion: 0.21
-Nodes (6): VolumeControlProps, VolumeBarProps, VolumeDisplayProps, TrackProgressControlsProps, MusicPlayerProps, AudioPlayer
+Cohesion: 0.09
+Nodes (17): AnimatedZ(), VolumeControlProps, LogoRow(), LogoRowProps, VolumeBarProps, VolumeDisplayProps, PlayPauseButton(), PlayPauseButtonProps (+9 more)
 
 ### Community 66 - "compilerOptions"
 Cohesion: 0.20
 Nodes (9): compilerOptions, allowSyntheticDefaultImports, composite, module, moduleResolution, outDir, skipLibCheck, strict (+1 more)
 
 ### Community 67 - "zpotify_common.pb.ts"
-Cohesion: 0.22
-Nodes (7): Paging, Notification, NotificationAPI, NotificationDialogProps, NotificationsState, INotificationsService, NotificationsService
+Cohesion: 0.20
+Nodes (8): Paging, Notification, NotificationAPI, NotificationDialogProps, NotificationsState, BaseService, INotificationsService, NotificationsService
 
 ### Community 68 - "supportedAudio.ts"
-Cohesion: 0.33
-Nodes (7): DropZone(), DropZoneProps, AUDIO_ACCEPT, isSupportedAudioFile(), SUPPORTED_AUDIO_EXTENSIONS, AddTracksPanel(), AddTracksPanelProps
+Cohesion: 0.22
+Nodes (10): UploadArrowSmallIcon(), SongListRefreshState, useSongListRefresh, DropZone(), DropZoneProps, AUDIO_ACCEPT, isSupportedAudioFile(), SUPPORTED_AUDIO_EXTENSIONS (+2 more)
 
 ### Community 69 - "ZpotifyUI Development Manifesto"
 Cohesion: 0.33
@@ -409,8 +416,8 @@ Cohesion: 0.28
 Nodes (6): DropZoneTargetIcon(), DropZoneTargetIconProps, DropZoneUploadIcon(), DropZoneUploadIconProps, DropZoneIcon(), DropZoneIconProps
 
 ### Community 71 - "LibraryGridScreenSkeleton.tsx"
-Cohesion: 0.13
-Nodes (16): SongEditDialog(), SongEditDialogProps, PlaylistService, catchServiceError(), internalErrors, useToaster(), Chip(), ChipProps (+8 more)
+Cohesion: 0.22
+Nodes (5): ManagementHomeSegment(), AlbumCardSkeleton(), PlaylistCardWideSkeleton(), PlaylistsLibrarySegment(), LibraryGridScreenSkeleton()
 
 ### Community 72 - "package.json"
 Cohesion: 0.40
@@ -425,20 +432,48 @@ Cohesion: 0.39
 Nodes (4): SegmentTabBarProps, Tab, HomePage(), useHomeSegments()
 
 ### Community 89 - "MusicFileIcon.tsx"
-Cohesion: 0.40
-Nodes (4): MusicFileIcon(), MusicFileIconProps, LibraryCard(), LibraryCardProps
+Cohesion: 0.33
+Nodes (8): Artist, EditableCoverWithFallbackProps, EditableArtistName(), EditableArtistNameProps, ArtistHeroSegment(), ArtistHeroSegmentProps, useArtistHeroSegment(), UseArtistHeroSegmentParams
 
 ### Community 90 - "zpotify_service_feature_flags.pb.ts"
-Cohesion: 0.40
-Nodes (4): FeatureFlagId, GetFeatureFlags, GetFeatureFlagsRequest, GetFeatureFlagsResponse
+Cohesion: 0.20
+Nodes (9): Absent, BaseHomePageSegment, HomePageSegmentFeedSegment, HomePageSegmentLibrarySegment, HomePageSegmentManagement, HomePageSegmentPlaylistSegment, OneOf, UiSettings (+1 more)
 
 ### Community 91 - "IdleDecoration.tsx"
-Cohesion: 0.50
-Nodes (3): DashedRingIcon(), DashedRingIconProps, IdleDecoration()
+Cohesion: 0.38
+Nodes (6): MainLayout(), SegmentCarousel(), SegmentCarouselProps, UISettings, useUISettings, MobileNavSegment()
+
+### Community 92 - "UploadCard.tsx"
+Cohesion: 0.29
+Nodes (6): HomeIcon(), NavSearchIcon(), UploadsIcon(), getNavIcon(), NavItem(), NavItemProps
 
 ### Community 93 - "GeneratedAvatar.tsx"
-Cohesion: 0.60
-Nodes (4): AvatarProps, generateColor(), GeneratedAvatar(), generateHash()
+Cohesion: 0.20
+Nodes (10): BellIcon(), BellIconProps, SettingsDialog(), AvatarProps, generateColor(), GeneratedAvatar(), generateHash(), UISettingsWidget() (+2 more)
+
+### Community 94 - ".preload"
+Cohesion: 0.33
+Nodes (7): ArtistBase, LikedArtistsState, useLikedArtists, SidebarArtistsWidget(), SidebarArtistsWidgetProps, uuidToHslSeed(), ArtistChipsField()
+
+### Community 96 - "zpotify_service_search.pb.ts"
+Cohesion: 0.22
+Nodes (8): Search, SearchAlbumResult, SearchArtistResult, SearchFilters, SearchPlaylistResult, SearchRequest, SearchResponse, SearchTrackResult
+
+### Community 97 - "EditControls.tsx"
+Cohesion: 0.32
+Nodes (5): EditIcon(), EditIconProps, SaveIcon(), EditControls(), EditControlsProps
+
+### Community 98 - "ArtistPage.tsx"
+Cohesion: 0.39
+Nodes (4): ArtistPage(), useArtistPage(), NotFoundScreen(), SkeletonLoadScreen()
+
+### Community 99 - "GetArtistPageResponse"
+Cohesion: 0.29
+Nodes (3): GetArtistPageResponse, IArtistsService, Props
+
+### Community 100 - "PlaylistHomeSegment.tsx"
+Cohesion: 0.38
+Nodes (5): playlistPath(), ActionButtonProps, IconButton(), DisplayPlaylistSegmentProps, PlaylistHomeSegment()
 
 ## Knowledge Gaps
 - **391 isolated node(s):** `localPlugin`, `name`, `private`, `version`, `type` (+386 more)
@@ -448,17 +483,17 @@ Nodes (4): AvatarProps, generateColor(), GeneratedAvatar(), generateHash()
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `useToaster()` connect `LibraryGridScreenSkeleton.tsx` to `Dropdown.tsx`, `HomePage.ts`, `MainLayout.tsx`, `useToaster`, `usePlaylistInfoSegment.ts`, `MultitrackUploadModal.tsx`, `ArtistItem`, `CachedSongsAccordion.tsx`, `useTrackDrafts.ts`, `audioCacheStore.ts`, `LazyLoadSongsList.tsx`, `MainContent.tsx`, `InfoControls.tsx`, `BaseService.ts`, `PlaylistControls.tsx`, `InitPage.tsx`, `PrivateLockWidget.tsx`, `.ListLibrary`, `zpotify_common.pb.ts`, `supportedAudio.ts`, `EditableText.tsx`?**
-  _High betweenness centrality (0.056) - this node is a cross-community bridge._
-- **Why does `AudioPlayerImpl` connect `AudioPlayerImpl` to `LazyLoadSongsList.tsx`, `PlayerBarSegment.tsx`, `usePlayer.ts`, `.preload`?**
+- **Why does `useToaster()` connect `useToaster` to `Dropdown.tsx`, `MainLayout.tsx`, `usePlayer.ts`, `useUser`, `usePlaylistInfoSegment.ts`, `ArtistItem`, `CachedSongsAccordion.tsx`, `useTrackDrafts.ts`, `audioCacheStore.ts`, `SongsService`, `LazyLoadSongsList.tsx`, `MainContent.tsx`, `usePendingFiles.tsx`, `zpotify_service_artists.pb.ts`, `PlaylistControls.tsx`, `PrivateLockWidget.tsx`, `.ListLibrary`, `PlaylistScreenWidget.tsx`, `SearchPage.tsx`, `AddTrackDialog.tsx`, `supportedAudio.ts`, `LibraryGridScreenSkeleton.tsx`, `EditableText.tsx`, `MusicFileIcon.tsx`?**
+  _High betweenness centrality (0.061) - this node is a cross-community bridge._
+- **Why does `AudioPlayerImpl` connect `AudioPlayerImpl` to `AddTrackDialog.tsx`, `PlayerBarSegment.tsx`?**
   _High betweenness centrality (0.045) - this node is a cross-community bridge._
-- **Why does `PlaylistService` connect `LibraryGridScreenSkeleton.tsx` to `audioCacheStore.ts`, `ChooseScreen.tsx`, `MainLayout.tsx`, `supportedAudio.ts`, `PlaylistAPI`, `LazyLoadSongsList.tsx`, `MainContent.tsx`, `AlbumTag`, `usePlaylistInfoSegment.ts`, `ArtistItem`, `zpotify_service_playlist.pb.ts`, `IPlaylistService`, `CachedSongsAccordion.tsx`, `useUser.ts`?**
-  _High betweenness centrality (0.030) - this node is a cross-community bridge._
+- **Why does `PlaylistService` connect `PlaylistAPI` to `audioCacheStore.ts`, `ChooseScreen.tsx`, `MainLayout.tsx`, `zpotify_common.pb.ts`, `supportedAudio.ts`, `usePlayer.ts`, `useToaster`, `LazyLoadSongsList.tsx`, `MainContent.tsx`, `LibraryGridScreenSkeleton.tsx`, `AlbumTag`, `usePlaylistInfoSegment.ts`, `CoverWithFallback.tsx`, `ArtistItem`, `IPlaylistService`, `PrivateLockWidget.tsx`, `PlaylistScreenWidget.tsx`?**
+  _High betweenness centrality (0.031) - this node is a cross-community bridge._
 - **What connects `localPlugin`, `name`, `private` to the rest of the system?**
   _396 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `zpotify_service_files.pb.ts` be split into smaller, more focused modules?**
   _Cohesion score 0.0990990990990991 - nodes in this community are weakly interconnected._
-- **Should `Dropdown.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.10984848484848485 - nodes in this community are weakly interconnected._
 - **Should `HomePage.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.11965811965811966 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.14736842105263157 - nodes in this community are weakly interconnected._
+- **Should `fetch.pb.ts` be split into smaller, more focused modules?**
+  _Cohesion score 0.059379217273954114 - nodes in this community are weakly interconnected._

@@ -94,5 +94,12 @@
   "92": "UploadCard.tsx",
   "93": "GeneratedAvatar.tsx",
   "94": ".preload",
-  "95": "DescriptionSection.tsx"
+  "95": "DescriptionSection.tsx",
+  "96": "zpotify_service_search.pb.ts",
+  "97": "EditControls.tsx",
+  "98": "ArtistPage.tsx",
+  "99": "GetArtistPageResponse",
+  "100": "PlaylistHomeSegment.tsx",
+  "101": "Input.tsx",
+  "102": "EditableText.tsx"
 }
