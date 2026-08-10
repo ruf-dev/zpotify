@@ -2210,8 +2210,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/PlayerBarSegment/PlayerBarSegment.tsx": {
-    "mtime": 1785007557.3652544,
-    "ast_hash": "724a0e98346a0a408232f31fd48ae4c9",
+    "mtime": 1786361803.3577,
+    "ast_hash": "2fa57c7b4fb5114f42f16ae525cba170",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/PlayerBarSegment/components/VolumeControl/VolumeControl.tsx": {
