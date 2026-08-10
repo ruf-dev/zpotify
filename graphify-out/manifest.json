@@ -2275,8 +2275,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/TrackRow/TrackRow.tsx": {
-    "mtime": 1786354294.9490016,
-    "ast_hash": "33195588c86912fcb68e517f9abefce1",
+    "mtime": 1786358982.6109514,
+    "ast_hash": "323c6c1700ad7506c60068c51ee36ee4",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/EditableText/EditableText.tsx": {
@@ -3415,8 +3415,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/ArtistHeroSegment.tsx": {
-    "mtime": 1784969209.019755,
-    "ast_hash": "8f7c7a73264e686a9c4876cec7d280f0",
+    "mtime": 1786358947.562309,
+    "ast_hash": "bd67143994f34b3f37a0431ff129e89e",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/ArtistScreen/segments/ArtistHeroSegment/useArtistHeroSegment.ts": {
