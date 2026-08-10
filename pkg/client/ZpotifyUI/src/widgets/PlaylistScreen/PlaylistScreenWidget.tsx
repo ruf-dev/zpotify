@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import type { Playlist, SongBase } from '@/app/api/zpotify';
@@ -12,6 +12,9 @@ import MainContent from '@/widgets/PlaylistScreen/components/MainContent/MainCon
 import cls from '@/widgets/PlaylistScreen/PlaylistScreenWidget.module.css';
 import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
 import { isAlbum } from '@/entities/playlist/isAlbum.ts';
+
+const COVER_COLLAPSE_THRESHOLD = 96; // px scrolled before the cover collapses to a banner
+const COVER_EXPAND_THRESHOLD = 32; // px — hysteresis band below the collapse threshold, avoids flicker near the boundary
 
 function computeTotalDuration(songs: SongBase[]): string {
     const totalSec = songs.reduce((acc, s) => acc + (s.durationSec ?? 0), 0);
@@ -36,10 +39,37 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
     const audioPlayer = useAudioPlayer();
     const [editMode, setEditMode] = useState(false);
     const [orderedSongs, setOrderedSongs] = useState<SongBase[]>(songs);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [coverCollapsed, setCoverCollapsed] = useState(false);
 
     useEffect(() => {
         setOrderedSongs(songs);
     }, [songs]);
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return undefined;
+        let ticking = false;
+
+        function handleScroll() {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(updateCoverCollapsed);
+        }
+
+        function updateCoverCollapsed() {
+            const scrollTop = el!.scrollTop;
+            setCoverCollapsed((prev) => {
+                if (!prev && scrollTop > COVER_COLLAPSE_THRESHOLD) return true;
+                if (prev && scrollTop < COVER_EXPAND_THRESHOLD) return false;
+                return prev;
+            });
+            ticking = false;
+        }
+
+        el.addEventListener('scroll', handleScroll, { passive: true });
+        return () => el.removeEventListener('scroll', handleScroll);
+    }, []);
 
     function handleBack() {
         navigate(Path.HomePage);
@@ -96,7 +126,7 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
     const trackCount = songs.length > 0 ? songs.length : (playlist?.songCount ?? 0);
 
     return (
-        <div className={cls.PlaylistScreenContainer}>
+        <div className={cls.PlaylistScreenContainer} ref={containerRef}>
             <div className={cls.AmbientWash} />
             <div className={cls.Body}>
                 {playlist ? (
@@ -111,6 +141,7 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
                         editMode={editMode}
                         onEnterEditMode={() => setEditMode(true)}
                         onExitEditMode={() => setEditMode(false)}
+                        coverCollapsed={coverCollapsed}
                     />
                 ) : (
                     <NotFoundPlaylistInfoSegment onBack={handleBack} />

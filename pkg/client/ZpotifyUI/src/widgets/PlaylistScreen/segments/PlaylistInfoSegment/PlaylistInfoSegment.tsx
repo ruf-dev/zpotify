@@ -1,3 +1,5 @@
+import cn from 'classnames';
+
 import cls from '@/widgets/PlaylistScreen/segments/PlaylistInfoSegment/PlaylistInfoSegment.module.css';
 import type { Playlist, SongBase } from '@/app/api/zpotify';
 import BackButton from '@/shared/ui/BackButton.tsx';
@@ -22,17 +24,23 @@ export interface PlaylistInfoSegmentProps {
     editMode: boolean;
     onEnterEditMode: () => void;
     onExitEditMode: () => void;
+    coverCollapsed: boolean;
 }
 
 export default function PlaylistInfoSegment(props: PlaylistInfoSegmentProps) {
-    const { playlist, onBack, editMode } = props;
+    const { playlist, onBack, editMode, coverCollapsed } = props;
     const context = usePlaylistInfoSegment(props);
 
     return (
         <div className={cls.PlaylistInfoContainer}>
-            <BackButton onClick={onBack} />
+            <div className={cls.BackButtonWrapper}>
+                <BackButton onClick={onBack} />
+            </div>
 
-            <EditableCoverWithFallback {...context.coverProps} />
+            <EditableCoverWithFallback
+                {...context.coverProps}
+                className={cn(cls.CoverWrapper, { [cls.CoverWrapperCollapsed]: coverCollapsed })}
+            />
 
             <div className={cls.TitleBlock}>
                 <span className={cls.TypeLabel}>{context.playlistIsAlbum ? 'album' : 'playlist'}</span>

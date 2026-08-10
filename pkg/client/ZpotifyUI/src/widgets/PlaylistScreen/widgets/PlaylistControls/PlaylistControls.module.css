@@ -3,3 +3,9 @@
     align-items: center;
     gap: 0.625rem;
 }
+
+@media (orientation: portrait) {
+    .PlaylistControlsContainer {
+        zoom: 1.5;
+    }
+}

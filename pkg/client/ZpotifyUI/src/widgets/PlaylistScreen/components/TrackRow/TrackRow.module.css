@@ -197,13 +197,26 @@
 
 @media (orientation: portrait) {
     .TrackRow {
-        grid-template-columns: 2rem 1fr 2rem 3rem 1.5rem 0;
+        grid-template-columns: 1fr 2rem 3rem 1.5rem 0;
         gap: 0.25rem;
-        padding: 0.7rem 0.5rem;
+        padding: 1rem 0.5rem;
     }
 
     .TrackRowReorderable {
-        grid-template-columns: 2rem 1fr 2rem 3rem 1.5rem 1.5rem;
+        grid-template-columns: 1fr 2rem 3rem 1.5rem 1.5rem;
+    }
+
+    .TrackNumCell {
+        display: none;
+    }
+
+    .TrackTitle {
+        font-size: calc(var(--font-size-md) * 1.125);
+    }
+
+    .TrackArtist,
+    .TrackDuration {
+        font-size: calc(var(--font-size-sm) * 1.125);
     }
 }
 

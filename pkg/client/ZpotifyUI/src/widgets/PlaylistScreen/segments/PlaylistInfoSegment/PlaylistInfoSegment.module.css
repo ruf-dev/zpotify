@@ -71,9 +71,17 @@
         flex-shrink: 0;
     }
 
+    .BackButtonWrapper {
+        align-self: flex-start;
+    }
+
     .CoverWrapper {
-        width: 8rem;
-        align-self: center;
+        height: 50dvh;
+        transition: height var(--ease-slow);
+    }
+
+    .CoverWrapperCollapsed {
+        height: 6rem;
     }
 }
 
