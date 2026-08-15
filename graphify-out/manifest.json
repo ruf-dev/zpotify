@@ -2825,8 +2825,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/main/search/SearchPage.tsx": {
-    "mtime": 1786361171.275041,
-    "ast_hash": "3f7d7f7d5c03ded7b19ca8f20c21a300",
+    "mtime": 1786830220.8838584,
+    "ast_hash": "7672680baa4738fb4690d0096159e34e",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/main/search/components/ArtistCard/ArtistCard.tsx": {
@@ -3632,6 +3632,11 @@
   "pkg/client/ZpotifyUI/vitest.config.ts": {
     "mtime": 1786829155.7905202,
     "ast_hash": "849f8abfa87c0b5366b000b7d9199aa2",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/main/search/components/MobileSearchInput/MobileSearchInput.tsx": {
+    "mtime": 1786830000.7168138,
+    "ast_hash": "215759ab782efe9711b0726c8ddd5d24",
     "semantic_hash": ""
   }
 }
