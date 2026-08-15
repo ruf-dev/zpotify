@@ -2535,8 +2535,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/entities/ui-settings/useUISettings.ts": {
-    "mtime": 1783271170.0940971,
-    "ast_hash": "5c57753c98a876901698ca665ee1aadb",
+    "mtime": 1786827456.6729407,
+    "ast_hash": "c9bd67fa7a1e49581e0f1da8e53ad798",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/entities/audio-settings/useAudioSettings.ts": {
