@@ -24,6 +24,7 @@
 }
 
 .PlayerBarContainer {
+    position: relative;
     height: var(--player-bar-height);
     width: 100%;
     background: rgb(0 0 0 / 78%);
@@ -37,9 +38,30 @@
     flex-shrink: 0;
 }
 
+/* Mobile-only: progress fill rendered as the bar's own background, behind
+   all other content (DOM order controls stacking — see "Never use z-index"). */
+.PlayerBufferedBackground,
+.PlayerProgressBackground {
+    display: none;
+    position: absolute;
+    inset: 0;
+    right: auto;
+    pointer-events: none;
+    transition: width var(--ease-quick);
+}
+
+.PlayerBufferedBackground {
+    background: var(--color-bg-accent);
+}
+
+.PlayerProgressBackground {
+    background: var(--color-accent-dim-hover);
+}
+
 /* ── Left: Track Info ── */
 
 .TrackInfoWrapper {
+    position: relative;
     flex: 0 0 auto;
     min-width: 10rem;
     max-width: 13.75rem;
@@ -135,6 +157,7 @@
 }
 
 .ButtonsRow {
+    position: relative;
     display: flex;
     gap: 1.375rem;
     align-items: center;
@@ -303,6 +326,11 @@
 
     .SongTitle {
         max-width: none;
+        font-size: var(--font-size-md);
+    }
+
+    .SongArtist {
+        font-size: var(--font-size-sm);
     }
 
     /* Suppress navigation on tap — CSS-only, JS handler left untouched */
@@ -310,9 +338,8 @@
         pointer-events: none;
     }
 
-    /* Unwrap the column so ButtonsRow/ProgressRow become direct flex items
-       of PlayerBarContainer — lets ProgressRow's width:100% force it onto
-       its own wrapped line below row 1. */
+    /* Unwrap the column so ButtonsRow sits as a direct flex item of
+       PlayerBarContainer, inline with the track info. */
     .ControlsCenterWrapper {
         display: contents;
     }
@@ -330,15 +357,13 @@
         display: none;
     }
 
+    /* Progress is shown as the player bar's own background fill instead */
     .ProgressRow {
-        display: flex;
-        width: 100%;
+        display: none;
     }
 
-    .ProgressTrackWrapper {
-        margin: 0 calc(-1 * var(--space-2xl) + 2%);
-        width: calc(100% + var(--space-2xl) * 2 - 4%);
-        pointer-events: none;
-        cursor: default;
+    .PlayerBufferedBackground,
+    .PlayerProgressBackground {
+        display: block;
     }
 }

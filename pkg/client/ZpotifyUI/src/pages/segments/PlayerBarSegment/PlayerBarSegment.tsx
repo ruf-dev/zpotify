@@ -85,6 +85,8 @@ export default function PlayerBarSegment() {
 
     return (
         <div className={cls.PlayerBarContainer}>
+            <div className={cls.PlayerBufferedBackground} style={{ width: `${buffered}%` }} />
+            <div className={cls.PlayerProgressBackground} style={{ width: `${progress}%` }} />
             <div className={cls.TrackInfoWrapper}>
                 <div className={cls.TrackInfoSlideWrapper}>
                     <AnimatePresence initial={false}>
