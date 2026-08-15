@@ -1,0 +1,72 @@
+.UploadingFileRowContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius-md);
+    background: var(--color-bg-card);
+    border: 0.0625rem solid var(--color-border);
+    overflow: hidden;
+    transition: border-color 0.15s ease;
+}
+
+.ProgressFill {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: rgb(217 0 127 / 9%);
+    transform: scaleX(var(--upload-pct, 0));
+    transform-origin: left;
+    border-radius: var(--border-radius-md);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.UploadDone .ProgressFill {
+    background: transparent;
+}
+
+.UploadError .ProgressFill {
+    background: rgb(220 38 38 / 9%);
+}
+
+.UploadError {
+    border-color: var(--color-error);
+}
+
+.FileIcon {
+    position: relative;
+    color: var(--color-fg-secondary);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.FileName {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.StatusLabel {
+    position: relative;
+    flex-shrink: 0;
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+}
+
+.ErrorLabel {
+    position: relative;
+    flex-shrink: 0;
+    font-size: var(--font-size-xs);
+    color: var(--color-error);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 12rem;
+}

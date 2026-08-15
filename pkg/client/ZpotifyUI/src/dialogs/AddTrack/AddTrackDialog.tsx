@@ -14,6 +14,9 @@ import MultitrackUploadModal from '@/dialogs/MultitrackUpload/MultitrackUploadMo
 import MetaDialog from '@/dialogs/Meta/MetaDialog';
 import { AudioFile } from '@/shared/model/AudioFile.ts';
 import { isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
+import type { DroppedGroups } from '@/features/upload/resolveDroppedEntries.ts';
+import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
+import { useBatchUpload } from '@/dialogs/AddTrack/useBatchUpload';
 
 export type ModalStep = 'choose' | 'drop' | 'pending';
 
@@ -24,6 +27,9 @@ export interface AddTrackContext {
     handleFiles: (files: File[]) => void;
     handleSelectFromLibrary: (song: SongFile) => void;
     handleCreatePlaylist: () => void;
+    handleDroppedGroups: (groups: DroppedGroups) => void;
+    batchTracks: TrackDraft[];
+    handleOpenBatchFolder: (folderName: string) => void;
 }
 
 const BACK_STEPS: Partial<Record<ModalStep, ModalStep>> = {
@@ -44,6 +50,7 @@ export default function AddTrackDialog() {
     const [step, setStep] = useState<ModalStep>('choose');
     const [uploading, setUploading] = useState(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
+    const batchUpload = useBatchUpload();
 
     function handleFiles(rawFiles: File[]) {
         const files = rawFiles.filter(isSupportedAudioFile);
@@ -84,6 +91,30 @@ export default function AddTrackDialog() {
             .finally(() => setUploading(false));
     }
 
+    function handleDroppedGroups(groups: DroppedGroups) {
+        const soleFolder =
+            groups.folders.length === 1 && groups.looseFiles.length === 0 ? groups.folders[0] : undefined;
+
+        if (soleFolder) {
+            CloseDialog();
+            OpenDialog(
+                <MultitrackUploadModal files={[]} folders={[soleFolder]} initialPlaylistName={soleFolder.name} />,
+            );
+            return;
+        }
+
+        batchUpload.startBatch(groups.folders, groups.looseFiles);
+        setStep('pending');
+    }
+
+    function handleOpenBatchFolder(folderName: string) {
+        const folder = batchUpload.folders.find((f) => f.name === folderName);
+        if (!folder) return;
+
+        CloseDialog();
+        OpenDialog(<MultitrackUploadModal files={[]} folders={[folder]} initialPlaylistName={folder.name} />);
+    }
+
     function handleCreatePlaylist() {
         CloseDialog();
         OpenDialog(<MultitrackUploadModal files={[]} />);
@@ -106,6 +137,9 @@ export default function AddTrackDialog() {
         handleFiles,
         handleSelectFromLibrary,
         handleCreatePlaylist,
+        handleDroppedGroups,
+        batchTracks: batchUpload.tracks,
+        handleOpenBatchFolder,
     };
 
     const Screen = SCREENS[step];

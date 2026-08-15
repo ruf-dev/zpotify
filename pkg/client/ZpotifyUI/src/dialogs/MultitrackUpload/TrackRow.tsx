@@ -25,6 +25,7 @@ export interface TrackDraft {
     fileId?: string;
     isExisting?: boolean;
     linkedSongId?: string;
+    folderName?: string;
 }
 
 interface TrackRowProps {

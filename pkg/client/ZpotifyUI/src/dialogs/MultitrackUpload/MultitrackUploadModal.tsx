@@ -18,6 +18,7 @@ import { useMultitrackSummary } from '@/dialogs/MultitrackUpload/useMultitrackSu
 import { useArtistLookup } from '@/dialogs/MultitrackUpload/useArtistLookup';
 import { formatBytes } from '@/dialogs/MultitrackUpload/utils';
 import { useEagerFileUpload } from '@/shared/lib/useEagerFileUpload.ts';
+import type { DroppedFolder } from '@/features/upload/resolveDroppedEntries.ts';
 import cls from '@/dialogs/MultitrackUpload/MultitrackUploadModal.module.css';
 import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
 
@@ -29,18 +30,25 @@ interface TargetPlaylist {
 
 interface MultitrackUploadModalProps {
     files: File[];
+    folders?: DroppedFolder[];
     targetPlaylist?: TargetPlaylist;
+    initialPlaylistName?: string;
 }
 
-export default function MultitrackUploadModal({ files, targetPlaylist }: MultitrackUploadModalProps) {
+export default function MultitrackUploadModal({
+    files,
+    folders,
+    targetPlaylist,
+    initialPlaylistName,
+}: MultitrackUploadModalProps) {
     const { CloseDialog, LockClosing, UnlockClosing } = useDialog();
     const refreshActive = useSongListRefresh((s) => s.refreshActive);
     const refreshPlaylists = usePlaylistListRefresh((s) => s.refresh);
 
-    const trackDrafts = useTrackDrafts(files);
+    const trackDrafts = useTrackDrafts(files, folders ?? []);
 
     const [playlistMode, setPlaylistMode] = useState(true);
-    const [playlistName, setPlaylistName] = useState('');
+    const [playlistName, setPlaylistName] = useState(initialPlaylistName ?? '');
     const [albumArtists, setAlbumArtists] = useState<ArtistItem[]>(targetPlaylist?.artists ?? []);
     const [year, setYear] = useState<number | undefined>();
     const [tags, setTags] = useState<ChipEntry[]>([]);
@@ -139,6 +147,10 @@ export default function MultitrackUploadModal({ files, targetPlaylist }: Multitr
                     showSearchBox={playlistMode}
                     excludedSongIds={excludedSongIds}
                     onAddSong={trackDrafts.handleAddSong}
+                    onAddPendingFile={trackDrafts.handleAddPendingFile}
+                    excludedFileIds={
+                        new Set(trackDrafts.tracks.map((t) => t.fileId).filter((id): id is string => !!id))
+                    }
                 />
             </div>
 

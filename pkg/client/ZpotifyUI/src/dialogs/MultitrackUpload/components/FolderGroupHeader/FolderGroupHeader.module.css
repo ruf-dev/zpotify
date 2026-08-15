@@ -1,0 +1,70 @@
+.FolderGroupHeaderContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-card);
+    cursor: pointer;
+    overflow: hidden;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.FolderGroupHeaderContainer:hover {
+    background: var(--color-bg-hover);
+    border-color: var(--color-border-light);
+}
+
+.ProgressFill {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: rgb(217 0 127 / 9%);
+    transform: scaleX(var(--upload-pct, 0));
+    transform-origin: left;
+    border-radius: var(--border-radius-md);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.Chevron {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-fg-tertiary);
+    transform: rotate(0deg);
+    transition: transform 0.15s ease;
+}
+
+.ChevronExpanded {
+    transform: rotate(90deg);
+}
+
+.FolderIconWrapper {
+    display: flex;
+    align-items: center;
+    color: var(--color-fg-secondary);
+    flex-shrink: 0;
+}
+
+.FolderName {
+    flex: 1;
+    min-width: 0;
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-fg-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.TrackCount {
+    flex-shrink: 0;
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--border-radius-pill);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+}

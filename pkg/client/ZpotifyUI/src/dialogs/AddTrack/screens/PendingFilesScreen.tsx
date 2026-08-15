@@ -3,9 +3,14 @@ import { Button, Toggle } from '@vervstack/chures';
 import cls from '@/dialogs/AddTrack/screens/PendingFilesScreen.module.css';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 import FileItem from '@/dialogs/AddTrack/screens/components/FileItem/FileItem';
+import BatchUploadSection from '@/dialogs/AddTrack/screens/components/BatchUploadSection/BatchUploadSection';
 import { usePendingFiles } from '@/dialogs/AddTrack/screens/usePendingFiles.tsx';
 
-export default function PendingFilesScreen({ handleSelectFromLibrary }: AddTrackContext) {
+export default function PendingFilesScreen({
+    handleSelectFromLibrary,
+    batchTracks,
+    handleOpenBatchFolder,
+}: AddTrackContext) {
     const pendingFiles = usePendingFiles();
 
     if (pendingFiles.loading) {
@@ -18,6 +23,7 @@ export default function PendingFilesScreen({ handleSelectFromLibrary }: AddTrack
 
     return (
         <div className={cls.PendingFilesScreenContainer}>
+            {batchTracks.length > 0 && <BatchUploadSection tracks={batchTracks} onOpenFolder={handleOpenBatchFolder} />}
             {pendingFiles.files.length === 0 ? (
                 <div className={cls.Empty}>no pending uploads found</div>
             ) : (

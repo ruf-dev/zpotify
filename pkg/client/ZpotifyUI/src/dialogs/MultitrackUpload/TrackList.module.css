@@ -45,6 +45,15 @@
     gap: 0.375rem;
 }
 
+.FolderTrackIndent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin-left: 1.25rem;
+    padding-left: 0.625rem;
+    border-left: 1px solid var(--color-border);
+}
+
 .EmptyStateWrapper {
     border: 1px dashed var(--color-border-light);
     border-radius: var(--border-radius-md);

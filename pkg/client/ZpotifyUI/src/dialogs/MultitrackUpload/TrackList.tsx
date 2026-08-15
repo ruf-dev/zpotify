@@ -3,13 +3,16 @@ import { createPortal } from 'react-dom';
 import { Button } from '@vervstack/chures';
 
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
-import type { SongBase } from '@/app/api/zpotify';
+import type { SongBase, SongFile } from '@/app/api/zpotify';
 import DropZone from '@/features/upload/DropZone';
 import SongSearchBox from '@/widgets/SongSearchBox/SongSearchBox';
 import TrackRow from '@/dialogs/MultitrackUpload/TrackRow';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { useTrackDrag } from '@/dialogs/MultitrackUpload/useTrackDrag';
 import { canCleanTrackNumbers } from '@/dialogs/MultitrackUpload/utils';
+import { groupTracksByFolder, folderProgress } from '@/dialogs/MultitrackUpload/groupTracksByFolder';
+import FolderGroupHeader from '@/dialogs/MultitrackUpload/components/FolderGroupHeader/FolderGroupHeader';
+import FetchServerFilesButton from '@/dialogs/MultitrackUpload/components/FetchServerFilesButton/FetchServerFilesButton';
 import cls from '@/dialogs/MultitrackUpload/TrackList.module.css';
 
 interface TrackListProps {
@@ -27,6 +30,8 @@ interface TrackListProps {
     showSearchBox: boolean;
     excludedSongIds: Set<string>;
     onAddSong: (song: SongBase) => void;
+    onAddPendingFile: (song: SongFile) => void;
+    excludedFileIds: Set<string>;
 }
 
 const CLEAN_NUMBERS_ANIMATION_MS = 220;
@@ -37,6 +42,7 @@ export default function TrackList(props: TrackListProps) {
     const drag = useTrackDrag(props.tracks.length, props.onReorder);
     const [isHoveringClean, setIsHoveringClean] = useState(false);
     const [isCleaningNumbers, setIsCleaningNumbers] = useState(false);
+    const [collapsedFolders, setCollapsedFolders] = useState<Set<string>>(new Set());
 
     const count = props.tracks.length;
     const headerLabel = count === 1 ? 'TRACK · 1' : `TRACKS · ${count}`;
@@ -44,6 +50,7 @@ export default function TrackList(props: TrackListProps) {
     const canCleanNames = canCleanTrackNumbers(props.tracks.map((t) => t.title));
     const previewCleanNumbers = canCleanNames && isHoveringClean;
     const cleaningNumbers = canCleanNames && isCleaningNumbers;
+    const segments = groupTracksByFolder(props.tracks);
 
     function handleCleanNamesClick() {
         setIsHoveringClean(false);
@@ -52,6 +59,42 @@ export default function TrackList(props: TrackListProps) {
             props.onCleanNames();
             setIsCleaningNumbers(false);
         }, CLEAN_NUMBERS_ANIMATION_MS);
+    }
+
+    function toggleFolder(folderName: string) {
+        setCollapsedFolders((prev) => {
+            const next = new Set(prev);
+            if (next.has(folderName)) next.delete(folderName);
+            else next.add(folderName);
+            return next;
+        });
+    }
+
+    function renderTrackRow(track: TrackDraft, idx: number) {
+        return (
+            <TrackRow
+                key={track.id}
+                track={track}
+                index={idx}
+                albumArtists={props.albumArtists}
+                rowRef={(el) => {
+                    if (el) drag.rowRefs.current[track.id] = el;
+                    else delete drag.rowRefs.current[track.id];
+                }}
+                onHandlePointerDown={(e) => drag.startDrag(track.id, idx, e)}
+                dragStyle={drag.getRowStyle(idx)}
+                isDragging={drag.draggedIdx === idx}
+                anyDragging={drag.isActive}
+                onTitleChange={props.onTitleChange}
+                onArtistsChange={props.onArtistsChange}
+                onRemove={props.onRemove}
+                onRetry={props.onRetry}
+                loadArtistOptions={props.loadArtistOptions}
+                onCreateArtist={props.onCreateArtist}
+                previewCleanNumbers={previewCleanNumbers}
+                isCleaningNumbers={cleaningNumbers}
+            />
+        );
     }
 
     return (
@@ -77,30 +120,37 @@ export default function TrackList(props: TrackListProps) {
             </div>
 
             <div className={cls.RowsWrapper}>
-                {props.tracks.map((track, idx) => (
-                    <TrackRow
-                        key={track.id}
-                        track={track}
-                        index={idx}
-                        albumArtists={props.albumArtists}
-                        rowRef={(el) => {
-                            if (el) drag.rowRefs.current[track.id] = el;
-                            else delete drag.rowRefs.current[track.id];
-                        }}
-                        onHandlePointerDown={(e) => drag.startDrag(track.id, idx, e)}
-                        dragStyle={drag.getRowStyle(idx)}
-                        isDragging={drag.draggedIdx === idx}
-                        anyDragging={drag.isActive}
-                        onTitleChange={props.onTitleChange}
-                        onArtistsChange={props.onArtistsChange}
-                        onRemove={props.onRemove}
-                        onRetry={props.onRetry}
-                        loadArtistOptions={props.loadArtistOptions}
-                        onCreateArtist={props.onCreateArtist}
-                        previewCleanNumbers={previewCleanNumbers}
-                        isCleaningNumbers={cleaningNumbers}
-                    />
-                ))}
+                {segments.flatMap((segment) => {
+                    if (segment.folderName === undefined) {
+                        return [renderTrackRow(segment.tracks[0], segment.startIndex)];
+                    }
+
+                    const folderName = segment.folderName;
+                    const collapsed = collapsedFolders.has(folderName);
+                    const nodes = [
+                        <FolderGroupHeader
+                            key={`folder-header-${folderName}-${segment.startIndex}`}
+                            name={folderName}
+                            trackCount={segment.tracks.length}
+                            progress={folderProgress(segment.tracks)}
+                            collapsed={collapsed}
+                            onToggle={() => toggleFolder(folderName)}
+                        />,
+                    ];
+
+                    if (!collapsed) {
+                        nodes.push(
+                            <div
+                                key={`folder-tracks-${folderName}-${segment.startIndex}`}
+                                className={cls.FolderTrackIndent}
+                            >
+                                {segment.tracks.map((track, i) => renderTrackRow(track, segment.startIndex + i))}
+                            </div>,
+                        );
+                    }
+
+                    return nodes;
+                })}
             </div>
 
             {ghostTrack &&
@@ -127,6 +177,8 @@ export default function TrackList(props: TrackListProps) {
                 )}
 
             {props.showSearchBox && <SongSearchBox excludedIds={props.excludedSongIds} onAddSong={props.onAddSong} />}
+
+            <FetchServerFilesButton excludedFileIds={props.excludedFileIds} onAddPendingFile={props.onAddPendingFile} />
 
             <DropZone onFiles={props.onAddFiles} className={cls.EmptyStateWrapper}>
                 <div className={cls.EmptyStateContent}>

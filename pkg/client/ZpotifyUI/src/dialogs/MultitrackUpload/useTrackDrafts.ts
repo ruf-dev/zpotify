@@ -9,11 +9,12 @@ import { fileService } from '@/shared/api/FileService.ts';
 import type { FileHashResult } from '@/shared/api/FileService.ts';
 import { isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
-import type { SongBase } from '@/app/api/zpotify';
+import type { SongBase, SongFile } from '@/app/api/zpotify';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { cleanTitle, cleanTrackNumber, computeHash } from '@/dialogs/MultitrackUpload/utils';
 import type { UploadQueue } from '@/dialogs/MultitrackUpload/useUploadQueue';
 import { useUploadQueue } from '@/dialogs/MultitrackUpload/useUploadQueue';
+import type { DroppedFolder } from '@/features/upload/resolveDroppedEntries.ts';
 
 export interface TrackDraftsState {
     tracks: TrackDraft[];
@@ -23,9 +24,15 @@ export interface TrackDraftsState {
     handleReorder: (fromIdx: number, toIdx: number) => void;
     handleAddFiles: (incomingFiles: File[]) => void;
     handleAddSong: (song: SongBase) => void;
+    handleAddPendingFile: (songFile: SongFile) => void;
     handleRetry: (id: string) => void;
     handleRetryAll: () => void;
     handleCleanNumbers: () => void;
+}
+
+interface TaggedFile {
+    file: File;
+    folderName?: string;
 }
 
 interface ClassifiedFile {
@@ -44,16 +51,23 @@ function mapArtists(song: SongBase | undefined): ArtistItem[] {
     return (song?.artists ?? []).filter((a) => a.uuid && a.name).map((a) => ({ id: a.uuid!, name: a.name! }));
 }
 
-function createInitialTracks(files: File[]): TrackDraft[] {
-    return files.map((f) => ({
+export function flattenDroppedInput(files: File[], folders: DroppedFolder[]): TaggedFile[] {
+    const folderTagged: TaggedFile[] = folders.flatMap((f) => f.files.map((file) => ({ file, folderName: f.name })));
+    const looseTagged: TaggedFile[] = files.map((file) => ({ file, folderName: undefined }));
+    return folderTagged.concat(looseTagged);
+}
+
+export function createInitialTracks(taggedFiles: TaggedFile[]): TrackDraft[] {
+    return taggedFiles.map(({ file, folderName }) => ({
         id: crypto.randomUUID(),
-        file: f,
-        title: cleanTitle(f.name),
+        file,
+        title: cleanTitle(file.name),
         artists: [] as ArtistItem[],
         duration: 0,
-        size: f.size,
+        size: file.size,
         uploadStatus: 'pending' as const,
         uploadProgress: 0,
+        folderName,
     }));
 }
 
@@ -187,10 +201,10 @@ function startNewTrackUploads(
     });
 }
 
-export function useTrackDrafts(files: File[]): TrackDraftsState {
+export function useTrackDrafts(files: File[], folders: DroppedFolder[] = []): TrackDraftsState {
     const toaster = useToaster();
 
-    const [tracks, setTracks] = useState<TrackDraft[]>(() => createInitialTracks(files));
+    const [tracks, setTracks] = useState<TrackDraft[]>(() => createInitialTracks(flattenDroppedInput(files, folders)));
 
     const tracksRef = useRef(tracks);
     tracksRef.current = tracks;
@@ -283,6 +297,25 @@ export function useTrackDrafts(files: File[]): TrackDraftsState {
         setTracks((prev) => [...prev, newTrack]);
     }
 
+    function handleAddPendingFile(songFile: SongFile) {
+        if (!songFile.id) return;
+        if (tracksRef.current.some((t) => t.fileId === songFile.id)) return;
+
+        const name = songFile.path?.split('/').pop() ?? '';
+        const newTrack: TrackDraft = {
+            id: crypto.randomUUID(),
+            title: cleanTitle(name),
+            artists: [],
+            duration: 0,
+            uploadStatus: 'done',
+            uploadProgress: 100,
+            fileId: songFile.id,
+            isExisting: true,
+        };
+
+        setTracks((prev) => [...prev, newTrack]);
+    }
+
     return {
         tracks,
         handleTitleChange,
@@ -291,6 +324,7 @@ export function useTrackDrafts(files: File[]): TrackDraftsState {
         handleReorder,
         handleAddFiles,
         handleAddSong,
+        handleAddPendingFile,
         handleRetry,
         handleRetryAll,
         handleCleanNumbers,
