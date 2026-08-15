@@ -1240,8 +1240,8 @@
     "semantic_hash": ""
   },
   "config/config.yaml": {
-    "mtime": 1786388787.61177,
-    "ast_hash": "f75fdc02b93d5686a35283c180c8b52e",
+    "mtime": 1786362841.8659132,
+    "ast_hash": "78591b91258661ed4226a15a18ee374d",
     "semantic_hash": ""
   },
   "config/config_template.yaml": {
@@ -2210,8 +2210,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/PlayerBarSegment/PlayerBarSegment.tsx": {
-    "mtime": 1786818737.3889422,
-    "ast_hash": "641b2553c9d920e08d9b817b470df363",
+    "mtime": 1786385059.866015,
+    "ast_hash": "67f8dd511ecf7c82af64abcb056e8568",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/PlayerBarSegment/components/VolumeControl/VolumeControl.tsx": {
@@ -3577,11 +3577,6 @@
   "docs/release_notes/v1.0.13.md": {
     "mtime": 1786362922.0202255,
     "ast_hash": "a372bd96e7f6a659cae7c3fb39753dfc",
-    "semantic_hash": ""
-  },
-  "pkg/client/ZpotifyUI/vite.config.js.timestamp-1786818159605-b1ae229d6c347.mjs": {
-    "mtime": 1786818159.6077058,
-    "ast_hash": "43dc8350e80d1e48e23e5f1fa3237056",
     "semantic_hash": ""
   }
 }
