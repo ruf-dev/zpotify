@@ -1440,13 +1440,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/tsconfig.node.json": {
-    "mtime": 1786208494.1132317,
-    "ast_hash": "7dbc67ed81b7cbdd58c18c23ad81ac27",
+    "mtime": 1786829156.8210351,
+    "ast_hash": "187b626abb2f1ea77bff5f47beb4e196",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/package.json": {
-    "mtime": 1786051665.647144,
-    "ast_hash": "6395fd19d7198b179aea7437e71df8e4",
+    "mtime": 1786829158.1038094,
+    "ast_hash": "f9ed3994472edfdcff6457d5277836c9",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/tsconfig.json": {
@@ -3622,6 +3622,16 @@
   "pkg/client/ZpotifyUI/src/shared/lib/useBackGuard.ts": {
     "mtime": 1786826491.3588898,
     "ast_hash": "e887602fe4cf7b0d03538e19e220b707",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/carousel/SegmentCarousel.test.tsx": {
+    "mtime": 1786829261.7357643,
+    "ast_hash": "89edb18388a8db02295f70a9386b0f3b",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/vitest.config.ts": {
+    "mtime": 1786829155.7905202,
+    "ast_hash": "849f8abfa87c0b5366b000b7d9199aa2",
     "semantic_hash": ""
   }
 }
