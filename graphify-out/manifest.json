@@ -1865,8 +1865,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/AddTrackDialog.tsx": {
-    "mtime": 1783259493.8247948,
-    "ast_hash": "864e89d1a9410510d3501da88e0973c1",
+    "mtime": 1786820398.374162,
+    "ast_hash": "95f5ba33419579cd15ffba1201c56421",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/PendingFilesScreen.tsx": {
@@ -1875,8 +1875,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/DropZoneScreen.tsx": {
-    "mtime": 1783575382.2553506,
-    "ast_hash": "a4f22e8dab051ddd551cc92c3bc35430",
+    "mtime": 1786820415.6513577,
+    "ast_hash": "9c36367d16ba8597cd496718319af328",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/ChooseScreen.tsx": {
@@ -1930,8 +1930,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/components/PanelHeader/PanelHeader.tsx": {
-    "mtime": 1783575292.41857,
-    "ast_hash": "6a4bc54377106a419d00299ffb4fd1be",
+    "mtime": 1786820403.6681511,
+    "ast_hash": "cd57cd6143e24f44d14804ec92a95167",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/Meta/MetaDialog.tsx": {
@@ -1980,8 +1980,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/MultitrackUploadModal.tsx": {
-    "mtime": 1784923331.2469072,
-    "ast_hash": "6f47c673f248a9dfe1e80097f4edec48",
+    "mtime": 1786820538.089022,
+    "ast_hash": "b90e36c3b23a3ce9be85157d3ec26bc9",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/PlaylistToggleRow.tsx": {
@@ -3582,6 +3582,31 @@
   "pkg/client/ZpotifyUI/vite.config.js.timestamp-1786818159605-b1ae229d6c347.mjs": {
     "mtime": 1786818159.6077058,
     "ast_hash": "43dc8350e80d1e48e23e5f1fa3237056",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/FolderIcon.tsx": {
+    "mtime": 1786820360.7178783,
+    "ast_hash": "932314caa5f165124992ef6147530073",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/GroupPickerScreen.tsx": {
+    "mtime": 1786820468.5393984,
+    "ast_hash": "0e80acb26df09ab362eb87f5233160af",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/GroupFolderRow/GroupFolderRow.tsx": {
+    "mtime": 1786820369.0099208,
+    "ast_hash": "0e23ded6269ee4f1ae8ef6a90a66c740",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/PickerRow/PickerRow.tsx": {
+    "mtime": 1786820450.145659,
+    "ast_hash": "a38c4119f933830ece0dba0d86f154ae",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/features/upload/resolveDroppedEntries.ts": {
+    "mtime": 1786820540.9312203,
+    "ast_hash": "cee2949f5a58c5bdedef693fae9238d2",
     "semantic_hash": ""
   }
 }
