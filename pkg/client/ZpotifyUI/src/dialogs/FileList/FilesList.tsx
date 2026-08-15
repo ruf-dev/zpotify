@@ -8,6 +8,7 @@ import type { SongFile } from '@/app/api/zpotify';
 import Button from '@/shared/ui/Button.tsx';
 import SongEditDialog from '@/dialogs/SongEdit/SongEditDialog.tsx';
 import { fileService } from '@/shared/api/FileService.ts';
+import { useBackGuard } from '@/shared/lib/useBackGuard';
 
 interface FilesListProps {
     previousScreen?: React.JSX.Element;
@@ -17,6 +18,8 @@ export default function FilesList({ previousScreen }: FilesListProps) {
     const { OpenDialog, CloseDialog } = useDialog();
     const [files, setFiles] = useState<SongFile[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    useBackGuard(!!previousScreen, () => OpenDialog(previousScreen!));
 
     useEffect(() => {
         fileService

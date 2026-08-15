@@ -11,6 +11,7 @@ import { useSidebarUI } from '@/shared/model/sidebarUIStore.ts';
 import AddTrackButton from '@/features/upload/AddTrackButton.tsx';
 import AddTrackDialog from '@/dialogs/AddTrack/AddTrackDialog.tsx';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
+import { useBackGuard } from '@/shared/lib/useBackGuard';
 
 type navIdentity = 'home' | 'search' | 'my_uploads';
 
@@ -28,6 +29,8 @@ export default function SidebarSegment() {
 
     const navigate = useNavigate();
     const { OpenDialog } = useDialog();
+
+    useBackGuard(isDrawerOpen, closeDrawer);
 
     function resolveNavigation(ni: navIdentity): () => void {
         return () => {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import cn from 'classnames';
 import { Button, ModalClose } from '@vervstack/chures';
 
@@ -18,9 +18,13 @@ import { useMultitrackSummary } from '@/dialogs/MultitrackUpload/useMultitrackSu
 import { useArtistLookup } from '@/dialogs/MultitrackUpload/useArtistLookup';
 import { formatBytes } from '@/dialogs/MultitrackUpload/utils';
 import { useEagerFileUpload } from '@/shared/lib/useEagerFileUpload.ts';
+import { useBackGuard } from '@/shared/lib/useBackGuard';
 import type { DroppedFolder } from '@/features/upload/resolveDroppedEntries.ts';
+import BackButton from '@/shared/ui/BackButton';
 import cls from '@/dialogs/MultitrackUpload/MultitrackUploadModal.module.css';
 import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
+
+const AddTrackDialog = lazy(() => import('@/dialogs/AddTrack/AddTrackDialog'));
 
 interface TargetPlaylist {
     uuid: string;
@@ -41,7 +45,7 @@ export default function MultitrackUploadModal({
     targetPlaylist,
     initialPlaylistName,
 }: MultitrackUploadModalProps) {
-    const { CloseDialog, LockClosing, UnlockClosing } = useDialog();
+    const { CloseDialog, OpenDialog, LockClosing, UnlockClosing } = useDialog();
     const refreshActive = useSongListRefresh((s) => s.refreshActive);
     const refreshPlaylists = usePlaylistListRefresh((s) => s.refresh);
 
@@ -55,9 +59,20 @@ export default function MultitrackUploadModal({
     const [cover, setCover] = useState<File | undefined>();
     const coverUpload = useEagerFileUpload();
 
+    useBackGuard(!targetPlaylist, handleBack);
+
     function handleCoverChange(file: File) {
         setCover(file);
         coverUpload.startUpload(file);
+    }
+
+    function handleBack() {
+        CloseDialog();
+        OpenDialog(
+            <Suspense fallback={null}>
+                <AddTrackDialog />
+            </Suspense>,
+        );
     }
 
     const submitState = useMultitrackSubmit({
@@ -94,6 +109,7 @@ export default function MultitrackUploadModal({
         <div className={cls.PanelContainer} role="dialog" aria-modal="true" aria-labelledby="multitrack-title">
             <div className={cls.PanelHeader}>
                 <div className={cls.HeaderLeft}>
+                    {!targetPlaylist && <BackButton onClick={handleBack} />}
                     <span id="multitrack-title" className={cls.PanelTitle}>
                         {summary.titleText}
                     </span>

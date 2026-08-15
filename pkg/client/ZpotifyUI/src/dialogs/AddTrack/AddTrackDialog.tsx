@@ -17,6 +17,7 @@ import { isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
 import type { DroppedGroups } from '@/features/upload/resolveDroppedEntries.ts';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { useBatchUpload } from '@/dialogs/AddTrack/useBatchUpload';
+import { useBackGuard } from '@/shared/lib/useBackGuard';
 
 export type ModalStep = 'choose' | 'drop' | 'pending';
 
@@ -51,6 +52,9 @@ export default function AddTrackDialog() {
     const [uploading, setUploading] = useState(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
     const batchUpload = useBatchUpload();
+    const backStep = BACK_STEPS[step];
+
+    useBackGuard(!!backStep, () => setStep(backStep!));
 
     function handleFiles(rawFiles: File[]) {
         const files = rawFiles.filter(isSupportedAudioFile);
@@ -127,8 +131,6 @@ export default function AddTrackDialog() {
         CloseDialog();
         OpenDialog(<MetaDialog audioFile={new AudioFile(id)} initialTitle={initialTitle} />);
     }
-
-    const backStep = BACK_STEPS[step];
 
     const ctx: AddTrackContext = {
         goTo: setStep,

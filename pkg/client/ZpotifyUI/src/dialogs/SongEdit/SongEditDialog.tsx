@@ -10,6 +10,7 @@ import Chip from '@/shared/ui/Chip.tsx';
 import MultiSelect, { Option } from '@/shared/ui/MultiSelect.tsx';
 import { artistsService } from '@/shared/api/ArtistsService.ts';
 import { songsService } from '@/shared/api/Songs.ts';
+import { useBackGuard } from '@/shared/lib/useBackGuard';
 
 interface SongEditDialogProps {
     fileId: string;
@@ -30,6 +31,8 @@ export default function SongEditDialog({
 }: SongEditDialogProps) {
     const { OpenDialog, CloseDialog } = useDialog();
     const toaster = useToaster();
+
+    useBackGuard(!!previousScreen, () => OpenDialog(previousScreen!));
 
     const [title, setTitle] = useState(initialTitle);
     const [selectedArtistIds, setSelectedArtistIds] = useState<string[]>([]);
