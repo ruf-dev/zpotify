@@ -1595,8 +1595,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/features/upload/AddTrackButton.tsx": {
-    "mtime": 1782926426.89488,
-    "ast_hash": "f479dea40d6b1948b6e3d353d8d9e36e",
+    "mtime": 1786824511.7406223,
+    "ast_hash": "5ae9d89d63911691f467e0e8594ed848",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/features/upload/supportedAudio.ts": {
@@ -1980,8 +1980,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/MultitrackUploadModal.tsx": {
-    "mtime": 1786821831.01178,
-    "ast_hash": "a56dae42054dfef8169d51d2adab031b",
+    "mtime": 1786824511.7400389,
+    "ast_hash": "249195ccc91f793ad9f51e25ed874a72",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/PlaylistToggleRow.tsx": {
@@ -2255,8 +2255,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/PlaylistScreenWidget.tsx": {
-    "mtime": 1786383152.727399,
-    "ast_hash": "66ce8699697b747d7fd752346b86876a",
+    "mtime": 1786824611.8815548,
+    "ast_hash": "5876fc7a5b7da8592248aaca4950682e",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/screens/SkeletonLoadScreen/SkeletonLoadScreen.tsx": {
@@ -3577,11 +3577,6 @@
   "docs/release_notes/v1.0.13.md": {
     "mtime": 1786362922.0202255,
     "ast_hash": "a372bd96e7f6a659cae7c3fb39753dfc",
-    "semantic_hash": ""
-  },
-  "pkg/client/ZpotifyUI/vite.config.js.timestamp-1786818159605-b1ae229d6c347.mjs": {
-    "mtime": 1786818159.6077058,
-    "ast_hash": "43dc8350e80d1e48e23e5f1fa3237056",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/assets/icons/FolderIcon.tsx": {
