@@ -12,6 +12,13 @@
     width: 100%;
     max-width: var(--home-section-max-width);
     margin-bottom: var(--space-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+
+    > :first-child {
+        flex-shrink: 0;
+    }
 }
 
 .ResultsWrapper {

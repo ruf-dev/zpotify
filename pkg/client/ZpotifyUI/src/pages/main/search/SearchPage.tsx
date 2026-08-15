@@ -6,6 +6,7 @@ import FilterChips from '@/pages/main/search/components/FilterChips/FilterChips.
 import SectionLabel from '@/pages/main/search/components/SectionLabel/SectionLabel.tsx';
 import EmptyState from '@/pages/main/search/components/EmptyState/EmptyState.tsx';
 import ArtistCard from '@/pages/main/search/components/ArtistCard/ArtistCard.tsx';
+import MobileSearchInput from '@/pages/main/search/components/MobileSearchInput/MobileSearchInput.tsx';
 import SongRow from '@/components/SongRow/SongRow.tsx';
 import { useSearchPage } from '@/pages/main/search/useSearchPage.ts';
 import type { SearchTrackResult } from '@/shared/api/SearchService.ts';
@@ -118,6 +119,7 @@ export default function SearchPage() {
         <div className={cls.SearchPageContainer}>
             <div className={cls.HeaderRow}>
                 <BackButton onClick={handleBack} />
+                <MobileSearchInput />
             </div>
             <FilterChips active={page.filters} onToggle={page.toggleFilter} />
             <div className={cls.ResultsWrapper}>{renderResults()}</div>

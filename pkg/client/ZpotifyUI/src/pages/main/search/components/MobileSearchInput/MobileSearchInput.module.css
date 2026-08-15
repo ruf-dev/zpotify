@@ -1,0 +1,18 @@
+.MobileSearchInputContainer {
+    display: none;
+    flex: 1;
+    min-width: 0;
+}
+
+@media (orientation: portrait) {
+    .MobileSearchInputContainer {
+        display: flex;
+    }
+}
+
+.MobileSearchInputField {
+    width: 100%;
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-pill);
+    border: 1px solid var(--color-border);
+}
