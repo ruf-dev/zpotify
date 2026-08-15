@@ -63,5 +63,6 @@ type ListSongsByArtist struct {
 // ArtistStorage.Search / ArtistsService.Search.
 type ArtistSearchResult struct {
 	ArtistsBase
-	Score float64
+	AvatarFilePath string
+	Score          float64
 }

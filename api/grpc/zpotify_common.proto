@@ -18,6 +18,7 @@ message ArtistBase {
   string uuid = 1;
   string name = 2;
   bool liked = 3;
+  optional string avatar_file_path = 4;
 }
 
 enum SongTagKind {

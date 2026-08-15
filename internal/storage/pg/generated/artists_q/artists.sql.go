@@ -7,6 +7,7 @@ package artists_q
 
 import (
 	"context"
+	"database/sql"
 	"time"
 
 	"github.com/google/uuid"
@@ -32,6 +33,7 @@ const searchArtistsByName = `-- name: SearchArtistsByName :many
 SELECT uuid,
        name,
        created_at,
+       avatar_file_path,
        ts_rank(name_tsv, to_tsquery('simple', $1::text)) AS score
 FROM artist_search_view_v1
 WHERE name_tsv @@ to_tsquery('simple', $1::text)
@@ -46,10 +48,11 @@ type SearchArtistsByNameParams struct {
 }
 
 type SearchArtistsByNameRow struct {
-	Uuid      uuid.UUID
-	Name      string
-	CreatedAt time.Time
-	Score     float32
+	Uuid           uuid.UUID
+	Name           string
+	CreatedAt      time.Time
+	AvatarFilePath sql.NullString
+	Score          float32
 }
 
 func (q *Queries) SearchArtistsByName(ctx context.Context, arg SearchArtistsByNameParams) ([]SearchArtistsByNameRow, error) {
@@ -65,6 +68,7 @@ func (q *Queries) SearchArtistsByName(ctx context.Context, arg SearchArtistsByNa
 			&i.Uuid,
 			&i.Name,
 			&i.CreatedAt,
+			&i.AvatarFilePath,
 			&i.Score,
 		); err != nil {
 			return nil, err

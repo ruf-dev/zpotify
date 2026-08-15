@@ -335,6 +335,9 @@
         },
         "liked": {
           "type": "boolean"
+        },
+        "avatarFilePath": {
+          "type": "string"
         }
       }
     },

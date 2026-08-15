@@ -12,7 +12,7 @@ import (
 
 func TestSearchService_Search_ReturnsResultsAcrossAllTypes(t *testing.T) {
 	song := domain.Song{SongBase: domain.SongBase{Id: 1, Title: "Some Song"}, Score: 0.8}
-	artist := domain.ArtistSearchResult{ArtistsBase: domain.ArtistsBase{Uuid: "artist-uuid", Name: "Some Artist"}, Score: 0.7}
+	artist := domain.ArtistSearchResult{ArtistsBase: domain.ArtistsBase{Uuid: "artist-uuid", Name: "Some Artist"}, AvatarFilePath: "artists/artist-uuid/avatar.png", Score: 0.7}
 	album := domain.PlaylistSearchResult{Playlist: domain.Playlist{Uuid: "album-uuid", Name: "Some Album"}, Score: 0.6}
 	playlist := domain.PlaylistSearchResult{Playlist: domain.Playlist{Uuid: "playlist-uuid", Name: "Some Playlist"}, Score: 0.5}
 
@@ -45,6 +45,7 @@ func TestSearchService_Search_ReturnsResultsAcrossAllTypes(t *testing.T) {
 
 	require.Len(t, result.Artists, 1)
 	assert.Equal(t, "artist-uuid", result.Artists[0].Uuid)
+	assert.Equal(t, "artists/artist-uuid/avatar.png", result.Artists[0].AvatarFilePath)
 
 	require.Len(t, result.Albums, 1)
 	assert.Equal(t, "album-uuid", result.Albums[0].Uuid)

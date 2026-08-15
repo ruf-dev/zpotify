@@ -50,6 +50,7 @@ export type ArtistBase = {
   uuid?: string;
   name?: string;
   liked?: boolean;
+  avatarFilePath?: string;
 };
 
 export type SongTag = {

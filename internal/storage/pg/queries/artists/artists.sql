@@ -10,6 +10,7 @@ DELETE FROM user_artists WHERE user_id = $1 AND artist_id = $2;
 SELECT uuid,
        name,
        created_at,
+       avatar_file_path,
        ts_rank(name_tsv, to_tsquery('simple', @query::text)) AS score
 FROM artist_search_view_v1
 WHERE name_tsv @@ to_tsquery('simple', @query::text)

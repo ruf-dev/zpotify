@@ -246,12 +246,13 @@ func (x *Paging) GetOffset() uint64 {
 }
 
 type ArtistBase struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Liked         bool                   `protobuf:"varint,3,opt,name=liked,proto3" json:"liked,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Uuid           string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Name           string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Liked          bool                   `protobuf:"varint,3,opt,name=liked,proto3" json:"liked,omitempty"`
+	AvatarFilePath *string                `protobuf:"bytes,4,opt,name=avatar_file_path,json=avatarFilePath,proto3,oneof" json:"avatar_file_path,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *ArtistBase) Reset() {
@@ -303,6 +304,13 @@ func (x *ArtistBase) GetLiked() bool {
 		return x.Liked
 	}
 	return false
+}
+
+func (x *ArtistBase) GetAvatarFilePath() string {
+	if x != nil && x.AvatarFilePath != nil {
+		return *x.AvatarFilePath
+	}
+	return ""
 }
 
 type SongTag struct {
@@ -782,12 +790,14 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\x14zpotify_common.proto\x12\vzpotify_api\x1a\tnpm.proto\"6\n" +
 	"\x06Paging\x12\x14\n" +
 	"\x05limit\x18\x01 \x01(\x04R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x02 \x01(\x04R\x06offset\"J\n" +
+	"\x06offset\x18\x02 \x01(\x04R\x06offset\"\x8e\x01\n" +
 	"\n" +
 	"ArtistBase\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
-	"\x05liked\x18\x03 \x01(\bR\x05liked\"M\n" +
+	"\x05liked\x18\x03 \x01(\bR\x05liked\x12-\n" +
+	"\x10avatar_file_path\x18\x04 \x01(\tH\x00R\x0eavatarFilePath\x88\x01\x01B\x13\n" +
+	"\x11_avatar_file_path\"M\n" +
 	"\aSongTag\x12,\n" +
 	"\x04kind\x18\x01 \x01(\x0e2\x18.zpotify_api.SongTagKindR\x04kind\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value\"\x8e\x02\n" +
@@ -904,6 +914,7 @@ func file_zpotify_common_proto_init() {
 	if File_zpotify_common_proto != nil {
 		return
 	}
+	file_zpotify_common_proto_msgTypes[1].OneofWrappers = []any{}
 	file_zpotify_common_proto_msgTypes[5].OneofWrappers = []any{
 		(*AlbumTag_AlbumVersion)(nil),
 	}

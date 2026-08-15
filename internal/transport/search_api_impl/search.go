@@ -59,8 +59,20 @@ func toPbTrackResults(tracks []domain.Song) []*zpotify_api.Search_TrackResult {
 func toPbArtistResults(artists []domain.ArtistSearchResult) []*zpotify_api.Search_ArtistResult {
 	results := make([]*zpotify_api.Search_ArtistResult, len(artists))
 	for i, artist := range artists {
+		var avatarFilePath *string
+		if artist.AvatarFilePath != "" {
+			avatarFilePath = toolbox.ToPtr(artist.AvatarFilePath)
+		}
+
+		pbArtist := &zpotify_api.ArtistBase{
+			Uuid:           artist.ArtistsBase.Uuid,
+			Name:           artist.ArtistsBase.Name,
+			Liked:          artist.ArtistsBase.Liked,
+			AvatarFilePath: avatarFilePath,
+		}
+
 		results[i] = &zpotify_api.Search_ArtistResult{
-			Artist: toPbArtistBase(artist.ArtistsBase),
+			Artist: pbArtist,
 			Score:  artist.Score,
 		}
 	}

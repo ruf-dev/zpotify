@@ -88,7 +88,7 @@ func TestArtistsService_Search_DelegatesToStorage(t *testing.T) {
 
 			results := make([]domain.ArtistSearchResult, len(expected))
 			for i, a := range expected {
-				results[i] = domain.ArtistSearchResult{ArtistsBase: a, Score: 0.75}
+				results[i] = domain.ArtistSearchResult{ArtistsBase: a, AvatarFilePath: "artists/artist-uuid/avatar.png", Score: 0.75}
 			}
 			return results, nil
 		},
@@ -105,6 +105,7 @@ func TestArtistsService_Search_DelegatesToStorage(t *testing.T) {
 
 	require.Len(t, results, 1)
 	assert.Equal(t, "artist-uuid", results[0].Uuid)
+	assert.Equal(t, "artists/artist-uuid/avatar.png", results[0].AvatarFilePath)
 	assert.Equal(t, 0.75, results[0].Score)
 }
 

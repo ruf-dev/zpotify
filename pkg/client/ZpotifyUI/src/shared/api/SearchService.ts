@@ -112,6 +112,7 @@ function toSearchArtistResult(a: WireArtistResult): SearchArtistResult {
         uuid,
         name: a.artist?.name ?? '',
         seed: uuidToSeed(uuid),
+        coverUrl: buildCoverUrl(a.artist?.avatarFilePath),
     };
 }
 

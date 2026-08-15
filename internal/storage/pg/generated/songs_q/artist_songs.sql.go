@@ -23,7 +23,7 @@ SELECT v.id,
        v.file_id,
        v.artist_info,
        v.cover_file_path
-FROM song_search_view_v2 v
+FROM song_search_view_v3 v
 WHERE EXISTS (SELECT 1
               FROM songs_artists sa
               WHERE sa.song_id = v.id
@@ -92,7 +92,7 @@ SELECT v.id,
        v.file_id,
        v.artist_info,
        v.cover_file_path
-FROM song_search_view_v2 v
+FROM song_search_view_v3 v
 WHERE EXISTS (SELECT 1
               FROM songs_artists sa
               WHERE sa.song_id = v.id

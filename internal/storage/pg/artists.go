@@ -372,7 +372,8 @@ func (a *ArtistsStorage) Search(ctx context.Context, query string, limit, offset
 				Name:      row.Name,
 				CreatedAt: row.CreatedAt,
 			},
-			Score: float64(row.Score),
+			AvatarFilePath: row.AvatarFilePath.String,
+			Score:          float64(row.Score),
 		}
 	}
 

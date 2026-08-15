@@ -47,7 +47,7 @@ SELECT id,
        artist_info,
        cover_file_path,
        ts_rank(title_tsv, to_tsquery('simple', @query::text)) AS score
-FROM song_search_view_v2
+FROM song_search_view_v3
 WHERE title_tsv @@ to_tsquery('simple', @query::text)
 ORDER BY ts_rank(title_tsv, to_tsquery('simple', @query::text)) DESC, id
 LIMIT @limit_ OFFSET @offset_;

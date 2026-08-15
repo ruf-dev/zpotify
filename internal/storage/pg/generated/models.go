@@ -554,6 +554,18 @@ type SongSearchViewV2 struct {
 	CoverFilePath sql.NullString
 }
 
+type SongSearchViewV3 struct {
+	ID            int64
+	Title         string
+	CreatedAt     time.Time
+	DurationSec   int64
+	FilePath      string
+	FileID        int64
+	TitleTsv      interface{}
+	ArtistInfo    json.RawMessage
+	CoverFilePath sql.NullString
+}
+
 type SongTag struct {
 	ID      int32
 	SongID  int64
