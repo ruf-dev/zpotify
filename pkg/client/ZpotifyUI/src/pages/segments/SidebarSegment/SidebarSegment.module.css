@@ -66,6 +66,7 @@
 @media (orientation: portrait) {
     .SidebarFooter {
         display: flex;
+        justify-content: flex-end;
         margin-top: auto;
         padding: var(--space-lg);
         flex-shrink: 0;

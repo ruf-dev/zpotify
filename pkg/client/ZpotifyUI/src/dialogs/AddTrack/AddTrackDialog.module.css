@@ -18,3 +18,9 @@
     flex-direction: column;
     gap: 0.875rem;
 }
+
+@media (orientation: portrait) {
+    .AddTrackContainer {
+        width: 95vw;
+    }
+}

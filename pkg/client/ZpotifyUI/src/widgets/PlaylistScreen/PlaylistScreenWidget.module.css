@@ -38,4 +38,8 @@
         flex-direction: column;
         overflow: visible;
     }
+
+    .BodyExtraPadding {
+        padding-bottom: 25dvh;
+    }
 }

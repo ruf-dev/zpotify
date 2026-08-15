@@ -66,3 +66,18 @@
         border-color: var(--color-fg-secondary);
     }
 }
+
+@media (orientation: portrait) {
+    .SectionLabel {
+        font-size: 0.6rem;
+    }
+
+    .EmptyStateText {
+        font-size: 0.8125rem;
+    }
+
+    .SearchButton {
+        padding: 0.35rem 0.85rem;
+        font-size: 0.8125rem;
+    }
+}

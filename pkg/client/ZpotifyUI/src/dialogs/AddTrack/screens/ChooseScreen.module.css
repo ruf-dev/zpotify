@@ -16,6 +16,11 @@
 }
 
 @media (orientation: portrait) {
+    .ChooseScreenContainer {
+        width: 100%;
+        max-width: 44rem;
+    }
+
     .GridWrapper {
         display: flex;
         flex-direction: column;

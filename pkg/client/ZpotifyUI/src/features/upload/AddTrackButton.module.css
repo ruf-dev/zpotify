@@ -46,3 +46,19 @@
 .AddTrackButtonContainer:hover .Label {
     color: var(--color-fg-primary);
 }
+
+@media (orientation: portrait) {
+    .AddTrackButtonContainer {
+        gap: 0.625rem;
+        padding: 0.55rem 1.5rem 0.55rem 0.875rem;
+    }
+
+    .IconCircle {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .Label {
+        font-size: 1.0625rem;
+    }
+}

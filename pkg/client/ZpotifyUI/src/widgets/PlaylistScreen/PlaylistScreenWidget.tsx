@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import cn from 'classnames';
 
 import type { Playlist, SongBase } from '@/app/api/zpotify';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
@@ -15,6 +16,7 @@ import { isAlbum } from '@/entities/playlist/isAlbum.ts';
 
 const COVER_COLLAPSE_THRESHOLD = 96; // px scrolled before the cover collapses to a banner
 const COVER_EXPAND_THRESHOLD = 32; // px — hysteresis band below the collapse threshold, avoids flicker near the boundary
+const SCROLL_PADDING_BUFFER = 40; // px — extra margin so the collapse threshold is reliably reachable despite overscroll/bounce behavior
 
 function computeTotalDuration(songs: SongBase[]): string {
     const totalSec = songs.reduce((acc, s) => acc + (s.durationSec ?? 0), 0);
@@ -24,6 +26,10 @@ function computeTotalDuration(songs: SongBase[]): string {
 
 function mapPlaylistArtists(playlist: Playlist): ArtistItem[] {
     return (playlist.artists ?? []).filter((a) => a.uuid && a.name).map((a) => ({ id: a.uuid!, name: a.name! }));
+}
+
+function needsExtraScrollPadding(scrollHeight: number, clientHeight: number): boolean {
+    return scrollHeight - clientHeight < COVER_COLLAPSE_THRESHOLD + SCROLL_PADDING_BUFFER;
 }
 
 interface Props {
@@ -41,6 +47,7 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
     const [orderedSongs, setOrderedSongs] = useState<SongBase[]>(songs);
     const containerRef = useRef<HTMLDivElement>(null);
     const [coverCollapsed, setCoverCollapsed] = useState(false);
+    const [needsPadding, setNeedsPadding] = useState(false);
 
     useEffect(() => {
         setOrderedSongs(songs);
@@ -69,6 +76,20 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
 
         el.addEventListener('scroll', handleScroll, { passive: true });
         return () => el.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return undefined;
+
+        function updatePaddingNeed() {
+            setNeedsPadding(needsExtraScrollPadding(el!.scrollHeight, el!.clientHeight));
+        }
+
+        updatePaddingNeed();
+        const observer = new ResizeObserver(updatePaddingNeed);
+        observer.observe(el);
+        return () => observer.disconnect();
     }, []);
 
     function handleBack() {
@@ -128,7 +149,7 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
     return (
         <div className={cls.PlaylistScreenContainer} ref={containerRef}>
             <div className={cls.AmbientWash} />
-            <div className={cls.Body}>
+            <div className={cn(cls.Body, needsPadding && cls.BodyExtraPadding)}>
                 {playlist ? (
                     <PlaylistInfoSegment
                         playlist={playlist}

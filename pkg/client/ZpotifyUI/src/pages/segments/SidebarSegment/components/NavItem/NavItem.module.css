@@ -53,6 +53,12 @@
 }
 
 @media (orientation: portrait) {
+    .NavItem {
+        gap: 0.95rem;
+        padding: 0.8rem 1.3rem;
+        font-size: 0.9rem;
+    }
+
     .NavItemHiddenDesktop {
         display: flex;
     }

@@ -13,3 +13,9 @@
     justify-content: center;
     align-items: center;
 }
+
+@media (orientation: portrait) {
+    .DialogContainer > * {
+        max-width: 95vw;
+    }
+}
