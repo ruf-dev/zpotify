@@ -30,7 +30,7 @@
 
         width: 100%;
         bottom: 0;
-        background: transparent;
+        background: linear-gradient(to top, var(--color-shadow-deep), transparent);
         flex-shrink: 0;
         padding: 0.4rem 0.55rem 0.5rem;
         max-height: var(--album-card-footer-height);
