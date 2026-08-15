@@ -1865,8 +1865,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/AddTrackDialog.tsx": {
-    "mtime": 1786823244.8532217,
-    "ast_hash": "59316c6b373685b4f19a2b44ddfe23e2",
+    "mtime": 1786826518.9843462,
+    "ast_hash": "a3709c06f6bdc97d5ee2d240c68bcc3f",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/PendingFilesScreen.tsx": {
@@ -1950,8 +1950,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/FileList/FilesList.tsx": {
-    "mtime": 1783577240.6569562,
-    "ast_hash": "f9e999bbbcedac437bd9f0e0902637ea",
+    "mtime": 1786826532.763849,
+    "ast_hash": "07d6de1481f06678afd7e74c749be3f5",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/EditTrack/EditTrackDialog.tsx": {
@@ -1980,8 +1980,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/MultitrackUploadModal.tsx": {
-    "mtime": 1786825942.6946666,
-    "ast_hash": "bbe96f23421843aecb45515a6cd6cf0e",
+    "mtime": 1786826541.1140594,
+    "ast_hash": "46185526c13b5ed1341f7acdc41dec34",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/PlaylistToggleRow.tsx": {
@@ -1995,8 +1995,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/SongEdit/SongEditDialog.tsx": {
-    "mtime": 1783577133.8520837,
-    "ast_hash": "e0a1c94c21c778dbd8494d4ed531fe2b",
+    "mtime": 1786826525.597418,
+    "ast_hash": "a2d482a7c7fe83207408199efdde8318",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/assets/MoreDots.tsx": {
@@ -2175,8 +2175,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/dialog/Dialog.tsx": {
-    "mtime": 1783841635.5076714,
-    "ast_hash": "48209dd13a2efd014f79bf69ce7b0880",
+    "mtime": 1786826596.576806,
+    "ast_hash": "bce5756174d1019bac45c49797c49209",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/early_access/EarlyAccessPage.tsx": {
@@ -3617,6 +3617,11 @@
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/useBatchUpload.ts": {
     "mtime": 1786823104.5881019,
     "ast_hash": "fad056e4358068c808604329db4b16f2",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/lib/useBackGuard.ts": {
+    "mtime": 1786826491.3588898,
+    "ast_hash": "e887602fe4cf7b0d03538e19e220b707",
     "semantic_hash": ""
   }
 }

@@ -2220,8 +2220,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/SidebarSegment.tsx": {
-    "mtime": 1786356564.2748272,
-    "ast_hash": "f0c6f6355d53762d9c7b5a0c4a5565b1",
+    "mtime": 1786826981.9148555,
+    "ast_hash": "0f0616298d377a333a66b818057e15ee",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/Widget/SidebarArtistsWidget/SidebarArtistsWidget.tsx": {
