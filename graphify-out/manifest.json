@@ -3648,5 +3648,10 @@
     "mtime": 1786831063.2339551,
     "ast_hash": "a54abdb714f154720558341d1951959a",
     "semantic_hash": ""
+  },
+  "internal/storage/pg/artists_test.go": {
+    "mtime": 1786831451.3559833,
+    "ast_hash": "fd7a19208d1f5b1eacb38908043a7965",
+    "semantic_hash": ""
   }
 }
