@@ -15,14 +15,25 @@ export default function SegmentCarousel({ activeIdx, count, onChange, renderSlid
     const containerRef = useRef<HTMLDivElement>(null);
     const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
     const isProgrammatic = useRef(false);
+    const isUserScroll = useRef(false);
     const activeIdxRef = useRef(activeIdx);
     activeIdxRef.current = activeIdx;
+    const onChangeRef = useRef(onChange);
+    onChangeRef.current = onChange;
     const prevCountRef = useRef(0);
 
     const swipeEnabled = useUISettings((s) => s.swipeEnabled);
     const showPlayerBar = useUISettings((s) => s.showPlayerBar);
 
     useEffect(() => {
+        const isInitial = prevCountRef.current === 0 && count > 0;
+        prevCountRef.current = count;
+
+        if (isUserScroll.current) {
+            isUserScroll.current = false;
+            return;
+        }
+
         const container = containerRef.current;
         const card = cardRefs.current[activeIdx];
         if (!container || !card) return;
@@ -31,9 +42,6 @@ export default function SegmentCarousel({ activeIdx, count, onChange, renderSlid
         const cardRect = card.getBoundingClientRect();
         const delta = cardRect.left + cardRect.width / 2 - (containerRect.left + containerRect.width / 2);
         const targetScrollLeft = container.scrollLeft + delta;
-
-        const isInitial = prevCountRef.current === 0 && count > 0;
-        prevCountRef.current = count;
 
         isProgrammatic.current = true;
         container.scrollTo({ left: targetScrollLeft, behavior: isInitial ? 'instant' : 'smooth' });
@@ -45,7 +53,7 @@ export default function SegmentCarousel({ activeIdx, count, onChange, renderSlid
         );
     }, [activeIdx, count, swipeEnabled]);
 
-    function handleScroll() {
+    function commitClosestCard() {
         if (isProgrammatic.current) return;
         const container = containerRef.current;
         if (!container) return;
@@ -64,8 +72,21 @@ export default function SegmentCarousel({ activeIdx, count, onChange, renderSlid
             }
         });
 
-        if (closest !== activeIdxRef.current) onChange(closest);
+        if (closest !== activeIdxRef.current) {
+            isUserScroll.current = true;
+            onChangeRef.current(closest);
+        }
     }
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container || !swipeEnabled) return;
+
+        container.addEventListener('scrollend', commitClosestCard);
+        return function removeScrollEndListener() {
+            container.removeEventListener('scrollend', commitClosestCard);
+        };
+    }, [swipeEnabled]);
 
     return (
         <div
@@ -73,7 +94,7 @@ export default function SegmentCarousel({ activeIdx, count, onChange, renderSlid
             className={cn(cls.SegmentCarouselContainer, {
                 [cls.Disabled]: !swipeEnabled,
             })}
-            onScroll={swipeEnabled ? handleScroll : undefined}
+            onScroll={swipeEnabled ? commitClosestCard : undefined}
         >
             {Array.from({ length: count }).map((_, idx) => {
                 const offset = idx - activeIdx;

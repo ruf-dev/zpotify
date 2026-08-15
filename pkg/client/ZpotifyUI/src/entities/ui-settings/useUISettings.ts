@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+const isMobile = typeof window !== 'undefined' && window.matchMedia('(orientation: portrait)').matches;
+
 interface UISettings {
     dynamicHomePage: boolean;
     setDynamicHomePage: (v: boolean) => void;
@@ -18,7 +20,7 @@ export const useUISettings = create<UISettings>()(
             dynamicHomePage: false,
             setDynamicHomePage: (v: boolean) => set({ dynamicHomePage: v }),
 
-            swipeEnabled: false,
+            swipeEnabled: isMobile,
             setSwipeEnabled: (v: boolean) => set({ swipeEnabled: v }),
 
             showSidebar: true,

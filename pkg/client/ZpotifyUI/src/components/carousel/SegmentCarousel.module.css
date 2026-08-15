@@ -19,6 +19,7 @@
 .Card {
     flex: 0 0 var(--carousel-card-width);
     scroll-snap-align: center;
+    scroll-snap-stop: always;
     margin-block: var(--space-3);
     transform-origin: top center;
     background: var(--color-bg-secondary);

@@ -9,6 +9,7 @@
     "outDir": "./node_modules/.tsbuild/node"
   },
   "include": [
-    "vite.config.ts"
+    "vite.config.ts",
+    "vitest.config.ts"
   ]
 }
