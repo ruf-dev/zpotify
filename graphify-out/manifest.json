@@ -2200,8 +2200,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/main/album/AlbumPage.tsx": {
-    "mtime": 1783947106.4504209,
-    "ast_hash": "11a78792a7759ddaf4e8bb01eeba3c88",
+    "mtime": 1786876590.1218657,
+    "ast_hash": "8784015c0a4543ca4eb1108bfd5d5976",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/error/ErrorPage.tsx": {
