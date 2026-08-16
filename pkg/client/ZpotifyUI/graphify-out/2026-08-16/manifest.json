@@ -1525,8 +1525,8 @@
     "semantic_hash": ""
   },
   "src/components/carousel/SegmentCarousel.tsx": {
-    "mtime": 1784137251.1390824,
-    "ast_hash": "bb5c4d361ebb1a473e7698b0f65cbcb3",
+    "mtime": 1786828614.5350595,
+    "ast_hash": "56d460cee3c10def81e9d01068829e43",
     "semantic_hash": ""
   },
   "src/components/carousel/Carousel.tsx": {
@@ -1555,8 +1555,8 @@
     "semantic_hash": ""
   },
   "src/dialogs/AddTrack/AddTrackDialog.tsx": {
-    "mtime": 1786823244.8532217,
-    "ast_hash": "59316c6b373685b4f19a2b44ddfe23e2",
+    "mtime": 1786826518.9843462,
+    "ast_hash": "a3709c06f6bdc97d5ee2d240c68bcc3f",
     "semantic_hash": ""
   },
   "src/dialogs/AddTrack/screens/PendingFilesScreen.tsx": {
@@ -1590,8 +1590,8 @@
     "semantic_hash": ""
   },
   "src/dialogs/FileList/FilesList.tsx": {
-    "mtime": 1783577240.6569562,
-    "ast_hash": "f9e999bbbcedac437bd9f0e0902637ea",
+    "mtime": 1786826532.763849,
+    "ast_hash": "07d6de1481f06678afd7e74c749be3f5",
     "semantic_hash": ""
   },
   "src/dialogs/EditTrack/EditTrackDialog.tsx": {
@@ -1620,8 +1620,8 @@
     "semantic_hash": ""
   },
   "src/dialogs/MultitrackUpload/MultitrackUploadModal.tsx": {
-    "mtime": 1786825942.6946666,
-    "ast_hash": "bbe96f23421843aecb45515a6cd6cf0e",
+    "mtime": 1786826541.1140594,
+    "ast_hash": "46185526c13b5ed1341f7acdc41dec34",
     "semantic_hash": ""
   },
   "src/dialogs/MultitrackUpload/PlaylistToggleRow.tsx": {
@@ -1630,8 +1630,8 @@
     "semantic_hash": ""
   },
   "src/dialogs/SongEdit/SongEditDialog.tsx": {
-    "mtime": 1783577133.8520837,
-    "ast_hash": "e0a1c94c21c778dbd8494d4ed531fe2b",
+    "mtime": 1786826525.597418,
+    "ast_hash": "a2d482a7c7fe83207408199efdde8318",
     "semantic_hash": ""
   },
   "src/assets/MoreDots.tsx": {
@@ -1765,8 +1765,8 @@
     "semantic_hash": ""
   },
   "src/pages/dialog/Dialog.tsx": {
-    "mtime": 1783841635.5076714,
-    "ast_hash": "48209dd13a2efd014f79bf69ce7b0880",
+    "mtime": 1786826596.576806,
+    "ast_hash": "bce5756174d1019bac45c49797c49209",
     "semantic_hash": ""
   },
   "src/pages/early_access/EarlyAccessPage.tsx": {
@@ -1805,8 +1805,8 @@
     "semantic_hash": ""
   },
   "src/pages/segments/SidebarSegment/SidebarSegment.tsx": {
-    "mtime": 1786356564.2748272,
-    "ast_hash": "f0c6f6355d53762d9c7b5a0c4a5565b1",
+    "mtime": 1786826981.9148555,
+    "ast_hash": "0f0616298d377a333a66b818057e15ee",
     "semantic_hash": ""
   },
   "src/pages/segments/SidebarSegment/Widget/SidebarArtistsWidget/SidebarArtistsWidget.tsx": {
@@ -2045,8 +2045,8 @@
     "semantic_hash": ""
   },
   "src/entities/ui-settings/useUISettings.ts": {
-    "mtime": 1783271170.0940971,
-    "ast_hash": "5c57753c98a876901698ca665ee1aadb",
+    "mtime": 1786827866.8204339,
+    "ast_hash": "c9bd67fa7a1e49581e0f1da8e53ad798",
     "semantic_hash": ""
   },
   "/Users/alexbukov/ruf/zpotify/pkg/docs/docs.swagger_ui.go": {
@@ -3112,6 +3112,11 @@
   "src/features/upload/resolveDroppedEntries.ts": {
     "mtime": 1786820540.9312203,
     "ast_hash": "cee2949f5a58c5bdedef693fae9238d2",
+    "semantic_hash": ""
+  },
+  "src/shared/lib/useBackGuard.ts": {
+    "mtime": 1786826491.3588898,
+    "ast_hash": "e887602fe4cf7b0d03538e19e220b707",
     "semantic_hash": ""
   }
 }
