@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 
 import cls from '@/pages/dialog/Dialog.module.css';
-import {useDialog} from '@/app/hooks/Dialog.tsx';
+import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useBackGuard } from '@/shared/lib/useBackGuard';
 
 export default function Dialog() {
-    const {children, CloseDialog} = useDialog();
+    const { children, CloseDialog } = useDialog();
     const isOpen = !!children;
 
     useBackGuard(isOpen, CloseDialog);
@@ -26,14 +26,15 @@ export default function Dialog() {
     if (!children) return null;
 
     return (
-        <div className={cls.DialogContainer}
-             onMouseDown={(e) => {
-                 if (e.target === e.currentTarget) CloseDialog();
-             }}
+        <div
+            className={cls.DialogContainer}
+            onMouseDown={(e) => {
+                if (e.target === e.currentTarget) CloseDialog();
+            }}
         >
-                {children.map((v, idx) => {
-                    return <React.Fragment key={idx}>{v}</React.Fragment>;
-                })}
+            {children.map((v, idx) => {
+                return <React.Fragment key={idx}>{v}</React.Fragment>;
+            })}
         </div>
     );
 }

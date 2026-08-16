@@ -236,6 +236,7 @@
         background: transparent;
         border-left-color: transparent;
     }
+
     16%, 50%, 84% {
         background: var(--color-accent-glow);
         border-left-color: var(--color-fg-accent);
