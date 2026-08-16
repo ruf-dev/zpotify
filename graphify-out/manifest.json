@@ -180,9 +180,9 @@
     "semantic_hash": "80fd039c1a5c9ac2b940226415b6fede"
   },
   "internal/transport/grpc.go": {
-    "mtime": 1783199705.932967,
-    "ast_hash": "d76a7392c3fe182f6280a23353d475cb",
-    "semantic_hash": "d76a7392c3fe182f6280a23353d475cb"
+    "mtime": 1786906312.6864421,
+    "ast_hash": "eb1f0188fc6754db460db202a05c3cfb",
+    "semantic_hash": ""
   },
   "internal/transport/http.go": {
     "mtime": 1783938554.5620975,
