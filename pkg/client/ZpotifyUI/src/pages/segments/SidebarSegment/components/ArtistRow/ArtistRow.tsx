@@ -1,9 +1,11 @@
 import type { CSSProperties } from 'react';
 import cn from 'classnames';
+import { flushSync } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
 import cls from '@/pages/segments/SidebarSegment/components/ArtistRow/ArtistRow.module.css';
 import { artistPath } from '@/app/routing/paths.ts';
+import { useSidebarUI } from '@/shared/model/sidebarUIStore.ts';
 
 interface ArtistRowProps {
     uuid: string;
@@ -14,9 +16,12 @@ interface ArtistRowProps {
 
 export default function ArtistRow({ uuid, name, seed, isCollapsed }: ArtistRowProps) {
     const navigate = useNavigate();
+    const closeDrawer = useSidebarUI((state) => state.closeDrawer);
 
     function handleClick() {
-        if (uuid) navigate(artistPath(uuid));
+        if (!uuid) return;
+        flushSync(() => closeDrawer());
+        navigate(artistPath(uuid));
     }
 
     return (

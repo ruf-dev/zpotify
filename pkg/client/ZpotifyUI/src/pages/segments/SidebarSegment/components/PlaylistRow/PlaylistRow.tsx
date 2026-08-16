@@ -1,9 +1,11 @@
 import type { CSSProperties } from 'react';
+import { flushSync } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 
 import { playlistPath } from '@/app/routing/paths.ts';
 import cls from '@/pages/segments/SidebarSegment/components/PlaylistRow/PlaylistRow.module.css';
+import { useSidebarUI } from '@/shared/model/sidebarUIStore.ts';
 
 export interface PlaylistRowData {
     uuid: string;
@@ -19,8 +21,10 @@ interface PlaylistRowProps extends PlaylistRowData {
 
 export default function PlaylistRow({ uuid, name, tracks, color, coverUrl, isCollapsed }: PlaylistRowProps) {
     const navigate = useNavigate();
+    const closeDrawer = useSidebarUI((state) => state.closeDrawer);
 
     function handleClick() {
+        flushSync(() => closeDrawer());
         navigate(playlistPath(uuid));
     }
 

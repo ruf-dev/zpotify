@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import { flushSync } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
 import LogoRow from '@/pages/segments/SidebarSegment/components/LogoRow/LogoRow';
@@ -12,6 +13,7 @@ import AddTrackButton from '@/features/upload/AddTrackButton.tsx';
 import AddTrackDialog from '@/dialogs/AddTrack/AddTrackDialog.tsx';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useBackGuard } from '@/shared/lib/useBackGuard';
+import { useIsMobile } from '@/shared/lib/useIsMobile.ts';
 
 type navIdentity = 'home' | 'search' | 'my_uploads';
 
@@ -29,12 +31,13 @@ export default function SidebarSegment() {
 
     const navigate = useNavigate();
     const { OpenDialog } = useDialog();
+    const isMobile = useIsMobile();
 
     useBackGuard(isDrawerOpen, closeDrawer);
 
     function resolveNavigation(ni: navIdentity): () => void {
         return () => {
-            closeDrawer();
+            flushSync(() => closeDrawer());
             switch (ni) {
                 case 'home':
                     navigate(Path.HomePage);
@@ -44,6 +47,14 @@ export default function SidebarSegment() {
                     break;
             }
         };
+    }
+
+    function resolveCollapseToggle() {
+        if (isMobile) {
+            closeDrawer();
+        } else {
+            toggleCollapse();
+        }
     }
 
     function handleAddTrack() {
@@ -60,7 +71,11 @@ export default function SidebarSegment() {
                     isDrawerOpen && cls.SidebarContainerOpen,
                 )}
             >
-                <LogoRow isCollapsed={isCollapsed} onToggle={toggleCollapse} onLogoClick={resolveNavigation('home')} />
+                <LogoRow
+                    isCollapsed={isCollapsed}
+                    onToggle={resolveCollapseToggle}
+                    onLogoClick={resolveNavigation('home')}
+                />
 
                 <nav className={cls.NavSection}>
                     {NAV_ITEMS.map((item) => (

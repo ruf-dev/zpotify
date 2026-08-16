@@ -47,7 +47,12 @@ export function useBackGuard(active: boolean, onBack: () => void) {
             // (e.g. the on-screen back button was clicked directly), the history entry it pushed
             // is still there — burn it via history.back() and mark the resulting popstate as
             // synthetic so it doesn't get misdelivered to whichever guard is now on top.
-            if (!consumedByPop) {
+            // But if the close was bundled with a real navigation (e.g. clicking a link inside
+            // the guarded UI), that navigation already pushed its own entry on top of ours —
+            // history.state is no longer our marker, and calling history.back() here would
+            // wrongly undo that navigation instead of burning our now-buried entry.
+            const stateIsOwnMarker = (window.history.state as { backGuard?: boolean } | null)?.backGuard === true;
+            if (!consumedByPop && stateIsOwnMarker) {
                 pendingSyntheticPops += 1;
                 window.history.back();
             }

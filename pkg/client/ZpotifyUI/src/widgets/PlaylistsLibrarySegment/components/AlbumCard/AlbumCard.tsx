@@ -5,15 +5,18 @@ import { albumPath, artistPath } from '@/app/routing/paths.ts';
 import CoverWithFallback from '@/components/CoverWithFallback/CoverWithFallback.tsx';
 import type { AlbumCardProps } from '@/widgets/PlaylistsLibrarySegment/model.ts';
 import cls from '@/widgets/PlaylistsLibrarySegment/components/AlbumCard/AlbumCard.module.css';
+import { useIsMobile } from '@/shared/lib/useIsMobile.ts';
 
 export default function AlbumCard({ uuid, name, artists, seed, coverUrl }: AlbumCardProps) {
     const navigate = useNavigate();
+    const isMobile = useIsMobile();
 
     function handleClick() {
         navigate(albumPath(uuid));
     }
 
     function handleArtistClick(e: React.MouseEvent, artistUuid: string) {
+        if (isMobile) return;
         e.stopPropagation();
         navigate(artistPath(artistUuid));
     }
