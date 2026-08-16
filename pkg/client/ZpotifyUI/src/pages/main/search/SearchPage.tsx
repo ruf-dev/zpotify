@@ -11,7 +11,7 @@ import SongRow from '@/components/SongRow/SongRow.tsx';
 import { useSearchPage } from '@/pages/main/search/useSearchPage.ts';
 import type { SearchTrackResult } from '@/shared/api/SearchService.ts';
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
-import { Path, artistPath } from '@/app/routing/paths.ts';
+import { Path, artistPath, albumPath, playlistPath } from '@/app/routing/paths.ts';
 import BackButton from '@/shared/ui/BackButton.tsx';
 import cls from '@/pages/main/search/SearchPage.module.css';
 
@@ -25,7 +25,13 @@ export default function SearchPage() {
     }
 
     function handlePlayTrack(track: SearchTrackResult) {
+        const containerPath = resolveContainerPath(track);
+        if (containerPath) {
+            navigate(containerPath);
+            return;
+        }
         if (!track.filePath) return;
+        // TODO: standalone singles just play directly for now — give them their own page/flow later.
         const artistName = track.artists.map((a) => a.name).join(', ') || null;
         player.setSongInfo(track.title, artistName, track.coverUrl ?? null, track.artists);
         player.play(track.filePath);
@@ -125,4 +131,10 @@ export default function SearchPage() {
             <div className={cls.ResultsWrapper}>{renderResults()}</div>
         </div>
     );
+}
+
+function resolveContainerPath(track: SearchTrackResult): string | null {
+    const container = track.containerPlaylist;
+    if (!container) return null;
+    return container.isAlbum ? albumPath(container.uuid, track.uuid) : playlistPath(container.uuid, track.uuid);
 }

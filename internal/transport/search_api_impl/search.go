@@ -8,11 +8,17 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 )
 
 func (impl *Impl) Search(ctx context.Context, req *zpotify_api.Search_Request) (*zpotify_api.Search_Response, error) {
 	params := domain.SearchParams{
 		Query: req.GetQuery(),
+	}
+
+	userCtx, ok := user_context.GetUserContext(ctx)
+	if ok {
+		params.UserId = userCtx.UserId
 	}
 
 	paging := req.GetPaging()
@@ -48,12 +54,27 @@ func toPbTrackResults(tracks []domain.Song) []*zpotify_api.Search_TrackResult {
 	results := make([]*zpotify_api.Search_TrackResult, len(tracks))
 	for i, track := range tracks {
 		results[i] = &zpotify_api.Search_TrackResult{
-			Song:  toPbSongBase(track),
-			Score: track.Score,
+			Song:              toPbSongBase(track),
+			Score:             track.Score,
+			ContainerPlaylist: toPbContainerPlaylist(track.ContainerPlaylist),
 		}
 	}
 
 	return results
+}
+
+func toPbContainerPlaylist(container *domain.ContainerPlaylist) *zpotify_api.Search_ContainerPlaylist {
+	if container == nil {
+		return nil
+	}
+
+	pbContainer := &zpotify_api.Search_ContainerPlaylist{
+		Uuid:    container.Uuid,
+		Name:    container.Name,
+		IsAlbum: container.IsAlbum,
+	}
+
+	return pbContainer
 }
 
 func toPbArtistResults(artists []domain.ArtistSearchResult) []*zpotify_api.Search_ArtistResult {

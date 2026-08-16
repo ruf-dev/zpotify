@@ -86,6 +86,20 @@
         }
       }
     },
+    "SearchContainerPlaylist": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "isAlbum": {
+          "type": "boolean"
+        }
+      }
+    },
     "SearchPlaylistResult": {
       "type": "object",
       "properties": {
@@ -107,6 +121,9 @@
         "score": {
           "type": "number",
           "format": "double"
+        },
+        "containerPlaylist": {
+          "$ref": "#/definitions/SearchContainerPlaylist"
         }
       }
     },

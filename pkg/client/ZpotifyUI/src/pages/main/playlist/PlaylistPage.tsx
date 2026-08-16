@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import useUser from '@/entities/user/useUser.ts';
 import { isAlbum } from '@/entities/playlist/isAlbum.ts';
@@ -14,6 +14,8 @@ import NotFoundScreen from '@/widgets/PlaylistScreen/screens/NotFoundScreen/NotF
 export default function PlaylistPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const highlightTrackId = searchParams.get('track') ?? undefined;
     const userData = useUser((state) => state.userData);
     const { playlist, isLoading: playlistLoading, error: playlistError } = usePlaylist(id);
     const { songs, isInitialLoading: songsLoading, isListEnded, loadMore } = usePlaylistSongs(id);
@@ -42,6 +44,7 @@ export default function PlaylistPage() {
             username={userData.username ?? ''}
             isListEnded={isListEnded}
             onLoadMore={loadMore}
+            highlightTrackId={highlightTrackId}
         />
     );
 }

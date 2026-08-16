@@ -39,7 +39,10 @@ export interface MainContentProps {
     playlistArtists?: ArtistItem[];
     isListEnded?: boolean;
     onLoadMore?: () => void;
+    highlightTrackId?: string;
 }
+
+const HIGHLIGHT_DURATION_MS = 1600;
 
 export default function MainContent({
     songs,
@@ -57,8 +60,10 @@ export default function MainContent({
     playlistArtists,
     isListEnded,
     onLoadMore,
+    highlightTrackId,
 }: MainContentProps) {
     const [animatingHeartId, setAnimatingHeartId] = useState<string | null>(null);
+    const [blinkingTrackId, setBlinkingTrackId] = useState<string | null>(null);
     const [drag, setDrag] = useState<Drag>(null);
     const [dropIdx, setDropIdx] = useState<number | null>(null);
     const commentsEnabled = useFeatureFlags((s) => selectFlagEnabled(s, 'IS_COMMENTS_ON_ALBUM_ENABLED'));
@@ -72,6 +77,7 @@ export default function MainContent({
 
     const dropIdxRef = useRef<number | null>(null);
     const rowRefs = useRef<Record<string, HTMLDivElement>>({});
+    const handledHighlightIdRef = useRef<string | null>(null);
 
     useEffect(() => {
         dropIdxRef.current = dropIdx;
@@ -81,6 +87,18 @@ export default function MainContent({
         if (!likedPlaylistId) return;
         void fetchLikedSongs(likedPlaylistId);
     }, [likedPlaylistId, fetchLikedSongs]);
+
+    useEffect(() => {
+        if (!highlightTrackId || handledHighlightIdRef.current === highlightTrackId) return;
+        const el = rowRefs.current[highlightTrackId];
+        if (!el) return;
+
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        handledHighlightIdRef.current = highlightTrackId;
+        setBlinkingTrackId(highlightTrackId);
+        const timer = setTimeout(() => setBlinkingTrackId(null), HIGHLIGHT_DURATION_MS);
+        return () => clearTimeout(timer);
+    }, [highlightTrackId, songs]);
 
     function handleToggleLike(songId: string) {
         const toggle = likedSongIds.has(songId) ? unlikeSong : likeSong;
@@ -232,6 +250,7 @@ export default function MainContent({
                             isLoading={isAudioLoading}
                             isLiked={likedSongIds.has(song.id ?? '')}
                             isHeartAnimating={animatingHeartId === song.id}
+                            isHighlighted={blinkingTrackId === song.id}
                             onPlay={() => onPlaySong(song)}
                             onToggleLike={() => handleToggleLike(song.id ?? '')}
                             canReorder={editMode && canEdit}

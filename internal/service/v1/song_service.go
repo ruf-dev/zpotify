@@ -518,7 +518,7 @@ func (s *AudioService) Search(ctx context.Context, req domain.SearchSongsParams)
 		limit = defaultSearchLimit
 	}
 
-	songs, err := s.songsStorage.SearchByTitle(ctx, req.Query, limit, req.Offset)
+	songs, err := s.songsStorage.SearchByTitle(ctx, req.Query, req.UserId, limit, req.Offset)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error searching songs by title")
 	}

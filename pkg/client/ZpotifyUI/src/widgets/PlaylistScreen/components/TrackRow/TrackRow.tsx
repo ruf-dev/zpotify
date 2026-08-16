@@ -49,6 +49,7 @@ export interface TrackRowProps {
     isLoading: boolean;
     isLiked: boolean;
     isHeartAnimating: boolean;
+    isHighlighted?: boolean;
     onPlay: () => void;
     onToggleLike: () => void;
     canReorder?: boolean;
@@ -70,6 +71,7 @@ export default function TrackRow({
     isLoading,
     isLiked,
     isHeartAnimating,
+    isHighlighted,
     onPlay,
     onToggleLike,
     canReorder,
@@ -222,7 +224,12 @@ export default function TrackRow({
 
     return (
         <div
-            className={cn(cls.TrackRow, isCurrent && cls.TrackRowPlaying, canReorder && cls.TrackRowReorderable)}
+            className={cn(
+                cls.TrackRow,
+                isCurrent && cls.TrackRowPlaying,
+                canReorder && cls.TrackRowReorderable,
+                isHighlighted && cls.TrackRowHighlight,
+            )}
             onClick={handleRowClick}
             style={dragStyle}
             ref={rowRef}

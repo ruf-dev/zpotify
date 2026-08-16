@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import useUser from '@/entities/user/useUser.ts';
 import { isAlbum } from '@/entities/playlist/isAlbum.ts';
@@ -12,6 +12,8 @@ import SkeletonLoadScreen from '@/widgets/PlaylistScreen/screens/SkeletonLoadScr
 export default function AlbumPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const highlightTrackId = searchParams.get('track') ?? undefined;
     const userData = useUser((state) => state.userData);
     const { playlist, isLoading: playlistLoading } = usePlaylist(id);
     const { songs, isInitialLoading: songsLoading, isListEnded, loadMore } = usePlaylistSongs(id);
@@ -37,6 +39,7 @@ export default function AlbumPage() {
             username={userData.username ?? ''}
             isListEnded={isListEnded}
             onLoadMore={loadMore}
+            highlightTrackId={highlightTrackId}
         />
     );
 }

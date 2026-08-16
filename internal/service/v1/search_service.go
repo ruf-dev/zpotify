@@ -60,6 +60,7 @@ func (s *SearchService) Search(ctx context.Context, req domain.SearchParams) (do
 		Query:  req.Query,
 		Limit:  limit,
 		Offset: req.Offset,
+		UserId: req.UserId,
 	})
 	if err != nil {
 		return domain.SearchResult{}, rerrors.Wrap(err, "error searching tracks")

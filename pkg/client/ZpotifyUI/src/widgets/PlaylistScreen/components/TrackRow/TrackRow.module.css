@@ -40,6 +40,10 @@
     border-left-color: var(--color-fg-accent);
 }
 
+.TrackRowHighlight {
+    animation: trackFlash 1.6s ease-in-out;
+}
+
 .TrackNumCell {
     display: grid;
     place-items: center;
@@ -225,4 +229,15 @@
     40%  { transform: scale(1.4); }
     70%  { transform: scale(0.88); }
     100% { transform: scale(1); }
+}
+
+@keyframes trackFlash {
+    0%, 33%, 67%, 100% {
+        background: transparent;
+        border-left-color: transparent;
+    }
+    16%, 50%, 84% {
+        background: var(--color-accent-glow);
+        border-left-color: var(--color-fg-accent);
+    }
 }

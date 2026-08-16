@@ -189,7 +189,7 @@ func (f *fakeSongStorage) GetByFileId(_ context.Context, _ int64) (domain.Song, 
 	return domain.Song{}, nil
 }
 
-func (f *fakeSongStorage) SearchByTitle(_ context.Context, _ string, _, _ uint64) ([]domain.Song, error) {
+func (f *fakeSongStorage) SearchByTitle(_ context.Context, _ string, _ int64, _, _ uint64) ([]domain.Song, error) {
 	return nil, nil
 }
 

@@ -101,6 +101,20 @@ type Song struct {
 	// Score is the full-text search relevance rank. Only populated by
 	// SongStorage.SearchByTitle / AudioService.Search - zero everywhere else.
 	Score float64
+	// ContainerPlaylist is the album/playlist this track was resolved into
+	// for the requesting user (album preferred over a plain playlist, and
+	// only ones the user can access). Nil if the track isn't in any
+	// playlist/album the user can see. Only populated by
+	// SongStorage.SearchByTitle / AudioService.Search - nil everywhere else.
+	ContainerPlaylist *ContainerPlaylist
+}
+
+// ContainerPlaylist identifies the playlist/album a search-result track was
+// resolved into. See Song.ContainerPlaylist.
+type ContainerPlaylist struct {
+	Uuid    string
+	Name    string
+	IsAlbum bool
 }
 
 type SongTag struct {
@@ -153,6 +167,9 @@ type SearchSongsParams struct {
 	Query  string
 	Limit  uint64
 	Offset uint64
+	// UserId scopes the container-playlist resolution to playlists that are
+	// public or that this user has access to.
+	UserId int64
 }
 
 type ListUploadedFiles struct {

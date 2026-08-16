@@ -38,9 +38,17 @@ interface Props {
     username: string;
     isListEnded?: boolean;
     onLoadMore?: () => void;
+    highlightTrackId?: string;
 }
 
-export default function PlaylistScreenWidget({ playlist, songs, username, isListEnded, onLoadMore }: Props) {
+export default function PlaylistScreenWidget({
+    playlist,
+    songs,
+    username,
+    isListEnded,
+    onLoadMore,
+    highlightTrackId,
+}: Props) {
     const navigate = useNavigate();
     const audioPlayer = useAudioPlayer();
     const [editMode, setEditMode] = useState(false);
@@ -183,6 +191,7 @@ export default function PlaylistScreenWidget({ playlist, songs, username, isList
                     playlistArtists={playlist ? mapPlaylistArtists(playlist) : []}
                     isListEnded={isListEnded}
                     onLoadMore={onLoadMore}
+                    highlightTrackId={highlightTrackId}
                 />
             </div>
         </div>

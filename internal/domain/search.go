@@ -12,9 +12,13 @@ type SearchFilters struct {
 // SearchParams is the input to SearchService.Search - a single free-text
 // query fanned out across tracks, artists, albums and playlists.
 type SearchParams struct {
-	Query   string
-	Limit   uint64
-	Offset  uint64
+	Query  string
+	Limit  uint64
+	Offset uint64
+	// UserId scopes track container-playlist resolution to playlists that
+	// are public or that this user has access to. Zero value (unauthenticated)
+	// resolves only public playlists.
+	UserId  int64
 	Filters SearchFilters
 }
 

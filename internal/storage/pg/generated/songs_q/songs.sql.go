@@ -194,18 +194,38 @@ func (q *Queries) InsertSongTag(ctx context.Context, arg InsertSongTagParams) er
 }
 
 const searchSongsByTitle = `-- name: SearchSongsByTitle :many
-SELECT id,
-       title,
-       created_at,
-       duration_sec,
-       file_path,
-       file_id,
-       artist_info,
-       cover_file_path,
-       ts_rank(title_tsv, to_tsquery('simple', $1::text)) AS score
-FROM song_search_view_v3
-WHERE title_tsv @@ to_tsquery('simple', $1::text)
-ORDER BY ts_rank(title_tsv, to_tsquery('simple', $1::text)) DESC, id
+WITH container AS (
+    SELECT DISTINCT ON (ps.song_id) ps.song_id,
+                                     p.uuid                                                                  AS playlist_uuid,
+                                     p.name                                                                  AS playlist_name,
+                                     EXISTS(SELECT 1
+                                            FROM playlists_artists pa
+                                            WHERE pa.playlist_uuid = p.uuid)                                 AS is_album
+    FROM playlist_songs ps
+             INNER JOIN playlists p ON p.uuid = ps.playlist_uuid
+             LEFT JOIN user_playlists up ON up.playlist_id = p.uuid AND up.user_id = $4
+    WHERE p.is_public
+       OR up.user_id IS NOT NULL
+    ORDER BY ps.song_id,
+             EXISTS(SELECT 1 FROM playlists_artists pa WHERE pa.playlist_uuid = p.uuid) DESC,
+             p.created_at
+)
+SELECT s.id,
+       s.title,
+       s.created_at,
+       s.duration_sec,
+       s.file_path,
+       s.file_id,
+       s.artist_info,
+       s.cover_file_path,
+       ts_rank(s.title_tsv, to_tsquery('simple', $1::text)) AS score,
+       container.playlist_uuid                                 AS container_playlist_uuid,
+       container.playlist_name                                 AS container_playlist_name,
+       container.is_album                                      AS container_is_album
+FROM song_search_view_v3 s
+         LEFT JOIN container ON container.song_id = s.id
+WHERE s.title_tsv @@ to_tsquery('simple', $1::text)
+ORDER BY ts_rank(s.title_tsv, to_tsquery('simple', $1::text)) DESC, s.id
 LIMIT $3 OFFSET $2
 `
 
@@ -213,22 +233,31 @@ type SearchSongsByTitleParams struct {
 	Query  string
 	Offset int32
 	Limit  int32
+	UserID int64
 }
 
 type SearchSongsByTitleRow struct {
-	ID            int64
-	Title         string
-	CreatedAt     time.Time
-	DurationSec   int64
-	FilePath      string
-	FileID        int64
-	ArtistInfo    json.RawMessage
-	CoverFilePath sql.NullString
-	Score         float32
+	ID                    int64
+	Title                 string
+	CreatedAt             time.Time
+	DurationSec           int64
+	FilePath              string
+	FileID                int64
+	ArtistInfo            json.RawMessage
+	CoverFilePath         sql.NullString
+	Score                 float32
+	ContainerPlaylistUuid uuid.NullUUID
+	ContainerPlaylistName sql.NullString
+	ContainerIsAlbum      sql.NullBool
 }
 
 func (q *Queries) SearchSongsByTitle(ctx context.Context, arg SearchSongsByTitleParams) ([]SearchSongsByTitleRow, error) {
-	rows, err := q.db.QueryContext(ctx, searchSongsByTitle, arg.Query, arg.Offset, arg.Limit)
+	rows, err := q.db.QueryContext(ctx, searchSongsByTitle,
+		arg.Query,
+		arg.Offset,
+		arg.Limit,
+		arg.UserID,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -246,6 +275,9 @@ func (q *Queries) SearchSongsByTitle(ctx context.Context, arg SearchSongsByTitle
 			&i.ArtistInfo,
 			&i.CoverFilePath,
 			&i.Score,
+			&i.ContainerPlaylistUuid,
+			&i.ContainerPlaylistName,
+			&i.ContainerIsAlbum,
 		); err != nil {
 			return nil, err
 		}

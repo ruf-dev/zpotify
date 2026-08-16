@@ -38,18 +38,38 @@ WHERE sa.song_id = $1
 ORDER BY sa.order_id;
 
 -- name: SearchSongsByTitle :many
-SELECT id,
-       title,
-       created_at,
-       duration_sec,
-       file_path,
-       file_id,
-       artist_info,
-       cover_file_path,
-       ts_rank(title_tsv, to_tsquery('simple', @query::text)) AS score
-FROM song_search_view_v3
-WHERE title_tsv @@ to_tsquery('simple', @query::text)
-ORDER BY ts_rank(title_tsv, to_tsquery('simple', @query::text)) DESC, id
+WITH container AS (
+    SELECT DISTINCT ON (ps.song_id) ps.song_id,
+                                     p.uuid                                                                  AS playlist_uuid,
+                                     p.name                                                                  AS playlist_name,
+                                     EXISTS(SELECT 1
+                                            FROM playlists_artists pa
+                                            WHERE pa.playlist_uuid = p.uuid)                                 AS is_album
+    FROM playlist_songs ps
+             INNER JOIN playlists p ON p.uuid = ps.playlist_uuid
+             LEFT JOIN user_playlists up ON up.playlist_id = p.uuid AND up.user_id = @user_id
+    WHERE p.is_public
+       OR up.user_id IS NOT NULL
+    ORDER BY ps.song_id,
+             EXISTS(SELECT 1 FROM playlists_artists pa WHERE pa.playlist_uuid = p.uuid) DESC,
+             p.created_at
+)
+SELECT s.id,
+       s.title,
+       s.created_at,
+       s.duration_sec,
+       s.file_path,
+       s.file_id,
+       s.artist_info,
+       s.cover_file_path,
+       ts_rank(s.title_tsv, to_tsquery('simple', @query::text)) AS score,
+       container.playlist_uuid                                 AS container_playlist_uuid,
+       container.playlist_name                                 AS container_playlist_name,
+       container.is_album                                      AS container_is_album
+FROM song_search_view_v3 s
+         LEFT JOIN container ON container.song_id = s.id
+WHERE s.title_tsv @@ to_tsquery('simple', @query::text)
+ORDER BY ts_rank(s.title_tsv, to_tsquery('simple', @query::text)) DESC, s.id
 LIMIT @limit_ OFFSET @offset_;
 
 -- name: GetSongTags :many

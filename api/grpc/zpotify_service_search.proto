@@ -37,6 +37,13 @@ message Search {
   message TrackResult {
     SongBase song = 1;
     double score = 2;
+    ContainerPlaylist container_playlist = 3;
+  }
+
+  message ContainerPlaylist {
+    string uuid = 1;
+    string name = 2;
+    bool is_album = 3;
   }
 
   message ArtistResult {

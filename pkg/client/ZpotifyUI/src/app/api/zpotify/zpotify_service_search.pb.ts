@@ -25,6 +25,13 @@ export type SearchResponse = {
 export type SearchTrackResult = {
   song?: ZpotifyApiZpotifyCommon.SongBase;
   score?: number;
+  containerPlaylist?: SearchContainerPlaylist;
+};
+
+export type SearchContainerPlaylist = {
+  uuid?: string;
+  name?: string;
+  isAlbum?: boolean;
 };
 
 export type SearchArtistResult = {

@@ -42,6 +42,7 @@ export interface SearchTrackResult {
     coverUrl?: string;
     durationSec: number;
     filePath?: string;
+    containerPlaylist?: { uuid: string; name: string; isAlbum: boolean };
 }
 
 export interface SearchFilters {
@@ -96,6 +97,7 @@ function toSearchResponse(resp: WireSearchResponse): SearchResponse {
 
 function toSearchTrackResult(t: WireTrackResult): SearchTrackResult {
     const song = t.song;
+    const container = t.containerPlaylist;
     return {
         uuid: song?.id ?? '',
         title: song?.title ?? '',
@@ -103,6 +105,9 @@ function toSearchTrackResult(t: WireTrackResult): SearchTrackResult {
         coverUrl: buildCoverUrl(song?.coverFilePath),
         durationSec: song?.durationSec ?? 0,
         filePath: song?.filePath,
+        containerPlaylist: container?.uuid
+            ? { uuid: container.uuid, name: container.name ?? '', isAlbum: container.isAlbum ?? false }
+            : undefined,
     };
 }
 

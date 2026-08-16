@@ -67,7 +67,7 @@ func (s *SongsStorage) GetByFileId(ctx context.Context, fileId int64) (domain.So
 	return song, nil
 }
 
-func (s *SongsStorage) SearchByTitle(ctx context.Context, query string, limit, offset uint64) ([]domain.Song, error) {
+func (s *SongsStorage) SearchByTitle(ctx context.Context, query string, userId int64, limit, offset uint64) ([]domain.Song, error) {
 	tsQuery := toPrefixTSQuery(query)
 	if tsQuery == "" {
 		return []domain.Song{}, nil
@@ -75,6 +75,7 @@ func (s *SongsStorage) SearchByTitle(ctx context.Context, query string, limit, o
 
 	params := songs_q.SearchSongsByTitleParams{
 		Query:  tsQuery,
+		UserID: userId,
 		Limit:  int32(limit),
 		Offset: int32(offset),
 	}
@@ -93,13 +94,28 @@ func (s *SongsStorage) SearchByTitle(ctx context.Context, query string, limit, o
 		}
 
 		songs[i] = domain.Song{
-			SongBase: toSongBaseFromSearch(row),
-			Artists:  artists,
-			Score:    float64(row.Score),
+			SongBase:          toSongBaseFromSearch(row),
+			Artists:           artists,
+			Score:             float64(row.Score),
+			ContainerPlaylist: toContainerPlaylist(row),
 		}
 	}
 
 	return songs, nil
+}
+
+func toContainerPlaylist(row songs_q.SearchSongsByTitleRow) *domain.ContainerPlaylist {
+	if !row.ContainerPlaylistUuid.Valid {
+		return nil
+	}
+
+	container := domain.ContainerPlaylist{
+		Uuid:    row.ContainerPlaylistUuid.UUID.String(),
+		Name:    row.ContainerPlaylistName.String,
+		IsAlbum: row.ContainerIsAlbum.Bool,
+	}
+
+	return &container
 }
 
 func (s *SongsStorage) Create(ctx context.Context, params songs_q.CreateSongParams) (int64, error) {
@@ -371,4 +387,3 @@ func toSongBaseFromArtistFeatured(song songs_q.ListArtistFeaturedSongsRow) domai
 		CoverFilePath: song.CoverFilePath.String,
 	}
 }
-
