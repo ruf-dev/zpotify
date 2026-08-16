@@ -2220,8 +2220,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/SidebarSegment.tsx": {
-    "mtime": 1786826981.9148555,
-    "ast_hash": "0f0616298d377a333a66b818057e15ee",
+    "mtime": 1786874341.227611,
+    "ast_hash": "4e0e404125987b73342d901bcd2eb320",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/Widget/SidebarArtistsWidget/SidebarArtistsWidget.tsx": {
@@ -2235,8 +2235,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/components/PlaylistRow/PlaylistRow.tsx": {
-    "mtime": 1783254247.9461358,
-    "ast_hash": "5dc85895e49b14ed0e5842ee0dd0dbd7",
+    "mtime": 1786874237.182392,
+    "ast_hash": "73ba0b06e1d288057c7b8754c3cfccd5",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/components/LogoRow/LogoRow.tsx": {
@@ -2245,8 +2245,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/components/ArtistRow/ArtistRow.tsx": {
-    "mtime": 1785007557.3668165,
-    "ast_hash": "f5ee890392a166f50d74dc7039d8c7ff",
+    "mtime": 1786874231.8168714,
+    "ast_hash": "8ea8f9a7328953b6a2dcdc5c50eaff37",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/components/NavItem/NavItem.tsx": {
@@ -2440,8 +2440,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistsLibrarySegment/components/AlbumCard/AlbumCard.tsx": {
-    "mtime": 1784966779.441964,
-    "ast_hash": "10d6e4b0aa1171dfd005d86bab6b1b35",
+    "mtime": 1786874254.277109,
+    "ast_hash": "4eacb306a44ff1d45a2efb7d30edfd4b",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistsLibrarySegment/components/PlaylistCardWide/PlaylistCardWide.tsx": {
@@ -3652,6 +3652,16 @@
   "internal/storage/pg/artists_test.go": {
     "mtime": 1786831451.3559833,
     "ast_hash": "fd7a19208d1f5b1eacb38908043a7965",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/lib/useIsMobile.test.ts": {
+    "mtime": 1786874417.4919283,
+    "ast_hash": "655ef03b3162087482b8cc7f36a57e5f",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/lib/useIsMobile.ts": {
+    "mtime": 1786874226.7639508,
+    "ast_hash": "e1e919e0f3758328128d13ff55b11f95",
     "semantic_hash": ""
   }
 }
