@@ -2775,8 +2775,8 @@
     "semantic_hash": ""
   },
   "src/widgets/PlaylistScreen/components/TrackRow/TrackRow.tsx": {
-    "mtime": 1786955301.2898097,
-    "ast_hash": "236221d7e5925ef715512e608a12ba88",
+    "mtime": 1786877468.8963444,
+    "ast_hash": "ba83dd9dfdc976bab8ecea63bf7dc41e",
     "semantic_hash": ""
   },
   "src/widgets/PlaylistScreen/screens/NotFoundScreen/NotFoundScreen.tsx": {
@@ -3055,8 +3055,8 @@
     "semantic_hash": ""
   },
   "src/widgets/ArtistScreen/widgets/ArtistSongsRow/ArtistSongsRow.tsx": {
-    "mtime": 1786955319.2608554,
-    "ast_hash": "a2419b8ae9361e0f630978fff74853e6",
+    "mtime": 1785007557.3682232,
+    "ast_hash": "50a4908d3e2a5769dd1b462ea900e8c7",
     "semantic_hash": ""
   },
   "src/widgets/NotificationBell/NotificationBellWidget.tsx": {
@@ -3172,11 +3172,6 @@
   "src/widgets/SearchHistoryDropdown/SearchHistoryDropdown.tsx": {
     "mtime": 1786904171.5853505,
     "ast_hash": "e33ae0bc7a22c552f8ad5a429f0896d8",
-    "semantic_hash": ""
-  },
-  "src/widgets/PlaylistScreen/components/TrackRow/TrackRow.test.tsx": {
-    "mtime": 1786955382.1887913,
-    "ast_hash": "a139344a45c112d3437cd4e45366346a",
     "semantic_hash": ""
   }
 }

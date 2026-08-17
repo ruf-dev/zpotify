@@ -100,5 +100,7 @@
   "98": "GeneratedAvatar.tsx",
   "99": "SearchHistoryDropdown.test.tsx",
   "100": "Input.tsx",
-  "101": "DropdownCreateRow.tsx"
+  "101": "DropdownCreateRow.tsx",
+  "102": "EditableText.tsx",
+  "103": "DescriptionSection.tsx"
 }
