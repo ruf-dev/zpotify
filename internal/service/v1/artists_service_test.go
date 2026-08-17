@@ -122,6 +122,40 @@ func TestArtistsService_Search_PropagatesStorageError(t *testing.T) {
 	require.Error(t, err)
 }
 
+func TestArtistsService_GetArtistPage_PropagatesAlbumCoverFilePath(t *testing.T) {
+	fakeArtist := &fakeArtistStorage{
+		getFn: func(_ context.Context, artistUuid string, _ int64) (domain.Artist, error) {
+			return domain.Artist{ArtistsBase: domain.ArtistsBase{Uuid: artistUuid}}, nil
+		},
+	}
+
+	fakePlaylists := &fakePlaylistStorage{
+		listFn: func(_ context.Context, _ domain.ListPlaylists) ([]domain.Playlist, error) {
+			album := domain.Playlist{
+				Uuid:          "album-uuid",
+				Name:          "Some Album",
+				CoverFilePath: "playlists/album-uuid/cover.png",
+			}
+			return []domain.Playlist{album}, nil
+		},
+	}
+
+	svc := &ArtistsService{
+		artistStorage:   fakeArtist,
+		playlistStorage: fakePlaylists,
+		songStorage:     &fakeSongStorage{},
+	}
+
+	ctx := contextWithPermissions(7, domain.UserPermissions{})
+
+	page, err := svc.GetArtistPage(ctx, "artist-uuid")
+	require.NoError(t, err)
+
+	require.Len(t, page.Albums, 1, "expected the album returned by PlaylistStorage.List to be included in the artist page")
+	assert.Equal(t, "playlists/album-uuid/cover.png", page.Albums[0].CoverFilePath,
+		"expected PlaylistStorage.List's resolved CoverFilePath to propagate through GetArtistPage so the frontend can render the real album cover instead of falling back to a placeholder")
+}
+
 func TestArtistsService_GetArtistPage_UsesRoleAndStandaloneFiltersPerRow(t *testing.T) {
 	fakeArtist := &fakeArtistStorage{
 		getFn: func(_ context.Context, artistUuid string, _ int64) (domain.Artist, error) {

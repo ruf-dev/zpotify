@@ -71,6 +71,7 @@ export default function ArtistSongsRow({ title, songs, queueSourceId }: ArtistSo
                 <div key={song.id} className={cls.TrackCardWrapper}>
                     <TrackRow
                         song={song}
+                        showCover
                         index={idx + 1}
                         isCurrent={audioPlayer.trackPath === song.filePath}
                         isPlaying={audioPlayer.isPlaying}

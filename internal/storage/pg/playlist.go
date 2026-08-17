@@ -529,10 +529,12 @@ func (p *PlaylistStorage) List(ctx context.Context, req domain.ListPlaylists) ([
 			"v.description",
 			"v.is_public",
 			"v.cover_file_id",
+			"fm.file_path AS cover_file_path",
 			"v.song_count",
 			"v.year",
 		).
 			From("playlists_v2 v").
+			LeftJoin("files_meta fm ON fm.id = v.cover_file_id").
 			PlaceholderFormat(sq.Dollar),
 	}.
 		applyFilters(req).
@@ -554,16 +556,17 @@ func (p *PlaylistStorage) List(ctx context.Context, req domain.ListPlaylists) ([
 	var playlists []domain.Playlist
 	for rows.Next() {
 		var (
-			id          uuid.UUID
-			name        string
-			description string
-			isPublic    bool
-			coverFileID sql.NullInt64
-			songCount   int32
-			year        sql.NullInt32
+			id            uuid.UUID
+			name          string
+			description   string
+			isPublic      bool
+			coverFileID   sql.NullInt64
+			coverFilePath sql.NullString
+			songCount     int32
+			year          sql.NullInt32
 		)
 
-		err = rows.Scan(&id, &name, &description, &isPublic, &coverFileID, &songCount, &year)
+		err = rows.Scan(&id, &name, &description, &isPublic, &coverFileID, &coverFilePath, &songCount, &year)
 		if err != nil {
 			return nil, wrapPgErr(err)
 		}
@@ -578,6 +581,10 @@ func (p *PlaylistStorage) List(ctx context.Context, req domain.ListPlaylists) ([
 
 		if coverFileID.Valid {
 			playlist.CoverFileId = &coverFileID.Int64
+		}
+
+		if coverFilePath.Valid {
+			playlist.CoverFilePath = coverFilePath.String
 		}
 
 		if year.Valid {

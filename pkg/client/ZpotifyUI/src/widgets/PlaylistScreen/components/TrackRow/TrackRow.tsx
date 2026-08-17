@@ -7,6 +7,8 @@ import cls from '@/widgets/PlaylistScreen/components/TrackRow/TrackRow.module.cs
 import type { SongBase } from '@/app/api/zpotify';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import { artistPath } from '@/app/routing/paths.ts';
+import CoverWithFallback from '@/components/CoverWithFallback/CoverWithFallback.tsx';
+import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
 import NowPlayingBars from '@/assets/icons/NowPlayingBars.tsx';
 import { HeartIcon } from '@/assets/icons/HeartIcon.tsx';
 import { PlayTriangleIcon } from '@/assets/icons/PlayTriangleIcon.tsx';
@@ -50,6 +52,7 @@ export interface TrackRowProps {
     isLiked: boolean;
     isHeartAnimating: boolean;
     isHighlighted?: boolean;
+    showCover?: boolean;
     onPlay: () => void;
     onToggleLike: () => void;
     canReorder?: boolean;
@@ -72,6 +75,7 @@ export default function TrackRow({
     isLiked,
     isHeartAnimating,
     isHighlighted,
+    showCover,
     onPlay,
     onToggleLike,
     canReorder,
@@ -221,11 +225,13 @@ export default function TrackRow({
 
     const artistParts = computeArtistParts();
     const duration = formatDuration(song.durationSec ?? 0);
+    const coverUrl = showCover ? buildCoverUrl(song.coverFilePath) : undefined;
 
     return (
         <div
             className={cn(
                 cls.TrackRow,
+                showCover && cls.TrackRowWithCover,
                 isCurrent && cls.TrackRowPlaying,
                 canReorder && cls.TrackRowReorderable,
                 isHighlighted && cls.TrackRowHighlight,
@@ -251,6 +257,18 @@ export default function TrackRow({
                     </>
                 )}
             </div>
+
+            {showCover && (
+                <div className={cls.CoverCell} data-testid="track-row-cover">
+                    <CoverWithFallback
+                        coverUrl={coverUrl}
+                        coverFilePath={song.coverFilePath}
+                        uuid={song.id}
+                        name={song.title}
+                        className={cls.CoverImage}
+                    />
+                </div>
+            )}
 
             <div className={cls.TrackTitleCell}>
                 <span className={cn(cls.TrackTitle, isCurrent && cls.TrackTitlePlaying)}>

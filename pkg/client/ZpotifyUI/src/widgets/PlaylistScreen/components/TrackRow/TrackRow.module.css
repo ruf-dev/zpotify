@@ -44,6 +44,22 @@
     animation: trackFlash 1.6s ease-in-out;
 }
 
+.TrackRowWithCover {
+    grid-template-columns: 2.5rem var(--track-row-cover-size) 1fr 2rem 3rem 1.5rem 0;
+}
+
+.CoverCell {
+    width: var(--track-row-cover-size);
+    height: var(--track-row-cover-size);
+    border-radius: var(--border-radius-sm);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.CoverImage {
+    border-radius: var(--border-radius-sm);
+}
+
 .TrackNumCell {
     display: grid;
     place-items: center;
@@ -208,6 +224,10 @@
 
     .TrackRowReorderable {
         grid-template-columns: 1fr 2rem 3rem 1.5rem 1.5rem;
+    }
+
+    .TrackRowWithCover {
+        grid-template-columns: var(--track-row-cover-size) 1fr 2rem 3rem 1.5rem 0;
     }
 
     .TrackNumCell {
