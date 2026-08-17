@@ -530,8 +530,8 @@
     "semantic_hash": ""
   },
   "internal/storage/pg/playlist.go": {
-    "mtime": 1786097764.5641453,
-    "ast_hash": "2426c6ae168007774ba295933774ca61",
+    "mtime": 1786955206.656111,
+    "ast_hash": "517c04edf18fa613481f7d514a80952a",
     "semantic_hash": ""
   },
   "internal/storage/pg/jobs.go": {
@@ -1240,8 +1240,8 @@
     "semantic_hash": ""
   },
   "config/config.yaml": {
-    "mtime": 1786388787.61177,
-    "ast_hash": "f75fdc02b93d5686a35283c180c8b52e",
+    "mtime": 1786953682.4519482,
+    "ast_hash": "84928af220db595dcfd424f4d977e02b",
     "semantic_hash": ""
   },
   "config/config_template.yaml": {
@@ -3330,8 +3330,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/artists_service_test.go": {
-    "mtime": 1786831089.4801474,
-    "ast_hash": "f6754e3ff964de5f8d498817d63a641f",
+    "mtime": 1786955259.1119492,
+    "ast_hash": "203514f61d7f4ba41607b3edeb178030",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/songs_q/artist_songs.sql.go": {
@@ -3772,6 +3772,11 @@
   "pkg/client/ZpotifyUI/src/widgets/SearchHistoryDropdown/SearchHistoryDropdown.test.tsx": {
     "mtime": 1786904383.2738762,
     "ast_hash": "9597ef113663c0f9d86da8f58f64c620",
+    "semantic_hash": ""
+  },
+  "docs/release_notes/v1.1.0.md": {
+    "mtime": 1786953804.8958042,
+    "ast_hash": "f52790576d7d702f1c3a9c00dfd8b11a",
     "semantic_hash": ""
   }
 }
