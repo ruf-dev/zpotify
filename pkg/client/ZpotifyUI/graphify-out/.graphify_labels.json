@@ -88,8 +88,19 @@
   "86": "vite.config.d.ts",
   "87": "vite.config.js",
   "88": "vite.config.ts",
+  "89": "useArtistHeroSegment.ts",
+  "90": "EditControls.tsx",
   "91": ".preload",
   "92": "UploadCard.tsx",
+  "93": "SearchIcon.tsx",
+  "94": "useLikedArtists.ts",
+  "95": "DropZoneIcon.tsx",
+  "96": "zpotify_common.pb.ts",
+  "97": "FolderGroupHeader.tsx",
   "98": "GeneratedAvatar.tsx",
-  "100": "Input.tsx"
+  "99": "SearchHistoryDropdown.test.tsx",
+  "100": "Input.tsx",
+  "101": "DropdownCreateRow.tsx",
+  "102": "EditableText.tsx",
+  "103": "DescriptionSection.tsx"
 }
