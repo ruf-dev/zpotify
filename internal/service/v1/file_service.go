@@ -216,6 +216,19 @@ func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, cont
 		return existingFile.Id, nil
 	}
 
+	// Rename the temp file to a content-hash-derived path. It was originally
+	// written under the client-supplied file name, so two uploads that share
+	// a name (but differ in content, since same-hash uploads already
+	// returned above) would otherwise collide on files_meta's unique
+	// file_path index.
+	hashedPath := path.Join(path.Dir(tmpFilePath), contentHash+path.Ext(fileNameWithExt))
+	err = s.binaryStorage.Move(ctx, tmpFilePath, hashedPath)
+	if err != nil {
+		_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
+		return 0, rerrors.Wrap(err, "error moving file to content-hash path")
+	}
+	tmpFilePath = hashedPath
+
 	totalSize, err := s.storage.GetTotalSizeByUser(ctx, uCtx.UserId)
 	if err != nil {
 		_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
