@@ -11,6 +11,7 @@
 .HeaderRow {
     width: 100%;
     max-width: var(--home-section-max-width);
+    align-self: flex-start;
     margin-bottom: var(--space-lg);
     display: flex;
     align-items: center;
@@ -52,6 +53,10 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-md);
+}
+
+.FindingCaptureWrapper {
+    display: contents;
 }
 
 @media (orientation: portrait) {

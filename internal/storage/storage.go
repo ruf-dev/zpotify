@@ -28,6 +28,7 @@ type Storage interface {
 	FeatureFlags() FeatureFlagsStorage
 	Home() HomeStorage
 	Notification() NotificationStorage
+	SearchHistory() SearchHistoryStorage
 
 	TxManager() *tx_manager.TxManager
 }
@@ -196,6 +197,27 @@ type NotificationStorage interface {
 
 	MarkRead(ctx context.Context, userId, notificationID int64) error
 	Consent(ctx context.Context, userId, notificationID int64) error
+}
+
+// SearchHistoryStorage manages a user's per-user, FIFO-capped (5 entries)
+// list of past search queries, each optionally carrying a "finding" - the
+// item clicked after that search.
+type SearchHistoryStorage interface {
+	WithTx(tx *sql.Tx) SearchHistoryStorage
+
+	// InsertQuery inserts a new search history row for the user. Callers must
+	// also call Trim within the same transaction to enforce the 5-entry cap.
+	InsertQuery(ctx context.Context, userId int64, query string) (domain.SearchHistoryEntry, error)
+
+	// AttachFinding attaches finding details to the most-recent row matching
+	// (userId, query). matched is false if no such row exists, in which case
+	// the caller should fall back to InsertQuery with the finding populated.
+	AttachFinding(ctx context.Context, userId int64, query string, finding domain.SearchHistoryEntry) (matched bool, err error)
+
+	List(ctx context.Context, userId int64) ([]domain.SearchHistoryEntry, error)
+
+	// Trim deletes rows beyond the 5 most-recent for the user.
+	Trim(ctx context.Context, userId int64) error
 }
 
 type UserSettingsStorage interface {

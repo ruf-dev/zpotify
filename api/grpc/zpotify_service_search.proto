@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package zpotify_api;
 
+import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 import "npm.proto";
 import "zpotify_common.proto";
@@ -16,6 +17,26 @@ service SearchAPI {
     option (google.api.http) = {
       post: "/api/search"
       body: "*"
+    };
+  };
+
+  rpc RecordSearchQuery(RecordSearchQuery.Request) returns (RecordSearchQuery.Response) {
+    option (google.api.http) = {
+      post: "/api/search/history/query"
+      body: "*"
+    };
+  };
+
+  rpc RecordSearchFinding(RecordSearchFinding.Request) returns (RecordSearchFinding.Response) {
+    option (google.api.http) = {
+      post: "/api/search/history/finding"
+      body: "*"
+    };
+  };
+
+  rpc ListSearchHistory(ListSearchHistory.Request) returns (ListSearchHistory.Response) {
+    option (google.api.http) = {
+      get: "/api/search/history"
     };
   };
 }
@@ -65,4 +86,41 @@ message Search {
 message SearchFilters {
   // Reserved for future genre/mood facet chips (reuses AlbumTag kinds). Unused server-side in v1 — accepted but ignored.
   repeated string tags = 1;
+}
+
+message RecordSearchQuery {
+  message Request {
+    string query = 1;
+  }
+
+  message Response {}
+}
+
+message RecordSearchFinding {
+  message Request {
+    string query = 1;
+    string finding_type = 2;
+    string finding_id = 3;
+    string finding_name = 4;
+    string finding_cover_url = 5;
+  }
+
+  message Response {}
+}
+
+message ListSearchHistory {
+  message Request {}
+
+  message Response {
+    repeated SearchHistoryEntry entries = 1;
+  }
+}
+
+message SearchHistoryEntry {
+  string query = 1;
+  string finding_type = 2;
+  string finding_id = 3;
+  string finding_name = 4;
+  string finding_cover_url = 5;
+  google.protobuf.Timestamp created_at = 6;
 }

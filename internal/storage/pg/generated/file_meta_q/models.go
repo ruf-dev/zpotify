@@ -515,6 +515,17 @@ type PlaylistsV4 struct {
 	CreatedAt     time.Time
 }
 
+type SearchHistory struct {
+	ID              int64
+	UserID          int64
+	Query           string
+	FindingType     sql.NullString
+	FindingID       sql.NullString
+	FindingName     sql.NullString
+	FindingCoverUrl sql.NullString
+	CreatedAt       time.Time
+}
+
 type Song struct {
 	ID        int64
 	FileID    int64

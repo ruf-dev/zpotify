@@ -33,4 +33,6 @@ var (
 	ErrFileAlreadyUsed = rerrors.New("file is already attached to a song", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusConflict))
 
 	ErrTelegramNotLinked = rerrors.New("telegram account is not linked", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusBadRequest))
+
+	ErrEmptySearchQuery = rerrors.New("search query must not be empty", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
 )

@@ -9,9 +9,10 @@ import ArtistCard from '@/pages/main/search/components/ArtistCard/ArtistCard.tsx
 import MobileSearchInput from '@/pages/main/search/components/MobileSearchInput/MobileSearchInput.tsx';
 import SongRow from '@/components/SongRow/SongRow.tsx';
 import { useSearchPage } from '@/pages/main/search/useSearchPage.ts';
-import type { SearchTrackResult } from '@/shared/api/SearchService.ts';
+import type { SearchArtistResult, SearchTrackResult } from '@/shared/api/SearchService.ts';
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
 import { Path, artistPath, albumPath, playlistPath } from '@/app/routing/paths.ts';
+import { useSearchHistory } from '@/entities/search/useSearchHistory.ts';
 import BackButton from '@/shared/ui/BackButton.tsx';
 import cls from '@/pages/main/search/SearchPage.module.css';
 
@@ -19,6 +20,7 @@ export default function SearchPage() {
     const page = useSearchPage();
     const navigate = useNavigate();
     const player = useAudioPlayer();
+    const recordFinding = useSearchHistory((s) => s.recordFinding);
 
     function handleBack() {
         navigate(Path.HomePage);
@@ -26,7 +28,15 @@ export default function SearchPage() {
 
     function handlePlayTrack(track: SearchTrackResult) {
         const containerPath = resolveContainerPath(track);
-        if (containerPath) {
+        const container = track.containerPlaylist;
+        if (containerPath && container) {
+            recordFinding(
+                page.query,
+                container.isAlbum ? 'album' : 'playlist',
+                container.uuid,
+                container.name,
+                track.coverUrl ?? '',
+            );
             navigate(containerPath);
             return;
         }
@@ -38,7 +48,31 @@ export default function SearchPage() {
     }
 
     function handleArtistClick(artistUuid: string) {
+        const artist = findArtistInResults(artistUuid);
+        recordFinding(page.query, 'artist', artistUuid, artist?.name ?? '', artist?.coverUrl ?? '');
         navigate(artistPath(artistUuid));
+    }
+
+    function handleArtistCardClick(artist: SearchArtistResult) {
+        recordFinding(page.query, 'artist', artist.uuid, artist.name, artist.coverUrl ?? '');
+    }
+
+    function handleAlbumCardClick(uuid: string, name: string, coverUrl?: string) {
+        recordFinding(page.query, 'album', uuid, name, coverUrl ?? '');
+    }
+
+    function handlePlaylistCardClick(uuid: string, name: string, coverUrl?: string) {
+        recordFinding(page.query, 'playlist', uuid, name, coverUrl ?? '');
+    }
+
+    function findArtistInResults(artistUuid: string): { name: string; coverUrl?: string } | null {
+        const fromArtistResults = page.visibleArtists.find((a) => a.uuid === artistUuid);
+        if (fromArtistResults) return fromArtistResults;
+        for (const track of page.visibleTracks) {
+            const match = track.artists.find((a) => a.uuid === artistUuid);
+            if (match) return { name: match.name };
+        }
+        return null;
     }
 
     function renderTracks() {
@@ -71,7 +105,13 @@ export default function SearchPage() {
                 <SectionLabel label="Artists" count={page.visibleArtists.length} />
                 <div className={cls.ArtistGrid}>
                     {page.visibleArtists.map((artist) => (
-                        <ArtistCard key={artist.uuid} {...artist} />
+                        <div
+                            key={artist.uuid}
+                            className={cls.FindingCaptureWrapper}
+                            onClick={() => handleArtistCardClick(artist)}
+                        >
+                            <ArtistCard {...artist} />
+                        </div>
                     ))}
                 </div>
             </div>
@@ -85,7 +125,13 @@ export default function SearchPage() {
                 <SectionLabel label="Albums" count={page.visibleAlbums.length} />
                 <div className={cls.AlbumGrid}>
                     {page.visibleAlbums.map((album) => (
-                        <AlbumCard key={album.uuid} {...album} />
+                        <div
+                            key={album.uuid}
+                            className={cls.FindingCaptureWrapper}
+                            onClick={() => handleAlbumCardClick(album.uuid, album.name, album.coverUrl)}
+                        >
+                            <AlbumCard {...album} />
+                        </div>
                     ))}
                 </div>
             </div>
@@ -99,7 +145,13 @@ export default function SearchPage() {
                 <SectionLabel label="Playlists" count={page.visiblePlaylists.length} />
                 <div className={cls.PlaylistGrid}>
                     {page.visiblePlaylists.map((playlist) => (
-                        <PlaylistCardWide key={playlist.uuid} {...playlist} />
+                        <div
+                            key={playlist.uuid}
+                            className={cls.FindingCaptureWrapper}
+                            onClick={() => handlePlaylistCardClick(playlist.uuid, playlist.name, playlist.coverUrl)}
+                        >
+                            <PlaylistCardWide {...playlist} />
+                        </div>
                     ))}
                 </div>
             </div>

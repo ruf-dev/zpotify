@@ -15,13 +15,15 @@ import (
 type Impl struct {
 	zpotify_api.UnimplementedSearchAPIServer
 
-	searchService service.SearchService
+	searchService        service.SearchService
+	searchHistoryService service.SearchHistoryService
 }
 
 func New(srv service.Service) *Impl {
 	return &Impl{
 		UnimplementedSearchAPIServer: zpotify_api.UnimplementedSearchAPIServer{},
 		searchService:                srv.SearchService(),
+		searchHistoryService:         srv.SearchHistoryService(),
 	}
 }
 

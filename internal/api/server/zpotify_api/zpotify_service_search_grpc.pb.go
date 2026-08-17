@@ -19,7 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	SearchAPI_Search_FullMethodName = "/zpotify_api.SearchAPI/Search"
+	SearchAPI_Search_FullMethodName              = "/zpotify_api.SearchAPI/Search"
+	SearchAPI_RecordSearchQuery_FullMethodName   = "/zpotify_api.SearchAPI/RecordSearchQuery"
+	SearchAPI_RecordSearchFinding_FullMethodName = "/zpotify_api.SearchAPI/RecordSearchFinding"
+	SearchAPI_ListSearchHistory_FullMethodName   = "/zpotify_api.SearchAPI/ListSearchHistory"
 )
 
 // SearchAPIClient is the client API for SearchAPI service.
@@ -27,6 +30,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SearchAPIClient interface {
 	Search(ctx context.Context, in *Search_Request, opts ...grpc.CallOption) (*Search_Response, error)
+	RecordSearchQuery(ctx context.Context, in *RecordSearchQuery_Request, opts ...grpc.CallOption) (*RecordSearchQuery_Response, error)
+	RecordSearchFinding(ctx context.Context, in *RecordSearchFinding_Request, opts ...grpc.CallOption) (*RecordSearchFinding_Response, error)
+	ListSearchHistory(ctx context.Context, in *ListSearchHistory_Request, opts ...grpc.CallOption) (*ListSearchHistory_Response, error)
 }
 
 type searchAPIClient struct {
@@ -46,11 +52,41 @@ func (c *searchAPIClient) Search(ctx context.Context, in *Search_Request, opts .
 	return out, nil
 }
 
+func (c *searchAPIClient) RecordSearchQuery(ctx context.Context, in *RecordSearchQuery_Request, opts ...grpc.CallOption) (*RecordSearchQuery_Response, error) {
+	out := new(RecordSearchQuery_Response)
+	err := c.cc.Invoke(ctx, SearchAPI_RecordSearchQuery_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *searchAPIClient) RecordSearchFinding(ctx context.Context, in *RecordSearchFinding_Request, opts ...grpc.CallOption) (*RecordSearchFinding_Response, error) {
+	out := new(RecordSearchFinding_Response)
+	err := c.cc.Invoke(ctx, SearchAPI_RecordSearchFinding_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *searchAPIClient) ListSearchHistory(ctx context.Context, in *ListSearchHistory_Request, opts ...grpc.CallOption) (*ListSearchHistory_Response, error) {
+	out := new(ListSearchHistory_Response)
+	err := c.cc.Invoke(ctx, SearchAPI_ListSearchHistory_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SearchAPIServer is the server API for SearchAPI service.
 // All implementations must embed UnimplementedSearchAPIServer
 // for forward compatibility
 type SearchAPIServer interface {
 	Search(context.Context, *Search_Request) (*Search_Response, error)
+	RecordSearchQuery(context.Context, *RecordSearchQuery_Request) (*RecordSearchQuery_Response, error)
+	RecordSearchFinding(context.Context, *RecordSearchFinding_Request) (*RecordSearchFinding_Response, error)
+	ListSearchHistory(context.Context, *ListSearchHistory_Request) (*ListSearchHistory_Response, error)
 	mustEmbedUnimplementedSearchAPIServer()
 }
 
@@ -60,6 +96,15 @@ type UnimplementedSearchAPIServer struct {
 
 func (UnimplementedSearchAPIServer) Search(context.Context, *Search_Request) (*Search_Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Search not implemented")
+}
+func (UnimplementedSearchAPIServer) RecordSearchQuery(context.Context, *RecordSearchQuery_Request) (*RecordSearchQuery_Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RecordSearchQuery not implemented")
+}
+func (UnimplementedSearchAPIServer) RecordSearchFinding(context.Context, *RecordSearchFinding_Request) (*RecordSearchFinding_Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RecordSearchFinding not implemented")
+}
+func (UnimplementedSearchAPIServer) ListSearchHistory(context.Context, *ListSearchHistory_Request) (*ListSearchHistory_Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListSearchHistory not implemented")
 }
 func (UnimplementedSearchAPIServer) mustEmbedUnimplementedSearchAPIServer() {}
 
@@ -92,6 +137,60 @@ func _SearchAPI_Search_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SearchAPI_RecordSearchQuery_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RecordSearchQuery_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SearchAPIServer).RecordSearchQuery(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SearchAPI_RecordSearchQuery_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SearchAPIServer).RecordSearchQuery(ctx, req.(*RecordSearchQuery_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SearchAPI_RecordSearchFinding_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RecordSearchFinding_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SearchAPIServer).RecordSearchFinding(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SearchAPI_RecordSearchFinding_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SearchAPIServer).RecordSearchFinding(ctx, req.(*RecordSearchFinding_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SearchAPI_ListSearchHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSearchHistory_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SearchAPIServer).ListSearchHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SearchAPI_ListSearchHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SearchAPIServer).ListSearchHistory(ctx, req.(*ListSearchHistory_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SearchAPI_ServiceDesc is the grpc.ServiceDesc for SearchAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +201,18 @@ var SearchAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Search",
 			Handler:    _SearchAPI_Search_Handler,
+		},
+		{
+			MethodName: "RecordSearchQuery",
+			Handler:    _SearchAPI_RecordSearchQuery_Handler,
+		},
+		{
+			MethodName: "RecordSearchFinding",
+			Handler:    _SearchAPI_RecordSearchFinding_Handler,
+		},
+		{
+			MethodName: "ListSearchHistory",
+			Handler:    _SearchAPI_ListSearchHistory_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

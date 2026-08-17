@@ -15,6 +15,18 @@ vi.mock('@/widgets/MusicPlayer/usePlayer.ts', () => ({
     default: () => ({ play: playSpy, setSongInfo: setSongInfoSpy }),
 }));
 
+const recordFindingSpy = vi.fn();
+vi.mock('@/entities/search/useSearchHistory.ts', () => ({
+    useSearchHistory: (selector: (s: { recordFinding: typeof recordFindingSpy }) => unknown) =>
+        selector({ recordFinding: recordFindingSpy }),
+}));
+
+// MobileSearchInput mounts SearchHistoryDropdown, which needs matchMedia/portal wiring that's
+// out of scope for these SearchPage-level tests — see SearchHistoryDropdown.test.tsx for that behavior.
+vi.mock('@/pages/main/search/components/MobileSearchInput/MobileSearchInput.tsx', () => ({
+    default: () => null,
+}));
+
 let visibleTracks: SearchTrackResult[] = [];
 vi.mock('@/pages/main/search/useSearchPage.ts', () => ({
     useSearchPage: () => ({
@@ -62,6 +74,7 @@ describe('SearchPage handlePlayTrack branching', () => {
         expect(navigateSpy).toHaveBeenCalledWith('/album/album-uuid?track=track-album');
         expect(playSpy).not.toHaveBeenCalled();
         expect(setSongInfoSpy).not.toHaveBeenCalled();
+        expect(recordFindingSpy).toHaveBeenCalledWith('test', 'album', 'album-uuid', 'My Album', '');
     });
 
     it('navigates to the playlist path when the track belongs to a non-album playlist', () => {
@@ -78,6 +91,7 @@ describe('SearchPage handlePlayTrack branching', () => {
         expect(navigateSpy).toHaveBeenCalledWith('/playlist/playlist-uuid?track=track-playlist');
         expect(playSpy).not.toHaveBeenCalled();
         expect(setSongInfoSpy).not.toHaveBeenCalled();
+        expect(recordFindingSpy).toHaveBeenCalledWith('test', 'playlist', 'playlist-uuid', 'My Playlist', '');
     });
 
     it('plays the track directly when it has no container playlist', () => {
@@ -91,5 +105,16 @@ describe('SearchPage handlePlayTrack branching', () => {
             { uuid: 'artist-1', name: 'Artist' },
         ]);
         expect(playSpy).toHaveBeenCalledWith('/files/track-1.mp3');
+        expect(recordFindingSpy).not.toHaveBeenCalled();
+    });
+
+    it('records an artist finding and navigates when an artist name in a track row is clicked', () => {
+        visibleTracks = [makeTrack({ uuid: 'track-artist', containerPlaylist: undefined })];
+
+        render(<SearchPage />);
+        fireEvent.click(screen.getByText('Artist'));
+
+        expect(navigateSpy).toHaveBeenCalledWith('/artist/artist-1');
+        expect(recordFindingSpy).toHaveBeenCalledWith('test', 'artist', 'artist-1', 'Artist', '');
     });
 });

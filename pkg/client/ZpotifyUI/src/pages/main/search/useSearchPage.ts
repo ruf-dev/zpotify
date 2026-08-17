@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { useSearchQuery } from '@/entities/search/useSearchQuery.ts';
+import { useSearchHistory } from '@/entities/search/useSearchHistory.ts';
 import type {
     SearchAlbumResult,
     SearchArtistResult,
@@ -45,10 +46,12 @@ export function useSearchPage(): UseSearchPageResult {
             setLoading(true);
             const reqId = ++reqIdRef.current;
             const handle = setTimeout(function runSearch() {
+                const trimmedQuery = query.trim();
                 searchService
-                    .Search(query.trim(), filters)
+                    .Search(trimmedQuery, filters)
                     .then((result) => {
                         if (reqIdRef.current === reqId) setResponse(result);
+                        if (trimmedQuery) useSearchHistory.getState().recordQuery(trimmedQuery);
                     })
                     .catch(() => {
                         if (reqIdRef.current === reqId) setResponse(EMPTY_RESPONSE);

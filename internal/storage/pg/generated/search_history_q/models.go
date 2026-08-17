@@ -2,7 +2,7 @@
 // versions:
 //   sqlc v1.30.0
 
-package home_q
+package search_history_q
 
 import (
 	"database/sql"

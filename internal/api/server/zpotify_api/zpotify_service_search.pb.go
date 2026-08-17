@@ -11,6 +11,7 @@ import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -104,6 +105,198 @@ func (x *SearchFilters) GetTags() []string {
 	return nil
 }
 
+type RecordSearchQuery struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecordSearchQuery) Reset() {
+	*x = RecordSearchQuery{}
+	mi := &file_zpotify_service_search_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecordSearchQuery) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecordSearchQuery) ProtoMessage() {}
+
+func (x *RecordSearchQuery) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_search_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecordSearchQuery.ProtoReflect.Descriptor instead.
+func (*RecordSearchQuery) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_search_proto_rawDescGZIP(), []int{2}
+}
+
+type RecordSearchFinding struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecordSearchFinding) Reset() {
+	*x = RecordSearchFinding{}
+	mi := &file_zpotify_service_search_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecordSearchFinding) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecordSearchFinding) ProtoMessage() {}
+
+func (x *RecordSearchFinding) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_search_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecordSearchFinding.ProtoReflect.Descriptor instead.
+func (*RecordSearchFinding) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_search_proto_rawDescGZIP(), []int{3}
+}
+
+type ListSearchHistory struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSearchHistory) Reset() {
+	*x = ListSearchHistory{}
+	mi := &file_zpotify_service_search_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSearchHistory) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSearchHistory) ProtoMessage() {}
+
+func (x *ListSearchHistory) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_search_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSearchHistory.ProtoReflect.Descriptor instead.
+func (*ListSearchHistory) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_search_proto_rawDescGZIP(), []int{4}
+}
+
+type SearchHistoryEntry struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Query           string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
+	FindingType     string                 `protobuf:"bytes,2,opt,name=finding_type,json=findingType,proto3" json:"finding_type,omitempty"`
+	FindingId       string                 `protobuf:"bytes,3,opt,name=finding_id,json=findingId,proto3" json:"finding_id,omitempty"`
+	FindingName     string                 `protobuf:"bytes,4,opt,name=finding_name,json=findingName,proto3" json:"finding_name,omitempty"`
+	FindingCoverUrl string                 `protobuf:"bytes,5,opt,name=finding_cover_url,json=findingCoverUrl,proto3" json:"finding_cover_url,omitempty"`
+	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *SearchHistoryEntry) Reset() {
+	*x = SearchHistoryEntry{}
+	mi := &file_zpotify_service_search_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SearchHistoryEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchHistoryEntry) ProtoMessage() {}
+
+func (x *SearchHistoryEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_search_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchHistoryEntry.ProtoReflect.Descriptor instead.
+func (*SearchHistoryEntry) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_search_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *SearchHistoryEntry) GetQuery() string {
+	if x != nil {
+		return x.Query
+	}
+	return ""
+}
+
+func (x *SearchHistoryEntry) GetFindingType() string {
+	if x != nil {
+		return x.FindingType
+	}
+	return ""
+}
+
+func (x *SearchHistoryEntry) GetFindingId() string {
+	if x != nil {
+		return x.FindingId
+	}
+	return ""
+}
+
+func (x *SearchHistoryEntry) GetFindingName() string {
+	if x != nil {
+		return x.FindingName
+	}
+	return ""
+}
+
+func (x *SearchHistoryEntry) GetFindingCoverUrl() string {
+	if x != nil {
+		return x.FindingCoverUrl
+	}
+	return ""
+}
+
+func (x *SearchHistoryEntry) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
 type Search_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Query         string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
@@ -115,7 +308,7 @@ type Search_Request struct {
 
 func (x *Search_Request) Reset() {
 	*x = Search_Request{}
-	mi := &file_zpotify_service_search_proto_msgTypes[2]
+	mi := &file_zpotify_service_search_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -127,7 +320,7 @@ func (x *Search_Request) String() string {
 func (*Search_Request) ProtoMessage() {}
 
 func (x *Search_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_search_proto_msgTypes[2]
+	mi := &file_zpotify_service_search_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -176,7 +369,7 @@ type Search_Response struct {
 
 func (x *Search_Response) Reset() {
 	*x = Search_Response{}
-	mi := &file_zpotify_service_search_proto_msgTypes[3]
+	mi := &file_zpotify_service_search_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -188,7 +381,7 @@ func (x *Search_Response) String() string {
 func (*Search_Response) ProtoMessage() {}
 
 func (x *Search_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_search_proto_msgTypes[3]
+	mi := &file_zpotify_service_search_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -243,7 +436,7 @@ type Search_TrackResult struct {
 
 func (x *Search_TrackResult) Reset() {
 	*x = Search_TrackResult{}
-	mi := &file_zpotify_service_search_proto_msgTypes[4]
+	mi := &file_zpotify_service_search_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -255,7 +448,7 @@ func (x *Search_TrackResult) String() string {
 func (*Search_TrackResult) ProtoMessage() {}
 
 func (x *Search_TrackResult) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_search_proto_msgTypes[4]
+	mi := &file_zpotify_service_search_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -303,7 +496,7 @@ type Search_ContainerPlaylist struct {
 
 func (x *Search_ContainerPlaylist) Reset() {
 	*x = Search_ContainerPlaylist{}
-	mi := &file_zpotify_service_search_proto_msgTypes[5]
+	mi := &file_zpotify_service_search_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -315,7 +508,7 @@ func (x *Search_ContainerPlaylist) String() string {
 func (*Search_ContainerPlaylist) ProtoMessage() {}
 
 func (x *Search_ContainerPlaylist) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_search_proto_msgTypes[5]
+	mi := &file_zpotify_service_search_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -362,7 +555,7 @@ type Search_ArtistResult struct {
 
 func (x *Search_ArtistResult) Reset() {
 	*x = Search_ArtistResult{}
-	mi := &file_zpotify_service_search_proto_msgTypes[6]
+	mi := &file_zpotify_service_search_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -374,7 +567,7 @@ func (x *Search_ArtistResult) String() string {
 func (*Search_ArtistResult) ProtoMessage() {}
 
 func (x *Search_ArtistResult) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_search_proto_msgTypes[6]
+	mi := &file_zpotify_service_search_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -414,7 +607,7 @@ type Search_AlbumResult struct {
 
 func (x *Search_AlbumResult) Reset() {
 	*x = Search_AlbumResult{}
-	mi := &file_zpotify_service_search_proto_msgTypes[7]
+	mi := &file_zpotify_service_search_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -426,7 +619,7 @@ func (x *Search_AlbumResult) String() string {
 func (*Search_AlbumResult) ProtoMessage() {}
 
 func (x *Search_AlbumResult) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_search_proto_msgTypes[7]
+	mi := &file_zpotify_service_search_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -466,7 +659,7 @@ type Search_PlaylistResult struct {
 
 func (x *Search_PlaylistResult) Reset() {
 	*x = Search_PlaylistResult{}
-	mi := &file_zpotify_service_search_proto_msgTypes[8]
+	mi := &file_zpotify_service_search_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -478,7 +671,7 @@ func (x *Search_PlaylistResult) String() string {
 func (*Search_PlaylistResult) ProtoMessage() {}
 
 func (x *Search_PlaylistResult) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_search_proto_msgTypes[8]
+	mi := &file_zpotify_service_search_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -508,11 +701,283 @@ func (x *Search_PlaylistResult) GetScore() float64 {
 	return 0
 }
 
+type RecordSearchQuery_Request struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Query         string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecordSearchQuery_Request) Reset() {
+	*x = RecordSearchQuery_Request{}
+	mi := &file_zpotify_service_search_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecordSearchQuery_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecordSearchQuery_Request) ProtoMessage() {}
+
+func (x *RecordSearchQuery_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_search_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecordSearchQuery_Request.ProtoReflect.Descriptor instead.
+func (*RecordSearchQuery_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_search_proto_rawDescGZIP(), []int{2, 0}
+}
+
+func (x *RecordSearchQuery_Request) GetQuery() string {
+	if x != nil {
+		return x.Query
+	}
+	return ""
+}
+
+type RecordSearchQuery_Response struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecordSearchQuery_Response) Reset() {
+	*x = RecordSearchQuery_Response{}
+	mi := &file_zpotify_service_search_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecordSearchQuery_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecordSearchQuery_Response) ProtoMessage() {}
+
+func (x *RecordSearchQuery_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_search_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecordSearchQuery_Response.ProtoReflect.Descriptor instead.
+func (*RecordSearchQuery_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_search_proto_rawDescGZIP(), []int{2, 1}
+}
+
+type RecordSearchFinding_Request struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Query           string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
+	FindingType     string                 `protobuf:"bytes,2,opt,name=finding_type,json=findingType,proto3" json:"finding_type,omitempty"`
+	FindingId       string                 `protobuf:"bytes,3,opt,name=finding_id,json=findingId,proto3" json:"finding_id,omitempty"`
+	FindingName     string                 `protobuf:"bytes,4,opt,name=finding_name,json=findingName,proto3" json:"finding_name,omitempty"`
+	FindingCoverUrl string                 `protobuf:"bytes,5,opt,name=finding_cover_url,json=findingCoverUrl,proto3" json:"finding_cover_url,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *RecordSearchFinding_Request) Reset() {
+	*x = RecordSearchFinding_Request{}
+	mi := &file_zpotify_service_search_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecordSearchFinding_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecordSearchFinding_Request) ProtoMessage() {}
+
+func (x *RecordSearchFinding_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_search_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecordSearchFinding_Request.ProtoReflect.Descriptor instead.
+func (*RecordSearchFinding_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_search_proto_rawDescGZIP(), []int{3, 0}
+}
+
+func (x *RecordSearchFinding_Request) GetQuery() string {
+	if x != nil {
+		return x.Query
+	}
+	return ""
+}
+
+func (x *RecordSearchFinding_Request) GetFindingType() string {
+	if x != nil {
+		return x.FindingType
+	}
+	return ""
+}
+
+func (x *RecordSearchFinding_Request) GetFindingId() string {
+	if x != nil {
+		return x.FindingId
+	}
+	return ""
+}
+
+func (x *RecordSearchFinding_Request) GetFindingName() string {
+	if x != nil {
+		return x.FindingName
+	}
+	return ""
+}
+
+func (x *RecordSearchFinding_Request) GetFindingCoverUrl() string {
+	if x != nil {
+		return x.FindingCoverUrl
+	}
+	return ""
+}
+
+type RecordSearchFinding_Response struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecordSearchFinding_Response) Reset() {
+	*x = RecordSearchFinding_Response{}
+	mi := &file_zpotify_service_search_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecordSearchFinding_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecordSearchFinding_Response) ProtoMessage() {}
+
+func (x *RecordSearchFinding_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_search_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecordSearchFinding_Response.ProtoReflect.Descriptor instead.
+func (*RecordSearchFinding_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_search_proto_rawDescGZIP(), []int{3, 1}
+}
+
+type ListSearchHistory_Request struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSearchHistory_Request) Reset() {
+	*x = ListSearchHistory_Request{}
+	mi := &file_zpotify_service_search_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSearchHistory_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSearchHistory_Request) ProtoMessage() {}
+
+func (x *ListSearchHistory_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_search_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSearchHistory_Request.ProtoReflect.Descriptor instead.
+func (*ListSearchHistory_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_search_proto_rawDescGZIP(), []int{4, 0}
+}
+
+type ListSearchHistory_Response struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Entries       []*SearchHistoryEntry  `protobuf:"bytes,1,rep,name=entries,proto3" json:"entries,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSearchHistory_Response) Reset() {
+	*x = ListSearchHistory_Response{}
+	mi := &file_zpotify_service_search_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSearchHistory_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSearchHistory_Response) ProtoMessage() {}
+
+func (x *ListSearchHistory_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_search_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSearchHistory_Response.ProtoReflect.Descriptor instead.
+func (*ListSearchHistory_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_search_proto_rawDescGZIP(), []int{4, 1}
+}
+
+func (x *ListSearchHistory_Response) GetEntries() []*SearchHistoryEntry {
+	if x != nil {
+		return x.Entries
+	}
+	return nil
+}
+
 var File_zpotify_service_search_proto protoreflect.FileDescriptor
 
 const file_zpotify_service_search_proto_rawDesc = "" +
 	"\n" +
-	"\x1czpotify_service_search.proto\x12\vzpotify_api\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\x1a\x14zpotify_common.proto\"\x93\a\n" +
+	"\x1czpotify_service_search.proto\x12\vzpotify_api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\x1a\x14zpotify_common.proto\"\x93\a\n" +
 	"\x06Search\x1a\x82\x01\n" +
 	"\aRequest\x12\x14\n" +
 	"\x05query\x18\x01 \x01(\tR\x05query\x12+\n" +
@@ -541,9 +1006,40 @@ const file_zpotify_service_search_proto_rawDesc = "" +
 	"\bplaylist\x18\x01 \x01(\v2\x15.zpotify_api.PlaylistR\bplaylist\x12\x14\n" +
 	"\x05score\x18\x02 \x01(\x01R\x05score\"#\n" +
 	"\rSearchFilters\x12\x12\n" +
-	"\x04tags\x18\x01 \x03(\tR\x04tags2h\n" +
+	"\x04tags\x18\x01 \x03(\tR\x04tags\"@\n" +
+	"\x11RecordSearchQuery\x1a\x1f\n" +
+	"\aRequest\x12\x14\n" +
+	"\x05query\x18\x01 \x01(\tR\x05query\x1a\n" +
+	"\n" +
+	"\bResponse\"\xd4\x01\n" +
+	"\x13RecordSearchFinding\x1a\xb0\x01\n" +
+	"\aRequest\x12\x14\n" +
+	"\x05query\x18\x01 \x01(\tR\x05query\x12!\n" +
+	"\ffinding_type\x18\x02 \x01(\tR\vfindingType\x12\x1d\n" +
+	"\n" +
+	"finding_id\x18\x03 \x01(\tR\tfindingId\x12!\n" +
+	"\ffinding_name\x18\x04 \x01(\tR\vfindingName\x12*\n" +
+	"\x11finding_cover_url\x18\x05 \x01(\tR\x0ffindingCoverUrl\x1a\n" +
+	"\n" +
+	"\bResponse\"e\n" +
+	"\x11ListSearchHistory\x1a\t\n" +
+	"\aRequest\x1aE\n" +
+	"\bResponse\x129\n" +
+	"\aentries\x18\x01 \x03(\v2\x1f.zpotify_api.SearchHistoryEntryR\aentries\"\xf6\x01\n" +
+	"\x12SearchHistoryEntry\x12\x14\n" +
+	"\x05query\x18\x01 \x01(\tR\x05query\x12!\n" +
+	"\ffinding_type\x18\x02 \x01(\tR\vfindingType\x12\x1d\n" +
+	"\n" +
+	"finding_id\x18\x03 \x01(\tR\tfindingId\x12!\n" +
+	"\ffinding_name\x18\x04 \x01(\tR\vfindingName\x12*\n" +
+	"\x11finding_cover_url\x18\x05 \x01(\tR\x0ffindingCoverUrl\x129\n" +
+	"\n" +
+	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt2\x8e\x04\n" +
 	"\tSearchAPI\x12[\n" +
-	"\x06Search\x12\x1b.zpotify_api.Search.Request\x1a\x1c.zpotify_api.Search.Response\"\x16\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/api/searchBA\x92\x82\x19\f@zpotify/api\n" +
+	"\x06Search\x12\x1b.zpotify_api.Search.Request\x1a\x1c.zpotify_api.Search.Response\"\x16\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/api/search\x12\x8a\x01\n" +
+	"\x11RecordSearchQuery\x12&.zpotify_api.RecordSearchQuery.Request\x1a'.zpotify_api.RecordSearchQuery.Response\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/api/search/history/query\x12\x92\x01\n" +
+	"\x13RecordSearchFinding\x12(.zpotify_api.RecordSearchFinding.Request\x1a).zpotify_api.RecordSearchFinding.Response\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/search/history/finding\x12\x81\x01\n" +
+	"\x11ListSearchHistory\x12&.zpotify_api.ListSearchHistory.Request\x1a'.zpotify_api.ListSearchHistory.Response\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/api/search/historyBA\x92\x82\x19\f@zpotify/api\n" +
 	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
@@ -558,41 +1054,60 @@ func file_zpotify_service_search_proto_rawDescGZIP() []byte {
 	return file_zpotify_service_search_proto_rawDescData
 }
 
-var file_zpotify_service_search_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_zpotify_service_search_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_zpotify_service_search_proto_goTypes = []any{
-	(*Search)(nil),                   // 0: zpotify_api.Search
-	(*SearchFilters)(nil),            // 1: zpotify_api.SearchFilters
-	(*Search_Request)(nil),           // 2: zpotify_api.Search.Request
-	(*Search_Response)(nil),          // 3: zpotify_api.Search.Response
-	(*Search_TrackResult)(nil),       // 4: zpotify_api.Search.TrackResult
-	(*Search_ContainerPlaylist)(nil), // 5: zpotify_api.Search.ContainerPlaylist
-	(*Search_ArtistResult)(nil),      // 6: zpotify_api.Search.ArtistResult
-	(*Search_AlbumResult)(nil),       // 7: zpotify_api.Search.AlbumResult
-	(*Search_PlaylistResult)(nil),    // 8: zpotify_api.Search.PlaylistResult
-	(*Paging)(nil),                   // 9: zpotify_api.Paging
-	(*SongBase)(nil),                 // 10: zpotify_api.SongBase
-	(*ArtistBase)(nil),               // 11: zpotify_api.ArtistBase
-	(*Playlist)(nil),                 // 12: zpotify_api.Playlist
+	(*Search)(nil),                       // 0: zpotify_api.Search
+	(*SearchFilters)(nil),                // 1: zpotify_api.SearchFilters
+	(*RecordSearchQuery)(nil),            // 2: zpotify_api.RecordSearchQuery
+	(*RecordSearchFinding)(nil),          // 3: zpotify_api.RecordSearchFinding
+	(*ListSearchHistory)(nil),            // 4: zpotify_api.ListSearchHistory
+	(*SearchHistoryEntry)(nil),           // 5: zpotify_api.SearchHistoryEntry
+	(*Search_Request)(nil),               // 6: zpotify_api.Search.Request
+	(*Search_Response)(nil),              // 7: zpotify_api.Search.Response
+	(*Search_TrackResult)(nil),           // 8: zpotify_api.Search.TrackResult
+	(*Search_ContainerPlaylist)(nil),     // 9: zpotify_api.Search.ContainerPlaylist
+	(*Search_ArtistResult)(nil),          // 10: zpotify_api.Search.ArtistResult
+	(*Search_AlbumResult)(nil),           // 11: zpotify_api.Search.AlbumResult
+	(*Search_PlaylistResult)(nil),        // 12: zpotify_api.Search.PlaylistResult
+	(*RecordSearchQuery_Request)(nil),    // 13: zpotify_api.RecordSearchQuery.Request
+	(*RecordSearchQuery_Response)(nil),   // 14: zpotify_api.RecordSearchQuery.Response
+	(*RecordSearchFinding_Request)(nil),  // 15: zpotify_api.RecordSearchFinding.Request
+	(*RecordSearchFinding_Response)(nil), // 16: zpotify_api.RecordSearchFinding.Response
+	(*ListSearchHistory_Request)(nil),    // 17: zpotify_api.ListSearchHistory.Request
+	(*ListSearchHistory_Response)(nil),   // 18: zpotify_api.ListSearchHistory.Response
+	(*timestamppb.Timestamp)(nil),        // 19: google.protobuf.Timestamp
+	(*Paging)(nil),                       // 20: zpotify_api.Paging
+	(*SongBase)(nil),                     // 21: zpotify_api.SongBase
+	(*ArtistBase)(nil),                   // 22: zpotify_api.ArtistBase
+	(*Playlist)(nil),                     // 23: zpotify_api.Playlist
 }
 var file_zpotify_service_search_proto_depIdxs = []int32{
-	9,  // 0: zpotify_api.Search.Request.paging:type_name -> zpotify_api.Paging
-	1,  // 1: zpotify_api.Search.Request.filters:type_name -> zpotify_api.SearchFilters
-	4,  // 2: zpotify_api.Search.Response.tracks:type_name -> zpotify_api.Search.TrackResult
-	6,  // 3: zpotify_api.Search.Response.artists:type_name -> zpotify_api.Search.ArtistResult
-	7,  // 4: zpotify_api.Search.Response.albums:type_name -> zpotify_api.Search.AlbumResult
-	8,  // 5: zpotify_api.Search.Response.playlists:type_name -> zpotify_api.Search.PlaylistResult
-	10, // 6: zpotify_api.Search.TrackResult.song:type_name -> zpotify_api.SongBase
-	5,  // 7: zpotify_api.Search.TrackResult.container_playlist:type_name -> zpotify_api.Search.ContainerPlaylist
-	11, // 8: zpotify_api.Search.ArtistResult.artist:type_name -> zpotify_api.ArtistBase
-	12, // 9: zpotify_api.Search.AlbumResult.playlist:type_name -> zpotify_api.Playlist
-	12, // 10: zpotify_api.Search.PlaylistResult.playlist:type_name -> zpotify_api.Playlist
-	2,  // 11: zpotify_api.SearchAPI.Search:input_type -> zpotify_api.Search.Request
-	3,  // 12: zpotify_api.SearchAPI.Search:output_type -> zpotify_api.Search.Response
-	12, // [12:13] is the sub-list for method output_type
-	11, // [11:12] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	19, // 0: zpotify_api.SearchHistoryEntry.created_at:type_name -> google.protobuf.Timestamp
+	20, // 1: zpotify_api.Search.Request.paging:type_name -> zpotify_api.Paging
+	1,  // 2: zpotify_api.Search.Request.filters:type_name -> zpotify_api.SearchFilters
+	8,  // 3: zpotify_api.Search.Response.tracks:type_name -> zpotify_api.Search.TrackResult
+	10, // 4: zpotify_api.Search.Response.artists:type_name -> zpotify_api.Search.ArtistResult
+	11, // 5: zpotify_api.Search.Response.albums:type_name -> zpotify_api.Search.AlbumResult
+	12, // 6: zpotify_api.Search.Response.playlists:type_name -> zpotify_api.Search.PlaylistResult
+	21, // 7: zpotify_api.Search.TrackResult.song:type_name -> zpotify_api.SongBase
+	9,  // 8: zpotify_api.Search.TrackResult.container_playlist:type_name -> zpotify_api.Search.ContainerPlaylist
+	22, // 9: zpotify_api.Search.ArtistResult.artist:type_name -> zpotify_api.ArtistBase
+	23, // 10: zpotify_api.Search.AlbumResult.playlist:type_name -> zpotify_api.Playlist
+	23, // 11: zpotify_api.Search.PlaylistResult.playlist:type_name -> zpotify_api.Playlist
+	5,  // 12: zpotify_api.ListSearchHistory.Response.entries:type_name -> zpotify_api.SearchHistoryEntry
+	6,  // 13: zpotify_api.SearchAPI.Search:input_type -> zpotify_api.Search.Request
+	13, // 14: zpotify_api.SearchAPI.RecordSearchQuery:input_type -> zpotify_api.RecordSearchQuery.Request
+	15, // 15: zpotify_api.SearchAPI.RecordSearchFinding:input_type -> zpotify_api.RecordSearchFinding.Request
+	17, // 16: zpotify_api.SearchAPI.ListSearchHistory:input_type -> zpotify_api.ListSearchHistory.Request
+	7,  // 17: zpotify_api.SearchAPI.Search:output_type -> zpotify_api.Search.Response
+	14, // 18: zpotify_api.SearchAPI.RecordSearchQuery:output_type -> zpotify_api.RecordSearchQuery.Response
+	16, // 19: zpotify_api.SearchAPI.RecordSearchFinding:output_type -> zpotify_api.RecordSearchFinding.Response
+	18, // 20: zpotify_api.SearchAPI.ListSearchHistory:output_type -> zpotify_api.ListSearchHistory.Response
+	17, // [17:21] is the sub-list for method output_type
+	13, // [13:17] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_service_search_proto_init() }
@@ -607,7 +1122,7 @@ func file_zpotify_service_search_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_service_search_proto_rawDesc), len(file_zpotify_service_search_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -47,6 +47,92 @@
           "SearchAPI"
         ]
       }
+    },
+    "/api/search/history": {
+      "get": {
+        "operationId": "SearchAPI_ListSearchHistory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiListSearchHistoryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "SearchAPI"
+        ]
+      }
+    },
+    "/api/search/history/finding": {
+      "post": {
+        "operationId": "SearchAPI_RecordSearchFinding",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiRecordSearchFindingResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiRecordSearchFindingRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SearchAPI"
+        ]
+      }
+    },
+    "/api/search/history/query": {
+      "post": {
+        "operationId": "SearchAPI_RecordSearchQuery",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiRecordSearchQueryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiRecordSearchQueryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SearchAPI"
+        ]
+      }
     }
   },
   "definitions": {
@@ -212,6 +298,18 @@
         }
       }
     },
+    "zpotify_apiListSearchHistoryResponse": {
+      "type": "object",
+      "properties": {
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiSearchHistoryEntry"
+          }
+        }
+      }
+    },
     "zpotify_apiPaging": {
       "type": "object",
       "properties": {
@@ -276,6 +374,40 @@
         }
       }
     },
+    "zpotify_apiRecordSearchFindingRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string"
+        },
+        "findingType": {
+          "type": "string"
+        },
+        "findingId": {
+          "type": "string"
+        },
+        "findingName": {
+          "type": "string"
+        },
+        "findingCoverUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiRecordSearchFindingResponse": {
+      "type": "object"
+    },
+    "zpotify_apiRecordSearchQueryRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiRecordSearchQueryResponse": {
+      "type": "object"
+    },
     "zpotify_apiSearchFilters": {
       "type": "object",
       "properties": {
@@ -285,6 +417,30 @@
             "type": "string"
           },
           "description": "Reserved for future genre/mood facet chips (reuses AlbumTag kinds). Unused server-side in v1 — accepted but ignored."
+        }
+      }
+    },
+    "zpotify_apiSearchHistoryEntry": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string"
+        },
+        "findingType": {
+          "type": "string"
+        },
+        "findingId": {
+          "type": "string"
+        },
+        "findingName": {
+          "type": "string"
+        },
+        "findingCoverUrl": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },

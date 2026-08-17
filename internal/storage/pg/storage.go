@@ -24,14 +24,15 @@ type dataStorage struct {
 	userStorage         *UserStorage
 	userSettingsStorage *UserSettingsStorage
 
-	songsStorage        *SongsStorage
-	playlistStorage     *PlaylistStorage
-	artistStorage       *ArtistsStorage
-	fileMetaStorage     *FileMetaStorage
-	jobsStorage         *jobsStorage
-	featureFlagsStorage *FeatureFlagsStorage
-	homeStorage         *HomeStorage
-	notificationStorage *NotificationStorage
+	songsStorage         *SongsStorage
+	playlistStorage      *PlaylistStorage
+	artistStorage        *ArtistsStorage
+	fileMetaStorage      *FileMetaStorage
+	jobsStorage          *jobsStorage
+	featureFlagsStorage  *FeatureFlagsStorage
+	homeStorage          *HomeStorage
+	notificationStorage  *NotificationStorage
+	searchHistoryStorage *SearchHistoryStorage
 
 	conn *sql.DB
 }
@@ -53,6 +54,7 @@ func NewStorage(conn *sql.DB) storage.Storage {
 		featureFlagsStorage:     NewFeatureFlagsStorage(conn),
 		homeStorage:             NewHomeStorage(conn, playlistStorage),
 		notificationStorage:     NewNotificationStorage(conn),
+		searchHistoryStorage:    NewSearchHistoryStorage(conn),
 		conn:                    conn,
 	}
 }
@@ -107,6 +109,10 @@ func (d *dataStorage) Home() storage.HomeStorage {
 
 func (d *dataStorage) Notification() storage.NotificationStorage {
 	return d.notificationStorage
+}
+
+func (d *dataStorage) SearchHistory() storage.SearchHistoryStorage {
+	return d.searchHistoryStorage
 }
 
 func (d *dataStorage) TxManager() *tx_manager.TxManager {

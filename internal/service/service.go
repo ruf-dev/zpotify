@@ -26,19 +26,21 @@ type Service interface {
 	HomeService() HomeService
 	NotificationService() NotificationService
 	SearchService() SearchService
+	SearchHistoryService() SearchHistoryService
 }
 
 type service struct {
-	audioService        AudioService
-	userService         UserService
-	authService         AuthService
-	playlistService     PlaylistService
-	artistsService      ArtistsService
-	fileService         FileService
-	featureFlagsService FeatureFlagsService
-	homeService         HomeService
-	notificationService NotificationService
-	searchService       SearchService
+	audioService         AudioService
+	userService          UserService
+	authService          AuthService
+	playlistService      PlaylistService
+	artistsService       ArtistsService
+	fileService          FileService
+	featureFlagsService  FeatureFlagsService
+	homeService          HomeService
+	notificationService  NotificationService
+	searchService        SearchService
+	searchHistoryService SearchHistoryService
 }
 
 func New(dataStorage storage.Storage, cache files_cache.FilesCache,
@@ -61,16 +63,17 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 	artistsService := v1.NewArtistsService(dataStorage, fileStorage)
 
 	return &service{
-		audioService:        audioService,
-		userService:         v1.NewUserService(dataStorage),
-		authService:         authSvc,
-		playlistService:     playlistService,
-		artistsService:      artistsService,
-		fileService:         v1.NewFileService(dataStorage, fileStorage),
-		featureFlagsService: v1.NewFeatureFlagsService(dataStorage),
-		homeService:         v1.NewHomeService(dataStorage),
-		notificationService: v1.NewNotificationService(dataStorage),
-		searchService:       v1.NewSearchService(audioService, artistsService, playlistService),
+		audioService:         audioService,
+		userService:          v1.NewUserService(dataStorage),
+		authService:          authSvc,
+		playlistService:      playlistService,
+		artistsService:       artistsService,
+		fileService:          v1.NewFileService(dataStorage, fileStorage),
+		featureFlagsService:  v1.NewFeatureFlagsService(dataStorage),
+		homeService:          v1.NewHomeService(dataStorage),
+		notificationService:  v1.NewNotificationService(dataStorage),
+		searchService:        v1.NewSearchService(audioService, artistsService, playlistService),
+		searchHistoryService: v1.NewSearchHistoryService(dataStorage),
 	}, nil
 }
 
@@ -112,6 +115,10 @@ func (s *service) NotificationService() NotificationService {
 
 func (s *service) SearchService() SearchService {
 	return s.searchService
+}
+
+func (s *service) SearchHistoryService() SearchHistoryService {
+	return s.searchHistoryService
 }
 
 type AudioService interface {
@@ -248,4 +255,18 @@ type NotificationService interface {
 // PlaylistService rather than duplicating any of their search SQL.
 type SearchService interface {
 	Search(ctx context.Context, req domain.SearchParams) (domain.SearchResult, error)
+}
+
+// SearchHistoryService manages the caller's per-user, FIFO-capped (5
+// entries) list of past search queries, each optionally carrying a
+// "finding" - the item clicked after that search.
+type SearchHistoryService interface {
+	// RecordQuery records a new search query for the caller.
+	RecordQuery(ctx context.Context, query string) error
+	// RecordFinding attaches a finding to the caller's most-recent matching
+	// query entry, inserting a new entry if none matched.
+	RecordFinding(ctx context.Context, query string, finding domain.SearchHistoryEntry) error
+	// List returns up to 5 of the caller's most-recent search history
+	// entries, newest first.
+	List(ctx context.Context) ([]domain.SearchHistoryEntry, error)
 }

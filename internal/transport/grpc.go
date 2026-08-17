@@ -4,6 +4,7 @@ import (
 	"context"
 	"net"
 	"net/http"
+	"strings"
 
 	"go.redsock.ru/rerrors"
 	"google.golang.org/grpc"
@@ -73,9 +74,19 @@ func (s *grpcServer) AddImplementation(grpcImpls ...GrpcImpl) {
 
 		grpcWithGateway, ok := grpcImpl.(GrpcWithGateway)
 		if ok {
-			s.gatewayMux.Handle(grpcWithGateway.Gateway(s.ctx,
+			route, handler := grpcWithGateway.Gateway(s.ctx,
 				s.listener.Addr().String(),
-				grpc.WithTransportCredentials(insecure.NewCredentials())))
+				grpc.WithTransportCredentials(insecure.NewCredentials()))
+
+			s.gatewayMux.Handle(route, handler)
+
+			// route may mix a route registered with no sub-path (e.g. "/api/search") with
+			// sub-routed RPCs (e.g. "/api/search/history/query"). net/http.ServeMux treats a
+			// pattern with no trailing slash as an exact match only, so also register the
+			// subtree variant to catch any sub-paths served by the same handler.
+			if !strings.HasSuffix(route, "/") {
+				s.gatewayMux.Handle(route+"/", handler)
+			}
 		}
 	}
 }
