@@ -1870,8 +1870,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/PendingFilesScreen.tsx": {
-    "mtime": 1787555741.8811543,
-    "ast_hash": "a7ee4404b47ad293e80806b35e657997",
+    "mtime": 1787557348.7208369,
+    "ast_hash": "507b8bd8cabed120cf7b1e409f5fba75",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/DropZoneScreen.tsx": {
@@ -3832,6 +3832,11 @@
   "pkg/client/ZpotifyUI/src/dialogs/MultitrackUpload/useTrackDrafts.test.ts": {
     "mtime": 1787556909.3761685,
     "ast_hash": "db9f88eb77999b27b1d0ffbd90ca0b71",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/PendingFilesScreen.test.tsx": {
+    "mtime": 1787557375.4761784,
+    "ast_hash": "6ec95a55318589dba197d4c35e5ca5a1",
     "semantic_hash": ""
   }
 }
