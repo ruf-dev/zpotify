@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@vervstack/chures';
 
 import { groupTracksByFolder, folderProgress } from '@/dialogs/MultitrackUpload/groupTracksByFolder';
-import FolderGroupHeader from '@/dialogs/MultitrackUpload/components/FolderGroupHeader/FolderGroupHeader';
+import FolderGroupHeader from '@/components/FolderGroupHeader/FolderGroupHeader';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import UploadingFileRow from '@/dialogs/AddTrack/screens/components/UploadingFileRow/UploadingFileRow';
 import cls from '@/dialogs/AddTrack/screens/components/BatchUploadSection/BatchUploadSection.module.css';

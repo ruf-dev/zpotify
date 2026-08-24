@@ -26,8 +26,29 @@
     padding: 0 0.25rem;
 }
 
+.ActionsRight {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .FileList {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+}
+
+.FolderGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.FolderTrackIndent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-left: 1.25rem;
+    padding-left: 0.625rem;
+    border-left: 0.0625rem solid var(--color-border);
 }

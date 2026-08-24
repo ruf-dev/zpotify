@@ -3,7 +3,9 @@ package v1
 import (
 	"bytes"
 	"context"
+	"crypto/sha256"
 	"database/sql"
+	"encoding/hex"
 	"image"
 	"image/color"
 	"image/jpeg"
@@ -11,6 +13,7 @@ import (
 	"os"
 	"path"
 	"strconv"
+	"strings"
 	"sync"
 	"testing"
 
@@ -223,6 +226,8 @@ func encodeTestJPEG(t *testing.T, c color.RGBA) []byte {
 	return buf.Bytes()
 }
 
+const testFolderName = "My Album"
+
 func uploadPermissions() domain.UserPermissions {
 	return domain.UserPermissions{
 		CanUpload:           true,
@@ -250,10 +255,10 @@ func TestFileService_SaveFile_SameOriginalFileNameDifferentContent(t *testing.T)
 	redImage := encodeTestJPEG(t, color.RGBA{R: 255, A: 255})
 	greenImage := encodeTestJPEG(t, color.RGBA{G: 255, A: 255})
 
-	id1, err := svc.SaveFile(ctx, "or.jpeg", bytes.NewReader(redImage))
+	id1, err := svc.SaveFile(ctx, "or.jpeg", "", bytes.NewReader(redImage))
 	require.NoError(t, err)
 
-	id2, err := svc.SaveFile(ctx, "or.jpeg", bytes.NewReader(greenImage))
+	id2, err := svc.SaveFile(ctx, "or.jpeg", "", bytes.NewReader(greenImage))
 	require.NoError(t, err, "uploading a second, different photo under the same original file name must not conflict")
 
 	assert.NotEqual(t, id1, id2)
@@ -275,11 +280,197 @@ func TestFileService_SaveFile_IdenticalContentIsDeduplicated(t *testing.T) {
 
 	img := encodeTestJPEG(t, color.RGBA{B: 255, A: 255})
 
-	id1, err := svc.SaveFile(ctx, "or.jpeg", bytes.NewReader(img))
+	id1, err := svc.SaveFile(ctx, "or.jpeg", "", bytes.NewReader(img))
 	require.NoError(t, err)
 
-	id2, err := svc.SaveFile(ctx, "other-name.jpeg", bytes.NewReader(img))
+	id2, err := svc.SaveFile(ctx, "other-name.jpeg", "", bytes.NewReader(img))
 	require.NoError(t, err)
 
 	assert.Equal(t, id1, id2)
+	assert.Len(t, binaryStorage.files, 1, "the duplicate upload's staged file must be cleaned up, leaving only the first upload's physical file")
+}
+
+// TestFileService_SaveFile_PlainNamesKeptWhenNoCollision verifies the new
+// default behavior: when two uploads have different original names (so
+// there is no target-path collision), both are stored under their exact
+// original names - no content-hash renaming at all.
+func TestFileService_SaveFile_PlainNamesKeptWhenNoCollision(t *testing.T) {
+	binaryStorage := newFakeSaveFileBinaryStorage()
+	fileMetaStorage := newFakeFileMetaStorage()
+
+	svc := &FileService{
+		storage:       fileMetaStorage,
+		binaryStorage: binaryStorage,
+	}
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	redImage := encodeTestJPEG(t, color.RGBA{R: 255, A: 255})
+	blueImage := encodeTestJPEG(t, color.RGBA{B: 255, A: 255})
+
+	id1, err := svc.SaveFile(ctx, "track1.jpeg", "", bytes.NewReader(redImage))
+	require.NoError(t, err)
+
+	id2, err := svc.SaveFile(ctx, "track2.jpeg", "", bytes.NewReader(blueImage))
+	require.NoError(t, err)
+
+	meta1, err := fileMetaStorage.Get(ctx, id1)
+	require.NoError(t, err)
+	meta2, err := fileMetaStorage.Get(ctx, id2)
+	require.NoError(t, err)
+
+	assert.Equal(t, "tmp/1/track1.jpeg", meta1.FilePath)
+	assert.Equal(t, "tmp/1/track2.jpeg", meta2.FilePath)
+}
+
+// TestFileService_SaveFile_SameNameDifferentContentGetsHashSuffix verifies
+// that when two uploads share the exact same target path but differ in
+// content, the first keeps its plain original name and the second is
+// disambiguated with a 5-hex-char content-hash suffix.
+func TestFileService_SaveFile_SameNameDifferentContentGetsHashSuffix(t *testing.T) {
+	binaryStorage := newFakeSaveFileBinaryStorage()
+	fileMetaStorage := newFakeFileMetaStorage()
+
+	svc := &FileService{
+		storage:       fileMetaStorage,
+		binaryStorage: binaryStorage,
+	}
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	redImage := encodeTestJPEG(t, color.RGBA{R: 255, A: 255})
+	greenImage := encodeTestJPEG(t, color.RGBA{G: 255, A: 255})
+
+	id1, err := svc.SaveFile(ctx, "or.jpeg", "", bytes.NewReader(redImage))
+	require.NoError(t, err)
+
+	id2, err := svc.SaveFile(ctx, "or.jpeg", "", bytes.NewReader(greenImage))
+	require.NoError(t, err)
+
+	meta1, err := fileMetaStorage.Get(ctx, id1)
+	require.NoError(t, err)
+	meta2, err := fileMetaStorage.Get(ctx, id2)
+	require.NoError(t, err)
+
+	assert.Equal(t, "tmp/1/or.jpeg", meta1.FilePath, "first upload should keep its plain original name")
+
+	expectedHash5 := sha256Hex(t, string(greenImage))[:5]
+	assert.Equal(t, "tmp/1/or-"+expectedHash5+".jpeg", meta2.FilePath)
+}
+
+// sha256Hex returns the hex-encoded SHA-256 digest of s, mirroring the hash
+// SaveFile computes over an upload's content.
+func sha256Hex(t *testing.T, s string) string {
+	t.Helper()
+	sum := sha256.Sum256([]byte(s))
+	return hex.EncodeToString(sum[:])
+}
+
+// TestFileService_resolveTargetPath_ExtendsHashPrefixOnRepeatedCollision
+// proves the path-selection loop keeps extending the disambiguation hash
+// prefix (rather than giving up or erroring) when even the shortest
+// disambiguated candidates are already taken.
+func TestFileService_resolveTargetPath_ExtendsHashPrefixOnRepeatedCollision(t *testing.T) {
+	fileMetaStorage := newFakeFileMetaStorage()
+
+	svc := &FileService{
+		storage: fileMetaStorage,
+	}
+
+	ctx := context.Background()
+
+	contentHash := sha256Hex(t, "forced-collision-content")
+	dir := "tmp/1"
+
+	takenPaths := []string{
+		path.Join(dir, "track.mp3"),
+		path.Join(dir, "track-"+contentHash[:5]+".mp3"),
+		path.Join(dir, "track-"+contentHash[:6]+".mp3"),
+	}
+	for i, p := range takenPaths {
+		fileMeta := domain.FileMeta{
+			File: domain.File{
+				FilePath:    p,
+				ContentHash: "unrelated-hash-" + strconv.Itoa(i),
+			},
+		}
+		_, addErr := fileMetaStorage.Add(ctx, fileMeta)
+		require.NoError(t, addErr)
+	}
+
+	got, err := svc.resolveTargetPath(ctx, dir, "track.mp3", contentHash)
+	require.NoError(t, err)
+
+	want := path.Join(dir, "track-"+contentHash[:7]+".mp3")
+	assert.Equal(t, want, got)
+}
+
+// TestFileService_resolveTargetPath_FreePathReturnedAsIs verifies that when
+// the plain candidate path is not taken, resolveTargetPath returns it
+// unchanged - no hash suffix.
+func TestFileService_resolveTargetPath_FreePathReturnedAsIs(t *testing.T) {
+	fileMetaStorage := newFakeFileMetaStorage()
+
+	svc := &FileService{
+		storage: fileMetaStorage,
+	}
+
+	ctx := context.Background()
+
+	contentHash := sha256Hex(t, "free-path-content")
+
+	got, err := svc.resolveTargetPath(ctx, "tmp/1", "track.mp3", contentHash)
+	require.NoError(t, err)
+
+	assert.Equal(t, "tmp/1/track.mp3", got)
+}
+
+// TestFileService_SaveFile_FolderNameIsIncludedInStoredPath verifies that
+// when a caller supplies a folder name (e.g. the frontend mirroring a
+// dropped folder), the resulting stored FilePath includes that folder
+// segment, so files from different dropped folders don't collide/flatten
+// together.
+func TestFileService_SaveFile_FolderNameIsIncludedInStoredPath(t *testing.T) {
+	binaryStorage := newFakeSaveFileBinaryStorage()
+	fileMetaStorage := newFakeFileMetaStorage()
+
+	svc := &FileService{
+		storage:       fileMetaStorage,
+		binaryStorage: binaryStorage,
+	}
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	img := encodeTestJPEG(t, color.RGBA{R: 128, A: 255})
+
+	id, err := svc.SaveFile(ctx, "track.jpeg", testFolderName, bytes.NewReader(img))
+	require.NoError(t, err)
+
+	meta, err := fileMetaStorage.Get(ctx, id)
+	require.NoError(t, err)
+
+	assert.True(t, strings.Contains(meta.FilePath, testFolderName+"/"), "expected stored path %q to contain folder segment", meta.FilePath)
+}
+
+// TestFileService_SaveFile_InvalidFolderNameIsRejected verifies that an
+// unsafe folder name (e.g. containing "..") is rejected before any file is
+// written to binary storage or persisted in file meta storage.
+func TestFileService_SaveFile_InvalidFolderNameIsRejected(t *testing.T) {
+	binaryStorage := newFakeSaveFileBinaryStorage()
+	fileMetaStorage := newFakeFileMetaStorage()
+
+	svc := &FileService{
+		storage:       fileMetaStorage,
+		binaryStorage: binaryStorage,
+	}
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	img := encodeTestJPEG(t, color.RGBA{G: 128, A: 255})
+
+	id, err := svc.SaveFile(ctx, "track.jpeg", "../../etc", bytes.NewReader(img))
+	require.Error(t, err)
+	assert.Zero(t, id)
+
+	assert.Empty(t, binaryStorage.files, "no file should have been written to binary storage for a rejected folder name")
 }

@@ -4,6 +4,7 @@ import MusicFileIcon from '@/assets/icons/MusicFileIcon';
 import { TrashIcon } from '@/assets/icons/TrashIcon.tsx';
 import Checkbox from '@/components/Checkbox/Checkbox';
 import cls from '@/dialogs/AddTrack/screens/components/FileItem/FileItem.module.css';
+import { parseSongFilePath } from '@/dialogs/AddTrack/screens/parseSongFilePath.ts';
 import type { SongFile } from '@/app/api/zpotify';
 
 interface FileItemProps {
@@ -15,7 +16,7 @@ interface FileItemProps {
 }
 
 export default function FileItem({ file, selected, onSelect, onDelete, onToggleSelect }: FileItemProps) {
-    const name = file.path?.split('/').pop() ?? 'unknown file';
+    const { fileName: name } = parseSongFilePath(file.path);
 
     function handleClick() {
         onSelect(file);

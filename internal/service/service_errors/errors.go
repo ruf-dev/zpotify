@@ -35,4 +35,10 @@ var (
 	ErrTelegramNotLinked = rerrors.New("telegram account is not linked", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusBadRequest))
 
 	ErrEmptySearchQuery = rerrors.New("search query must not be empty", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
+
+	// ErrFilePathCollisionUnresolved is returned when every content-hash-prefix
+	// disambiguated path for an upload is already taken, up to the full hash
+	// digest. This should never happen in practice - it would require another
+	// file with a different content hash to occupy every disambiguated name.
+	ErrFilePathCollisionUnresolved = rerrors.New("could not resolve a free file path", codes.Internal, rerrors.WithHttpStatus(http.StatusInternalServerError))
 )

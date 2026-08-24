@@ -67,6 +67,28 @@ func (l LocalStorageProvider) ListFiles(_ context.Context, userId int64) ([]stri
 		if !entry.IsDir() {
 			filePath := path.Join(userTmpDir, entry.Name())
 			files = append(files, filePath)
+			continue
+		}
+
+		// Scope is capped at one folder level: look one level into this
+		// subdirectory, but don't recurse into any subdirectory it in turn
+		// contains.
+		subDir := path.Join(userTmpDir, entry.Name())
+		subEntries, subErr := os.ReadDir(path.Join(l.root, subDir))
+		if subErr != nil {
+			log.Warn().
+				Err(subErr).
+				Str("path", subDir).
+				Msg("error reading user temporary subdirectory, skipping it")
+			continue
+		}
+
+		for _, subEntry := range subEntries {
+			if subEntry.IsDir() {
+				continue
+			}
+			filePath := path.Join(subDir, subEntry.Name())
+			files = append(files, filePath)
 		}
 	}
 

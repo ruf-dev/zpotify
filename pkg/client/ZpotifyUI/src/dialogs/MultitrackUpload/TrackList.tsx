@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { Button } from '@vervstack/chures';
 
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
-import type { SongBase, SongFile } from '@/app/api/zpotify';
+import type { SongBase } from '@/app/api/zpotify';
 import DropZone from '@/features/upload/DropZone';
 import SongSearchBox from '@/widgets/SongSearchBox/SongSearchBox';
 import TrackRow from '@/dialogs/MultitrackUpload/TrackRow';
@@ -11,8 +11,7 @@ import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { useTrackDrag } from '@/dialogs/MultitrackUpload/useTrackDrag';
 import { canCleanTrackNumbers } from '@/dialogs/MultitrackUpload/utils';
 import { groupTracksByFolder, folderProgress } from '@/dialogs/MultitrackUpload/groupTracksByFolder';
-import FolderGroupHeader from '@/dialogs/MultitrackUpload/components/FolderGroupHeader/FolderGroupHeader';
-import FetchServerFilesButton from '@/dialogs/MultitrackUpload/components/FetchServerFilesButton/FetchServerFilesButton';
+import FolderGroupHeader from '@/components/FolderGroupHeader/FolderGroupHeader';
 import cls from '@/dialogs/MultitrackUpload/TrackList.module.css';
 
 interface TrackListProps {
@@ -30,8 +29,7 @@ interface TrackListProps {
     showSearchBox: boolean;
     excludedSongIds: Set<string>;
     onAddSong: (song: SongBase) => void;
-    onAddPendingFile: (song: SongFile) => void;
-    excludedFileIds: Set<string>;
+    flatList?: boolean;
 }
 
 const CLEAN_NUMBERS_ANIMATION_MS = 220;
@@ -50,7 +48,7 @@ export default function TrackList(props: TrackListProps) {
     const canCleanNames = canCleanTrackNumbers(props.tracks.map((t) => t.title));
     const previewCleanNumbers = canCleanNames && isHoveringClean;
     const cleaningNumbers = canCleanNames && isCleaningNumbers;
-    const segments = groupTracksByFolder(props.tracks);
+    const segments = props.flatList ? undefined : groupTracksByFolder(props.tracks);
 
     function handleCleanNamesClick() {
         setIsHoveringClean(false);
@@ -120,37 +118,39 @@ export default function TrackList(props: TrackListProps) {
             </div>
 
             <div className={cls.RowsWrapper}>
-                {segments.flatMap((segment) => {
-                    if (segment.folderName === undefined) {
-                        return [renderTrackRow(segment.tracks[0], segment.startIndex)];
-                    }
+                {props.flatList
+                    ? props.tracks.map((track, idx) => renderTrackRow(track, idx))
+                    : segments!.flatMap((segment) => {
+                          if (segment.folderName === undefined) {
+                              return [renderTrackRow(segment.tracks[0], segment.startIndex)];
+                          }
 
-                    const folderName = segment.folderName;
-                    const collapsed = collapsedFolders.has(folderName);
-                    const nodes = [
-                        <FolderGroupHeader
-                            key={`folder-header-${folderName}-${segment.startIndex}`}
-                            name={folderName}
-                            trackCount={segment.tracks.length}
-                            progress={folderProgress(segment.tracks)}
-                            collapsed={collapsed}
-                            onToggle={() => toggleFolder(folderName)}
-                        />,
-                    ];
+                          const folderName = segment.folderName;
+                          const collapsed = collapsedFolders.has(folderName);
+                          const nodes = [
+                              <FolderGroupHeader
+                                  key={`folder-header-${folderName}-${segment.startIndex}`}
+                                  name={folderName}
+                                  trackCount={segment.tracks.length}
+                                  progress={folderProgress(segment.tracks)}
+                                  collapsed={collapsed}
+                                  onToggle={() => toggleFolder(folderName)}
+                              />,
+                          ];
 
-                    if (!collapsed) {
-                        nodes.push(
-                            <div
-                                key={`folder-tracks-${folderName}-${segment.startIndex}`}
-                                className={cls.FolderTrackIndent}
-                            >
-                                {segment.tracks.map((track, i) => renderTrackRow(track, segment.startIndex + i))}
-                            </div>,
-                        );
-                    }
+                          if (!collapsed) {
+                              nodes.push(
+                                  <div
+                                      key={`folder-tracks-${folderName}-${segment.startIndex}`}
+                                      className={cls.FolderTrackIndent}
+                                  >
+                                      {segment.tracks.map((track, i) => renderTrackRow(track, segment.startIndex + i))}
+                                  </div>,
+                              );
+                          }
 
-                    return nodes;
-                })}
+                          return nodes;
+                      })}
             </div>
 
             {ghostTrack &&
@@ -177,8 +177,6 @@ export default function TrackList(props: TrackListProps) {
                 )}
 
             {props.showSearchBox && <SongSearchBox excludedIds={props.excludedSongIds} onAddSong={props.onAddSong} />}
-
-            <FetchServerFilesButton excludedFileIds={props.excludedFileIds} onAddPendingFile={props.onAddPendingFile} />
 
             <DropZone onFiles={props.onAddFiles} className={cls.EmptyStateWrapper}>
                 <div className={cls.EmptyStateContent}>

@@ -9,8 +9,13 @@ import {
 } from '@/shared/api/Errors.ts';
 
 export interface WebApi {
-    UploadFile(file: File, signal?: AbortSignal): Promise<string>;
-    UploadFileWithProgress(file: File, onProgress: (pct: number) => void, signal?: AbortSignal): Promise<string>;
+    UploadFile(file: File, signal?: AbortSignal, folderName?: string): Promise<string>;
+    UploadFileWithProgress(
+        file: File,
+        onProgress: (pct: number) => void,
+        signal?: AbortSignal,
+        folderName?: string,
+    ): Promise<string>;
 }
 
 enum WebApiUriPath {
@@ -18,9 +23,12 @@ enum WebApiUriPath {
 }
 
 export class WebApiImpl extends BaseService implements WebApi {
-    UploadFile(file: File, signal?: AbortSignal): Promise<string> {
+    UploadFile(file: File, signal?: AbortSignal, folderName?: string): Promise<string> {
         return this.executeAuthApiCall(async (initReq) => {
             const formData = new FormData();
+            if (folderName) {
+                formData.append('folder', folderName);
+            }
             formData.append('file', file, file.name);
 
             const headers = new Headers(initReq.headers as HeadersInit);
@@ -44,10 +52,18 @@ export class WebApiImpl extends BaseService implements WebApi {
         });
     }
 
-    UploadFileWithProgress(file: File, onProgress: (pct: number) => void, signal?: AbortSignal): Promise<string> {
+    UploadFileWithProgress(
+        file: File,
+        onProgress: (pct: number) => void,
+        signal?: AbortSignal,
+        folderName?: string,
+    ): Promise<string> {
         return this.executeAuthApiCall((initReq) => {
             return new Promise<string>((resolve, reject) => {
                 const formData = new FormData();
+                if (folderName) {
+                    formData.append('folder', folderName);
+                }
                 formData.append('file', file, file.name);
 
                 const headers = new Headers(initReq.headers as HeadersInit);

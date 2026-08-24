@@ -60,6 +60,7 @@ export function useUploadQueue(setTracks: React.Dispatch<React.SetStateAction<Tr
                     setTracks((prev) => prev.map((p) => (p.id === t.id ? { ...p, uploadProgress: pct } : p)));
                 },
                 controller.signal,
+                t.folderName,
             )
             .then((fileId) => {
                 setTracks((prev) =>

@@ -9,16 +9,25 @@ import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 export function usePendingFiles() {
     const [files, setFiles] = useState<SongFile[]>([]);
     const [loading, setLoading] = useState(true);
+    const [refetching, setRefetching] = useState(false);
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const { OpenDialog, CloseDialog } = useDialog();
     const toaster = useToaster();
 
+    function fetchFiles() {
+        return fileService.ListUploadedFiles({ temporaryOnly: true }).then((res) => setFiles(res.files || []));
+    }
+
     useEffect(() => {
-        fileService
-            .ListUploadedFiles({ temporaryOnly: true })
-            .then((res) => setFiles(res.files || []))
-            .finally(() => setLoading(false));
+        fetchFiles().finally(() => setLoading(false));
     }, []);
+
+    function refetch() {
+        setRefetching(true);
+        fetchFiles()
+            .catch((err) => toaster.catch(err))
+            .finally(() => setRefetching(false));
+    }
 
     const allSelected = files.length > 0 && selectedIds.size === files.length;
 
@@ -97,6 +106,8 @@ export function usePendingFiles() {
     return {
         files,
         loading,
+        refetching,
+        refetch,
         selectedIds,
         allSelected,
         handleToggleSelect,

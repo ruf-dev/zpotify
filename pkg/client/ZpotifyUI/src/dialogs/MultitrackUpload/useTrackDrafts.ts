@@ -9,7 +9,7 @@ import { fileService } from '@/shared/api/FileService.ts';
 import type { FileHashResult } from '@/shared/api/FileService.ts';
 import { isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
-import type { SongBase, SongFile } from '@/app/api/zpotify';
+import type { SongBase } from '@/app/api/zpotify';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { cleanTitle, cleanTrackNumber, computeHash } from '@/dialogs/MultitrackUpload/utils';
 import type { UploadQueue } from '@/dialogs/MultitrackUpload/useUploadQueue';
@@ -24,7 +24,6 @@ export interface TrackDraftsState {
     handleReorder: (fromIdx: number, toIdx: number) => void;
     handleAddFiles: (incomingFiles: File[]) => void;
     handleAddSong: (song: SongBase) => void;
-    handleAddPendingFile: (songFile: SongFile) => void;
     handleRetry: (id: string) => void;
     handleRetryAll: () => void;
     handleCleanNumbers: () => void;
@@ -297,25 +296,6 @@ export function useTrackDrafts(files: File[], folders: DroppedFolder[] = []): Tr
         setTracks((prev) => [...prev, newTrack]);
     }
 
-    function handleAddPendingFile(songFile: SongFile) {
-        if (!songFile.id) return;
-        if (tracksRef.current.some((t) => t.fileId === songFile.id)) return;
-
-        const name = songFile.path?.split('/').pop() ?? '';
-        const newTrack: TrackDraft = {
-            id: crypto.randomUUID(),
-            title: cleanTitle(name),
-            artists: [],
-            duration: 0,
-            uploadStatus: 'done',
-            uploadProgress: 100,
-            fileId: songFile.id,
-            isExisting: true,
-        };
-
-        setTracks((prev) => [...prev, newTrack]);
-    }
-
     return {
         tracks,
         handleTitleChange,
@@ -324,7 +304,6 @@ export function useTrackDrafts(files: File[], folders: DroppedFolder[] = []): Tr
         handleReorder,
         handleAddFiles,
         handleAddSong,
-        handleAddPendingFile,
         handleRetry,
         handleRetryAll,
         handleCleanNumbers,

@@ -102,6 +102,7 @@ export default function MultitrackUploadModal({
 
     const excludedSongIds = new Set([...summary.linkedSongIds, ...(targetPlaylist?.existingSongIds ?? [])]);
     const failedCount = trackDrafts.tracks.filter((t) => t.uploadStatus === 'error').length;
+    const isSingleFolder = (folders?.length ?? 0) === 1;
 
     const { loadArtistOptions, onCreateArtist } = useArtistLookup();
 
@@ -163,10 +164,7 @@ export default function MultitrackUploadModal({
                     showSearchBox={playlistMode}
                     excludedSongIds={excludedSongIds}
                     onAddSong={trackDrafts.handleAddSong}
-                    onAddPendingFile={trackDrafts.handleAddPendingFile}
-                    excludedFileIds={
-                        new Set(trackDrafts.tracks.map((t) => t.fileId).filter((id): id is string => !!id))
-                    }
+                    flatList={isSingleFolder}
                 />
             </div>
 

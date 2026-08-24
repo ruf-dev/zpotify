@@ -1,10 +1,41 @@
-import { Button, Toggle } from '@vervstack/chures';
+import { useState } from 'react';
+import { Button } from '@vervstack/chures';
 
 import cls from '@/dialogs/AddTrack/screens/PendingFilesScreen.module.css';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 import FileItem from '@/dialogs/AddTrack/screens/components/FileItem/FileItem';
 import BatchUploadSection from '@/dialogs/AddTrack/screens/components/BatchUploadSection/BatchUploadSection';
+import Checkbox from '@/components/Checkbox/Checkbox';
+import FolderGroupHeader from '@/components/FolderGroupHeader/FolderGroupHeader';
 import { usePendingFiles } from '@/dialogs/AddTrack/screens/usePendingFiles.tsx';
+import { parseSongFilePath } from '@/dialogs/AddTrack/screens/parseSongFilePath.ts';
+import type { SongFile } from '@/app/api/zpotify';
+
+interface GroupedFiles {
+    folders: Map<string, SongFile[]>;
+    ungrouped: SongFile[];
+}
+
+function groupFilesByFolder(files: SongFile[]): GroupedFiles {
+    const folders = new Map<string, SongFile[]>();
+    const ungrouped: SongFile[] = [];
+
+    files.forEach((file) => {
+        const { folderName } = parseSongFilePath(file.path);
+        if (folderName === undefined) {
+            ungrouped.push(file);
+            return;
+        }
+        const group = folders.get(folderName);
+        if (group) {
+            group.push(file);
+        } else {
+            folders.set(folderName, [file]);
+        }
+    });
+
+    return { folders, ungrouped };
+}
 
 export default function PendingFilesScreen({
     handleSelectFromLibrary,
@@ -12,6 +43,29 @@ export default function PendingFilesScreen({
     handleOpenBatchFolder,
 }: AddTrackContext) {
     const pendingFiles = usePendingFiles();
+    const [collapsedFolders, setCollapsedFolders] = useState<Set<string>>(new Set());
+
+    function toggleFolder(folderName: string) {
+        setCollapsedFolders((prev) => {
+            const next = new Set(prev);
+            if (next.has(folderName)) next.delete(folderName);
+            else next.add(folderName);
+            return next;
+        });
+    }
+
+    function renderFileItem(file: SongFile) {
+        return (
+            <FileItem
+                key={file.id}
+                file={file}
+                selected={pendingFiles.selectedIds.has(file.id ?? '')}
+                onSelect={handleSelectFromLibrary}
+                onDelete={pendingFiles.handleDelete}
+                onToggleSelect={pendingFiles.handleToggleSelect}
+            />
+        );
+    }
 
     if (pendingFiles.loading) {
         return (
@@ -21,6 +75,8 @@ export default function PendingFilesScreen({
         );
     }
 
+    const grouped = groupFilesByFolder(pendingFiles.files);
+
     return (
         <div className={cls.PendingFilesScreenContainer}>
             {batchTracks.length > 0 && <BatchUploadSection tracks={batchTracks} onOpenFolder={handleOpenBatchFolder} />}
@@ -29,30 +85,43 @@ export default function PendingFilesScreen({
             ) : (
                 <>
                     <div className={cls.ActionsRow}>
-                        <Toggle
+                        <Checkbox
                             checked={pendingFiles.allSelected}
                             onChange={pendingFiles.handleToggleSelectAll}
                             label="Select all"
                         />
-                        <Button
-                            variant="danger"
-                            disabled={pendingFiles.selectedIds.size === 0}
-                            onClick={pendingFiles.handleDeleteSelected}
-                        >
-                            Delete selected ({pendingFiles.selectedIds.size})
-                        </Button>
+                        <div className={cls.ActionsRight}>
+                            <Button variant="ghost" onClick={pendingFiles.refetch} disabled={pendingFiles.refetching}>
+                                {pendingFiles.refetching ? 'refreshing…' : 'Refresh'}
+                            </Button>
+                            <Button
+                                variant="danger"
+                                disabled={pendingFiles.selectedIds.size === 0}
+                                onClick={pendingFiles.handleDeleteSelected}
+                            >
+                                Delete selected ({pendingFiles.selectedIds.size})
+                            </Button>
+                        </div>
                     </div>
                     <div className={cls.FileList}>
-                        {pendingFiles.files.map((file) => (
-                            <FileItem
-                                key={file.id}
-                                file={file}
-                                selected={pendingFiles.selectedIds.has(file.id ?? '')}
-                                onSelect={handleSelectFromLibrary}
-                                onDelete={pendingFiles.handleDelete}
-                                onToggleSelect={pendingFiles.handleToggleSelect}
-                            />
-                        ))}
+                        {Array.from(grouped.folders.entries()).map(([folderName, groupFiles]) => {
+                            const collapsed = collapsedFolders.has(folderName);
+                            return (
+                                <div key={folderName} className={cls.FolderGroup}>
+                                    <FolderGroupHeader
+                                        name={folderName}
+                                        trackCount={groupFiles.length}
+                                        progress={100}
+                                        collapsed={collapsed}
+                                        onToggle={() => toggleFolder(folderName)}
+                                    />
+                                    {!collapsed && (
+                                        <div className={cls.FolderTrackIndent}>{groupFiles.map(renderFileItem)}</div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                        {grouped.ungrouped.map(renderFileItem)}
                     </div>
                 </>
             )}

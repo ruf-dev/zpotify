@@ -5,11 +5,12 @@
 
 .DropZoneScreenContainer {
     animation: slideIn 0.2s ease both;
+    width: min(56vw, 44rem);
 }
 
 .DropZone {
     position: relative;
-    height: 16rem;
+    height: 32rem;
     border-radius: var(--border-radius);
     display: flex;
     flex-direction: column;
@@ -52,4 +53,11 @@
     font-size: var(--font-size-sm);
     color: var(--color-error);
     text-align: center;
+}
+
+@media (orientation: portrait) {
+    .DropZoneScreenContainer {
+        width: 100%;
+        max-width: 44rem;
+    }
 }

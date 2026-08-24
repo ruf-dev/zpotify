@@ -2,7 +2,7 @@ import cn from 'classnames';
 
 import FolderIcon from '@/assets/icons/FolderIcon';
 import ChevronRightIcon from '@/assets/icons/ChevronRightIcon.tsx';
-import cls from '@/dialogs/MultitrackUpload/components/FolderGroupHeader/FolderGroupHeader.module.css';
+import cls from '@/components/FolderGroupHeader/FolderGroupHeader.module.css';
 
 interface FolderGroupHeaderProps {
     name: string;
