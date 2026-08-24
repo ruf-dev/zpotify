@@ -1240,8 +1240,8 @@
     "semantic_hash": ""
   },
   "config/config.yaml": {
-    "mtime": 1786953682.4519482,
-    "ast_hash": "84928af220db595dcfd424f4d977e02b",
+    "mtime": 1786956833.8097432,
+    "ast_hash": "e135afe43a2b064e743398ea21c49be0",
     "semantic_hash": ""
   },
   "config/config_template.yaml": {
@@ -1870,8 +1870,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/PendingFilesScreen.tsx": {
-    "mtime": 1786823244.8532221,
-    "ast_hash": "554728c35f998d65553423edd2675eeb",
+    "mtime": 1787550241.2607436,
+    "ast_hash": "4e517120efbd17bfdd397a1a5a358511",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/DropZoneScreen.tsx": {
@@ -1915,8 +1915,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/FileItem/FileItem.tsx": {
-    "mtime": 1783978398.435716,
-    "ast_hash": "b219a100ead7216b070f9d4144bfa8e7",
+    "mtime": 1787550233.0233495,
+    "ast_hash": "3a427076829544619d922667e052fb6d",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/DragOverDecoration/DragOverDecoration.tsx": {
@@ -3787,6 +3787,16 @@
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/components/TrackRow/TrackRow.test.tsx": {
     "mtime": 1786955382.1887913,
     "ast_hash": "a139344a45c112d3437cd4e45366346a",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/TrashIcon.tsx": {
+    "mtime": 1787550305.0590618,
+    "ast_hash": "c4a289b26ab8dad86ec4faedb14181bc",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/components/Checkbox/Checkbox.tsx": {
+    "mtime": 1787550201.0575047,
+    "ast_hash": "72f6395416561e8a5ad53653008cab00",
     "semantic_hash": ""
   }
 }
