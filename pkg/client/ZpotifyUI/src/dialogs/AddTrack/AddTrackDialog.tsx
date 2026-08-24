@@ -44,11 +44,15 @@ const SCREENS: Record<ModalStep, ComponentType<AddTrackContext>> = {
     pending: PendingFilesScreen,
 };
 
-export default function AddTrackDialog() {
+interface AddTrackDialogProps {
+    initialStep?: ModalStep;
+}
+
+export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialogProps) {
     const { CloseDialog, OpenDialog } = useDialog();
     const toaster = useToaster();
 
-    const [step, setStep] = useState<ModalStep>('choose');
+    const [step, setStep] = useState<ModalStep>(initialStep);
     const [uploading, setUploading] = useState(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
     const batchUpload = useBatchUpload();
@@ -128,8 +132,13 @@ export default function AddTrackDialog() {
         const id = songFile.id ?? '';
         const name = songFile.path?.split('/').pop() ?? '';
         const initialTitle = name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
-        CloseDialog();
-        OpenDialog(<MetaDialog audioFile={new AudioFile(id)} initialTitle={initialTitle} />);
+        OpenDialog(
+            <MetaDialog
+                audioFile={new AudioFile(id)}
+                initialTitle={initialTitle}
+                previousScreen={<AddTrackDialog initialStep="pending" />}
+            />,
+        );
     }
 
     const ctx: AddTrackContext = {

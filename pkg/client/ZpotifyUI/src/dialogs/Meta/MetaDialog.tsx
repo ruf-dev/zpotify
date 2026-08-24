@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import cn from 'classnames';
 import { ModalActions, ModalClose } from '@vervstack/chures';
 
@@ -11,17 +11,22 @@ import MetaScreen from '@/dialogs/shared/screens/MetaScreen';
 import { AudioFile } from '@/shared/model/AudioFile.ts';
 import { useSongListRefresh } from '@/entities/song/useSongListRefresh.ts';
 import { useFeedRefresh } from '@/entities/feed/useFeedRefresh.ts';
+import BackButton from '@/shared/ui/BackButton';
+import { useBackGuard } from '@/shared/lib/useBackGuard';
 
 interface MetaDialogProps {
     audioFile: AudioFile;
     initialTitle: string;
+    previousScreen?: React.JSX.Element;
 }
 
-export default function MetaDialog({ audioFile, initialTitle }: MetaDialogProps) {
-    const { CloseDialog } = useDialog();
+export default function MetaDialog({ audioFile, initialTitle, previousScreen }: MetaDialogProps) {
+    const { OpenDialog, CloseDialog } = useDialog();
     const toaster = useToaster();
     const refreshActive = useSongListRefresh((s) => s.refreshActive);
     const bumpFeed = useFeedRefresh((s) => s.bump);
+
+    useBackGuard(!!previousScreen, () => OpenDialog(previousScreen!));
 
     const [title, setTitle] = useState(initialTitle);
     const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
@@ -49,7 +54,10 @@ export default function MetaDialog({ audioFile, initialTitle }: MetaDialogProps)
     return (
         <div className={cls.MetaDialogContainer}>
             <div className={cls.PanelHeader}>
-                <span className={cls.PanelTitle}>track details</span>
+                <div className={cls.PanelTitleGroup}>
+                    {previousScreen && <BackButton onClick={() => OpenDialog(previousScreen)} />}
+                    <span className={cls.PanelTitle}>track details</span>
+                </div>
                 <ModalClose className={modalCloseCls.ModalCloseButton} onClick={CloseDialog} />
             </div>
 

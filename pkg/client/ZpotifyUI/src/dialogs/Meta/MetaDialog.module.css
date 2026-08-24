@@ -21,6 +21,12 @@
     min-height: 3rem;
 }
 
+.PanelTitleGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
 .PanelTitle {
     font-size: var(--font-size-lg);
     font-weight: 700;

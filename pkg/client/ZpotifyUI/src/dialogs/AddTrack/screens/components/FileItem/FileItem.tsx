@@ -1,7 +1,8 @@
-import { Button, Toggle } from '@vervstack/chures';
+import { Button } from '@vervstack/chures';
 
 import MusicFileIcon from '@/assets/icons/MusicFileIcon';
-import { RemoveTrackIcon } from '@/assets/icons/RemoveTrackIcon.tsx';
+import { TrashIcon } from '@/assets/icons/TrashIcon.tsx';
+import Checkbox from '@/components/Checkbox/Checkbox';
 import cls from '@/dialogs/AddTrack/screens/components/FileItem/FileItem.module.css';
 import type { SongFile } from '@/app/api/zpotify';
 
@@ -36,14 +37,14 @@ export default function FileItem({ file, selected, onSelect, onDelete, onToggleS
     return (
         <div className={cls.FileItemContainer} onClick={handleClick}>
             <div className={cls.CheckboxWrapper} onClick={handleToggleClick}>
-                <Toggle checked={selected} onChange={handleToggleChange} />
+                <Checkbox checked={selected} onChange={handleToggleChange} />
             </div>
             <div className={cls.FileIcon}>
                 <MusicFileIcon width={14} height={14} />
             </div>
             <span className={cls.FileName}>{name}</span>
             <Button variant="iconDanger" aria-label={`Delete ${name}`} onClick={handleDeleteClick}>
-                <RemoveTrackIcon />
+                <TrashIcon />
             </Button>
         </div>
     );
