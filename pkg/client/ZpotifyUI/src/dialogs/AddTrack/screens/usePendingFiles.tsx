@@ -49,6 +49,17 @@ export function usePendingFiles() {
         setSelectedIds(checked ? new Set(files.map((f) => f.id ?? '')) : new Set());
     }
 
+    function handleToggleSelectFolder(fileIds: string[], checked: boolean) {
+        setSelectedIds((prev) => {
+            const next = new Set(prev);
+            fileIds.forEach((id) => {
+                if (checked) next.add(id);
+                else next.delete(id);
+            });
+            return next;
+        });
+    }
+
     function handleDelete(file: SongFile) {
         const name = file.path?.split('/').pop() ?? 'this file';
 
@@ -112,6 +123,7 @@ export function usePendingFiles() {
         allSelected,
         handleToggleSelect,
         handleToggleSelectAll,
+        handleToggleSelectFolder,
         handleDelete,
         handleDeleteSelected,
     };

@@ -9,12 +9,13 @@ import { fileService } from '@/shared/api/FileService.ts';
 import type { FileHashResult } from '@/shared/api/FileService.ts';
 import { isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
-import type { SongBase } from '@/app/api/zpotify';
+import type { SongBase, SongFile } from '@/app/api/zpotify';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { cleanTitle, cleanTrackNumber, computeHash } from '@/dialogs/MultitrackUpload/utils';
 import type { UploadQueue } from '@/dialogs/MultitrackUpload/useUploadQueue';
 import { useUploadQueue } from '@/dialogs/MultitrackUpload/useUploadQueue';
 import type { DroppedFolder } from '@/features/upload/resolveDroppedEntries.ts';
+import { parseSongFilePath } from '@/dialogs/AddTrack/screens/parseSongFilePath.ts';
 
 export interface TrackDraftsState {
     tracks: TrackDraft[];
@@ -68,6 +69,23 @@ export function createInitialTracks(taggedFiles: TaggedFile[]): TrackDraft[] {
         uploadProgress: 0,
         folderName,
     }));
+}
+
+export function createTracksFromExistingFiles(existingFiles: SongFile[]): TrackDraft[] {
+    return existingFiles.map((songFile) => {
+        const { folderName, fileName } = parseSongFilePath(songFile.path);
+        return {
+            id: crypto.randomUUID(),
+            title: cleanTitle(fileName),
+            artists: [] as ArtistItem[],
+            duration: 0,
+            uploadStatus: 'done' as const,
+            uploadProgress: 100,
+            fileId: songFile.id,
+            isExisting: false,
+            folderName,
+        };
+    });
 }
 
 async function loadInitialTrackMeta(initial: TrackDraft[]): Promise<InitialTrackMeta> {
@@ -181,6 +199,19 @@ async function buildNewTracksFromFresh(fresh: ClassifiedFile[]): Promise<TrackDr
     });
 }
 
+function applyInitialTrackMeta(
+    meta: InitialTrackMeta,
+    initial: TrackDraft[],
+    idxById: Map<string, number>,
+    knownHashesRef: React.MutableRefObject<Map<string, string>>,
+    uploadQueue: UploadQueue,
+    setTracks: React.Dispatch<React.SetStateAction<TrackDraft[]>>,
+) {
+    meta.hashes.forEach((h, i) => knownHashesRef.current.set(h, initial[i].id));
+    setTracks((prev) => prev.map((p) => (idxById.has(p.id) ? mergeInitialTrack(p, idxById.get(p.id)!, meta) : p)));
+    initial.forEach((t, i) => !meta.existingMap.has(meta.hashes[i]) && uploadQueue.startUpload(t));
+}
+
 function startNewTrackUploads(
     newTracks: TrackDraft[],
     setTracks: React.Dispatch<React.SetStateAction<TrackDraft[]>>,
@@ -200,10 +231,19 @@ function startNewTrackUploads(
     });
 }
 
-export function useTrackDrafts(files: File[], folders: DroppedFolder[] = []): TrackDraftsState {
+export function useTrackDrafts(
+    files: File[],
+    folders: DroppedFolder[] = [],
+    existingFiles: SongFile[] = [],
+): TrackDraftsState {
     const toaster = useToaster();
 
-    const [tracks, setTracks] = useState<TrackDraft[]>(() => createInitialTracks(flattenDroppedInput(files, folders)));
+    // Blob-backed tracks (need hashing/upload), kept apart from fileId-only existingFiles tracks.
+    const blobBackedInitialRef = useRef<TrackDraft[]>(createInitialTracks(flattenDroppedInput(files, folders)));
+    const [tracks, setTracks] = useState<TrackDraft[]>(() => [
+        ...blobBackedInitialRef.current,
+        ...createTracksFromExistingFiles(existingFiles),
+    ]);
 
     const tracksRef = useRef(tracks);
     tracksRef.current = tracks;
@@ -214,15 +254,11 @@ export function useTrackDrafts(files: File[], folders: DroppedFolder[] = []): Tr
     const uploadQueue = useUploadQueue(setTracks);
 
     useEffect(() => {
-        const initial = tracksRef.current;
+        const initial = blobBackedInitialRef.current;
+        if (initial.length === 0) return;
+        const idxById = new Map(initial.map((t, i) => [t.id, i]));
         loadInitialTrackMeta(initial)
-            .then((meta) => {
-                meta.hashes.forEach((h, i) => knownHashesRef.current.set(h, initial[i].id));
-                setTracks((prev) => prev.map((p, i) => mergeInitialTrack(p, i, meta)));
-                initial.forEach((t, i) => {
-                    if (!meta.existingMap.has(meta.hashes[i])) uploadQueue.startUpload(t);
-                });
-            })
+            .then((meta) => applyInitialTrackMeta(meta, initial, idxById, knownHashesRef, uploadQueue, setTracks))
             .catch(() => {});
     }, []);
 

@@ -28,6 +28,7 @@ export interface AddTrackContext {
     handleFiles: (files: File[]) => void;
     handleSelectFromLibrary: (song: SongFile) => void;
     handleCreatePlaylist: () => void;
+    handleCreatePlaylistFromFolder: (folderName: string, files: SongFile[]) => void;
     handleDroppedGroups: (groups: DroppedGroups) => void;
     batchTracks: TrackDraft[];
     handleOpenBatchFolder: (folderName: string) => void;
@@ -128,6 +129,11 @@ export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialo
         OpenDialog(<MultitrackUploadModal files={[]} />);
     }
 
+    function handleCreatePlaylistFromFolder(folderName: string, files: SongFile[]) {
+        CloseDialog();
+        OpenDialog(<MultitrackUploadModal files={[]} existingFiles={files} initialPlaylistName={folderName} />);
+    }
+
     function handleSelectFromLibrary(songFile: SongFile) {
         const id = songFile.id ?? '';
         const name = songFile.path?.split('/').pop() ?? '';
@@ -148,6 +154,7 @@ export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialo
         handleFiles,
         handleSelectFromLibrary,
         handleCreatePlaylist,
+        handleCreatePlaylistFromFolder,
         handleDroppedGroups,
         batchTracks: batchUpload.tracks,
         handleOpenBatchFolder,

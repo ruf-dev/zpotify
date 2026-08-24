@@ -37,10 +37,15 @@ function groupFilesByFolder(files: SongFile[]): GroupedFiles {
     return { folders, ungrouped };
 }
 
+function isFolderSelected(groupFiles: SongFile[], selectedIds: Set<string>): boolean {
+    return groupFiles.length > 0 && groupFiles.every((f) => selectedIds.has(f.id ?? ''));
+}
+
 export default function PendingFilesScreen({
     handleSelectFromLibrary,
     batchTracks,
     handleOpenBatchFolder,
+    handleCreatePlaylistFromFolder,
 }: AddTrackContext) {
     const pendingFiles = usePendingFiles();
     const [collapsedFolders, setCollapsedFolders] = useState<Set<string>>(new Set());
@@ -106,6 +111,7 @@ export default function PendingFilesScreen({
                     <div className={cls.FileList}>
                         {Array.from(grouped.folders.entries()).map(([folderName, groupFiles]) => {
                             const collapsed = collapsedFolders.has(folderName);
+                            const folderSelected = isFolderSelected(groupFiles, pendingFiles.selectedIds);
                             return (
                                 <div key={folderName} className={cls.FolderGroup}>
                                     <FolderGroupHeader
@@ -114,6 +120,14 @@ export default function PendingFilesScreen({
                                         progress={100}
                                         collapsed={collapsed}
                                         onToggle={() => toggleFolder(folderName)}
+                                        folderSelected={folderSelected}
+                                        onToggleSelectFolder={(checked) =>
+                                            pendingFiles.handleToggleSelectFolder(
+                                                groupFiles.map((f) => f.id ?? ''),
+                                                checked,
+                                            )
+                                        }
+                                        onCreatePlaylist={() => handleCreatePlaylistFromFolder(folderName, groupFiles)}
                                     />
                                     {!collapsed && (
                                         <div className={cls.FolderTrackIndent}>{groupFiles.map(renderFileItem)}</div>

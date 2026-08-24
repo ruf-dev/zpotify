@@ -20,6 +20,7 @@ import { formatBytes } from '@/dialogs/MultitrackUpload/utils';
 import { useEagerFileUpload } from '@/shared/lib/useEagerFileUpload.ts';
 import { useBackGuard } from '@/shared/lib/useBackGuard';
 import type { DroppedFolder } from '@/features/upload/resolveDroppedEntries.ts';
+import type { SongFile } from '@/app/api/zpotify';
 import BackButton from '@/shared/ui/BackButton';
 import cls from '@/dialogs/MultitrackUpload/MultitrackUploadModal.module.css';
 import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
@@ -35,6 +36,7 @@ interface TargetPlaylist {
 interface MultitrackUploadModalProps {
     files: File[];
     folders?: DroppedFolder[];
+    existingFiles?: SongFile[];
     targetPlaylist?: TargetPlaylist;
     initialPlaylistName?: string;
 }
@@ -42,6 +44,7 @@ interface MultitrackUploadModalProps {
 export default function MultitrackUploadModal({
     files,
     folders,
+    existingFiles,
     targetPlaylist,
     initialPlaylistName,
 }: MultitrackUploadModalProps) {
@@ -49,7 +52,7 @@ export default function MultitrackUploadModal({
     const refreshActive = useSongListRefresh((s) => s.refreshActive);
     const refreshPlaylists = usePlaylistListRefresh((s) => s.refresh);
 
-    const trackDrafts = useTrackDrafts(files, folders ?? []);
+    const trackDrafts = useTrackDrafts(files, folders ?? [], existingFiles ?? []);
 
     const [playlistMode, setPlaylistMode] = useState(true);
     const [playlistName, setPlaylistName] = useState(initialPlaylistName ?? '');
