@@ -100,21 +100,5 @@
   "98": "GeneratedAvatar.tsx",
   "99": "SearchHistoryDropdown.test.tsx",
   "100": "Input.tsx",
-  "101": "DropdownCreateRow.tsx",
-  "102": "zpotify_common.pb.ts",
-  "103": "PendingFilesScreen.test.tsx",
-  "104": "useTorrentJobs.ts",
-  "105": "SongEditDialog.tsx",
-  "106": "AlbumCard.tsx",
-  "107": "PlaylistScreenWidget.tsx",
-  "108": "IconButton.tsx",
-  "109": "SidebarSegment.tsx",
-  "110": "PlayerControls.tsx",
-  "111": "SearchService",
-  "112": "main.tsx",
-  "113": "GeneratedAvatar.tsx",
-  "114": "useEagerFileUpload.ts",
-  "115": "Input.tsx",
-  "116": "NotificationRow.tsx",
-  "117": "EditableText.tsx"
+  "101": "DropdownCreateRow.tsx"
 }
