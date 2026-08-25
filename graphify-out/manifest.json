@@ -350,13 +350,13 @@
     "semantic_hash": ""
   },
   "internal/transport/wapi/server.go": {
-    "mtime": 1775991195.4268568,
-    "ast_hash": "0f517f9d7eafec0fef9e8a9b99ca0072",
-    "semantic_hash": "0f517f9d7eafec0fef9e8a9b99ca0072"
+    "mtime": 1787635562.8578944,
+    "ast_hash": "92fa1ef7cb71aa33ea2bcd9e51e317e4",
+    "semantic_hash": ""
   },
   "internal/transport/wapi/common.go": {
-    "mtime": 1783198635.4920003,
-    "ast_hash": "7ed89d7bf00c6169432539371e2d6dc9",
+    "mtime": 1787635571.246945,
+    "ast_hash": "f88db3eadccf8f60495e6d004139b691",
     "semantic_hash": ""
   },
   "internal/transport/wapi/get_audio.go": {
@@ -400,8 +400,8 @@
     "semantic_hash": "e026a6674f2341a67053118987f91db7"
   },
   "internal/app/custom.go": {
-    "mtime": 1786354095.3575945,
-    "ast_hash": "c707f0d7aeabd432c818e799eeb33586",
+    "mtime": 1787635657.8696458,
+    "ast_hash": "5bbab5c388c2e64928e54024ad1ebb62",
     "semantic_hash": ""
   },
   "internal/app/config.go": {
@@ -920,8 +920,8 @@
     "semantic_hash": "fabd70b7f363a262440e394e26156525"
   },
   "internal/service/service.go": {
-    "mtime": 1787555741.875718,
-    "ast_hash": "eff2de8198573bd57bbf0c203832e620",
+    "mtime": 1787635534.1514,
+    "ast_hash": "4b4bcb0d62ad1343c52f1b99271f7639",
     "semantic_hash": ""
   },
   "internal/service/v1/file_service.go": {
@@ -3900,8 +3900,8 @@
     "semantic_hash": ""
   },
   "internal/domain/torrent.go": {
-    "mtime": 1787635164.7883844,
-    "ast_hash": "439dc02c1d3b88cdd7f7c4756462f3a8",
+    "mtime": 1787635882.2886267,
+    "ast_hash": "adcab4dcc05daddd8fab803c7be29fec",
     "semantic_hash": ""
   },
   "internal/storage/pg/torrent_downloads.go": {
@@ -3997,6 +3997,41 @@
   "pkg/client/ZpotifyUI/src/shared/lib/torrentStatus.ts": {
     "mtime": 1787634861.0953794,
     "ast_hash": "67d12d39047af8f54838c8f633e6a1e4",
+    "semantic_hash": ""
+  },
+  "internal/background/torrent_sync/task_test.go": {
+    "mtime": 1787635891.0230653,
+    "ast_hash": "f37560eb98c2630425bc0d78d6b05f42",
+    "semantic_hash": ""
+  },
+  "internal/service/v1/torrent_service_test.go": {
+    "mtime": 1787635747.3579662,
+    "ast_hash": "f0e91ecb31e02c907bd7fd006f8bbaec",
+    "semantic_hash": ""
+  },
+  "internal/transport/torrent_api_impl/cancel_torrent_job.go": {
+    "mtime": 1787635595.697802,
+    "ast_hash": "a15cc4abe472bf7922afbd80c3c65be0",
+    "semantic_hash": ""
+  },
+  "internal/transport/torrent_api_impl/get_torrent_job.go": {
+    "mtime": 1787635591.2814164,
+    "ast_hash": "91159b8c7ea864aec9872ffd21e7ad77",
+    "semantic_hash": ""
+  },
+  "internal/transport/torrent_api_impl/impl.go": {
+    "mtime": 1787635581.5206032,
+    "ast_hash": "82c3d10a6d2c504ea3dd05a2b5961024",
+    "semantic_hash": ""
+  },
+  "internal/transport/torrent_api_impl/list_torrent_jobs.go": {
+    "mtime": 1787635586.7269778,
+    "ast_hash": "29d5f43f0f9b626d7d0d164175d1cd53",
+    "semantic_hash": ""
+  },
+  "internal/transport/wapi/torrent_upload.go": {
+    "mtime": 1787635556.8165975,
+    "ast_hash": "a8d22991fa796fbf6876ea50f6b19cc3",
     "semantic_hash": ""
   }
 }
