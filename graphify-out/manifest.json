@@ -485,8 +485,8 @@
     "semantic_hash": "c2e06c8b92a51f2d8c8a1e68b121912d"
   },
   "internal/storage/storage.go": {
-    "mtime": 1786904458.1349366,
-    "ast_hash": "301e271205a8802ca935d6a3fdbbbb7f",
+    "mtime": 1787634256.1893456,
+    "ast_hash": "ed45cfffc7bd52560376af909f46d088",
     "semantic_hash": ""
   },
   "internal/storage/errors.go": {
@@ -525,8 +525,8 @@
     "semantic_hash": ""
   },
   "internal/storage/pg/storage.go": {
-    "mtime": 1786904458.1346602,
-    "ast_hash": "6b037d7b670c4816195f119c5323be5d",
+    "mtime": 1787634300.6881025,
+    "ast_hash": "c951f844bb2af9be2b881ecb417a9c06",
     "semantic_hash": ""
   },
   "internal/storage/pg/playlist.go": {
@@ -3897,6 +3897,21 @@
   "docs/release_notes/v1.1.2.md": {
     "mtime": 1787558873.0323331,
     "ast_hash": "31a14487f9cfaa6e49209eb6df9cf47e",
+    "semantic_hash": ""
+  },
+  "internal/domain/torrent.go": {
+    "mtime": 1787634236.9697616,
+    "ast_hash": "ecd83593e9298cf436c215181624556f",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/torrent_downloads.go": {
+    "mtime": 1787634276.8560688,
+    "ast_hash": "46542282ae185ab331ec1a4c6cda19b7",
+    "semantic_hash": ""
+  },
+  "internal/storage/pg/torrent_downloads_test.go": {
+    "mtime": 1787634451.2310197,
+    "ast_hash": "0532a2bdcbc7e4e5bf8f6ecb54d0b028",
     "semantic_hash": ""
   }
 }
