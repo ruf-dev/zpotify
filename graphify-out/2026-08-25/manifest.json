@@ -1870,8 +1870,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/PendingFilesScreen.tsx": {
-    "mtime": 1787635299.5722456,
-    "ast_hash": "3badd33109dd8d9475ec7f5f8e8e9876",
+    "mtime": 1787655746.8074203,
+    "ast_hash": "8a06cc34e8bcc5d4493298ba6620a882",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/DropZoneScreen.tsx": {
