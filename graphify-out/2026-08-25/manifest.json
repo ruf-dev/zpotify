@@ -1875,8 +1875,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/DropZoneScreen.tsx": {
-    "mtime": 1787635403.6212108,
-    "ast_hash": "122b0bb170c6d19458aa881788bad9b0",
+    "mtime": 1787652924.8199165,
+    "ast_hash": "ad961450984e1a414ba032c590c9da51",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/ChooseScreen.tsx": {
@@ -3945,8 +3945,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/DropZoneScreen.test.tsx": {
-    "mtime": 1787635203.9781759,
-    "ast_hash": "5af6b4f153c63440b6ef3c86a1bddde1",
+    "mtime": 1787652938.5810597,
+    "ast_hash": "7362f61a6cd6854e77edb809cac33664",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/TorrentJobItem/TorrentJobItem.test.tsx": {
