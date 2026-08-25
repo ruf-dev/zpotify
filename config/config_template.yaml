@@ -49,3 +49,21 @@ environment:
     - name: telegram_token
       type: string
       value: ""
+    - name: torrent_download_dir
+      type: string
+      value: data/torrents
+    - name: torrent_listen_port
+      type: int
+      value: 42069
+    - name: torrent_max_concurrent_downloads
+      type: int
+      value: 3
+    - name: torrent_seed_after_complete
+      type: bool
+      value: false
+    - name: torrent_seed_time_limit_minutes
+      type: int
+      value: 0
+    - name: torrent_sync_period_seconds
+      type: int
+      value: 3

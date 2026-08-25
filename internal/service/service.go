@@ -27,6 +27,7 @@ type Service interface {
 	NotificationService() NotificationService
 	SearchService() SearchService
 	SearchHistoryService() SearchHistoryService
+	TorrentService() TorrentService
 }
 
 type service struct {
@@ -41,11 +42,17 @@ type service struct {
 	notificationService  NotificationService
 	searchService        SearchService
 	searchHistoryService SearchHistoryService
+	torrentService       TorrentService
 }
 
+// New builds the service facade. torrentService is constructed by the caller
+// because it needs the process-wide bittorrent client, and the torrent_sync
+// background task needs the concrete type - its import entry point is
+// deliberately not part of the TorrentService interface below.
 func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 	fileStorage storage.BinaryFileStorage, adminNotifier auth.AdminNotifier,
 	telegramSender v1.TelegramSender,
+	torrentService *v1.TorrentService,
 	cfg config.Config,
 ) (Service, error) {
 	tokenParser := telegram.NewTokenParser(
@@ -74,6 +81,7 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 		notificationService:  v1.NewNotificationService(dataStorage),
 		searchService:        v1.NewSearchService(audioService, artistsService, playlistService),
 		searchHistoryService: v1.NewSearchHistoryService(dataStorage),
+		torrentService:       torrentService,
 	}, nil
 }
 
@@ -119,6 +127,10 @@ func (s *service) SearchService() SearchService {
 
 func (s *service) SearchHistoryService() SearchHistoryService {
 	return s.searchHistoryService
+}
+
+func (s *service) TorrentService() TorrentService {
+	return s.torrentService
 }
 
 type AudioService interface {
@@ -224,6 +236,22 @@ type FileService interface {
 	CheckFilesByHashes(ctx context.Context, hashes []string) ([]domain.FoundFileByHash, error)
 	DeleteUploadedFile(ctx context.Context, fileId int64) error
 	DeleteUploadedFiles(ctx context.Context, fileIds []int64) error
+}
+
+// TorrentService drives user-submitted .torrent downloads. Note that the
+// completed-torrent import entry point is intentionally absent here: it is
+// called only by the torrent_sync background task, never through the facade.
+type TorrentService interface {
+	// SubmitTorrent registers a .torrent file for download on the caller's
+	// behalf and returns the id of the tracking job row.
+	SubmitTorrent(ctx context.Context, torrentFileBytes []byte, folderName string) (int64, error)
+	// GetJob returns one of the caller's torrent jobs.
+	GetJob(ctx context.Context, jobID int64) (domain.TorrentDownload, error)
+	// ListJobs returns the caller's torrent jobs, optionally narrowed to one
+	// upload folder (empty folderName returns all folders).
+	ListJobs(ctx context.Context, folderName string) ([]domain.TorrentDownload, error)
+	// CancelJob stops one of the caller's torrent jobs.
+	CancelJob(ctx context.Context, jobID int64) error
 }
 
 type FeatureFlagsService interface {

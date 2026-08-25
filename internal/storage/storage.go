@@ -29,6 +29,7 @@ type Storage interface {
 	Home() HomeStorage
 	Notification() NotificationStorage
 	SearchHistory() SearchHistoryStorage
+	TorrentDownloads() TorrentDownloadStorage
 
 	TxManager() *tx_manager.TxManager
 }
@@ -286,4 +287,38 @@ type JobStorage interface {
 	Complete(ctx context.Context, jobID int64) error
 	Fail(ctx context.Context, jobID int64, lastError string, backoffSeconds int32) error
 	RequeueStalled(ctx context.Context) error
+}
+
+// TorrentDownloadStorage tracks per-torrent download state for the torrent uploader feature.
+type TorrentDownloadStorage interface {
+	WithTx(tx *sql.Tx) TorrentDownloadStorage
+
+	// Add - inserts a new torrent download row and returns it.
+	Add(ctx context.Context, download domain.TorrentDownload) (domain.TorrentDownload, error)
+
+	// Get - returns a torrent download by id, scoped to userId for auth safety.
+	Get(ctx context.Context, id int64, userId int64) (domain.TorrentDownload, error)
+
+	// ListByUser - lists torrent downloads for a user, optionally filtered by folderName
+	// (empty folderName returns all folders).
+	ListByUser(ctx context.Context, userId int64, folderName string) ([]domain.TorrentDownload, error)
+
+	// ListActive - lists all torrent downloads currently in an active status
+	// (queued, downloading, importing), across all users, for the background sync task.
+	ListActive(ctx context.Context) ([]domain.TorrentDownload, error)
+
+	// UpdateProgress - updates downloaded/total byte counts for a torrent download.
+	UpdateProgress(ctx context.Context, id int64, downloadedBytes int64, totalBytes int64) error
+
+	// UpdateStatus - updates the status of a torrent download.
+	UpdateStatus(ctx context.Context, id int64, status domain.TorrentDownloadStatus) error
+
+	// SetError - marks a torrent download as failed with the given error message.
+	SetError(ctx context.Context, id int64, errMsg string) error
+
+	// SetImportedFiles - sets the list of file paths imported from a completed torrent download.
+	SetImportedFiles(ctx context.Context, id int64, importedFiles []string) error
+
+	// Delete - deletes a torrent download by id, scoped to userId for auth safety.
+	Delete(ctx context.Context, id int64, userId int64) error
 }

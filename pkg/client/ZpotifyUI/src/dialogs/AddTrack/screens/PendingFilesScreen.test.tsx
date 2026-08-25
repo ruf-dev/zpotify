@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, afterEach } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 
-import type { SongFile } from '@/app/api/zpotify';
+import type { SongFile, TorrentJob } from '@/app/api/zpotify';
 import PendingFilesScreen from '@/dialogs/AddTrack/screens/PendingFilesScreen';
 import type { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 
@@ -9,6 +9,7 @@ const handleToggleSelectFolderSpy = vi.fn();
 
 let mockFiles: SongFile[] = [];
 let mockSelectedIds: Set<string> = new Set();
+let mockJobs: TorrentJob[] = [];
 
 vi.mock('@/dialogs/AddTrack/screens/usePendingFiles.tsx', () => ({
     usePendingFiles: () => ({
@@ -26,8 +27,20 @@ vi.mock('@/dialogs/AddTrack/screens/usePendingFiles.tsx', () => ({
     }),
 }));
 
+vi.mock('@/dialogs/AddTrack/screens/useTorrentJobs.ts', () => ({
+    useTorrentJobs: () => ({
+        jobs: mockJobs,
+        loading: false,
+        refetch: vi.fn(),
+    }),
+}));
+
 function makeFile(id: string, folder: string): SongFile {
     return { id, path: `tmp/user1/${folder}/${id}.mp3` } as SongFile;
+}
+
+function makeJob(overrides: Partial<TorrentJob>): TorrentJob {
+    return { id: 'job1', torrentName: 'ubuntu.torrent', status: 'downloading', ...overrides };
 }
 
 function makeContext(overrides: Partial<AddTrackContext>): AddTrackContext {
@@ -36,7 +49,9 @@ function makeContext(overrides: Partial<AddTrackContext>): AddTrackContext {
         uploading: false,
         uploadError: null,
         handleFiles: vi.fn(),
+        handleTorrentFile: vi.fn(),
         handleSelectFromLibrary: vi.fn(),
+        handleManageTorrent: vi.fn(),
         handleCreatePlaylist: vi.fn(),
         handleCreatePlaylistFromFolder: vi.fn(),
         handleDroppedGroups: vi.fn(),
@@ -52,6 +67,7 @@ describe('PendingFilesScreen folder wiring', () => {
         vi.clearAllMocks();
         mockFiles = [];
         mockSelectedIds = new Set();
+        mockJobs = [];
     });
 
     it('calls handleToggleSelectFolder with the folder file ids and checked value when the folder checkbox is toggled', () => {
@@ -81,5 +97,20 @@ describe('PendingFilesScreen folder wiring', () => {
         fireEvent.click(screen.getByText('Create playlist'));
 
         expect(handleCreatePlaylistFromFolderSpy).toHaveBeenCalledWith('MyFolder', files);
+    });
+
+    it('renders a torrent job row and calls handleManageTorrent with the job when Manage is clicked', () => {
+        const job = makeJob({});
+        mockJobs = [job];
+
+        const handleManageTorrentSpy = vi.fn();
+        const ctx = makeContext({ handleManageTorrent: handleManageTorrentSpy });
+        render(<PendingFilesScreen {...ctx} />);
+
+        expect(screen.getByText('ubuntu.torrent')).not.toBeNull();
+
+        fireEvent.click(screen.getByText('Manage'));
+
+        expect(handleManageTorrentSpy).toHaveBeenCalledWith(job);
     });
 });

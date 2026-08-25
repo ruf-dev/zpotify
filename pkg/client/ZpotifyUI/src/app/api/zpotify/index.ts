@@ -11,6 +11,7 @@ export * from './zpotify_service_notification.pb';
 export * from './zpotify_service_playlist.pb';
 export * from './zpotify_service_search.pb';
 export * from './zpotify_service_song.pb';
+export * from './zpotify_service_torrents.pb';
 export * from './zpotify_service_user.pb';
 
 export { ZpotifyAPI } from './zpotify_service_api.pb';
@@ -23,6 +24,7 @@ export { NotificationAPI } from './zpotify_service_notification.pb';
 export { PlaylistAPI } from './zpotify_service_playlist.pb';
 export { SearchAPI } from './zpotify_service_search.pb';
 export { SongAPI } from './zpotify_service_song.pb';
+export { TorrentAPI } from './zpotify_service_torrents.pb';
 export { UserAPI } from './zpotify_service_user.pb';
 
 export * from './fetch.pb';

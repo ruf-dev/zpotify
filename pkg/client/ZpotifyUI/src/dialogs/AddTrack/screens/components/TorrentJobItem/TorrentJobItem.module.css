@@ -1,0 +1,79 @@
+.TorrentJobItemContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius-md);
+    background: var(--color-bg-card);
+    border: 0.0625rem solid var(--color-border);
+}
+
+.TorrentIcon {
+    color: var(--color-fg-secondary);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.InfoWrapper {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.TorrentName {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ProgressBarTrack {
+    position: relative;
+    height: 0.25rem;
+    border-radius: var(--border-radius-pill);
+    background: var(--color-bg-secondary);
+    overflow: hidden;
+}
+
+.ProgressBarFill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    background: var(--color-fg-accent);
+    transform: scaleX(var(--torrent-progress, 0));
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.MetaRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.StatusLabel {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+    text-transform: capitalize;
+}
+
+.ProgressLabel {
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+}
+
+.ErrorLabel {
+    font-size: var(--font-size-xs);
+    color: var(--color-error);
+}
+
+.ManageButton {
+    flex-shrink: 0;
+    font-size: var(--font-size-xs);
+    padding: 0.125rem var(--space-sm);
+}

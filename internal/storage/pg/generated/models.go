@@ -275,6 +275,53 @@ func (ns NullSongTagKind) Value() (driver.Value, error) {
 	return string(ns.SongTagKind), nil
 }
 
+type TorrentDownloadStatus string
+
+const (
+	TorrentDownloadStatusQueued      TorrentDownloadStatus = "queued"
+	TorrentDownloadStatusDownloading TorrentDownloadStatus = "downloading"
+	TorrentDownloadStatusImporting   TorrentDownloadStatus = "importing"
+	TorrentDownloadStatusSeeding     TorrentDownloadStatus = "seeding"
+	TorrentDownloadStatusDone        TorrentDownloadStatus = "done"
+	TorrentDownloadStatusFailed      TorrentDownloadStatus = "failed"
+	TorrentDownloadStatusCanceled    TorrentDownloadStatus = "canceled"
+)
+
+func (e *TorrentDownloadStatus) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = TorrentDownloadStatus(s)
+	case string:
+		*e = TorrentDownloadStatus(s)
+	default:
+		return fmt.Errorf("unsupported scan type for TorrentDownloadStatus: %T", src)
+	}
+	return nil
+}
+
+type NullTorrentDownloadStatus struct {
+	TorrentDownloadStatus TorrentDownloadStatus
+	Valid                 bool // Valid is true if TorrentDownloadStatus is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullTorrentDownloadStatus) Scan(value interface{}) error {
+	if value == nil {
+		ns.TorrentDownloadStatus, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.TorrentDownloadStatus.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullTorrentDownloadStatus) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.TorrentDownloadStatus), nil
+}
+
 type UserHomeSegmentType string
 
 const (
@@ -589,6 +636,21 @@ type SongsArtist struct {
 	SongID     int64
 	ArtistUuid uuid.UUID
 	OrderID    int64
+}
+
+type TorrentDownload struct {
+	ID              int64
+	UserID          int64
+	FolderName      string
+	InfoHash        string
+	TorrentName     string
+	Status          TorrentDownloadStatus
+	TotalBytes      int64
+	DownloadedBytes int64
+	ImportedFiles   json.RawMessage
+	Error           sql.NullString
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
 }
 
 type User struct {

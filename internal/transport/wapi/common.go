@@ -53,6 +53,30 @@ func unwrapError(ctx context.Context, writer http.ResponseWriter, err error) {
 		return
 	}
 
+	if stderrs.Is(err, service_errors.ErrTorrentConcurrencyLimitReached) {
+		writer.WriteHeader(http.StatusTooManyRequests)
+		_, _ = writer.Write([]byte(err.Error()))
+		return
+	}
+
+	if stderrs.Is(err, service_errors.ErrInvalidTorrentFile) {
+		writer.WriteHeader(http.StatusBadRequest)
+		_, _ = writer.Write([]byte(err.Error()))
+		return
+	}
+
+	if stderrs.Is(err, service_errors.ErrTorrentHasNoAudioFiles) {
+		writer.WriteHeader(http.StatusBadRequest)
+		_, _ = writer.Write([]byte(err.Error()))
+		return
+	}
+
+	if stderrs.Is(err, service_errors.ErrTorrentClientUnavailable) {
+		writer.WriteHeader(http.StatusServiceUnavailable)
+		_, _ = writer.Write([]byte(err.Error()))
+		return
+	}
+
 	writer.WriteHeader(http.StatusInternalServerError)
 	_, _ = writer.Write([]byte(err.Error()))
 }

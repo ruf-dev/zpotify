@@ -7,20 +7,23 @@ import (
 )
 
 type Server struct {
-	audioService service.AudioService
-	fileService  service.FileService
+	audioService   service.AudioService
+	fileService    service.FileService
+	torrentService service.TorrentService
 
 	mux http.ServeMux
 }
 
-func New(audioService service.AudioService, fileService service.FileService) http.Handler {
+func New(audioService service.AudioService, fileService service.FileService, torrentService service.TorrentService) http.Handler {
 	srv := &Server{
-		audioService: audioService,
-		fileService:  fileService,
+		audioService:   audioService,
+		fileService:    fileService,
+		torrentService: torrentService,
 	}
 
 	srv.mux.HandleFunc("/wapi/audio", srv.GetAudio)
 	srv.mux.HandleFunc("/wapi/files/upload", srv.Upload)
+	srv.mux.HandleFunc("/wapi/torrents/upload", srv.UploadTorrent)
 
 	handler := &srv.mux
 	return handler

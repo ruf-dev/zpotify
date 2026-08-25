@@ -52,3 +52,9 @@
     padding-left: 0.625rem;
     border-left: 0.0625rem solid var(--color-border);
 }
+
+.TorrentJobList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}

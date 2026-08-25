@@ -13,6 +13,13 @@ type EnvironmentConfig struct {
 	TelegramNotificationsChatID int
 	TelegramProxyURL            string
 	TelegramToken               string
+
+	TorrentDownloadDir            string
+	TorrentListenPort             int
+	TorrentMaxConcurrentDownloads int
+	TorrentSeedAfterComplete      bool
+	TorrentSeedTimeLimitMinutes   int
+	TorrentSyncPeriodSeconds      int
 }
 
 const (

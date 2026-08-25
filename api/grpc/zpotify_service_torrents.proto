@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package zpotify_api;
+
+import "npm.proto";
+
+import "google/api/annotations.proto";
+
+option go_package = "/zpotify_api;zpotify_api";
+option (npm_package) = "@zpotify/api";
+option java_package = "ru.zpotify.api.grpc";
+option java_multiple_files = true;
+
+service TorrentAPI {
+  rpc ListTorrentJobs(ListTorrentJobs.Request) returns (ListTorrentJobs.Response) {
+    option (google.api.http) = {
+      post: "/api/torrents/list"
+      body: "*",
+    };
+  }
+
+  rpc GetTorrentJob(GetTorrentJob.Request) returns (GetTorrentJob.Response) {
+    option (google.api.http) = {
+      get: "/api/torrents/{job_id}"
+    };
+  }
+
+  rpc CancelTorrentJob(CancelTorrentJob.Request) returns (CancelTorrentJob.Response) {
+    option (google.api.http) = {
+      post: "/api/torrents/{job_id}/cancel"
+    };
+  }
+}
+
+message TorrentJob {
+  int64 id = 1;
+  string torrent_name = 2;
+  string folder_name = 3;
+  string status = 4;
+  int64 total_bytes = 5;
+  int64 downloaded_bytes = 6;
+  repeated ImportedFile imported_files = 7;
+  string error = 8;
+}
+
+message ImportedFile {
+  string torrent_path = 1;
+  int64 file_id = 2;
+  string status = 3;
+  string error = 4;
+}
+
+message ListTorrentJobs {
+  message Request {
+    string folder_name = 1;
+  }
+
+  message Response {
+    repeated TorrentJob jobs = 1;
+  }
+}
+
+message GetTorrentJob {
+  message Request {
+    int64 job_id = 1;
+  }
+
+  message Response {
+    TorrentJob job = 1;
+  }
+}
+
+message CancelTorrentJob {
+  message Request {
+    int64 job_id = 1;
+  }
+
+  message Response {}
+}

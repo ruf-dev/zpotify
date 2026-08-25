@@ -36,6 +36,27 @@ var (
 
 	ErrEmptySearchQuery = rerrors.New("search query must not be empty", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
 
+	// ErrTorrentClientUnavailable is returned when a torrent operation is
+	// attempted while the bittorrent client failed to start or is not wired.
+	ErrTorrentClientUnavailable = rerrors.New("torrent client is unavailable", codes.Unavailable, rerrors.WithHttpStatus(http.StatusServiceUnavailable))
+
+	// ErrInvalidTorrentFile is returned for input that is not a parsable
+	// .torrent file, including magnet links (which carry no info dict).
+	ErrInvalidTorrentFile = rerrors.New("invalid torrent file", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
+
+	// ErrTorrentHasNoAudioFiles is returned when none of a torrent's files is
+	// in a supported audio format, so there would be nothing to import.
+	ErrTorrentHasNoAudioFiles = rerrors.New("torrent contains no supported audio files", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
+
+	// ErrTorrentConcurrencyLimitReached is returned when a user already has
+	// the configured maximum of torrents downloading at once.
+	ErrTorrentConcurrencyLimitReached = rerrors.New("too many torrents downloading at once", codes.ResourceExhausted, rerrors.WithHttpStatus(http.StatusTooManyRequests))
+
+	// ErrTorrentNotRegistered is returned when a tracked torrent job has no
+	// counterpart in the bittorrent client - e.g. after a process restart,
+	// which does not re-register in-flight torrents.
+	ErrTorrentNotRegistered = rerrors.New("torrent is not registered with the client", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusConflict))
+
 	// ErrFilePathCollisionUnresolved is returned when every content-hash-prefix
 	// disambiguated path for an upload is already taken, up to the full hash
 	// digest. This should never happen in practice - it would require another

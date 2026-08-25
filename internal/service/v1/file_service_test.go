@@ -366,65 +366,6 @@ func sha256Hex(t *testing.T, s string) string {
 	return hex.EncodeToString(sum[:])
 }
 
-// TestFileService_resolveTargetPath_ExtendsHashPrefixOnRepeatedCollision
-// proves the path-selection loop keeps extending the disambiguation hash
-// prefix (rather than giving up or erroring) when even the shortest
-// disambiguated candidates are already taken.
-func TestFileService_resolveTargetPath_ExtendsHashPrefixOnRepeatedCollision(t *testing.T) {
-	fileMetaStorage := newFakeFileMetaStorage()
-
-	svc := &FileService{
-		storage: fileMetaStorage,
-	}
-
-	ctx := context.Background()
-
-	contentHash := sha256Hex(t, "forced-collision-content")
-	dir := "tmp/1"
-
-	takenPaths := []string{
-		path.Join(dir, "track.mp3"),
-		path.Join(dir, "track-"+contentHash[:5]+".mp3"),
-		path.Join(dir, "track-"+contentHash[:6]+".mp3"),
-	}
-	for i, p := range takenPaths {
-		fileMeta := domain.FileMeta{
-			File: domain.File{
-				FilePath:    p,
-				ContentHash: "unrelated-hash-" + strconv.Itoa(i),
-			},
-		}
-		_, addErr := fileMetaStorage.Add(ctx, fileMeta)
-		require.NoError(t, addErr)
-	}
-
-	got, err := svc.resolveTargetPath(ctx, dir, "track.mp3", contentHash)
-	require.NoError(t, err)
-
-	want := path.Join(dir, "track-"+contentHash[:7]+".mp3")
-	assert.Equal(t, want, got)
-}
-
-// TestFileService_resolveTargetPath_FreePathReturnedAsIs verifies that when
-// the plain candidate path is not taken, resolveTargetPath returns it
-// unchanged - no hash suffix.
-func TestFileService_resolveTargetPath_FreePathReturnedAsIs(t *testing.T) {
-	fileMetaStorage := newFakeFileMetaStorage()
-
-	svc := &FileService{
-		storage: fileMetaStorage,
-	}
-
-	ctx := context.Background()
-
-	contentHash := sha256Hex(t, "free-path-content")
-
-	got, err := svc.resolveTargetPath(ctx, "tmp/1", "track.mp3", contentHash)
-	require.NoError(t, err)
-
-	assert.Equal(t, "tmp/1/track.mp3", got)
-}
-
 // TestFileService_SaveFile_FolderNameIsIncludedInStoredPath verifies that
 // when a caller supplies a folder name (e.g. the frontend mirroring a
 // dropped folder), the resulting stored FilePath includes that folder

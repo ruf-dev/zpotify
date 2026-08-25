@@ -9,6 +9,7 @@ import (
 
 	"github.com/Red-Sock/go_tg"
 	"github.com/Red-Sock/go_tg/model/response"
+	"github.com/anacrolix/torrent"
 	"github.com/rs/zerolog/log"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
@@ -23,9 +24,11 @@ import (
 	"go.zpotify.ru/zpotify/internal/async/provider/pgqueue"
 	"go.zpotify.ru/zpotify/internal/background"
 	"go.zpotify.ru/zpotify/internal/background/sessions_gc"
+	"go.zpotify.ru/zpotify/internal/background/torrent_sync"
 	tgclient "go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/middleware"
 	"go.zpotify.ru/zpotify/internal/service"
+	v1 "go.zpotify.ru/zpotify/internal/service/v1"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/storage/file_storage_providers"
 	"go.zpotify.ru/zpotify/internal/storage/files_cache"
@@ -43,6 +46,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/transport/telegram/grant_access"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/grant_creator_access"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/notify"
+	"go.zpotify.ru/zpotify/internal/transport/torrent_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/ui"
 	"go.zpotify.ru/zpotify/internal/transport/user_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/wapi"
@@ -53,6 +57,7 @@ type Custom struct {
 	dataStorage   storage.Storage
 	binaryStorage storage.BinaryFileStorage
 	tgConn        go_tg.TgApi
+	torrentClient *torrent.Client
 
 	Service service.Service
 
@@ -69,6 +74,7 @@ type Custom struct {
 	HomeApiImpl      *home_api_impl.Impl
 	NotificationImpl *notification_api_impl.Impl
 	SearchApiImpl    *search_api_impl.Impl
+	TorrentApiImpl   *torrent_api_impl.Impl
 
 	ServerManager *transport.ServersManager
 }
@@ -91,6 +97,17 @@ func (c *Custom) Init(app *App) (err error) {
 		return rerrors.Wrap(err, "error creating local file storage provider")
 	}
 
+	torrentClientCfg := v1.TorrentClientConfig{
+		DownloadDir: app.Cfg.Environment.TorrentDownloadDir,
+		ListenPort:  app.Cfg.Environment.TorrentListenPort,
+		Seed:        app.Cfg.Environment.TorrentSeedAfterComplete,
+	}
+
+	c.torrentClient, err = v1.NewTorrentClient(torrentClientCfg)
+	if err != nil {
+		return rerrors.Wrap(err, "error creating torrent client")
+	}
+
 	c.tgConn, err = go_tg.NewBot(app.Cfg.Environment.TelegramToken,
 		go_tg.WithProxy(app.Cfg.Environment.TelegramProxyURL))
 	if err != nil {
@@ -105,7 +122,16 @@ func (c *Custom) Init(app *App) (err error) {
 		return rerrors.Wrap(err, "error creating files cache")
 	}
 
-	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, adminNotifier, trackSender, app.Cfg)
+	torrentServiceCfg := v1.TorrentServiceConfig{
+		DownloadDir:            app.Cfg.Environment.TorrentDownloadDir,
+		MaxConcurrentDownloads: app.Cfg.Environment.TorrentMaxConcurrentDownloads,
+		SeedAfterComplete:      app.Cfg.Environment.TorrentSeedAfterComplete,
+		SeedTimeLimitMinutes:   app.Cfg.Environment.TorrentSeedTimeLimitMinutes,
+	}
+
+	torrentService := v1.NewTorrentService(c.dataStorage, c.binaryStorage, c.torrentClient, torrentServiceCfg)
+
+	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, adminNotifier, trackSender, torrentService, app.Cfg)
 	if err != nil {
 		return rerrors.Wrap(err, "error creating service")
 	}
@@ -115,8 +141,12 @@ func (c *Custom) Init(app *App) (err error) {
 	c.tgConn.MustAddCommandHandler(notify.New(c.Service.NotificationService(), int64(app.Cfg.Environment.TelegramNotificationsChatID)))
 	c.tgConn.MustAddCommandHandler(notify.NewConsent(c.Service.NotificationService(), int64(app.Cfg.Environment.TelegramNotificationsChatID)))
 
+	torrentLookup := torrent_sync.NewClientLookup(c.torrentClient)
+	torrentSyncPeriod := time.Duration(app.Cfg.Environment.TorrentSyncPeriodSeconds) * time.Second
+
 	c.BackgroundWorker = background.New(
 		sessions_gc.New(c.dataStorage),
+		torrent_sync.New(c.dataStorage, torrentLookup, torrentService, torrentSyncPeriod),
 	)
 
 	gcHandler := gc_handler.New(c.binaryStorage)
@@ -149,6 +179,7 @@ func (c *Custom) Init(app *App) (err error) {
 	c.HomeApiImpl = home_api_impl.New(c.Service)
 	c.NotificationImpl = notification_api_impl.New(c.Service)
 	c.SearchApiImpl = search_api_impl.New(c.Service)
+	c.TorrentApiImpl = torrent_api_impl.New(c.Service)
 
 	c.ServerManager, err = transport.NewServerManager(app.Ctx, app.MASTER)
 	if err != nil {
@@ -185,6 +216,7 @@ func (c *Custom) Init(app *App) (err error) {
 		c.HomeApiImpl,
 		c.NotificationImpl,
 		c.SearchApiImpl,
+		c.TorrentApiImpl,
 	)
 
 	c.ServerManager.AddHttpHandler(docs.Swagger())
@@ -192,7 +224,7 @@ func (c *Custom) Init(app *App) (err error) {
 	audioService := c.Service.AudioService()
 	fileService := c.Service.FileService()
 
-	wapiHandler := wapi.New(audioService, fileService)
+	wapiHandler := wapi.New(audioService, fileService, torrentService)
 	wapiHandler = middleware.HttpAuthMiddleware(
 		c.Service,
 		middleware.WithDebug(app.Cfg.Environment.DebugAuth),
@@ -259,6 +291,18 @@ func (c *Custom) Stop() error {
 	eg.Go(c.ServerManager.Stop)
 	eg.Go(func() error {
 		c.tgConn.Stop()
+		return nil
+	})
+	eg.Go(func() error {
+		if c.torrentClient == nil {
+			return nil
+		}
+
+		closeErrs := c.torrentClient.Close()
+		for _, closeErr := range closeErrs {
+			log.Err(closeErr).Msg("error closing torrent client")
+		}
+
 		return nil
 	})
 

@@ -4,6 +4,7 @@ import cn from 'classnames';
 import cls from '@/dialogs/AddTrack/screens/DropZoneScreen.module.css';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 import { AUDIO_ACCEPT, isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
+import { TORRENT_EXTENSION, isTorrentFile, isTorrentFileName } from '@/features/upload/torrentFile.ts';
 import { resolveDroppedEntries, type DroppedGroups } from '@/features/upload/resolveDroppedEntries.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import IdleDecoration from '@/dialogs/AddTrack/screens/components/IdleDecoration/IdleDecoration';
@@ -12,7 +13,19 @@ import DropZoneIcon from '@/dialogs/AddTrack/screens/components/DropZoneIcon/Dro
 import DropZoneText from '@/dialogs/AddTrack/screens/components/DropZoneText/DropZoneText';
 import UploadingSpinner from '@/dialogs/AddTrack/screens/components/UploadingSpinner/UploadingSpinner';
 
-export default function DropZoneScreen({ handleFiles, handleDroppedGroups, uploadError, uploading }: AddTrackContext) {
+function readEntryAsFile(entry: FileSystemFileEntry): Promise<File> {
+    return new Promise((resolve, reject) => {
+        entry.file(resolve, reject);
+    });
+}
+
+export default function DropZoneScreen({
+    handleFiles,
+    handleTorrentFile,
+    handleDroppedGroups,
+    uploadError,
+    uploading,
+}: AddTrackContext) {
     const [dragOver, setDragOver] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const toaster = useToaster();
@@ -48,12 +61,25 @@ export default function DropZoneScreen({ handleFiles, handleDroppedGroups, uploa
             .filter((entry): entry is FileSystemEntry => entry !== null && entry !== undefined);
 
         if (entries.length === 0) {
-            const files = Array.from(e.dataTransfer.files).filter(isSupportedAudioFile);
-            if (files.length > 0) handleFiles(files);
+            const files = Array.from(e.dataTransfer.files);
+            files.filter(isTorrentFile).forEach((file) => handleTorrentFile(file));
+            const audioFiles = files.filter(isSupportedAudioFile);
+            if (audioFiles.length > 0) handleFiles(audioFiles);
             return;
         }
 
-        resolveDroppedEntries(entries).then(handleResolvedGroups);
+        const torrentEntries = entries.filter(
+            (entry): entry is FileSystemFileEntry => entry.isFile && isTorrentFileName(entry.name),
+        );
+        torrentEntries.forEach((entry) => {
+            readEntryAsFile(entry).then(handleTorrentFile);
+        });
+
+        const torrentEntrySet = new Set<FileSystemEntry>(torrentEntries);
+        const remainingEntries = entries.filter((entry) => !torrentEntrySet.has(entry));
+        if (remainingEntries.length === 0) return;
+
+        resolveDroppedEntries(remainingEntries).then(handleResolvedGroups);
     }
 
     function handleDragOver(e: DragEvent<HTMLDivElement>) {
@@ -63,7 +89,11 @@ export default function DropZoneScreen({ handleFiles, handleDroppedGroups, uploa
 
     function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
         const files = Array.from(e.target.files ?? []);
-        if (files.length > 0) handleFiles(files);
+        if (files.length === 0) return;
+
+        files.filter(isTorrentFile).forEach((file) => handleTorrentFile(file));
+        const nonTorrentFiles = files.filter((f) => !isTorrentFile(f));
+        if (nonTorrentFiles.length > 0) handleFiles(nonTorrentFiles);
     }
 
     function handleClick() {
@@ -87,7 +117,7 @@ export default function DropZoneScreen({ handleFiles, handleDroppedGroups, uploa
                 <input
                     ref={inputRef}
                     type="file"
-                    accept={AUDIO_ACCEPT}
+                    accept={`${AUDIO_ACCEPT},${TORRENT_EXTENSION}`}
                     multiple
                     className={cls.HiddenInput}
                     onChange={handleInputChange}

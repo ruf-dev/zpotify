@@ -3,7 +3,6 @@ package v1
 import (
 	"context"
 	"crypto/rand"
-	"crypto/sha256"
 	"encoding/hex"
 	"errors"
 	"image"
@@ -205,157 +204,36 @@ func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, fold
 		return 0, service_errors.ErrPendingTrackLimitReached
 	}
 
-	// The incoming content is written under a private, guaranteed-unique
-	// staging name first - never directly under fileNameWithExt. The
-	// content hash (needed to decide the real final path/dedup) can only be
-	// known after the stream has been read, and writing straight to the
-	// eventual target path could silently truncate/clobber an unrelated
-	// file that already lives there.
-	stagingFileName, err := newStagingFileName(path.Ext(fileNameWithExt))
+	uploadReq := uploadRequest{
+		UserId:              uCtx.UserId,
+		FileNameWithExt:     fileNameWithExt,
+		FolderRelDir:        folderRelDir,
+		Content:             content,
+		MaxSongSizeBytes:    uCtx.Permissions.MaxSongSizeBytes,
+		MaxTotalUploadBytes: uCtx.Permissions.MaxTotalUploadBytes,
+	}
+
+	pipeline := s.newUploadPipeline()
+
+	id, err := pipeline.store(ctx, uploadReq)
 	if err != nil {
-		return 0, rerrors.Wrap(err, "error generating staging file name")
-	}
-	stagingRelPath := path.Join(folderRelDir, stagingFileName)
-
-	hashWriter := sha256.New()
-	sizeCounter := &countingWriter{}
-	limitedContent := io.LimitReader(content, uCtx.Permissions.MaxSongSizeBytes+1)
-	tmpFilePath, err := s.binaryStorage.SaveToTempFolder(ctx, uCtx.UserId, stagingRelPath, io.TeeReader(limitedContent, io.MultiWriter(hashWriter, sizeCounter)))
-	if err != nil {
-		return 0, rerrors.Wrap(err, "error storing to temporary folder")
-	}
-
-	if sizeCounter.n > uCtx.Permissions.MaxSongSizeBytes {
-		_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-		return 0, service_errors.ErrSongSizeLimitExceeded
-	}
-
-	isCoverImage := isCoverImageUpload(fileNameWithExt)
-	verified := false
-	if isCoverImage {
-		rc, getErr := s.binaryStorage.GetFile(ctx, tmpFilePath)
-		if getErr != nil {
-			_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-			return 0, rerrors.Wrap(getErr, "error opening uploaded cover image for verification")
-		}
-
-		ext := strings.ToLower(path.Ext(fileNameWithExt))
-		verifyErr := verifyImage(ext, rc)
-		utils.CloseWithLog(rc, tmpFilePath)
-		if verifyErr != nil {
-			_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-			return 0, rerrors.Wrap(verifyErr)
-		}
-
-		verified = true
-	}
-
-	contentHash := hex.EncodeToString(hashWriter.Sum(nil))
-
-	existingFile, err := s.storage.GetByHash(ctx, contentHash, uCtx.UserId)
-	if err != nil && !errors.Is(err, storage.ErrNotFound) {
-		_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-		return 0, rerrors.Wrap(err, "error checking for duplicate file")
-	}
-	if err == nil {
-		_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-		return existingFile.Id, nil
-	}
-
-	// Move the staged file to its real, plain-named target path now that the
-	// content hash (and thus the dedup decision above) is known. In the
-	// common case the target path is free and the file keeps its original
-	// name; only a genuine name collision with different content triggers a
-	// hash-suffixed disambiguation (see resolveTargetPath).
-	targetDir := path.Dir(tmpFilePath)
-	targetPath, err := s.resolveTargetPath(ctx, targetDir, fileNameWithExt, contentHash)
-	if err != nil {
-		_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-		return 0, rerrors.Wrap(err, "error resolving final file path")
-	}
-	err = s.binaryStorage.Move(ctx, tmpFilePath, targetPath)
-	if err != nil {
-		_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-		return 0, rerrors.Wrap(err, "error moving file to final path")
-	}
-	tmpFilePath = targetPath
-
-	totalSize, err := s.storage.GetTotalSizeByUser(ctx, uCtx.UserId)
-	if err != nil {
-		_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-		return 0, rerrors.Wrap(err, "error getting total uploaded size for limit check")
-	}
-	if totalSize+sizeCounter.n > uCtx.Permissions.MaxTotalUploadBytes {
-		_ = s.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-		return 0, service_errors.ErrTotalUploadSizeLimitExceeded
-	}
-
-	fileMetaUpdate := domain.FileMeta{
-		File: domain.File{
-			FilePath:    tmpFilePath,
-			SizeBytes:   sizeCounter.n,
-			ContentHash: contentHash,
-			Verified:    verified,
-		},
-		AddedById: uCtx.UserId,
-	}
-
-	id, err := s.storage.Add(ctx, fileMetaUpdate)
-	if err != nil {
-		return 0, rerrors.Wrap(err, "error saving file meta")
-	}
-
-	if !isCoverImage {
-		enqErr := s.jobs.EnqueueAudioParseJob(ctx, id, tmpFilePath)
-		if enqErr != nil {
-			log.Warn().Err(enqErr).Int64("file_id", id).Msg("failed to enqueue audio parse job")
-		}
+		return 0, rerrors.Wrap(err)
 	}
 
 	return id, nil
 }
 
-// minDisambiguationHashChars is the shortest content-hash prefix used to
-// disambiguate two different files that would otherwise land on the same
-// target path (same directory + same original file name).
-const minDisambiguationHashChars = 5
-
-// resolveTargetPath decides the final stored path for a newly-hashed upload
-// within dir (a tmp/{userId}[/{folder}] directory). Callers are expected to
-// have already ruled out that contentHash matches an existing file
-// (identical content is deduplicated before this is called), so any
-// existing files_meta row already sitting at the plain candidate path
-// necessarily belongs to different content sharing the same name - which is
-// disambiguated by appending a growing prefix of this upload's own content
-// hash until a free path is found.
-func (s *FileService) resolveTargetPath(ctx context.Context, dir string, fileNameWithExt string, contentHash string) (string, error) {
-	candidatePath := path.Join(dir, fileNameWithExt)
-
-	_, err := s.storage.GetByPath(ctx, candidatePath)
-	if err != nil {
-		if errors.Is(err, storage.ErrNotFound) {
-			return candidatePath, nil
-		}
-		return "", rerrors.Wrap(err, "error checking target path availability")
+// newUploadPipeline builds the shared upload core from this service's own
+// storages, so direct uploads and torrent imports land files through exactly
+// the same staging/dedup/collision-resolution path.
+func (s *FileService) newUploadPipeline() uploadPipeline {
+	pipeline := uploadPipeline{
+		fileMeta:      s.storage,
+		binaryStorage: s.binaryStorage,
+		jobs:          s.jobs,
 	}
 
-	ext := path.Ext(fileNameWithExt)
-	base := strings.TrimSuffix(fileNameWithExt, ext)
-
-	for prefixLen := minDisambiguationHashChars; prefixLen <= len(contentHash); prefixLen++ {
-		disambiguatedName := base + "-" + contentHash[:prefixLen] + ext
-		disambiguatedPath := path.Join(dir, disambiguatedName)
-
-		_, getErr := s.storage.GetByPath(ctx, disambiguatedPath)
-		if getErr != nil {
-			if errors.Is(getErr, storage.ErrNotFound) {
-				return disambiguatedPath, nil
-			}
-			return "", rerrors.Wrap(getErr, "error checking disambiguated target path availability")
-		}
-	}
-
-	return "", rerrors.Wrap(service_errors.ErrFilePathCollisionUnresolved, "exhausted content hash while resolving unique file path")
+	return pipeline
 }
 
 func (s *FileService) ListUploadedFiles(ctx context.Context, req domain.ListUploadedFiles) ([]domain.SongFile, error) {
