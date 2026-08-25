@@ -1445,8 +1445,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/package.json": {
-    "mtime": 1786829158.1038094,
-    "ast_hash": "f9ed3994472edfdcff6457d5277836c9",
+    "mtime": 1787657823.6014194,
+    "ast_hash": "cd63b3259faae37701221afe336ba10e",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/tsconfig.json": {
@@ -4005,8 +4005,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/torrent_service_test.go": {
-    "mtime": 1787635747.3579662,
-    "ast_hash": "f0e91ecb31e02c907bd7fd006f8bbaec",
+    "mtime": 1787657809.7237053,
+    "ast_hash": "085dd266405b23ec1699b027f1d286d9",
     "semantic_hash": ""
   },
   "internal/transport/torrent_api_impl/cancel_torrent_job.go": {
