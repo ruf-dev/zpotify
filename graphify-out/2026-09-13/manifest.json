@@ -400,8 +400,8 @@
     "semantic_hash": "e026a6674f2341a67053118987f91db7"
   },
   "internal/app/custom.go": {
-    "mtime": 1787635657.8696458,
-    "ast_hash": "5bbab5c388c2e64928e54024ad1ebb62",
+    "mtime": 1789293128.0549245,
+    "ast_hash": "82ddf9beedd2d4942bc74d6469d50881",
     "semantic_hash": ""
   },
   "internal/app/config.go": {
@@ -1045,8 +1045,8 @@
     "semantic_hash": ""
   },
   ".claude/settings.local.json": {
-    "mtime": 1782931184.1969554,
-    "ast_hash": "a153b94fa71fe08f16e6b35f98dd3ede",
+    "mtime": 1789292145.1665003,
+    "ast_hash": "eb5538a7abd80c179d49ce67ba154242",
     "semantic_hash": ""
   },
   "examples/http-client.env.json": {
@@ -4052,6 +4052,21 @@
   "migrations/20260825010000_add_paused_torrent_download_status.sql": {
     "mtime": 1787657583.6454678,
     "ast_hash": "e0c245bcd6cb7ec4da18be357c044a9c",
+    "semantic_hash": ""
+  },
+  ".claude/hooks/restart-serve-on-stop.sh": {
+    "mtime": 1789292198.6910474,
+    "ast_hash": "8fddf4013943c6a808d56fd215cfe833",
+    "semantic_hash": ""
+  },
+  ".claude/hooks/serve-session-end.sh": {
+    "mtime": 1789292159.627099,
+    "ast_hash": "b5f4f907e4ab61de0579331da8f35dbf",
+    "semantic_hash": ""
+  },
+  ".claude/hooks/serve-session-start.sh": {
+    "mtime": 1789292157.5506952,
+    "ast_hash": "01d10da223603905bb9004c25ca9c936",
     "semantic_hash": ""
   }
 }
