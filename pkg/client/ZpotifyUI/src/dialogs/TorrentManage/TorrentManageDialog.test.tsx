@@ -5,18 +5,24 @@ import TorrentManageDialog from '@/dialogs/TorrentManage/TorrentManageDialog';
 import type { TorrentJob } from '@/app/api/zpotify';
 
 const getTorrentJobMock = vi.fn();
-const cancelTorrentJobMock = vi.fn();
+const pauseTorrentJobMock = vi.fn();
+const resumeTorrentJobMock = vi.fn();
+const deleteTorrentJobMock = vi.fn();
 vi.mock('@/shared/api/TorrentService.ts', () => ({
     torrentService: {
         GetTorrentJob: (...args: unknown[]) => getTorrentJobMock(...args),
-        CancelTorrentJob: (...args: unknown[]) => cancelTorrentJobMock(...args),
+        PauseTorrentJob: (...args: unknown[]) => pauseTorrentJobMock(...args),
+        ResumeTorrentJob: (...args: unknown[]) => resumeTorrentJobMock(...args),
+        DeleteTorrentJob: (...args: unknown[]) => deleteTorrentJobMock(...args),
     },
 }));
 
+const openDialogMock = vi.fn();
+const closeDialogMock = vi.fn();
 vi.mock('@/app/hooks/Dialog.tsx', () => ({
     useDialog: () => ({
-        OpenDialog: vi.fn(),
-        CloseDialog: vi.fn(),
+        OpenDialog: openDialogMock,
+        CloseDialog: closeDialogMock,
     }),
 }));
 
@@ -70,34 +76,70 @@ describe('TorrentManageDialog', () => {
         expect(screen.getByText('no seeders found')).not.toBeNull();
     });
 
-    it('calls CancelTorrentJob when cancel is clicked while non-terminal', async () => {
+    it('calls PauseTorrentJob when the toggle button is clicked while downloading', async () => {
         const job = makeJob({ status: 'downloading' });
         getTorrentJobMock.mockResolvedValue({ job });
-        cancelTorrentJobMock.mockResolvedValue({});
+        pauseTorrentJobMock.mockResolvedValue({});
 
         render(<TorrentManageDialog job={job} />);
 
-        const cancelButton = screen.getByText('cancel');
-        expect((cancelButton as HTMLButtonElement).disabled).toBe(false);
+        const toggleButton = screen.getByRole('button', { name: 'pause' });
+        expect((toggleButton as HTMLButtonElement).disabled).toBe(false);
 
         await act(async () => {
-            fireEvent.click(cancelButton);
+            fireEvent.click(toggleButton);
             await Promise.resolve();
         });
 
-        expect(cancelTorrentJobMock).toHaveBeenCalledWith({ jobId: 'job1' });
+        expect(pauseTorrentJobMock).toHaveBeenCalledWith({ jobId: 'job1' });
     });
 
-    it('disables the cancel button when the job is already terminal', () => {
+    it('calls ResumeTorrentJob when the toggle button is clicked while paused', async () => {
+        const job = makeJob({ status: 'paused' });
+        getTorrentJobMock.mockResolvedValue({ job });
+        resumeTorrentJobMock.mockResolvedValue({});
+
+        render(<TorrentManageDialog job={job} />);
+
+        const toggleButton = screen.getByRole('button', { name: 'resume' });
+
+        await act(async () => {
+            fireEvent.click(toggleButton);
+            await Promise.resolve();
+        });
+
+        expect(resumeTorrentJobMock).toHaveBeenCalledWith({ jobId: 'job1' });
+    });
+
+    it('hides the pause toggle button when the job is terminal', () => {
         const job = makeJob({ status: 'done' });
         getTorrentJobMock.mockResolvedValue({ job });
 
         render(<TorrentManageDialog job={job} />);
 
-        const cancelButton = screen.getByText('cancel') as HTMLButtonElement;
-        expect(cancelButton.disabled).toBe(true);
+        expect(screen.queryByRole('button', { name: 'pause' })).toBeNull();
+        expect(screen.queryByRole('button', { name: 'resume' })).toBeNull();
+    });
 
-        fireEvent.click(cancelButton);
-        expect(cancelTorrentJobMock).not.toHaveBeenCalled();
+    it('opens the confirm dialog and deletes the job on confirm', async () => {
+        const job = makeJob({ status: 'downloading' });
+        getTorrentJobMock.mockResolvedValue({ job });
+        deleteTorrentJobMock.mockResolvedValue({});
+
+        render(<TorrentManageDialog job={job} />);
+
+        const deleteButton = screen.getByText('delete');
+        fireEvent.click(deleteButton);
+
+        expect(openDialogMock).toHaveBeenCalledTimes(1);
+        const confirmDialogElement = openDialogMock.mock.calls[0][0];
+        const onConfirm = confirmDialogElement.props.onConfirm as () => Promise<void>;
+
+        await act(async () => {
+            await onConfirm();
+        });
+
+        expect(deleteTorrentJobMock).toHaveBeenCalledWith({ jobId: 'job1' });
+        expect(closeDialogMock).toHaveBeenCalled();
     });
 });

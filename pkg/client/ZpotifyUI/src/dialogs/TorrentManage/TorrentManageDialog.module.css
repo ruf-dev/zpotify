@@ -117,7 +117,7 @@
     color: var(--color-error);
 }
 
-.CancelButton {
+.DeleteButton {
     width: 100%;
     padding: 0.7rem 1rem;
     border-radius: var(--border-radius-pill);
@@ -131,7 +131,30 @@
     transition: opacity 0.15s ease;
 }
 
-.CancelButton:disabled {
+.DeleteButton:disabled {
+    background: var(--color-bg-secondary);
+    border-color: var(--color-border-light);
+    color: var(--color-fg-disabled);
+    cursor: default;
+}
+
+.PauseToggleButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border-radius: var(--border-radius-pill);
+    background: var(--color-bg-card);
+    border: 0.0625rem solid var(--color-border);
+    color: var(--color-fg-primary);
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+}
+
+.PauseToggleButton:disabled {
     background: var(--color-bg-secondary);
     border-color: var(--color-border-light);
     color: var(--color-fg-disabled);

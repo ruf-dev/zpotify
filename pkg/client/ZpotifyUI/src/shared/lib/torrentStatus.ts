@@ -5,3 +5,7 @@ const TERMINAL_TORRENT_STATUSES = new Set(['done', 'failed', 'canceled', 'seedin
 export function isTerminalTorrentStatus(status: string | undefined): boolean {
     return TERMINAL_TORRENT_STATUSES.has(status ?? '');
 }
+
+export function isPausedTorrentStatus(status: string | undefined): boolean {
+    return status === 'paused';
+}

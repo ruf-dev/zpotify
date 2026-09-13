@@ -52,10 +52,10 @@ export default function PendingFilesScreen({
 }: AddTrackContext) {
     const pendingFiles = usePendingFiles();
     const torrentJobs = useTorrentJobs();
-    const [collapsedFolders, setCollapsedFolders] = useState<Set<string>>(new Set());
+    const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
 
     function toggleFolder(folderName: string) {
-        setCollapsedFolders((prev) => {
+        setExpandedFolders((prev) => {
             const next = new Set(prev);
             if (next.has(folderName)) next.delete(folderName);
             else next.add(folderName);
@@ -127,7 +127,7 @@ export default function PendingFilesScreen({
                     </div>
                     <div className={cls.FileList}>
                         {Array.from(grouped.folders.entries()).map(([folderName, groupFiles]) => {
-                            const collapsed = collapsedFolders.has(folderName);
+                            const collapsed = !expandedFolders.has(folderName);
                             const folderSelected = isFolderSelected(groupFiles, pendingFiles.selectedIds);
                             return (
                                 <div key={folderName} className={cls.FolderGroup}>
