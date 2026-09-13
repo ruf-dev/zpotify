@@ -3,11 +3,13 @@ import cn from 'classnames';
 import { HomeIcon } from '@/assets/icons/HomeIcon';
 import { NavSearchIcon } from '@/assets/icons/NavSearchIcon';
 import { UploadsIcon } from '@/assets/icons/UploadsIcon';
+import { DownloadIcon } from '@/assets/icons/DownloadIcon';
 import cls from '@/pages/segments/SidebarSegment/components/NavItem/NavItem.module.css';
 
 function getNavIcon(id: string) {
     if (id === 'home') return <HomeIcon />;
     if (id === 'search') return <NavSearchIcon />;
+    if (id === 'downloads') return <DownloadIcon />;
     return <UploadsIcon />;
 }
 

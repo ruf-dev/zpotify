@@ -399,6 +399,7 @@ class AudioPlayerImpl implements AudioPlayer {
                     useAudioCacheStore.getState().addCachedUrl(trackUrl, {
                         title: songTitle || 'Track',
                         artist: songArtist || 'Unknown',
+                        filePath: trackPath,
                     });
                 }
             });

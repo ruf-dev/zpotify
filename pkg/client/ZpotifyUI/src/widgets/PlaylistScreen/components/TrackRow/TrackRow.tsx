@@ -113,6 +113,7 @@ export default function TrackRow({
                             ?.map((a) => a.name ?? '')
                             .filter(Boolean)
                             .join(', ') || 'Unknown',
+                    filePath: song.filePath,
                     songId: song.id,
                     playlistName,
                     playlistUuid,

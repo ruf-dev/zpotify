@@ -15,11 +15,12 @@ import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useBackGuard } from '@/shared/lib/useBackGuard';
 import { useIsMobile } from '@/shared/lib/useIsMobile.ts';
 
-type navIdentity = 'home' | 'search' | 'my_uploads';
+type navIdentity = 'home' | 'search' | 'downloads' | 'my_uploads';
 
 const NAV_ITEMS = [
     { id: 'home', label: 'Home', active: true, hideOnDesktop: true },
     { id: 'search', label: 'Search', active: false, hideOnDesktop: true },
+    { id: 'downloads', label: 'Downloads', active: false },
     { id: 'my_uploads', label: 'My Uploads', active: false, disabled: true },
 ] as const;
 
@@ -44,6 +45,9 @@ export default function SidebarSegment() {
                     break;
                 case 'search':
                     navigate(Path.SearchPage);
+                    break;
+                case 'downloads':
+                    navigate(Path.DownloadsPage);
                     break;
             }
         };

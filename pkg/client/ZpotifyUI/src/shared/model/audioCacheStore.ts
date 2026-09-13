@@ -3,7 +3,13 @@ import { persist } from 'zustand/middleware';
 
 import type { SongBase } from '@/app/api/zpotify';
 import { songsService } from '@/shared/api/Songs.ts';
-import { clearAudioCache, getTrackUrl, listCachedUrls, uncacheAudio } from '@/shared/lib/audioCache.ts';
+import {
+    clearAudioCache,
+    getTrackUrl,
+    listCachedUrls,
+    trackPathFromUrl,
+    uncacheAudio,
+} from '@/shared/lib/audioCache.ts';
 
 interface DownloadProgress {
     completed: number;
@@ -13,6 +19,7 @@ interface DownloadProgress {
 export interface CachedSongMeta {
     title: string;
     artist: string;
+    filePath?: string;
     songId?: string;
     playlistName?: string;
     playlistUuid?: string;
@@ -140,6 +147,7 @@ export function useCachedCount(songs: SongBase[]): { cached: number; total: numb
 
 export interface CachedSongEntry {
     url: string;
+    filePath: string;
     title: string;
     artist: string;
     songId?: string;
@@ -156,6 +164,7 @@ export function useCachedSongs(): CachedSongEntry[] {
         const meta = cachedSongMeta[url];
         return {
             url,
+            filePath: meta?.filePath ?? trackPathFromUrl(url),
             title: meta?.title ?? decodeURIComponent(url.split('/').pop() || url),
             artist: meta?.artist ?? 'Unknown',
             songId: meta?.songId,

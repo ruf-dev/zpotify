@@ -46,6 +46,7 @@ export function useDownloadButtonWidget({ playlist, songs }: UseDownloadButtonWi
                     ? {
                           title: song.title || 'Track',
                           artist: song.artists?.[0]?.name ?? 'Unknown',
+                          filePath: song.filePath,
                           songId: song.id,
                           playlistName: playlist.name,
                           playlistUuid: playlist.uuid,

@@ -7,6 +7,12 @@ export function getTrackUrl(trackPath: string): string {
     return new URL(rawUrl, window.location.origin).href;
 }
 
+// Best-effort reverse of getTrackUrl() for cache entries stored before CachedSongMeta carried
+// filePath directly - only correct when VITE_ZPOTIFY_WEBSERVER is unset (same-origin deployment).
+export function trackPathFromUrl(url: string): string {
+    return url.startsWith(window.location.origin) ? url.slice(window.location.origin.length) : url;
+}
+
 export async function getCachedAudio(url: string): Promise<Blob | null> {
     if (!('caches' in window)) return null;
 

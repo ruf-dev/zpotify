@@ -6,6 +6,7 @@ export enum Path {
     AlbumPage = '/album/:id',
     ArtistPage = '/artist/:id',
     EarlyAccessPage = '/early_access',
+    DownloadsPage = '/downloads',
 }
 
 export function playlistPath(id: string, focusTrackId?: string): string {

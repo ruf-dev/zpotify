@@ -1,0 +1,52 @@
+.DownloadedSongRowContainer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+
+    &:hover {
+        background: var(--color-bg-hover);
+    }
+}
+
+.DownloadedSongRowPlaying {
+    background: var(--color-accent-dim);
+}
+
+.PlayCell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    flex-shrink: 0;
+    color: var(--color-fg-secondary);
+}
+
+.SongInfoWrapper {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex-grow: 1;
+}
+
+.SongTitle {
+    font-size: var(--font-size-base);
+    color: var(--color-fg-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.SongTitlePlaying {
+    color: var(--color-fg-accent);
+}
+
+.SongArtist {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

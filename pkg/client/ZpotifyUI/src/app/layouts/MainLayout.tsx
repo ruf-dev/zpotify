@@ -24,17 +24,19 @@ export default function MainLayout() {
     const audioPlayer = useAudioPlayer();
     const effectiveShowPlayerBar = showPlayerBar && audioPlayer.trackPath !== null;
 
+    const isOfflineLibraryPath = window.location.pathname === Path.DownloadsPage;
+
     useEffect(() => {
-        if (authStatus === 'unauthenticated') {
+        if (authStatus === 'unauthenticated' && !isOfflineLibraryPath) {
             const path = window.location.pathname;
             if (path !== Path.HomePage && path !== Path.IntiPage) {
                 sessionStorage.setItem('zpotify-return-path', path);
             }
             navigate(Path.IntiPage);
         }
-    }, [authStatus]);
+    }, [authStatus, isOfflineLibraryPath]);
 
-    if (authStatus === 'unauthenticated') {
+    if (authStatus === 'unauthenticated' && !isOfflineLibraryPath) {
         return null;
     }
 
