@@ -133,15 +133,24 @@ class AudioPlayerImpl implements AudioPlayer {
     private audio: HTMLAudioElement;
     private pendingRestoreProgress: number | null = null;
     private currentObjectUrl: string | null = null;
-    private opToken = 0;
     private loadedTrackPath: string | null = null;
     private preloadedNextForTrack: string | null = null;
+    private preloadedNextTrackPath: string | null = null;
+    private preloadedNextBlobUrl: string | null = null;
 
     constructor() {
         this.audio = new Audio();
         this.setupEventListeners();
         this.setupMediaSession();
         this.restoreLastPlayed();
+        document.addEventListener('visibilitychange', () => this.handleVisibilityChange());
+    }
+
+    private handleVisibilityChange(): void {
+        if (document.visibilityState !== 'visible') return;
+        if (useAudioStore.getState().isPlaying && this.audio.paused) {
+            this.startPlay();
+        }
     }
 
     private restoreLastPlayed(): void {
@@ -173,6 +182,7 @@ class AudioPlayerImpl implements AudioPlayer {
             });
             this.maybePreloadNextTrack(progress);
             this.updateBuffered();
+            this.updatePositionState();
         });
 
         this.audio.addEventListener('progress', () => {
@@ -323,7 +333,6 @@ class AudioPlayerImpl implements AudioPlayer {
         const { trackPath, isPlaying, isLoading } = useAudioStore.getState();
         if (trackPath == null) return false;
         if (isPlaying || isLoading) {
-            this.opToken++;
             this.audio.pause();
             useAudioStore.setState({ isPlaying: false, isLoading: false });
         } else {
@@ -343,6 +352,17 @@ class AudioPlayerImpl implements AudioPlayer {
         const bufferedEnd = buffered.end(buffered.length - 1);
         const percent = (bufferedEnd / this.audio.duration) * 100;
         useAudioStore.setState({ buffered: Math.max(0, Math.min(100, percent)) });
+    }
+
+    private updatePositionState(): void {
+        if (!('mediaSession' in navigator) || !('setPositionState' in navigator.mediaSession)) return;
+        if (!this.audio.duration || !isFinite(this.audio.duration)) return;
+
+        navigator.mediaSession.setPositionState({
+            duration: this.audio.duration,
+            playbackRate: this.audio.playbackRate || 1,
+            position: this.audio.currentTime,
+        });
     }
 
     private revokeCurrentObjectUrl(): void {
@@ -365,59 +385,100 @@ class AudioPlayerImpl implements AudioPlayer {
         const next = queue[queueIndex + 1];
         if (!next) return;
 
-        cacheAudio(getTrackUrl(next.filePath)).catch(() => {});
+        this.prefetchNextTrackBlob(next.filePath);
     }
 
-    async preload(trackPath: string): Promise<void> {
-        const token = ++this.opToken;
+    // Resolves a cache blob for the upcoming track ahead of time, into memory, so that
+    // loadTrackImmediate() never has to await a Cache Storage lookup once the current track ends.
+    private prefetchNextTrackBlob(nextTrackPath: string): void {
+        const nextUrl = getTrackUrl(nextTrackPath);
+
+        cacheAudio(nextUrl)
+            .then((cached) => (cached ? getCachedAudio(nextUrl) : null))
+            .then((blob) => {
+                if (!blob) return;
+                if (this.preloadedNextBlobUrl) {
+                    URL.revokeObjectURL(this.preloadedNextBlobUrl);
+                }
+                this.preloadedNextTrackPath = nextTrackPath;
+                this.preloadedNextBlobUrl = URL.createObjectURL(blob);
+            })
+            .catch(() => {});
+    }
+
+    // Synchronously assigns audio.src and starts loading - no awaited step in between. WebKit only
+    // honors an unattended play() call (locked screen / backgrounded tab) when it stays tightly
+    // chained to the triggering trusted event (the `ended` listener below), and a frozen background
+    // page can leave an awaited Cache Storage lookup pending indefinitely until it's foregrounded
+    // again. Any cache blob usable for this track must already be resolved via
+    // prefetchNextTrackBlob() beforehand - this method never awaits one.
+    private loadTrackImmediate(trackPath: string): void {
         const trackUrl = getTrackUrl(trackPath);
 
         this.revokeCurrentObjectUrl();
         this.preloadedNextForTrack = null;
 
-        useAudioStore.setState({ trackPath, isLoading: true, progress: 0, currentTime: 0, duration: 0, buffered: 0 });
-
-        const cacheSongs = useAudioSettings.getState().cacheSongs;
         let src = trackUrl;
-
-        const cachedBlob = await getCachedAudio(trackUrl);
-        if (cachedBlob) {
-            src = URL.createObjectURL(cachedBlob);
+        if (this.preloadedNextTrackPath === trackPath && this.preloadedNextBlobUrl) {
+            src = this.preloadedNextBlobUrl;
             this.currentObjectUrl = src;
+        } else if (this.preloadedNextBlobUrl) {
+            URL.revokeObjectURL(this.preloadedNextBlobUrl);
         }
+        this.preloadedNextTrackPath = null;
+        this.preloadedNextBlobUrl = null;
 
-        if (token !== this.opToken) return;
+        useAudioStore.setState({ trackPath, isLoading: true, progress: 0, currentTime: 0, duration: 0, buffered: 0 });
 
         this.audio.src = src;
         this.audio.load();
         this.loadedTrackPath = trackPath;
 
-        if (cacheSongs && src === trackUrl) {
-            const { songTitle, songArtist } = useAudioStore.getState();
-            cacheAudio(trackUrl).then((cached) => {
-                if (cached) {
-                    useAudioCacheStore.getState().addCachedUrl(trackUrl, {
-                        title: songTitle || 'Track',
-                        artist: songArtist || 'Unknown',
-                        filePath: trackPath,
-                    });
-                }
-            });
-        }
+        this.updateMediaSessionMetadata(trackUrl);
 
-        if ('mediaSession' in navigator) {
-            const { songTitle, songArtist, songCover } = useAudioStore.getState();
-            navigator.mediaSession.metadata = new MediaMetadata({
-                title: songTitle || trackUrl.split('/').pop() || 'Unknown Track',
-                artist: songArtist || '',
-                artwork: songCover ? [{ src: songCover }] : [],
-            });
+        if (src === trackUrl) {
+            this.persistTrackToCacheIfEnabled(trackPath, trackUrl);
         }
     }
 
+    private updateMediaSessionMetadata(trackUrl: string): void {
+        if (!('mediaSession' in navigator)) return;
+
+        const { songTitle, songArtist, songCover } = useAudioStore.getState();
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: songTitle || trackUrl.split('/').pop() || 'Unknown Track',
+            artist: songArtist || '',
+            artwork: songCover ? [{ src: songCover }] : [],
+        });
+    }
+
+    private persistTrackToCacheIfEnabled(trackPath: string, trackUrl: string): void {
+        const cacheSongs = useAudioSettings.getState().cacheSongs;
+        if (!cacheSongs) return;
+
+        const { songTitle, songArtist } = useAudioStore.getState();
+        cacheAudio(trackUrl).then((cached) => {
+            if (!cached) return;
+            useAudioCacheStore.getState().addCachedUrl(trackUrl, {
+                title: songTitle || 'Track',
+                artist: songArtist || 'Unknown',
+                filePath: trackPath,
+            });
+        });
+    }
+
+    preload(trackPath: string): Promise<void> {
+        this.loadTrackImmediate(trackPath);
+        return Promise.resolve();
+    }
+
     unload(): void {
-        this.opToken++;
         this.revokeCurrentObjectUrl();
+        if (this.preloadedNextBlobUrl) {
+            URL.revokeObjectURL(this.preloadedNextBlobUrl);
+            this.preloadedNextBlobUrl = null;
+            this.preloadedNextTrackPath = null;
+        }
         this.audio.src = '';
         useAudioStore.setState({
             trackPath: null,
@@ -429,13 +490,11 @@ class AudioPlayerImpl implements AudioPlayer {
         });
     }
 
-    async play(trackUrl: string): Promise<void> {
+    play(trackPath: string): Promise<void> {
         this.pendingRestoreProgress = null;
-        const preloadPromise = this.preload(trackUrl);
-        const token = this.opToken;
-        await preloadPromise;
-        if (token !== this.opToken) return;
+        this.loadTrackImmediate(trackPath);
         this.startPlay();
+        return Promise.resolve();
     }
 
     setVolume(volume: number): void {
@@ -462,7 +521,9 @@ class AudioPlayerImpl implements AudioPlayer {
 
         useAudioStore.setState({ queueIndex: index });
         this.setSongInfo(target.info.title, target.info.artist, target.info.cover, target.info.artists);
-        this.play(target.filePath);
+        this.pendingRestoreProgress = null;
+        this.loadTrackImmediate(target.filePath);
+        this.startPlay();
     }
 
     playNext(): void {
