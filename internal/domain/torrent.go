@@ -18,6 +18,7 @@ const (
 	TorrentDownloadStatusDone        TorrentDownloadStatus = "done"
 	TorrentDownloadStatusFailed      TorrentDownloadStatus = "failed"
 	TorrentDownloadStatusCanceled    TorrentDownloadStatus = "canceled"
+	TorrentDownloadStatusPaused      TorrentDownloadStatus = "paused"
 )
 
 // ActiveTorrentDownloadStatuses are the statuses considered "in progress" by
@@ -26,6 +27,7 @@ var ActiveTorrentDownloadStatuses = []TorrentDownloadStatus{
 	TorrentDownloadStatusQueued,
 	TorrentDownloadStatusDownloading,
 	TorrentDownloadStatusImporting,
+	TorrentDownloadStatusPaused,
 }
 
 // TorrentDownload tracks the state of a single user-initiated torrent download.

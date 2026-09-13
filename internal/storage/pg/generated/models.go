@@ -285,6 +285,7 @@ const (
 	TorrentDownloadStatusDone        TorrentDownloadStatus = "done"
 	TorrentDownloadStatusFailed      TorrentDownloadStatus = "failed"
 	TorrentDownloadStatusCanceled    TorrentDownloadStatus = "canceled"
+	TorrentDownloadStatusPaused      TorrentDownloadStatus = "paused"
 )
 
 func (e *TorrentDownloadStatus) Scan(src interface{}) error {

@@ -279,6 +279,81 @@ func (s *TorrentService) CancelJob(ctx context.Context, jobID int64) error {
 	return nil
 }
 
+// PauseJob suspends data download for one of the caller's torrent jobs
+// without releasing its scratch space, so it can be resumed later.
+func (s *TorrentService) PauseJob(ctx context.Context, jobID int64) error {
+	uCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return rerrors.Wrap(user_errors.ErrUnauthenticated)
+	}
+
+	row, err := s.torrentStorage.Get(ctx, jobID, uCtx.UserId)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting torrent job")
+	}
+
+	tor, ok := s.lookupTorrent(row.InfoHash)
+	if ok {
+		tor.DisallowDataDownload()
+	}
+
+	err = s.torrentStorage.UpdateStatus(ctx, row.Id, domain.TorrentDownloadStatusPaused)
+	if err != nil {
+		return rerrors.Wrap(err, "error marking torrent job paused")
+	}
+
+	return nil
+}
+
+// ResumeJob re-enables data download for one of the caller's paused torrent
+// jobs.
+func (s *TorrentService) ResumeJob(ctx context.Context, jobID int64) error {
+	uCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return rerrors.Wrap(user_errors.ErrUnauthenticated)
+	}
+
+	row, err := s.torrentStorage.Get(ctx, jobID, uCtx.UserId)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting torrent job")
+	}
+
+	tor, ok := s.lookupTorrent(row.InfoHash)
+	if ok {
+		tor.AllowDataDownload()
+	}
+
+	err = s.torrentStorage.UpdateStatus(ctx, row.Id, domain.TorrentDownloadStatusDownloading)
+	if err != nil {
+		return rerrors.Wrap(err, "error marking torrent job downloading")
+	}
+
+	return nil
+}
+
+// DeleteJob stops one of the caller's torrent jobs, reclaims its scratch
+// space, and permanently removes its tracking row.
+func (s *TorrentService) DeleteJob(ctx context.Context, jobID int64) error {
+	uCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return rerrors.Wrap(user_errors.ErrUnauthenticated)
+	}
+
+	row, err := s.torrentStorage.Get(ctx, jobID, uCtx.UserId)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting torrent job")
+	}
+
+	s.releaseTorrent(ctx, row)
+
+	err = s.torrentStorage.Delete(ctx, row.Id, uCtx.UserId)
+	if err != nil {
+		return rerrors.Wrap(err, "error deleting torrent job")
+	}
+
+	return nil
+}
+
 // ImportCompleted runs the import of a finished torrent. It exists purely so
 // the torrent_sync background task - which lives in another package - can
 // drive the import inline on the tick that observes completion. It is

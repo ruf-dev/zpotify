@@ -252,6 +252,12 @@ type TorrentService interface {
 	ListJobs(ctx context.Context, folderName string) ([]domain.TorrentDownload, error)
 	// CancelJob stops one of the caller's torrent jobs.
 	CancelJob(ctx context.Context, jobID int64) error
+	// PauseJob suspends data download for one of the caller's torrent jobs.
+	PauseJob(ctx context.Context, jobID int64) error
+	// ResumeJob re-enables data download for one of the caller's paused torrent jobs.
+	ResumeJob(ctx context.Context, jobID int64) error
+	// DeleteJob stops one of the caller's torrent jobs and permanently removes it.
+	DeleteJob(ctx context.Context, jobID int64) error
 }
 
 type FeatureFlagsService interface {

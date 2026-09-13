@@ -433,6 +433,139 @@ func TestTorrentService_ListJobs_ReturnsOnlyCallersJobs(t *testing.T) {
 	assert.Equal(t, "mine", rows[0].TorrentName)
 }
 
+func TestTorrentService_PauseJob_RequiresAuthentication(t *testing.T) {
+	svc, _ := newQuotaTestService(0, 3)
+
+	err := svc.PauseJob(context.Background(), 1)
+	require.Error(t, err)
+	assert.ErrorIs(t, err, user_errors.ErrUnauthenticated)
+}
+
+// TestTorrentService_PauseJob_IsScopedToCaller proves a job belonging to
+// another user cannot be paused.
+func TestTorrentService_PauseJob_IsScopedToCaller(t *testing.T) {
+	svc, torrentStorage := newQuotaTestService(0, 3)
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	othersRow := domain.TorrentDownload{UserId: 2, TorrentName: "someone-elses", Status: domain.TorrentDownloadStatusDownloading}
+	added, err := torrentStorage.Add(ctx, othersRow)
+	require.NoError(t, err)
+
+	err = svc.PauseJob(ctx, added.Id)
+	require.Error(t, err)
+	assert.ErrorIs(t, err, storage.ErrNotFound)
+}
+
+// TestTorrentService_PauseJob_MarksJobPaused proves a successful pause
+// updates the job status even when no live torrent is registered
+// client-side.
+func TestTorrentService_PauseJob_MarksJobPaused(t *testing.T) {
+	svc, torrentStorage := newQuotaTestService(0, 3)
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	row := domain.TorrentDownload{UserId: 1, TorrentName: "mine", Status: domain.TorrentDownloadStatusDownloading}
+	added, err := torrentStorage.Add(ctx, row)
+	require.NoError(t, err)
+
+	err = svc.PauseJob(ctx, added.Id)
+	require.NoError(t, err)
+
+	got, err := torrentStorage.Get(ctx, added.Id, 1)
+	require.NoError(t, err)
+	assert.Equal(t, domain.TorrentDownloadStatusPaused, got.Status)
+}
+
+func TestTorrentService_ResumeJob_RequiresAuthentication(t *testing.T) {
+	svc, _ := newQuotaTestService(0, 3)
+
+	err := svc.ResumeJob(context.Background(), 1)
+	require.Error(t, err)
+	assert.ErrorIs(t, err, user_errors.ErrUnauthenticated)
+}
+
+// TestTorrentService_ResumeJob_IsScopedToCaller proves a job belonging to
+// another user cannot be resumed.
+func TestTorrentService_ResumeJob_IsScopedToCaller(t *testing.T) {
+	svc, torrentStorage := newQuotaTestService(0, 3)
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	othersRow := domain.TorrentDownload{UserId: 2, TorrentName: "someone-elses", Status: domain.TorrentDownloadStatusPaused}
+	added, err := torrentStorage.Add(ctx, othersRow)
+	require.NoError(t, err)
+
+	err = svc.ResumeJob(ctx, added.Id)
+	require.Error(t, err)
+	assert.ErrorIs(t, err, storage.ErrNotFound)
+}
+
+// TestTorrentService_ResumeJob_MarksJobDownloading proves a successful
+// resume always returns the job to the downloading state.
+func TestTorrentService_ResumeJob_MarksJobDownloading(t *testing.T) {
+	svc, torrentStorage := newQuotaTestService(0, 3)
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	row := domain.TorrentDownload{UserId: 1, TorrentName: "mine", Status: domain.TorrentDownloadStatusPaused}
+	added, err := torrentStorage.Add(ctx, row)
+	require.NoError(t, err)
+
+	err = svc.ResumeJob(ctx, added.Id)
+	require.NoError(t, err)
+
+	got, err := torrentStorage.Get(ctx, added.Id, 1)
+	require.NoError(t, err)
+	assert.Equal(t, domain.TorrentDownloadStatusDownloading, got.Status)
+}
+
+func TestTorrentService_DeleteJob_RequiresAuthentication(t *testing.T) {
+	svc, _ := newQuotaTestService(0, 3)
+
+	err := svc.DeleteJob(context.Background(), 1)
+	require.Error(t, err)
+	assert.ErrorIs(t, err, user_errors.ErrUnauthenticated)
+}
+
+// TestTorrentService_DeleteJob_IsScopedToCaller proves a job belonging to
+// another user cannot be deleted, and is left untouched.
+func TestTorrentService_DeleteJob_IsScopedToCaller(t *testing.T) {
+	svc, torrentStorage := newQuotaTestService(0, 3)
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	othersRow := domain.TorrentDownload{UserId: 2, TorrentName: "someone-elses"}
+	added, err := torrentStorage.Add(ctx, othersRow)
+	require.NoError(t, err)
+
+	err = svc.DeleteJob(ctx, added.Id)
+	require.Error(t, err)
+	assert.ErrorIs(t, err, storage.ErrNotFound)
+
+	_, err = torrentStorage.Get(context.Background(), added.Id, 2)
+	require.NoError(t, err, "job must not have been removed")
+}
+
+// TestTorrentService_DeleteJob_RemovesRow proves a successful delete
+// actually invokes storage.Delete and the row is gone afterward.
+func TestTorrentService_DeleteJob_RemovesRow(t *testing.T) {
+	svc, torrentStorage := newQuotaTestService(0, 3)
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	row := domain.TorrentDownload{UserId: 1, TorrentName: "mine", Status: domain.TorrentDownloadStatusDownloading}
+	added, err := torrentStorage.Add(ctx, row)
+	require.NoError(t, err)
+
+	err = svc.DeleteJob(ctx, added.Id)
+	require.NoError(t, err)
+
+	_, err = torrentStorage.Get(ctx, added.Id, 1)
+	require.Error(t, err, "row should have been deleted")
+	assert.ErrorIs(t, err, storage.ErrNotFound)
+}
+
 // TestTorrentScratchPath_RejectsEscapingNames proves an attacker-controlled
 // torrent name cannot make cleanup delete something outside the scratch dir.
 func TestTorrentScratchPath_RejectsEscapingNames(t *testing.T) {
