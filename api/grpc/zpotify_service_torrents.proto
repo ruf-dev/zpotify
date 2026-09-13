@@ -30,6 +30,24 @@ service TorrentAPI {
       post: "/api/torrents/{job_id}/cancel"
     };
   }
+
+  rpc PauseTorrentJob(PauseTorrentJob.Request) returns (PauseTorrentJob.Response) {
+    option (google.api.http) = {
+      post: "/api/torrents/{job_id}/pause"
+    };
+  }
+
+  rpc ResumeTorrentJob(ResumeTorrentJob.Request) returns (ResumeTorrentJob.Response) {
+    option (google.api.http) = {
+      post: "/api/torrents/{job_id}/resume"
+    };
+  }
+
+  rpc DeleteTorrentJob(DeleteTorrentJob.Request) returns (DeleteTorrentJob.Response) {
+    option (google.api.http) = {
+      delete: "/api/torrents/{job_id}"
+    };
+  }
 }
 
 message TorrentJob {
@@ -71,6 +89,30 @@ message GetTorrentJob {
 }
 
 message CancelTorrentJob {
+  message Request {
+    int64 job_id = 1;
+  }
+
+  message Response {}
+}
+
+message PauseTorrentJob {
+  message Request {
+    int64 job_id = 1;
+  }
+
+  message Response {}
+}
+
+message ResumeTorrentJob {
+  message Request {
+    int64 job_id = 1;
+  }
+
+  message Response {}
+}
+
+message DeleteTorrentJob {
   message Request {
     int64 job_id = 1;
   }

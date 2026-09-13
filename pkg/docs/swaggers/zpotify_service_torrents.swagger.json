@@ -77,6 +77,35 @@
         "tags": [
           "TorrentAPI"
         ]
+      },
+      "delete": {
+        "operationId": "TorrentAPI_DeleteTorrentJob",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiDeleteTorrentJobResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TorrentAPI"
+        ]
       }
     },
     "/api/torrents/{jobId}/cancel": {
@@ -87,6 +116,68 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/zpotify_apiCancelTorrentJobResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TorrentAPI"
+        ]
+      }
+    },
+    "/api/torrents/{jobId}/pause": {
+      "post": {
+        "operationId": "TorrentAPI_PauseTorrentJob",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiPauseTorrentJobResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TorrentAPI"
+        ]
+      }
+    },
+    "/api/torrents/{jobId}/resume": {
+      "post": {
+        "operationId": "TorrentAPI_ResumeTorrentJob",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiResumeTorrentJobResponse"
             }
           },
           "default": {
@@ -143,6 +234,9 @@
     "zpotify_apiCancelTorrentJobResponse": {
       "type": "object"
     },
+    "zpotify_apiDeleteTorrentJobResponse": {
+      "type": "object"
+    },
     "zpotify_apiGetTorrentJobResponse": {
       "type": "object",
       "properties": {
@@ -188,6 +282,12 @@
           }
         }
       }
+    },
+    "zpotify_apiPauseTorrentJobResponse": {
+      "type": "object"
+    },
+    "zpotify_apiResumeTorrentJobResponse": {
+      "type": "object"
     },
     "zpotify_apiTorrentJob": {
       "type": "object",

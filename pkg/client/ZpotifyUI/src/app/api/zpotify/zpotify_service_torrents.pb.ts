@@ -54,6 +54,30 @@ export type CancelTorrentJobResponse = Record<string, never>;
 
 export type CancelTorrentJob = Record<string, never>;
 
+export type PauseTorrentJobRequest = {
+  jobId?: string;
+};
+
+export type PauseTorrentJobResponse = Record<string, never>;
+
+export type PauseTorrentJob = Record<string, never>;
+
+export type ResumeTorrentJobRequest = {
+  jobId?: string;
+};
+
+export type ResumeTorrentJobResponse = Record<string, never>;
+
+export type ResumeTorrentJob = Record<string, never>;
+
+export type DeleteTorrentJobRequest = {
+  jobId?: string;
+};
+
+export type DeleteTorrentJobResponse = Record<string, never>;
+
+export type DeleteTorrentJob = Record<string, never>;
+
 export class TorrentAPI {
   static ListTorrentJobs(this:void, req: ListTorrentJobsRequest, initReq?: fm.InitReq): Promise<ListTorrentJobsResponse> {
     return fm.fetchRequest<ListTorrentJobsResponse>(`/api/torrents/list`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
@@ -63,5 +87,14 @@ export class TorrentAPI {
   }
   static CancelTorrentJob(this:void, req: CancelTorrentJobRequest, initReq?: fm.InitReq): Promise<CancelTorrentJobResponse> {
     return fm.fetchRequest<CancelTorrentJobResponse>(`/api/torrents/${req.jobId}/cancel`, {...initReq, method: "POST"});
+  }
+  static PauseTorrentJob(this:void, req: PauseTorrentJobRequest, initReq?: fm.InitReq): Promise<PauseTorrentJobResponse> {
+    return fm.fetchRequest<PauseTorrentJobResponse>(`/api/torrents/${req.jobId}/pause`, {...initReq, method: "POST"});
+  }
+  static ResumeTorrentJob(this:void, req: ResumeTorrentJobRequest, initReq?: fm.InitReq): Promise<ResumeTorrentJobResponse> {
+    return fm.fetchRequest<ResumeTorrentJobResponse>(`/api/torrents/${req.jobId}/resume`, {...initReq, method: "POST"});
+  }
+  static DeleteTorrentJob(this:void, req: DeleteTorrentJobRequest, initReq?: fm.InitReq): Promise<DeleteTorrentJobResponse> {
+    return fm.fetchRequest<DeleteTorrentJobResponse>(`/api/torrents/${req.jobId}?${fm.renderURLSearchParams(req, ["jobId"])}`, {...initReq, method: "DELETE"});
   }
 }
