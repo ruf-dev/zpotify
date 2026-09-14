@@ -652,6 +652,7 @@ type TorrentDownload struct {
 	Error           sql.NullString
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
+	FileProgress    json.RawMessage
 }
 
 type User struct {

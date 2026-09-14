@@ -17,6 +17,7 @@ export type TorrentJob = {
   downloadedBytes?: string;
   importedFiles?: ImportedFile[];
   error?: string;
+  files?: TorrentFileProgress[];
 };
 
 export type ImportedFile = {
@@ -24,6 +25,12 @@ export type ImportedFile = {
   fileId?: string;
   status?: string;
   error?: string;
+};
+
+export type TorrentFileProgress = {
+  path?: string;
+  downloadedBytes?: string;
+  totalBytes?: string;
 };
 
 export type ListTorrentJobsRequest = {

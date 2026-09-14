@@ -29,7 +29,7 @@ func (q *Queries) DeleteTorrentDownload(ctx context.Context, arg DeleteTorrentDo
 
 const getTorrentDownloadByID = `-- name: GetTorrentDownloadByID :one
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress
 FROM torrent_downloads
 WHERE id = $1
   AND user_id = $2
@@ -56,13 +56,14 @@ func (q *Queries) GetTorrentDownloadByID(ctx context.Context, arg GetTorrentDown
 		&i.Error,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.FileProgress,
 	)
 	return i, err
 }
 
 const getTorrentDownloadByUserAndInfoHash = `-- name: GetTorrentDownloadByUserAndInfoHash :one
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress
 FROM torrent_downloads
 WHERE user_id = $1
   AND info_hash = $2
@@ -90,6 +91,7 @@ func (q *Queries) GetTorrentDownloadByUserAndInfoHash(ctx context.Context, arg G
 		&i.Error,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.FileProgress,
 	)
 	return i, err
 }
@@ -98,7 +100,7 @@ const insertTorrentDownload = `-- name: InsertTorrentDownload :one
 INSERT INTO torrent_downloads (user_id, folder_name, info_hash, torrent_name)
 VALUES ($1, $2, $3, $4)
 RETURNING id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress
 `
 
 type InsertTorrentDownloadParams struct {
@@ -129,13 +131,14 @@ func (q *Queries) InsertTorrentDownload(ctx context.Context, arg InsertTorrentDo
 		&i.Error,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.FileProgress,
 	)
 	return i, err
 }
 
 const listActiveTorrentDownloads = `-- name: ListActiveTorrentDownloads :many
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress
 FROM torrent_downloads
 WHERE status IN ('queued', 'downloading', 'importing')
 ORDER BY created_at
@@ -163,6 +166,7 @@ func (q *Queries) ListActiveTorrentDownloads(ctx context.Context) ([]TorrentDown
 			&i.Error,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.FileProgress,
 		); err != nil {
 			return nil, err
 		}
@@ -179,7 +183,7 @@ func (q *Queries) ListActiveTorrentDownloads(ctx context.Context) ([]TorrentDown
 
 const listTorrentDownloadsByUser = `-- name: ListTorrentDownloadsByUser :many
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress
 FROM torrent_downloads
 WHERE user_id = $1
   AND ($2::text = '' OR folder_name = $2::text)
@@ -213,6 +217,7 @@ func (q *Queries) ListTorrentDownloadsByUser(ctx context.Context, arg ListTorren
 			&i.Error,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.FileProgress,
 		); err != nil {
 			return nil, err
 		}
@@ -266,18 +271,25 @@ const updateTorrentDownloadProgress = `-- name: UpdateTorrentDownloadProgress :e
 UPDATE torrent_downloads
 SET downloaded_bytes = $1,
     total_bytes       = $2,
+    file_progress     = $3,
     updated_at        = NOW()
-WHERE id = $3
+WHERE id = $4
 `
 
 type UpdateTorrentDownloadProgressParams struct {
 	DownloadedBytes int64
 	TotalBytes      int64
+	FileProgress    json.RawMessage
 	ID              int64
 }
 
 func (q *Queries) UpdateTorrentDownloadProgress(ctx context.Context, arg UpdateTorrentDownloadProgressParams) error {
-	_, err := q.db.ExecContext(ctx, updateTorrentDownloadProgress, arg.DownloadedBytes, arg.TotalBytes, arg.ID)
+	_, err := q.db.ExecContext(ctx, updateTorrentDownloadProgress,
+		arg.DownloadedBytes,
+		arg.TotalBytes,
+		arg.FileProgress,
+		arg.ID,
+	)
 	return err
 }
 

@@ -41,9 +41,19 @@ type TorrentDownload struct {
 	TotalBytes      int64
 	DownloadedBytes int64
 	ImportedFiles   []string
+	Files           []TorrentFileProgress
 	Error           string
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
+}
+
+// TorrentFileProgress is one file's live download progress within a torrent
+// job - the per-file breakdown behind TorrentDownload's aggregate
+// DownloadedBytes/TotalBytes.
+type TorrentFileProgress struct {
+	Path            string `json:"path"`
+	DownloadedBytes int64  `json:"downloaded_bytes"`
+	TotalBytes      int64  `json:"total_bytes"`
 }
 
 // Per-file outcomes recorded on a completed torrent import.

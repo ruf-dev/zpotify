@@ -311,8 +311,15 @@ type TorrentDownloadStorage interface {
 	// (queued, downloading, importing), across all users, for the background sync task.
 	ListActive(ctx context.Context) ([]domain.TorrentDownload, error)
 
-	// UpdateProgress - updates downloaded/total byte counts for a torrent download.
-	UpdateProgress(ctx context.Context, id int64, downloadedBytes int64, totalBytes int64) error
+	// UpdateProgress - updates downloaded/total byte counts and the per-file
+	// progress breakdown for a torrent download.
+	UpdateProgress(
+		ctx context.Context,
+		id int64,
+		downloadedBytes int64,
+		totalBytes int64,
+		fileProgress []domain.TorrentFileProgress,
+	) error
 
 	// UpdateStatus - updates the status of a torrent download.
 	UpdateStatus(ctx context.Context, id int64, status domain.TorrentDownloadStatus) error

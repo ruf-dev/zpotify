@@ -79,6 +79,7 @@ message TorrentJob {
   int64 downloaded_bytes = 6;
   repeated ImportedFile imported_files = 7;
   string error = 8;
+  repeated TorrentFileProgress files = 9;
 }
 
 message ImportedFile {
@@ -86,6 +87,12 @@ message ImportedFile {
   int64 file_id = 2;
   string status = 3;
   string error = 4;
+}
+
+message TorrentFileProgress {
+  string path = 1;
+  int64 downloaded_bytes = 2;
+  int64 total_bytes = 3;
 }
 
 message ListTorrentJobs {

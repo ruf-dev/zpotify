@@ -186,12 +186,16 @@ func (s *TorrentService) finalizeTorrentSubmission(
 	selectedFiles []*torrent.File,
 ) (int64, error) {
 	var totalBytes int64
+	fileProgress := make([]domain.TorrentFileProgress, 0, len(selectedFiles))
 	for _, file := range selectedFiles {
 		if file.Length() > uCtx.Permissions.MaxSongSizeBytes {
 			tor.Drop()
 			return 0, rerrors.Wrap(service_errors.ErrSongSizeLimitExceeded, file.Path())
 		}
 		totalBytes += file.Length()
+
+		progress := domain.TorrentFileProgress{Path: file.Path(), DownloadedBytes: 0, TotalBytes: file.Length()}
+		fileProgress = append(fileProgress, progress)
 	}
 
 	if totalBytes > uCtx.Permissions.MaxTotalUploadBytes {
@@ -212,7 +216,7 @@ func (s *TorrentService) finalizeTorrentSubmission(
 		return 0, rerrors.Wrap(err, "error saving torrent download")
 	}
 
-	err = s.torrentStorage.UpdateProgress(ctx, row.Id, 0, totalBytes)
+	err = s.torrentStorage.UpdateProgress(ctx, row.Id, 0, totalBytes, fileProgress)
 	if err != nil {
 		return 0, rerrors.Wrap(err, "error setting initial torrent progress")
 	}
@@ -222,7 +226,11 @@ func (s *TorrentService) finalizeTorrentSubmission(
 		return 0, rerrors.Wrap(err, "error marking torrent as downloading")
 	}
 
-	tor.DownloadAll()
+	// The download itself already started: the caller (applyAudioOnlyPriority
+	// or applySelectedPriority) set PiecePriorityNormal on exactly the
+	// selected files before calling here. Torrent.DownloadAll() must not be
+	// called in addition - it raises every piece, including deliberately
+	// skipped files, back to Normal, defeating the selection entirely.
 
 	return row.Id, nil
 }
@@ -451,7 +459,7 @@ func (s *TorrentService) ImportCompleted(ctx context.Context, row domain.Torrent
 	return nil
 }
 
-// importCompletedTorrent streams every audio file of a completed torrent
+// importCompletedTorrent streams every selected file of a completed torrent
 // through the shared upload pipeline into the owner's tmp/{userId}/{folder}
 // storage, records the per-file outcome, and then either drops the torrent or
 // leaves it seeding.
@@ -476,11 +484,11 @@ func (s *TorrentService) importCompletedTorrent(ctx context.Context, row domain.
 		jobs:          s.jobs,
 	}
 
-	audioFiles := audioFilesOf(tor)
+	selectedFiles := selectedFilesOf(tor)
 
-	imported := make([]domain.TorrentImportedFile, 0, len(audioFiles))
+	imported := make([]domain.TorrentImportedFile, 0, len(selectedFiles))
 	succeeded := 0
-	for _, file := range audioFiles {
+	for _, file := range selectedFiles {
 		entry := s.importOneFile(ctx, pipeline, row, permissions, file.Path())
 		if entry.Status == domain.TorrentImportedFileStatusOk {
 			succeeded++

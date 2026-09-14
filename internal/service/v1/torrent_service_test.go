@@ -136,7 +136,13 @@ func (f *fakeTorrentDownloadStorage) ListActive(_ context.Context) ([]domain.Tor
 	return rows, nil
 }
 
-func (f *fakeTorrentDownloadStorage) UpdateProgress(_ context.Context, id int64, downloadedBytes int64, totalBytes int64) error {
+func (f *fakeTorrentDownloadStorage) UpdateProgress(
+	_ context.Context,
+	id int64,
+	downloadedBytes int64,
+	totalBytes int64,
+	fileProgress []domain.TorrentFileProgress,
+) error {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 
@@ -146,6 +152,7 @@ func (f *fakeTorrentDownloadStorage) UpdateProgress(_ context.Context, id int64,
 	}
 	row.DownloadedBytes = downloadedBytes
 	row.TotalBytes = totalBytes
+	row.Files = fileProgress
 	f.byId[id] = row
 
 	return nil
@@ -952,20 +959,20 @@ func TestTorrentService_WatchJobs_SendsCurrentJobs(t *testing.T) {
 	userID := int64(1)
 
 	job1 := domain.TorrentDownload{
-		UserId:     userID,
-		InfoHash:   "abc123",
+		UserId:      userID,
+		InfoHash:    "abc123",
 		TorrentName: "album1.torrent",
-		Status:     domain.TorrentDownloadStatusDownloading,
+		Status:      domain.TorrentDownloadStatusDownloading,
 	}
 
 	job1Result, err := torrentStorage.Add(context.Background(), job1)
 	require.NoError(t, err)
 
 	job2 := domain.TorrentDownload{
-		UserId:     userID,
-		InfoHash:   "def456",
+		UserId:      userID,
+		InfoHash:    "def456",
 		TorrentName: "album2.torrent",
-		Status:     domain.TorrentDownloadStatusQueued,
+		Status:      domain.TorrentDownloadStatusQueued,
 	}
 
 	job2Result, err := torrentStorage.Add(context.Background(), job2)
@@ -1014,19 +1021,19 @@ func TestTorrentService_WatchJobs_FiltersFolder(t *testing.T) {
 	userID := int64(1)
 
 	job1 := domain.TorrentDownload{
-		UserId:     userID,
-		FolderName: "folder1",
+		UserId:      userID,
+		FolderName:  "folder1",
 		TorrentName: "album1.torrent",
-		Status:     domain.TorrentDownloadStatusDownloading,
+		Status:      domain.TorrentDownloadStatusDownloading,
 	}
 
 	torrentStorage.Add(context.Background(), job1)
 
 	job2 := domain.TorrentDownload{
-		UserId:     userID,
-		FolderName: "folder2",
+		UserId:      userID,
+		FolderName:  "folder2",
 		TorrentName: "album2.torrent",
-		Status:     domain.TorrentDownloadStatusQueued,
+		Status:      domain.TorrentDownloadStatusQueued,
 	}
 
 	torrentStorage.Add(context.Background(), job2)
@@ -1071,17 +1078,17 @@ func TestTorrentService_WatchJobs_UserIsolation(t *testing.T) {
 	user2 := int64(2)
 
 	job1 := domain.TorrentDownload{
-		UserId:     user1,
+		UserId:      user1,
 		TorrentName: "album1.torrent",
-		Status:     domain.TorrentDownloadStatusDownloading,
+		Status:      domain.TorrentDownloadStatusDownloading,
 	}
 
 	torrentStorage.Add(context.Background(), job1)
 
 	job2 := domain.TorrentDownload{
-		UserId:     user2,
+		UserId:      user2,
 		TorrentName: "album2.torrent",
-		Status:     domain.TorrentDownloadStatusDownloading,
+		Status:      domain.TorrentDownloadStatusDownloading,
 	}
 
 	torrentStorage.Add(context.Background(), job2)

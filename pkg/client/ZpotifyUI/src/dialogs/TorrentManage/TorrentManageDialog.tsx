@@ -12,6 +12,7 @@ import { formatFileSize } from '@/shared/lib/files.ts';
 import { isPausedTorrentStatus, isTerminalTorrentStatus } from '@/shared/lib/torrentStatus.ts';
 import BackButton from '@/shared/ui/BackButton';
 import { useBackGuard } from '@/shared/lib/useBackGuard';
+import TorrentFileProgressList from '@/components/TorrentFileProgressList/TorrentFileProgressList';
 import type { TorrentJob } from '@/app/api/zpotify';
 
 interface TorrentManageDialogProps {
@@ -43,6 +44,7 @@ export default function TorrentManageDialog({ job: initialJob, previousScreen }:
     const total = Number(job.totalBytes ?? 0);
     const downloaded = Number(job.downloadedBytes ?? 0);
     const importedFiles = job.importedFiles ?? [];
+    const fileProgress = job.files ?? [];
 
     function handlePause() {
         if (!job.id || toggling) return;
@@ -125,6 +127,8 @@ export default function TorrentManageDialog({ job: initialJob, previousScreen }:
                 </div>
 
                 {job.error && <span className={cls.ErrorMessage}>{job.error}</span>}
+
+                {fileProgress.length > 1 && <TorrentFileProgressList files={fileProgress} />}
 
                 {importedFiles.length > 0 && (
                     <div className={cls.FileList}>

@@ -31,13 +31,16 @@ export function useWatchTorrentJobs(folderName?: string, limit: number = 3) {
         setLoading(true);
 
         torrentService
-            .WatchTorrentJobs(request, handleJobUpdate, abortController.signal)
-            .then(() => {
-                setLoading(false);
+            .ListTorrentJobs({ folderName })
+            .then((res) => {
+                setJobs((res.jobs ?? []).slice(0, limit));
             })
-            .catch(() => {
+            .catch(() => {})
+            .finally(() => {
                 setLoading(false);
             });
+
+        torrentService.WatchTorrentJobs(request, handleJobUpdate, abortController.signal).catch(() => {});
 
         return () => {
             abortController.abort();

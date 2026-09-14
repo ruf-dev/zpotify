@@ -6,6 +6,12 @@
     border-radius: var(--border-radius-md);
     background: var(--color-bg-card);
     border: 0.0625rem solid var(--color-border);
+    cursor: pointer;
+
+    &:focus-visible {
+        outline: 0.125rem solid var(--color-fg-accent);
+        outline-offset: 0.125rem;
+    }
 }
 
 .TorrentIcon {
@@ -70,6 +76,11 @@
 .ErrorLabel {
     font-size: var(--font-size-xs);
     color: var(--color-error);
+}
+
+.FileProgressList {
+    max-height: var(--torrent-file-progress-max-height);
+    overflow-y: auto;
 }
 
 .ManageButton {

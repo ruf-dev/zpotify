@@ -170,13 +170,18 @@ func TestTorrentDownloadsStorage_UpdateProgress(t *testing.T) {
 	created, err := store.Add(ctx, dl)
 	require.NoError(t, err)
 
-	err = store.UpdateProgress(ctx, created.Id, 512, 1024)
+	fileProgress := []domain.TorrentFileProgress{
+		{Path: "track01.flac", DownloadedBytes: 512, TotalBytes: 1024},
+	}
+
+	err = store.UpdateProgress(ctx, created.Id, 512, 1024, fileProgress)
 	require.NoError(t, err)
 
 	fetched, err := store.Get(ctx, created.Id, userId)
 	require.NoError(t, err)
 	assert.EqualValues(t, 512, fetched.DownloadedBytes)
 	assert.EqualValues(t, 1024, fetched.TotalBytes)
+	assert.Equal(t, fileProgress, fetched.Files)
 }
 
 func TestTorrentDownloadsStorage_UpdateStatus(t *testing.T) {

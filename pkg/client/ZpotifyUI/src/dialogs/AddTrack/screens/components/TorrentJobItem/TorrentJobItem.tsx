@@ -1,8 +1,10 @@
+import { type KeyboardEvent, type MouseEvent } from 'react';
 import { Button } from '@vervstack/chures';
 
 import { DownloadIcon } from '@/assets/icons/DownloadIcon';
 import cls from '@/dialogs/AddTrack/screens/components/TorrentJobItem/TorrentJobItem.module.css';
 import { formatFileSize } from '@/shared/lib/files.ts';
+import TorrentFileProgressList from '@/components/TorrentFileProgressList/TorrentFileProgressList';
 import type { TorrentJob } from '@/app/api/zpotify';
 
 interface TorrentJobItemProps {
@@ -15,13 +17,32 @@ export default function TorrentJobItem({ job, onManage }: TorrentJobItemProps) {
     const downloaded = Number(job.downloadedBytes ?? 0);
     const progress = total > 0 ? Math.min(1, downloaded / total) : 0;
     const progressLabel = `${Math.round(progress * 100)}%`;
+    const files = job.files ?? [];
 
-    function handleManageClick() {
+    function handleRowClick() {
         onManage(job);
     }
 
+    function handleManageButtonClick(e: MouseEvent) {
+        e.stopPropagation();
+        onManage(job);
+    }
+
+    function handleKeyDown(e: KeyboardEvent) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleRowClick();
+        }
+    }
+
     return (
-        <div className={cls.TorrentJobItemContainer}>
+        <div
+            className={cls.TorrentJobItemContainer}
+            onClick={handleRowClick}
+            onKeyDown={handleKeyDown}
+            role="button"
+            tabIndex={0}
+        >
             <div className={cls.TorrentIcon}>
                 <DownloadIcon />
             </div>
@@ -40,8 +61,9 @@ export default function TorrentJobItem({ job, onManage }: TorrentJobItemProps) {
                     </span>
                 </div>
                 {job.error && <span className={cls.ErrorLabel}>{job.error}</span>}
+                {files.length > 1 && <TorrentFileProgressList files={files} className={cls.FileProgressList} />}
             </div>
-            <Button variant="ghost" className={cls.ManageButton} onClick={handleManageClick}>
+            <Button variant="ghost" className={cls.ManageButton} onClick={handleManageButtonClick}>
                 Manage
             </Button>
         </div>

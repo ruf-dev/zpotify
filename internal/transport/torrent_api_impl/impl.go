@@ -60,6 +60,16 @@ func toTorrentJob(row domain.TorrentDownload) *zpotify_api.TorrentJob {
 		apiFiles = append(apiFiles, apiFile)
 	}
 
+	apiFileProgress := make([]*zpotify_api.TorrentFileProgress, 0, len(row.Files))
+	for _, file := range row.Files {
+		fileProgress := &zpotify_api.TorrentFileProgress{
+			Path:            file.Path,
+			DownloadedBytes: file.DownloadedBytes,
+			TotalBytes:      file.TotalBytes,
+		}
+		apiFileProgress = append(apiFileProgress, fileProgress)
+	}
+
 	job := &zpotify_api.TorrentJob{
 		Id:              row.Id,
 		TorrentName:     row.TorrentName,
@@ -69,6 +79,7 @@ func toTorrentJob(row domain.TorrentDownload) *zpotify_api.TorrentJob {
 		DownloadedBytes: row.DownloadedBytes,
 		ImportedFiles:   apiFiles,
 		Error:           row.Error,
+		Files:           apiFileProgress,
 	}
 
 	return job

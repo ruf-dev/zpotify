@@ -6,10 +6,17 @@
     border-radius: var(--border-radius-md);
     background: var(--color-bg-card);
     border: 0.0625rem solid var(--color-border);
+    cursor: pointer;
+}
+
+.TorrentFileRowContainer:focus-visible {
+    outline: 0.125rem solid var(--color-fg-accent);
+    outline-offset: -0.125rem;
 }
 
 .Unsupported {
     color: var(--color-fg-disabled);
+    cursor: not-allowed;
 }
 
 .FileName {

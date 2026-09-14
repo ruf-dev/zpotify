@@ -16,12 +16,11 @@ import (
 const defaultPeriod = 3 * time.Second
 
 // TorrentHandle is the minimal view of one registered torrent this task needs.
-// Byte counts are restricted to the torrent's audio files - the only files a
-// torrent job ever downloads - so completion is not judged against payload
-// that was deliberately skipped.
+// FileProgress is restricted to the files actually selected for download -
+// the only ones a torrent job ever downloads - so completion is not judged
+// against payload that was deliberately skipped.
 type TorrentHandle interface {
-	AudioBytesCompleted() int64
-	AudioBytesTotal() int64
+	FileProgress() []domain.TorrentFileProgress
 }
 
 // TorrentLookup resolves a tracked job's hex info hash to its live torrent.
@@ -136,16 +135,17 @@ func (t *Task) syncRow(ctx context.Context, row domain.TorrentDownload) error {
 		return nil
 	}
 
-	downloaded := handle.AudioBytesCompleted()
-	total := handle.AudioBytesTotal()
+	files := handle.FileProgress()
+	downloaded, total := sumFileProgress(files)
 
-	err := t.torrentStorage.UpdateProgress(ctx, row.Id, downloaded, total)
+	err := t.torrentStorage.UpdateProgress(ctx, row.Id, downloaded, total, files)
 	if err != nil {
 		return rerrors.Wrap(err, "error updating torrent progress")
 	}
 
 	row.DownloadedBytes = downloaded
 	row.TotalBytes = total
+	row.Files = files
 	t.broadcaster.Publish(row)
 
 	if !isComplete(downloaded, total) {
@@ -181,6 +181,17 @@ func (t *Task) syncRow(ctx context.Context, row domain.TorrentDownload) error {
 	t.broadcaster.Publish(row)
 
 	return rerrors.Wrap(importErr, "error importing completed torrent")
+}
+
+// sumFileProgress totals a torrent's per-file breakdown into the aggregate
+// downloaded/total byte counts stored on the row.
+func sumFileProgress(files []domain.TorrentFileProgress) (downloaded int64, total int64) {
+	for _, file := range files {
+		downloaded += file.DownloadedBytes
+		total += file.TotalBytes
+	}
+
+	return downloaded, total
 }
 
 // isComplete reports whether every audio byte of a torrent is on disk. A

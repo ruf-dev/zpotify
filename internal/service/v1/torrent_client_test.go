@@ -14,8 +14,9 @@ import (
 )
 
 const (
-	testTrackFileName = "01.mp3"
-	testCoverFileName = "cover.jpg"
+	testTrackFileName       = "01.mp3"
+	testCoverFileName       = "cover.jpg"
+	testUnsupportedFileName = "readme.txt"
 )
 
 // newTestTorrent registers a torrent built from the given files with a client
@@ -76,7 +77,9 @@ func newTestTorrent(t *testing.T, files []metainfo.FileInfo) *torrent.Torrent {
 }
 
 // TestApplySelectedPriority_SelectsValidSubset proves only the caller's
-// chosen, audio-supported files are prioritized for download and returned.
+// chosen, supported files are prioritized for download and returned, and an
+// unselected file is left at zero priority even though it is itself a
+// supported format.
 func TestApplySelectedPriority_SelectsValidSubset(t *testing.T) {
 	files := []metainfo.FileInfo{
 		{Path: []string{testTrackFileName}, Length: 100},
@@ -100,6 +103,28 @@ func TestApplySelectedPriority_SelectsValidSubset(t *testing.T) {
 	}
 }
 
+// TestApplySelectedPriority_SelectsCoverImage proves a cover image can be
+// selected alongside an audio file - not just audio formats - so it can be
+// downloaded now and used as album art later.
+func TestApplySelectedPriority_SelectsCoverImage(t *testing.T) {
+	files := []metainfo.FileInfo{
+		{Path: []string{testTrackFileName}, Length: 100},
+		{Path: []string{testCoverFileName}, Length: 50},
+	}
+	tor := newTestTorrent(t, files)
+
+	trackPath := "TestTorrent/" + testTrackFileName
+	coverPath := "TestTorrent/" + testCoverFileName
+
+	selected, err := applySelectedPriority(tor, []string{trackPath, coverPath})
+	require.NoError(t, err)
+	require.Len(t, selected, 2)
+
+	for _, file := range selected {
+		assert.Equal(t, torrent.PiecePriorityNormal, file.Priority())
+	}
+}
+
 // TestApplySelectedPriority_RejectsPathNotInTorrent proves a selected path
 // that does not match any file in the torrent is rejected outright, rather
 // than silently ignored.
@@ -114,16 +139,17 @@ func TestApplySelectedPriority_RejectsPathNotInTorrent(t *testing.T) {
 	assert.Nil(t, selected)
 }
 
-// TestApplySelectedPriority_RejectsNonAudioPath proves a selected path that
-// matches a real file, but one the audio parsers do not support, is rejected.
-func TestApplySelectedPriority_RejectsNonAudioPath(t *testing.T) {
+// TestApplySelectedPriority_RejectsUnsupportedPath proves a selected path
+// that matches a real file, but one neither the audio parsers nor the cover
+// image allowlist support, is rejected.
+func TestApplySelectedPriority_RejectsUnsupportedPath(t *testing.T) {
 	files := []metainfo.FileInfo{
 		{Path: []string{testTrackFileName}, Length: 100},
-		{Path: []string{testCoverFileName}, Length: 50},
+		{Path: []string{testUnsupportedFileName}, Length: 50},
 	}
 	tor := newTestTorrent(t, files)
 
-	selected, err := applySelectedPriority(tor, []string{"TestTorrent/" + testCoverFileName})
+	selected, err := applySelectedPriority(tor, []string{"TestTorrent/" + testUnsupportedFileName})
 	require.Error(t, err)
 	assert.Nil(t, selected)
 }
@@ -144,13 +170,15 @@ func TestApplySelectedPriority_RejectsEmptySelection(t *testing.T) {
 // TestTorrentFileEntriesOf_MultiFileTorrent proves the listed paths match
 // what torrent.File.Path() returns post-AddTorrent (the torrent's top-level
 // name joined with each file's own path), not FileInfo.DisplayPath (which
-// omits that name for a multi-file torrent).
+// omits that name for a multi-file torrent), and that a cover image is
+// listed as supported alongside audio.
 func TestTorrentFileEntriesOf_MultiFileTorrent(t *testing.T) {
 	info := &metainfo.Info{
 		Name: "Album",
 		Files: []metainfo.FileInfo{
 			{Path: []string{"Track One.mp3"}, Length: 100},
 			{Path: []string{"Artwork.jpg"}, Length: 50},
+			{Path: []string{"liner notes.txt"}, Length: 10},
 		},
 	}
 
@@ -158,7 +186,8 @@ func TestTorrentFileEntriesOf_MultiFileTorrent(t *testing.T) {
 
 	want := []domain.TorrentFileEntry{
 		{Path: "Album/Track One.mp3", SizeBytes: 100, Supported: true},
-		{Path: "Album/Artwork.jpg", SizeBytes: 50, Supported: false},
+		{Path: "Album/Artwork.jpg", SizeBytes: 50, Supported: true},
+		{Path: "Album/liner notes.txt", SizeBytes: 10, Supported: false},
 	}
 	assert.Equal(t, want, entries)
 }

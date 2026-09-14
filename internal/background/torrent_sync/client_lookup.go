@@ -4,7 +4,7 @@ import (
 	"github.com/anacrolix/torrent"
 	"github.com/anacrolix/torrent/metainfo"
 
-	"go.zpotify.ru/zpotify/internal/audio_parsers"
+	"go.zpotify.ru/zpotify/internal/domain"
 )
 
 // clientLookup adapts the anacrolix bittorrent client to TorrentLookup.
@@ -41,39 +41,42 @@ func (c *clientLookup) Torrent(infoHash string) (TorrentHandle, bool) {
 	return handle, true
 }
 
-// torrentHandle reports byte counts over a torrent's audio files only, since
-// non-audio files are given zero priority and are never downloaded.
+// torrentHandle reports progress over the files actually selected for
+// download (a non-zero piece priority), not just anything with an audio
+// extension - a submitted job may also select a supported cover image
+// alongside its audio files, and everything left at zero priority is never
+// downloaded regardless of its format.
 type torrentHandle struct {
 	tor *torrent.Torrent
 }
 
-func (h *torrentHandle) AudioBytesCompleted() int64 {
-	var completed int64
-	for _, file := range h.audioFiles() {
-		completed += file.BytesCompleted()
+// FileProgress reports each selected file's own downloaded/total byte
+// counts, so a caller can render or sum them independently.
+func (h *torrentHandle) FileProgress() []domain.TorrentFileProgress {
+	files := h.selectedFiles()
+
+	progress := make([]domain.TorrentFileProgress, 0, len(files))
+	for _, file := range files {
+		fileProgress := domain.TorrentFileProgress{
+			Path:            file.Path(),
+			DownloadedBytes: file.BytesCompleted(),
+			TotalBytes:      file.Length(),
+		}
+		progress = append(progress, fileProgress)
 	}
 
-	return completed
+	return progress
 }
 
-func (h *torrentHandle) AudioBytesTotal() int64 {
-	var total int64
-	for _, file := range h.audioFiles() {
-		total += file.Length()
-	}
-
-	return total
-}
-
-func (h *torrentHandle) audioFiles() []*torrent.File {
+func (h *torrentHandle) selectedFiles() []*torrent.File {
 	files := h.tor.Files()
 
-	audioFiles := make([]*torrent.File, 0, len(files))
+	selected := make([]*torrent.File, 0, len(files))
 	for _, file := range files {
-		if audio_parsers.IsSupported(file.Path()) {
-			audioFiles = append(audioFiles, file)
+		if file.Priority() != torrent.PiecePriorityNone {
+			selected = append(selected, file)
 		}
 	}
 
-	return audioFiles
+	return selected
 }

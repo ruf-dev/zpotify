@@ -137,14 +137,30 @@ func (s *TorrentDownloadsStorage) ListActive(ctx context.Context) ([]domain.Torr
 	return downloads, nil
 }
 
-func (s *TorrentDownloadsStorage) UpdateProgress(ctx context.Context, id int64, downloadedBytes int64, totalBytes int64) error {
+func (s *TorrentDownloadsStorage) UpdateProgress(
+	ctx context.Context,
+	id int64,
+	downloadedBytes int64,
+	totalBytes int64,
+	fileProgress []domain.TorrentFileProgress,
+) error {
+	if fileProgress == nil {
+		fileProgress = []domain.TorrentFileProgress{}
+	}
+
+	rawFileProgress, err := json.Marshal(fileProgress)
+	if err != nil {
+		return rerrors.Wrap(err, "marshal file progress")
+	}
+
 	params := torrent_downloads_q.UpdateTorrentDownloadProgressParams{
 		ID:              id,
 		DownloadedBytes: downloadedBytes,
 		TotalBytes:      totalBytes,
+		FileProgress:    rawFileProgress,
 	}
 
-	err := s.q.UpdateTorrentDownloadProgress(ctx, params)
+	err = s.q.UpdateTorrentDownloadProgress(ctx, params)
 	if err != nil {
 		return wrapPgErr(err)
 	}
@@ -241,6 +257,14 @@ func toTorrentDownloadDomain(row torrent_downloads_q.TorrentDownload) (domain.To
 		}
 	}
 
+	fileProgress := []domain.TorrentFileProgress{}
+	if len(row.FileProgress) != 0 {
+		err := json.Unmarshal(row.FileProgress, &fileProgress)
+		if err != nil {
+			return domain.TorrentDownload{}, rerrors.Wrap(err, "unmarshal file progress")
+		}
+	}
+
 	dl := domain.TorrentDownload{
 		Id:              row.ID,
 		UserId:          row.UserID,
@@ -251,6 +275,7 @@ func toTorrentDownloadDomain(row torrent_downloads_q.TorrentDownload) (domain.To
 		TotalBytes:      row.TotalBytes,
 		DownloadedBytes: row.DownloadedBytes,
 		ImportedFiles:   importedFiles,
+		Files:           fileProgress,
 		Error:           row.Error.String,
 		CreatedAt:       row.CreatedAt,
 		UpdatedAt:       row.UpdatedAt,

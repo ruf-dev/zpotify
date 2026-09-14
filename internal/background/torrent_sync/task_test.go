@@ -14,18 +14,15 @@ import (
 	"go.zpotify.ru/zpotify/internal/storage"
 )
 
-// fakeHandle is a TorrentHandle returning fixed byte counts.
+// fakeHandle is a TorrentHandle reporting a single file's fixed byte counts.
 type fakeHandle struct {
 	completed int64
 	total     int64
 }
 
-func (h fakeHandle) AudioBytesCompleted() int64 {
-	return h.completed
-}
-
-func (h fakeHandle) AudioBytesTotal() int64 {
-	return h.total
+func (h fakeHandle) FileProgress() []domain.TorrentFileProgress {
+	fileProgress := domain.TorrentFileProgress{Path: "file", DownloadedBytes: h.completed, TotalBytes: h.total}
+	return []domain.TorrentFileProgress{fileProgress}
 }
 
 // fakeLookup is a TorrentLookup backed by a map of info hash to handle.
@@ -63,6 +60,7 @@ type progressCall struct {
 	id         int64
 	downloaded int64
 	total      int64
+	files      []domain.TorrentFileProgress
 }
 
 // fakeTorrentStorage records the state transitions the task drives.
@@ -104,11 +102,17 @@ func (f *fakeTorrentStorage) ListActive(_ context.Context) ([]domain.TorrentDown
 	return f.active, nil
 }
 
-func (f *fakeTorrentStorage) UpdateProgress(_ context.Context, id int64, downloadedBytes int64, totalBytes int64) error {
+func (f *fakeTorrentStorage) UpdateProgress(
+	_ context.Context,
+	id int64,
+	downloadedBytes int64,
+	totalBytes int64,
+	fileProgress []domain.TorrentFileProgress,
+) error {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 
-	call := progressCall{id: id, downloaded: downloadedBytes, total: totalBytes}
+	call := progressCall{id: id, downloaded: downloadedBytes, total: totalBytes, files: fileProgress}
 	f.progress = append(f.progress, call)
 
 	return nil
@@ -183,7 +187,8 @@ func TestSyncRow_WritesProgressWhileIncomplete(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Len(t, torrentStorage.progress, 1)
-	wantProgress := progressCall{id: 7, downloaded: 40, total: 100}
+	wantFiles := []domain.TorrentFileProgress{{Path: "file", DownloadedBytes: 40, TotalBytes: 100}}
+	wantProgress := progressCall{id: 7, downloaded: 40, total: 100, files: wantFiles}
 	assert.Equal(t, wantProgress, torrentStorage.progress[0])
 
 	assert.Empty(t, torrentStorage.statuses, "an incomplete torrent must not change status")
@@ -204,7 +209,8 @@ func TestSyncRow_ImportsOnceAudioBytesComplete(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Len(t, torrentStorage.progress, 1)
-	wantProgress := progressCall{id: 7, downloaded: 100, total: 100}
+	wantFiles := []domain.TorrentFileProgress{{Path: "file", DownloadedBytes: 100, TotalBytes: 100}}
+	wantProgress := progressCall{id: 7, downloaded: 100, total: 100, files: wantFiles}
 	assert.Equal(t, wantProgress, torrentStorage.progress[0])
 
 	require.Len(t, torrentStorage.statuses, 1)

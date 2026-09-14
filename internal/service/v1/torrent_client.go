@@ -108,14 +108,16 @@ func applyAudioOnlyPriority(tor *torrent.Torrent) []*torrent.File {
 	return audioFilesOf(tor)
 }
 
-// applySelectedPriority marks exactly the caller's chosen, audio-supported
-// files in tor for download at normal priority and everything else as
-// skipped, and returns the selected files.
+// applySelectedPriority marks exactly the caller's chosen, supported files in
+// tor for download at normal priority and everything else as skipped, and
+// returns the selected files. "Supported" here is isSupportedUpload's - a
+// parsable audio format or a cover image - since a selection may pair an
+// audio file with e.g. a cover.jpg to keep for later use as its album art.
 //
 // Unlike applyAudioOnlyPriority, selectedPaths is caller-controlled input:
-// every entry must match a real, audio-supported file in tor, and the
-// resulting selection must be non-empty - a bogus path is rejected rather
-// than silently dropped.
+// every entry must match a real, supported file in tor, and the resulting
+// selection must be non-empty - a bogus path is rejected rather than
+// silently dropped.
 //
 // The caller must have waited on tor.GotInfo() first - a torrent with no info
 // dict has no file list to prioritize yet.
@@ -131,7 +133,7 @@ func applySelectedPriority(tor *torrent.Torrent, selectedPaths []string) ([]*tor
 	for _, file := range tor.Files() {
 		filePath := file.Path()
 
-		if wanted[filePath] && audio_parsers.IsSupported(filePath) {
+		if wanted[filePath] && isSupportedUpload(filePath) {
 			file.SetPriority(torrent.PiecePriorityNormal)
 			selected = append(selected, file)
 			matched[filePath] = true
@@ -152,6 +154,27 @@ func applySelectedPriority(tor *torrent.Torrent, selectedPaths []string) ([]*tor
 	}
 
 	return selected, nil
+}
+
+// selectedFilesOf returns the files of tor that were actually marked for
+// download (a non-zero piece priority), regardless of what criterion put
+// them there - applyAudioOnlyPriority's audio-only rule or
+// applySelectedPriority's caller-chosen subset. This is the single
+// definition of "what a torrent job downloads" used once selection has
+// already happened, by progress accounting and import; unlike audioFilesOf it
+// does not re-derive the selection from file extensions, so it stays correct
+// for a job that also selected a cover image.
+func selectedFilesOf(tor *torrent.Torrent) []*torrent.File {
+	files := tor.Files()
+
+	selected := make([]*torrent.File, 0, len(files))
+	for _, file := range files {
+		if file.Priority() != torrent.PiecePriorityNone {
+			selected = append(selected, file)
+		}
+	}
+
+	return selected
 }
 
 // torrentScratchPath resolves where anacrolix stores a torrent named

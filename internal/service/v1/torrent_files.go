@@ -10,7 +10,6 @@ import (
 	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
 
-	"go.zpotify.ru/zpotify/internal/audio_parsers"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/service/service_errors"
@@ -252,7 +251,7 @@ func torrentFileEntriesOf(info *metainfo.Info) []domain.TorrentFileEntry {
 		entry := domain.TorrentFileEntry{
 			Path:      filePath,
 			SizeBytes: fileInfo.Length,
-			Supported: audio_parsers.IsSupported(filePath),
+			Supported: isSupportedUpload(filePath),
 		}
 		entries = append(entries, entry)
 	}

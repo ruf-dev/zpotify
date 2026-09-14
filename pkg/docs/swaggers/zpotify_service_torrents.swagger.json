@@ -462,6 +462,22 @@
         }
       }
     },
+    "zpotify_apiTorrentFileProgress": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "downloadedBytes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "totalBytes": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "zpotify_apiTorrentJob": {
       "type": "object",
       "properties": {
@@ -495,6 +511,13 @@
         },
         "error": {
           "type": "string"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiTorrentFileProgress"
+          }
         }
       }
     },

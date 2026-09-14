@@ -16,13 +16,39 @@ export default function TorrentFileRow({ entry, selected, onToggleSelect }: Torr
     const name = path.split('/').pop() || path;
     const supported = entry.supported === true;
 
-    function handleChange() {
+    function handleRowClick() {
+        if (!supported) {
+            return;
+        }
         onToggleSelect(path);
     }
 
+    function handleCheckboxAreaClick(e: React.MouseEvent) {
+        e.stopPropagation();
+    }
+
+    function handleKeyDown(e: React.KeyboardEvent) {
+        if (e.key !== 'Enter' && e.key !== ' ') {
+            return;
+        }
+        e.preventDefault();
+        handleRowClick();
+    }
+
     return (
-        <div className={cn(cls.TorrentFileRowContainer, !supported && cls.Unsupported)}>
-            <Checkbox checked={supported && selected} onChange={handleChange} disabled={!supported} />
+        <div
+            className={cn(cls.TorrentFileRowContainer, !supported && cls.Unsupported)}
+            onClick={handleRowClick}
+            onKeyDown={handleKeyDown}
+            role="checkbox"
+            aria-checked={supported && selected}
+            aria-disabled={!supported}
+            tabIndex={supported ? 0 : -1}
+            title={supported ? undefined : 'Unsupported file type — cannot be downloaded'}
+        >
+            <span onClick={handleCheckboxAreaClick}>
+                <Checkbox checked={supported && selected} onChange={handleRowClick} disabled={!supported} />
+            </span>
             <span className={cls.FileName}>{name}</span>
             <span className={cls.FileSize}>{formatFileBytes(entry.sizeBytes, 0)}</span>
         </div>
