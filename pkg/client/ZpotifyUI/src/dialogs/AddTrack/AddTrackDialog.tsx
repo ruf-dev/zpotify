@@ -7,6 +7,8 @@ import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { ServiceError } from '@/shared/api/Errors.ts';
 import { webApiService } from '@/shared/api/WebApi.ts';
+import { torrentService } from '@/shared/api/TorrentService.ts';
+import { parseDuplicateTorrentJobId } from '@/dialogs/AddTrack/parseDuplicateTorrentJobId.ts';
 import ChooseScreen from '@/dialogs/AddTrack/screens/ChooseScreen';
 import DropZoneScreen from '@/dialogs/AddTrack/screens/DropZoneScreen';
 import PendingFilesScreen from '@/dialogs/AddTrack/screens/PendingFilesScreen';
@@ -113,9 +115,25 @@ export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialo
                 setStep('pending');
             })
             .catch((err: unknown) => {
-                toaster.catch(err as ServiceError);
+                const existingJobId = parseDuplicateTorrentJobId(err);
+                if (existingJobId === undefined) {
+                    toaster.catch(err as ServiceError);
+                    return;
+                }
+
+                openExistingTorrentJob(existingJobId);
             })
             .finally(() => setUploading(false));
+    }
+
+    function openExistingTorrentJob(jobId: string) {
+        torrentService
+            .GetTorrentJob({ jobId })
+            .then((res) => {
+                if (!res.job) return;
+                OpenDialog(<TorrentManageDialog job={res.job} />);
+            })
+            .catch((err: unknown) => toaster.catch(err as ServiceError));
     }
 
     function handleManageTorrent(job: TorrentJob) {

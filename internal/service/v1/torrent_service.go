@@ -113,6 +113,16 @@ func (s *TorrentService) SubmitTorrent(ctx context.Context, torrentFileBytes []b
 		return 0, rerrors.Wrap(service_errors.ErrInvalidTorrentFile, "torrent has no files")
 	}
 
+	infoHash := metaInfo.HashInfoBytes().HexString()
+
+	existing, err := s.torrentStorage.GetByUserAndInfoHash(ctx, uCtx.UserId, infoHash)
+	if err != nil {
+		return 0, rerrors.Wrap(err, "error checking for an existing torrent download")
+	}
+	if existing.Valid {
+		return existing.V.Id, rerrors.Wrap(service_errors.ErrTorrentAlreadyExists)
+	}
+
 	err = s.checkSubmitQuota(ctx, uCtx.UserId, uCtx.Permissions.MaxPendingTracks)
 	if err != nil {
 		return 0, rerrors.Wrap(err)
@@ -154,7 +164,7 @@ func (s *TorrentService) SubmitTorrent(ctx context.Context, torrentFileBytes []b
 	newDownload := domain.TorrentDownload{
 		UserId:      uCtx.UserId,
 		FolderName:  folderRelDir,
-		InfoHash:    tor.InfoHash().HexString(),
+		InfoHash:    infoHash,
 		TorrentName: tor.Name(),
 	}
 

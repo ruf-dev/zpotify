@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"bytes"
 	"context"
 	"database/sql"
 	"path/filepath"
@@ -8,6 +9,9 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/anacrolix/torrent"
+	"github.com/anacrolix/torrent/bencode"
+	"github.com/anacrolix/torrent/metainfo"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -57,6 +61,23 @@ func (f *fakeTorrentDownloadStorage) Get(_ context.Context, id int64, userId int
 	}
 
 	return row, nil
+}
+
+func (f *fakeTorrentDownloadStorage) GetByUserAndInfoHash(
+	_ context.Context,
+	userId int64,
+	infoHash string,
+) (sql.Null[domain.TorrentDownload], error) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+
+	for _, row := range f.byId {
+		if row.UserId == userId && row.InfoHash == infoHash {
+			return sql.Null[domain.TorrentDownload]{V: row, Valid: true}, nil
+		}
+	}
+
+	return sql.Null[domain.TorrentDownload]{}, nil
 }
 
 func (f *fakeTorrentDownloadStorage) ListByUser(_ context.Context, userId int64, folderName string) ([]domain.TorrentDownload, error) {
@@ -385,6 +406,52 @@ func TestTorrentService_SubmitTorrent_RejectsInvalidTorrentFile(t *testing.T) {
 	require.Error(t, err)
 	assert.ErrorIs(t, err, service_errors.ErrTorrentClientUnavailable)
 	assert.Zero(t, id)
+}
+
+// newValidTorrentBytes bencodes a minimal single-file .torrent whose info
+// dict is complete enough for metainfo.Load/UnmarshalInfo to accept it, and
+// returns its info hash alongside the encoded bytes.
+func newValidTorrentBytes(t *testing.T, name string) ([]byte, string) {
+	t.Helper()
+
+	info := metainfo.Info{
+		PieceLength: 16384,
+		Name:        name,
+		Length:      1024,
+	}
+
+	infoBytes, err := bencode.Marshal(info)
+	require.NoError(t, err)
+
+	mi := metainfo.MetaInfo{InfoBytes: infoBytes}
+
+	var buf bytes.Buffer
+	err = mi.Write(&buf)
+	require.NoError(t, err)
+
+	return buf.Bytes(), mi.HashInfoBytes().HexString()
+}
+
+// TestTorrentService_SubmitTorrent_DuplicateReturnsExistingJobId proves a
+// resubmit of the same (user, info hash) pair is short-circuited before the
+// torrent is ever registered with the client, and hands back the id of the
+// already-tracked job instead of a bare conflict.
+func TestTorrentService_SubmitTorrent_DuplicateReturnsExistingJobId(t *testing.T) {
+	svc, torrentStorage := newQuotaTestService(0, 3)
+	svc.torrentClient = &torrent.Client{}
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	torrentBytes, infoHash := newValidTorrentBytes(t, "dup.mp3")
+
+	existingDownload := domain.TorrentDownload{UserId: 1, InfoHash: infoHash, TorrentName: "dup.mp3"}
+	existing, err := torrentStorage.Add(ctx, existingDownload)
+	require.NoError(t, err)
+
+	id, err := svc.SubmitTorrent(ctx, torrentBytes, "")
+	require.Error(t, err)
+	assert.ErrorIs(t, err, service_errors.ErrTorrentAlreadyExists)
+	assert.Equal(t, existing.Id, id)
 }
 
 func TestTorrentService_ListJobs_RequiresAuthentication(t *testing.T) {

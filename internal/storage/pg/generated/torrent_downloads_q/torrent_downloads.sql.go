@@ -60,6 +60,39 @@ func (q *Queries) GetTorrentDownloadByID(ctx context.Context, arg GetTorrentDown
 	return i, err
 }
 
+const getTorrentDownloadByUserAndInfoHash = `-- name: GetTorrentDownloadByUserAndInfoHash :one
+SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
+    downloaded_bytes, imported_files, error, created_at, updated_at
+FROM torrent_downloads
+WHERE user_id = $1
+  AND info_hash = $2
+`
+
+type GetTorrentDownloadByUserAndInfoHashParams struct {
+	UserID   int64
+	InfoHash string
+}
+
+func (q *Queries) GetTorrentDownloadByUserAndInfoHash(ctx context.Context, arg GetTorrentDownloadByUserAndInfoHashParams) (TorrentDownload, error) {
+	row := q.db.QueryRowContext(ctx, getTorrentDownloadByUserAndInfoHash, arg.UserID, arg.InfoHash)
+	var i TorrentDownload
+	err := row.Scan(
+		&i.ID,
+		&i.UserID,
+		&i.FolderName,
+		&i.InfoHash,
+		&i.TorrentName,
+		&i.Status,
+		&i.TotalBytes,
+		&i.DownloadedBytes,
+		&i.ImportedFiles,
+		&i.Error,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
 const insertTorrentDownload = `-- name: InsertTorrentDownload :one
 INSERT INTO torrent_downloads (user_id, folder_name, info_hash, torrent_name)
 VALUES ($1, $2, $3, $4)

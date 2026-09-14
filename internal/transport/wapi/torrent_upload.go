@@ -1,6 +1,7 @@
 package wapi
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/log"
+	"go.zpotify.ru/zpotify/internal/service/service_errors"
 )
 
 // maxTorrentFileBytes caps how much of the uploaded part is read. A .torrent
@@ -59,6 +61,11 @@ func (s *Server) UploadTorrent(writer http.ResponseWriter, r *http.Request) {
 
 	id, err := s.torrentService.SubmitTorrent(ctx, torrentFileBytes, folderName)
 	if err != nil {
+		if errors.Is(err, service_errors.ErrTorrentAlreadyExists) {
+			writeExistingTorrentJob(writer, id)
+			return
+		}
+
 		unwrapError(ctx, writer, rerrors.Wrap(err, "error in torrent service SubmitTorrent"))
 		return
 	}
@@ -70,6 +77,15 @@ func (s *Server) UploadTorrent(writer http.ResponseWriter, r *http.Request) {
 	})
 
 	response := fmt.Sprintf(`{"id": %d}`, id)
+	_, _ = writer.Write([]byte(response))
+}
+
+// writeExistingTorrentJob responds with the id of the caller's pre-existing
+// torrent download, so the frontend can redirect into managing it instead of
+// showing a bare conflict error.
+func writeExistingTorrentJob(writer http.ResponseWriter, existingJobId int64) {
+	writer.WriteHeader(http.StatusConflict)
+	response := fmt.Sprintf(`{"id": %d}`, existingJobId)
 	_, _ = writer.Write([]byte(response))
 }
 

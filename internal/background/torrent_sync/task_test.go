@@ -88,6 +88,10 @@ func (f *fakeTorrentStorage) Get(_ context.Context, _ int64, _ int64) (domain.To
 	return domain.TorrentDownload{}, storage.ErrNotFound
 }
 
+func (f *fakeTorrentStorage) GetByUserAndInfoHash(_ context.Context, _ int64, _ string) (sql.Null[domain.TorrentDownload], error) {
+	return sql.Null[domain.TorrentDownload]{}, nil
+}
+
 func (f *fakeTorrentStorage) ListByUser(_ context.Context, _ int64, _ string) ([]domain.TorrentDownload, error) {
 	return nil, nil
 }

@@ -57,6 +57,12 @@ var (
 	// which does not re-register in-flight torrents.
 	ErrTorrentNotRegistered = rerrors.New("torrent is not registered with the client", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusConflict))
 
+	// ErrTorrentAlreadyExists is returned when the caller already has a
+	// torrent download registered for the same info hash. The existing job's
+	// id is returned alongside this error so the caller can be redirected to
+	// it instead of retrying the submit.
+	ErrTorrentAlreadyExists = rerrors.New("torrent already submitted", codes.AlreadyExists, rerrors.WithHttpStatus(http.StatusConflict))
+
 	// ErrFilePathCollisionUnresolved is returned when every content-hash-prefix
 	// disambiguated path for an upload is already taken, up to the full hash
 	// digest. This should never happen in practice - it would require another

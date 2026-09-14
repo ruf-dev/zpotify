@@ -11,6 +11,7 @@ import (
 type Querier interface {
 	DeleteTorrentDownload(ctx context.Context, arg DeleteTorrentDownloadParams) error
 	GetTorrentDownloadByID(ctx context.Context, arg GetTorrentDownloadByIDParams) (TorrentDownload, error)
+	GetTorrentDownloadByUserAndInfoHash(ctx context.Context, arg GetTorrentDownloadByUserAndInfoHashParams) (TorrentDownload, error)
 	InsertTorrentDownload(ctx context.Context, arg InsertTorrentDownloadParams) (TorrentDownload, error)
 	ListActiveTorrentDownloads(ctx context.Context) ([]TorrentDownload, error)
 	ListTorrentDownloadsByUser(ctx context.Context, arg ListTorrentDownloadsByUserParams) ([]TorrentDownload, error)

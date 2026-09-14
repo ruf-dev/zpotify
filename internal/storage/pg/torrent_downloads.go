@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"errors"
 
 	"go.redsock.ru/rerrors"
 
@@ -75,6 +76,32 @@ func (s *TorrentDownloadsStorage) Get(ctx context.Context, id int64, userId int6
 	}
 
 	return dl, nil
+}
+
+func (s *TorrentDownloadsStorage) GetByUserAndInfoHash(
+	ctx context.Context,
+	userId int64,
+	infoHash string,
+) (sql.Null[domain.TorrentDownload], error) {
+	params := torrent_downloads_q.GetTorrentDownloadByUserAndInfoHashParams{
+		UserID:   userId,
+		InfoHash: infoHash,
+	}
+
+	row, err := s.q.GetTorrentDownloadByUserAndInfoHash(ctx, params)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return sql.Null[domain.TorrentDownload]{}, nil
+		}
+		return sql.Null[domain.TorrentDownload]{}, wrapPgErr(err)
+	}
+
+	dl, err := toTorrentDownloadDomain(row)
+	if err != nil {
+		return sql.Null[domain.TorrentDownload]{}, rerrors.Wrap(err)
+	}
+
+	return sql.Null[domain.TorrentDownload]{V: dl, Valid: true}, nil
 }
 
 func (s *TorrentDownloadsStorage) ListByUser(ctx context.Context, userId int64, folderName string) ([]domain.TorrentDownload, error) {

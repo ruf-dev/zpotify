@@ -299,6 +299,10 @@ type TorrentDownloadStorage interface {
 	// Get - returns a torrent download by id, scoped to userId for auth safety.
 	Get(ctx context.Context, id int64, userId int64) (domain.TorrentDownload, error)
 
+	// GetByUserAndInfoHash - returns a user's torrent download for the given
+	// info hash, if one already exists.
+	GetByUserAndInfoHash(ctx context.Context, userId int64, infoHash string) (sql.Null[domain.TorrentDownload], error)
+
 	// ListByUser - lists torrent downloads for a user, optionally filtered by folderName
 	// (empty folderName returns all folders).
 	ListByUser(ctx context.Context, userId int64, folderName string) ([]domain.TorrentDownload, error)
