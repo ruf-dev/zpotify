@@ -145,8 +145,8 @@
     "semantic_hash": "3eb7e41a9427101647e9c55d703d924c"
   },
   "internal/middleware/log.go": {
-    "mtime": 1783199183.2375517,
-    "ast_hash": "ff64450ed029e334b2c3db1d8234a637",
+    "mtime": 1789400659.6891103,
+    "ast_hash": "0e9c8c8229c5c399f18807ce3a61c1e1",
     "semantic_hash": ""
   },
   "internal/middleware/cors.go": {
@@ -165,8 +165,8 @@
     "semantic_hash": ""
   },
   "internal/middleware/auth_interceptor.go": {
-    "mtime": 1784966779.3757894,
-    "ast_hash": "9d8ecde7f8fe3834ee4a37afe98c0da5",
+    "mtime": 1789400653.7075512,
+    "ast_hash": "bb2ce84db0f7d355e9f82ce13549326e",
     "semantic_hash": ""
   },
   "internal/middleware/otel_hook.go": {
@@ -400,8 +400,8 @@
     "semantic_hash": "e026a6674f2341a67053118987f91db7"
   },
   "internal/app/custom.go": {
-    "mtime": 1789381595.9038427,
-    "ast_hash": "8e3651c5dc2d8b01fdccf04df7861716",
+    "mtime": 1789400668.7354257,
+    "ast_hash": "04d2e0646ed18798c8b2318087503b4a",
     "semantic_hash": ""
   },
   "internal/app/config.go": {
