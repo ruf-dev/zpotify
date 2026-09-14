@@ -35,6 +35,27 @@ func LogInterceptor() grpc.ServerOption {
 		})
 }
 
+// LogStreamInterceptor mirrors LogInterceptor for server-streaming RPCs. There's no
+// single request/response to log for a stream, so it logs the method path and the
+// terminal error (if any) once the stream ends.
+func LogStreamInterceptor() grpc.ServerOption {
+	return grpc.ChainStreamInterceptor(
+		func(srv any, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+			err := handler(srv, ss)
+
+			logBase := log.Debug(ss.Context()).
+				Str("path", info.FullMethod)
+
+			if err != nil {
+				logBase = logBase.Err(err)
+			}
+
+			logBase.Msg("incoming GRPC stream")
+
+			return err
+		})
+}
+
 func LogWebMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		start := time.Now()

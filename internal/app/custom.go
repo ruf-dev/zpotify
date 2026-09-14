@@ -198,8 +198,20 @@ func (c *Custom) Init(app *App) (err error) {
 		middleware.PanicInterceptor(),
 		middleware.TraceInterceptor(),
 		middleware.LogInterceptor(),
+		middleware.LogStreamInterceptor(),
 		grpc.StatsHandler(otelServerHandler),
 		middleware.GrpcAuthInterceptor(
+			c.Service,
+			middleware.WithIgnoredPathAuthOption(
+				zpotify_api.AuthAPI_Auth_FullMethodName,
+				zpotify_api.AuthAPI_RefreshToken_FullMethodName,
+				zpotify_api.AuthAPI_AuthAsync_FullMethodName,
+				zpotify_api.AuthAPI_GetAuthMethods_FullMethodName,
+				zpotify_api.FeatureFlagsAPI_GetFeatureFlags_FullMethodName,
+			),
+			middleware.WithDebug(app.Cfg.Environment.DebugAuth),
+		),
+		middleware.GrpcStreamAuthInterceptor(
 			c.Service,
 			middleware.WithIgnoredPathAuthOption(
 				zpotify_api.AuthAPI_Auth_FullMethodName,
