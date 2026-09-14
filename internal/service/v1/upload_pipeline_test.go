@@ -22,6 +22,7 @@ type fakeJobStorage struct {
 	mu               sync.Mutex
 	audioParseFileId []int64
 	audioParsePath   []string
+	garbagePaths     []string
 }
 
 func newFakeJobStorage() *fakeJobStorage {
@@ -36,7 +37,12 @@ func (f *fakeJobStorage) Enqueue(_ context.Context, _ string, _ any, _ int32) er
 	return nil
 }
 
-func (f *fakeJobStorage) EnqueueGarbageFile(_ context.Context, _ string) error {
+func (f *fakeJobStorage) EnqueueGarbageFile(_ context.Context, filePath string) error {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+
+	f.garbagePaths = append(f.garbagePaths, filePath)
+
 	return nil
 }
 

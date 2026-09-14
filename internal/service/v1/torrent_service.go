@@ -366,9 +366,45 @@ func (s *TorrentService) DeleteJob(ctx context.Context, jobID int64) error {
 
 	s.releaseTorrent(ctx, row)
 
+	err = s.deleteImportedFiles(ctx, row)
+	if err != nil {
+		return rerrors.Wrap(err, "error deleting torrent's imported files")
+	}
+
 	err = s.torrentStorage.Delete(ctx, row.Id, uCtx.UserId)
 	if err != nil {
 		return rerrors.Wrap(err, "error deleting torrent job")
+	}
+
+	return nil
+}
+
+// deleteImportedFiles removes the files_meta row and schedules the physical
+// file for deletion (via the garbage collector job queue) for every file the
+// torrent already imported - so a deleted torrent doesn't leave its imported
+// files dangling on disk or invisibly counted against the user's quota.
+func (s *TorrentService) deleteImportedFiles(ctx context.Context, row domain.TorrentDownload) error {
+	importedFiles := domain.DecodeTorrentImportedFiles(row.ImportedFiles)
+
+	for _, importedFile := range importedFiles {
+		if importedFile.Status != domain.TorrentImportedFileStatusOk || importedFile.FileId == 0 {
+			continue
+		}
+
+		fileMeta, err := s.fileMeta.Get(ctx, importedFile.FileId)
+		if err != nil {
+			return rerrors.Wrap(err, "error getting imported file meta")
+		}
+
+		err = s.fileMeta.Delete(ctx, importedFile.FileId)
+		if err != nil {
+			return rerrors.Wrap(err, "error deleting imported file meta")
+		}
+
+		err = s.jobs.EnqueueGarbageFile(ctx, fileMeta.FilePath)
+		if err != nil {
+			return rerrors.Wrap(err, "error enqueueing imported file for deletion")
+		}
 	}
 
 	return nil

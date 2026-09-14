@@ -783,6 +783,50 @@ func TestTorrentService_DeleteJob_RemovesRow(t *testing.T) {
 	assert.ErrorIs(t, err, storage.ErrNotFound)
 }
 
+// TestTorrentService_DeleteJob_SchedulesImportedFilesForDeletion proves a
+// successful delete also removes the files_meta rows of everything the
+// torrent already imported and schedules the physical files for deletion,
+// so a deleted torrent job doesn't leave its imported files dangling.
+func TestTorrentService_DeleteJob_SchedulesImportedFilesForDeletion(t *testing.T) {
+	svc, torrentStorage := newQuotaTestService(0, 3)
+
+	fileMeta := newFakeFileMetaStorage()
+	jobs := newFakeJobStorage()
+	svc.fileMeta = fileMeta
+	svc.jobs = jobs
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	fileMetaToAdd := domain.FileMeta{File: domain.File{FilePath: "tmp/1/album/track.mp3"}, AddedById: 1}
+	importedFileId, err := fileMeta.Add(ctx, fileMetaToAdd)
+	require.NoError(t, err)
+
+	importedFiles := []domain.TorrentImportedFile{
+		{TorrentPath: "track.mp3", FileId: importedFileId, Status: domain.TorrentImportedFileStatusOk},
+		{TorrentPath: "cover.jpg", Status: domain.TorrentImportedFileStatusFailed, Error: "not audio"},
+	}
+	encodedFiles, err := domain.EncodeTorrentImportedFiles(importedFiles)
+	require.NoError(t, err)
+
+	row := domain.TorrentDownload{
+		UserId:        1,
+		TorrentName:   "mine",
+		Status:        domain.TorrentDownloadStatusDone,
+		ImportedFiles: encodedFiles,
+	}
+	added, err := torrentStorage.Add(ctx, row)
+	require.NoError(t, err)
+
+	err = svc.DeleteJob(ctx, added.Id)
+	require.NoError(t, err)
+
+	_, err = fileMeta.Get(ctx, importedFileId)
+	require.Error(t, err, "imported file's meta row should have been deleted")
+
+	require.Len(t, jobs.garbagePaths, 1)
+	assert.Equal(t, "tmp/1/album/track.mp3", jobs.garbagePaths[0])
+}
+
 // TestTorrentScratchPath_RejectsEscapingNames proves an attacker-controlled
 // torrent name cannot make cleanup delete something outside the scratch dir.
 func TestTorrentScratchPath_RejectsEscapingNames(t *testing.T) {
