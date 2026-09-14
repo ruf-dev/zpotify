@@ -49,9 +49,7 @@ func (f *fakeTorrentDownloadStorage) Add(_ context.Context, download domain.Torr
 	if download.InfoHash != "" {
 		for _, row := range f.byId {
 			if row.UserId == download.UserId && row.InfoHash == download.InfoHash {
-				if row.Status == domain.TorrentDownloadStatusQueued ||
-					row.Status == domain.TorrentDownloadStatusDownloading ||
-					row.Status == domain.TorrentDownloadStatusImporting {
+				if isActiveTorrentStatus(row.Status) {
 					// Active torrent with same (user_id, info_hash) already exists
 					return domain.TorrentDownload{}, storage.ErrAlreadyExists
 				}
@@ -92,9 +90,7 @@ func (f *fakeTorrentDownloadStorage) GetByUserAndInfoHash(
 	for _, row := range f.byId {
 		if row.UserId == userId && row.InfoHash == infoHash {
 			// Only return active torrents - dedup should not block re-submission of completed/failed torrents
-			if row.Status == domain.TorrentDownloadStatusQueued ||
-				row.Status == domain.TorrentDownloadStatusDownloading ||
-				row.Status == domain.TorrentDownloadStatusImporting {
+			if isActiveTorrentStatus(row.Status) {
 				return sql.Null[domain.TorrentDownload]{V: row, Valid: true}, nil
 			}
 		}
@@ -474,6 +470,33 @@ func TestTorrentService_SubmitTorrent_DuplicateReturnsExistingJobId(t *testing.T
 
 	existingDownload := domain.TorrentDownload{UserId: 1, InfoHash: infoHash, TorrentName: "dup.mp3"}
 	existing, err := torrentStorage.Add(ctx, existingDownload)
+	require.NoError(t, err)
+
+	id, err := svc.SubmitTorrent(ctx, torrentBytes, "")
+	require.Error(t, err)
+	assert.ErrorIs(t, err, service_errors.ErrTorrentAlreadyExists)
+	assert.Equal(t, existing.Id, id)
+}
+
+// TestTorrentService_SubmitTorrent_DuplicateReturnsExistingJobId_Paused proves
+// a resubmit of a torrent whose existing job is paused is also short-circuited
+// - paused is an active status, so it must dedup the same way queued/downloading
+// /importing do.
+func TestTorrentService_SubmitTorrent_DuplicateReturnsExistingJobId_Paused(t *testing.T) {
+	svc, torrentStorage := newQuotaTestService(0, 3)
+	svc.torrentClient = &torrent.Client{}
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	torrentBytes, infoHash := newValidTorrentBytes(t, "paused-dup.mp3")
+
+	pausedDownload := domain.TorrentDownload{
+		UserId:      1,
+		InfoHash:    infoHash,
+		TorrentName: "paused-dup.mp3",
+		Status:      domain.TorrentDownloadStatusPaused,
+	}
+	existing, err := torrentStorage.Add(ctx, pausedDownload)
 	require.NoError(t, err)
 
 	id, err := svc.SubmitTorrent(ctx, torrentBytes, "")
