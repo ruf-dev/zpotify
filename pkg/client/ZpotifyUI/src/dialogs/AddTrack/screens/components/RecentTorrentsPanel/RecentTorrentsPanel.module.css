@@ -82,8 +82,8 @@
 }
 
 .SkeletonLine {
-    height: 0.625rem;
-    border-radius: var(--border-radius-md);
+    height: 0.5rem;
+    border-radius: var(--border-radius-sm);
     background: linear-gradient(90deg, var(--color-bg-secondary) 25%, transparent 25%, transparent 50%, var(--color-bg-secondary) 50%, var(--color-bg-secondary) 75%, transparent 75%, transparent);
     background-size: 2rem 100%;
     background-position: 0 0;
@@ -91,11 +91,22 @@
 }
 
 .SkeletonLineName {
-    width: 60%;
+    height: 0.625rem;
+    width: 55%;
 }
 
-.SkeletonLineMeta {
-    width: 35%;
+.SkeletonMetaRow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.SkeletonChip {
+    width: 2.5rem;
+}
+
+.SkeletonChipWide {
+    width: 3.5rem;
 }
 
 .SkeletonLineFiles {
@@ -106,14 +117,47 @@
 .EmptyState {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 1.5rem 1rem;
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+        background: var(--color-bg-hover);
+    }
 }
 
-.EmptyStateMessage {
+.EmptyStateIconCircle {
+    width: var(--icon-circle-md);
+    height: var(--icon-circle-md);
+    border-radius: var(--border-radius-circle);
+    background: var(--color-bg-accent);
+    border: 0.0625rem solid var(--color-border-light);
+    color: var(--color-fg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.EmptyStateText {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.EmptyStateTitle {
     font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-fg-primary);
+    text-transform: lowercase;
+}
+
+.EmptyStateSubtitle {
+    font-size: var(--font-size-xs);
     color: var(--color-fg-tertiary);
-    text-align: center;
+    line-height: 1.4;
 }
 
 @keyframes shimmer {

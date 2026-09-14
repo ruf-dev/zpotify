@@ -31,10 +31,10 @@ describe('RecentTorrentsPanel job list', () => {
         vi.clearAllMocks();
     });
 
-    it('should render empty state message when loading is false and jobs are empty', () => {
+    it('should render an add torrent call to action when loading is false and jobs are empty', () => {
         render(<RecentTorrentsPanel jobs={[]} loading={false} onFile={onFile} />);
 
-        expect(screen.getByText('No torrent files yet. upload one via torrent file')).not.toBeNull();
+        expect(screen.getByText('upload a .torrent file to start downloading')).not.toBeNull();
     });
 
     it('should show skeleton loaders when loading is true and no jobs', () => {

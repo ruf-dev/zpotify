@@ -6,6 +6,10 @@
 .ChooseScreenContainer {
     animation: slideIn 0.2s ease both;
 
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+
     width: min(36vw, 41.25rem);
 }
 

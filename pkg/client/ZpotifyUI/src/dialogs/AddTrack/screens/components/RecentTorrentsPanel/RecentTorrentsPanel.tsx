@@ -25,6 +25,8 @@ export default function RecentTorrentsPanel({ jobs, loading, onFile }: RecentTor
         return jobs.slice(0, 3);
     }, [jobs]);
 
+    const isEmpty = !loading && displayedJobs.length === 0;
+
     function handleRowClick(job: TorrentJob) {
         OpenDialog(<TorrentManageDialog job={job} />);
     }
@@ -60,16 +62,18 @@ export default function RecentTorrentsPanel({ jobs, loading, onFile }: RecentTor
 
             <div className={cls.PanelHeader}>
                 <span className={cls.PanelTitle}>recent torrents</span>
-                <div
-                    className={cls.AddTorrentTrigger}
-                    onClick={handleAddTorrentClick}
-                    onKeyDown={handleAddTorrentKeyDown}
-                    role="button"
-                    tabIndex={0}
-                >
-                    <DownloadIcon />
-                    <span>add torrent</span>
-                </div>
+                {!isEmpty && (
+                    <div
+                        className={cls.AddTorrentTrigger}
+                        onClick={handleAddTorrentClick}
+                        onKeyDown={handleAddTorrentKeyDown}
+                        role="button"
+                        tabIndex={0}
+                    >
+                        <DownloadIcon />
+                        <span>add torrent</span>
+                    </div>
+                )}
             </div>
 
             <div className={cls.JobsList}>
@@ -80,7 +84,11 @@ export default function RecentTorrentsPanel({ jobs, loading, onFile }: RecentTor
                                 <div className={cls.SkeletonDot} />
                                 <div className={cls.SkeletonInfo}>
                                     <div className={cn(cls.SkeletonLine, cls.SkeletonLineName)} />
-                                    <div className={cn(cls.SkeletonLine, cls.SkeletonLineMeta)} />
+                                    <div className={cls.SkeletonMetaRow}>
+                                        <div className={cn(cls.SkeletonLine, cls.SkeletonChip)} />
+                                        <div className={cn(cls.SkeletonLine, cls.SkeletonChip)} />
+                                        <div className={cn(cls.SkeletonLine, cls.SkeletonChipWide)} />
+                                    </div>
                                 </div>
                                 <div className={cn(cls.SkeletonLine, cls.SkeletonLineFiles)} />
                             </div>
@@ -89,8 +97,20 @@ export default function RecentTorrentsPanel({ jobs, loading, onFile }: RecentTor
                 ) : displayedJobs.length > 0 ? (
                     displayedJobs.map((job) => <TorrentJobRow key={job.id} job={job} onClick={handleRowClick} />)
                 ) : (
-                    <div className={cls.EmptyState}>
-                        <span className={cls.EmptyStateMessage}>No torrent files yet. upload one via torrent file</span>
+                    <div
+                        className={cls.EmptyState}
+                        onClick={handleAddTorrentClick}
+                        onKeyDown={handleAddTorrentKeyDown}
+                        role="button"
+                        tabIndex={0}
+                    >
+                        <div className={cls.EmptyStateIconCircle}>
+                            <DownloadIcon />
+                        </div>
+                        <div className={cls.EmptyStateText}>
+                            <span className={cls.EmptyStateTitle}>add torrent</span>
+                            <span className={cls.EmptyStateSubtitle}>upload a .torrent file to start downloading</span>
+                        </div>
                     </div>
                 )}
             </div>
