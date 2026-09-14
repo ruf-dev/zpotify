@@ -7,7 +7,6 @@ import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 import CreatePlaylistCard from '@/dialogs/AddTrack/screens/components/CreatePlaylistCard/CreatePlaylistCard';
 import LibraryCard from '@/dialogs/AddTrack/screens/components/LibraryCard/LibraryCard';
 import UploadCard from '@/dialogs/AddTrack/screens/components/UploadCard/UploadCard';
-import TorrentCard from '@/dialogs/AddTrack/screens/components/TorrentCard/TorrentCard';
 import RecentTorrentsPanel from '@/dialogs/AddTrack/screens/components/RecentTorrentsPanel/RecentTorrentsPanel';
 import { useWatchTorrentJobs } from '@/dialogs/AddTrack/screens/useWatchTorrentJobs';
 
@@ -35,8 +34,6 @@ export default function ChooseScreen({ goTo, handleCreatePlaylist, handleTorrent
 
     return (
         <div className={cls.ChooseScreenContainer}>
-            <RecentTorrentsPanel jobs={jobs} loading={torrentLoading} />
-
             <div className={cls.GridWrapper}>
                 <CreatePlaylistCard onClick={handleCreatePlaylist} />
                 <LibraryCard
@@ -51,8 +48,9 @@ export default function ChooseScreen({ goTo, handleCreatePlaylist, handleTorrent
                     maxPendingTracks={maxPendingTracks}
                     onClick={() => goTo('drop')}
                 />
-                <TorrentCard onFile={handleTorrentFileSelected} />
             </div>
+
+            <RecentTorrentsPanel jobs={jobs} loading={torrentLoading} onFile={handleTorrentFileSelected} />
         </div>
     );
 }

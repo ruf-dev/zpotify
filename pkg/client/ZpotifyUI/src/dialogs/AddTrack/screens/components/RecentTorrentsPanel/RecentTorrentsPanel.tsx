@@ -1,26 +1,25 @@
-import { useMemo, type KeyboardEvent } from 'react';
+import { useMemo, useRef, type ChangeEvent, type KeyboardEvent } from 'react';
 import cn from 'classnames';
 
 import type { TorrentJob } from '@/app/api/zpotify';
 import cls from '@/dialogs/AddTrack/screens/components/RecentTorrentsPanel/RecentTorrentsPanel.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import TorrentManageDialog from '@/dialogs/TorrentManage/TorrentManageDialog.tsx';
-import { formatFileSize } from '@/shared/lib/files.ts';
+import TorrentJobRow from '@/dialogs/AddTrack/screens/components/RecentTorrentsPanel/components/TorrentJobRow/TorrentJobRow.tsx';
+import { DownloadIcon } from '@/assets/icons/DownloadIcon';
+import { TORRENT_EXTENSION } from '@/features/upload/torrentFile.ts';
 
 interface RecentTorrentsPanelProps {
     jobs: TorrentJob[];
     loading: boolean;
+    onFile: (file: File) => void;
 }
 
-function getStatusDotColor(status?: string): string {
-    if (status === 'done') return cls.StatusDone;
-    if (status === 'downloading') return cls.StatusDownloading;
-    if (status === 'paused') return cls.StatusPaused;
-    return cls.StatusDefault;
-}
+const SKELETON_ROW_KEYS = ['skeleton-1', 'skeleton-2', 'skeleton-3'];
 
-export default function RecentTorrentsPanel({ jobs, loading }: RecentTorrentsPanelProps) {
+export default function RecentTorrentsPanel({ jobs, loading, onFile }: RecentTorrentsPanelProps) {
     const { OpenDialog } = useDialog();
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const displayedJobs = useMemo(() => {
         return jobs.slice(0, 3);
@@ -30,64 +29,68 @@ export default function RecentTorrentsPanel({ jobs, loading }: RecentTorrentsPan
         OpenDialog(<TorrentManageDialog job={job} />);
     }
 
+    function handleAddTorrentClick() {
+        inputRef.current?.click();
+    }
+
+    function handleAddTorrentKeyDown(e: KeyboardEvent) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleAddTorrentClick();
+        }
+    }
+
+    function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0];
+        if (file) {
+            onFile(file);
+        }
+        e.target.value = '';
+    }
+
     return (
         <div className={cls.RecentTorrentsPanelContainer}>
+            <input
+                ref={inputRef}
+                type="file"
+                accept={TORRENT_EXTENSION}
+                className={cls.HiddenInput}
+                onChange={handleInputChange}
+            />
+
             <div className={cls.PanelHeader}>
                 <span className={cls.PanelTitle}>recent torrents</span>
+                <div
+                    className={cls.AddTorrentTrigger}
+                    onClick={handleAddTorrentClick}
+                    onKeyDown={handleAddTorrentKeyDown}
+                    role="button"
+                    tabIndex={0}
+                >
+                    <DownloadIcon />
+                    <span>add torrent</span>
+                </div>
             </div>
 
             <div className={cls.JobsList}>
                 {loading && displayedJobs.length === 0 ? (
                     <>
-                        <div className={cls.SkeletonRow} />
-                        <div className={cls.SkeletonRow} />
-                        <div className={cls.SkeletonRow} />
+                        {SKELETON_ROW_KEYS.map((key) => (
+                            <div key={key} className={cls.SkeletonRow}>
+                                <div className={cls.SkeletonDot} />
+                                <div className={cls.SkeletonInfo}>
+                                    <div className={cn(cls.SkeletonLine, cls.SkeletonLineName)} />
+                                    <div className={cn(cls.SkeletonLine, cls.SkeletonLineMeta)} />
+                                </div>
+                                <div className={cn(cls.SkeletonLine, cls.SkeletonLineFiles)} />
+                            </div>
+                        ))}
                     </>
                 ) : displayedJobs.length > 0 ? (
-                    displayedJobs.map((job) => {
-                        const total = Number(job.totalBytes ?? 0);
-                        const downloaded = Number(job.downloadedBytes ?? 0);
-                        const progress = total > 0 ? Math.min(1, downloaded / total) : 0;
-                        const progressPercent = `${Math.round(progress * 100)}%`;
-
-                        function handleKeyDown(e: KeyboardEvent) {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault();
-                                handleRowClick(job);
-                            }
-                        }
-
-                        return (
-                            <div
-                                key={job.id}
-                                className={cls.JobRow}
-                                onClick={() => handleRowClick(job)}
-                                onKeyDown={handleKeyDown}
-                                role="button"
-                                tabIndex={0}
-                            >
-                                <div className={cn(cls.StatusDot, getStatusDotColor(job.status))} />
-
-                                <div className={cls.JobInfo}>
-                                    <span className={cls.JobName}>{job.torrentName}</span>
-                                    <div className={cls.JobMeta}>
-                                        <span className={cls.JobStatus}>{job.status}</span>
-                                        <span className={cls.JobProgress}>{progressPercent}</span>
-                                        <span className={cls.JobSize}>
-                                            {formatFileSize(downloaded)} / {formatFileSize(total)}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div className={cls.FilesInfo}>
-                                    <span className={cls.FilesLabel}>{job.importedFiles?.length ?? 0} files</span>
-                                </div>
-                            </div>
-                        );
-                    })
+                    displayedJobs.map((job) => <TorrentJobRow key={job.id} job={job} onClick={handleRowClick} />)
                 ) : (
                     <div className={cls.EmptyState}>
-                        <span className={cls.EmptyStateMessage}>No recent torrents</span>
+                        <span className={cls.EmptyStateMessage}>No torrent files yet. upload one via torrent file</span>
                     </div>
                 )}
             </div>

@@ -4115,13 +4115,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/RecentTorrentsPanel/RecentTorrentsPanel.test.tsx": {
-    "mtime": 1789393141.95903,
-    "ast_hash": "f25414c58513900ee71361ee3f0990b1",
+    "mtime": 1789393758.0919316,
+    "ast_hash": "3ab0680666db4a694f0de4d2be48d243",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/RecentTorrentsPanel/RecentTorrentsPanel.tsx": {
-    "mtime": 1789393230.7475123,
-    "ast_hash": "080f5c0a568ff7c02679e0b0ad8a8305",
+    "mtime": 1789393870.3671722,
+    "ast_hash": "ffd90e70a604bcebf9bb491d72df8719",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/useWatchTorrentJobs.test.ts": {
@@ -4132,6 +4132,11 @@
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/useWatchTorrentJobs.ts": {
     "mtime": 1789381632.2723255,
     "ast_hash": "f47617cad4014f622661e77538106b75",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/RecentTorrentsPanel/components/TorrentJobRow/TorrentJobRow.tsx": {
+    "mtime": 1789393877.665131,
+    "ast_hash": "a8aaf58e31cb96bdc9690e37886f9fad",
     "semantic_hash": ""
   }
 }

@@ -23,20 +23,22 @@ function makeJob(overrides: Partial<TorrentJob>): TorrentJob {
     };
 }
 
-describe('RecentTorrentsPanel', () => {
+describe('RecentTorrentsPanel job list', () => {
+    const onFile = vi.fn();
+
     afterEach(() => {
         cleanup();
         vi.clearAllMocks();
     });
 
     it('should render empty state message when loading is false and jobs are empty', () => {
-        render(<RecentTorrentsPanel jobs={[]} loading={false} />);
+        render(<RecentTorrentsPanel jobs={[]} loading={false} onFile={onFile} />);
 
-        expect(screen.getByText('No recent torrents')).not.toBeNull();
+        expect(screen.getByText('No torrent files yet. upload one via torrent file')).not.toBeNull();
     });
 
     it('should show skeleton loaders when loading is true and no jobs', () => {
-        const { container } = render(<RecentTorrentsPanel jobs={[]} loading={true} />);
+        const { container } = render(<RecentTorrentsPanel jobs={[]} loading={true} onFile={onFile} />);
 
         const skeletonRows = container.querySelectorAll('[class*="SkeletonRow"]');
         expect(skeletonRows.length).toBe(3);
@@ -45,7 +47,7 @@ describe('RecentTorrentsPanel', () => {
     it('should render job rows when jobs are provided', () => {
         const jobs = [makeJob({ id: '1', torrentName: 'ubuntu.torrent' })];
 
-        render(<RecentTorrentsPanel jobs={jobs} loading={false} />);
+        render(<RecentTorrentsPanel jobs={jobs} loading={false} onFile={onFile} />);
 
         expect(screen.getByText('ubuntu.torrent')).not.toBeNull();
         expect(screen.getByText('downloading')).not.toBeNull();
@@ -54,7 +56,7 @@ describe('RecentTorrentsPanel', () => {
     it('should show progress percentage', () => {
         const jobs = [makeJob({ id: '1', totalBytes: '1000', downloadedBytes: '500' })];
 
-        render(<RecentTorrentsPanel jobs={jobs} loading={false} />);
+        render(<RecentTorrentsPanel jobs={jobs} loading={false} onFile={onFile} />);
 
         expect(screen.getByText('50%')).not.toBeNull();
     });
@@ -62,7 +64,7 @@ describe('RecentTorrentsPanel', () => {
     it('should show file sizes', () => {
         const jobs = [makeJob({ id: '1', totalBytes: '1000', downloadedBytes: '250' })];
 
-        render(<RecentTorrentsPanel jobs={jobs} loading={false} />);
+        render(<RecentTorrentsPanel jobs={jobs} loading={false} onFile={onFile} />);
 
         expect(screen.getByText(/KB/)).not.toBeNull();
     });
@@ -75,7 +77,7 @@ describe('RecentTorrentsPanel', () => {
             }),
         ];
 
-        render(<RecentTorrentsPanel jobs={jobs} loading={false} />);
+        render(<RecentTorrentsPanel jobs={jobs} loading={false} onFile={onFile} />);
 
         expect(screen.getByText('2 files')).not.toBeNull();
     });
@@ -83,7 +85,7 @@ describe('RecentTorrentsPanel', () => {
     it('should show status dot with correct color for done status', () => {
         const jobs = [makeJob({ id: '1', status: 'done' })];
 
-        const { container } = render(<RecentTorrentsPanel jobs={jobs} loading={false} />);
+        const { container } = render(<RecentTorrentsPanel jobs={jobs} loading={false} onFile={onFile} />);
 
         const statusDots = container.querySelectorAll('[class*="StatusDot"]');
         expect(statusDots.length).toBeGreaterThan(0);
@@ -92,7 +94,7 @@ describe('RecentTorrentsPanel', () => {
     it('should call OpenDialog when a job row is clicked', () => {
         const jobs = [makeJob({ id: '1', torrentName: 'ubuntu.torrent' })];
 
-        render(<RecentTorrentsPanel jobs={jobs} loading={false} />);
+        render(<RecentTorrentsPanel jobs={jobs} loading={false} onFile={onFile} />);
 
         const jobRow = screen.getByText('ubuntu.torrent').closest('[role="button"]');
         if (jobRow) {
@@ -110,7 +112,7 @@ describe('RecentTorrentsPanel', () => {
             makeJob({ id: '4', torrentName: 'torrent4.torrent' }),
         ];
 
-        render(<RecentTorrentsPanel jobs={jobs} loading={false} />);
+        render(<RecentTorrentsPanel jobs={jobs} loading={false} onFile={onFile} />);
 
         expect(screen.getByText('torrent1.torrent')).not.toBeNull();
         expect(screen.getByText('torrent2.torrent')).not.toBeNull();
@@ -121,7 +123,7 @@ describe('RecentTorrentsPanel', () => {
     it('should show correct status for paused jobs', () => {
         const jobs = [makeJob({ id: '1', status: 'paused' })];
 
-        render(<RecentTorrentsPanel jobs={jobs} loading={false} />);
+        render(<RecentTorrentsPanel jobs={jobs} loading={false} onFile={onFile} />);
 
         expect(screen.getByText('paused')).not.toBeNull();
     });
@@ -129,7 +131,7 @@ describe('RecentTorrentsPanel', () => {
     it('should show 0% when totalBytes is zero', () => {
         const jobs = [makeJob({ id: '1', totalBytes: '0', downloadedBytes: '0' })];
 
-        render(<RecentTorrentsPanel jobs={jobs} loading={false} />);
+        render(<RecentTorrentsPanel jobs={jobs} loading={false} onFile={onFile} />);
 
         expect(screen.getByText('0%')).not.toBeNull();
     });
@@ -137,8 +139,66 @@ describe('RecentTorrentsPanel', () => {
     it('should render a panel header with title', () => {
         const jobs = [makeJob({ id: '1' })];
 
-        render(<RecentTorrentsPanel jobs={jobs} loading={false} />);
+        render(<RecentTorrentsPanel jobs={jobs} loading={false} onFile={onFile} />);
 
         expect(screen.getByText('recent torrents')).not.toBeNull();
+    });
+});
+
+describe('RecentTorrentsPanel add torrent trigger', () => {
+    const onFile = vi.fn();
+
+    afterEach(() => {
+        cleanup();
+        vi.clearAllMocks();
+    });
+
+    it('should render the add torrent trigger even when jobs exist', () => {
+        const jobs = [makeJob({ id: '1' })];
+
+        render(<RecentTorrentsPanel jobs={jobs} loading={false} onFile={onFile} />);
+
+        expect(screen.getByText('add torrent')).not.toBeNull();
+    });
+
+    it('should render the add torrent trigger when jobs are empty', () => {
+        render(<RecentTorrentsPanel jobs={[]} loading={false} onFile={onFile} />);
+
+        expect(screen.getByText('add torrent')).not.toBeNull();
+    });
+
+    it('should trigger file input click when add torrent trigger is clicked', () => {
+        const { container } = render(<RecentTorrentsPanel jobs={[]} loading={false} onFile={onFile} />);
+
+        const trigger = screen.getByText('add torrent').closest('[role="button"]');
+        if (trigger) {
+            fireEvent.click(trigger);
+        }
+
+        const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+        expect(fileInput).not.toBeNull();
+        expect(fileInput.accept).toBe('.torrent');
+    });
+
+    it('should call onFile with selected file', () => {
+        const { container } = render(<RecentTorrentsPanel jobs={[]} loading={false} onFile={onFile} />);
+
+        const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+        const file = new File(['content'], 'test.torrent', { type: 'application/x-torrent' });
+
+        fireEvent.change(fileInput, { target: { files: [file] } });
+
+        expect(onFile).toHaveBeenCalledWith(file);
+    });
+
+    it('should clear input value after file selection', () => {
+        const { container } = render(<RecentTorrentsPanel jobs={[]} loading={false} onFile={onFile} />);
+
+        const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+        const file = new File(['content'], 'test.torrent');
+
+        fireEvent.change(fileInput, { target: { files: [file] } });
+
+        expect(fileInput.value).toBe('');
     });
 });
