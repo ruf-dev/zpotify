@@ -1930,8 +1930,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/components/PanelHeader/PanelHeader.tsx": {
-    "mtime": 1786821722.6211636,
-    "ast_hash": "6a4bc54377106a419d00299ffb4fd1be",
+    "mtime": 1789403158.8116992,
+    "ast_hash": "7a48a1610bc748a67c00ba1057966a9d",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/Meta/MetaDialog.tsx": {
@@ -3835,8 +3835,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/PendingFilesScreen.test.tsx": {
-    "mtime": 1787635299.5719435,
-    "ast_hash": "dd2aeb2c31e585a5e91c3a1ae1bb5b0d",
+    "mtime": 1789403165.1873467,
+    "ast_hash": "cca03822f05de8104ca0ed17d27a357d",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_torrents.pb.go": {
@@ -3945,8 +3945,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/DropZoneScreen.test.tsx": {
-    "mtime": 1787652938.5810597,
-    "ast_hash": "7362f61a6cd6854e77edb809cac33664",
+    "mtime": 1789403163.4486907,
+    "ast_hash": "f096184819d8a01c8bb346db070ee90d",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/TorrentJobItem/TorrentJobItem.test.tsx": {
@@ -4145,8 +4145,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/torrent_files.go": {
-    "mtime": 1789402257.157067,
-    "ast_hash": "295f584bf479c9001cdde20551663e14",
+    "mtime": 1789403137.6906416,
+    "ast_hash": "b7f07712977a670010c296423af5d7fa",
     "semantic_hash": ""
   },
   "internal/transport/torrent_api_impl/get_torrent_file.go": {
@@ -4165,8 +4165,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/TorrentFilesScreen.tsx": {
-    "mtime": 1789403100.595585,
-    "ast_hash": "6e72663fe3f0ab877b617e4ca8413a45",
+    "mtime": 1789403245.051334,
+    "ast_hash": "1b3a588b94429939efdbf51d319531f6",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/TorrentFileRow/TorrentFileRow.tsx": {
@@ -4177,6 +4177,11 @@
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/useTorrentFileSelection.ts": {
     "mtime": 1789403044.8410287,
     "ast_hash": "6e204bbb3b220ce7a8bd79551df38b10",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/TorrentFilesScreen.test.tsx": {
+    "mtime": 1789403298.891623,
+    "ast_hash": "60081e9f4d2b808bc3171c94ceb21c6a",
     "semantic_hash": ""
   }
 }
