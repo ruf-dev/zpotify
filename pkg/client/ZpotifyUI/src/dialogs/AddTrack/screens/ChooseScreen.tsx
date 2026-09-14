@@ -7,12 +7,15 @@ import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 import CreatePlaylistCard from '@/dialogs/AddTrack/screens/components/CreatePlaylistCard/CreatePlaylistCard';
 import LibraryCard from '@/dialogs/AddTrack/screens/components/LibraryCard/LibraryCard';
 import UploadCard from '@/dialogs/AddTrack/screens/components/UploadCard/UploadCard';
+import RecentTorrentsPanel from '@/dialogs/AddTrack/screens/components/RecentTorrentsPanel/RecentTorrentsPanel';
+import { useWatchTorrentJobs } from '@/dialogs/AddTrack/screens/useWatchTorrentJobs';
 
 export default function ChooseScreen({ goTo, handleCreatePlaylist }: AddTrackContext) {
     const { userData } = useUser();
 
     const [pendingCount, setPendingCount] = useState(0);
     const [loading, setLoading] = useState(true);
+    const { jobs, loading: torrentLoading } = useWatchTorrentJobs();
 
     useEffect(() => {
         fileService
@@ -26,6 +29,8 @@ export default function ChooseScreen({ goTo, handleCreatePlaylist }: AddTrackCon
 
     return (
         <div className={cls.ChooseScreenContainer}>
+            <RecentTorrentsPanel jobs={jobs} loading={torrentLoading} />
+
             <div className={cls.GridWrapper}>
                 <CreatePlaylistCard onClick={handleCreatePlaylist} />
                 <LibraryCard

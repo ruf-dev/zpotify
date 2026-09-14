@@ -1,0 +1,141 @@
+.RecentTorrentsPanelContainer {
+    width: 100%;
+    margin-bottom: 1.25rem;
+    border-radius: var(--border-radius-md);
+    background: var(--color-bg-card);
+    border: 0.0625rem solid var(--color-border);
+    overflow: hidden;
+}
+
+.PanelHeader {
+    padding: 0.75rem 1rem;
+    border-bottom: 0.0625rem solid var(--color-border);
+    background: var(--color-bg-secondary);
+}
+
+.PanelTitle {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-fg-primary);
+    text-transform: lowercase;
+}
+
+.JobsList {
+    display: flex;
+    flex-direction: column;
+}
+
+.JobRow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: none;
+    background: transparent;
+    border-bottom: 0.0625rem solid var(--color-border);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+        background: var(--color-bg-secondary);
+    }
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.StatusDot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.StatusDone {
+    background-color: var(--color-success);
+}
+
+.StatusDownloading {
+    background-color: var(--color-warning);
+}
+
+.StatusPaused {
+    background-color: var(--color-fg-tertiary);
+}
+
+.StatusDefault {
+    background-color: var(--color-fg-disabled);
+}
+
+.JobInfo {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.JobName {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+
+.JobMeta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+}
+
+.JobStatus {
+    text-transform: capitalize;
+}
+
+.JobProgress {
+    min-width: 2rem;
+    text-align: right;
+}
+
+.JobSize {
+    white-space: nowrap;
+}
+
+.FilesInfo {
+    flex-shrink: 0;
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+    white-space: nowrap;
+}
+
+.FilesLabel {
+    display: block;
+}
+
+.SkeletonRow {
+    height: 3.5rem;
+    background: linear-gradient(90deg, var(--color-bg-secondary) 25%, transparent 25%, transparent 50%, var(--color-bg-secondary) 50%, var(--color-bg-secondary) 75%, transparent 75%, transparent);
+    background-size: 2rem 100%;
+    background-position: 0 0;
+    animation: shimmer 2s infinite;
+    border-bottom: 0.0625rem solid var(--color-border);
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -2rem 0;
+    }
+
+    100% {
+        background-position: calc(100% + 2rem) 0;
+    }
+}

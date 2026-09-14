@@ -7,11 +7,14 @@ import {
     GetTorrentJobResponse,
     ListTorrentJobsRequest,
     ListTorrentJobsResponse,
+    NotifyStreamEntityArrival,
     PauseTorrentJobRequest,
     PauseTorrentJobResponse,
     ResumeTorrentJobRequest,
     ResumeTorrentJobResponse,
     TorrentAPI,
+    WatchTorrentJobsRequest,
+    WatchTorrentJobsResponse,
 } from '@/app/api/zpotify';
 import { BaseService } from '@/shared/api/BaseService.ts';
 
@@ -22,6 +25,11 @@ export interface ITorrentService {
     PauseTorrentJob(req: PauseTorrentJobRequest): Promise<PauseTorrentJobResponse>;
     ResumeTorrentJob(req: ResumeTorrentJobRequest): Promise<ResumeTorrentJobResponse>;
     DeleteTorrentJob(req: DeleteTorrentJobRequest): Promise<DeleteTorrentJobResponse>;
+    WatchTorrentJobs(
+        req: WatchTorrentJobsRequest,
+        entityNotifier: NotifyStreamEntityArrival<WatchTorrentJobsResponse>,
+        signal?: AbortSignal,
+    ): Promise<void>;
 }
 
 export class TorrentService extends BaseService implements ITorrentService {
@@ -58,6 +66,17 @@ export class TorrentService extends BaseService implements ITorrentService {
     async DeleteTorrentJob(req: DeleteTorrentJobRequest): Promise<DeleteTorrentJobResponse> {
         return this.executeAuthApiCall(async (initReq) => {
             return TorrentAPI.DeleteTorrentJob(req, initReq);
+        });
+    }
+
+    async WatchTorrentJobs(
+        req: WatchTorrentJobsRequest,
+        entityNotifier: NotifyStreamEntityArrival<WatchTorrentJobsResponse>,
+        signal?: AbortSignal,
+    ): Promise<void> {
+        return this.executeAuthApiCall(async (initReq) => {
+            const streamInitReq = { ...initReq, signal };
+            return TorrentAPI.WatchTorrentJobs(req, entityNotifier, streamInitReq);
         });
     }
 }
