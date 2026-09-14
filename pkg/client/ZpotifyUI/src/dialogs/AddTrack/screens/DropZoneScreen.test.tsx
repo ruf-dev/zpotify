@@ -25,6 +25,9 @@ function makeContext(overrides: Partial<AddTrackContext>): AddTrackContext {
         handleDroppedGroups: vi.fn(),
         batchTracks: [],
         handleOpenBatchFolder: vi.fn(),
+        pendingTorrentUpload: null,
+        submittingTorrentFile: false,
+        handleSubmitTorrentFile: vi.fn(),
         ...overrides,
     };
 }

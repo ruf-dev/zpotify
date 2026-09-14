@@ -3,6 +3,8 @@ import {
     CancelTorrentJobResponse,
     DeleteTorrentJobRequest,
     DeleteTorrentJobResponse,
+    GetTorrentFileRequest,
+    GetTorrentFileResponse,
     GetTorrentJobRequest,
     GetTorrentJobResponse,
     ListTorrentJobsRequest,
@@ -12,6 +14,8 @@ import {
     PauseTorrentJobResponse,
     ResumeTorrentJobRequest,
     ResumeTorrentJobResponse,
+    SubmitTorrentFileRequest,
+    SubmitTorrentFileResponse,
     TorrentAPI,
     WatchTorrentJobsRequest,
     WatchTorrentJobsResponse,
@@ -25,6 +29,8 @@ export interface ITorrentService {
     PauseTorrentJob(req: PauseTorrentJobRequest): Promise<PauseTorrentJobResponse>;
     ResumeTorrentJob(req: ResumeTorrentJobRequest): Promise<ResumeTorrentJobResponse>;
     DeleteTorrentJob(req: DeleteTorrentJobRequest): Promise<DeleteTorrentJobResponse>;
+    GetTorrentFile(req: GetTorrentFileRequest): Promise<GetTorrentFileResponse>;
+    SubmitTorrentFile(req: SubmitTorrentFileRequest): Promise<SubmitTorrentFileResponse>;
     WatchTorrentJobs(
         req: WatchTorrentJobsRequest,
         entityNotifier: NotifyStreamEntityArrival<WatchTorrentJobsResponse>,
@@ -66,6 +72,18 @@ export class TorrentService extends BaseService implements ITorrentService {
     async DeleteTorrentJob(req: DeleteTorrentJobRequest): Promise<DeleteTorrentJobResponse> {
         return this.executeAuthApiCall(async (initReq) => {
             return TorrentAPI.DeleteTorrentJob(req, initReq);
+        });
+    }
+
+    async GetTorrentFile(req: GetTorrentFileRequest): Promise<GetTorrentFileResponse> {
+        return this.executeAuthApiCall(async (initReq) => {
+            return TorrentAPI.GetTorrentFile(req, initReq);
+        });
+    }
+
+    async SubmitTorrentFile(req: SubmitTorrentFileRequest): Promise<SubmitTorrentFileResponse> {
+        return this.executeAuthApiCall(async (initReq) => {
+            return TorrentAPI.SubmitTorrentFile(req, initReq);
         });
     }
 

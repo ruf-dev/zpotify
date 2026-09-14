@@ -12,6 +12,7 @@ import { parseDuplicateTorrentJobId } from '@/dialogs/AddTrack/parseDuplicateTor
 import ChooseScreen from '@/dialogs/AddTrack/screens/ChooseScreen';
 import DropZoneScreen from '@/dialogs/AddTrack/screens/DropZoneScreen';
 import PendingFilesScreen from '@/dialogs/AddTrack/screens/PendingFilesScreen';
+import TorrentFilesScreen from '@/dialogs/AddTrack/screens/TorrentFilesScreen';
 import MultitrackUploadModal from '@/dialogs/MultitrackUpload/MultitrackUploadModal';
 import MetaDialog from '@/dialogs/Meta/MetaDialog';
 import TorrentManageDialog from '@/dialogs/TorrentManage/TorrentManageDialog';
@@ -22,7 +23,7 @@ import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { useBatchUpload } from '@/dialogs/AddTrack/useBatchUpload';
 import { useBackGuard } from '@/shared/lib/useBackGuard';
 
-export type ModalStep = 'choose' | 'drop' | 'pending';
+export type ModalStep = 'choose' | 'drop' | 'pending' | 'torrentFiles';
 
 export interface AddTrackContext {
     goTo: (step: ModalStep) => void;
@@ -37,17 +38,22 @@ export interface AddTrackContext {
     handleDroppedGroups: (groups: DroppedGroups) => void;
     batchTracks: TrackDraft[];
     handleOpenBatchFolder: (folderName: string) => void;
+    pendingTorrentUpload: { id: string; folderName: string } | null;
+    submittingTorrentFile: boolean;
+    handleSubmitTorrentFile: (selectedPaths: string[]) => void;
 }
 
 const BACK_STEPS: Partial<Record<ModalStep, ModalStep>> = {
     drop: 'choose',
     pending: 'choose',
+    torrentFiles: 'choose',
 };
 
 const SCREENS: Record<ModalStep, ComponentType<AddTrackContext>> = {
     choose: ChooseScreen,
     drop: DropZoneScreen,
     pending: PendingFilesScreen,
+    torrentFiles: TorrentFilesScreen,
 };
 
 interface AddTrackDialogProps {
@@ -61,6 +67,8 @@ export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialo
     const [step, setStep] = useState<ModalStep>(initialStep);
     const [uploading, setUploading] = useState(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
+    const [pendingTorrentUpload, setPendingTorrentUpload] = useState<{ id: string; folderName: string } | null>(null);
+    const [submittingTorrentFile, setSubmittingTorrentFile] = useState(false);
     const batchUpload = useBatchUpload();
     const backStep = BACK_STEPS[step];
 
@@ -110,8 +118,27 @@ export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialo
         setUploadError(null);
         setUploading(true);
         webApiService
-            .UploadTorrentFile(file, folderName)
+            .UploadTorrent(file)
+            .then((res) => {
+                setPendingTorrentUpload({ id: res.id, folderName });
+                setStep('torrentFiles');
+            })
+            .catch((err: unknown) => toaster.catch(err as ServiceError))
+            .finally(() => setUploading(false));
+    }
+
+    function handleSubmitTorrentFile(selectedPaths: string[]) {
+        if (!pendingTorrentUpload) return;
+
+        setSubmittingTorrentFile(true);
+        torrentService
+            .SubmitTorrentFile({
+                id: pendingTorrentUpload.id,
+                folderName: pendingTorrentUpload.folderName,
+                selectedPaths,
+            })
             .then(() => {
+                setPendingTorrentUpload(null);
                 setStep('pending');
             })
             .catch((err: unknown) => {
@@ -121,9 +148,10 @@ export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialo
                     return;
                 }
 
+                setPendingTorrentUpload(null);
                 openExistingTorrentJob(existingJobId);
             })
-            .finally(() => setUploading(false));
+            .finally(() => setSubmittingTorrentFile(false));
     }
 
     function openExistingTorrentJob(jobId: string) {
@@ -200,6 +228,9 @@ export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialo
         handleDroppedGroups,
         batchTracks: batchUpload.tracks,
         handleOpenBatchFolder,
+        pendingTorrentUpload,
+        submittingTorrentFile,
+        handleSubmitTorrentFile,
     };
 
     const Screen = SCREENS[step];

@@ -16,12 +16,12 @@ export interface WebApi {
         signal?: AbortSignal,
         folderName?: string,
     ): Promise<string>;
-    UploadTorrentFile(file: File, folderName: string): Promise<{ id: number }>;
+    UploadTorrent(file: File): Promise<{ id: string }>;
 }
 
 enum WebApiUriPath {
     Upload = '/wapi/files/upload',
-    UploadTorrent = '/wapi/torrents/upload',
+    UploadTorrent = '/wapi/torrents/files',
 }
 
 export class WebApiImpl extends BaseService implements WebApi {
@@ -122,10 +122,9 @@ export class WebApiImpl extends BaseService implements WebApi {
         });
     }
 
-    UploadTorrentFile(file: File, folderName: string): Promise<{ id: number }> {
+    UploadTorrent(file: File): Promise<{ id: string }> {
         return this.executeAuthApiCall(async (initReq) => {
             const formData = new FormData();
-            formData.append('folder', folderName);
             formData.append('file', file, file.name);
 
             const headers = new Headers(initReq.headers as HeadersInit);
@@ -140,7 +139,8 @@ export class WebApiImpl extends BaseService implements WebApi {
             });
 
             if (response.ok) {
-                return (await response.json()) as { id: number };
+                const body = (await response.json()) as { id: string };
+                return { id: String(body.id) };
             }
 
             throw await ServiceErrorFromHttp(response);
