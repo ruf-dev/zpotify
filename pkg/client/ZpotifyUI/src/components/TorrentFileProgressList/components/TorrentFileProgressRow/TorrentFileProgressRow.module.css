@@ -37,6 +37,8 @@
 
 .FileSize {
     flex-shrink: 0;
+    width: 6.5rem;
+    text-align: right;
     font-size: var(--font-size-xs);
     color: var(--color-fg-tertiary);
 }

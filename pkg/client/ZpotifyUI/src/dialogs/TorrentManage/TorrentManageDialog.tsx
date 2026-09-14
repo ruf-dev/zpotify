@@ -43,7 +43,6 @@ export default function TorrentManageDialog({ job: initialJob, previousScreen }:
     const paused = isPausedTorrentStatus(job.status);
     const total = Number(job.totalBytes ?? 0);
     const downloaded = Number(job.downloadedBytes ?? 0);
-    const importedFiles = job.importedFiles ?? [];
     const fileProgress = job.files ?? [];
 
     function handlePause() {
@@ -129,18 +128,6 @@ export default function TorrentManageDialog({ job: initialJob, previousScreen }:
                 {job.error && <span className={cls.ErrorMessage}>{job.error}</span>}
 
                 {fileProgress.length > 1 && <TorrentFileProgressList files={fileProgress} />}
-
-                {importedFiles.length > 0 && (
-                    <div className={cls.FileList}>
-                        {importedFiles.map((file) => (
-                            <div key={file.fileId ?? file.torrentPath} className={cls.FileRow}>
-                                <span className={cls.FilePath}>{file.torrentPath}</span>
-                                <span className={cls.FileStatus}>{file.status}</span>
-                                {file.error && <span className={cls.FileError}>{file.error}</span>}
-                            </div>
-                        ))}
-                    </div>
-                )}
 
                 <ModalActions
                     buttons={[

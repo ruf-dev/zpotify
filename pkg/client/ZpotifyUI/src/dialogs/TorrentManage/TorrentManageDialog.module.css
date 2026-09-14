@@ -76,47 +76,6 @@
     color: var(--color-error);
 }
 
-.FileList {
-    display: flex;
-    flex-direction: column;
-    gap: 0.375rem;
-    max-height: 12rem;
-    overflow-y: auto;
-}
-
-.FileRow {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.375rem 0.5rem;
-    border-radius: var(--border-radius-md);
-    background: var(--color-bg-card);
-    border: 0.0625rem solid var(--color-border);
-}
-
-.FilePath {
-    flex: 1;
-    min-width: 0;
-    font-size: var(--font-size-xs);
-    color: var(--color-fg-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.FileStatus {
-    flex-shrink: 0;
-    font-size: var(--font-size-xs);
-    color: var(--color-fg-tertiary);
-    text-transform: capitalize;
-}
-
-.FileError {
-    flex-shrink: 0;
-    font-size: var(--font-size-xs);
-    color: var(--color-error);
-}
-
 .DeleteButton {
     width: 100%;
     padding: 0.7rem 1rem;
