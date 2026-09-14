@@ -485,8 +485,8 @@
     "semantic_hash": "c2e06c8b92a51f2d8c8a1e68b121912d"
   },
   "internal/storage/storage.go": {
-    "mtime": 1789379030.5285642,
-    "ast_hash": "f38be4620384de1e2aa76eb500a58407",
+    "mtime": 1787635299.5704443,
+    "ast_hash": "ed45cfffc7bd52560376af909f46d088",
     "semantic_hash": ""
   },
   "internal/storage/errors.go": {
@@ -965,8 +965,8 @@
     "semantic_hash": ""
   },
   "internal/service/service_errors/errors.go": {
-    "mtime": 1789379030.5102336,
-    "ast_hash": "23408b39ee8abffe709156e9bc072c93",
+    "mtime": 1787635299.5662158,
+    "ast_hash": "0ab3153f4767222bfb352d87c50d086b",
     "semantic_hash": ""
   },
   "internal/domain/user.go": {
@@ -1240,8 +1240,8 @@
     "semantic_hash": ""
   },
   "config/config.yaml": {
-    "mtime": 1789375131.3512528,
-    "ast_hash": "f863625efe3cef93f2e1ffd516130047",
+    "mtime": 1787635299.564733,
+    "ast_hash": "9a708016298f2c015d14f971dc3cdf4d",
     "semantic_hash": ""
   },
   "config/config_template.yaml": {
@@ -1865,8 +1865,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/AddTrackDialog.tsx": {
-    "mtime": 1789379030.5336795,
-    "ast_hash": "ad072b2f65312fddc02e1ad12e061ef3",
+    "mtime": 1787635299.5710418,
+    "ast_hash": "e1e654dff63fcd3b66c427385b1a5ec5",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/PendingFilesScreen.tsx": {
@@ -2175,8 +2175,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/dialog/Dialog.tsx": {
-    "mtime": 1789379030.5036294,
-    "ast_hash": "02dd644def0e2ac6346cc880817c003a",
+    "mtime": 1786877658.3177857,
+    "ast_hash": "f032f651dcd97b65b6c7b41a85dfa259",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/early_access/EarlyAccessPage.tsx": {
@@ -3865,18 +3865,18 @@
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/torrent_downloads_q/querier.go": {
-    "mtime": 1789379030.5185363,
-    "ast_hash": "783f6a400dd02ecd135428d8f9448454",
+    "mtime": 1787657624.3944552,
+    "ast_hash": "c4f43115ced2683e1f21ea02fa01917b",
     "semantic_hash": ""
   },
   "internal/storage/pg/generated/torrent_downloads_q/torrent_downloads.sql.go": {
-    "mtime": 1789379030.520922,
-    "ast_hash": "f14a7a2c854ddad2af290a011269fc47",
+    "mtime": 1787657624.3923519,
+    "ast_hash": "0d90353b29a36e96c1460973e5ed4311",
     "semantic_hash": ""
   },
   "internal/storage/pg/queries/torrent_downloads/torrent_downloads.sql": {
-    "mtime": 1789379030.5234642,
-    "ast_hash": "b839eb82eb68595a28ef2a8c0e2bb903",
+    "mtime": 1787634213.4482834,
+    "ast_hash": "980e6f10be2b0d40dc72db247ba85914",
     "semantic_hash": ""
   },
   "migrations/20260825000000_torrent_downloads.sql": {
@@ -3905,8 +3905,8 @@
     "semantic_hash": ""
   },
   "internal/storage/pg/torrent_downloads.go": {
-    "mtime": 1789379030.5260758,
-    "ast_hash": "debe5e951389dae9538b523b902b19e5",
+    "mtime": 1787634276.8560688,
+    "ast_hash": "46542282ae185ab331ec1a4c6cda19b7",
     "semantic_hash": ""
   },
   "internal/storage/pg/torrent_downloads_test.go": {
@@ -3930,8 +3930,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/torrent_service.go": {
-    "mtime": 1789379030.513227,
-    "ast_hash": "a5cdb7054ac73205c3fdd43c9b6a4457",
+    "mtime": 1787657769.2806213,
+    "ast_hash": "6f3a5c6c6595487608a330a67e619b0f",
     "semantic_hash": ""
   },
   "internal/service/v1/upload_pipeline.go": {
@@ -4000,13 +4000,13 @@
     "semantic_hash": ""
   },
   "internal/background/torrent_sync/task_test.go": {
-    "mtime": 1789379030.5067577,
-    "ast_hash": "9edb5b796f346a7dfe9be6d1591b3279",
+    "mtime": 1787635891.0230653,
+    "ast_hash": "f37560eb98c2630425bc0d78d6b05f42",
     "semantic_hash": ""
   },
   "internal/service/v1/torrent_service_test.go": {
-    "mtime": 1789379030.515804,
-    "ast_hash": "0ffadfaad8a454eae9ebb280875eb63a",
+    "mtime": 1787657809.7237053,
+    "ast_hash": "085dd266405b23ec1699b027f1d286d9",
     "semantic_hash": ""
   },
   "internal/transport/torrent_api_impl/cancel_torrent_job.go": {
@@ -4030,8 +4030,8 @@
     "semantic_hash": ""
   },
   "internal/transport/wapi/torrent_upload.go": {
-    "mtime": 1789379030.530966,
-    "ast_hash": "160a9e4310e1d19852d7e634711c0672",
+    "mtime": 1787635556.8165975,
+    "ast_hash": "a8d22991fa796fbf6876ea50f6b19cc3",
     "semantic_hash": ""
   },
   "internal/transport/torrent_api_impl/delete_torrent_job.go": {
@@ -4055,18 +4055,18 @@
     "semantic_hash": ""
   },
   ".claude/hooks/restart-serve-on-stop.sh": {
-    "mtime": 1789373102.7681565,
-    "ast_hash": "8af61c1e091a95d04851927a55225eb1",
+    "mtime": 1789292198.6910474,
+    "ast_hash": "8fddf4013943c6a808d56fd215cfe833",
     "semantic_hash": ""
   },
   ".claude/hooks/serve-session-end.sh": {
-    "mtime": 1789373117.1581283,
-    "ast_hash": "a38bcacb49d9d3f5caa0c0a80c840046",
+    "mtime": 1789292159.627099,
+    "ast_hash": "b5f4f907e4ab61de0579331da8f35dbf",
     "semantic_hash": ""
   },
   ".claude/hooks/serve-session-start.sh": {
-    "mtime": 1789373113.7148407,
-    "ast_hash": "ea73734df585aa9cc695a7592e4c8b24",
+    "mtime": 1789292157.5506952,
+    "ast_hash": "01d10da223603905bb9004c25ca9c936",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/downloads/DownloadsPage.tsx": {
@@ -4077,21 +4077,6 @@
   "pkg/client/ZpotifyUI/src/pages/downloads/components/DownloadedSongRow/DownloadedSongRow.tsx": {
     "mtime": 1789295782.305209,
     "ast_hash": "ae47aaef9bd4a4c8227301e19511e5b9",
-    "semantic_hash": ""
-  },
-  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/parseDuplicateTorrentJobId.test.ts": {
-    "mtime": 1789379030.537836,
-    "ast_hash": "a3a8d03e317d46e3860a9e7954c79271",
-    "semantic_hash": ""
-  },
-  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/parseDuplicateTorrentJobId.ts": {
-    "mtime": 1789379030.5358286,
-    "ast_hash": "8c01338ae2229fbe813883145b8bbd30",
-    "semantic_hash": ""
-  },
-  "docs/release_notes/v1.2.0.md": {
-    "mtime": 1789375124.6704044,
-    "ast_hash": "5d700c1dae2a9527ca4c0df582fd039e",
     "semantic_hash": ""
   }
 }
