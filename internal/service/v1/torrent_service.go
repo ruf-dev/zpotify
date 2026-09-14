@@ -6,6 +6,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"sync"
 
 	"github.com/anacrolix/torrent"
 	"github.com/anacrolix/torrent/metainfo"
@@ -62,6 +63,12 @@ type TorrentService struct {
 
 	// broadcaster is set later (after task creation) for pub/sub updates.
 	broadcaster torrentBroadcaster
+
+	// pendingUploads caches parsed-but-not-yet-submitted .torrent files
+	// between UploadTorrentFile and the caller's later GetTorrentFile /
+	// SubmitTorrentFile calls. See torrent_files.go.
+	pendingUploadsMu sync.Mutex
+	pendingUploads   map[string]pendingTorrentUpload
 }
 
 func NewTorrentService(
@@ -78,6 +85,7 @@ func NewTorrentService(
 		jobs:           dataStorage.Jobs(),
 		torrentClient:  torrentClient,
 		cfg:            cfg,
+		pendingUploads: make(map[string]pendingTorrentUpload),
 	}
 }
 
@@ -157,8 +165,28 @@ func (s *TorrentService) SubmitTorrent(ctx context.Context, torrentFileBytes []b
 		return 0, rerrors.Wrap(service_errors.ErrTorrentHasNoAudioFiles)
 	}
 
+	jobId, err := s.finalizeTorrentSubmission(ctx, uCtx, tor, folderRelDir, infoHash, audioFiles)
+	if err != nil {
+		return 0, rerrors.Wrap(err)
+	}
+
+	return jobId, nil
+}
+
+// finalizeTorrentSubmission runs the tail shared by SubmitTorrent and
+// SubmitTorrentFile once the files to download are already selected and
+// prioritized on tor: per-file and total size checks against the caller's
+// permissions, the tracking row, initial progress, and starting the download.
+func (s *TorrentService) finalizeTorrentSubmission(
+	ctx context.Context,
+	uCtx user_context.UserContext,
+	tor *torrent.Torrent,
+	folderRelDir string,
+	infoHash string,
+	selectedFiles []*torrent.File,
+) (int64, error) {
 	var totalBytes int64
-	for _, file := range audioFiles {
+	for _, file := range selectedFiles {
 		if file.Length() > uCtx.Permissions.MaxSongSizeBytes {
 			tor.Drop()
 			return 0, rerrors.Wrap(service_errors.ErrSongSizeLimitExceeded, file.Path())

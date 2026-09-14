@@ -72,4 +72,13 @@ var (
 	// ErrNotImplemented is returned by a method whose contract has been
 	// defined but whose business logic has not landed yet.
 	ErrNotImplemented = rerrors.New("not implemented", codes.Unimplemented, rerrors.WithHttpStatus(http.StatusNotImplemented))
+
+	// ErrTorrentUploadNotFound is returned when an upload handle from
+	// UploadTorrentFile is unknown, expired, or not owned by the caller.
+	ErrTorrentUploadNotFound = rerrors.New("torrent upload not found", codes.NotFound, rerrors.WithHttpStatus(http.StatusNotFound))
+
+	// ErrTorrentInvalidSelection is returned when SubmitTorrentFile's selected
+	// paths are empty, or do not each match a real, audio-supported file in
+	// the torrent.
+	ErrTorrentInvalidSelection = rerrors.New("invalid torrent file selection", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
 )

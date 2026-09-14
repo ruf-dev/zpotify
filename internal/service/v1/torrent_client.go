@@ -9,6 +9,7 @@ import (
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/audio_parsers"
+	"go.zpotify.ru/zpotify/internal/service/service_errors"
 )
 
 // TorrentClientConfig is the subset of runtime config the bittorrent client
@@ -105,6 +106,52 @@ func applyAudioOnlyPriority(tor *torrent.Torrent) []*torrent.File {
 	}
 
 	return audioFilesOf(tor)
+}
+
+// applySelectedPriority marks exactly the caller's chosen, audio-supported
+// files in tor for download at normal priority and everything else as
+// skipped, and returns the selected files.
+//
+// Unlike applyAudioOnlyPriority, selectedPaths is caller-controlled input:
+// every entry must match a real, audio-supported file in tor, and the
+// resulting selection must be non-empty - a bogus path is rejected rather
+// than silently dropped.
+//
+// The caller must have waited on tor.GotInfo() first - a torrent with no info
+// dict has no file list to prioritize yet.
+func applySelectedPriority(tor *torrent.Torrent, selectedPaths []string) ([]*torrent.File, error) {
+	wanted := make(map[string]bool, len(selectedPaths))
+	for _, selectedPath := range selectedPaths {
+		wanted[selectedPath] = true
+	}
+
+	matched := make(map[string]bool, len(selectedPaths))
+	selected := make([]*torrent.File, 0, len(selectedPaths))
+
+	for _, file := range tor.Files() {
+		filePath := file.Path()
+
+		if wanted[filePath] && audio_parsers.IsSupported(filePath) {
+			file.SetPriority(torrent.PiecePriorityNormal)
+			selected = append(selected, file)
+			matched[filePath] = true
+			continue
+		}
+
+		file.SetPriority(torrent.PiecePriorityNone)
+	}
+
+	for _, selectedPath := range selectedPaths {
+		if !matched[selectedPath] {
+			return nil, rerrors.Wrap(service_errors.ErrTorrentInvalidSelection, selectedPath)
+		}
+	}
+
+	if len(selected) == 0 {
+		return nil, rerrors.Wrap(service_errors.ErrTorrentInvalidSelection, "no files selected")
+	}
+
+	return selected, nil
 }
 
 // torrentScratchPath resolves where anacrolix stores a torrent named
