@@ -55,6 +55,19 @@ service TorrentAPI {
       body: "*"
     };
   }
+
+  rpc GetTorrentFile(GetTorrentFile.Request) returns (GetTorrentFile.Response) {
+    option (google.api.http) = {
+      get: "/api/torrents/files/{id}"
+    };
+  }
+
+  rpc SubmitTorrentFile(SubmitTorrentFile.Request) returns (SubmitTorrentFile.Response) {
+    option (google.api.http) = {
+      post: "/api/torrents/files/{id}/submit"
+      body: "*"
+    };
+  }
 }
 
 message TorrentJob {
@@ -135,5 +148,39 @@ message WatchTorrentJobs {
 
   message Response {
     TorrentJob job = 1;
+  }
+}
+
+message TorrentFile {
+  string id = 1;
+  string torrent_name = 2;
+  repeated TorrentFileEntry files = 3;
+}
+
+message TorrentFileEntry {
+  string path = 1;
+  int64 size_bytes = 2;
+  bool supported = 3;
+}
+
+message GetTorrentFile {
+  message Request {
+    string id = 1;
+  }
+
+  message Response {
+    TorrentFile file = 1;
+  }
+}
+
+message SubmitTorrentFile {
+  message Request {
+    string id = 1;
+    string folder_name = 2;
+    repeated string selected_paths = 3;
+  }
+
+  message Response {
+    int64 job_id = 1;
   }
 }

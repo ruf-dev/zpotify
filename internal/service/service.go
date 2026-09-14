@@ -261,6 +261,19 @@ type TorrentService interface {
 	// WatchJobs returns a channel that streams updates for the caller's torrent jobs,
 	// optionally filtered by folder_name. It immediately sends current jobs, then streams updates.
 	WatchJobs(ctx context.Context, folderName string, limit int32) (chan domain.TorrentDownload, error)
+
+	// UploadTorrentFile parses a .torrent file and caches it under an opaque
+	// handle, without registering it with the bittorrent client or creating a
+	// torrent_downloads row. The handle is later passed to GetTorrentFile or
+	// SubmitTorrentFile.
+	UploadTorrentFile(ctx context.Context, torrentFileBytes []byte) (domain.TorrentFile, error)
+	// GetTorrentFile returns a previously uploaded, not-yet-submitted torrent
+	// file by its opaque handle.
+	GetTorrentFile(ctx context.Context, id string) (domain.TorrentFile, error)
+	// SubmitTorrentFile registers a previously uploaded torrent file for
+	// download, restricted to the given selected paths, and returns the id
+	// of the newly created tracking job.
+	SubmitTorrentFile(ctx context.Context, id string, folderName string, selectedPaths []string) (int64, error)
 }
 
 type FeatureFlagsService interface {

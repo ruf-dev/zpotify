@@ -19,13 +19,15 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	TorrentAPI_ListTorrentJobs_FullMethodName  = "/zpotify_api.TorrentAPI/ListTorrentJobs"
-	TorrentAPI_GetTorrentJob_FullMethodName    = "/zpotify_api.TorrentAPI/GetTorrentJob"
-	TorrentAPI_CancelTorrentJob_FullMethodName = "/zpotify_api.TorrentAPI/CancelTorrentJob"
-	TorrentAPI_PauseTorrentJob_FullMethodName  = "/zpotify_api.TorrentAPI/PauseTorrentJob"
-	TorrentAPI_ResumeTorrentJob_FullMethodName = "/zpotify_api.TorrentAPI/ResumeTorrentJob"
-	TorrentAPI_DeleteTorrentJob_FullMethodName = "/zpotify_api.TorrentAPI/DeleteTorrentJob"
-	TorrentAPI_WatchTorrentJobs_FullMethodName = "/zpotify_api.TorrentAPI/WatchTorrentJobs"
+	TorrentAPI_ListTorrentJobs_FullMethodName   = "/zpotify_api.TorrentAPI/ListTorrentJobs"
+	TorrentAPI_GetTorrentJob_FullMethodName     = "/zpotify_api.TorrentAPI/GetTorrentJob"
+	TorrentAPI_CancelTorrentJob_FullMethodName  = "/zpotify_api.TorrentAPI/CancelTorrentJob"
+	TorrentAPI_PauseTorrentJob_FullMethodName   = "/zpotify_api.TorrentAPI/PauseTorrentJob"
+	TorrentAPI_ResumeTorrentJob_FullMethodName  = "/zpotify_api.TorrentAPI/ResumeTorrentJob"
+	TorrentAPI_DeleteTorrentJob_FullMethodName  = "/zpotify_api.TorrentAPI/DeleteTorrentJob"
+	TorrentAPI_WatchTorrentJobs_FullMethodName  = "/zpotify_api.TorrentAPI/WatchTorrentJobs"
+	TorrentAPI_GetTorrentFile_FullMethodName    = "/zpotify_api.TorrentAPI/GetTorrentFile"
+	TorrentAPI_SubmitTorrentFile_FullMethodName = "/zpotify_api.TorrentAPI/SubmitTorrentFile"
 )
 
 // TorrentAPIClient is the client API for TorrentAPI service.
@@ -39,6 +41,8 @@ type TorrentAPIClient interface {
 	ResumeTorrentJob(ctx context.Context, in *ResumeTorrentJob_Request, opts ...grpc.CallOption) (*ResumeTorrentJob_Response, error)
 	DeleteTorrentJob(ctx context.Context, in *DeleteTorrentJob_Request, opts ...grpc.CallOption) (*DeleteTorrentJob_Response, error)
 	WatchTorrentJobs(ctx context.Context, in *WatchTorrentJobs_Request, opts ...grpc.CallOption) (TorrentAPI_WatchTorrentJobsClient, error)
+	GetTorrentFile(ctx context.Context, in *GetTorrentFile_Request, opts ...grpc.CallOption) (*GetTorrentFile_Response, error)
+	SubmitTorrentFile(ctx context.Context, in *SubmitTorrentFile_Request, opts ...grpc.CallOption) (*SubmitTorrentFile_Response, error)
 }
 
 type torrentAPIClient struct {
@@ -135,6 +139,24 @@ func (x *torrentAPIWatchTorrentJobsClient) Recv() (*WatchTorrentJobs_Response, e
 	return m, nil
 }
 
+func (c *torrentAPIClient) GetTorrentFile(ctx context.Context, in *GetTorrentFile_Request, opts ...grpc.CallOption) (*GetTorrentFile_Response, error) {
+	out := new(GetTorrentFile_Response)
+	err := c.cc.Invoke(ctx, TorrentAPI_GetTorrentFile_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *torrentAPIClient) SubmitTorrentFile(ctx context.Context, in *SubmitTorrentFile_Request, opts ...grpc.CallOption) (*SubmitTorrentFile_Response, error) {
+	out := new(SubmitTorrentFile_Response)
+	err := c.cc.Invoke(ctx, TorrentAPI_SubmitTorrentFile_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TorrentAPIServer is the server API for TorrentAPI service.
 // All implementations must embed UnimplementedTorrentAPIServer
 // for forward compatibility
@@ -146,6 +168,8 @@ type TorrentAPIServer interface {
 	ResumeTorrentJob(context.Context, *ResumeTorrentJob_Request) (*ResumeTorrentJob_Response, error)
 	DeleteTorrentJob(context.Context, *DeleteTorrentJob_Request) (*DeleteTorrentJob_Response, error)
 	WatchTorrentJobs(*WatchTorrentJobs_Request, TorrentAPI_WatchTorrentJobsServer) error
+	GetTorrentFile(context.Context, *GetTorrentFile_Request) (*GetTorrentFile_Response, error)
+	SubmitTorrentFile(context.Context, *SubmitTorrentFile_Request) (*SubmitTorrentFile_Response, error)
 	mustEmbedUnimplementedTorrentAPIServer()
 }
 
@@ -173,6 +197,12 @@ func (UnimplementedTorrentAPIServer) DeleteTorrentJob(context.Context, *DeleteTo
 }
 func (UnimplementedTorrentAPIServer) WatchTorrentJobs(*WatchTorrentJobs_Request, TorrentAPI_WatchTorrentJobsServer) error {
 	return status.Errorf(codes.Unimplemented, "method WatchTorrentJobs not implemented")
+}
+func (UnimplementedTorrentAPIServer) GetTorrentFile(context.Context, *GetTorrentFile_Request) (*GetTorrentFile_Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTorrentFile not implemented")
+}
+func (UnimplementedTorrentAPIServer) SubmitTorrentFile(context.Context, *SubmitTorrentFile_Request) (*SubmitTorrentFile_Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitTorrentFile not implemented")
 }
 func (UnimplementedTorrentAPIServer) mustEmbedUnimplementedTorrentAPIServer() {}
 
@@ -316,6 +346,42 @@ func (x *torrentAPIWatchTorrentJobsServer) Send(m *WatchTorrentJobs_Response) er
 	return x.ServerStream.SendMsg(m)
 }
 
+func _TorrentAPI_GetTorrentFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTorrentFile_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TorrentAPIServer).GetTorrentFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TorrentAPI_GetTorrentFile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TorrentAPIServer).GetTorrentFile(ctx, req.(*GetTorrentFile_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TorrentAPI_SubmitTorrentFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubmitTorrentFile_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TorrentAPIServer).SubmitTorrentFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TorrentAPI_SubmitTorrentFile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TorrentAPIServer).SubmitTorrentFile(ctx, req.(*SubmitTorrentFile_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TorrentAPI_ServiceDesc is the grpc.ServiceDesc for TorrentAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -346,6 +412,14 @@ var TorrentAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteTorrentJob",
 			Handler:    _TorrentAPI_DeleteTorrentJob_Handler,
+		},
+		{
+			MethodName: "GetTorrentFile",
+			Handler:    _TorrentAPI_GetTorrentFile_Handler,
+		},
+		{
+			MethodName: "SubmitTorrentFile",
+			Handler:    _TorrentAPI_SubmitTorrentFile_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

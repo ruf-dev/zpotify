@@ -68,4 +68,8 @@ var (
 	// digest. This should never happen in practice - it would require another
 	// file with a different content hash to occupy every disambiguated name.
 	ErrFilePathCollisionUnresolved = rerrors.New("could not resolve a free file path", codes.Internal, rerrors.WithHttpStatus(http.StatusInternalServerError))
+
+	// ErrNotImplemented is returned by a method whose contract has been
+	// defined but whose business logic has not landed yet.
+	ErrNotImplemented = rerrors.New("not implemented", codes.Unimplemented, rerrors.WithHttpStatus(http.StatusNotImplemented))
 )

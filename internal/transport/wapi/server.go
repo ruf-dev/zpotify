@@ -24,6 +24,7 @@ func New(audioService service.AudioService, fileService service.FileService, tor
 	srv.mux.HandleFunc("/wapi/audio", srv.GetAudio)
 	srv.mux.HandleFunc("/wapi/files/upload", srv.Upload)
 	srv.mux.HandleFunc("/wapi/torrents/upload", srv.UploadTorrent)
+	srv.mux.HandleFunc("/wapi/torrents/files", srv.UploadTorrentFile)
 
 	handler := &srv.mux
 	return handler

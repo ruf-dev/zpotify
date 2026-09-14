@@ -73,3 +73,25 @@ func toTorrentJob(row domain.TorrentDownload) *zpotify_api.TorrentJob {
 
 	return job
 }
+
+// toTorrentFile converts an uploaded-but-not-yet-submitted torrent file into
+// its API shape.
+func toTorrentFile(file domain.TorrentFile) *zpotify_api.TorrentFile {
+	apiEntries := make([]*zpotify_api.TorrentFileEntry, 0, len(file.Files))
+	for _, entry := range file.Files {
+		apiEntry := &zpotify_api.TorrentFileEntry{
+			Path:      entry.Path,
+			SizeBytes: entry.SizeBytes,
+			Supported: entry.Supported,
+		}
+		apiEntries = append(apiEntries, apiEntry)
+	}
+
+	apiFile := &zpotify_api.TorrentFile{
+		Id:          file.Id,
+		TorrentName: file.TorrentName,
+		Files:       apiEntries,
+	}
+
+	return apiFile
+}

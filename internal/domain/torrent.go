@@ -80,6 +80,24 @@ func EncodeTorrentImportedFiles(files []TorrentImportedFile) ([]string, error) {
 	return encoded, nil
 }
 
+// TorrentFile is an uploaded-but-not-yet-submitted .torrent file, identified
+// by an opaque handle returned from the upload call. It is not backed by a
+// torrent_downloads row - that row is only created once the file is
+// submitted for download.
+type TorrentFile struct {
+	Id          string
+	TorrentName string
+	Files       []TorrentFileEntry
+}
+
+// TorrentFileEntry is one file listed inside an uploaded .torrent's info
+// dict, before any of it has been downloaded.
+type TorrentFileEntry struct {
+	Path      string
+	SizeBytes int64
+	Supported bool
+}
+
 // DecodeTorrentImportedFiles parses entries written by
 // EncodeTorrentImportedFiles. An element that is not a JSON object is treated
 // as a bare torrent-relative path, so rows written by any other producer still

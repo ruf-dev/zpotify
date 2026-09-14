@@ -89,6 +89,40 @@ export type WatchTorrentJobsResponse = {
 
 export type WatchTorrentJobs = Record<string, never>;
 
+export type TorrentFile = {
+  id?: string;
+  torrentName?: string;
+  files?: TorrentFileEntry[];
+};
+
+export type TorrentFileEntry = {
+  path?: string;
+  sizeBytes?: string;
+  supported?: boolean;
+};
+
+export type GetTorrentFileRequest = {
+  id?: string;
+};
+
+export type GetTorrentFileResponse = {
+  file?: TorrentFile;
+};
+
+export type GetTorrentFile = Record<string, never>;
+
+export type SubmitTorrentFileRequest = {
+  id?: string;
+  folderName?: string;
+  selectedPaths?: string[];
+};
+
+export type SubmitTorrentFileResponse = {
+  jobId?: string;
+};
+
+export type SubmitTorrentFile = Record<string, never>;
+
 export class TorrentAPI {
   static ListTorrentJobs(this:void, req: ListTorrentJobsRequest, initReq?: fm.InitReq): Promise<ListTorrentJobsResponse> {
     return fm.fetchRequest<ListTorrentJobsResponse>(`/api/torrents/list`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
@@ -110,5 +144,11 @@ export class TorrentAPI {
   }
   static WatchTorrentJobs(this:void, req: WatchTorrentJobsRequest, entityNotifier?: fm.NotifyStreamEntityArrival<WatchTorrentJobsResponse>, initReq?: fm.InitReq): Promise<void> {
     return fm.fetchStreamingRequest<WatchTorrentJobsResponse>(`/api/torrents/watch`, entityNotifier, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static GetTorrentFile(this:void, req: GetTorrentFileRequest, initReq?: fm.InitReq): Promise<GetTorrentFileResponse> {
+    return fm.fetchRequest<GetTorrentFileResponse>(`/api/torrents/files/${req.id}?${fm.renderURLSearchParams(req, ["id"])}`, {...initReq, method: "GET"});
+  }
+  static SubmitTorrentFile(this:void, req: SubmitTorrentFileRequest, initReq?: fm.InitReq): Promise<SubmitTorrentFileResponse> {
+    return fm.fetchRequest<SubmitTorrentFileResponse>(`/api/torrents/files/${req.id}/submit`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }

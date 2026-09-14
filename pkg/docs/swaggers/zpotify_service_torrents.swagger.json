@@ -16,6 +16,74 @@
     "application/json"
   ],
   "paths": {
+    "/api/torrents/files/{id}": {
+      "get": {
+        "operationId": "TorrentAPI_GetTorrentFile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetTorrentFileResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TorrentAPI"
+        ]
+      }
+    },
+    "/api/torrents/files/{id}/submit": {
+      "post": {
+        "operationId": "TorrentAPI_SubmitTorrentFile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiSubmitTorrentFileResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiTorrentAPISubmitTorrentFileBody"
+            }
+          }
+        ],
+        "tags": [
+          "TorrentAPI"
+        ]
+      }
+    },
     "/api/torrents/list": {
       "post": {
         "operationId": "TorrentAPI_ListTorrentJobs",
@@ -278,6 +346,14 @@
     "zpotify_apiDeleteTorrentJobResponse": {
       "type": "object"
     },
+    "zpotify_apiGetTorrentFileResponse": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "$ref": "#/definitions/zpotify_apiTorrentFile"
+        }
+      }
+    },
     "zpotify_apiGetTorrentJobResponse": {
       "type": "object",
       "properties": {
@@ -329,6 +405,62 @@
     },
     "zpotify_apiResumeTorrentJobResponse": {
       "type": "object"
+    },
+    "zpotify_apiSubmitTorrentFileResponse": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "zpotify_apiTorrentAPISubmitTorrentFileBody": {
+      "type": "object",
+      "properties": {
+        "folderName": {
+          "type": "string"
+        },
+        "selectedPaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "zpotify_apiTorrentFile": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "torrentName": {
+          "type": "string"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiTorrentFileEntry"
+          }
+        }
+      }
+    },
+    "zpotify_apiTorrentFileEntry": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sizeBytes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "supported": {
+          "type": "boolean"
+        }
+      }
     },
     "zpotify_apiTorrentJob": {
       "type": "object",
