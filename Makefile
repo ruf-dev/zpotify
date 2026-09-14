@@ -23,12 +23,16 @@ reload-webserver:
 client:
 	cd pkg/client/ZpotifyUI && vite
 
-# Run Go dev server and React dev server together
-serve:
-	@trap 'kill 0' EXIT; \
-	go run ./cmd/service -dev & \
-	cd pkg/client/ZpotifyUI && bun dev & \
-	wait
+# Builds the production UI bundle and embeds it into the Go binary's serving dir, so the Go
+# service alone has something real to serve (e.g. behind a reverse proxy).
+build-ui:
+	cd pkg/client/ZpotifyUI && bun install --frozen-lockfile && bun run build
+	rm -rf internal/transport/ui/dist
+	cp -r pkg/client/ZpotifyUI/dist internal/transport/ui/dist
+
+# Run the Go dev server, serving the freshly built UI bundle embedded in the binary
+serve: build-ui
+	go run ./cmd/service -dev
 
 # Build UI part of project
 client-build: codegen .build-ui
