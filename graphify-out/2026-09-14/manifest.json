@@ -3930,8 +3930,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/torrent_service.go": {
-    "mtime": 1789381595.94198,
-    "ast_hash": "50b7c514d1b5d49f6771452e8f6f4122",
+    "mtime": 1789398946.853907,
+    "ast_hash": "76a602825eb4bf421299433b1149c069",
     "semantic_hash": ""
   },
   "internal/service/v1/upload_pipeline.go": {
@@ -3940,8 +3940,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/upload_pipeline_test.go": {
-    "mtime": 1787635064.7953415,
-    "ast_hash": "eb47e4124cfa7dfb294154ad4992f905",
+    "mtime": 1789398995.3519187,
+    "ast_hash": "4eeacfd7ffb0a9b3305ca6c372454326",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/DropZoneScreen.test.tsx": {
@@ -4005,8 +4005,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/torrent_service_test.go": {
-    "mtime": 1789389324.294117,
-    "ast_hash": "588f8e2ad0350584115a08a35ca75a9c",
+    "mtime": 1789399026.9798887,
+    "ast_hash": "2a2720dfa066b2d97a2f991a64767335",
     "semantic_hash": ""
   },
   "internal/transport/torrent_api_impl/cancel_torrent_job.go": {
