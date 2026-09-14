@@ -25,6 +25,7 @@ const (
 	TorrentAPI_PauseTorrentJob_FullMethodName  = "/zpotify_api.TorrentAPI/PauseTorrentJob"
 	TorrentAPI_ResumeTorrentJob_FullMethodName = "/zpotify_api.TorrentAPI/ResumeTorrentJob"
 	TorrentAPI_DeleteTorrentJob_FullMethodName = "/zpotify_api.TorrentAPI/DeleteTorrentJob"
+	TorrentAPI_WatchTorrentJobs_FullMethodName = "/zpotify_api.TorrentAPI/WatchTorrentJobs"
 )
 
 // TorrentAPIClient is the client API for TorrentAPI service.
@@ -37,6 +38,7 @@ type TorrentAPIClient interface {
 	PauseTorrentJob(ctx context.Context, in *PauseTorrentJob_Request, opts ...grpc.CallOption) (*PauseTorrentJob_Response, error)
 	ResumeTorrentJob(ctx context.Context, in *ResumeTorrentJob_Request, opts ...grpc.CallOption) (*ResumeTorrentJob_Response, error)
 	DeleteTorrentJob(ctx context.Context, in *DeleteTorrentJob_Request, opts ...grpc.CallOption) (*DeleteTorrentJob_Response, error)
+	WatchTorrentJobs(ctx context.Context, in *WatchTorrentJobs_Request, opts ...grpc.CallOption) (TorrentAPI_WatchTorrentJobsClient, error)
 }
 
 type torrentAPIClient struct {
@@ -101,6 +103,38 @@ func (c *torrentAPIClient) DeleteTorrentJob(ctx context.Context, in *DeleteTorre
 	return out, nil
 }
 
+func (c *torrentAPIClient) WatchTorrentJobs(ctx context.Context, in *WatchTorrentJobs_Request, opts ...grpc.CallOption) (TorrentAPI_WatchTorrentJobsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &TorrentAPI_ServiceDesc.Streams[0], TorrentAPI_WatchTorrentJobs_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &torrentAPIWatchTorrentJobsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type TorrentAPI_WatchTorrentJobsClient interface {
+	Recv() (*WatchTorrentJobs_Response, error)
+	grpc.ClientStream
+}
+
+type torrentAPIWatchTorrentJobsClient struct {
+	grpc.ClientStream
+}
+
+func (x *torrentAPIWatchTorrentJobsClient) Recv() (*WatchTorrentJobs_Response, error) {
+	m := new(WatchTorrentJobs_Response)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // TorrentAPIServer is the server API for TorrentAPI service.
 // All implementations must embed UnimplementedTorrentAPIServer
 // for forward compatibility
@@ -111,6 +145,7 @@ type TorrentAPIServer interface {
 	PauseTorrentJob(context.Context, *PauseTorrentJob_Request) (*PauseTorrentJob_Response, error)
 	ResumeTorrentJob(context.Context, *ResumeTorrentJob_Request) (*ResumeTorrentJob_Response, error)
 	DeleteTorrentJob(context.Context, *DeleteTorrentJob_Request) (*DeleteTorrentJob_Response, error)
+	WatchTorrentJobs(*WatchTorrentJobs_Request, TorrentAPI_WatchTorrentJobsServer) error
 	mustEmbedUnimplementedTorrentAPIServer()
 }
 
@@ -135,6 +170,9 @@ func (UnimplementedTorrentAPIServer) ResumeTorrentJob(context.Context, *ResumeTo
 }
 func (UnimplementedTorrentAPIServer) DeleteTorrentJob(context.Context, *DeleteTorrentJob_Request) (*DeleteTorrentJob_Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteTorrentJob not implemented")
+}
+func (UnimplementedTorrentAPIServer) WatchTorrentJobs(*WatchTorrentJobs_Request, TorrentAPI_WatchTorrentJobsServer) error {
+	return status.Errorf(codes.Unimplemented, "method WatchTorrentJobs not implemented")
 }
 func (UnimplementedTorrentAPIServer) mustEmbedUnimplementedTorrentAPIServer() {}
 
@@ -257,6 +295,27 @@ func _TorrentAPI_DeleteTorrentJob_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TorrentAPI_WatchTorrentJobs_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(WatchTorrentJobs_Request)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(TorrentAPIServer).WatchTorrentJobs(m, &torrentAPIWatchTorrentJobsServer{stream})
+}
+
+type TorrentAPI_WatchTorrentJobsServer interface {
+	Send(*WatchTorrentJobs_Response) error
+	grpc.ServerStream
+}
+
+type torrentAPIWatchTorrentJobsServer struct {
+	grpc.ServerStream
+}
+
+func (x *torrentAPIWatchTorrentJobsServer) Send(m *WatchTorrentJobs_Response) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // TorrentAPI_ServiceDesc is the grpc.ServiceDesc for TorrentAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -289,6 +348,12 @@ var TorrentAPI_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _TorrentAPI_DeleteTorrentJob_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "WatchTorrentJobs",
+			Handler:       _TorrentAPI_WatchTorrentJobs_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "zpotify_service_torrents.proto",
 }

@@ -48,6 +48,13 @@ service TorrentAPI {
       delete: "/api/torrents/{job_id}"
     };
   }
+
+  rpc WatchTorrentJobs(WatchTorrentJobs.Request) returns (stream WatchTorrentJobs.Response) {
+    option (google.api.http) = {
+      post: "/api/torrents/watch"
+      body: "*"
+    };
+  }
 }
 
 message TorrentJob {
@@ -118,4 +125,15 @@ message DeleteTorrentJob {
   }
 
   message Response {}
+}
+
+message WatchTorrentJobs {
+  message Request {
+    optional string folder_name = 1;
+    optional int32 limit = 2;
+  }
+
+  message Response {
+    TorrentJob job = 1;
+  }
 }

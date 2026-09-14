@@ -48,6 +48,47 @@
         ]
       }
     },
+    "/api/torrents/watch": {
+      "post": {
+        "operationId": "TorrentAPI_WatchTorrentJobs",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/zpotify_apiWatchTorrentJobsResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of zpotify_apiWatchTorrentJobsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiWatchTorrentJobsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TorrentAPI"
+        ]
+      }
+    },
     "/api/torrents/{jobId}": {
       "get": {
         "operationId": "TorrentAPI_GetTorrentJob",
@@ -322,6 +363,26 @@
         },
         "error": {
           "type": "string"
+        }
+      }
+    },
+    "zpotify_apiWatchTorrentJobsRequest": {
+      "type": "object",
+      "properties": {
+        "folderName": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "zpotify_apiWatchTorrentJobsResponse": {
+      "type": "object",
+      "properties": {
+        "job": {
+          "$ref": "#/definitions/zpotify_apiTorrentJob"
         }
       }
     }

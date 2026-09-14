@@ -317,6 +317,27 @@ func local_request_TorrentAPI_DeleteTorrentJob_0(ctx context.Context, marshaler 
 
 }
 
+func request_TorrentAPI_WatchTorrentJobs_0(ctx context.Context, marshaler runtime.Marshaler, client TorrentAPIClient, req *http.Request, pathParams map[string]string) (TorrentAPI_WatchTorrentJobsClient, runtime.ServerMetadata, error) {
+	var protoReq WatchTorrentJobs_Request
+	var metadata runtime.ServerMetadata
+
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	stream, err := client.WatchTorrentJobs(ctx, &protoReq)
+	if err != nil {
+		return nil, metadata, err
+	}
+	header, err := stream.Header()
+	if err != nil {
+		return nil, metadata, err
+	}
+	metadata.HeaderMD = header
+	return stream, metadata, nil
+
+}
+
 // RegisterTorrentAPIHandlerServer registers the http handlers for service TorrentAPI to "mux".
 // UnaryRPC     :call TorrentAPIServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -471,6 +492,13 @@ func RegisterTorrentAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 
 		forward_TorrentAPI_DeleteTorrentJob_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
+	})
+
+	mux.Handle("POST", pattern_TorrentAPI_WatchTorrentJobs_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
 	})
 
 	return nil
@@ -646,6 +674,28 @@ func RegisterTorrentAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux,
 
 	})
 
+	mux.Handle("POST", pattern_TorrentAPI_WatchTorrentJobs_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zpotify_api.TorrentAPI/WatchTorrentJobs", runtime.WithHTTPPathPattern("/api/torrents/watch"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_TorrentAPI_WatchTorrentJobs_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_TorrentAPI_WatchTorrentJobs_0(annotatedContext, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -661,6 +711,8 @@ var (
 	pattern_TorrentAPI_ResumeTorrentJob_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"api", "torrents", "job_id", "resume"}, ""))
 
 	pattern_TorrentAPI_DeleteTorrentJob_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"api", "torrents", "job_id"}, ""))
+
+	pattern_TorrentAPI_WatchTorrentJobs_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "torrents", "watch"}, ""))
 )
 
 var (
@@ -675,4 +727,6 @@ var (
 	forward_TorrentAPI_ResumeTorrentJob_0 = runtime.ForwardResponseMessage
 
 	forward_TorrentAPI_DeleteTorrentJob_0 = runtime.ForwardResponseMessage
+
+	forward_TorrentAPI_WatchTorrentJobs_0 = runtime.ForwardResponseStream
 )

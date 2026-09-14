@@ -78,6 +78,17 @@ export type DeleteTorrentJobResponse = Record<string, never>;
 
 export type DeleteTorrentJob = Record<string, never>;
 
+export type WatchTorrentJobsRequest = {
+  folderName?: string;
+  limit?: number;
+};
+
+export type WatchTorrentJobsResponse = {
+  job?: TorrentJob;
+};
+
+export type WatchTorrentJobs = Record<string, never>;
+
 export class TorrentAPI {
   static ListTorrentJobs(this:void, req: ListTorrentJobsRequest, initReq?: fm.InitReq): Promise<ListTorrentJobsResponse> {
     return fm.fetchRequest<ListTorrentJobsResponse>(`/api/torrents/list`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
@@ -96,5 +107,8 @@ export class TorrentAPI {
   }
   static DeleteTorrentJob(this:void, req: DeleteTorrentJobRequest, initReq?: fm.InitReq): Promise<DeleteTorrentJobResponse> {
     return fm.fetchRequest<DeleteTorrentJobResponse>(`/api/torrents/${req.jobId}?${fm.renderURLSearchParams(req, ["jobId"])}`, {...initReq, method: "DELETE"});
+  }
+  static WatchTorrentJobs(this:void, req: WatchTorrentJobsRequest, entityNotifier?: fm.NotifyStreamEntityArrival<WatchTorrentJobsResponse>, initReq?: fm.InitReq): Promise<void> {
+    return fm.fetchStreamingRequest<WatchTorrentJobsResponse>(`/api/torrents/watch`, entityNotifier, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }
