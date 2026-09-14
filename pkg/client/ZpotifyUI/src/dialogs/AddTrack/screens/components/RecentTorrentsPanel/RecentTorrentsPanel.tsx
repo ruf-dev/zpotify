@@ -26,10 +26,6 @@ export default function RecentTorrentsPanel({ jobs, loading }: RecentTorrentsPan
         return jobs.slice(0, 3);
     }, [jobs]);
 
-    if (!loading && displayedJobs.length === 0) {
-        return null;
-    }
-
     function handleRowClick(job: TorrentJob) {
         OpenDialog(<TorrentManageDialog job={job} />);
     }
@@ -47,7 +43,7 @@ export default function RecentTorrentsPanel({ jobs, loading }: RecentTorrentsPan
                         <div className={cls.SkeletonRow} />
                         <div className={cls.SkeletonRow} />
                     </>
-                ) : (
+                ) : displayedJobs.length > 0 ? (
                     displayedJobs.map((job) => {
                         const total = Number(job.totalBytes ?? 0);
                         const downloaded = Number(job.downloadedBytes ?? 0);
@@ -89,6 +85,10 @@ export default function RecentTorrentsPanel({ jobs, loading }: RecentTorrentsPan
                             </div>
                         );
                     })
+                ) : (
+                    <div className={cls.EmptyState}>
+                        <span className={cls.EmptyStateMessage}>No recent torrents</span>
+                    </div>
                 )}
             </div>
         </div>

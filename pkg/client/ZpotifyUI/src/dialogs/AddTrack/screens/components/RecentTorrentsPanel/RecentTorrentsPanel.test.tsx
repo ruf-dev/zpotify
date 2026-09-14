@@ -29,10 +29,10 @@ describe('RecentTorrentsPanel', () => {
         vi.clearAllMocks();
     });
 
-    it('should render nothing when loading is false and jobs are empty', () => {
-        const { container } = render(<RecentTorrentsPanel jobs={[]} loading={false} />);
+    it('should render empty state message when loading is false and jobs are empty', () => {
+        render(<RecentTorrentsPanel jobs={[]} loading={false} />);
 
-        expect(container.firstChild).toBeNull();
+        expect(screen.getByText('No recent torrents')).not.toBeNull();
     });
 
     it('should show skeleton loaders when loading is true and no jobs', () => {

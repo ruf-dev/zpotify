@@ -130,6 +130,19 @@
     }
 }
 
+.EmptyState {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 1rem;
+}
+
+.EmptyStateMessage {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-tertiary);
+    text-align: center;
+}
+
 @keyframes shimmer {
     0% {
         background-position: -2rem 0;
