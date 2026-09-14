@@ -16,7 +16,8 @@ SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
     downloaded_bytes, imported_files, error, created_at, updated_at
 FROM torrent_downloads
 WHERE user_id = @user_id
-  AND info_hash = @info_hash;
+  AND info_hash = @info_hash
+  AND status IN ('queued', 'downloading', 'importing');
 
 -- name: ListTorrentDownloadsByUser :many
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,

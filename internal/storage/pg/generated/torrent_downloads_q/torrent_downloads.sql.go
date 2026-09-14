@@ -66,6 +66,7 @@ SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
 FROM torrent_downloads
 WHERE user_id = $1
   AND info_hash = $2
+  AND status IN ('queued', 'downloading', 'importing')
 `
 
 type GetTorrentDownloadByUserAndInfoHashParams struct {

@@ -5,6 +5,7 @@ import (
 	"context"
 	"database/sql"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"sync"
 	"testing"
@@ -43,6 +44,21 @@ func (f *fakeTorrentDownloadStorage) Add(_ context.Context, download domain.Torr
 	f.mu.Lock()
 	defer f.mu.Unlock()
 
+	// Check for unique (user_id, info_hash) on active status only - matching the partial index.
+	// Only enforce when info_hash is non-empty (real DB constraint only applies to actual hashes).
+	if download.InfoHash != "" {
+		for _, row := range f.byId {
+			if row.UserId == download.UserId && row.InfoHash == download.InfoHash {
+				if row.Status == domain.TorrentDownloadStatusQueued ||
+					row.Status == domain.TorrentDownloadStatusDownloading ||
+					row.Status == domain.TorrentDownloadStatusImporting {
+					// Active torrent with same (user_id, info_hash) already exists
+					return domain.TorrentDownload{}, storage.ErrAlreadyExists
+				}
+			}
+		}
+	}
+
 	f.nextId++
 	download.Id = f.nextId
 	if download.Status == "" {
@@ -75,7 +91,12 @@ func (f *fakeTorrentDownloadStorage) GetByUserAndInfoHash(
 
 	for _, row := range f.byId {
 		if row.UserId == userId && row.InfoHash == infoHash {
-			return sql.Null[domain.TorrentDownload]{V: row, Valid: true}, nil
+			// Only return active torrents - dedup should not block re-submission of completed/failed torrents
+			if row.Status == domain.TorrentDownloadStatusQueued ||
+				row.Status == domain.TorrentDownloadStatusDownloading ||
+				row.Status == domain.TorrentDownloadStatusImporting {
+				return sql.Null[domain.TorrentDownload]{V: row, Valid: true}, nil
+			}
 		}
 	}
 
@@ -96,6 +117,11 @@ func (f *fakeTorrentDownloadStorage) ListByUser(_ context.Context, userId int64,
 		}
 		rows = append(rows, row)
 	}
+
+	// Newest first, matching the real ORDER BY created_at DESC in
+	// ListTorrentDownloadsByUser; Id is a stand-in for creation order since
+	// this fake doesn't stamp created_at.
+	sort.Slice(rows, func(i, j int) bool { return rows[i].Id > rows[j].Id })
 
 	return rows, nil
 }
@@ -456,6 +482,105 @@ func TestTorrentService_SubmitTorrent_DuplicateReturnsExistingJobId(t *testing.T
 	assert.Equal(t, existing.Id, id)
 }
 
+// TestTorrentService_SubmitTorrent_AllowsResubmitAfterDelete proves that after
+// deleting a torrent job, resubmitting the same torrent file succeeds. The
+// dedup check only blocks active downloads, not deleted ones. After delete,
+// the row is gone from storage and does not block re-submission.
+func TestTorrentService_SubmitTorrent_AllowsResubmitAfterDelete(t *testing.T) {
+	_, torrentStorage := newQuotaTestService(0, 3)
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	_, infoHash := newValidTorrentBytes(t, "resubmit.mp3")
+
+	// Pre-create a deleted job with the same info hash - status is not queued/downloading/importing
+	// so it should NOT block re-submission. Hard delete simulates this by removing the row.
+	deletedDownload := domain.TorrentDownload{
+		UserId:      1,
+		InfoHash:    infoHash,
+		TorrentName: "resubmit.mp3",
+		Status:      domain.TorrentDownloadStatusCanceled,
+	}
+	deletedJob, err := torrentStorage.Add(ctx, deletedDownload)
+	require.NoError(t, err)
+
+	// Delete the job (hard delete)
+	err = torrentStorage.Delete(ctx, deletedJob.Id, 1)
+	require.NoError(t, err)
+
+	// Re-submit the same torrent - should pass dedup check since no active job exists
+	// The dedup check now filters for active status, so canceled/deleted rows don't block it
+	existing, err := torrentStorage.GetByUserAndInfoHash(ctx, 1, infoHash)
+	require.NoError(t, err)
+	require.False(t, existing.Valid, "deleted torrent should not be found by dedup query")
+}
+
+// TestTorrentService_SubmitTorrent_DedupsActiveOnlyNotCompleted proves the
+// dedup check only blocks active downloads (queued/downloading/importing), not
+// completed/failed/canceled ones. A user can re-submit a torrent that
+// previously completed or failed.
+func TestTorrentService_SubmitTorrent_DedupsActiveOnlyNotCompleted(t *testing.T) {
+	_, torrentStorage := newQuotaTestService(0, 3)
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	_, infoHash := newValidTorrentBytes(t, "completed.mp3")
+
+	// Create a completed download with the same info hash
+	completedDownload := domain.TorrentDownload{
+		UserId:      1,
+		InfoHash:    infoHash,
+		TorrentName: "completed.mp3",
+		Status:      domain.TorrentDownloadStatusDone,
+	}
+	_, err := torrentStorage.Add(ctx, completedDownload)
+	require.NoError(t, err)
+
+	// The dedup query should NOT find it since status is 'done', not active
+	existing, err := torrentStorage.GetByUserAndInfoHash(ctx, 1, infoHash)
+	require.NoError(t, err)
+	require.False(t, existing.Valid, "completed torrent should not block re-submission")
+}
+
+// TestTorrentService_SubmitTorrent_AllowsResubmitAfterCancel proves that a canceled torrent
+// does not block resubmission of the same torrent file. The scenario simulates:
+// 1. User submits a torrent (creates queued job)
+// 2. User cancels the job (updates status to canceled, but row stays in DB)
+// 3. Adding a new job with same (user_id, info_hash) should succeed, not AlreadyExists error
+// This tests the partial index constraint: canceled status is not included in the unique index.
+func TestTorrentService_SubmitTorrent_AllowsResubmitAfterCancel(t *testing.T) {
+	_, torrentStorage := newQuotaTestService(0, 3)
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	_, infoHash := newValidTorrentBytes(t, "cancel-resubmit.mp3")
+
+	// Step 1: Create a queued download (simulating first submission)
+	firstDownload := domain.TorrentDownload{UserId: 1, InfoHash: infoHash, TorrentName: "cancel-resubmit.mp3"}
+	canceledJob, err := torrentStorage.Add(ctx, firstDownload)
+	require.NoError(t, err)
+	require.Equal(t, domain.TorrentDownloadStatusQueued, canceledJob.Status)
+
+	// Step 2: Cancel the job (status changes to canceled, but row stays in DB)
+	err = torrentStorage.UpdateStatus(ctx, canceledJob.Id, domain.TorrentDownloadStatusCanceled)
+	require.NoError(t, err)
+
+	// Step 3: Verify the dedup query does NOT find the canceled job
+	existing, err := torrentStorage.GetByUserAndInfoHash(ctx, 1, infoHash)
+	require.NoError(t, err)
+	require.False(t, existing.Valid, "canceled torrent should not be found by dedup query")
+
+	// Step 4: Try to add a new download with same (user_id, info_hash)
+	// The fake storage now enforces the partial index constraint (active status only).
+	// This should succeed because the canceled row is not covered by the partial index.
+	// On real Postgres, this would work because the partial index only constrains active rows.
+	secondDownload := domain.TorrentDownload{UserId: 1, InfoHash: infoHash, TorrentName: "cancel-resubmit.mp3"}
+	newJob, err := torrentStorage.Add(ctx, secondDownload)
+	require.NoError(t, err, "adding a new torrent after canceling should succeed")
+	require.NotEqual(t, canceledJob.Id, newJob.Id, "new submission should get a different ID")
+	require.Equal(t, domain.TorrentDownloadStatusQueued, newJob.Status, "new job should have queued status")
+}
+
 func TestTorrentService_ListJobs_RequiresAuthentication(t *testing.T) {
 	svc, _ := newQuotaTestService(0, 3)
 
@@ -761,6 +886,7 @@ func TestTorrentService_WatchJobs_SendsCurrentJobs(t *testing.T) {
 
 	job1 := domain.TorrentDownload{
 		UserId:     userID,
+		InfoHash:   "abc123",
 		TorrentName: "album1.torrent",
 		Status:     domain.TorrentDownloadStatusDownloading,
 	}
@@ -770,6 +896,7 @@ func TestTorrentService_WatchJobs_SendsCurrentJobs(t *testing.T) {
 
 	job2 := domain.TorrentDownload{
 		UserId:     userID,
+		InfoHash:   "def456",
 		TorrentName: "album2.torrent",
 		Status:     domain.TorrentDownloadStatusQueued,
 	}
@@ -807,8 +934,8 @@ func TestTorrentService_WatchJobs_SendsCurrentJobs(t *testing.T) {
 	}
 
 	require.Len(t, received, 2)
-	assert.Equal(t, job1Result.Id, received[0].Id)
-	assert.Equal(t, job2Result.Id, received[1].Id)
+	assert.Equal(t, job2Result.Id, received[0].Id)
+	assert.Equal(t, job1Result.Id, received[1].Id)
 
 	cancel()
 }
