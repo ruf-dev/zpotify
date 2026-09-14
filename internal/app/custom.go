@@ -148,9 +148,12 @@ func (c *Custom) Init(app *App) (err error) {
 	torrentLookup := torrent_sync.NewClientLookup(c.torrentClient)
 	torrentSyncPeriod := time.Duration(app.Cfg.Environment.TorrentSyncPeriodSeconds) * time.Second
 
+	torrentSyncTask := torrent_sync.New(c.dataStorage, torrentLookup, torrentService, torrentSyncPeriod)
+	torrentService.SetBroadcaster(torrentSyncTask.Broadcaster())
+
 	c.BackgroundWorker = background.New(
 		sessions_gc.New(c.dataStorage),
-		torrent_sync.New(c.dataStorage, torrentLookup, torrentService, torrentSyncPeriod),
+		torrentSyncTask,
 	)
 
 	gcHandler := gc_handler.New(c.binaryStorage)

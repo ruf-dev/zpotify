@@ -37,6 +37,13 @@ type TorrentServiceConfig struct {
 	SeedTimeLimitMinutes int
 }
 
+// torrentBroadcaster is the pub/sub side WatchJobs subscribes to. Satisfied by
+// *torrent_sync.Broadcaster; declared here since this is where it's consumed.
+type torrentBroadcaster interface {
+	Subscribe(userID int64) chan domain.TorrentDownload
+	Unsubscribe(userID int64, ch chan domain.TorrentDownload)
+}
+
 // TorrentService drives user-submitted .torrent downloads: it registers them
 // with the shared bittorrent client, restricts them to audio files, and - once
 // complete - lands those files in the user's own storage through the same
@@ -52,6 +59,9 @@ type TorrentService struct {
 	torrentClient *torrent.Client
 
 	cfg TorrentServiceConfig
+
+	// broadcaster is set later (after task creation) for pub/sub updates.
+	broadcaster torrentBroadcaster
 }
 
 func NewTorrentService(
@@ -612,4 +622,76 @@ func isWithinDir(dir string, candidate string) bool {
 func hasParentPrefix(rel string) bool {
 	prefix := ".." + string(filepath.Separator)
 	return len(rel) >= len(prefix) && rel[:len(prefix)] == prefix
+}
+
+// SetBroadcaster injects the broadcaster into the service. Called once during
+// app initialization after the background task is created.
+func (s *TorrentService) SetBroadcaster(b torrentBroadcaster) {
+	s.broadcaster = b
+}
+
+// WatchJobs returns a channel that sends updates for the caller's torrent jobs,
+// optionally filtered by folder_name. It immediately sends the caller's current
+// jobs, then streams updates as they occur.
+func (s *TorrentService) WatchJobs(ctx context.Context, folderName string, limit int32) (chan domain.TorrentDownload, error) {
+	uCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return nil, rerrors.Wrap(user_errors.ErrUnauthenticated)
+	}
+
+	rows, err := s.torrentStorage.ListByUser(ctx, uCtx.UserId, folderName)
+	if err != nil {
+		return nil, rerrors.Wrap(err, "error listing torrent jobs")
+	}
+
+	ch := make(chan domain.TorrentDownload, 10)
+	go func() {
+		var sent int32
+		for _, row := range rows {
+			if limit > 0 && sent >= limit {
+				break
+			}
+			select {
+			case ch <- row:
+				sent++
+			case <-ctx.Done():
+				close(ch)
+				return
+			}
+		}
+
+		if s.broadcaster == nil {
+			close(ch)
+			return
+		}
+
+		subCh := s.broadcaster.Subscribe(uCtx.UserId)
+		defer s.broadcaster.Unsubscribe(uCtx.UserId, subCh)
+
+		for {
+			select {
+			case job, ok := <-subCh:
+				if !ok {
+					close(ch)
+					return
+				}
+
+				if folderName != "" && job.FolderName != folderName {
+					continue
+				}
+
+				select {
+				case ch <- job:
+				case <-ctx.Done():
+					close(ch)
+					return
+				}
+			case <-ctx.Done():
+				close(ch)
+				return
+			}
+		}
+	}()
+
+	return ch, nil
 }

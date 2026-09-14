@@ -153,6 +153,7 @@ func newTestTask(torrentStorage *fakeTorrentStorage, lookup TorrentLookup, impor
 		torrentStorage: torrentStorage,
 		lookup:         lookup,
 		importer:       importer,
+		broadcaster:    NewBroadcaster(),
 	}
 
 	return task

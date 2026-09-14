@@ -45,6 +45,7 @@ type Task struct {
 	torrentStorage storage.TorrentDownloadStorage
 	lookup         TorrentLookup
 	importer       Importer
+	broadcaster    *Broadcaster
 
 	once   sync.Once
 	period time.Duration
@@ -63,8 +64,14 @@ func New(dataStorage storage.Storage, lookup TorrentLookup, importer Importer, p
 		torrentStorage: dataStorage.TorrentDownloads(),
 		lookup:         lookup,
 		importer:       importer,
+		broadcaster:    NewBroadcaster(),
 		period:         period,
 	}
+}
+
+// Broadcaster returns the underlying broadcaster for pub/sub subscriptions.
+func (t *Task) Broadcaster() *Broadcaster {
+	return t.broadcaster
 }
 
 func (t *Task) Start() {
@@ -137,6 +144,10 @@ func (t *Task) syncRow(ctx context.Context, row domain.TorrentDownload) error {
 		return rerrors.Wrap(err, "error updating torrent progress")
 	}
 
+	row.DownloadedBytes = downloaded
+	row.TotalBytes = total
+	t.broadcaster.Publish(row)
+
 	if !isComplete(downloaded, total) {
 		return nil
 	}
@@ -149,6 +160,7 @@ func (t *Task) syncRow(ctx context.Context, row domain.TorrentDownload) error {
 	row.Status = domain.TorrentDownloadStatusImporting
 	row.DownloadedBytes = downloaded
 	row.TotalBytes = total
+	t.broadcaster.Publish(row)
 
 	importErr := t.importer.ImportCompleted(ctx, row)
 	if importErr == nil {
@@ -164,6 +176,9 @@ func (t *Task) syncRow(ctx context.Context, row domain.TorrentDownload) error {
 	if err != nil {
 		return rerrors.Wrap(err, "error marking torrent download as failed")
 	}
+
+	row.Status = domain.TorrentDownloadStatusFailed
+	t.broadcaster.Publish(row)
 
 	return rerrors.Wrap(importErr, "error importing completed torrent")
 }

@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/anacrolix/torrent"
 	"github.com/anacrolix/torrent/bencode"
@@ -16,6 +17,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/storage"
 	"go.zpotify.ru/zpotify/internal/user_errors"
@@ -704,4 +706,221 @@ func TestDecodeTorrentImportedFiles_PlainPathsStillRender(t *testing.T) {
 	require.Len(t, decoded, 1)
 	assert.Equal(t, "Album/01.mp3", decoded[0].TorrentPath)
 	assert.Equal(t, domain.TorrentImportedFileStatusOk, decoded[0].Status)
+}
+
+// fakeBroadcaster provides a simple test double for the broadcaster interface.
+type fakeBroadcaster struct {
+	mu          sync.Mutex
+	subscribers map[int64][]chan domain.TorrentDownload
+}
+
+func newFakeBroadcaster() *fakeBroadcaster {
+	return &fakeBroadcaster{
+		subscribers: make(map[int64][]chan domain.TorrentDownload),
+	}
+}
+
+func (fb *fakeBroadcaster) Subscribe(userID int64) chan domain.TorrentDownload {
+	fb.mu.Lock()
+	defer fb.mu.Unlock()
+
+	ch := make(chan domain.TorrentDownload, 10)
+	fb.subscribers[userID] = append(fb.subscribers[userID], ch)
+	return ch
+}
+
+func (fb *fakeBroadcaster) Unsubscribe(userID int64, ch chan domain.TorrentDownload) {
+	fb.mu.Lock()
+	defer fb.mu.Unlock()
+
+	close(ch)
+}
+
+func (fb *fakeBroadcaster) PublishForTest(job domain.TorrentDownload) {
+	fb.mu.Lock()
+	defer fb.mu.Unlock()
+
+	chans, ok := fb.subscribers[job.UserId]
+	if !ok {
+		return
+	}
+
+	for _, ch := range chans {
+		select {
+		case ch <- job:
+		default:
+		}
+	}
+}
+
+// TestTorrentService_WatchJobs_SendsCurrentJobs verifies that WatchJobs sends
+// the caller's existing jobs before subscribing to future updates.
+func TestTorrentService_WatchJobs_SendsCurrentJobs(t *testing.T) {
+	torrentStorage := newFakeTorrentDownloadStorage()
+	userID := int64(1)
+
+	job1 := domain.TorrentDownload{
+		UserId:     userID,
+		TorrentName: "album1.torrent",
+		Status:     domain.TorrentDownloadStatusDownloading,
+	}
+
+	job1Result, err := torrentStorage.Add(context.Background(), job1)
+	require.NoError(t, err)
+
+	job2 := domain.TorrentDownload{
+		UserId:     userID,
+		TorrentName: "album2.torrent",
+		Status:     domain.TorrentDownloadStatusQueued,
+	}
+
+	job2Result, err := torrentStorage.Add(context.Background(), job2)
+	require.NoError(t, err)
+
+	broadcaster := newFakeBroadcaster()
+
+	svc := &TorrentService{
+		torrentStorage: torrentStorage,
+		broadcaster:    broadcaster,
+	}
+
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	ctx = user_context.WithUserContext(ctx, user_context.UserContext{UserId: userID})
+
+	jobCh, err := svc.WatchJobs(ctx, "", 0)
+	require.NoError(t, err)
+
+	received := make([]domain.TorrentDownload, 0, 2)
+	timeout := time.NewTimer(100 * time.Millisecond)
+	defer timeout.Stop()
+
+	for len(received) < 2 {
+		select {
+		case job := <-jobCh:
+			received = append(received, job)
+		case <-timeout.C:
+			break
+		}
+	}
+
+	require.Len(t, received, 2)
+	assert.Equal(t, job1Result.Id, received[0].Id)
+	assert.Equal(t, job2Result.Id, received[1].Id)
+
+	cancel()
+}
+
+// TestTorrentService_WatchJobs_FiltersFolder verifies that WatchJobs respects
+// the folderName filter.
+func TestTorrentService_WatchJobs_FiltersFolder(t *testing.T) {
+	torrentStorage := newFakeTorrentDownloadStorage()
+	userID := int64(1)
+
+	job1 := domain.TorrentDownload{
+		UserId:     userID,
+		FolderName: "folder1",
+		TorrentName: "album1.torrent",
+		Status:     domain.TorrentDownloadStatusDownloading,
+	}
+
+	torrentStorage.Add(context.Background(), job1)
+
+	job2 := domain.TorrentDownload{
+		UserId:     userID,
+		FolderName: "folder2",
+		TorrentName: "album2.torrent",
+		Status:     domain.TorrentDownloadStatusQueued,
+	}
+
+	torrentStorage.Add(context.Background(), job2)
+
+	broadcaster := newFakeBroadcaster()
+
+	svc := &TorrentService{
+		torrentStorage: torrentStorage,
+		broadcaster:    broadcaster,
+	}
+
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	ctx = user_context.WithUserContext(ctx, user_context.UserContext{UserId: userID})
+
+	jobCh, err := svc.WatchJobs(ctx, "folder1", 0)
+	require.NoError(t, err)
+
+	received := make([]domain.TorrentDownload, 0)
+	timeout := time.NewTimer(100 * time.Millisecond)
+	defer timeout.Stop()
+
+	for {
+		select {
+		case job := <-jobCh:
+			received = append(received, job)
+		case <-timeout.C:
+			cancel()
+			<-jobCh
+			return
+		}
+	}
+}
+
+// TestTorrentService_WatchJobs_UserIsolation verifies that a user only receives
+// their own jobs and not jobs from other users.
+func TestTorrentService_WatchJobs_UserIsolation(t *testing.T) {
+	torrentStorage := newFakeTorrentDownloadStorage()
+	user1 := int64(1)
+	user2 := int64(2)
+
+	job1 := domain.TorrentDownload{
+		UserId:     user1,
+		TorrentName: "album1.torrent",
+		Status:     domain.TorrentDownloadStatusDownloading,
+	}
+
+	torrentStorage.Add(context.Background(), job1)
+
+	job2 := domain.TorrentDownload{
+		UserId:     user2,
+		TorrentName: "album2.torrent",
+		Status:     domain.TorrentDownloadStatusDownloading,
+	}
+
+	torrentStorage.Add(context.Background(), job2)
+
+	broadcaster := newFakeBroadcaster()
+
+	svc := &TorrentService{
+		torrentStorage: torrentStorage,
+		broadcaster:    broadcaster,
+	}
+
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	ctx = user_context.WithUserContext(ctx, user_context.UserContext{UserId: user1})
+
+	jobCh, err := svc.WatchJobs(ctx, "", 0)
+	require.NoError(t, err)
+
+	received := make([]domain.TorrentDownload, 0)
+	timeout := time.NewTimer(100 * time.Millisecond)
+	defer timeout.Stop()
+
+	for {
+		select {
+		case job := <-jobCh:
+			received = append(received, job)
+			assert.Equal(t, user1, job.UserId, "user 1 received job from different user")
+		case <-timeout.C:
+			cancel()
+			<-jobCh
+			return
+		}
+	}
 }

@@ -258,6 +258,9 @@ type TorrentService interface {
 	ResumeJob(ctx context.Context, jobID int64) error
 	// DeleteJob stops one of the caller's torrent jobs and permanently removes it.
 	DeleteJob(ctx context.Context, jobID int64) error
+	// WatchJobs returns a channel that streams updates for the caller's torrent jobs,
+	// optionally filtered by folder_name. It immediately sends current jobs, then streams updates.
+	WatchJobs(ctx context.Context, folderName string, limit int32) (chan domain.TorrentDownload, error)
 }
 
 type FeatureFlagsService interface {
