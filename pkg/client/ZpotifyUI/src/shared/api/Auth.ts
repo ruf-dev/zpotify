@@ -3,7 +3,7 @@ import { AuthAPI, AuthRequest, AuthData, RefreshRequest, InitReq } from '@/app/a
 import { GetAuthMethodsRequest } from '@/app/api/zpotify/zpotify_service_auth.pb';
 import {
     ErrorReason,
-    GrpcError,
+    normalizeCaughtError,
     ServiceError,
     WithIsNonRetryable,
     WithReason,
@@ -46,13 +46,17 @@ export class AuthService extends BaseService implements IAuthService {
 export async function GetTelegramBotId(): Promise<string> {
     const req = {} as GetAuthMethodsRequest;
 
-    return AuthAPI.GetAuthMethods(req, apiPrefix()).then((r) => {
-        if (!r.telegramBotId) {
-            throw new Error('telegramBotId is empty');
-        }
+    return AuthAPI.GetAuthMethods(req, apiPrefix())
+        .catch((err: unknown) => {
+            throw normalizeCaughtError(err);
+        })
+        .then((r) => {
+            if (!r.telegramBotId) {
+                throw new Error('telegramBotId is empty');
+            }
 
-        return r.telegramBotId;
-    });
+            return r.telegramBotId;
+        });
 }
 
 export async function AuthViaTelegram(idToken: string): Promise<AuthData> {
@@ -133,15 +137,21 @@ export class AuthMiddleware {
             refreshToken: this.session.refreshToken,
         };
 
-        const newSession = await AuthAPI.RefreshToken(req, apiPrefix()).catch((e: GrpcError) => {
-            if (e.details.find((d) => d.reason == ErrorReason.REFRESH_TOKEN_NOT_FOUND)) {
+        const newSession = await AuthAPI.RefreshToken(req, apiPrefix()).catch((err: unknown) => {
+            const normalizedErr = normalizeCaughtError(err);
+
+            if (normalizedErr instanceof ServiceError) {
+                throw normalizedErr;
+            }
+
+            if (normalizedErr.details.find((d) => d.reason == ErrorReason.REFRESH_TOKEN_NOT_FOUND)) {
                 this.invalidateSession();
             }
 
             throw new ServiceError(
-                WithTitle(e.message),
+                WithTitle(normalizedErr.message),
                 WithIsNonRetryable(true),
-                WithReason(e.details.find((d) => d.reason != undefined)?.reason),
+                WithReason(normalizedErr.details.find((d) => d.reason != undefined)?.reason),
             );
         });
 

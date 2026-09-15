@@ -15,7 +15,16 @@ export default function TelegramAuth() {
     const toaster = useToaster();
 
     useEffect(function fetchBotId() {
-        GetTelegramBotId().then(setBotId);
+        GetTelegramBotId()
+            .then(setBotId)
+            .catch(function (err: unknown) {
+                toaster.bake({
+                    title: 'Failed to load Telegram login',
+                    description: err instanceof Error ? err.message : 'Unknown error',
+                    level: 'Error',
+                    isDismissable: true,
+                });
+            });
     }, []);
 
     function handleSuccess(data: TelegramAuthData) {

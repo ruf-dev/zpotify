@@ -104,3 +104,15 @@ function isHttpCodeRetryable(code: number): boolean {
 
     return false;
 }
+
+export function normalizeCaughtError(err: unknown): GrpcError | ServiceError {
+    if (err instanceof Response) {
+        return new ServiceError(
+            WithTitle(`Server unavailable (${err.status})`),
+            WithStatusCode(err.status),
+            WithIsNonRetryable(false),
+        );
+    }
+
+    return err as GrpcError | ServiceError;
+}
