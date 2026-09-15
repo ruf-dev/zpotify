@@ -3975,8 +3975,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/TorrentManage/TorrentManageDialog.tsx": {
-    "mtime": 1789505405.1479847,
-    "ast_hash": "cb650cb7df7d9f29abb355d7aa27f4d8",
+    "mtime": 1789506043.517109,
+    "ast_hash": "704cb2504482229799013b83d471597e",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/features/upload/torrentFile.test.ts": {
