@@ -55,6 +55,7 @@
 }
 
 .EmptyStateWrapper {
+    margin-top: var(--space-md);
     border: 1px dashed var(--color-border-light);
     border-radius: var(--border-radius-md);
     background: var(--color-bg-card);
