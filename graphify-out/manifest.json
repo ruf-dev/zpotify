@@ -1720,8 +1720,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/api/BaseService.ts": {
-    "mtime": 1786088369.2704492,
-    "ast_hash": "d3bcae7ac0644ea9195bfa5f95087a84",
+    "mtime": 1789504791.3782384,
+    "ast_hash": "b651a1b9cfba1b9024e82dad9b6e9a86",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/api/HomePage.ts": {
@@ -1730,8 +1730,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/api/Errors.ts": {
-    "mtime": 1789502791.4165227,
-    "ast_hash": "f5e1a8470a6dc5d270b561126782c9ba",
+    "mtime": 1789504781.9605737,
+    "ast_hash": "4d52cde574840d494854aec792d51a40",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/api/Api.ts": {
