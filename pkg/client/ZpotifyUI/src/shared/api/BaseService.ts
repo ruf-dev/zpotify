@@ -66,7 +66,7 @@ export class BaseService {
                             throw new ServiceError(
                                 WithTitle(err.message),
                                 WithCode(Errors.UNAVAILABLE),
-                                WithIsNonRetryable(true),
+                                WithIsNonRetryable(false),
                             );
                         }
 
@@ -105,9 +105,16 @@ export class BaseService {
                         throw new ServiceError(WithTitle(err.message));
                     })
                     .then(),
-            1,
+            RETRYABLE_ERROR_MAX_RETRIES,
         );
     }
+}
+
+const RETRYABLE_ERROR_MAX_RETRIES = 3;
+const RETRYABLE_ERROR_DELAY_MS = 5000;
+
+function delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function withRetries<T>(callback: () => Promise<T>, retries: number): Promise<T> {
@@ -117,7 +124,7 @@ function withRetries<T>(callback: () => Promise<T>, retries: number): Promise<T>
         }
 
         if (retries > 0) {
-            return withRetries(callback, retries - 1);
+            return delay(RETRYABLE_ERROR_DELAY_MS).then(() => withRetries(callback, retries - 1));
         }
 
         throw err;

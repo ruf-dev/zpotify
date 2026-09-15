@@ -98,11 +98,7 @@ export function WithStatusCode(statusCode: number): (e: ServiceError) => void {
 }
 
 function isHttpCodeRetryable(code: number): boolean {
-    if (code >= 500) {
-        return false;
-    }
-
-    return false;
+    return code >= 500;
 }
 
 export function normalizeCaughtError(err: unknown): GrpcError | ServiceError {
