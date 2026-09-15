@@ -13,7 +13,9 @@ import { isPausedTorrentStatus, isTerminalTorrentStatus } from '@/shared/lib/tor
 import BackButton from '@/shared/ui/BackButton';
 import { useBackGuard } from '@/shared/lib/useBackGuard';
 import TorrentFileProgressList from '@/components/TorrentFileProgressList/TorrentFileProgressList';
-import type { TorrentJob } from '@/app/api/zpotify';
+import MultitrackUploadModal from '@/dialogs/MultitrackUpload/MultitrackUploadModal';
+import { fileService } from '@/shared/api/FileService.ts';
+import type { SongFile, TorrentJob } from '@/app/api/zpotify';
 
 interface TorrentManageDialogProps {
     job: TorrentJob;
@@ -26,6 +28,7 @@ export default function TorrentManageDialog({ job: initialJob, previousScreen }:
 
     const [job, setJob] = useState<TorrentJob>(initialJob);
     const [toggling, setToggling] = useState(false);
+    const [creatingPlaylist, setCreatingPlaylist] = useState(false);
 
     useBackGuard(!!previousScreen, () => OpenDialog(previousScreen!));
 
@@ -94,6 +97,30 @@ export default function TorrentManageDialog({ job: initialJob, previousScreen }:
         );
     }
 
+    function handleCreatePlaylist() {
+        if (creatingPlaylist) return;
+
+        const importedFileIds = new Set(
+            (job.importedFiles ?? []).filter((f) => f.status === 'ok' && f.fileId).map((f) => f.fileId as string),
+        );
+
+        setCreatingPlaylist(true);
+        fileService
+            .ListUploadedFiles({})
+            .then((res) => {
+                const existingFiles: SongFile[] = (res.files ?? []).filter((f) => f.id && importedFileIds.has(f.id));
+                OpenDialog(
+                    <MultitrackUploadModal
+                        files={[]}
+                        existingFiles={existingFiles}
+                        initialPlaylistName={job.torrentName}
+                    />,
+                );
+            })
+            .catch((err) => toaster.catch(err))
+            .finally(() => setCreatingPlaylist(false));
+    }
+
     return (
         <div className={cls.TorrentManageDialogContainer}>
             <div className={cls.PanelHeader}>
@@ -130,7 +157,14 @@ export default function TorrentManageDialog({ job: initialJob, previousScreen }:
                 {fileProgress.length > 1 && <TorrentFileProgressList files={fileProgress} />}
 
                 <ModalActions
+                    containerClassName={cls.ActionsRow}
                     buttons={[
+                        {
+                            label: 'create playlist',
+                            onClick: handleCreatePlaylist,
+                            className: cls.CreatePlaylistButton,
+                            disabled: creatingPlaylist,
+                        },
                         {
                             label: 'delete',
                             onClick: handleDelete,

@@ -76,8 +76,13 @@
     color: var(--color-error);
 }
 
+.ActionsRow {
+    display: flex;
+    gap: 0.5rem;
+}
+
 .DeleteButton {
-    width: 100%;
+    flex: 1;
     padding: 0.7rem 1rem;
     border-radius: var(--border-radius-pill);
     text-align: center;
@@ -91,6 +96,27 @@
 }
 
 .DeleteButton:disabled {
+    background: var(--color-bg-secondary);
+    border-color: var(--color-border-light);
+    color: var(--color-fg-disabled);
+    cursor: default;
+}
+
+.CreatePlaylistButton {
+    flex: 3;
+    padding: 0.7rem 1rem;
+    border-radius: var(--border-radius-pill);
+    text-align: center;
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    background: var(--color-fg-accent);
+    border: 0.0625rem solid var(--color-fg-accent);
+    color: var(--color-fg-white);
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+}
+
+.CreatePlaylistButton:disabled {
     background: var(--color-bg-secondary);
     border-color: var(--color-border-light);
     color: var(--color-fg-disabled);
