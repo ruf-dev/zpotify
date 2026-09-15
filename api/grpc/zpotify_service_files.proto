@@ -35,6 +35,13 @@ service FileMetaAPI {
     };
   }
 
+  rpc CheckSongsByFileIds(CheckSongsByFileIds.Request) returns (CheckSongsByFileIds.Response) {
+    option (google.api.http) = {
+      post: "/api/file_meta/check_songs_by_ids"
+      body: "*",
+    };
+  }
+
   rpc DeleteFile(DeleteFile.Request) returns (DeleteFile.Response) {
     option (google.api.http) = {
       delete: "/api/file_meta/{file_id}"
@@ -89,6 +96,21 @@ message CheckFilesByHashes {
 
   message Response {
     repeated FoundFileByHash found = 1;
+  }
+}
+
+message CheckSongsByFileIds {
+  message Request {
+    repeated int64 file_ids = 1;
+  }
+
+  message FoundSongByFileId {
+    int64 file_id = 1;
+    int64 song_id = 2;
+  }
+
+  message Response {
+    repeated FoundSongByFileId found = 1;
   }
 }
 

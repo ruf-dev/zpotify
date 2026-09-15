@@ -52,6 +52,21 @@ export type CheckFilesByHashesResponse = {
 
 export type CheckFilesByHashes = Record<string, never>;
 
+export type CheckSongsByFileIdsRequest = {
+  fileIds?: string[];
+};
+
+export type CheckSongsByFileIdsFoundSongByFileId = {
+  fileId?: string;
+  songId?: string;
+};
+
+export type CheckSongsByFileIdsResponse = {
+  found?: CheckSongsByFileIdsFoundSongByFileId[];
+};
+
+export type CheckSongsByFileIds = Record<string, never>;
+
 export type DeleteFileRequest = {
   fileId?: string;
 };
@@ -77,6 +92,9 @@ export class FileMetaAPI {
   }
   static CheckFilesByHashes(this:void, req: CheckFilesByHashesRequest, initReq?: fm.InitReq): Promise<CheckFilesByHashesResponse> {
     return fm.fetchRequest<CheckFilesByHashesResponse>(`/api/file_meta/check_hashes`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static CheckSongsByFileIds(this:void, req: CheckSongsByFileIdsRequest, initReq?: fm.InitReq): Promise<CheckSongsByFileIdsResponse> {
+    return fm.fetchRequest<CheckSongsByFileIdsResponse>(`/api/file_meta/check_songs_by_ids`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
   static DeleteFile(this:void, req: DeleteFileRequest, initReq?: fm.InitReq): Promise<DeleteFileResponse> {
     return fm.fetchRequest<DeleteFileResponse>(`/api/file_meta/${req.fileId}?${fm.renderURLSearchParams(req, ["fileId"])}`, {...initReq, method: "DELETE"});

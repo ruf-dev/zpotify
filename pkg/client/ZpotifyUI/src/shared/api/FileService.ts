@@ -20,6 +20,7 @@ export interface IFileService {
     ListUploadedFiles(req: ListUploadedFilesRequest): Promise<ListUploadedFilesResponse>;
     GetFile(req: GetFileRequest): Promise<GetFileResponse>;
     checkByHashes(hashes: string[]): Promise<Map<string, FileHashResult>>;
+    checkSongsByFileIds(fileIds: string[]): Promise<Map<string, string>>;
     DeleteFile(req: DeleteFileRequest): Promise<DeleteFileResponse>;
     BatchDeleteFiles(req: BatchDeleteFilesRequest): Promise<BatchDeleteFilesResponse>;
 }
@@ -55,6 +56,17 @@ export class FileService extends BaseService implements IFileService {
             const map = new Map<string, FileHashResult>();
             (resp.found ?? []).forEach((f) => {
                 if (f.hash && f.fileId) map.set(f.hash, { fileId: f.fileId, songId: f.songId });
+            });
+            return map;
+        });
+    }
+
+    async checkSongsByFileIds(fileIds: string[]): Promise<Map<string, string>> {
+        return this.executeAuthApiCall(async (initReq) => {
+            const resp = await FileMetaAPI.CheckSongsByFileIds({ fileIds }, initReq);
+            const map = new Map<string, string>();
+            (resp.found ?? []).forEach((f) => {
+                if (f.fileId && f.songId) map.set(f.fileId, f.songId);
             });
             return map;
         });

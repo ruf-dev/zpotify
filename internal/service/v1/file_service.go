@@ -60,6 +60,32 @@ func (s *FileService) CheckFilesByHashes(ctx context.Context, hashes []string) (
 	return result, nil
 }
 
+func (s *FileService) CheckSongsByFileIds(ctx context.Context, fileIds []int64) ([]domain.FoundSongByFileId, error) {
+	_, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return nil, rerrors.Wrap(user_errors.ErrUnauthenticated)
+	}
+
+	result := make([]domain.FoundSongByFileId, 0, len(fileIds))
+	for _, fileId := range fileIds {
+		song, err := s.songStorage.GetByFileId(ctx, fileId)
+		if err != nil {
+			if errors.Is(err, storage.ErrNotFound) {
+				continue
+			}
+			return nil, rerrors.Wrap(err, "error checking song for file")
+		}
+
+		found := domain.FoundSongByFileId{
+			FileId: fileId,
+			SongId: song.SongBase.Id,
+		}
+		result = append(result, found)
+	}
+
+	return result, nil
+}
+
 // coverImageExtensions are the image formats accepted for cover art uploads.
 // The upload endpoint is shared between audio tracks and cover images, so an
 // upload is allowed when it is either a parsable audio file or one of these.

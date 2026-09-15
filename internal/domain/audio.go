@@ -186,3 +186,8 @@ type FoundFileByHash struct {
 	FileId int64
 	SongId *int64
 }
+
+type FoundSongByFileId struct {
+	FileId int64
+	SongId int64
+}

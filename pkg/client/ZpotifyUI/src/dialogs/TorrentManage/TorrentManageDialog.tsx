@@ -14,7 +14,6 @@ import BackButton from '@/shared/ui/BackButton';
 import { useBackGuard } from '@/shared/lib/useBackGuard';
 import TorrentFileProgressList from '@/components/TorrentFileProgressList/TorrentFileProgressList';
 import MultitrackUploadModal from '@/dialogs/MultitrackUpload/MultitrackUploadModal';
-import { fileService } from '@/shared/api/FileService.ts';
 import type { SongFile, TorrentJob } from '@/app/api/zpotify';
 
 interface TorrentManageDialogProps {
@@ -28,7 +27,6 @@ export default function TorrentManageDialog({ job: initialJob, previousScreen }:
 
     const [job, setJob] = useState<TorrentJob>(initialJob);
     const [toggling, setToggling] = useState(false);
-    const [creatingPlaylist, setCreatingPlaylist] = useState(false);
 
     useBackGuard(!!previousScreen, () => OpenDialog(previousScreen!));
 
@@ -98,27 +96,13 @@ export default function TorrentManageDialog({ job: initialJob, previousScreen }:
     }
 
     function handleCreatePlaylist() {
-        if (creatingPlaylist) return;
+        const existingFiles: SongFile[] = (job.importedFiles ?? [])
+            .filter((f) => f.status === 'ok' && f.fileId)
+            .map((f) => ({ id: f.fileId, path: f.torrentPath }));
 
-        const importedFileIds = new Set(
-            (job.importedFiles ?? []).filter((f) => f.status === 'ok' && f.fileId).map((f) => f.fileId as string),
+        OpenDialog(
+            <MultitrackUploadModal files={[]} existingFiles={existingFiles} initialPlaylistName={job.torrentName} />,
         );
-
-        setCreatingPlaylist(true);
-        fileService
-            .ListUploadedFiles({})
-            .then((res) => {
-                const existingFiles: SongFile[] = (res.files ?? []).filter((f) => f.id && importedFileIds.has(f.id));
-                OpenDialog(
-                    <MultitrackUploadModal
-                        files={[]}
-                        existingFiles={existingFiles}
-                        initialPlaylistName={job.torrentName}
-                    />,
-                );
-            })
-            .catch((err) => toaster.catch(err))
-            .finally(() => setCreatingPlaylist(false));
     }
 
     return (
@@ -163,7 +147,6 @@ export default function TorrentManageDialog({ job: initialJob, previousScreen }:
                             label: 'create playlist',
                             onClick: handleCreatePlaylist,
                             className: cls.CreatePlaylistButton,
-                            disabled: creatingPlaylist,
                         },
                         {
                             label: 'delete',

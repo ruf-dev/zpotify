@@ -234,6 +234,7 @@ type FileService interface {
 	ListUploadedFiles(ctx context.Context, req domain.ListUploadedFiles) ([]domain.SongFile, error)
 	GetFile(ctx context.Context, fileId int64) (domain.FileMeta, error)
 	CheckFilesByHashes(ctx context.Context, hashes []string) ([]domain.FoundFileByHash, error)
+	CheckSongsByFileIds(ctx context.Context, fileIds []int64) ([]domain.FoundSongByFileId, error)
 	DeleteUploadedFile(ctx context.Context, fileId int64) error
 	DeleteUploadedFiles(ctx context.Context, fileIds []int64) error
 }

@@ -47,6 +47,11 @@ interface InitialTrackMeta {
     songMetaMap: Map<string, SongBase>;
 }
 
+interface ExistingFileSongMeta {
+    songIdMap: Map<string, string>;
+    songMetaMap: Map<string, SongBase>;
+}
+
 function mapArtists(song: SongBase | undefined): ArtistItem[] {
     return (song?.artists ?? []).filter((a) => a.uuid && a.name).map((a) => ({ id: a.uuid!, name: a.name! }));
 }
@@ -122,6 +127,36 @@ function mergeInitialTrack(prev: TrackDraft, i: number, meta: InitialTrackMeta):
         uploadProgress: 100,
         isExisting: true,
         linkedSongId: existing.songId,
+        ...(song && { title: song.title ?? prev.title, artists: mapArtists(song) }),
+    };
+}
+
+async function loadExistingFilesSongMeta(initial: TrackDraft[]): Promise<ExistingFileSongMeta> {
+    const fileIds = initial.map((t) => t.fileId).filter((id): id is string => !!id);
+    const songIdMap = await fileService.checkSongsByFileIds(fileIds);
+
+    const songMetaMap = new Map<string, SongBase>();
+    await Promise.all(
+        fileIds
+            .filter((id) => songIdMap.has(id))
+            .map(async (id) => {
+                const song = await songsService.GetSong(songIdMap.get(id)!);
+                songMetaMap.set(id, song);
+            }),
+    );
+
+    return { songIdMap, songMetaMap };
+}
+
+function mergeExistingFileTrack(prev: TrackDraft, meta: ExistingFileSongMeta): TrackDraft {
+    if (!prev.fileId) return prev;
+    const songId = meta.songIdMap.get(prev.fileId);
+    if (!songId) return prev;
+    const song = meta.songMetaMap.get(prev.fileId);
+    return {
+        ...prev,
+        isExisting: true,
+        linkedSongId: songId,
         ...(song && { title: song.title ?? prev.title, artists: mapArtists(song) }),
     };
 }
@@ -240,9 +275,10 @@ export function useTrackDrafts(
 
     // Blob-backed tracks (need hashing/upload), kept apart from fileId-only existingFiles tracks.
     const blobBackedInitialRef = useRef<TrackDraft[]>(createInitialTracks(flattenDroppedInput(files, folders)));
+    const existingFilesInitialRef = useRef<TrackDraft[]>(createTracksFromExistingFiles(existingFiles));
     const [tracks, setTracks] = useState<TrackDraft[]>(() => [
         ...blobBackedInitialRef.current,
-        ...createTracksFromExistingFiles(existingFiles),
+        ...existingFilesInitialRef.current,
     ]);
 
     const tracksRef = useRef(tracks);
@@ -259,6 +295,17 @@ export function useTrackDrafts(
         const idxById = new Map(initial.map((t, i) => [t.id, i]));
         loadInitialTrackMeta(initial)
             .then((meta) => applyInitialTrackMeta(meta, initial, idxById, knownHashesRef, uploadQueue, setTracks))
+            .catch(() => {});
+    }, []);
+
+    useEffect(() => {
+        const initial = existingFilesInitialRef.current;
+        if (initial.length === 0) return;
+        const initialIds = new Set(initial.map((t) => t.id));
+        loadExistingFilesSongMeta(initial)
+            .then((meta) => {
+                setTracks((prev) => prev.map((p) => (initialIds.has(p.id) ? mergeExistingFileTrack(p, meta) : p)));
+            })
             .catch(() => {});
     }, []);
 

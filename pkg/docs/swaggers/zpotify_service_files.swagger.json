@@ -80,6 +80,38 @@
         ]
       }
     },
+    "/api/file_meta/check_songs_by_ids": {
+      "post": {
+        "operationId": "FileMetaAPI_CheckSongsByFileIds",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiCheckSongsByFileIdsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiCheckSongsByFileIdsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FileMetaAPI"
+        ]
+      }
+    },
     "/api/file_meta/list": {
       "post": {
         "operationId": "FileMetaAPI_ListUploadedFiles",
@@ -190,6 +222,19 @@
         }
       }
     },
+    "CheckSongsByFileIdsFoundSongByFileId": {
+      "type": "object",
+      "properties": {
+        "fileId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "songId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -252,6 +297,30 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/CheckFilesByHashesFoundFileByHash"
+          }
+        }
+      }
+    },
+    "zpotify_apiCheckSongsByFileIdsRequest": {
+      "type": "object",
+      "properties": {
+        "fileIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        }
+      }
+    },
+    "zpotify_apiCheckSongsByFileIdsResponse": {
+      "type": "object",
+      "properties": {
+        "found": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CheckSongsByFileIdsFoundSongByFileId"
           }
         }
       }

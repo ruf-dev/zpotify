@@ -199,6 +199,42 @@ func (*CheckFilesByHashes) Descriptor() ([]byte, []int) {
 	return file_zpotify_service_files_proto_rawDescGZIP(), []int{3}
 }
 
+type CheckSongsByFileIds struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CheckSongsByFileIds) Reset() {
+	*x = CheckSongsByFileIds{}
+	mi := &file_zpotify_service_files_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CheckSongsByFileIds) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CheckSongsByFileIds) ProtoMessage() {}
+
+func (x *CheckSongsByFileIds) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_files_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CheckSongsByFileIds.ProtoReflect.Descriptor instead.
+func (*CheckSongsByFileIds) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_files_proto_rawDescGZIP(), []int{4}
+}
+
 type DeleteFile struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -207,7 +243,7 @@ type DeleteFile struct {
 
 func (x *DeleteFile) Reset() {
 	*x = DeleteFile{}
-	mi := &file_zpotify_service_files_proto_msgTypes[4]
+	mi := &file_zpotify_service_files_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -219,7 +255,7 @@ func (x *DeleteFile) String() string {
 func (*DeleteFile) ProtoMessage() {}
 
 func (x *DeleteFile) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[4]
+	mi := &file_zpotify_service_files_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -232,7 +268,7 @@ func (x *DeleteFile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteFile.ProtoReflect.Descriptor instead.
 func (*DeleteFile) Descriptor() ([]byte, []int) {
-	return file_zpotify_service_files_proto_rawDescGZIP(), []int{4}
+	return file_zpotify_service_files_proto_rawDescGZIP(), []int{5}
 }
 
 type BatchDeleteFiles struct {
@@ -243,7 +279,7 @@ type BatchDeleteFiles struct {
 
 func (x *BatchDeleteFiles) Reset() {
 	*x = BatchDeleteFiles{}
-	mi := &file_zpotify_service_files_proto_msgTypes[5]
+	mi := &file_zpotify_service_files_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -255,7 +291,7 @@ func (x *BatchDeleteFiles) String() string {
 func (*BatchDeleteFiles) ProtoMessage() {}
 
 func (x *BatchDeleteFiles) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[5]
+	mi := &file_zpotify_service_files_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -268,7 +304,7 @@ func (x *BatchDeleteFiles) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchDeleteFiles.ProtoReflect.Descriptor instead.
 func (*BatchDeleteFiles) Descriptor() ([]byte, []int) {
-	return file_zpotify_service_files_proto_rawDescGZIP(), []int{5}
+	return file_zpotify_service_files_proto_rawDescGZIP(), []int{6}
 }
 
 type ListUploadedFiles_Request struct {
@@ -280,7 +316,7 @@ type ListUploadedFiles_Request struct {
 
 func (x *ListUploadedFiles_Request) Reset() {
 	*x = ListUploadedFiles_Request{}
-	mi := &file_zpotify_service_files_proto_msgTypes[6]
+	mi := &file_zpotify_service_files_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -292,7 +328,7 @@ func (x *ListUploadedFiles_Request) String() string {
 func (*ListUploadedFiles_Request) ProtoMessage() {}
 
 func (x *ListUploadedFiles_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[6]
+	mi := &file_zpotify_service_files_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -324,7 +360,7 @@ type ListUploadedFiles_Response struct {
 
 func (x *ListUploadedFiles_Response) Reset() {
 	*x = ListUploadedFiles_Response{}
-	mi := &file_zpotify_service_files_proto_msgTypes[7]
+	mi := &file_zpotify_service_files_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -336,7 +372,7 @@ func (x *ListUploadedFiles_Response) String() string {
 func (*ListUploadedFiles_Response) ProtoMessage() {}
 
 func (x *ListUploadedFiles_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[7]
+	mi := &file_zpotify_service_files_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -368,7 +404,7 @@ type GetFile_Request struct {
 
 func (x *GetFile_Request) Reset() {
 	*x = GetFile_Request{}
-	mi := &file_zpotify_service_files_proto_msgTypes[8]
+	mi := &file_zpotify_service_files_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -380,7 +416,7 @@ func (x *GetFile_Request) String() string {
 func (*GetFile_Request) ProtoMessage() {}
 
 func (x *GetFile_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[8]
+	mi := &file_zpotify_service_files_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -412,7 +448,7 @@ type GetFile_Response struct {
 
 func (x *GetFile_Response) Reset() {
 	*x = GetFile_Response{}
-	mi := &file_zpotify_service_files_proto_msgTypes[9]
+	mi := &file_zpotify_service_files_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -424,7 +460,7 @@ func (x *GetFile_Response) String() string {
 func (*GetFile_Response) ProtoMessage() {}
 
 func (x *GetFile_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[9]
+	mi := &file_zpotify_service_files_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -456,7 +492,7 @@ type CheckFilesByHashes_Request struct {
 
 func (x *CheckFilesByHashes_Request) Reset() {
 	*x = CheckFilesByHashes_Request{}
-	mi := &file_zpotify_service_files_proto_msgTypes[10]
+	mi := &file_zpotify_service_files_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -468,7 +504,7 @@ func (x *CheckFilesByHashes_Request) String() string {
 func (*CheckFilesByHashes_Request) ProtoMessage() {}
 
 func (x *CheckFilesByHashes_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[10]
+	mi := &file_zpotify_service_files_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -502,7 +538,7 @@ type CheckFilesByHashes_FoundFileByHash struct {
 
 func (x *CheckFilesByHashes_FoundFileByHash) Reset() {
 	*x = CheckFilesByHashes_FoundFileByHash{}
-	mi := &file_zpotify_service_files_proto_msgTypes[11]
+	mi := &file_zpotify_service_files_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -514,7 +550,7 @@ func (x *CheckFilesByHashes_FoundFileByHash) String() string {
 func (*CheckFilesByHashes_FoundFileByHash) ProtoMessage() {}
 
 func (x *CheckFilesByHashes_FoundFileByHash) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[11]
+	mi := &file_zpotify_service_files_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -560,7 +596,7 @@ type CheckFilesByHashes_Response struct {
 
 func (x *CheckFilesByHashes_Response) Reset() {
 	*x = CheckFilesByHashes_Response{}
-	mi := &file_zpotify_service_files_proto_msgTypes[12]
+	mi := &file_zpotify_service_files_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -572,7 +608,7 @@ func (x *CheckFilesByHashes_Response) String() string {
 func (*CheckFilesByHashes_Response) ProtoMessage() {}
 
 func (x *CheckFilesByHashes_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[12]
+	mi := &file_zpotify_service_files_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -595,6 +631,146 @@ func (x *CheckFilesByHashes_Response) GetFound() []*CheckFilesByHashes_FoundFile
 	return nil
 }
 
+type CheckSongsByFileIds_Request struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileIds       []int64                `protobuf:"varint,1,rep,packed,name=file_ids,json=fileIds,proto3" json:"file_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CheckSongsByFileIds_Request) Reset() {
+	*x = CheckSongsByFileIds_Request{}
+	mi := &file_zpotify_service_files_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CheckSongsByFileIds_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CheckSongsByFileIds_Request) ProtoMessage() {}
+
+func (x *CheckSongsByFileIds_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_files_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CheckSongsByFileIds_Request.ProtoReflect.Descriptor instead.
+func (*CheckSongsByFileIds_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_files_proto_rawDescGZIP(), []int{4, 0}
+}
+
+func (x *CheckSongsByFileIds_Request) GetFileIds() []int64 {
+	if x != nil {
+		return x.FileIds
+	}
+	return nil
+}
+
+type CheckSongsByFileIds_FoundSongByFileId struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FileId        int64                  `protobuf:"varint,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
+	SongId        int64                  `protobuf:"varint,2,opt,name=song_id,json=songId,proto3" json:"song_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CheckSongsByFileIds_FoundSongByFileId) Reset() {
+	*x = CheckSongsByFileIds_FoundSongByFileId{}
+	mi := &file_zpotify_service_files_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CheckSongsByFileIds_FoundSongByFileId) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CheckSongsByFileIds_FoundSongByFileId) ProtoMessage() {}
+
+func (x *CheckSongsByFileIds_FoundSongByFileId) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_files_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CheckSongsByFileIds_FoundSongByFileId.ProtoReflect.Descriptor instead.
+func (*CheckSongsByFileIds_FoundSongByFileId) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_files_proto_rawDescGZIP(), []int{4, 1}
+}
+
+func (x *CheckSongsByFileIds_FoundSongByFileId) GetFileId() int64 {
+	if x != nil {
+		return x.FileId
+	}
+	return 0
+}
+
+func (x *CheckSongsByFileIds_FoundSongByFileId) GetSongId() int64 {
+	if x != nil {
+		return x.SongId
+	}
+	return 0
+}
+
+type CheckSongsByFileIds_Response struct {
+	state         protoimpl.MessageState                   `protogen:"open.v1"`
+	Found         []*CheckSongsByFileIds_FoundSongByFileId `protobuf:"bytes,1,rep,name=found,proto3" json:"found,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CheckSongsByFileIds_Response) Reset() {
+	*x = CheckSongsByFileIds_Response{}
+	mi := &file_zpotify_service_files_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CheckSongsByFileIds_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CheckSongsByFileIds_Response) ProtoMessage() {}
+
+func (x *CheckSongsByFileIds_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_files_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CheckSongsByFileIds_Response.ProtoReflect.Descriptor instead.
+func (*CheckSongsByFileIds_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_files_proto_rawDescGZIP(), []int{4, 2}
+}
+
+func (x *CheckSongsByFileIds_Response) GetFound() []*CheckSongsByFileIds_FoundSongByFileId {
+	if x != nil {
+		return x.Found
+	}
+	return nil
+}
+
 type DeleteFile_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FileId        int64                  `protobuf:"varint,1,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
@@ -604,7 +780,7 @@ type DeleteFile_Request struct {
 
 func (x *DeleteFile_Request) Reset() {
 	*x = DeleteFile_Request{}
-	mi := &file_zpotify_service_files_proto_msgTypes[13]
+	mi := &file_zpotify_service_files_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -616,7 +792,7 @@ func (x *DeleteFile_Request) String() string {
 func (*DeleteFile_Request) ProtoMessage() {}
 
 func (x *DeleteFile_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[13]
+	mi := &file_zpotify_service_files_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -629,7 +805,7 @@ func (x *DeleteFile_Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteFile_Request.ProtoReflect.Descriptor instead.
 func (*DeleteFile_Request) Descriptor() ([]byte, []int) {
-	return file_zpotify_service_files_proto_rawDescGZIP(), []int{4, 0}
+	return file_zpotify_service_files_proto_rawDescGZIP(), []int{5, 0}
 }
 
 func (x *DeleteFile_Request) GetFileId() int64 {
@@ -647,7 +823,7 @@ type DeleteFile_Response struct {
 
 func (x *DeleteFile_Response) Reset() {
 	*x = DeleteFile_Response{}
-	mi := &file_zpotify_service_files_proto_msgTypes[14]
+	mi := &file_zpotify_service_files_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -659,7 +835,7 @@ func (x *DeleteFile_Response) String() string {
 func (*DeleteFile_Response) ProtoMessage() {}
 
 func (x *DeleteFile_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[14]
+	mi := &file_zpotify_service_files_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -672,7 +848,7 @@ func (x *DeleteFile_Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteFile_Response.ProtoReflect.Descriptor instead.
 func (*DeleteFile_Response) Descriptor() ([]byte, []int) {
-	return file_zpotify_service_files_proto_rawDescGZIP(), []int{4, 1}
+	return file_zpotify_service_files_proto_rawDescGZIP(), []int{5, 1}
 }
 
 type BatchDeleteFiles_Request struct {
@@ -684,7 +860,7 @@ type BatchDeleteFiles_Request struct {
 
 func (x *BatchDeleteFiles_Request) Reset() {
 	*x = BatchDeleteFiles_Request{}
-	mi := &file_zpotify_service_files_proto_msgTypes[15]
+	mi := &file_zpotify_service_files_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -696,7 +872,7 @@ func (x *BatchDeleteFiles_Request) String() string {
 func (*BatchDeleteFiles_Request) ProtoMessage() {}
 
 func (x *BatchDeleteFiles_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[15]
+	mi := &file_zpotify_service_files_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -709,7 +885,7 @@ func (x *BatchDeleteFiles_Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchDeleteFiles_Request.ProtoReflect.Descriptor instead.
 func (*BatchDeleteFiles_Request) Descriptor() ([]byte, []int) {
-	return file_zpotify_service_files_proto_rawDescGZIP(), []int{5, 0}
+	return file_zpotify_service_files_proto_rawDescGZIP(), []int{6, 0}
 }
 
 func (x *BatchDeleteFiles_Request) GetFileIds() []int64 {
@@ -727,7 +903,7 @@ type BatchDeleteFiles_Response struct {
 
 func (x *BatchDeleteFiles_Response) Reset() {
 	*x = BatchDeleteFiles_Response{}
-	mi := &file_zpotify_service_files_proto_msgTypes[16]
+	mi := &file_zpotify_service_files_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -739,7 +915,7 @@ func (x *BatchDeleteFiles_Response) String() string {
 func (*BatchDeleteFiles_Response) ProtoMessage() {}
 
 func (x *BatchDeleteFiles_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_files_proto_msgTypes[16]
+	mi := &file_zpotify_service_files_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -752,7 +928,7 @@ func (x *BatchDeleteFiles_Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchDeleteFiles_Response.ProtoReflect.Descriptor instead.
 func (*BatchDeleteFiles_Response) Descriptor() ([]byte, []int) {
-	return file_zpotify_service_files_proto_rawDescGZIP(), []int{5, 1}
+	return file_zpotify_service_files_proto_rawDescGZIP(), []int{6, 1}
 }
 
 var File_zpotify_service_files_proto protoreflect.FileDescriptor
@@ -786,7 +962,15 @@ const file_zpotify_service_files_proto_rawDesc = "" +
 	"\n" +
 	"\b_song_id\x1aQ\n" +
 	"\bResponse\x12E\n" +
-	"\x05found\x18\x01 \x03(\v2/.zpotify_api.CheckFilesByHashes.FoundFileByHashR\x05found\"<\n" +
+	"\x05found\x18\x01 \x03(\v2/.zpotify_api.CheckFilesByHashes.FoundFileByHashR\x05found\"\xd8\x01\n" +
+	"\x13CheckSongsByFileIds\x1a$\n" +
+	"\aRequest\x12\x19\n" +
+	"\bfile_ids\x18\x01 \x03(\x03R\afileIds\x1aE\n" +
+	"\x11FoundSongByFileId\x12\x17\n" +
+	"\afile_id\x18\x01 \x01(\x03R\x06fileId\x12\x17\n" +
+	"\asong_id\x18\x02 \x01(\x03R\x06songId\x1aT\n" +
+	"\bResponse\x12H\n" +
+	"\x05found\x18\x01 \x03(\v22.zpotify_api.CheckSongsByFileIds.FoundSongByFileIdR\x05found\"<\n" +
 	"\n" +
 	"DeleteFile\x1a\"\n" +
 	"\aRequest\x12\x17\n" +
@@ -797,11 +981,12 @@ const file_zpotify_service_files_proto_rawDesc = "" +
 	"\aRequest\x12\x19\n" +
 	"\bfile_ids\x18\x01 \x03(\x03R\afileIds\x1a\n" +
 	"\n" +
-	"\bResponse2\x8f\x05\n" +
+	"\bResponse2\xaa\x06\n" +
 	"\vFileMetaAPI\x12\x84\x01\n" +
 	"\x11ListUploadedFiles\x12&.zpotify_api.ListUploadedFiles.Request\x1a'.zpotify_api.ListUploadedFiles.Response\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/file_meta/list\x12h\n" +
 	"\aGetFile\x12\x1c.zpotify_api.GetFile.Request\x1a\x1d.zpotify_api.GetFile.Response\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/api/file_meta/{file_id}\x12\x8f\x01\n" +
-	"\x12CheckFilesByHashes\x12'.zpotify_api.CheckFilesByHashes.Request\x1a(.zpotify_api.CheckFilesByHashes.Response\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/file_meta/check_hashes\x12q\n" +
+	"\x12CheckFilesByHashes\x12'.zpotify_api.CheckFilesByHashes.Request\x1a(.zpotify_api.CheckFilesByHashes.Response\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/file_meta/check_hashes\x12\x98\x01\n" +
+	"\x13CheckSongsByFileIds\x12(.zpotify_api.CheckSongsByFileIds.Request\x1a).zpotify_api.CheckSongsByFileIds.Response\",\x82\xd3\xe4\x93\x02&:\x01*\"!/api/file_meta/check_songs_by_ids\x12q\n" +
 	"\n" +
 	"DeleteFile\x12\x1f.zpotify_api.DeleteFile.Request\x1a .zpotify_api.DeleteFile.Response\" \x82\xd3\xe4\x93\x02\x1a*\x18/api/file_meta/{file_id}\x12\x89\x01\n" +
 	"\x10BatchDeleteFiles\x12%.zpotify_api.BatchDeleteFiles.Request\x1a&.zpotify_api.BatchDeleteFiles.Response\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/file_meta/batch_deleteBA\x92\x82\x19\f@zpotify/api\n" +
@@ -819,46 +1004,53 @@ func file_zpotify_service_files_proto_rawDescGZIP() []byte {
 	return file_zpotify_service_files_proto_rawDescData
 }
 
-var file_zpotify_service_files_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_zpotify_service_files_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_zpotify_service_files_proto_goTypes = []any{
-	(*ListUploadedFiles)(nil),                  // 0: zpotify_api.ListUploadedFiles
-	(*GetFile)(nil),                            // 1: zpotify_api.GetFile
-	(*FileInfo)(nil),                           // 2: zpotify_api.FileInfo
-	(*CheckFilesByHashes)(nil),                 // 3: zpotify_api.CheckFilesByHashes
-	(*DeleteFile)(nil),                         // 4: zpotify_api.DeleteFile
-	(*BatchDeleteFiles)(nil),                   // 5: zpotify_api.BatchDeleteFiles
-	(*ListUploadedFiles_Request)(nil),          // 6: zpotify_api.ListUploadedFiles.Request
-	(*ListUploadedFiles_Response)(nil),         // 7: zpotify_api.ListUploadedFiles.Response
-	(*GetFile_Request)(nil),                    // 8: zpotify_api.GetFile.Request
-	(*GetFile_Response)(nil),                   // 9: zpotify_api.GetFile.Response
-	(*CheckFilesByHashes_Request)(nil),         // 10: zpotify_api.CheckFilesByHashes.Request
-	(*CheckFilesByHashes_FoundFileByHash)(nil), // 11: zpotify_api.CheckFilesByHashes.FoundFileByHash
-	(*CheckFilesByHashes_Response)(nil),        // 12: zpotify_api.CheckFilesByHashes.Response
-	(*DeleteFile_Request)(nil),                 // 13: zpotify_api.DeleteFile.Request
-	(*DeleteFile_Response)(nil),                // 14: zpotify_api.DeleteFile.Response
-	(*BatchDeleteFiles_Request)(nil),           // 15: zpotify_api.BatchDeleteFiles.Request
-	(*BatchDeleteFiles_Response)(nil),          // 16: zpotify_api.BatchDeleteFiles.Response
-	(*SongFile)(nil),                           // 17: zpotify_api.SongFile
+	(*ListUploadedFiles)(nil),                     // 0: zpotify_api.ListUploadedFiles
+	(*GetFile)(nil),                               // 1: zpotify_api.GetFile
+	(*FileInfo)(nil),                              // 2: zpotify_api.FileInfo
+	(*CheckFilesByHashes)(nil),                    // 3: zpotify_api.CheckFilesByHashes
+	(*CheckSongsByFileIds)(nil),                   // 4: zpotify_api.CheckSongsByFileIds
+	(*DeleteFile)(nil),                            // 5: zpotify_api.DeleteFile
+	(*BatchDeleteFiles)(nil),                      // 6: zpotify_api.BatchDeleteFiles
+	(*ListUploadedFiles_Request)(nil),             // 7: zpotify_api.ListUploadedFiles.Request
+	(*ListUploadedFiles_Response)(nil),            // 8: zpotify_api.ListUploadedFiles.Response
+	(*GetFile_Request)(nil),                       // 9: zpotify_api.GetFile.Request
+	(*GetFile_Response)(nil),                      // 10: zpotify_api.GetFile.Response
+	(*CheckFilesByHashes_Request)(nil),            // 11: zpotify_api.CheckFilesByHashes.Request
+	(*CheckFilesByHashes_FoundFileByHash)(nil),    // 12: zpotify_api.CheckFilesByHashes.FoundFileByHash
+	(*CheckFilesByHashes_Response)(nil),           // 13: zpotify_api.CheckFilesByHashes.Response
+	(*CheckSongsByFileIds_Request)(nil),           // 14: zpotify_api.CheckSongsByFileIds.Request
+	(*CheckSongsByFileIds_FoundSongByFileId)(nil), // 15: zpotify_api.CheckSongsByFileIds.FoundSongByFileId
+	(*CheckSongsByFileIds_Response)(nil),          // 16: zpotify_api.CheckSongsByFileIds.Response
+	(*DeleteFile_Request)(nil),                    // 17: zpotify_api.DeleteFile.Request
+	(*DeleteFile_Response)(nil),                   // 18: zpotify_api.DeleteFile.Response
+	(*BatchDeleteFiles_Request)(nil),              // 19: zpotify_api.BatchDeleteFiles.Request
+	(*BatchDeleteFiles_Response)(nil),             // 20: zpotify_api.BatchDeleteFiles.Response
+	(*SongFile)(nil),                              // 21: zpotify_api.SongFile
 }
 var file_zpotify_service_files_proto_depIdxs = []int32{
-	17, // 0: zpotify_api.ListUploadedFiles.Response.files:type_name -> zpotify_api.SongFile
+	21, // 0: zpotify_api.ListUploadedFiles.Response.files:type_name -> zpotify_api.SongFile
 	2,  // 1: zpotify_api.GetFile.Response.file:type_name -> zpotify_api.FileInfo
-	11, // 2: zpotify_api.CheckFilesByHashes.Response.found:type_name -> zpotify_api.CheckFilesByHashes.FoundFileByHash
-	6,  // 3: zpotify_api.FileMetaAPI.ListUploadedFiles:input_type -> zpotify_api.ListUploadedFiles.Request
-	8,  // 4: zpotify_api.FileMetaAPI.GetFile:input_type -> zpotify_api.GetFile.Request
-	10, // 5: zpotify_api.FileMetaAPI.CheckFilesByHashes:input_type -> zpotify_api.CheckFilesByHashes.Request
-	13, // 6: zpotify_api.FileMetaAPI.DeleteFile:input_type -> zpotify_api.DeleteFile.Request
-	15, // 7: zpotify_api.FileMetaAPI.BatchDeleteFiles:input_type -> zpotify_api.BatchDeleteFiles.Request
-	7,  // 8: zpotify_api.FileMetaAPI.ListUploadedFiles:output_type -> zpotify_api.ListUploadedFiles.Response
-	9,  // 9: zpotify_api.FileMetaAPI.GetFile:output_type -> zpotify_api.GetFile.Response
-	12, // 10: zpotify_api.FileMetaAPI.CheckFilesByHashes:output_type -> zpotify_api.CheckFilesByHashes.Response
-	14, // 11: zpotify_api.FileMetaAPI.DeleteFile:output_type -> zpotify_api.DeleteFile.Response
-	16, // 12: zpotify_api.FileMetaAPI.BatchDeleteFiles:output_type -> zpotify_api.BatchDeleteFiles.Response
-	8,  // [8:13] is the sub-list for method output_type
-	3,  // [3:8] is the sub-list for method input_type
-	3,  // [3:3] is the sub-list for extension type_name
-	3,  // [3:3] is the sub-list for extension extendee
-	0,  // [0:3] is the sub-list for field type_name
+	12, // 2: zpotify_api.CheckFilesByHashes.Response.found:type_name -> zpotify_api.CheckFilesByHashes.FoundFileByHash
+	15, // 3: zpotify_api.CheckSongsByFileIds.Response.found:type_name -> zpotify_api.CheckSongsByFileIds.FoundSongByFileId
+	7,  // 4: zpotify_api.FileMetaAPI.ListUploadedFiles:input_type -> zpotify_api.ListUploadedFiles.Request
+	9,  // 5: zpotify_api.FileMetaAPI.GetFile:input_type -> zpotify_api.GetFile.Request
+	11, // 6: zpotify_api.FileMetaAPI.CheckFilesByHashes:input_type -> zpotify_api.CheckFilesByHashes.Request
+	14, // 7: zpotify_api.FileMetaAPI.CheckSongsByFileIds:input_type -> zpotify_api.CheckSongsByFileIds.Request
+	17, // 8: zpotify_api.FileMetaAPI.DeleteFile:input_type -> zpotify_api.DeleteFile.Request
+	19, // 9: zpotify_api.FileMetaAPI.BatchDeleteFiles:input_type -> zpotify_api.BatchDeleteFiles.Request
+	8,  // 10: zpotify_api.FileMetaAPI.ListUploadedFiles:output_type -> zpotify_api.ListUploadedFiles.Response
+	10, // 11: zpotify_api.FileMetaAPI.GetFile:output_type -> zpotify_api.GetFile.Response
+	13, // 12: zpotify_api.FileMetaAPI.CheckFilesByHashes:output_type -> zpotify_api.CheckFilesByHashes.Response
+	16, // 13: zpotify_api.FileMetaAPI.CheckSongsByFileIds:output_type -> zpotify_api.CheckSongsByFileIds.Response
+	18, // 14: zpotify_api.FileMetaAPI.DeleteFile:output_type -> zpotify_api.DeleteFile.Response
+	20, // 15: zpotify_api.FileMetaAPI.BatchDeleteFiles:output_type -> zpotify_api.BatchDeleteFiles.Response
+	10, // [10:16] is the sub-list for method output_type
+	4,  // [4:10] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_service_files_proto_init() }
@@ -869,14 +1061,14 @@ func file_zpotify_service_files_proto_init() {
 	file_zpotify_user_proto_init()
 	file_zpotify_user_settings_proto_init()
 	file_zpotify_common_proto_init()
-	file_zpotify_service_files_proto_msgTypes[11].OneofWrappers = []any{}
+	file_zpotify_service_files_proto_msgTypes[12].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_service_files_proto_rawDesc), len(file_zpotify_service_files_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   17,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

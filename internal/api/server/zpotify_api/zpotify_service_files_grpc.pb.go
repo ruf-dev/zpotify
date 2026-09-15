@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	FileMetaAPI_ListUploadedFiles_FullMethodName  = "/zpotify_api.FileMetaAPI/ListUploadedFiles"
-	FileMetaAPI_GetFile_FullMethodName            = "/zpotify_api.FileMetaAPI/GetFile"
-	FileMetaAPI_CheckFilesByHashes_FullMethodName = "/zpotify_api.FileMetaAPI/CheckFilesByHashes"
-	FileMetaAPI_DeleteFile_FullMethodName         = "/zpotify_api.FileMetaAPI/DeleteFile"
-	FileMetaAPI_BatchDeleteFiles_FullMethodName   = "/zpotify_api.FileMetaAPI/BatchDeleteFiles"
+	FileMetaAPI_ListUploadedFiles_FullMethodName   = "/zpotify_api.FileMetaAPI/ListUploadedFiles"
+	FileMetaAPI_GetFile_FullMethodName             = "/zpotify_api.FileMetaAPI/GetFile"
+	FileMetaAPI_CheckFilesByHashes_FullMethodName  = "/zpotify_api.FileMetaAPI/CheckFilesByHashes"
+	FileMetaAPI_CheckSongsByFileIds_FullMethodName = "/zpotify_api.FileMetaAPI/CheckSongsByFileIds"
+	FileMetaAPI_DeleteFile_FullMethodName          = "/zpotify_api.FileMetaAPI/DeleteFile"
+	FileMetaAPI_BatchDeleteFiles_FullMethodName    = "/zpotify_api.FileMetaAPI/BatchDeleteFiles"
 )
 
 // FileMetaAPIClient is the client API for FileMetaAPI service.
@@ -33,6 +34,7 @@ type FileMetaAPIClient interface {
 	ListUploadedFiles(ctx context.Context, in *ListUploadedFiles_Request, opts ...grpc.CallOption) (*ListUploadedFiles_Response, error)
 	GetFile(ctx context.Context, in *GetFile_Request, opts ...grpc.CallOption) (*GetFile_Response, error)
 	CheckFilesByHashes(ctx context.Context, in *CheckFilesByHashes_Request, opts ...grpc.CallOption) (*CheckFilesByHashes_Response, error)
+	CheckSongsByFileIds(ctx context.Context, in *CheckSongsByFileIds_Request, opts ...grpc.CallOption) (*CheckSongsByFileIds_Response, error)
 	DeleteFile(ctx context.Context, in *DeleteFile_Request, opts ...grpc.CallOption) (*DeleteFile_Response, error)
 	BatchDeleteFiles(ctx context.Context, in *BatchDeleteFiles_Request, opts ...grpc.CallOption) (*BatchDeleteFiles_Response, error)
 }
@@ -72,6 +74,15 @@ func (c *fileMetaAPIClient) CheckFilesByHashes(ctx context.Context, in *CheckFil
 	return out, nil
 }
 
+func (c *fileMetaAPIClient) CheckSongsByFileIds(ctx context.Context, in *CheckSongsByFileIds_Request, opts ...grpc.CallOption) (*CheckSongsByFileIds_Response, error) {
+	out := new(CheckSongsByFileIds_Response)
+	err := c.cc.Invoke(ctx, FileMetaAPI_CheckSongsByFileIds_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *fileMetaAPIClient) DeleteFile(ctx context.Context, in *DeleteFile_Request, opts ...grpc.CallOption) (*DeleteFile_Response, error) {
 	out := new(DeleteFile_Response)
 	err := c.cc.Invoke(ctx, FileMetaAPI_DeleteFile_FullMethodName, in, out, opts...)
@@ -97,6 +108,7 @@ type FileMetaAPIServer interface {
 	ListUploadedFiles(context.Context, *ListUploadedFiles_Request) (*ListUploadedFiles_Response, error)
 	GetFile(context.Context, *GetFile_Request) (*GetFile_Response, error)
 	CheckFilesByHashes(context.Context, *CheckFilesByHashes_Request) (*CheckFilesByHashes_Response, error)
+	CheckSongsByFileIds(context.Context, *CheckSongsByFileIds_Request) (*CheckSongsByFileIds_Response, error)
 	DeleteFile(context.Context, *DeleteFile_Request) (*DeleteFile_Response, error)
 	BatchDeleteFiles(context.Context, *BatchDeleteFiles_Request) (*BatchDeleteFiles_Response, error)
 	mustEmbedUnimplementedFileMetaAPIServer()
@@ -114,6 +126,9 @@ func (UnimplementedFileMetaAPIServer) GetFile(context.Context, *GetFile_Request)
 }
 func (UnimplementedFileMetaAPIServer) CheckFilesByHashes(context.Context, *CheckFilesByHashes_Request) (*CheckFilesByHashes_Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckFilesByHashes not implemented")
+}
+func (UnimplementedFileMetaAPIServer) CheckSongsByFileIds(context.Context, *CheckSongsByFileIds_Request) (*CheckSongsByFileIds_Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckSongsByFileIds not implemented")
 }
 func (UnimplementedFileMetaAPIServer) DeleteFile(context.Context, *DeleteFile_Request) (*DeleteFile_Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteFile not implemented")
@@ -188,6 +203,24 @@ func _FileMetaAPI_CheckFilesByHashes_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FileMetaAPI_CheckSongsByFileIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckSongsByFileIds_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FileMetaAPIServer).CheckSongsByFileIds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FileMetaAPI_CheckSongsByFileIds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FileMetaAPIServer).CheckSongsByFileIds(ctx, req.(*CheckSongsByFileIds_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FileMetaAPI_DeleteFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteFile_Request)
 	if err := dec(in); err != nil {
@@ -242,6 +275,10 @@ var FileMetaAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckFilesByHashes",
 			Handler:    _FileMetaAPI_CheckFilesByHashes_Handler,
+		},
+		{
+			MethodName: "CheckSongsByFileIds",
+			Handler:    _FileMetaAPI_CheckSongsByFileIds_Handler,
 		},
 		{
 			MethodName: "DeleteFile",
