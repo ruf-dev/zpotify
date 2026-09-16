@@ -165,8 +165,8 @@
     "semantic_hash": ""
   },
   "internal/middleware/auth_interceptor.go": {
-    "mtime": 1789400653.7075512,
-    "ast_hash": "bb2ce84db0f7d355e9f82ce13549326e",
+    "mtime": 1789576787.820271,
+    "ast_hash": "cd5fe176b7e67e9ac337bc07eb20cca7",
     "semantic_hash": ""
   },
   "internal/middleware/otel_hook.go": {
@@ -180,19 +180,19 @@
     "semantic_hash": "80fd039c1a5c9ac2b940226415b6fede"
   },
   "internal/transport/grpc.go": {
-    "mtime": 1789575706.6519606,
-    "ast_hash": "eb1f0188fc6754db460db202a05c3cfb",
+    "mtime": 1789576787.8564296,
+    "ast_hash": "f03bc7c89f98eb9eb7c559eef0b3f949",
     "semantic_hash": ""
   },
   "internal/transport/http.go": {
-    "mtime": 1789575706.6526756,
-    "ast_hash": "c8cbff7a0b7de884d13c3b36ad2b0171",
+    "mtime": 1789576787.8619664,
+    "ast_hash": "de779145d0efa15c451c9d510ee9a589",
     "semantic_hash": ""
   },
   "internal/transport/manager.go": {
-    "mtime": 1789575706.6562164,
-    "ast_hash": "e9396f1c0ab5c45ec93d1ec4f7347d58",
-    "semantic_hash": "e9396f1c0ab5c45ec93d1ec4f7347d58"
+    "mtime": 1789576787.8693292,
+    "ast_hash": "a4a9c5474ec57004ff02dfe922c328b3",
+    "semantic_hash": ""
   },
   "internal/transport/ui/ui.go": {
     "mtime": 1783196066.5237138,
@@ -280,9 +280,9 @@
     "semantic_hash": "be08940e56a8db36c2edfa0c651ca600"
   },
   "internal/transport/zpotify_api_impl/impl.go": {
-    "mtime": 1783198581.2439716,
-    "ast_hash": "a38545b1ace0a439f2af07ab383a6383",
-    "semantic_hash": "a38545b1ace0a439f2af07ab383a6383"
+    "mtime": 1789576901.935359,
+    "ast_hash": "eae3552907ffc1b48e0a8f89ad8776cc",
+    "semantic_hash": ""
   },
   "internal/transport/song_api_impl/update_song.go": {
     "mtime": 1783759922.943856,
@@ -400,28 +400,23 @@
     "semantic_hash": "e026a6674f2341a67053118987f91db7"
   },
   "internal/app/custom.go": {
-    "mtime": 1789400668.7354257,
-    "ast_hash": "04d2e0646ed18798c8b2318087503b4a",
+    "mtime": 1789576887.2284164,
+    "ast_hash": "24c30e7a1abcdef1a3f420424b4a9610",
     "semantic_hash": ""
   },
   "internal/app/config.go": {
-    "mtime": 1789575706.649768,
-    "ast_hash": "d6b7acfe89603d3c385bb48d3a21b9c9",
-    "semantic_hash": "d6b7acfe89603d3c385bb48d3a21b9c9"
-  },
-  "internal/app/server.go": {
-    "mtime": 1789575706.6499026,
-    "ast_hash": "516cb4aa4a23570c2201048cf9467071",
+    "mtime": 1789576787.7735946,
+    "ast_hash": "310254d09b706509f13a5a1675abec97",
     "semantic_hash": ""
   },
-  "internal/app/data_sources.go": {
-    "mtime": 1782414658.9938378,
-    "ast_hash": "925496b292a6902dad76339eb4b0831a",
-    "semantic_hash": "925496b292a6902dad76339eb4b0831a"
+  "internal/app/server.go": {
+    "mtime": 1789576787.7845173,
+    "ast_hash": "87d477ad26b452c35cbcfbfb865e199a",
+    "semantic_hash": ""
   },
   "internal/app/app.go": {
-    "mtime": 1789575706.6496303,
-    "ast_hash": "068c616fb3bf6fdd5b1d0baf3f1d7e7f",
+    "mtime": 1789576787.7685606,
+    "ast_hash": "53b0e4110121676147b1370a227ab3f4",
     "semantic_hash": ""
   },
   "internal/app/otel.go": {
@@ -430,24 +425,24 @@
     "semantic_hash": "b50305d0edca416a4aad2964f52d8c67"
   },
   "internal/config/servers.go": {
-    "mtime": 1789575706.651268,
-    "ast_hash": "bd289d918f417950491034b290842f24",
-    "semantic_hash": "bd289d918f417950491034b290842f24"
+    "mtime": 1789576787.8041134,
+    "ast_hash": "3ad2132570a62ca0f8226db77a1f4d4c",
+    "semantic_hash": ""
   },
   "internal/config/data_sources.go": {
-    "mtime": 1789575706.6502306,
-    "ast_hash": "20a34a30d8763a26e3fc73785813b035",
-    "semantic_hash": "20a34a30d8763a26e3fc73785813b035"
+    "mtime": 1789576787.7892413,
+    "ast_hash": "e5e9787845d41d15eef8a1690da4659e",
+    "semantic_hash": ""
   },
   "internal/config/environment.go": {
-    "mtime": 1789575706.6507494,
-    "ast_hash": "dca46819a84559985f5d12d24a0a23bb",
+    "mtime": 1789576787.7942612,
+    "ast_hash": "61efec7f0f0803efde19388cd5c8bacd",
     "semantic_hash": ""
   },
   "internal/config/load.go": {
-    "mtime": 1789575706.650905,
-    "ast_hash": "502cd52accfb292d8ad5d97af140fa24",
-    "semantic_hash": "502cd52accfb292d8ad5d97af140fa24"
+    "mtime": 1789576787.7992418,
+    "ast_hash": "abdfb1ceeb38b0200ebb9ac428482fe4",
+    "semantic_hash": ""
   },
   "internal/user_errors/auth.go": {
     "mtime": 1783197320.770535,
@@ -1055,8 +1050,8 @@
     "semantic_hash": "7a281cdb9908775e7c7d549ae5877853"
   },
   "pkg/docs/docs.swagger_ui.go": {
-    "mtime": 1789575706.6565285,
-    "ast_hash": "ee2897fb3c26796f025cfa340437c658",
+    "mtime": 1789576787.8747385,
+    "ast_hash": "8aed9bdf3bf884226bae53f04f221193",
     "semantic_hash": ""
   },
   "pkg/docs/swaggers/zpotify_service_auth.swagger.json": {
@@ -1275,9 +1270,9 @@
     "semantic_hash": ""
   },
   ".verv/vervonomicon.yaml": {
-    "mtime": 1789575706.6480627,
-    "ast_hash": "97fefbd9a770bfe6c0c5691636810bdd",
-    "semantic_hash": "97fefbd9a770bfe6c0c5691636810bdd"
+    "mtime": 1789576787.7447073,
+    "ast_hash": "52be4e867631df1663a3c2fb9c073cf7",
+    "semantic_hash": ""
   },
   ".verv/auth.yaml": {
     "mtime": 1780043642.832267,
@@ -2735,8 +2730,8 @@
     "semantic_hash": ""
   },
   "go.mod": {
-    "mtime": 1787635378.0850205,
-    "ast_hash": "190a613f69139f9ca183b55c403dbc57",
+    "mtime": 1789576787.7574627,
+    "ast_hash": "fa478294b19915599938a1cc26926174",
     "semantic_hash": ""
   },
   "internal/transport/song_api_impl/song_tags.go": {
@@ -4237,6 +4232,66 @@
   "pkg/client/ZpotifyUI/src/shared/api/VersionService.ts": {
     "mtime": 1789576103.3508916,
     "ast_hash": "853d03e70e099759b3fc2f92bc396ea1",
+    "semantic_hash": ""
+  },
+  "internal/clients/postgres/conn.go": {
+    "mtime": 1789576787.8852942,
+    "ast_hash": "64d86baf07ab73c6b80b8d384f4088de",
+    "semantic_hash": ""
+  },
+  "internal/clients/postgres/driver.go": {
+    "mtime": 1789576787.8879807,
+    "ast_hash": "c202594714c4789fffb888749198631b",
+    "semantic_hash": ""
+  },
+  "internal/clients/postgres/instances.go": {
+    "mtime": 1789576787.8899996,
+    "ast_hash": "73f3106e53c3aef04f61f0894d9a9189",
+    "semantic_hash": ""
+  },
+  "internal/config/skeleton.go": {
+    "mtime": 1789576787.8091435,
+    "ast_hash": "422df5eb52b07d57a197955dbdeb086f",
+    "semantic_hash": ""
+  },
+  "internal/middleware/cookie_annotator.go": {
+    "mtime": 1789576787.825177,
+    "ast_hash": "6ab73312960a331d329b6d5defddd2c4",
+    "semantic_hash": ""
+  },
+  "internal/middleware/cookie_names.go": {
+    "mtime": 1789576787.830041,
+    "ast_hash": "04558c67676c775d740fe323a743ba2e",
+    "semantic_hash": ""
+  },
+  "internal/middleware/cookie_response.go": {
+    "mtime": 1789576787.8357613,
+    "ast_hash": "b21e172b0c5c761fd73c8db9202f086e",
+    "semantic_hash": ""
+  },
+  "internal/middleware/csrf_interceptor.go": {
+    "mtime": 1789576787.840822,
+    "ast_hash": "b4bc6649eca5868463ff2f5d8e4bc180",
+    "semantic_hash": ""
+  },
+  "internal/middleware/request_scheme_annotator.go": {
+    "mtime": 1789576787.846257,
+    "ast_hash": "cca0102decc9ffda0ffb12dfa5e02fce",
+    "semantic_hash": ""
+  },
+  "internal/transport/gateway_mux.go": {
+    "mtime": 1789576787.8514192,
+    "ast_hash": "0f0881577bd9a513fc28067e7bc6d2be",
+    "semantic_hash": ""
+  },
+  "internal/transport/zpotify_api_impl/version.go": {
+    "mtime": 1789576870.956904,
+    "ast_hash": "af976142cc1d66c0d77bd4df200d7e90",
+    "semantic_hash": ""
+  },
+  "internal/config/skeleton.yaml": {
+    "mtime": 1789576787.8144019,
+    "ast_hash": "1908b37e19270b0f33c16cdcd506de27",
     "semantic_hash": ""
   }
 }
