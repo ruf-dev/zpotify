@@ -1570,8 +1570,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/routing/Router.tsx": {
-    "mtime": 1789295593.6891828,
-    "ast_hash": "7ba43ccd42148cfb41574af7448728b2",
+    "mtime": 1789576139.555935,
+    "ast_hash": "c2e74b50ada4f995d4ba08cdbf9c2829",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/routing/paths.ts": {
@@ -4222,6 +4222,21 @@
   "pkg/client/ZpotifyUI/src/features/upload/imageFile.ts": {
     "mtime": 1789573855.373301,
     "ast_hash": "04f75c41a5972dd18d1dbe4ca9103f57",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/ServerStatusBanner/ServerStatusBanner.tsx": {
+    "mtime": 1789576129.4479806,
+    "ast_hash": "51f23eb3e1d4a2c0061f8bd2553a15d0",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/ServerStatusBanner/useServerStatusBanner.ts": {
+    "mtime": 1789576124.790015,
+    "ast_hash": "6464070313a6b55b5729dd53373e2f4c",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/VersionService.ts": {
+    "mtime": 1789576103.3508916,
+    "ast_hash": "853d03e70e099759b3fc2f92bc396ea1",
     "semantic_hash": ""
   }
 }
