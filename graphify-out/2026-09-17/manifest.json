@@ -3970,8 +3970,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/TorrentManage/TorrentManageDialog.tsx": {
-    "mtime": 1789587793.8465242,
-    "ast_hash": "10f7e1763e4730a71735f86444db7ec3",
+    "mtime": 1789622385.030549,
+    "ast_hash": "6c0ff794c52155a0f48d82bf382137ba",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/features/upload/torrentFile.test.ts": {
@@ -4195,13 +4195,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/components/TorrentFileProgressList/TorrentFileProgressList.tsx": {
-    "mtime": 1789413140.2486634,
-    "ast_hash": "8af10ff3a569fab0c3c048e29a9b79c2",
+    "mtime": 1789622327.603615,
+    "ast_hash": "a2d554ac40a43473f01bc4f763a5a43f",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/components/TorrentFileProgressList/components/TorrentFileProgressRow/TorrentFileProgressRow.tsx": {
-    "mtime": 1789413121.7613986,
-    "ast_hash": "95ddd2ba64622f5995c9204c333878d6",
+    "mtime": 1789622334.9291134,
+    "ast_hash": "e4ece38047752bea3b4d3c2aae16d93b",
     "semantic_hash": ""
   },
   "internal/transport/file_api_impl/check_songs_by_file_ids.go": {
@@ -4295,8 +4295,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/TorrentManage/components/ImportedFilesList/ImportedFilesList.tsx": {
-    "mtime": 1789587621.9673345,
-    "ast_hash": "c90f33a70e194efb84c0574ee614a450",
+    "mtime": 1789622374.8886795,
+    "ast_hash": "95a3609a788209287b2f800dc9838aac",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/TorrentManage/components/ImportedFilesList/components/ImportedFileRow/ImportedFileRow.test.tsx": {
@@ -4305,8 +4305,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/TorrentManage/components/ImportedFilesList/components/ImportedFileRow/ImportedFileRow.tsx": {
-    "mtime": 1789587631.1960614,
-    "ast_hash": "d5f6f7d371b7d031799089fd6c9cea49",
+    "mtime": 1789622377.5946336,
+    "ast_hash": "23ebde69bfeb6234877a333aa1ae7bec",
     "semantic_hash": ""
   }
 }
