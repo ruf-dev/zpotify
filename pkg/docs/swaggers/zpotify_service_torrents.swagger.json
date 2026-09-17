@@ -377,6 +377,12 @@
         },
         "error": {
           "type": "string"
+        },
+        "filePath": {
+          "type": "string"
+        },
+        "fileDeleted": {
+          "type": "boolean"
         }
       }
     },

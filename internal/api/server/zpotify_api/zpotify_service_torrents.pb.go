@@ -7,13 +7,14 @@
 package zpotify_api
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "go.redsock.ru/protoc-gen-npm/npmplugin"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -137,6 +138,8 @@ type ImportedFile struct {
 	FileId        int64                  `protobuf:"varint,2,opt,name=file_id,json=fileId,proto3" json:"file_id,omitempty"`
 	Status        string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	Error         string                 `protobuf:"bytes,4,opt,name=error,proto3" json:"error,omitempty"`
+	FilePath      string                 `protobuf:"bytes,5,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"`
+	FileDeleted   bool                   `protobuf:"varint,6,opt,name=file_deleted,json=fileDeleted,proto3" json:"file_deleted,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -197,6 +200,20 @@ func (x *ImportedFile) GetError() string {
 		return x.Error
 	}
 	return ""
+}
+
+func (x *ImportedFile) GetFilePath() string {
+	if x != nil {
+		return x.FilePath
+	}
+	return ""
+}
+
+func (x *ImportedFile) GetFileDeleted() bool {
+	if x != nil {
+		return x.FileDeleted
+	}
+	return false
 }
 
 type TorrentFileProgress struct {
@@ -1504,12 +1521,14 @@ const file_zpotify_service_torrents_proto_rawDesc = "" +
 	"\x10downloaded_bytes\x18\x06 \x01(\x03R\x0fdownloadedBytes\x12@\n" +
 	"\x0eimported_files\x18\a \x03(\v2\x19.zpotify_api.ImportedFileR\rimportedFiles\x12\x14\n" +
 	"\x05error\x18\b \x01(\tR\x05error\x126\n" +
-	"\x05files\x18\t \x03(\v2 .zpotify_api.TorrentFileProgressR\x05files\"x\n" +
+	"\x05files\x18\t \x03(\v2 .zpotify_api.TorrentFileProgressR\x05files\"\xb8\x01\n" +
 	"\fImportedFile\x12!\n" +
 	"\ftorrent_path\x18\x01 \x01(\tR\vtorrentPath\x12\x17\n" +
 	"\afile_id\x18\x02 \x01(\x03R\x06fileId\x12\x16\n" +
 	"\x06status\x18\x03 \x01(\tR\x06status\x12\x14\n" +
-	"\x05error\x18\x04 \x01(\tR\x05error\"u\n" +
+	"\x05error\x18\x04 \x01(\tR\x05error\x12\x1b\n" +
+	"\tfile_path\x18\x05 \x01(\tR\bfilePath\x12!\n" +
+	"\ffile_deleted\x18\x06 \x01(\bR\vfileDeleted\"u\n" +
 	"\x13TorrentFileProgress\x12\x12\n" +
 	"\x04path\x18\x01 \x01(\tR\x04path\x12)\n" +
 	"\x10downloaded_bytes\x18\x02 \x01(\x03R\x0fdownloadedBytes\x12\x1f\n" +

@@ -26,5 +26,7 @@ message Version {
   message Response {
     string version = 1;
     google.protobuf.Timestamp client_timestamp = 2;
+    google.protobuf.Timestamp started_at = 3;
+    bool dev_mode = 4;
   }
 }

@@ -14,6 +14,8 @@ export type VersionRequest = Record<string, never>;
 export type VersionResponse = {
   version?: string;
   clientTimestamp?: GoogleProtobufTimestamp.Timestamp;
+  startedAt?: GoogleProtobufTimestamp.Timestamp;
+  devMode?: boolean;
 };
 
 export type Version = Record<string, never>;

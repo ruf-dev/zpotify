@@ -87,6 +87,8 @@ message ImportedFile {
   int64 file_id = 2;
   string status = 3;
   string error = 4;
+  string file_path = 5;
+  bool file_deleted = 6;
 }
 
 message TorrentFileProgress {

@@ -25,6 +25,8 @@ export type ImportedFile = {
   fileId?: string;
   status?: string;
   error?: string;
+  filePath?: string;
+  fileDeleted?: boolean;
 };
 
 export type TorrentFileProgress = {

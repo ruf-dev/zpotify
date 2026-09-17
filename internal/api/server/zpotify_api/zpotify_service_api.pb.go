@@ -7,14 +7,15 @@
 package zpotify_api
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "go.redsock.ru/protoc-gen-npm/npmplugin"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -100,6 +101,8 @@ type Version_Response struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	Version         string                 `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	ClientTimestamp *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=client_timestamp,json=clientTimestamp,proto3" json:"client_timestamp,omitempty"`
+	StartedAt       *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
+	DevMode         bool                   `protobuf:"varint,4,opt,name=dev_mode,json=devMode,proto3" json:"dev_mode,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -148,16 +151,33 @@ func (x *Version_Response) GetClientTimestamp() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *Version_Response) GetStartedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.StartedAt
+	}
+	return nil
+}
+
+func (x *Version_Response) GetDevMode() bool {
+	if x != nil {
+		return x.DevMode
+	}
+	return false
+}
+
 var File_zpotify_service_api_proto protoreflect.FileDescriptor
 
 const file_zpotify_service_api_proto_rawDesc = "" +
 	"\n" +
-	"\x19zpotify_service_api.proto\x12\vzpotify_api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\"\x81\x01\n" +
+	"\x19zpotify_service_api.proto\x12\vzpotify_api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a\tnpm.proto\"\xd8\x01\n" +
 	"\aVersion\x1a\t\n" +
-	"\aRequest\x1ak\n" +
+	"\aRequest\x1a\xc1\x01\n" +
 	"\bResponse\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12E\n" +
-	"\x10client_timestamp\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x0fclientTimestamp2j\n" +
+	"\x10client_timestamp\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x0fclientTimestamp\x129\n" +
+	"\n" +
+	"started_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tstartedAt\x12\x19\n" +
+	"\bdev_mode\x18\x04 \x01(\bR\adevMode2j\n" +
 	"\n" +
 	"ZpotifyAPI\x12\\\n" +
 	"\aVersion\x12\x1c.zpotify_api.Version.Request\x1a\x1d.zpotify_api.Version.Response\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/api/versionBA\x92\x82\x19\f@zpotify/api\n" +
@@ -184,13 +204,14 @@ var file_zpotify_service_api_proto_goTypes = []any{
 }
 var file_zpotify_service_api_proto_depIdxs = []int32{
 	3, // 0: zpotify_api.Version.Response.client_timestamp:type_name -> google.protobuf.Timestamp
-	1, // 1: zpotify_api.ZpotifyAPI.Version:input_type -> zpotify_api.Version.Request
-	2, // 2: zpotify_api.ZpotifyAPI.Version:output_type -> zpotify_api.Version.Response
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	3, // 1: zpotify_api.Version.Response.started_at:type_name -> google.protobuf.Timestamp
+	1, // 2: zpotify_api.ZpotifyAPI.Version:input_type -> zpotify_api.Version.Request
+	2, // 3: zpotify_api.ZpotifyAPI.Version:output_type -> zpotify_api.Version.Response
+	3, // [3:4] is the sub-list for method output_type
+	2, // [2:3] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_service_api_proto_init() }

@@ -77,6 +77,13 @@
         "clientTimestamp": {
           "type": "string",
           "format": "date-time"
+        },
+        "startedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "devMode": {
+          "type": "boolean"
         }
       }
     }
