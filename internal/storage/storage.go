@@ -81,6 +81,11 @@ type FileMetaStorage interface {
 	GetByHash(ctx context.Context, hash string, userId int64) (domain.FileMeta, error)
 	GetTotalSizeByUser(ctx context.Context, userId int64) (int64, error)
 
+	// ExistingIds reports, for each of the given ids, whether its files_meta
+	// row still exists - used to annotate stale references (e.g. a torrent
+	// job's imported files) without erroring on the ones already deleted.
+	ExistingIds(ctx context.Context, ids []int64) (map[int64]bool, error)
+
 	Update(ctx context.Context, fileId int64, file domain.File) error
 
 	List(ctx context.Context, listReq domain.ListFileMeta) ([]domain.FileMeta, error)

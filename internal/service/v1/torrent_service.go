@@ -3,6 +3,7 @@ package v1
 import (
 	"bytes"
 	"context"
+	"errors"
 	"os"
 	"path"
 	"path/filepath"
@@ -293,6 +294,11 @@ func (s *TorrentService) GetJob(ctx context.Context, jobID int64) (domain.Torren
 		return domain.TorrentDownload{}, rerrors.Wrap(err, "error getting torrent job")
 	}
 
+	row, err = s.markDeletedImportedFiles(ctx, row)
+	if err != nil {
+		return domain.TorrentDownload{}, rerrors.Wrap(err, "error checking imported files existence")
+	}
+
 	return row, nil
 }
 
@@ -307,6 +313,14 @@ func (s *TorrentService) ListJobs(ctx context.Context, folderName string) ([]dom
 	rows, err := s.torrentStorage.ListByUser(ctx, uCtx.UserId, folderName)
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error listing torrent jobs")
+	}
+
+	for i, row := range rows {
+		row, err = s.markDeletedImportedFiles(ctx, row)
+		if err != nil {
+			return nil, rerrors.Wrap(err, "error checking imported files existence")
+		}
+		rows[i] = row
 	}
 
 	return rows, nil
@@ -429,6 +443,9 @@ func (s *TorrentService) deleteImportedFiles(ctx context.Context, row domain.Tor
 
 		fileMeta, err := s.fileMeta.Get(ctx, importedFile.FileId)
 		if err != nil {
+			if errors.Is(err, storage.ErrNotFound) {
+				continue
+			}
 			return rerrors.Wrap(err, "error getting imported file meta")
 		}
 
@@ -444,6 +461,48 @@ func (s *TorrentService) deleteImportedFiles(ctx context.Context, row domain.Tor
 	}
 
 	return nil
+}
+
+// markDeletedImportedFiles annotates each successfully-imported file with
+// whether its files_meta row still exists, so a torrent job whose files
+// were later removed from the library independently (e.g. via the file
+// library's own delete) shows that on read instead of silently pretending
+// they're still there.
+func (s *TorrentService) markDeletedImportedFiles(ctx context.Context, row domain.TorrentDownload) (domain.TorrentDownload, error) {
+	importedFiles := domain.DecodeTorrentImportedFiles(row.ImportedFiles)
+
+	ids := make([]int64, 0, len(importedFiles))
+	for _, importedFile := range importedFiles {
+		if importedFile.Status != domain.TorrentImportedFileStatusOk || importedFile.FileId == 0 {
+			continue
+		}
+		ids = append(ids, importedFile.FileId)
+	}
+
+	if len(ids) == 0 {
+		return row, nil
+	}
+
+	existing, err := s.fileMeta.ExistingIds(ctx, ids)
+	if err != nil {
+		return domain.TorrentDownload{}, rerrors.Wrap(err, "error checking existing file ids")
+	}
+
+	for i, importedFile := range importedFiles {
+		if importedFile.Status != domain.TorrentImportedFileStatusOk || importedFile.FileId == 0 {
+			continue
+		}
+		importedFiles[i].FileDeleted = !existing[importedFile.FileId]
+	}
+
+	encoded, err := domain.EncodeTorrentImportedFiles(importedFiles)
+	if err != nil {
+		return domain.TorrentDownload{}, rerrors.Wrap(err, "error encoding imported files")
+	}
+
+	row.ImportedFiles = encoded
+
+	return row, nil
 }
 
 // ImportCompleted runs the import of a finished torrent. It exists purely so
@@ -580,13 +639,14 @@ func (s *TorrentService) importOneFile(
 		MaxTotalUploadBytes: permissions.MaxTotalUploadBytes,
 	}
 
-	fileId, err := pipeline.store(ctx, uploadReq)
+	fileId, filePath, err := pipeline.store(ctx, uploadReq)
 	if err != nil {
 		entry.Error = err.Error()
 		return entry
 	}
 
 	entry.FileId = fileId
+	entry.FilePath = filePath
 	entry.Status = domain.TorrentImportedFileStatusOk
 	entry.Error = ""
 

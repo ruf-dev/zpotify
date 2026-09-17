@@ -209,6 +209,20 @@ func (f *fakeFileMetaStorage) Delete(_ context.Context, fileId int64) error {
 	return nil
 }
 
+func (f *fakeFileMetaStorage) ExistingIds(_ context.Context, ids []int64) (map[int64]bool, error) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+
+	existing := make(map[int64]bool, len(ids))
+	for _, id := range ids {
+		if _, ok := f.byId[id]; ok {
+			existing[id] = true
+		}
+	}
+
+	return existing, nil
+}
+
 func encodeTestJPEG(t *testing.T, c color.RGBA) []byte {
 	t.Helper()
 
@@ -226,7 +240,15 @@ func encodeTestJPEG(t *testing.T, c color.RGBA) []byte {
 	return buf.Bytes()
 }
 
-const testFolderName = "My Album"
+const (
+	testFolderName   = "My Album"
+	testArtistUuid   = "artist-uuid"
+	testArtistName   = "Some Artist"
+	testAlbumUuid    = "album-uuid"
+	testAlbumName    = "Some Album"
+	testPlaylistUuid = "playlist-uuid"
+	testSearchQuery  = "some"
+)
 
 func uploadPermissions() domain.UserPermissions {
 	return domain.UserPermissions{

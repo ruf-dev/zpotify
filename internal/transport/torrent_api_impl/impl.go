@@ -56,6 +56,8 @@ func toTorrentJob(row domain.TorrentDownload) *zpotify_api.TorrentJob {
 			FileId:      file.FileId,
 			Status:      file.Status,
 			Error:       file.Error,
+			FilePath:    file.FilePath,
+			FileDeleted: file.FileDeleted,
 		}
 		apiFiles = append(apiFiles, apiFile)
 	}

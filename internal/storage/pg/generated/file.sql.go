@@ -7,6 +7,8 @@ package querier
 
 import (
 	"context"
+
+	"github.com/lib/pq"
 )
 
 const createFile = `-- name: CreateFile :one
@@ -174,6 +176,33 @@ func (q *Queries) GetTotalFileSizeByUser(ctx context.Context, addedByID int64) (
 	var total_size int64
 	err := row.Scan(&total_size)
 	return total_size, err
+}
+
+const listExistingFileIds = `-- name: ListExistingFileIds :many
+SELECT id FROM files_meta WHERE id = ANY ($1::bigint[])
+`
+
+func (q *Queries) ListExistingFileIds(ctx context.Context, ids []int64) ([]int64, error) {
+	rows, err := q.db.QueryContext(ctx, listExistingFileIds, pq.Array(ids))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []int64{}
+	for rows.Next() {
+		var id int64
+		if err := rows.Scan(&id); err != nil {
+			return nil, err
+		}
+		items = append(items, id)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const updateFile = `-- name: UpdateFile :exec

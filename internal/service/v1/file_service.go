@@ -241,7 +241,7 @@ func (s *FileService) SaveFile(ctx context.Context, fileNameWithExt string, fold
 
 	pipeline := s.newUploadPipeline()
 
-	id, err := pipeline.store(ctx, uploadReq)
+	id, _, err := pipeline.store(ctx, uploadReq)
 	if err != nil {
 		return 0, rerrors.Wrap(err)
 	}

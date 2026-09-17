@@ -64,3 +64,6 @@ WHERE id = $1;
 SELECT COALESCE(SUM(size_bytes), 0)::BIGINT AS total_size
 FROM files_meta
 WHERE added_by_id = $1;
+
+-- name: ListExistingFileIds :many
+SELECT id FROM files_meta WHERE id = ANY (@ids::bigint[]);

@@ -49,9 +49,10 @@ type uploadRequest struct {
 }
 
 // store streams req.Content into the user's storage and returns the resulting
-// files_meta id. When the content hash matches a file the user already has,
-// the staged copy is discarded and the existing id is returned instead.
-func (p uploadPipeline) store(ctx context.Context, req uploadRequest) (int64, error) {
+// files_meta id and its stored path. When the content hash matches a file the
+// user already has, the staged copy is discarded and the existing id/path
+// are returned instead.
+func (p uploadPipeline) store(ctx context.Context, req uploadRequest) (int64, string, error) {
 	// The incoming content is written under a private, guaranteed-unique
 	// staging name first - never directly under FileNameWithExt. The
 	// content hash (needed to decide the real final path/dedup) can only be
@@ -60,7 +61,7 @@ func (p uploadPipeline) store(ctx context.Context, req uploadRequest) (int64, er
 	// file that already lives there.
 	stagingFileName, err := newStagingFileName(path.Ext(req.FileNameWithExt))
 	if err != nil {
-		return 0, rerrors.Wrap(err, "error generating staging file name")
+		return 0, "", rerrors.Wrap(err, "error generating staging file name")
 	}
 	stagingRelPath := path.Join(req.FolderRelDir, stagingFileName)
 
@@ -69,12 +70,12 @@ func (p uploadPipeline) store(ctx context.Context, req uploadRequest) (int64, er
 	limitedContent := io.LimitReader(req.Content, req.MaxSongSizeBytes+1)
 	tmpFilePath, err := p.binaryStorage.SaveToTempFolder(ctx, req.UserId, stagingRelPath, io.TeeReader(limitedContent, io.MultiWriter(hashWriter, sizeCounter)))
 	if err != nil {
-		return 0, rerrors.Wrap(err, "error storing to temporary folder")
+		return 0, "", rerrors.Wrap(err, "error storing to temporary folder")
 	}
 
 	if sizeCounter.n > req.MaxSongSizeBytes {
 		_ = p.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-		return 0, service_errors.ErrSongSizeLimitExceeded
+		return 0, "", service_errors.ErrSongSizeLimitExceeded
 	}
 
 	isCoverImage := isCoverImageUpload(req.FileNameWithExt)
@@ -83,7 +84,7 @@ func (p uploadPipeline) store(ctx context.Context, req uploadRequest) (int64, er
 		rc, getErr := p.binaryStorage.GetFile(ctx, tmpFilePath)
 		if getErr != nil {
 			_ = p.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-			return 0, rerrors.Wrap(getErr, "error opening uploaded cover image for verification")
+			return 0, "", rerrors.Wrap(getErr, "error opening uploaded cover image for verification")
 		}
 
 		ext := strings.ToLower(path.Ext(req.FileNameWithExt))
@@ -91,7 +92,7 @@ func (p uploadPipeline) store(ctx context.Context, req uploadRequest) (int64, er
 		utils.CloseWithLog(rc, tmpFilePath)
 		if verifyErr != nil {
 			_ = p.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-			return 0, rerrors.Wrap(verifyErr)
+			return 0, "", rerrors.Wrap(verifyErr)
 		}
 
 		verified = true
@@ -102,11 +103,11 @@ func (p uploadPipeline) store(ctx context.Context, req uploadRequest) (int64, er
 	existingFile, err := p.fileMeta.GetByHash(ctx, contentHash, req.UserId)
 	if err != nil && !errors.Is(err, storage.ErrNotFound) {
 		_ = p.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-		return 0, rerrors.Wrap(err, "error checking for duplicate file")
+		return 0, "", rerrors.Wrap(err, "error checking for duplicate file")
 	}
 	if err == nil {
 		_ = p.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-		return existingFile.Id, nil
+		return existingFile.Id, existingFile.FilePath, nil
 	}
 
 	// Move the staged file to its real, plain-named target path now that the
@@ -118,23 +119,23 @@ func (p uploadPipeline) store(ctx context.Context, req uploadRequest) (int64, er
 	targetPath, err := p.resolveTargetPath(ctx, targetDir, req.FileNameWithExt, contentHash)
 	if err != nil {
 		_ = p.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-		return 0, rerrors.Wrap(err, "error resolving final file path")
+		return 0, "", rerrors.Wrap(err, "error resolving final file path")
 	}
 	err = p.binaryStorage.Move(ctx, tmpFilePath, targetPath)
 	if err != nil {
 		_ = p.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-		return 0, rerrors.Wrap(err, "error moving file to final path")
+		return 0, "", rerrors.Wrap(err, "error moving file to final path")
 	}
 	tmpFilePath = targetPath
 
 	totalSize, err := p.fileMeta.GetTotalSizeByUser(ctx, req.UserId)
 	if err != nil {
 		_ = p.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-		return 0, rerrors.Wrap(err, "error getting total uploaded size for limit check")
+		return 0, "", rerrors.Wrap(err, "error getting total uploaded size for limit check")
 	}
 	if totalSize+sizeCounter.n > req.MaxTotalUploadBytes {
 		_ = p.binaryStorage.DeleteTempFile(ctx, tmpFilePath)
-		return 0, service_errors.ErrTotalUploadSizeLimitExceeded
+		return 0, "", service_errors.ErrTotalUploadSizeLimitExceeded
 	}
 
 	fileMetaUpdate := domain.FileMeta{
@@ -149,7 +150,7 @@ func (p uploadPipeline) store(ctx context.Context, req uploadRequest) (int64, er
 
 	id, err := p.fileMeta.Add(ctx, fileMetaUpdate)
 	if err != nil {
-		return 0, rerrors.Wrap(err, "error saving file meta")
+		return 0, "", rerrors.Wrap(err, "error saving file meta")
 	}
 
 	if !isCoverImage {
@@ -159,7 +160,7 @@ func (p uploadPipeline) store(ctx context.Context, req uploadRequest) (int64, er
 		}
 	}
 
-	return id, nil
+	return id, tmpFilePath, nil
 }
 
 // minDisambiguationHashChars is the shortest content-hash prefix used to

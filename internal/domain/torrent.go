@@ -70,6 +70,17 @@ type TorrentImportedFile struct {
 	FileId      int64  `json:"file_id,omitempty"`
 	Status      string `json:"status"`
 	Error       string `json:"error,omitempty"`
+	// FilePath is the file's actual location in the user's storage (as
+	// stored on files_meta), not the torrent-internal path above - it is
+	// what the frontend must join with the webserver base to fetch the
+	// file, e.g. to preview an imported cover image.
+	FilePath string `json:"file_path,omitempty"`
+	// FileDeleted is computed at read time, not written by the import
+	// pipeline - it reflects whether FileId's files_meta row still exists,
+	// so a file removed independently of the torrent job (e.g. deleted
+	// straight from the library) shows that on read instead of silently
+	// pretending it's still there.
+	FileDeleted bool `json:"file_deleted,omitempty"`
 }
 
 // EncodeTorrentImportedFiles renders each entry as a compact JSON object

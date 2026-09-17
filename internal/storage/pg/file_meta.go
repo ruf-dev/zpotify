@@ -47,7 +47,7 @@ func (s *FileMetaStorage) Add(ctx context.Context, req domain.FileMeta) (int64, 
 func (s *FileMetaStorage) Get(ctx context.Context, fileId int64) (file domain.FileMeta, err error) {
 	fileDb, err := s.q.GetFileById(ctx, fileId)
 	if err != nil {
-		return domain.FileMeta{}, err
+		return domain.FileMeta{}, wrapPgErr(err)
 	}
 
 	return toFileDomain(fileDb), nil
@@ -189,6 +189,24 @@ func (s *FileMetaStorage) GetTotalSizeByUser(ctx context.Context, userId int64) 
 	}
 
 	return total, nil
+}
+
+func (s *FileMetaStorage) ExistingIds(ctx context.Context, ids []int64) (map[int64]bool, error) {
+	if len(ids) == 0 {
+		return map[int64]bool{}, nil
+	}
+
+	existingIds, err := s.q.ListExistingFileIds(ctx, ids)
+	if err != nil {
+		return nil, wrapPgErr(err)
+	}
+
+	existing := make(map[int64]bool, len(existingIds))
+	for _, id := range existingIds {
+		existing[id] = true
+	}
+
+	return existing, nil
 }
 
 func (s *FileMetaStorage) WithTx(tx *sql.Tx) storage.FileMetaStorage {

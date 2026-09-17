@@ -44,6 +44,7 @@ type Querier interface {
 	InsertAlbumTag(ctx context.Context, arg InsertAlbumTagParams) error
 	InsertHomeSegment(ctx context.Context, arg InsertHomeSegmentParams) error
 	InsertUser(ctx context.Context, arg InsertUserParams) (int64, error)
+	ListExistingFileIds(ctx context.Context, ids []int64) ([]int64, error)
 	ListSessionsByUserId(ctx context.Context, userID int64) ([]UserSession, error)
 	ListUserPermissionsByUserId(ctx context.Context, userID int64) (UserPermission, error)
 	RemoveSongFromPlaylist(ctx context.Context, arg RemoveSongFromPlaylistParams) error

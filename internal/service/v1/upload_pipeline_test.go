@@ -111,11 +111,11 @@ func TestUploadPipeline_Store_PlainNamesKeptWhenNoCollision(t *testing.T) {
 	ctx := context.Background()
 
 	req1 := testUploadRequest("track1.mp3", "", []byte("first-track-content"))
-	id1, err := pipeline.store(ctx, req1)
+	id1, _, err := pipeline.store(ctx, req1)
 	require.NoError(t, err)
 
 	req2 := testUploadRequest("track2.mp3", "", []byte("second-track-content"))
-	id2, err := pipeline.store(ctx, req2)
+	id2, _, err := pipeline.store(ctx, req2)
 	require.NoError(t, err)
 
 	meta1, err := fileMetaStorage.Get(ctx, id1)
@@ -139,11 +139,11 @@ func TestUploadPipeline_Store_SameNameDifferentContentGetsHashSuffix(t *testing.
 	secondContent := []byte("green-track-content")
 
 	req1 := testUploadRequest("track.mp3", "", firstContent)
-	id1, err := pipeline.store(ctx, req1)
+	id1, _, err := pipeline.store(ctx, req1)
 	require.NoError(t, err)
 
 	req2 := testUploadRequest("track.mp3", "", secondContent)
-	id2, err := pipeline.store(ctx, req2)
+	id2, _, err := pipeline.store(ctx, req2)
 	require.NoError(t, err)
 
 	assert.NotEqual(t, id1, id2)
@@ -170,11 +170,11 @@ func TestUploadPipeline_Store_IdenticalContentIsDeduplicated(t *testing.T) {
 	content := []byte("identical-track-content")
 
 	req1 := testUploadRequest("track.mp3", "", content)
-	id1, err := pipeline.store(ctx, req1)
+	id1, _, err := pipeline.store(ctx, req1)
 	require.NoError(t, err)
 
 	req2 := testUploadRequest("other-name.mp3", "", content)
-	id2, err := pipeline.store(ctx, req2)
+	id2, _, err := pipeline.store(ctx, req2)
 	require.NoError(t, err)
 
 	assert.Equal(t, id1, id2)
@@ -190,7 +190,7 @@ func TestUploadPipeline_Store_FolderRelDirIsIncludedInStoredPath(t *testing.T) {
 	ctx := context.Background()
 
 	req := testUploadRequest("track.mp3", testFolderName, []byte("foldered-track-content"))
-	id, err := pipeline.store(ctx, req)
+	id, _, err := pipeline.store(ctx, req)
 	require.NoError(t, err)
 
 	meta, err := fileMetaStorage.Get(ctx, id)
@@ -207,7 +207,7 @@ func TestUploadPipeline_Store_AudioEnqueuesParseJob(t *testing.T) {
 	ctx := context.Background()
 
 	req := testUploadRequest("track.mp3", "", []byte("parsable-track-content"))
-	id, err := pipeline.store(ctx, req)
+	id, _, err := pipeline.store(ctx, req)
 	require.NoError(t, err)
 
 	require.Len(t, jobStorage.audioParseFileId, 1)
@@ -225,7 +225,7 @@ func TestUploadPipeline_Store_OversizedContentIsRejected(t *testing.T) {
 	req := testUploadRequest("track.mp3", "", []byte("way-too-large-for-the-cap"))
 	req.MaxSongSizeBytes = 4
 
-	id, err := pipeline.store(ctx, req)
+	id, _, err := pipeline.store(ctx, req)
 	require.Error(t, err)
 	assert.Zero(t, id)
 	assert.Empty(t, binaryStorage.files, "an oversized upload must not leave a staged file behind")

@@ -24,6 +24,13 @@ import (
 	"go.zpotify.ru/zpotify/internal/user_errors"
 )
 
+const (
+	testSomeoneElsesTorrentName = "someone-elses"
+	testMineTorrentName         = "mine"
+	testAlbum1TorrentName       = "album1.torrent"
+	testAlbum2TorrentName       = "album2.torrent"
+)
+
 // fakeTorrentDownloadStorage is an in-memory test double for
 // storage.TorrentDownloadStorage.
 type fakeTorrentDownloadStorage struct {
@@ -627,7 +634,7 @@ func TestTorrentService_GetJob_IsScopedToCaller(t *testing.T) {
 
 	ctx := contextWithPermissions(1, uploadPermissions())
 
-	othersRow := domain.TorrentDownload{UserId: 2, TorrentName: "someone-elses"}
+	othersRow := domain.TorrentDownload{UserId: 2, TorrentName: testSomeoneElsesTorrentName}
 	added, err := torrentStorage.Add(ctx, othersRow)
 	require.NoError(t, err)
 
@@ -642,7 +649,7 @@ func TestTorrentService_ListJobs_ReturnsOnlyCallersJobs(t *testing.T) {
 
 	ctx := contextWithPermissions(1, uploadPermissions())
 
-	mine := domain.TorrentDownload{UserId: 1, TorrentName: "mine", FolderName: testFolderName}
+	mine := domain.TorrentDownload{UserId: 1, TorrentName: testMineTorrentName, FolderName: testFolderName}
 	_, err := torrentStorage.Add(ctx, mine)
 	require.NoError(t, err)
 
@@ -654,7 +661,7 @@ func TestTorrentService_ListJobs_ReturnsOnlyCallersJobs(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Len(t, rows, 1)
-	assert.Equal(t, "mine", rows[0].TorrentName)
+	assert.Equal(t, testMineTorrentName, rows[0].TorrentName)
 }
 
 func TestTorrentService_PauseJob_RequiresAuthentication(t *testing.T) {
@@ -672,7 +679,7 @@ func TestTorrentService_PauseJob_IsScopedToCaller(t *testing.T) {
 
 	ctx := contextWithPermissions(1, uploadPermissions())
 
-	othersRow := domain.TorrentDownload{UserId: 2, TorrentName: "someone-elses", Status: domain.TorrentDownloadStatusDownloading}
+	othersRow := domain.TorrentDownload{UserId: 2, TorrentName: testSomeoneElsesTorrentName, Status: domain.TorrentDownloadStatusDownloading}
 	added, err := torrentStorage.Add(ctx, othersRow)
 	require.NoError(t, err)
 
@@ -689,7 +696,7 @@ func TestTorrentService_PauseJob_MarksJobPaused(t *testing.T) {
 
 	ctx := contextWithPermissions(1, uploadPermissions())
 
-	row := domain.TorrentDownload{UserId: 1, TorrentName: "mine", Status: domain.TorrentDownloadStatusDownloading}
+	row := domain.TorrentDownload{UserId: 1, TorrentName: testMineTorrentName, Status: domain.TorrentDownloadStatusDownloading}
 	added, err := torrentStorage.Add(ctx, row)
 	require.NoError(t, err)
 
@@ -716,7 +723,7 @@ func TestTorrentService_ResumeJob_IsScopedToCaller(t *testing.T) {
 
 	ctx := contextWithPermissions(1, uploadPermissions())
 
-	othersRow := domain.TorrentDownload{UserId: 2, TorrentName: "someone-elses", Status: domain.TorrentDownloadStatusPaused}
+	othersRow := domain.TorrentDownload{UserId: 2, TorrentName: testSomeoneElsesTorrentName, Status: domain.TorrentDownloadStatusPaused}
 	added, err := torrentStorage.Add(ctx, othersRow)
 	require.NoError(t, err)
 
@@ -732,7 +739,7 @@ func TestTorrentService_ResumeJob_MarksJobDownloading(t *testing.T) {
 
 	ctx := contextWithPermissions(1, uploadPermissions())
 
-	row := domain.TorrentDownload{UserId: 1, TorrentName: "mine", Status: domain.TorrentDownloadStatusPaused}
+	row := domain.TorrentDownload{UserId: 1, TorrentName: testMineTorrentName, Status: domain.TorrentDownloadStatusPaused}
 	added, err := torrentStorage.Add(ctx, row)
 	require.NoError(t, err)
 
@@ -759,7 +766,7 @@ func TestTorrentService_DeleteJob_IsScopedToCaller(t *testing.T) {
 
 	ctx := contextWithPermissions(1, uploadPermissions())
 
-	othersRow := domain.TorrentDownload{UserId: 2, TorrentName: "someone-elses"}
+	othersRow := domain.TorrentDownload{UserId: 2, TorrentName: testSomeoneElsesTorrentName}
 	added, err := torrentStorage.Add(ctx, othersRow)
 	require.NoError(t, err)
 
@@ -778,7 +785,7 @@ func TestTorrentService_DeleteJob_RemovesRow(t *testing.T) {
 
 	ctx := contextWithPermissions(1, uploadPermissions())
 
-	row := domain.TorrentDownload{UserId: 1, TorrentName: "mine", Status: domain.TorrentDownloadStatusDownloading}
+	row := domain.TorrentDownload{UserId: 1, TorrentName: testMineTorrentName, Status: domain.TorrentDownloadStatusDownloading}
 	added, err := torrentStorage.Add(ctx, row)
 	require.NoError(t, err)
 
@@ -817,7 +824,7 @@ func TestTorrentService_DeleteJob_SchedulesImportedFilesForDeletion(t *testing.T
 
 	row := domain.TorrentDownload{
 		UserId:        1,
-		TorrentName:   "mine",
+		TorrentName:   testMineTorrentName,
 		Status:        domain.TorrentDownloadStatusDone,
 		ImportedFiles: encodedFiles,
 	}
@@ -832,6 +839,102 @@ func TestTorrentService_DeleteJob_SchedulesImportedFilesForDeletion(t *testing.T
 
 	require.Len(t, jobs.garbagePaths, 1)
 	assert.Equal(t, "tmp/1/album/track.mp3", jobs.garbagePaths[0])
+}
+
+// TestTorrentService_DeleteJob_SucceedsWhenAnImportedFileWasAlreadyDeleted
+// reproduces the 500: an imported file whose files_meta row was already
+// removed elsewhere (e.g. the user deleted the song from their library
+// directly) must not fail the whole delete - it's skipped, while imported
+// files that still exist are still deleted and enqueued for cleanup.
+func TestTorrentService_DeleteJob_SucceedsWhenAnImportedFileWasAlreadyDeleted(t *testing.T) {
+	svc, torrentStorage := newQuotaTestService(0, 3)
+
+	fileMeta := newFakeFileMetaStorage()
+	jobs := newFakeJobStorage()
+	svc.fileMeta = fileMeta
+	svc.jobs = jobs
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	fileMetaToAdd := domain.FileMeta{File: domain.File{FilePath: "tmp/1/album/still-there.mp3"}, AddedById: 1}
+	survivingFileId, err := fileMeta.Add(ctx, fileMetaToAdd)
+	require.NoError(t, err)
+
+	const deletedFileId = int64(9999)
+
+	importedFiles := []domain.TorrentImportedFile{
+		{TorrentPath: "gone.mp3", FileId: deletedFileId, Status: domain.TorrentImportedFileStatusOk},
+		{TorrentPath: "still-there.mp3", FileId: survivingFileId, Status: domain.TorrentImportedFileStatusOk},
+	}
+	encodedFiles, err := domain.EncodeTorrentImportedFiles(importedFiles)
+	require.NoError(t, err)
+
+	row := domain.TorrentDownload{
+		UserId:        1,
+		TorrentName:   testMineTorrentName,
+		Status:        domain.TorrentDownloadStatusDone,
+		ImportedFiles: encodedFiles,
+	}
+	added, err := torrentStorage.Add(ctx, row)
+	require.NoError(t, err)
+
+	err = svc.DeleteJob(ctx, added.Id)
+	require.NoError(t, err, "a stale imported-file reference must not fail the whole delete")
+
+	_, err = fileMeta.Get(ctx, survivingFileId)
+	require.Error(t, err, "the surviving imported file's meta row should still have been deleted")
+
+	require.Len(t, jobs.garbagePaths, 1)
+	assert.Equal(t, "tmp/1/album/still-there.mp3", jobs.garbagePaths[0])
+}
+
+// TestTorrentService_GetJob_MarksFileDeletedForStaleImportedFiles proves
+// GetJob annotates each imported file with whether its files_meta row still
+// exists, so a file removed from the library independently of the torrent
+// job (e.g. deleted straight from the library) shows that on read.
+func TestTorrentService_GetJob_MarksFileDeletedForStaleImportedFiles(t *testing.T) {
+	svc, torrentStorage := newQuotaTestService(0, 3)
+
+	fileMeta := newFakeFileMetaStorage()
+	svc.fileMeta = fileMeta
+
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	fileMetaToAdd := domain.FileMeta{File: domain.File{FilePath: "tmp/1/album/still-there.mp3"}, AddedById: 1}
+	survivingFileId, err := fileMeta.Add(ctx, fileMetaToAdd)
+	require.NoError(t, err)
+
+	const deletedFileId = int64(9999)
+
+	importedFiles := []domain.TorrentImportedFile{
+		{TorrentPath: "gone.mp3", FileId: deletedFileId, Status: domain.TorrentImportedFileStatusOk},
+		{TorrentPath: "still-there.mp3", FileId: survivingFileId, Status: domain.TorrentImportedFileStatusOk},
+	}
+	encodedFiles, err := domain.EncodeTorrentImportedFiles(importedFiles)
+	require.NoError(t, err)
+
+	row := domain.TorrentDownload{
+		UserId:        1,
+		TorrentName:   testMineTorrentName,
+		Status:        domain.TorrentDownloadStatusDone,
+		ImportedFiles: encodedFiles,
+	}
+	added, err := torrentStorage.Add(ctx, row)
+	require.NoError(t, err)
+
+	got, err := svc.GetJob(ctx, added.Id)
+	require.NoError(t, err)
+
+	decoded := domain.DecodeTorrentImportedFiles(got.ImportedFiles)
+	require.Len(t, decoded, 2)
+
+	byPath := make(map[string]domain.TorrentImportedFile, len(decoded))
+	for _, file := range decoded {
+		byPath[file.TorrentPath] = file
+	}
+
+	assert.True(t, byPath["gone.mp3"].FileDeleted, "a file whose files_meta row is gone must be marked deleted")
+	assert.False(t, byPath["still-there.mp3"].FileDeleted, "a file whose files_meta row still exists must not be marked deleted")
 }
 
 // TestTorrentScratchPath_RejectsEscapingNames proves an attacker-controlled
@@ -850,10 +953,10 @@ func TestTorrentScratchPath_RejectsEscapingNames(t *testing.T) {
 func TestTorrentScratchPath_ResolvesInsideDownloadDir(t *testing.T) {
 	downloadDir := t.TempDir()
 
-	got, err := torrentScratchPath(downloadDir, "Some Album")
+	got, err := torrentScratchPath(downloadDir, testAlbumName)
 	require.NoError(t, err)
 
-	assert.Equal(t, filepath.Join(downloadDir, "Some Album"), got)
+	assert.Equal(t, filepath.Join(downloadDir, testAlbumName), got)
 }
 
 // TestResolveTorrentFilePath_RejectsEscapingPaths proves a malicious
@@ -961,7 +1064,7 @@ func TestTorrentService_WatchJobs_SendsCurrentJobs(t *testing.T) {
 	job1 := domain.TorrentDownload{
 		UserId:      userID,
 		InfoHash:    "abc123",
-		TorrentName: "album1.torrent",
+		TorrentName: testAlbum1TorrentName,
 		Status:      domain.TorrentDownloadStatusDownloading,
 	}
 
@@ -971,7 +1074,7 @@ func TestTorrentService_WatchJobs_SendsCurrentJobs(t *testing.T) {
 	job2 := domain.TorrentDownload{
 		UserId:      userID,
 		InfoHash:    "def456",
-		TorrentName: "album2.torrent",
+		TorrentName: testAlbum2TorrentName,
 		Status:      domain.TorrentDownloadStatusQueued,
 	}
 
@@ -998,12 +1101,13 @@ func TestTorrentService_WatchJobs_SendsCurrentJobs(t *testing.T) {
 	timeout := time.NewTimer(100 * time.Millisecond)
 	defer timeout.Stop()
 
+collectLoop:
 	for len(received) < 2 {
 		select {
 		case job := <-jobCh:
 			received = append(received, job)
 		case <-timeout.C:
-			break
+			break collectLoop
 		}
 	}
 
@@ -1023,20 +1127,22 @@ func TestTorrentService_WatchJobs_FiltersFolder(t *testing.T) {
 	job1 := domain.TorrentDownload{
 		UserId:      userID,
 		FolderName:  "folder1",
-		TorrentName: "album1.torrent",
+		TorrentName: testAlbum1TorrentName,
 		Status:      domain.TorrentDownloadStatusDownloading,
 	}
 
-	torrentStorage.Add(context.Background(), job1)
+	_, err := torrentStorage.Add(context.Background(), job1)
+	require.NoError(t, err)
 
 	job2 := domain.TorrentDownload{
 		UserId:      userID,
 		FolderName:  "folder2",
-		TorrentName: "album2.torrent",
+		TorrentName: testAlbum2TorrentName,
 		Status:      domain.TorrentDownloadStatusQueued,
 	}
 
-	torrentStorage.Add(context.Background(), job2)
+	_, err = torrentStorage.Add(context.Background(), job2)
+	require.NoError(t, err)
 
 	broadcaster := newFakeBroadcaster()
 
@@ -1058,6 +1164,7 @@ func TestTorrentService_WatchJobs_FiltersFolder(t *testing.T) {
 	timeout := time.NewTimer(100 * time.Millisecond)
 	defer timeout.Stop()
 
+collectLoop:
 	for {
 		select {
 		case job := <-jobCh:
@@ -1065,9 +1172,12 @@ func TestTorrentService_WatchJobs_FiltersFolder(t *testing.T) {
 		case <-timeout.C:
 			cancel()
 			<-jobCh
-			return
+			break collectLoop
 		}
 	}
+
+	require.Len(t, received, 1)
+	assert.Equal(t, "folder1", received[0].FolderName)
 }
 
 // TestTorrentService_WatchJobs_UserIsolation verifies that a user only receives
@@ -1079,19 +1189,21 @@ func TestTorrentService_WatchJobs_UserIsolation(t *testing.T) {
 
 	job1 := domain.TorrentDownload{
 		UserId:      user1,
-		TorrentName: "album1.torrent",
+		TorrentName: testAlbum1TorrentName,
 		Status:      domain.TorrentDownloadStatusDownloading,
 	}
 
-	torrentStorage.Add(context.Background(), job1)
+	_, err := torrentStorage.Add(context.Background(), job1)
+	require.NoError(t, err)
 
 	job2 := domain.TorrentDownload{
 		UserId:      user2,
-		TorrentName: "album2.torrent",
+		TorrentName: testAlbum2TorrentName,
 		Status:      domain.TorrentDownloadStatusDownloading,
 	}
 
-	torrentStorage.Add(context.Background(), job2)
+	_, err = torrentStorage.Add(context.Background(), job2)
+	require.NoError(t, err)
 
 	broadcaster := newFakeBroadcaster()
 
@@ -1113,6 +1225,7 @@ func TestTorrentService_WatchJobs_UserIsolation(t *testing.T) {
 	timeout := time.NewTimer(100 * time.Millisecond)
 	defer timeout.Stop()
 
+collectLoop:
 	for {
 		select {
 		case job := <-jobCh:
@@ -1121,7 +1234,9 @@ func TestTorrentService_WatchJobs_UserIsolation(t *testing.T) {
 		case <-timeout.C:
 			cancel()
 			<-jobCh
-			return
+			break collectLoop
 		}
 	}
+
+	require.Len(t, received, 1)
 }
