@@ -53,7 +53,7 @@ describe('TorrentManageDialog', () => {
 
     it('renders the job name, status, bytes and imported files', async () => {
         const job = makeJob({
-            importedFiles: [{ torrentPath: 'a.mp3', fileId: 'f1', status: 'imported' }],
+            importedFiles: [{ torrentPath: 'a.mp3', fileId: 'f1', status: 'ok' }],
         });
         getTorrentJobMock.mockResolvedValue({ job });
 
@@ -62,7 +62,6 @@ describe('TorrentManageDialog', () => {
         expect(screen.getByText('ubuntu.torrent')).not.toBeNull();
         expect(screen.getByText('downloading')).not.toBeNull();
         expect(screen.getByText('a.mp3')).not.toBeNull();
-        expect(screen.getByText('imported')).not.toBeNull();
 
         await waitFor(() => expect(getTorrentJobMock).toHaveBeenCalledWith({ jobId: 'job1' }));
     });

@@ -1,0 +1,4 @@
+.TorrentFileStatusListContainer {
+    display: flex;
+    flex-direction: column;
+}

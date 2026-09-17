@@ -7,7 +7,6 @@ import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { songsService } from '@/shared/api/Songs.ts';
 import { fileService } from '@/shared/api/FileService.ts';
 import type { FileHashResult } from '@/shared/api/FileService.ts';
-import { isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import type { SongBase, SongFile } from '@/app/api/zpotify';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
@@ -15,6 +14,7 @@ import { cleanTitle, cleanTrackNumber, computeHash } from '@/dialogs/MultitrackU
 import type { UploadQueue } from '@/dialogs/MultitrackUpload/useUploadQueue';
 import { useUploadQueue } from '@/dialogs/MultitrackUpload/useUploadQueue';
 import type { DroppedFolder } from '@/features/upload/resolveDroppedEntries.ts';
+import { isImageFile, isImagePath } from '@/features/upload/imageFile.ts';
 import { parseSongFilePath } from '@/dialogs/AddTrack/screens/parseSongFilePath.ts';
 
 export interface TrackDraftsState {
@@ -60,6 +60,30 @@ export function flattenDroppedInput(files: File[], folders: DroppedFolder[]): Ta
     const folderTagged: TaggedFile[] = folders.flatMap((f) => f.files.map((file) => ({ file, folderName: f.name })));
     const looseTagged: TaggedFile[] = files.map((file) => ({ file, folderName: undefined }));
     return folderTagged.concat(looseTagged);
+}
+
+interface FilePartition {
+    audio: TaggedFile[];
+    images: File[];
+}
+
+function partitionTaggedFiles(tagged: TaggedFile[]): FilePartition {
+    const audio: TaggedFile[] = [];
+    const images: File[] = [];
+    tagged.forEach((t) => (isImageFile(t.file) ? images.push(t.file) : audio.push(t)));
+    return { audio, images };
+}
+
+interface ExistingFilePartition {
+    audio: SongFile[];
+    images: SongFile[];
+}
+
+function partitionExistingFiles(existingFiles: SongFile[]): ExistingFilePartition {
+    const audio: SongFile[] = [];
+    const images: SongFile[] = [];
+    existingFiles.forEach((f) => (isImagePath(f.path ?? '') ? images.push(f) : audio.push(f)));
+    return { audio, images };
 }
 
 export function createInitialTracks(taggedFiles: TaggedFile[]): TrackDraft[] {
@@ -166,23 +190,13 @@ async function classifyIncomingFiles(
     knownHashes: Map<string, string>,
     toaster: Toaster,
 ): Promise<ClassifiedFile[]> {
-    const newFiles = incomingFiles.filter(isSupportedAudioFile);
-    const unsupported = incomingFiles.filter((f) => !isSupportedAudioFile(f));
-    if (unsupported.length > 0) {
-        toaster.bake({
-            title: 'unsupported format',
-            description: `only mp3, flac and aac are supported: ${unsupported.map((f) => f.name).join(', ')}`,
-            level: 'Warn',
-            isDismissable: true,
-        });
-    }
-    if (newFiles.length === 0) return [];
+    if (incomingFiles.length === 0) return [];
 
-    const hashes = await Promise.all(newFiles.map(computeHash));
+    const hashes = await Promise.all(incomingFiles.map(computeHash));
 
     const fresh: ClassifiedFile[] = [];
     const dupeNames: string[] = [];
-    newFiles.forEach(function classifyFile(file, i) {
+    incomingFiles.forEach(function classifyFile(file, i) {
         if (knownHashes.has(hashes[i])) {
             dupeNames.push(file.name);
         } else {
@@ -270,12 +284,23 @@ export function useTrackDrafts(
     files: File[],
     folders: DroppedFolder[] = [],
     existingFiles: SongFile[] = [],
+    onImageFile?: (file: File) => void,
+    onExistingImageFile?: (file: SongFile) => void,
 ): TrackDraftsState {
     const toaster = useToaster();
+    const onImageFileRef = useRef(onImageFile);
+    onImageFileRef.current = onImageFile;
+    const onExistingImageFileRef = useRef(onExistingImageFile);
+    onExistingImageFileRef.current = onExistingImageFile;
 
     // Blob-backed tracks (need hashing/upload), kept apart from fileId-only existingFiles tracks.
-    const blobBackedInitialRef = useRef<TrackDraft[]>(createInitialTracks(flattenDroppedInput(files, folders)));
-    const existingFilesInitialRef = useRef<TrackDraft[]>(createTracksFromExistingFiles(existingFiles));
+    // Image files (cover art) are pulled out of both sources here rather than becoming bogus tracks.
+    const initialPartitionRef = useRef(partitionTaggedFiles(flattenDroppedInput(files, folders)));
+    const blobBackedInitialRef = useRef<TrackDraft[]>(createInitialTracks(initialPartitionRef.current.audio));
+    const existingPartitionRef = useRef(partitionExistingFiles(existingFiles));
+    const existingFilesInitialRef = useRef<TrackDraft[]>(
+        createTracksFromExistingFiles(existingPartitionRef.current.audio),
+    );
     const [tracks, setTracks] = useState<TrackDraft[]>(() => [
         ...blobBackedInitialRef.current,
         ...existingFilesInitialRef.current,
@@ -307,6 +332,18 @@ export function useTrackDrafts(
                 setTracks((prev) => prev.map((p) => (initialIds.has(p.id) ? mergeExistingFileTrack(p, meta) : p)));
             })
             .catch(() => {});
+    }, []);
+
+    useEffect(() => {
+        const images = initialPartitionRef.current.images;
+        const lastImage = images[images.length - 1];
+        if (lastImage) onImageFileRef.current?.(lastImage);
+    }, []);
+
+    useEffect(() => {
+        const images = existingPartitionRef.current.images;
+        const lastImage = images[images.length - 1];
+        if (lastImage) onExistingImageFileRef.current?.(lastImage);
     }, []);
 
     function handleTitleChange(id: string, title: string) {
@@ -347,7 +384,13 @@ export function useTrackDrafts(
     }
 
     function handleAddFiles(incomingFiles: File[]) {
-        classifyIncomingFiles(incomingFiles, knownHashesRef.current, toaster)
+        const images = incomingFiles.filter(isImageFile);
+        const audioFiles = incomingFiles.filter((f) => !isImageFile(f));
+        const lastImage = images[images.length - 1];
+        if (lastImage) onImageFileRef.current?.(lastImage);
+        if (audioFiles.length === 0) return;
+
+        classifyIncomingFiles(audioFiles, knownHashesRef.current, toaster)
             .then((fresh) => {
                 if (fresh.length === 0) return undefined;
                 return buildNewTracksFromFresh(fresh).then((newTracks) => {

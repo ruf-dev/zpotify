@@ -101,19 +101,17 @@ export default function TrackList(props: TrackListProps) {
                 <span className={cls.HeaderLabel}>{headerLabel}</span>
                 <div className={cls.HeaderRight}>
                     <span className={cls.HeaderHint}>drag rows to reorder · click name to rename</span>
-                    {canCleanNames && (
-                        <Button
-                            type="button"
-                            variant="ghost"
-                            className={cls.CleanNamesButton}
-                            onClick={handleCleanNamesClick}
-                            onMouseEnter={() => setIsHoveringClean(true)}
-                            onMouseLeave={() => setIsHoveringClean(false)}
-                            disabled={isCleaningNumbers}
-                        >
-                            clean names
-                        </Button>
-                    )}
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        className={cls.CleanNamesButton}
+                        onClick={handleCleanNamesClick}
+                        onMouseEnter={() => setIsHoveringClean(true)}
+                        onMouseLeave={() => setIsHoveringClean(false)}
+                        disabled={!canCleanNames || isCleaningNumbers}
+                    >
+                        clean names
+                    </Button>
                 </div>
             </div>
 
@@ -176,7 +174,11 @@ export default function TrackList(props: TrackListProps) {
                     document.body,
                 )}
 
-            {props.showSearchBox && <SongSearchBox excludedIds={props.excludedSongIds} onAddSong={props.onAddSong} />}
+            {props.showSearchBox && (
+                <div className={cls.SearchBoxWrapper}>
+                    <SongSearchBox excludedIds={props.excludedSongIds} onAddSong={props.onAddSong} />
+                </div>
+            )}
 
             <DropZone onFiles={props.onAddFiles} className={cls.EmptyStateWrapper}>
                 <div className={cls.EmptyStateContent}>

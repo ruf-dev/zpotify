@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button, ConfirmDialog, ModalActions, ModalClose } from '@vervstack/chures';
 import { MorphIcon } from 'morphicons/react';
 import { Pause, Play } from 'lucide';
@@ -12,8 +12,9 @@ import { formatFileSize } from '@/shared/lib/files.ts';
 import { isPausedTorrentStatus, isTerminalTorrentStatus } from '@/shared/lib/torrentStatus.ts';
 import BackButton from '@/shared/ui/BackButton';
 import { useBackGuard } from '@/shared/lib/useBackGuard';
-import TorrentFileProgressList from '@/components/TorrentFileProgressList/TorrentFileProgressList';
 import MultitrackUploadModal from '@/dialogs/MultitrackUpload/MultitrackUploadModal';
+import TorrentFileStatusList from '@/dialogs/TorrentManage/components/TorrentFileStatusList/TorrentFileStatusList';
+import { mergeTorrentFiles } from '@/dialogs/TorrentManage/processes/mergeTorrentFiles';
 import type { SongFile, TorrentJob } from '@/app/api/zpotify';
 
 interface TorrentManageDialogProps {
@@ -45,6 +46,9 @@ export default function TorrentManageDialog({ job: initialJob, previousScreen }:
     const total = Number(job.totalBytes ?? 0);
     const downloaded = Number(job.downloadedBytes ?? 0);
     const fileProgress = job.files ?? [];
+    const importedFiles = job.importedFiles ?? [];
+    const fileRows = useMemo(() => mergeTorrentFiles(fileProgress, importedFiles), [fileProgress, importedFiles]);
+    const showFileRows = fileProgress.length > 1 || importedFiles.length > 0;
 
     function handlePause() {
         if (!job.id || toggling) return;
@@ -98,7 +102,7 @@ export default function TorrentManageDialog({ job: initialJob, previousScreen }:
     function handleCreatePlaylist() {
         const existingFiles: SongFile[] = (job.importedFiles ?? [])
             .filter((f) => f.status === 'ok' && f.fileId)
-            .map((f) => ({ id: f.fileId, path: f.torrentPath }));
+            .map((f) => ({ id: f.fileId, path: f.filePath }));
 
         OpenDialog(
             <MultitrackUploadModal files={[]} existingFiles={existingFiles} initialPlaylistName={job.torrentName} />,
@@ -138,7 +142,7 @@ export default function TorrentManageDialog({ job: initialJob, previousScreen }:
 
                 {job.error && <span className={cls.ErrorMessage}>{job.error}</span>}
 
-                {fileProgress.length > 1 && <TorrentFileProgressList files={fileProgress} />}
+                {showFileRows && <TorrentFileStatusList files={fileRows} />}
 
                 <ModalActions
                     containerClassName={cls.ActionsRow}

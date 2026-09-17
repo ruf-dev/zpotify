@@ -54,6 +54,10 @@
     border-left: 1px solid var(--color-border);
 }
 
+.SearchBoxWrapper {
+    margin-top: var(--space-md);
+}
+
 .EmptyStateWrapper {
     margin-top: var(--space-md);
     border: 1px dashed var(--color-border-light);

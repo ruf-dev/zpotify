@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useMemo, useState } from 'react';
 import cn from 'classnames';
 import { Button, ModalClose } from '@vervstack/chures';
 
@@ -16,9 +16,11 @@ import { useTrackDrafts } from '@/dialogs/MultitrackUpload/useTrackDrafts';
 import { useMultitrackSubmit } from '@/dialogs/MultitrackUpload/useMultitrackSubmit';
 import { useMultitrackSummary } from '@/dialogs/MultitrackUpload/useMultitrackSummary';
 import { useArtistLookup } from '@/dialogs/MultitrackUpload/useArtistLookup';
-import { formatBytes } from '@/dialogs/MultitrackUpload/utils';
+import { formatBytes, isSingleFolderInput } from '@/dialogs/MultitrackUpload/utils';
 import { useEagerFileUpload } from '@/shared/lib/useEagerFileUpload.ts';
 import { useBackGuard } from '@/shared/lib/useBackGuard';
+import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
+import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
 import type { DroppedFolder } from '@/features/upload/resolveDroppedEntries.ts';
 import type { SongFile } from '@/app/api/zpotify';
 import BackButton from '@/shared/ui/BackButton';
@@ -51,8 +53,7 @@ export default function MultitrackUploadModal({
     const { CloseDialog, OpenDialog, LockClosing, UnlockClosing } = useDialog();
     const refreshActive = useSongListRefresh((s) => s.refreshActive);
     const refreshPlaylists = usePlaylistListRefresh((s) => s.refresh);
-
-    const trackDrafts = useTrackDrafts(files, folders ?? [], existingFiles ?? []);
+    const toaster = useToaster();
 
     const [playlistMode, setPlaylistMode] = useState(true);
     const [playlistName, setPlaylistName] = useState(initialPlaylistName ?? '');
@@ -60,14 +61,54 @@ export default function MultitrackUploadModal({
     const [year, setYear] = useState<number | undefined>();
     const [tags, setTags] = useState<ChipEntry[]>([]);
     const [cover, setCover] = useState<File | undefined>();
+    const [existingCoverFile, setExistingCoverFile] = useState<SongFile | undefined>();
     const coverUpload = useEagerFileUpload();
-
-    useBackGuard(!targetPlaylist, handleBack);
 
     function handleCoverChange(file: File) {
         setCover(file);
         coverUpload.startUpload(file);
     }
+
+    function handleImageFile(file: File) {
+        if (playlistMode && !targetPlaylist) {
+            handleCoverChange(file);
+            return;
+        }
+        toaster.bake({
+            title: 'image skipped',
+            description: `${file.name} looks like cover art, not a track — enable playlist mode to use it as the cover`,
+            level: 'Warn',
+            isDismissable: true,
+        });
+    }
+
+    function handleExistingImageFile(file: SongFile) {
+        if (playlistMode && !targetPlaylist && file.id) {
+            setExistingCoverFile(file);
+            return;
+        }
+        toaster.bake({
+            title: 'image skipped',
+            description: `${file.path ?? 'a file'} looks like cover art, not a track — enable playlist mode to use it as the cover`,
+            level: 'Warn',
+            isDismissable: true,
+        });
+    }
+
+    function resolveCoverFileId(): Promise<string | undefined> {
+        if (cover !== undefined) return coverUpload.resolveFileId();
+        return Promise.resolve(existingCoverFile?.id);
+    }
+
+    const trackDrafts = useTrackDrafts(
+        files,
+        folders ?? [],
+        existingFiles ?? [],
+        handleImageFile,
+        handleExistingImageFile,
+    );
+
+    useBackGuard(!targetPlaylist, handleBack);
 
     function handleBack() {
         CloseDialog();
@@ -85,8 +126,8 @@ export default function MultitrackUploadModal({
         albumArtists,
         year,
         tags,
-        hasCover: cover !== undefined,
-        resolveCoverFileId: coverUpload.resolveFileId,
+        hasCover: cover !== undefined || existingCoverFile !== undefined,
+        resolveCoverFileId,
         targetPlaylistUuid: targetPlaylist?.uuid,
         CloseDialog,
         LockClosing,
@@ -105,7 +146,10 @@ export default function MultitrackUploadModal({
 
     const excludedSongIds = new Set([...summary.linkedSongIds, ...(targetPlaylist?.existingSongIds ?? [])]);
     const failedCount = trackDrafts.tracks.filter((t) => t.uploadStatus === 'error').length;
-    const isSingleFolder = (folders?.length ?? 0) === 1;
+    const isSingleFolder = useMemo(
+        () => isSingleFolderInput(folders ?? [], existingFiles ?? []),
+        [folders, existingFiles],
+    );
 
     const { loadArtistOptions, onCreateArtist } = useArtistLookup();
 
@@ -135,6 +179,7 @@ export default function MultitrackUploadModal({
                 {playlistMode && !targetPlaylist && (
                     <PlaylistDetailsPanel
                         onCoverChange={handleCoverChange}
+                        existingCoverUrl={cover === undefined ? buildCoverUrl(existingCoverFile?.path) : undefined}
                         coverUploadProgress={coverUpload.progress}
                         disabled={submitState.submitting}
                         playlistName={playlistName}

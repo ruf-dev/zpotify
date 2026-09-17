@@ -1,0 +1,61 @@
+.TorrentFileStatusRowContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+}
+
+.FileName {
+    flex: 1;
+    min-width: 0;
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.StatusPill {
+    flex-shrink: 0;
+    padding: 0.0625rem 0.5rem;
+    border-radius: var(--border-radius-pill);
+    font-size: var(--font-size-xs);
+}
+
+.StatusPillError {
+    color: var(--color-error);
+    background: var(--color-bg-secondary);
+}
+
+.StatusPillWarning {
+    color: var(--color-warning);
+    background: var(--color-bg-secondary);
+}
+
+.ProgressBarTrack {
+    position: relative;
+    width: 6rem;
+    flex-shrink: 0;
+    height: 0.1875rem;
+    border-radius: var(--border-radius-pill);
+    background: var(--color-bg-secondary);
+    overflow: hidden;
+}
+
+.ProgressBarFill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    background: var(--color-fg-accent);
+    transform: scaleX(var(--torrent-progress, 0));
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.FileSize {
+    flex-shrink: 0;
+    width: 6.5rem;
+    text-align: right;
+    font-size: var(--font-size-xs);
+    color: var(--color-fg-tertiary);
+}
