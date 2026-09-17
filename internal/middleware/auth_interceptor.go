@@ -21,8 +21,6 @@ import (
 )
 
 const (
-	authHeader = "authorization"
-
 	tgIdDebugHeader       = "Z-Tg-Id"
 	tgUsernameDebugHeader = "Z-Tg-Username"
 )
@@ -58,7 +56,13 @@ func WithDebug(b bool) authOption {
 }
 
 func GrpcAuthInterceptor(srv service.Service, opts ...authOption) grpc.ServerOption {
-	ac := newAuthMiddleware(srv, opts...)
+	ac := &authMiddleware{
+		authService: srv.AuthService(),
+		userService: srv.UserService(),
+	}
+	for _, opt := range opts {
+		opt(ac)
+	}
 
 	return grpc.ChainUnaryInterceptor(func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp any, err error) {
 		if ac.isIgnored(info.FullMethod) {
@@ -93,72 +97,6 @@ func GrpcAuthInterceptor(srv service.Service, opts ...authOption) grpc.ServerOpt
 
 		return nil, rerrors.Wrap(err)
 	})
-}
-
-// GrpcStreamAuthInterceptor mirrors GrpcAuthInterceptor for server-streaming RPCs
-// (e.g. WatchTorrentJobs). grpc.ChainUnaryInterceptor never runs for a streaming
-// method, so without this a streaming handler always sees an empty user_context.
-func GrpcStreamAuthInterceptor(srv service.Service, opts ...authOption) grpc.ServerOption {
-	ac := newAuthMiddleware(srv, opts...)
-
-	return grpc.ChainStreamInterceptor(func(srv any, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
-		ctx := ss.Context()
-
-		if ac.isIgnored(info.FullMethod) {
-			return handler(srv, ss)
-		}
-
-		md, ok := metadata.FromIncomingContext(ctx)
-		if !ok {
-			return status.Error(codes.FailedPrecondition, "error unmarshalling metadata from context")
-		}
-
-		ctxWithUser, err := ac.authWithSession(ctx, md)
-		if err == nil {
-			return handler(srv, &authenticatedServerStream{ServerStream: ss, ctx: ctxWithUser})
-		}
-
-		if ac.isDebugEnabled {
-			userCtx, debugErr := ac.authWithDebugHeaders(ctx, md)
-			if debugErr != nil {
-				return rerrors.Wrap(err)
-			}
-
-			if userCtx != nil {
-				ctx = user_context.WithUserContext(ctx, *userCtx)
-				log.AddField(ctx, func(e *zerolog.Event) *zerolog.Event {
-					return e.Int64("user_id", userCtx.UserId)
-				})
-
-				return handler(srv, &authenticatedServerStream{ServerStream: ss, ctx: ctx})
-			}
-		}
-
-		return rerrors.Wrap(err)
-	})
-}
-
-func newAuthMiddleware(srv service.Service, opts ...authOption) *authMiddleware {
-	ac := &authMiddleware{
-		authService: srv.AuthService(),
-		userService: srv.UserService(),
-	}
-	for _, opt := range opts {
-		opt(ac)
-	}
-
-	return ac
-}
-
-// authenticatedServerStream wraps a grpc.ServerStream to carry the context
-// produced by auth, since ServerStream.Context() can't be replaced in place.
-type authenticatedServerStream struct {
-	grpc.ServerStream
-	ctx context.Context
-}
-
-func (s *authenticatedServerStream) Context() context.Context {
-	return s.ctx
 }
 
 func HttpAuthMiddleware(srv service.Service, opts ...authOption) func(http.Handler) http.Handler {
