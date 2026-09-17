@@ -86,9 +86,9 @@ func toPbArtistResults(artists []domain.ArtistSearchResult) []*zpotify_api.Searc
 		}
 
 		pbArtist := &zpotify_api.ArtistBase{
-			Uuid:           artist.ArtistsBase.Uuid,
-			Name:           artist.ArtistsBase.Name,
-			Liked:          artist.ArtistsBase.Liked,
+			Uuid:           artist.Uuid,
+			Name:           artist.Name,
+			Liked:          artist.Liked,
 			AvatarFilePath: avatarFilePath,
 		}
 

@@ -59,6 +59,7 @@ func Test_Broadcaster_MultipleSubscribers(t *testing.T) {
 	received1 := false
 	received2 := false
 
+collectLoop:
 	for {
 		select {
 		case <-ch1:
@@ -66,7 +67,7 @@ func Test_Broadcaster_MultipleSubscribers(t *testing.T) {
 		case <-ch2:
 			received2 = true
 		case <-timeout.C:
-			break
+			break collectLoop
 		}
 
 		if received1 && received2 {
@@ -140,10 +141,10 @@ func Test_Broadcaster_UserIsolation(t *testing.T) {
 }
 
 func Test_Broadcaster_UnsubscribeStopsDelivery(t *testing.T) {
-	b := NewBroadcaster()
+	broadcaster := NewBroadcaster()
 	userID := int64(1)
 
-	ch := b.Subscribe(userID)
+	ch := broadcaster.Subscribe(userID)
 
 	job1 := domain.TorrentDownload{
 		Id:     1,
@@ -151,7 +152,7 @@ func Test_Broadcaster_UnsubscribeStopsDelivery(t *testing.T) {
 		Status: domain.TorrentDownloadStatusDownloading,
 	}
 
-	b.Publish(job1)
+	broadcaster.Publish(job1)
 
 	timeout := time.NewTimer(100 * time.Millisecond)
 	defer timeout.Stop()
@@ -163,7 +164,7 @@ func Test_Broadcaster_UnsubscribeStopsDelivery(t *testing.T) {
 		t.Fatal("timeout waiting for first job")
 	}
 
-	b.Unsubscribe(userID, ch)
+	broadcaster.Unsubscribe(userID, ch)
 
 	job2 := domain.TorrentDownload{
 		Id:     2,
@@ -171,7 +172,7 @@ func Test_Broadcaster_UnsubscribeStopsDelivery(t *testing.T) {
 		Status: domain.TorrentDownloadStatusDownloading,
 	}
 
-	b.Publish(job2)
+	broadcaster.Publish(job2)
 
 	// After unsubscribe, the channel is closed, so it should return immediately.
 	// The second publish should not have sent anything to the channel.

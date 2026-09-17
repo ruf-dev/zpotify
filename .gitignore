@@ -10,7 +10,8 @@
 
 # Configs
 config/dev.yaml
-data
+/data
+examples/data
 dist
 node_modules
 # Output of the go coverage tool, specifically when used with LiteIDE
@@ -29,3 +30,6 @@ proto_modules
 #Load testing
 tests/load/tank_errors.log
 tests/logs/*
+
+tests/data/*
+!tests/data/.gitkeep

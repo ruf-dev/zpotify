@@ -2,6 +2,7 @@ package tests
 
 import (
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -24,6 +25,9 @@ func NewTestEnv(t *testing.T) (te TestEnv) {
 
 	var err error
 	te.App, err = app.New()
+	if err != nil && strings.Contains(err.Error(), "tg bot connection") {
+		t.Skip("skipping: no telegram bot credentials configured in this environment")
+	}
 	require.NoError(t, err)
 
 	return te

@@ -665,7 +665,7 @@ func (p *PlaylistStorage) Search(ctx context.Context, query string, limit, offse
 	}
 
 	results := make([]domain.PlaylistSearchResult, len(rows))
-	for i, row := range rows {
+	for idx, row := range rows {
 		var artists []domain.ArtistsBase
 		err = json.Unmarshal(row.ArtistInfo, &artists)
 		if err != nil {
@@ -694,7 +694,7 @@ func (p *PlaylistStorage) Search(ctx context.Context, query string, limit, offse
 			playlist.Year = &row.Year.Int32
 		}
 
-		results[i] = domain.PlaylistSearchResult{
+		results[idx] = domain.PlaylistSearchResult{
 			Playlist: playlist,
 			Score:    float64(row.Score),
 		}

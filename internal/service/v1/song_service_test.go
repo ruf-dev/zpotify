@@ -194,7 +194,7 @@ func TestAudioService_SendToTelegram_HappyPath(t *testing.T) {
 					Duration: 200 * time.Second,
 					FilePath: "artist/Test_Track-abcd1234.mp3",
 				},
-				Artists: []domain.ArtistsBase{{Uuid: "artist-uuid", Name: "Test Artist"}},
+				Artists: []domain.ArtistsBase{{Uuid: testArtistUuid, Name: "Test Artist"}},
 			}
 			return song, nil
 		},

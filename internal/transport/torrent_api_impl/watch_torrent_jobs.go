@@ -25,7 +25,7 @@ func (impl *Impl) WatchTorrentJobs(req *zpotify_api.WatchTorrentJobs_Request, st
 
 		sendErr := stream.Send(resp)
 		if sendErr != nil {
-			return nil
+			return rerrors.Wrap(sendErr, "error sending torrent job")
 		}
 	}
 
