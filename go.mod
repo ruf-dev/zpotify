@@ -30,7 +30,7 @@ require (
 	go.redsock.ru/protoc-gen-npm v0.0.12
 	go.redsock.ru/rerrors v0.0.15
 	go.redsock.ru/toolbox v0.0.11
-	go.vervstack.ru/matreshka v1.0.95
+	go.vervstack.ru/matreshka v1.0.100
 	golang.org/x/sync v0.20.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250528174236-200df99c418a
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250528174236-200df99c418a

@@ -2,18 +2,20 @@
 
 package config
 
+// EnvironmentConfig holds parsed configuration values for this section.
 type EnvironmentConfig struct {
-	CorsAllowedOrigins          string
-	DebugAuth                   bool
-	LocalStoragePath            string
-	LogFormat                   string
-	LogLevel                    string
-	OtelEndpoint                string
-	TelegramClientID            string
-	TelegramNotificationsChatID int
-	TelegramProxyURL            string
-	TelegramToken               string
-
+	CorsAllowedOrigins            string
+	DebugAuth                     bool
+	DevMode                       bool
+	EnableHealthProbes            bool
+	LocalStoragePath              string
+	LogFormat                     string
+	LogLevel                      string
+	OtelEndpoint                  string
+	TelegramClientID              string
+	TelegramNotificationsChatID   int
+	TelegramProxyURL              string
+	TelegramToken                 string
 	TorrentDownloadDir            string
 	TorrentListenPort             int
 	TorrentMaxConcurrentDownloads int
@@ -22,17 +24,19 @@ type EnvironmentConfig struct {
 	TorrentSyncPeriodSeconds      int
 }
 
+// LogFormat enumerates the allowed values for the LogFormat field.
 const (
-	LogFormat_Json = "JSON"
-	LogFormat_Text = "TEXT"
+	LogFormatJSON = "JSON"
+	LogFormatText = "TEXT"
 )
 
+// LogLevel enumerates the allowed values for the LogLevel field.
 const (
-	LogLevel_Trace = "Trace"
-	LogLevel_Debug = "Debug"
-	LogLevel_Info  = "Info"
-	LogLevel_Warn  = "Warn"
-	LogLevel_Error = "Error"
-	LogLevel_Fatal = "Fatal"
-	LogLevel_Panic = "Panic"
+	LogLevelTrace = "Trace"
+	LogLevelDebug = "Debug"
+	LogLevelInfo  = "Info"
+	LogLevelWarn  = "Warn"
+	LogLevelError = "Error"
+	LogLevelFatal = "Fatal"
+	LogLevelPanic = "Panic"
 )
