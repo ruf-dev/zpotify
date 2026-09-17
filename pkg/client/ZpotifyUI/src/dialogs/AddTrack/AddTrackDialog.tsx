@@ -17,7 +17,6 @@ import MultitrackUploadModal from '@/dialogs/MultitrackUpload/MultitrackUploadMo
 import MetaDialog from '@/dialogs/Meta/MetaDialog';
 import TorrentManageDialog from '@/dialogs/TorrentManage/TorrentManageDialog';
 import { AudioFile } from '@/shared/model/AudioFile.ts';
-import { isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
 import type { DroppedGroups } from '@/features/upload/resolveDroppedEntries.ts';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { useBatchUpload } from '@/dialogs/AddTrack/useBatchUpload';
@@ -74,17 +73,7 @@ export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialo
 
     useBackGuard(!!backStep, () => setStep(backStep!));
 
-    function handleFiles(rawFiles: File[]) {
-        const files = rawFiles.filter(isSupportedAudioFile);
-        const rejected = rawFiles.filter((f) => !isSupportedAudioFile(f));
-        if (rejected.length > 0) {
-            toaster.bake({
-                title: 'unsupported format',
-                description: `only mp3, flac and aac are supported: ${rejected.map((f) => f.name).join(', ')}`,
-                level: 'Warn',
-                isDismissable: true,
-            });
-        }
+    function handleFiles(files: File[]) {
         if (files.length === 0) return;
 
         if (files.length > 1) {

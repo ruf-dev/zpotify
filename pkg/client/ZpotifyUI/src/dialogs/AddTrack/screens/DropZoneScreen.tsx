@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 import cls from '@/dialogs/AddTrack/screens/DropZoneScreen.module.css';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
-import { AUDIO_ACCEPT, isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
+import { AUDIO_ACCEPT } from '@/features/upload/supportedAudio.ts';
 import { TORRENT_EXTENSION, isTorrentFile, isTorrentFileName } from '@/features/upload/torrentFile.ts';
 import { resolveDroppedEntries, type DroppedGroups } from '@/features/upload/resolveDroppedEntries.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
@@ -63,8 +63,8 @@ export default function DropZoneScreen({
         if (entries.length === 0) {
             const files = Array.from(e.dataTransfer.files);
             files.filter(isTorrentFile).forEach((file) => handleTorrentFile(file));
-            const audioFiles = files.filter(isSupportedAudioFile);
-            if (audioFiles.length > 0) handleFiles(audioFiles);
+            const nonTorrentFiles = files.filter((f) => !isTorrentFile(f));
+            if (nonTorrentFiles.length > 0) handleFiles(nonTorrentFiles);
             return;
         }
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Input } from '@vervstack/chures';
+import { Button, Dropdown, Input } from '@vervstack/chures';
+import type { DropdownOption } from '@vervstack/chures';
 
 import Chip from '@/components/Chip/Chip';
 import cls from '@/widgets/ChipsField/ChipsField.module.css';
@@ -30,6 +31,8 @@ const CHIP_KIND_LABELS: Record<string, string> = {
     ALBUM_TAG_KIND_HIT: 'hit',
 };
 
+const KIND_OPTIONS: DropdownOption[] = CHIP_KINDS.map((k) => ({ id: k, name: CHIP_KIND_LABELS[k] }));
+
 export interface ChipsFieldProps {
     chips: ChipEntry[];
     onChange: (chips: ChipEntry[]) => void;
@@ -39,8 +42,9 @@ export default function ChipsField({ chips, onChange }: ChipsFieldProps) {
     const [kind, setKind] = useState(CHIP_KINDS[0]);
     const [value, setValue] = useState('');
 
-    function handleKindChange(e: React.ChangeEvent<HTMLSelectElement>) {
-        setKind(e.target.value as AlbumTagKind);
+    function handleKindChange(values: string[]) {
+        const next = values[0];
+        if (next) setKind(next as AlbumTagKind);
     }
 
     function handleAdd() {
@@ -79,23 +83,23 @@ export default function ChipsField({ chips, onChange }: ChipsFieldProps) {
                 </div>
             )}
             <div className={cls.AddRow}>
-                <select className={cls.KindSelect} value={kind} onChange={handleKindChange}>
-                    {CHIP_KINDS.map((k) => (
-                        <option key={k} value={k}>
-                            {CHIP_KIND_LABELS[k]}
-                        </option>
-                    ))}
-                </select>
+                <Dropdown
+                    className={cls.KindDropdown}
+                    options={KIND_OPTIONS}
+                    value={[kind]}
+                    onChange={handleKindChange}
+                />
                 <Input
                     value={value}
                     setValue={setValue}
                     onKeyDown={handleKeyDown}
                     placeholder="add tag…"
+                    className={cls.ValueInputWrapper}
                     inputClassName={cls.ValueInput}
                 />
-                <button className={cls.AddButton} type="button" onClick={handleAdd}>
+                <Button variant="unstyled" className={cls.AddButton} onClick={handleAdd} aria-label="add tag">
                     +
-                </button>
+                </Button>
             </div>
         </div>
     );

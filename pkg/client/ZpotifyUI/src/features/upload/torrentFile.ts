@@ -1,4 +1,4 @@
-// .torrent detection, sibling to isSupportedAudioFile in supportedAudio.ts.
+// .torrent detection, sibling to supportedAudio.ts.
 export const TORRENT_EXTENSION = '.torrent';
 
 export function isTorrentFileName(name: string): boolean {

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { flattenDroppedInput, createInitialTracks } from '@/dialogs/MultitrackUpload/useTrackDrafts';
 import { useUploadQueue } from '@/dialogs/MultitrackUpload/useUploadQueue';
+import { isImageFile } from '@/features/upload/imageFile.ts';
 import type { DroppedFolder } from '@/features/upload/resolveDroppedEntries.ts';
 
 export interface BatchUploadState {
@@ -21,7 +22,8 @@ export function useBatchUpload(): BatchUploadState {
     const uploadQueue = useUploadQueue(setTracks);
 
     function startBatch(newFolders: DroppedFolder[], looseFiles: File[]) {
-        const initial = createInitialTracks(flattenDroppedInput(looseFiles, newFolders));
+        const audioOnly = flattenDroppedInput(looseFiles, newFolders).filter((t) => !isImageFile(t.file));
+        const initial = createInitialTracks(audioOnly);
         setFolders(newFolders);
         setTracks(initial);
         initial.forEach((t) => uploadQueue.startUpload(t));

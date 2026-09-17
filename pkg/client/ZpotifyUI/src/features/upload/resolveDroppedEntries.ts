@@ -1,5 +1,3 @@
-import { isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
-
 export interface DroppedFolder {
     name: string;
     files: File[];
@@ -40,7 +38,7 @@ function resolveFolder(
         return Promise.all(childFiles.map(readEntryFile)).then((files) => {
             const folder: DroppedFolder = {
                 name: entry.name,
-                files: files.filter(isSupportedAudioFile),
+                files,
             };
             return { folder, ignoredNestedCount: childDirs.length };
         });
@@ -51,9 +49,7 @@ export function resolveDroppedEntries(entries: FileSystemEntry[]): Promise<Dropp
     const fileEntries = entries.filter((entry): entry is FileSystemFileEntry => entry.isFile);
     const dirEntries = entries.filter((entry): entry is FileSystemDirectoryEntry => entry.isDirectory);
 
-    const looseFilesPromise = Promise.all(fileEntries.map(readEntryFile)).then((files) =>
-        files.filter(isSupportedAudioFile),
-    );
+    const looseFilesPromise = Promise.all(fileEntries.map(readEntryFile));
     const foldersPromise = Promise.all(dirEntries.map(resolveFolder));
 
     return Promise.all([looseFilesPromise, foldersPromise]).then(([looseFiles, resolvedFolders]) => {

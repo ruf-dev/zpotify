@@ -2,7 +2,7 @@ import { useRef, useState, type DragEvent, type ChangeEvent } from 'react';
 import cn from 'classnames';
 
 import cls from '@/features/upload/DropZone.module.css';
-import { AUDIO_ACCEPT, isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
+import { AUDIO_ACCEPT } from '@/features/upload/supportedAudio.ts';
 
 interface DropZoneProps {
     onFiles: (files: File[]) => void;
@@ -18,7 +18,7 @@ export default function DropZone({ onFiles, accept = AUDIO_ACCEPT, className, ch
     function handleDrop(e: DragEvent<HTMLDivElement>) {
         e.preventDefault();
         setDragOver(false);
-        const files = Array.from(e.dataTransfer.files).filter(isSupportedAudioFile);
+        const files = Array.from(e.dataTransfer.files);
         if (files.length > 0) onFiles(files);
     }
 

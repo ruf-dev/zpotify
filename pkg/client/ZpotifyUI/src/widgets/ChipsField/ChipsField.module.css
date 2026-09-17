@@ -14,26 +14,27 @@
     display: flex;
     align-items: center;
     gap: 0.375rem;
-}
 
-.KindSelect {
-    flex-shrink: 0;
-    padding: 0.3125rem 0.5rem;
-    background: var(--color-bg-accent);
-    color: var(--color-fg-secondary);
-    border: 1px solid var(--color-border-light);
-    border-radius: 0.375rem;
-    font-size: var(--font-size-sm);
-    cursor: pointer;
-    outline: none;
+    /* Shrinks chures' Input/Dropdown controls down to match .AddButton below. */
+    --chures-input-height: 1.75rem;
 
-    &:focus {
-        border-color: var(--color-border-bright);
+    /*
+     * chures' Dropdown/Input containers set width: 100% unscoped (not :where()-wrapped for
+     * Dropdown), so a same-specificity single-class override loses to it on load order. Nesting
+     * under .AddRow bumps our selector to two classes, which outranks it regardless of order.
+     */
+    & .KindDropdown {
+        flex: 0 0 auto;
+        width: 7rem;
+    }
+
+    & .ValueInputWrapper {
+        flex: 1;
+        min-width: 0;
     }
 }
 
 .ValueInput {
-    flex: 1;
     padding: 0.3125rem 0.5rem;
     background: var(--color-bg-accent);
     color: var(--color-fg-primary);

@@ -29,6 +29,8 @@ export default ({ mode }: { mode: string }) => {
                     globPatterns: ['**/*.{js,css,html,svg,woff2}'],
                     cleanupOutdatedCaches: true,
                     navigateFallback: 'index.html',
+                    skipWaiting: true,
+                    clientsClaim: true,
                 },
             }),
         ],

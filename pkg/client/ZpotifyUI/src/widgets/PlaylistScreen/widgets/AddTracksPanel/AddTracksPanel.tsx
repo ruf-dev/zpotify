@@ -3,7 +3,6 @@ import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
 import cls from '@/widgets/PlaylistScreen/widgets/AddTracksPanel/AddTracksPanel.module.css';
 import SongSearchBox from '@/widgets/SongSearchBox/SongSearchBox';
 import DropZone from '@/features/upload/DropZone.tsx';
-import { isSupportedAudioFile } from '@/features/upload/supportedAudio.ts';
 import { UploadArrowSmallIcon } from '@/assets/icons/UploadArrowSmallIcon.tsx';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
@@ -36,17 +35,7 @@ export default function AddTracksPanel({
             .catch((e: unknown) => toaster.catch(e as never));
     }
 
-    function handleFiles(rawFiles: File[]) {
-        const files = rawFiles.filter(isSupportedAudioFile);
-        const rejected = rawFiles.filter((f) => !isSupportedAudioFile(f));
-        if (rejected.length > 0) {
-            toaster.bake({
-                title: 'unsupported format',
-                description: `only mp3, flac and aac are supported: ${rejected.map((f) => f.name).join(', ')}`,
-                level: 'Warn',
-                isDismissable: true,
-            });
-        }
+    function handleFiles(files: File[]) {
         if (files.length === 0) return;
 
         OpenDialog(
