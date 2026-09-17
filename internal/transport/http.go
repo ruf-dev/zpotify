@@ -5,19 +5,10 @@ import (
 	"net"
 	"net/http"
 	"text/template"
-	"time"
 
 	"github.com/rs/cors"
+	"github.com/soheilhy/cmux"
 	"go.redsock.ru/rerrors"
-)
-
-// ReadTimeout/WriteTimeout are deliberately left unset here: they'd bound the
-// entire request/response body (including large audio uploads/downloads).
-// Per-request stall protection for uploads is set via ResponseController in
-// the wapi upload handler instead.
-const (
-	httpReadHeaderTimeout = 30 * time.Second
-	httpIdleTimeout       = 120 * time.Second
 )
 
 type httpServer struct {
@@ -29,12 +20,10 @@ type httpServer struct {
 	registeredPaths map[string]struct{}
 }
 
-func newHttpServer(listener net.Listener, httpMux *http.ServeMux) httpServer {
+func newHttpServer(listener net.Listener, httpMux *http.ServeMux, allowedOrigins []string) httpServer {
 	return httpServer{
 		server: &http.Server{
-			Handler:           setUpCors().Handler(httpMux),
-			ReadHeaderTimeout: httpReadHeaderTimeout,
-			IdleTimeout:       httpIdleTimeout,
+			Handler: setUpCors(allowedOrigins).Handler(httpMux),
 		},
 		registeredPaths: make(map[string]struct{}),
 		listener:        listener,
@@ -59,7 +48,7 @@ func (s *httpServer) start() error {
 
 	err := s.server.Serve(s.listener)
 	if err != nil {
-		if !rerrors.Is(err, http.ErrServerClosed) {
+		if !rerrors.Is(err, cmux.ErrServerClosed) && !rerrors.Is(err, cmux.ErrListenerClosed) {
 			return rerrors.Wrap(err, "error listening http server")
 		}
 	}
@@ -117,15 +106,25 @@ func (s *httpServer) buildHomePageHandler() http.Handler {
 	})
 }
 
-func setUpCors() *cors.Cors {
+// AllowAllOrigins is an explicit opt-in escape hatch for the old permissive CORS
+// behavior (e.g. quick local dev) — pass it to setUpCors instead of retyping a wildcard.
+// Never the generated default: AllowCredentials: true (required for cookie-based auth)
+// is only valid alongside an explicit origin allowlist per the CORS spec, never "*".
+var AllowAllOrigins = []string{"*"}
+
+func setUpCors(allowedOrigins []string) *cors.Cors {
 	return cors.New(
 		cors.Options{
-			AllowedOrigins: []string{"*"},
+			AllowedOrigins: allowedOrigins,
 			AllowedMethods: []string{
 				http.MethodPost,
 				http.MethodGet,
 			},
-			AllowedHeaders:   []string{"*"},
-			AllowCredentials: false,
+			AllowedHeaders: []string{
+				"Content-Type",
+				"Grpc-Metadata-Authorization",
+				"Grpc-Metadata-X-Csrf-Token",
+			},
+			AllowCredentials: true,
 		})
 }

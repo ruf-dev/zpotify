@@ -3,6 +3,7 @@ package zpotify_api_impl
 import (
 	"context"
 	"net/http"
+	"time"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/rs/zerolog/log"
@@ -19,14 +20,22 @@ type Impl struct {
 	userService     service.UserService
 	authService     service.AuthService
 	playlistService service.PlaylistService
+
+	version   string
+	devMode   bool
+	startedAt time.Time
 }
 
-func New(srv service.Service) *Impl {
+func New(srv service.Service, version string, devMode bool, startedAt time.Time) *Impl {
 	return &Impl{
 		audioService:    srv.AudioService(),
 		userService:     srv.UserService(),
 		authService:     srv.AuthService(),
 		playlistService: srv.PlaylistService(),
+
+		version:   version,
+		devMode:   devMode,
+		startedAt: startedAt,
 	}
 }
 
@@ -47,5 +56,5 @@ func (impl *Impl) Gateway(ctx context.Context, endpoint string, opts ...grpc.Dia
 		log.Error().Err(err).Msg("error registering grpc2http handler")
 	}
 
-	return "/api/", gwHttpMux
+	return "/api/version", gwHttpMux
 }

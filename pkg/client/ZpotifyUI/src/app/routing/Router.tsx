@@ -17,6 +17,7 @@ import SearchPage from '@/pages/main/search/SearchPage.tsx';
 import DownloadsPage from '@/pages/downloads/DownloadsPage.tsx';
 import Dialog from '@/pages/dialog/Dialog.tsx';
 import MainLayout from '@/app/layouts/MainLayout.tsx';
+import ServerStatusBanner from '@/pages/segments/ServerStatusBanner/ServerStatusBanner.tsx';
 
 export default function Router() {
     const navigate = useNavigate();
@@ -62,6 +63,7 @@ export default function Router() {
                 <Tooltip id="root-tooltip" variant={'light'} />
                 <Toaster />
             </div>
+            <ServerStatusBanner />
         </div>
     );
 }

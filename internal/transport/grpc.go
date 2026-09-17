@@ -4,8 +4,8 @@ import (
 	"context"
 	"net"
 	"net/http"
-	"strings"
 
+	"github.com/soheilhy/cmux"
 	"go.redsock.ru/rerrors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -20,7 +20,6 @@ type GrpcWithGateway interface {
 }
 
 type grpcServer struct {
-	ctx      context.Context
 	listener net.Listener
 
 	gatewayMux *http.ServeMux
@@ -33,15 +32,30 @@ type grpcServer struct {
 }
 
 func newGrpcServer(
-	ctx context.Context,
 	listener net.Listener,
 	gatewayMux *http.ServeMux) grpcServer {
 	return grpcServer{
-		ctx:        ctx,
 		listener:   listener,
 		stopCall:   func() {},
 		gatewayMux: gatewayMux,
 	}
+}
+
+func (s *grpcServer) AddImplementation(ctx context.Context, grpcImpls ...GrpcImpl) {
+	for _, grpcImpl := range grpcImpls {
+		s.implementations = append(s.implementations, grpcImpl)
+
+		grpcWithGateway, ok := grpcImpl.(GrpcWithGateway)
+		if ok {
+			s.gatewayMux.Handle(grpcWithGateway.Gateway(ctx,
+				s.listener.Addr().String(),
+				grpc.WithTransportCredentials(insecure.NewCredentials())))
+		}
+	}
+}
+
+func (s *grpcServer) AddServerOption(opts ...grpc.ServerOption) {
+	s.opts = append(s.opts, opts...)
 }
 
 func (s *grpcServer) start() error {
@@ -51,46 +65,25 @@ func (s *grpcServer) start() error {
 		impl.Register(server)
 	}
 
+	// stopCall is intentionally NOT set to server.GracefulStop: cmux's matched
+	// listener embeds the shared root net.Listener without overriding Close(),
+	// so calling GracefulStop/Stop here would close the root listener out from
+	// under the whole mux (grpc and http share one socket). Shutdown goes
+	// through ServersManager.Stop's m.mux.Close() instead, which unblocks
+	// Serve() via cmux's own ErrServerClosed/ErrListenerClosed signal without
+	// touching the socket.
 	err := server.Serve(s.listener)
 	if err != nil {
-		if !rerrors.Is(err, http.ErrServerClosed) {
+		if !rerrors.Is(err, cmux.ErrServerClosed) && !rerrors.Is(err, cmux.ErrListenerClosed) {
 			return rerrors.Wrap(err, "error serving grpc server")
 		}
 	}
-
-	s.stopCall = server.GracefulStop
 
 	return nil
 }
 
 func (s *grpcServer) stop() error {
 	s.stopCall()
+
 	return nil
-}
-
-func (s *grpcServer) AddImplementation(grpcImpls ...GrpcImpl) {
-	for _, grpcImpl := range grpcImpls {
-		s.implementations = append(s.implementations, grpcImpl)
-
-		grpcWithGateway, ok := grpcImpl.(GrpcWithGateway)
-		if ok {
-			route, handler := grpcWithGateway.Gateway(s.ctx,
-				s.listener.Addr().String(),
-				grpc.WithTransportCredentials(insecure.NewCredentials()))
-
-			s.gatewayMux.Handle(route, handler)
-
-			// route may mix a route registered with no sub-path (e.g. "/api/search") with
-			// sub-routed RPCs (e.g. "/api/search/history/query"). net/http.ServeMux treats a
-			// pattern with no trailing slash as an exact match only, so also register the
-			// subtree variant to catch any sub-paths served by the same handler.
-			if !strings.HasSuffix(route, "/") {
-				s.gatewayMux.Handle(route+"/", handler)
-			}
-		}
-	}
-}
-
-func (s *grpcServer) AddServerOption(opts ...grpc.ServerOption) {
-	s.opts = append(s.opts, opts...)
 }

@@ -5,6 +5,8 @@ package app
 
 import (
 	"context"
+	"strings"
+	"sync/atomic"
 	"time"
 
 	"github.com/Red-Sock/go_tg"
@@ -25,6 +27,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/background"
 	"go.zpotify.ru/zpotify/internal/background/sessions_gc"
 	"go.zpotify.ru/zpotify/internal/background/torrent_sync"
+	"go.zpotify.ru/zpotify/internal/clients/postgres"
 	tgclient "go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/middleware"
 	"go.zpotify.ru/zpotify/internal/service"
@@ -50,6 +53,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/transport/ui"
 	"go.zpotify.ru/zpotify/internal/transport/user_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/wapi"
+	"go.zpotify.ru/zpotify/internal/transport/zpotify_api_impl"
 	"go.zpotify.ru/zpotify/pkg/docs"
 )
 
@@ -58,6 +62,10 @@ type Custom struct {
 	binaryStorage storage.BinaryFileStorage
 	tgConn        go_tg.TgApi
 	torrentClient *torrent.Client
+
+	listenAddr          string
+	notificationsChatId int64
+	readiness           *atomic.Bool
 
 	Service service.Service
 
@@ -75,11 +83,15 @@ type Custom struct {
 	NotificationImpl *notification_api_impl.Impl
 	SearchApiImpl    *search_api_impl.Impl
 	TorrentApiImpl   *torrent_api_impl.Impl
+	ZpotifyApiImpl   *zpotify_api_impl.Impl
 
 	ServerManager *transport.ServersManager
 }
 
 func (c *Custom) Init(app *App) (err error) {
+	startedAt := time.Now()
+	c.readiness = &atomic.Bool{}
+
 	rerrors.SetSeparator(':')
 
 	err = app.initOTel()
@@ -91,7 +103,12 @@ func (c *Custom) Init(app *App) (err error) {
 		log.Logger = log.Logger.Hook(hook)
 	}
 
-	c.dataStorage = pg.NewStorage(app.Postgres)
+	postgresConn, err := postgres.ConnectToPostgres()
+	if err != nil {
+		return rerrors.Wrap(err, "error connecting to postgres")
+	}
+
+	c.dataStorage = pg.NewStorage(postgresConn)
 	c.binaryStorage, err = file_storage_providers.NewLocalStorageProvider(app.Cfg.Environment.LocalStoragePath)
 	if err != nil {
 		return rerrors.Wrap(err, "error creating local file storage provider")
@@ -148,12 +165,9 @@ func (c *Custom) Init(app *App) (err error) {
 	torrentLookup := torrent_sync.NewClientLookup(c.torrentClient)
 	torrentSyncPeriod := time.Duration(app.Cfg.Environment.TorrentSyncPeriodSeconds) * time.Second
 
-	torrentSyncTask := torrent_sync.New(c.dataStorage, torrentLookup, torrentService, torrentSyncPeriod)
-	torrentService.SetBroadcaster(torrentSyncTask.Broadcaster())
-
 	c.BackgroundWorker = background.New(
 		sessions_gc.New(c.dataStorage),
-		torrentSyncTask,
+		torrent_sync.New(c.dataStorage, torrentLookup, torrentService, torrentSyncPeriod),
 	)
 
 	gcHandler := gc_handler.New(c.binaryStorage)
@@ -187,10 +201,22 @@ func (c *Custom) Init(app *App) (err error) {
 	c.NotificationImpl = notification_api_impl.New(c.Service)
 	c.SearchApiImpl = search_api_impl.New(c.Service)
 	c.TorrentApiImpl = torrent_api_impl.New(c.Service)
+	c.ZpotifyApiImpl = zpotify_api_impl.New(c.Service, app.Cfg.AppInfo.Version, app.Cfg.Environment.DevMode, startedAt)
 
-	c.ServerManager, err = transport.NewServerManager(app.Ctx, app.MASTER)
+	corsAllowedOrigins := transport.AllowAllOrigins
+	if app.Cfg.Environment.CorsAllowedOrigins != "*" {
+		corsAllowedOrigins = strings.Split(app.Cfg.Environment.CorsAllowedOrigins, ",")
+	}
+
+	c.ServerManager, err = transport.NewServerManager(app.Ctx, app.MASTER, corsAllowedOrigins)
 	if err != nil {
 		return rerrors.Wrap(err, "error creating server manager")
+	}
+	c.listenAddr = app.MASTER.Addr().String()
+
+	if app.Cfg.Environment.EnableHealthProbes {
+		c.ServerManager.AddHttpHandler("/livez", transport.LivezHandler())
+		c.ServerManager.AddHttpHandler("/readyz", transport.ReadyzHandler(c.readiness.Load))
 	}
 
 	otelServerHandler := otelgrpc.NewServerHandler()
@@ -198,7 +224,6 @@ func (c *Custom) Init(app *App) (err error) {
 		middleware.PanicInterceptor(),
 		middleware.TraceInterceptor(),
 		middleware.LogInterceptor(),
-		middleware.LogStreamInterceptor(),
 		grpc.StatsHandler(otelServerHandler),
 		middleware.GrpcAuthInterceptor(
 			c.Service,
@@ -208,23 +233,14 @@ func (c *Custom) Init(app *App) (err error) {
 				zpotify_api.AuthAPI_AuthAsync_FullMethodName,
 				zpotify_api.AuthAPI_GetAuthMethods_FullMethodName,
 				zpotify_api.FeatureFlagsAPI_GetFeatureFlags_FullMethodName,
-			),
-			middleware.WithDebug(app.Cfg.Environment.DebugAuth),
-		),
-		middleware.GrpcStreamAuthInterceptor(
-			c.Service,
-			middleware.WithIgnoredPathAuthOption(
-				zpotify_api.AuthAPI_Auth_FullMethodName,
-				zpotify_api.AuthAPI_RefreshToken_FullMethodName,
-				zpotify_api.AuthAPI_AuthAsync_FullMethodName,
-				zpotify_api.AuthAPI_GetAuthMethods_FullMethodName,
-				zpotify_api.FeatureFlagsAPI_GetFeatureFlags_FullMethodName,
+				zpotify_api.ZpotifyAPI_Version_FullMethodName,
 			),
 			middleware.WithDebug(app.Cfg.Environment.DebugAuth),
 		),
 	)
 
 	c.ServerManager.AddImplementation(
+		app.Ctx,
 		c.ArtistsApiImpl,
 		c.AuthApiImpl,
 		c.FeatureFlagsImpl,
@@ -236,6 +252,7 @@ func (c *Custom) Init(app *App) (err error) {
 		c.NotificationImpl,
 		c.SearchApiImpl,
 		c.TorrentApiImpl,
+		c.ZpotifyApiImpl,
 	)
 
 	c.ServerManager.AddHttpHandler(docs.Swagger())
@@ -255,17 +272,7 @@ func (c *Custom) Init(app *App) (err error) {
 	c.ServerManager.AddHttpHandler("/wapi/", wapiHandler)
 	c.ServerManager.AddHttpHandler("/", ui.NewHandler())
 
-	if app.Cfg.Environment.TelegramNotificationsChatID != 0 {
-		startMessage := &response.MessageOut{
-			ChatId: int64(app.Cfg.Environment.TelegramNotificationsChatID),
-			Text:   "Application started",
-		}
-
-		err = c.tgConn.Send(startMessage)
-		if err != nil {
-			log.Err(err).Msg("error sending start pod message")
-		}
-	}
+	c.notificationsChatId = int64(app.Cfg.Environment.TelegramNotificationsChatID)
 
 	return nil
 }
@@ -273,7 +280,7 @@ func (c *Custom) Init(app *App) (err error) {
 // Start - launch custom handlers
 // Even if you won't use it keep it for proper work.
 func (c *Custom) Start(ctx context.Context) error {
-	eg, _ := errgroup.WithContext(ctx)
+	eg, egCtx := errgroup.WithContext(ctx)
 
 	eg.Go(c.BackgroundWorker.Start)
 	eg.Go(c.AsyncPool.Start)
@@ -285,6 +292,31 @@ func (c *Custom) Start(ctx context.Context) error {
 		if startErr != nil {
 			return rerrors.Wrap(startErr, "error starting telegram bot")
 		}
+		return nil
+	})
+
+	eg.Go(func() error {
+		waitErr := transport.WaitUntilServing(egCtx, c.listenAddr)
+		if waitErr != nil {
+			return rerrors.Wrap(waitErr, "error waiting for server to start serving")
+		}
+
+		c.readiness.Store(true)
+
+		if c.notificationsChatId == 0 {
+			return nil
+		}
+
+		startMessage := &response.MessageOut{
+			ChatId: c.notificationsChatId,
+			Text:   "Application started",
+		}
+
+		sendErr := c.tgConn.Send(startMessage)
+		if sendErr != nil {
+			log.Err(sendErr).Msg("error sending start pod message")
+		}
+
 		return nil
 	})
 
