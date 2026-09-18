@@ -127,3 +127,11 @@
     color: var(--color-fg-disabled);
     cursor: not-allowed;
 }
+
+@media (orientation: portrait) {
+    .PanelContainer {
+        width: 95vw;
+        height: 85dvh;
+        max-height: 85dvh;
+    }
+}

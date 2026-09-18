@@ -51,12 +51,20 @@ export default function TrackList(props: TrackListProps) {
     const segments = props.flatList ? undefined : groupTracksByFolder(props.tracks);
 
     function handleCleanNamesClick() {
-        setIsHoveringClean(false);
-        setIsCleaningNumbers(true);
-        window.setTimeout(() => {
-            props.onCleanNames();
-            setIsCleaningNumbers(false);
-        }, CLEAN_NUMBERS_ANIMATION_MS);
+        // Without a hover-preview frame (touch devices never fire it), the prefix span would
+        // mount with the exit class already applied, so the browser has nothing to transition
+        // from. Force one painted "shown" frame first, then flip to the exit state.
+        setIsHoveringClean(true);
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                setIsHoveringClean(false);
+                setIsCleaningNumbers(true);
+                window.setTimeout(() => {
+                    props.onCleanNames();
+                    setIsCleaningNumbers(false);
+                }, CLEAN_NUMBERS_ANIMATION_MS);
+            });
+        });
     }
 
     function toggleFolder(folderName: string) {
