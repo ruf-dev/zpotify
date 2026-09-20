@@ -1,0 +1,17 @@
+.Line {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.LineTopOpen {
+    transform: translateY(4px) rotate(45deg);
+}
+
+.LineMiddleOpen {
+    opacity: 0;
+}
+
+.LineBottomOpen {
+    transform: translateY(-4px) rotate(-45deg);
+}
