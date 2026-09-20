@@ -2315,8 +2315,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/User/UserWidget.tsx": {
-    "mtime": 1785007557.3766112,
-    "ast_hash": "2b85fcf440e6945180d70064c7f85f82",
+    "mtime": 1789924657.0302904,
+    "ast_hash": "9845f76a6a56a117216655fdd9ae0915",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/AuthWidgets/LogPassWidget.tsx": {
@@ -2850,8 +2850,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/MobileNavSegment/MobileNavSegment.tsx": {
-    "mtime": 1786356564.2744162,
-    "ast_hash": "0e37ed94077eda54565ec0ecd19a8f4b",
+    "mtime": 1789924541.9329326,
+    "ast_hash": "1600afaff711c0e2a6ff5350fff181d5",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/MobileNavSegment/components/MobileSearchButton/MobileSearchButton.tsx": {
@@ -4347,6 +4347,11 @@
   "pkg/client/ZpotifyUI/src/entities/playlist/likedPlaylistCoverFallback.ts": {
     "mtime": 1789919627.137456,
     "ast_hash": "41862e610ac8199c57f084a9ebfa58aa",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/widgets/User/UserWidgetSkeleton.tsx": {
+    "mtime": 1789924627.6794548,
+    "ast_hash": "4b8ee44d6dd75e9b22f4ac6eae058df4",
     "semantic_hash": ""
   }
 }
