@@ -96,5 +96,5 @@ export default function CoverWithFallback(props: CoverWithFallbackProps) {
     }
 
     const resolvedSeed = props.seed ?? resolveCoverSeed({ coverFilePath: props.coverFilePath, uuid: props.uuid });
-    return <GenerativeCover seed={resolvedSeed} size={220} borderRadius="0" fluid />;
+    return <GenerativeCover seed={resolvedSeed} size={220} fluid />;
 }
