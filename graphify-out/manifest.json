@@ -5168,5 +5168,10 @@
     "mtime": 1789672298.0307944,
     "ast_hash": "94be0c264f983b524bd7807c10df8984",
     "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/CLAUDE.local.md": {
+    "mtime": 1789904377.2642548,
+    "ast_hash": "76245fd465de309146efec2ff9ea867d",
+    "semantic_hash": ""
   }
 }
