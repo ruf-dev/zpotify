@@ -9,12 +9,20 @@
     border-radius: var(--border-radius);
     box-shadow: 0 1.5rem 4rem var(--color-shadow-deep), 0 0 0 0.0625rem var(--color-bg-hover);
     animation: scaleIn 0.25s cubic-bezier(0.4,0,0.2,1) both;
-    max-height: calc(100vh - 2.5rem);
+    max-height: var(--dialog-max-height-desktop);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     width: 26rem;
     max-width: 100%;
+}
+
+@media (orientation: portrait) {
+    .TorrentManageDialogContainer {
+        width: var(--dialog-max-width-mobile);
+        height: var(--dialog-max-height-mobile);
+        max-height: var(--dialog-max-height-mobile);
+    }
 }
 
 .PanelHeader {

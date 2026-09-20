@@ -44,6 +44,11 @@
     /* Torrent per-file progress (pending-uploads list) */
     --torrent-file-progress-max-height: 8rem;
 
+    /* Dialog sizing — large/scrollable dialog shells (AddTrack, MultitrackUpload, TorrentManage, ...) */
+    --dialog-max-height-desktop: calc(100vh - 2.5rem);
+    --dialog-max-height-mobile:  85dvh; /* dvh, not vh — stays correct with mobile browser chrome show/hide */
+    --dialog-max-width-mobile:   95vw;
+
     /* Header */
     --header-logo-size:  1.875rem;   /* 30px */
     --header-padding-x:  1.5rem;     /* 24px */

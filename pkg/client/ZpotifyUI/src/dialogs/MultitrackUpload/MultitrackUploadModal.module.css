@@ -12,7 +12,7 @@
 .PanelContainer {
     width: 100%;
     max-width: 44rem;
-    max-height: calc(100vh - 2.5rem);
+    max-height: var(--dialog-max-height-desktop);
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border-light);
     border-radius: var(--border-radius);
@@ -130,8 +130,8 @@
 
 @media (orientation: portrait) {
     .PanelContainer {
-        width: 95vw;
-        height: 85dvh;
-        max-height: 85dvh;
+        width: var(--dialog-max-width-mobile);
+        height: var(--dialog-max-height-mobile);
+        max-height: var(--dialog-max-height-mobile);
     }
 }
