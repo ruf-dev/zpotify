@@ -106,16 +106,23 @@ type TokenParser struct {
 	jwksURL     string
 	issuer      string
 	audience    string
+	httpClient  *http.Client
 	jwksCache   *JWKSResponse
 	cacheExpiry time.Time
 }
 
-// NewTokenParser creates a new token parser with configuration.
-func NewTokenParser(jwksURL, issuer, audience string) TokenParser {
+// NewTokenParser creates a new token parser with configuration. httpClient may be nil,
+// in which case http.DefaultClient is used - pass a proxy-configured client when the
+// JWKS host is unreachable directly (same as the Telegram bot's outbound calls).
+func NewTokenParser(jwksURL, issuer, audience string, httpClient *http.Client) TokenParser {
+	if httpClient == nil {
+		httpClient = http.DefaultClient
+	}
 	return TokenParser{
-		jwksURL:  jwksURL,
-		issuer:   issuer,
-		audience: audience,
+		jwksURL:    jwksURL,
+		issuer:     issuer,
+		audience:   audience,
+		httpClient: httpClient,
 	}
 }
 
@@ -208,7 +215,7 @@ func (tp *TokenParser) getJWKS() (*JWKSResponse, error) {
 		return nil, fmt.Errorf("failed to build JWKS request: %w", err)
 	}
 
-	resp, err := http.DefaultClient.Do(req) //nolint:bodyclose // closed below via utils.CloseWithLog
+	resp, err := tp.httpClient.Do(req) //nolint:bodyclose // closed below via utils.CloseWithLog
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch JWKS: %w", err)
 	}

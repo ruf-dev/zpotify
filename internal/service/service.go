@@ -3,6 +3,8 @@ package service
 import (
 	"context"
 	"io"
+	"net/http"
+	"net/url"
 
 	"go.redsock.ru/rerrors"
 
@@ -55,10 +57,22 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 	torrentService *v1.TorrentService,
 	cfg config.Config,
 ) (Service, error) {
+	var jwksHttpClient *http.Client
+	if cfg.Environment.TelegramProxyURL != "" {
+		proxyUrl, err := url.Parse(cfg.Environment.TelegramProxyURL)
+		if err != nil {
+			return nil, rerrors.Wrap(err, "error parsing telegram proxy url")
+		}
+
+		jwksTransport := &http.Transport{Proxy: http.ProxyURL(proxyUrl)}
+		jwksHttpClient = &http.Client{Transport: jwksTransport}
+	}
+
 	tokenParser := telegram.NewTokenParser(
 		"https://oauth.telegram.org/.well-known/jwks.json",
 		"https://oauth.telegram.org",
-		cfg.Environment.TelegramClientID)
+		cfg.Environment.TelegramClientID,
+		jwksHttpClient)
 
 	authSvc, err := auth.New(dataStorage, tokenParser, adminNotifier)
 	if err != nil {
