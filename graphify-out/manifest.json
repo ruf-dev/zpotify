@@ -2315,8 +2315,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/User/UserWidget.tsx": {
-    "mtime": 1789924657.0302904,
-    "ast_hash": "9845f76a6a56a117216655fdd9ae0915",
+    "mtime": 1789933905.5933783,
+    "ast_hash": "ffd06ef3f6955a648ec64a0b9300efd0",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/AuthWidgets/LogPassWidget.tsx": {
@@ -4050,8 +4050,8 @@
     "semantic_hash": ""
   },
   ".claude/hooks/restart-serve-on-stop.sh": {
-    "mtime": 1789897937.6781101,
-    "ast_hash": "26e551de0ff7a55291c91567950c785c",
+    "mtime": 1789933792.1637454,
+    "ast_hash": "4c59f1d762754d2a269a3d1f8e654015",
     "semantic_hash": ""
   },
   ".claude/hooks/serve-session-end.sh": {
