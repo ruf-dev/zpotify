@@ -18,7 +18,19 @@ interface UserWidgetProps {
 
 export default function UserWidget({ dropdownDirection = 'down', showUsername = true }: UserWidgetProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuClosing, setIsMenuClosing] = useState(false);
     const widgetRef = useRef<HTMLDivElement>(null);
+
+    function closeMenu() {
+        setIsMenuClosing(true);
+    }
+
+    function handleDropdownAnimationEnd() {
+        if (isMenuClosing) {
+            setIsMenuOpen(false);
+            setIsMenuClosing(false);
+        }
+    }
 
     const userData = useUser((state) => state.userData);
     const authStatus = useUser((state) => state.authStatus);
@@ -27,13 +39,22 @@ export default function UserWidget({ dropdownDirection = 'down', showUsername = 
     const { OpenDialog } = useDialog();
 
     function openSettings() {
-        setIsMenuOpen(false);
+        closeMenu();
         OpenDialog(<SettingsDialog />);
     }
 
     function openNotifications() {
-        setIsMenuOpen(false);
+        closeMenu();
         openNotificationsPanel();
+    }
+
+    function toggleMenu() {
+        if (isMenuOpen) {
+            closeMenu();
+        } else {
+            setIsMenuClosing(false);
+            setIsMenuOpen(true);
+        }
     }
 
     const menuOptions = [
@@ -45,15 +66,17 @@ export default function UserWidget({ dropdownDirection = 'down', showUsername = 
     ];
 
     useEffect(() => {
+        if (!isMenuOpen) return;
+
         function handleClickOutside(event: MouseEvent) {
             if (widgetRef.current && !widgetRef.current.contains(event.target as Node)) {
-                setIsMenuOpen(false);
+                setIsMenuClosing(true);
             }
         }
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+    }, [isMenuOpen]);
 
     if (authStatus === 'checking') {
         return <UserWidgetSkeleton showUsername={showUsername} />;
@@ -65,7 +88,7 @@ export default function UserWidget({ dropdownDirection = 'down', showUsername = 
 
     return (
         <div className={cls.UserWidget} ref={widgetRef}>
-            <div className={cn(cls.Pill, !showUsername && cls.PillCompact)} onClick={() => setIsMenuOpen((o) => !o)}>
+            <div className={cn(cls.Pill, !showUsername && cls.PillCompact)} onClick={toggleMenu}>
                 <div className={cls.AvatarContainer}>
                     <GeneratedAvatar username={userData.username} pictureUrl={userData.pictureUrl} />
                 </div>
@@ -73,7 +96,14 @@ export default function UserWidget({ dropdownDirection = 'down', showUsername = 
             </div>
 
             {isMenuOpen && (
-                <div className={cn(cls.Dropdown, dropdownDirection === 'up' ? cls.DropdownUp : cls.DropdownDown)}>
+                <div
+                    className={cn(
+                        cls.Dropdown,
+                        dropdownDirection === 'up' ? cls.DropdownUp : cls.DropdownDown,
+                        isMenuClosing && cls.DropdownClosing,
+                    )}
+                    onAnimationEnd={handleDropdownAnimationEnd}
+                >
                     <Menu options={menuOptions} />
                 </div>
             )}

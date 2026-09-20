@@ -29,6 +29,7 @@
     height: 24px;
     border-radius: 50%;
     background: rgb(255 255 255 / 22%);
+    border: 1px solid var(--color-border-light);
     overflow: hidden;
     flex-shrink: 0;
     display: flex;
@@ -36,19 +37,40 @@
     justify-content: center;
 }
 
+@media (orientation: portrait) {
+    .PillCompact {
+        padding: 0;
+    }
+
+    .PillCompact .AvatarContainer {
+        width: var(--mobile-nav-button-size);
+        height: var(--mobile-nav-button-size);
+    }
+}
+
 .Username {
     color: rgb(255 255 255 / 50%);
     font-size: var(--font-size-sm);
 }
 
-@keyframes fadeSlideDown {
-    from { opacity: 0; transform: translateY(-0.5rem); }
-    to   { opacity: 1; transform: translateY(0); }
+@keyframes fadeSlideDownIn {
+    from { opacity: 0; transform: translateY(-0.5rem) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-@keyframes fadeSlideUp {
-    from { opacity: 0; transform: translateY(0.5rem); }
-    to   { opacity: 1; transform: translateY(0); }
+@keyframes fadeSlideDownOut {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to   { opacity: 0; transform: translateY(-0.5rem) scale(0.96); }
+}
+
+@keyframes fadeSlideUpIn {
+    from { opacity: 0; transform: translateY(0.5rem) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fadeSlideUpOut {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to   { opacity: 0; transform: translateY(0.5rem) scale(0.96); }
 }
 
 .Dropdown {
@@ -59,16 +81,26 @@
     border-radius: 0.75em;
     padding: 0.5em;
     min-width: 130px;
-    animation: fadeSlideDown 0.18s ease both;
 }
 
 .DropdownDown {
     top: calc(100% + 6px);
+    transform-origin: top right;
+    animation: fadeSlideDownIn 0.16s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+.DropdownDown.DropdownClosing {
+    animation: fadeSlideDownOut 0.14s ease-in both;
 }
 
 .DropdownUp {
     bottom: calc(100% + 6px);
-    animation-name: fadeSlideUp;
+    transform-origin: bottom right;
+    animation: fadeSlideUpIn 0.16s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+.DropdownUp.DropdownClosing {
+    animation: fadeSlideUpOut 0.14s ease-in both;
 }
 
 @keyframes shimmer {
@@ -92,4 +124,26 @@
     width: 4.5rem;
     height: var(--font-size-sm);
     border-radius: var(--border-radius-sm);
+}
+
+@keyframes avatarSpin {
+    to { transform: rotate(1turn); }
+}
+
+.AvatarSkeleton {
+    position: relative;
+    background: var(--color-bg-accent);
+}
+
+.AvatarSkeleton::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        var(--color-bg-hover-mid) 90deg,
+        transparent 200deg
+    );
+    animation: avatarSpin 1.2s linear infinite;
 }
