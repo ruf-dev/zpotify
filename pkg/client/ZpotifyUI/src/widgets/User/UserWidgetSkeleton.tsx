@@ -10,7 +10,7 @@ export default function UserWidgetSkeleton({ showUsername = true }: UserWidgetSk
     return (
         <div className={cls.UserWidget}>
             <div className={cn(cls.Pill, !showUsername && cls.PillCompact)}>
-                <div className={cn(cls.AvatarContainer, cls.ShimmerBlock)} />
+                <div className={cn(cls.AvatarContainer, cls.AvatarSkeleton)} />
                 {showUsername && <div className={cn(cls.ShimmerBlock, cls.SkeletonUsername)} />}
             </div>
         </div>
