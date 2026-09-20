@@ -29,6 +29,7 @@
 @media (orientation: portrait) {
     .AddTrackContainer {
         width: var(--dialog-max-width-mobile);
+        max-width: none;
         height: var(--dialog-max-height-mobile);
         max-height: var(--dialog-max-height-mobile);
     }

@@ -5,7 +5,7 @@
 
 .DropZoneScreenContainer {
     animation: slideIn 0.2s ease both;
-    width: min(56vw, 44rem);
+    width: 100%;
 }
 
 .DropZone {

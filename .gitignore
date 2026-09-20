@@ -34,3 +34,10 @@ tests/logs/*
 tests/data/*
 !tests/data/.gitkeep
 /.verv/local/
+
+# Claude serve-session hook runtime state
+/.claude/hooks/.last-serve-restart
+/.claude/hooks/serve.log
+
+# /brag skill scratch output — moved out of the repo, see CLAUDE.local.md
+/brag-output/
