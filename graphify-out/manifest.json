@@ -2765,8 +2765,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/assets/icons/SidebarToggleIcon.tsx": {
-    "mtime": 1783885931.7654169,
-    "ast_hash": "ca6f635432f4bfd4e867e7bc9bad7a2e",
+    "mtime": 1789928498.0122285,
+    "ast_hash": "47f744418b30e03f3ff3f6078fd50cdf",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/assets/icons/SpinnerIcon.tsx": {
@@ -2860,8 +2860,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/MobileNavSegment/components/SidebarToggleButton/SidebarToggleButton.tsx": {
-    "mtime": 1783919118.3547468,
-    "ast_hash": "bd30efe1de29540866fe44b34f5bf05f",
+    "mtime": 1789928504.0075257,
+    "ast_hash": "ed448797c436c8dc8e69e536c53d1727",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/api/SearchService.ts": {
