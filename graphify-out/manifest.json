@@ -2315,8 +2315,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/User/UserWidget.tsx": {
-    "mtime": 1789933905.5933783,
-    "ast_hash": "ffd06ef3f6955a648ec64a0b9300efd0",
+    "mtime": 1789934224.5358062,
+    "ast_hash": "6e0fd14b54c6ee9f4d46fc3b87f21dd9",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/AuthWidgets/LogPassWidget.tsx": {
