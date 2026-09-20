@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@vervstack/chures';
+import cn from 'classnames';
 
 import cls from '@/dialogs/AddTrack/screens/PendingFilesScreen.module.css';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
@@ -11,6 +12,7 @@ import FolderGroupHeader from '@/components/FolderGroupHeader/FolderGroupHeader'
 import { usePendingFiles } from '@/dialogs/AddTrack/screens/usePendingFiles.tsx';
 import { useTorrentJobs } from '@/dialogs/AddTrack/screens/useTorrentJobs.ts';
 import { parseSongFilePath } from '@/dialogs/AddTrack/screens/parseSongFilePath.ts';
+import { isTerminalTorrentStatus } from '@/shared/lib/torrentStatus.ts';
 import type { SongFile } from '@/app/api/zpotify';
 
 interface GroupedFiles {
@@ -97,13 +99,16 @@ export default function PendingFilesScreen({
     }
 
     const grouped = groupFilesByFolder(pendingFiles.files);
+    const hasActiveTorrentJob = torrentJobs.jobs.some((job) => !isTerminalTorrentStatus(job.status));
 
     return (
         <div className={cls.PendingFilesScreenContainer}>
             {renderTorrentJobs()}
             {batchTracks.length > 0 && <BatchUploadSection tracks={batchTracks} onOpenFolder={handleOpenBatchFolder} />}
             {pendingFiles.files.length === 0 ? (
-                <div className={cls.Empty}>no pending uploads found</div>
+                <div className={cls.Empty}>
+                    {hasActiveTorrentJob ? 'track will be downloaded soon' : 'no pending uploads found'}
+                </div>
             ) : (
                 <>
                     <div className={cls.ActionsRow}>
@@ -146,9 +151,16 @@ export default function PendingFilesScreen({
                                         }
                                         onCreatePlaylist={() => handleCreatePlaylistFromFolder(folderName, groupFiles)}
                                     />
-                                    {!collapsed && (
-                                        <div className={cls.FolderTrackIndent}>{groupFiles.map(renderFileItem)}</div>
-                                    )}
+                                    <div
+                                        className={cn(
+                                            cls.FolderTrackIndent,
+                                            !collapsed && cls.FolderTrackIndentExpanded,
+                                        )}
+                                    >
+                                        <div className={cls.FolderTrackIndentInner}>
+                                            {groupFiles.map(renderFileItem)}
+                                        </div>
+                                    </div>
                                 </div>
                             );
                         })}

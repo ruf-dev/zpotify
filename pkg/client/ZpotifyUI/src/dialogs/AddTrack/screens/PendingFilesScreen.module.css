@@ -45,12 +45,24 @@
 }
 
 .FolderTrackIndent {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.25s ease;
     margin-left: 1.25rem;
     padding-left: 0.625rem;
     border-left: 0.0625rem solid var(--color-border);
+}
+
+.FolderTrackIndentExpanded {
+    grid-template-rows: 1fr;
+}
+
+.FolderTrackIndentInner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .TorrentJobList {
