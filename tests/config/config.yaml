@@ -4,13 +4,13 @@ app_info:
   startup_duration: 10s
 data_sources:
   - resource_name: postgres
-    migrations_folder: ./migrations
+    migrations_folder: ../migrations
     host: localhost
-    port: 5432
+    port: 15432
     user: zpotify
     pwd: ""
-    name: zpotify
-    ssl_mode: ""
+    name: zpotify_db
+    ssl_mode: disable
 servers:
   80:
     /{GRPC}:

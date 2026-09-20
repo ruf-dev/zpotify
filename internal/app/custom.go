@@ -103,6 +103,11 @@ func (c *Custom) Init(app *App) (err error) {
 		log.Logger = log.Logger.Hook(hook)
 	}
 
+	err = postgres.MigrateToPostgres()
+	if err != nil {
+		return rerrors.Wrap(err, "error migrating postgres")
+	}
+
 	postgresConn, err := postgres.ConnectToPostgres()
 	if err != nil {
 		return rerrors.Wrap(err, "error connecting to postgres")
