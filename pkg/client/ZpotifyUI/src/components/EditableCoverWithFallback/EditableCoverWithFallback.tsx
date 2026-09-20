@@ -17,6 +17,8 @@ export interface EditableCoverWithFallbackProps {
     disabled?: boolean;
     shape?: 'circle' | 'rect';
     className?: string;
+    avatarFallbackUrl?: string;
+    avatarFallbackLabel?: string;
 }
 
 export default function EditableCoverWithFallback(props: EditableCoverWithFallbackProps) {
@@ -64,6 +66,8 @@ export default function EditableCoverWithFallback(props: EditableCoverWithFallba
                 coverFilePath={props.coverFilePath}
                 uuid={props.uuid}
                 name={props.name}
+                avatarFallbackUrl={props.avatarFallbackUrl}
+                avatarFallbackLabel={props.avatarFallbackLabel}
             />
             {previewUrl && (
                 <img key={previewUrl} src={previewUrl} alt={props.name ?? ''} className={cls.PreviewImage} />

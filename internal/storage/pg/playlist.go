@@ -639,7 +639,7 @@ func (b playlistsListBuilder) applyFilters(req domain.ListPlaylists) playlistsLi
 
 func (b playlistsListBuilder) applySorting(req domain.ListPlaylists) playlistsListBuilder {
 	if req.ByAuthedUser {
-		b.SelectBuilder = b.OrderBy("up.order_id")
+		b.SelectBuilder = b.OrderBy("up.order_id DESC")
 	} else {
 		b.SelectBuilder = b.OrderBy("v.uuid")
 	}

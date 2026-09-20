@@ -14,6 +14,8 @@ export default function PlaylistCardWide({
     seed,
     coverUrl,
     tracks,
+    avatarFallbackUrl,
+    avatarFallbackLabel,
 }: PlaylistCardWideProps) {
     const navigate = useNavigate();
     const subText = `${songCount ?? '?'} tracks${description ? ` · ${description}` : ''}`;
@@ -25,7 +27,13 @@ export default function PlaylistCardWide({
     return (
         <div className={cls.PlaylistCardWideContainer} onClick={handleClick}>
             <div className={cls.CoverWrapper}>
-                <CoverWithFallback coverUrl={coverUrl} seed={seed} name={name} />
+                <CoverWithFallback
+                    coverUrl={coverUrl}
+                    seed={seed}
+                    name={name}
+                    avatarFallbackUrl={avatarFallbackUrl}
+                    avatarFallbackLabel={avatarFallbackLabel}
+                />
             </div>
             <div className={cls.Content}>
                 <div className={cls.Header}>

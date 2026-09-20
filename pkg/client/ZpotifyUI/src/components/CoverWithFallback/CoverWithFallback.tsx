@@ -14,19 +14,27 @@ interface CoverWithFallbackProps {
     name?: string;
     seed?: number;
     className?: string;
+    avatarFallbackUrl?: string;
+    avatarFallbackLabel?: string;
 }
 
-export default function CoverWithFallback({
-    coverUrl,
-    coverFilePath,
-    uuid,
-    name,
-    seed,
-    className,
-}: CoverWithFallbackProps) {
+export default function CoverWithFallback(props: CoverWithFallbackProps) {
     const [objectUrl, setObjectUrl] = useState<string | null>(null);
+    const [avatarFailed, setAvatarFailed] = useState(false);
+
+    useEffect(
+        function resetAvatarFailure() {
+            setAvatarFailed(false);
+        },
+        [props.avatarFallbackUrl],
+    );
+
+    function handleAvatarError() {
+        setAvatarFailed(true);
+    }
 
     useEffect(() => {
+        const coverUrl = props.coverUrl;
         setObjectUrl(null);
         if (!coverUrl) return undefined;
 
@@ -61,12 +69,32 @@ export default function CoverWithFallback({
             cancelled = true;
             if (createdUrl) URL.revokeObjectURL(createdUrl);
         };
-    }, [coverUrl]);
+    }, [props.coverUrl]);
 
-    if (coverUrl) {
-        return <img src={objectUrl ?? coverUrl} alt={name ?? ''} className={cn(cls.CoverImage, className)} />;
+    if (props.coverUrl) {
+        return (
+            <img
+                src={objectUrl ?? props.coverUrl}
+                alt={props.name ?? ''}
+                className={cn(cls.CoverImage, props.className)}
+            />
+        );
     }
 
-    const resolvedSeed = seed ?? resolveCoverSeed({ coverFilePath, uuid });
+    if (props.avatarFallbackUrl && !avatarFailed) {
+        return (
+            <div className={cn(cls.AvatarCoverContainer, props.className)}>
+                <img
+                    src={props.avatarFallbackUrl}
+                    alt={props.name ?? ''}
+                    className={cls.AvatarCoverImage}
+                    onError={handleAvatarError}
+                />
+                {props.avatarFallbackLabel && <span className={cls.AvatarCoverLabel}>{props.avatarFallbackLabel}</span>}
+            </div>
+        );
+    }
+
+    const resolvedSeed = props.seed ?? resolveCoverSeed({ coverFilePath: props.coverFilePath, uuid: props.uuid });
     return <GenerativeCover seed={resolvedSeed} size={220} borderRadius="0" fluid />;
 }

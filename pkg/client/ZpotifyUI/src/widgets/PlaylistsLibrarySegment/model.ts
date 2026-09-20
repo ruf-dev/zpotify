@@ -16,6 +16,8 @@ export type PlaylistCardWideProps = {
     seed: number;
     coverUrl?: string;
     tracks: TrackPreview[];
+    avatarFallbackUrl?: string;
+    avatarFallbackLabel?: string;
 };
 
 export type LibraryItem = ({ kind: 'album' } & AlbumCardProps) | ({ kind: 'playlist' } & PlaylistCardWideProps);

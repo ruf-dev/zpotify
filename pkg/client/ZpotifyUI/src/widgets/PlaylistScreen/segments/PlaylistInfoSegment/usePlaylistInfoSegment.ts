@@ -11,7 +11,9 @@ import type { TrackCountLabelProps } from '@/widgets/PlaylistScreen/components/T
 import type { PlaylistOwnerLabelProps } from '@/widgets/PlaylistScreen/components/PlaylistOwnerLabel/PlaylistOwnerLabel.tsx';
 import type { PlaylistControlsProps } from '@/widgets/PlaylistScreen/widgets/PlaylistControls/PlaylistControls.tsx';
 import { isAlbum } from '@/entities/playlist/isAlbum.ts';
+import { getLikedPlaylistCoverFallback } from '@/entities/playlist/likedPlaylistCoverFallback.ts';
 import { usePlaylistListRefresh } from '@/entities/playlist/usePlaylistListRefresh.ts';
+import useUser from '@/entities/user/useUser.ts';
 import { artistsService } from '@/shared/api/ArtistsService.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { useEagerFileUpload } from '@/shared/lib/useEagerFileUpload.ts';
@@ -38,6 +40,8 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
     const queryClient = useQueryClient();
     const toaster = useToaster();
     const refreshPlaylists = usePlaylistListRefresh((s) => s.refresh);
+    const likedPlaylistId = useUser((s) => s.userData?.likedPlaylistId);
+    const userAvatarUrl = useUser((s) => s.userData?.pictureUrl);
 
     const [editName, setEditName] = useState('');
     const [editDesc, setEditDesc] = useState('');
@@ -124,6 +128,13 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
     const playlistIsAlbum = isAlbum(playlist);
     const showYear = playlist.year != null || editMode;
 
+    const likedCoverFallback = getLikedPlaylistCoverFallback(
+        playlist.uuid,
+        playlist.name,
+        likedPlaylistId,
+        userAvatarUrl,
+    );
+
     const coverProps: EditableCoverWithFallbackProps = {
         coverFilePath: playlist.coverFilePath,
         uuid: playlist.uuid,
@@ -132,6 +143,8 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
         onFileSelect: handleCoverFileSelect,
         uploadProgress: coverUpload.progress,
         disabled: saving,
+        avatarFallbackUrl: likedCoverFallback.avatarFallbackUrl,
+        avatarFallbackLabel: likedCoverFallback.avatarFallbackLabel,
     };
 
     const albumNameProps: EditableAlbumNameProps = {
