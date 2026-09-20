@@ -112,7 +112,15 @@ export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialo
                 setPendingTorrentUpload({ id: res.id, folderName });
                 setStep('torrentFiles');
             })
-            .catch((err: unknown) => toaster.catch(err as ServiceError))
+            .catch((err: unknown) => {
+                const existingJobId = parseDuplicateTorrentJobId(err);
+                if (existingJobId === undefined) {
+                    toaster.catch(err as ServiceError);
+                    return;
+                }
+
+                openExistingTorrentJob(existingJobId);
+            })
             .finally(() => setUploading(false));
     }
 

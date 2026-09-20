@@ -9,6 +9,7 @@ import LibraryCard from '@/dialogs/AddTrack/screens/components/LibraryCard/Libra
 import UploadCard from '@/dialogs/AddTrack/screens/components/UploadCard/UploadCard';
 import RecentTorrentsPanel from '@/dialogs/AddTrack/screens/components/RecentTorrentsPanel/RecentTorrentsPanel';
 import { useWatchTorrentJobs } from '@/dialogs/AddTrack/screens/useWatchTorrentJobs';
+import { isTerminalTorrentStatus } from '@/shared/lib/torrentStatus.ts';
 
 export default function ChooseScreen({ goTo, handleCreatePlaylist, handleTorrentFile }: AddTrackContext) {
     const { userData } = useUser();
@@ -26,6 +27,7 @@ export default function ChooseScreen({ goTo, handleCreatePlaylist, handleTorrent
 
     const maxPendingTracks = Number(userData?.permissions?.maxPendingTracks ?? 0);
     const atLimit = maxPendingTracks === 0 || pendingCount >= maxPendingTracks;
+    const hasActiveTorrentJob = jobs.some((job) => !isTerminalTorrentStatus(job.status));
 
     function handleTorrentFileSelected(file: File) {
         handleTorrentFile(file);
@@ -39,7 +41,7 @@ export default function ChooseScreen({ goTo, handleCreatePlaylist, handleTorrent
                 <LibraryCard
                     pendingCount={pendingCount}
                     onClick={() => goTo('pending')}
-                    disabled={pendingCount === 0}
+                    disabled={pendingCount === 0 && !hasActiveTorrentJob}
                 />
                 <UploadCard
                     atLimit={atLimit}
