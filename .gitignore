@@ -33,3 +33,4 @@ tests/logs/*
 
 tests/data/*
 !tests/data/.gitkeep
+/.verv/local/

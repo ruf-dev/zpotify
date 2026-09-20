@@ -1,5 +1,5 @@
 #!/bin/bash
-# SessionStart hook (see .claude/settings.local.json): brings up `make serve` (build-ui + go
+# SessionStart hook (see .claude/settings.local.json): brings up `make serve-rc` (build-ui + go
 # service serving the embedded UI bundle) for the session.
 #
 #   - source=startup|clear, port free -> start serve, tell Claude to announce it in the first
@@ -19,7 +19,7 @@ LOG=".claude/hooks/serve.log"
 
 start_serve() {
 	touch "$MARKER"
-	nohup make serve >"$LOG" 2>&1 </dev/null &
+	nohup make serve-rc >"$LOG" 2>&1 </dev/null &
 	local pid=$!
 	disown
 	caffeinate -d -u -w "$pid" >/dev/null 2>&1 &
@@ -31,7 +31,7 @@ kill_serve() {
 	port_pid=$(lsof -ti tcp:8087 2>/dev/null || true)
 	[ -n "$port_pid" ] && kill $port_pid 2>/dev/null || true
 	pkill -f "[g]o run ./cmd/service -dev" 2>/dev/null || true
-	pkill -f "[m]ake serve" 2>/dev/null || true
+	pkill -f "[m]ake serve-rc" 2>/dev/null || true
 	local i
 	for i in $(seq 1 20); do
 		lsof -ti tcp:8087 >/dev/null 2>&1 || return 0
@@ -63,12 +63,12 @@ fi
 
 if [ -z "$PORT_PID" ]; then
 	start_serve
-	CTX="zpotify dev server wasn't running — started \`make serve\` fresh (building; will be up at http://localhost:8087 shortly). Mention this in your first message so the user knows it's starting."
+	CTX="zpotify dev server wasn't running — started \`make serve-rc\` fresh (building; will be up at http://localhost:8087 shortly). Mention this in your first message so the user knows it's starting."
 	jq -cn --arg c "$CTX" '{hookSpecificOutput:{hookEventName:"SessionStart",additionalContext:$c}}'
 	exit 0
 fi
 
 UPTIME=$(ps -o etime= -p "$PORT_PID" 2>/dev/null | tr -d ' ')
-CTX="zpotify \`make serve\` is already listening on :8087 (PID ${PORT_PID}, up ${UPTIME:-unknown}). Before anything else this session, call AskUserQuestion asking whether to keep this running instance or restart/reload it fresh. If they pick restart, run: bash .claude/hooks/serve-session-start.sh --restart"
+CTX="zpotify \`make serve-rc\` is already listening on :8087 (PID ${PORT_PID}, up ${UPTIME:-unknown}). Before anything else this session, call AskUserQuestion asking whether to keep this running instance or restart/reload it fresh. If they pick restart, run: bash .claude/hooks/serve-session-start.sh --restart"
 jq -cn --arg c "$CTX" '{hookSpecificOutput:{hookEventName:"SessionStart",additionalContext:$c}}'
 exit 0

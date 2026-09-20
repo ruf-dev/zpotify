@@ -1,5 +1,5 @@
 #!/bin/bash
-# SessionEnd hook (see .claude/settings.local.json): stops the local `make serve` (go service
+# SessionEnd hook (see .claude/settings.local.json): stops the local `make serve-rc` (go service
 # serving the embedded UI bundle) when the Claude session closes (Ctrl+C from the binary, logout,
 # etc.), so the server's lifetime matches the conversation's.
 set -uo pipefail
@@ -10,6 +10,6 @@ if [ -n "$PORT_PID" ]; then
 fi
 
 pkill -f "[g]o run ./cmd/service -dev" 2>/dev/null || true
-pkill -f "[m]ake serve" 2>/dev/null || true
+pkill -f "[m]ake serve-rc" 2>/dev/null || true
 
 exit 0

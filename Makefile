@@ -30,8 +30,15 @@ build-ui:
 	rm -rf internal/transport/ui/dist
 	cp -r pkg/client/ZpotifyUI/dist internal/transport/ui/dist
 
-# Run the Go dev server, serving the freshly built UI bundle embedded in the binary
-serve: build-ui
+# Local dev at the machine: Go binary (API only) + Vite dev server (HMR), run concurrently.
+serve:
+	@trap 'kill 0' EXIT INT TERM; \
+	(cd pkg/client/ZpotifyUI && bun run dev) & \
+	go run ./cmd/service -dev & \
+	wait
+
+# Remote-control dev: build the UI, embed it into the Go binary, run the binary alone.
+serve-rc: build-ui
 	go run ./cmd/service -dev
 
 # Build UI part of project
