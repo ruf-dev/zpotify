@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 
 import cls from '@/widgets/User/UserWidget.module.css';
+import UserWidgetSkeleton from '@/widgets/User/UserWidgetSkeleton.tsx';
 import useUser from '@/entities/user/useUser.ts';
 import GeneratedAvatar from '@/entities/user/GeneratedAvatar.tsx';
 import Menu from '@/components/menu/Menu.tsx';
@@ -20,6 +21,7 @@ export default function UserWidget({ dropdownDirection = 'down', showUsername = 
     const widgetRef = useRef<HTMLDivElement>(null);
 
     const userData = useUser((state) => state.userData);
+    const authStatus = useUser((state) => state.authStatus);
     const logout = useUser((state) => state.logout);
     const openNotificationsPanel = useNotifications((state) => state.openPanel);
     const { OpenDialog } = useDialog();
@@ -52,6 +54,10 @@ export default function UserWidget({ dropdownDirection = 'down', showUsername = 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+
+    if (authStatus === 'checking') {
+        return <UserWidgetSkeleton showUsername={showUsername} />;
+    }
 
     if (!userData) {
         return <></>;

@@ -9,11 +9,10 @@ export default function MobileNavSegment() {
 
     return (
         <div className={cls.MobileNavContainer}>
-            <div className={cls.LeftGroup}>{showSidebar && <SidebarToggleButton />}</div>
-
             <div className={cls.RightGroup}>
                 <MobileSearchButton />
                 <UserWidget dropdownDirection="up" showUsername={false} />
+                {showSidebar && <SidebarToggleButton />}
             </div>
         </div>
     );

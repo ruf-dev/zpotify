@@ -57,3 +57,23 @@
     font-size: 0.4375rem;
     color: var(--color-fg-tertiary);
 }
+
+@media (orientation: portrait) {
+    .PlaylistRow {
+        gap: var(--space-md);
+        padding: var(--space-sm) var(--space-lg);
+    }
+
+    .PlaylistCover {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .PlaylistName {
+        font-size: var(--font-size-lg);
+    }
+
+    .PlaylistTracks {
+        font-size: var(--font-size-xs);
+    }
+}

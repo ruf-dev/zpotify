@@ -58,3 +58,20 @@
     color: var(--color-fg-primary);
     white-space: nowrap;
 }
+
+@media (orientation: portrait) {
+    .ArtistRow {
+        gap: var(--space-md);
+        padding: var(--space-sm) var(--space-lg);
+    }
+
+    .ArtistAvatar {
+        width: 2rem;
+        height: 2rem;
+        font-size: var(--font-size-base);
+    }
+
+    .ArtistName {
+        font-size: var(--font-size-lg);
+    }
+}

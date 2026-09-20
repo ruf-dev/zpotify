@@ -41,3 +41,9 @@ tests/data/*
 
 # /brag skill scratch output — moved out of the repo, see CLAUDE.local.md
 /brag-output/
+
+# Personal Claude Code permission overrides — not shared with the team
+/.claude/settings.local.json
+
+# Personal Claude Code slash commands — not shared with the team
+/.claude/commands/
