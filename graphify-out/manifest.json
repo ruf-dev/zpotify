@@ -4050,18 +4050,18 @@
     "semantic_hash": ""
   },
   ".claude/hooks/restart-serve-on-stop.sh": {
-    "mtime": 1789373102.7681565,
-    "ast_hash": "8af61c1e091a95d04851927a55225eb1",
+    "mtime": 1789897937.6781101,
+    "ast_hash": "26e551de0ff7a55291c91567950c785c",
     "semantic_hash": ""
   },
   ".claude/hooks/serve-session-end.sh": {
-    "mtime": 1789373117.1581283,
-    "ast_hash": "a38bcacb49d9d3f5caa0c0a80c840046",
+    "mtime": 1789897927.1906283,
+    "ast_hash": "9bfe687e176ca08c63476ab0f33f7c15",
     "semantic_hash": ""
   },
   ".claude/hooks/serve-session-start.sh": {
-    "mtime": 1789646257.5931072,
-    "ast_hash": "c4676ae8101644861719b4f26688b822",
+    "mtime": 1789897918.3901255,
+    "ast_hash": "696e9a869d9793ee2c0e07a0f749532a",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/downloads/DownloadsPage.tsx": {
