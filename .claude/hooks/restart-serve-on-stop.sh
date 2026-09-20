@@ -36,4 +36,14 @@ disown
 caffeinate -d -u -w "$SERVE_PID" >/dev/null 2>&1 &
 disown
 
+# Block the Stop hook until the rebuilt server is actually serving, so the turn doesn't end
+# (and the developer doesn't reload) while build-ui/go run is still in flight. Without this,
+# the reload race was the main reason a code change took 2-3 manual reloads to show up.
+# Zpotify itself sends a Telegram ping once it's up (see internal/clients/telegram) - no need
+# to duplicate that here.
+for i in $(seq 1 120); do
+	curl -sf -o /dev/null -m 2 http://localhost:8087/ && exit 0
+	sleep 0.5
+done
+
 exit 0
