@@ -25,11 +25,11 @@ func (f *fakeSongsQuerier) CreateSong(_ context.Context, _ songs_q.CreateSongPar
 func (f *fakeSongsQuerier) GetArtistsBySongId(_ context.Context, _ int64) ([]songs_q.GetArtistsBySongIdRow, error) {
 	return nil, nil
 }
-func (f *fakeSongsQuerier) GetSongByFileId(_ context.Context, _ int64) (songs_q.SongBaseViewV1, error) {
-	return songs_q.SongBaseViewV1{}, nil
+func (f *fakeSongsQuerier) GetSongByFileId(_ context.Context, _ int64) (songs_q.SongBaseViewV2, error) {
+	return songs_q.SongBaseViewV2{}, nil
 }
-func (f *fakeSongsQuerier) GetSongById(_ context.Context, _ int64) (songs_q.SongBaseViewV1, error) {
-	return songs_q.SongBaseViewV1{}, nil
+func (f *fakeSongsQuerier) GetSongById(_ context.Context, _ int64) (songs_q.SongBaseViewV2, error) {
+	return songs_q.SongBaseViewV2{}, nil
 }
 func (f *fakeSongsQuerier) GetSongTags(_ context.Context, _ int64) ([]songs_q.GetSongTagsRow, error) {
 	return nil, nil

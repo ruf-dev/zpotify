@@ -93,14 +93,15 @@ SELECT id,
        created_at,
        duration_sec,
        file_path,
-       file_id
-FROM song_base_view_v1 s
+       file_id,
+       cover_file_path
+FROM song_base_view_v2 s
 WHERE s.file_id = $1
 `
 
-func (q *Queries) GetSongByFileId(ctx context.Context, fileID int64) (SongBaseViewV1, error) {
+func (q *Queries) GetSongByFileId(ctx context.Context, fileID int64) (SongBaseViewV2, error) {
 	row := q.db.QueryRowContext(ctx, getSongByFileId, fileID)
-	var i SongBaseViewV1
+	var i SongBaseViewV2
 	err := row.Scan(
 		&i.ID,
 		&i.Title,
@@ -108,6 +109,7 @@ func (q *Queries) GetSongByFileId(ctx context.Context, fileID int64) (SongBaseVi
 		&i.DurationSec,
 		&i.FilePath,
 		&i.FileID,
+		&i.CoverFilePath,
 	)
 	return i, err
 }
@@ -118,14 +120,15 @@ SELECT id,
        created_at,
        duration_sec,
        file_path,
-       file_id
-FROM song_base_view_v1 s
+       file_id,
+       cover_file_path
+FROM song_base_view_v2 s
 WHERE s.id = $1
 `
 
-func (q *Queries) GetSongById(ctx context.Context, id int64) (SongBaseViewV1, error) {
+func (q *Queries) GetSongById(ctx context.Context, id int64) (SongBaseViewV2, error) {
 	row := q.db.QueryRowContext(ctx, getSongById, id)
-	var i SongBaseViewV1
+	var i SongBaseViewV2
 	err := row.Scan(
 		&i.ID,
 		&i.Title,
@@ -133,6 +136,7 @@ func (q *Queries) GetSongById(ctx context.Context, id int64) (SongBaseViewV1, er
 		&i.DurationSec,
 		&i.FilePath,
 		&i.FileID,
+		&i.CoverFilePath,
 	)
 	return i, err
 }

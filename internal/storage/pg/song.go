@@ -368,13 +368,14 @@ func (s *SongsStorage) WithTx(tx *sql.Tx) storage.SongStorage {
 	}
 }
 
-func toSongBase(song songs_q.SongBaseViewV1) domain.SongBase {
+func toSongBase(song songs_q.SongBaseViewV2) domain.SongBase {
 	return domain.SongBase{
-		Id:       song.ID,
-		Title:    song.Title,
-		Duration: time.Duration(song.DurationSec) * time.Second,
-		FilePath: song.FilePath,
-		FileId:   song.FileID,
+		Id:            song.ID,
+		Title:         song.Title,
+		Duration:      time.Duration(song.DurationSec) * time.Second,
+		FilePath:      song.FilePath,
+		FileId:        song.FileID,
+		CoverFilePath: song.CoverFilePath.String,
 	}
 }
 

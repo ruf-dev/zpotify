@@ -9,8 +9,9 @@ SELECT id,
        created_at,
        duration_sec,
        file_path,
-       file_id
-FROM song_base_view_v1 s
+       file_id,
+       cover_file_path
+FROM song_base_view_v2 s
 WHERE s.file_id = $1;
 
 -- name: UpdateSongTitle :exec
@@ -35,8 +36,9 @@ SELECT id,
        created_at,
        duration_sec,
        file_path,
-       file_id
-FROM song_base_view_v1 s
+       file_id,
+       cover_file_path
+FROM song_base_view_v2 s
 WHERE s.id = $1;
 
 -- name: GetArtistsBySongId :many

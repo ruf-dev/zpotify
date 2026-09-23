@@ -592,6 +592,16 @@ type SongBaseViewV1 struct {
 	FileID      int64
 }
 
+type SongBaseViewV2 struct {
+	ID            int64
+	Title         string
+	CreatedAt     time.Time
+	DurationSec   int64
+	FilePath      string
+	FileID        int64
+	CoverFilePath sql.NullString
+}
+
 type SongSearchViewV1 struct {
 	ID          int64
 	Title       string

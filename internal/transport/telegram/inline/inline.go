@@ -3,7 +3,9 @@ package inline
 import (
 	"context"
 	"fmt"
+	"path"
 	"strconv"
+	"strings"
 
 	"github.com/Red-Sock/go_tg/model"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -128,7 +130,7 @@ func (h *Handler) buildResult(track domain.Song) interface{} {
 		ok = false
 	}
 
-	if ok {
+	if ok && cachedAudioEligible(track.FilePath) {
 		return tgbotapi.NewInlineQueryResultCachedAudio(id, fileId)
 	}
 
@@ -148,6 +150,22 @@ func (h *Handler) buildResult(track domain.Song) interface{} {
 	}
 
 	return placeholder
+}
+
+// cachedAudioEligible reports whether filePath's extension is a format
+// Telegram accepts for InlineQueryResultCachedAudio - only MP3 and M4A. A
+// cached file_id for any other format (flac, ogg, wav, ...) plays fine via
+// a regular send or editMessageMedia, but reusing it as a cached_audio
+// inline result makes Telegram reject the entire answer with
+// AUDIO_CONTENT_TYPE_INVALID - so those songs always go through the
+// placeholder + HandleChosen edit path instead, even once cached.
+func cachedAudioEligible(filePath string) bool {
+	switch strings.ToLower(path.Ext(filePath)) {
+	case ".mp3", ".m4a":
+		return true
+	default:
+		return false
+	}
 }
 
 // buildCoverURL returns the public URL Telegram can fetch for song's cover
