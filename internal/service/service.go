@@ -79,7 +79,7 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 		return nil, rerrors.Wrap(err, "error initializing auth service")
 	}
 
-	audioService := v1.NewAudioService(dataStorage, cache, fileStorage, telegramSender)
+	audioService := v1.NewAudioService(dataStorage, cache, fileStorage, telegramSender, int64(cfg.Environment.TelegramNotificationsChatID))
 	playlistService := v1.NewPlaylistService(dataStorage, fileStorage)
 	artistsService := v1.NewArtistsService(dataStorage, fileStorage)
 
@@ -153,6 +153,16 @@ type AudioService interface {
 	// SendToTelegram delivers a track's audio file to the requesting user's
 	// own linked Telegram chat (bot DM).
 	SendToTelegram(ctx context.Context, songId int64) error
+
+	// EnsureTelegramFileId returns a cached Telegram file_id for the track's
+	// audio, relay-uploading it once via the configured relay chat if not
+	// cached yet.
+	EnsureTelegramFileId(ctx context.Context, songId int64) (string, error)
+
+	// GetCachedTelegramFileId returns songId's Telegram file_id if it has
+	// already been minted, without uploading. ok is false when nothing is
+	// cached yet.
+	GetCachedTelegramFileId(ctx context.Context, songId int64) (fileId string, ok bool, err error)
 
 	GetInfo(ctx context.Context, fileId int64) (domain.Song, error)
 	Save(ctx context.Context, req domain.AddAudio) (domain.SaveFileMetaResp, error)

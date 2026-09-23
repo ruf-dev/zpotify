@@ -80,3 +80,26 @@ func (s *TrackSender) SendTrack(chatId int64, audio TrackAudio) error {
 
 	return nil
 }
+
+// UploadForFileId sends audio to chatId like SendTrack, but returns
+// Telegram's file_id for the upload - for reuse via
+// InlineQueryResultCachedAudio without re-uploading the file.
+func (s *TrackSender) UploadForFileId(chatId int64, audio TrackAudio) (string, error) {
+	if chatId == 0 {
+		return "", rerrors.New("chat id is required to relay-upload track audio")
+	}
+
+	msg := response.NewMessage("", response.WithMedia(audio))
+	msg.SetChatIdIfZero(chatId)
+
+	sent, err := s.bot.SendAndReturn(msg)
+	if err != nil {
+		return "", rerrors.Wrap(err, "relay-upload track audio")
+	}
+
+	if sent.Audio == nil {
+		return "", rerrors.New("telegram response missing audio after relay upload")
+	}
+
+	return sent.Audio.FileID, nil
+}

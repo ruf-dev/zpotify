@@ -16,6 +16,16 @@ WHERE s.file_id = $1;
 -- name: UpdateSongTitle :exec
 UPDATE songs SET title = $1 WHERE id = $2;
 
+-- name: GetSongTgAudioFileId :one
+SELECT tg_audio_file_id
+FROM songs
+WHERE id = $1;
+
+-- name: UpdateSongTgAudioFileId :exec
+UPDATE songs
+SET tg_audio_file_id = $2
+WHERE id = $1;
+
 -- name: ClearSongArtists :exec
 DELETE FROM songs_artists WHERE song_id = $1;
 

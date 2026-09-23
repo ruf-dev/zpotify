@@ -34,6 +34,12 @@ func (f *fakeSongsQuerier) GetSongById(_ context.Context, _ int64) (songs_q.Song
 func (f *fakeSongsQuerier) GetSongTags(_ context.Context, _ int64) ([]songs_q.GetSongTagsRow, error) {
 	return nil, nil
 }
+func (f *fakeSongsQuerier) GetSongTgAudioFileId(_ context.Context, _ int64) (sql.NullString, error) {
+	return sql.NullString{}, nil
+}
+func (f *fakeSongsQuerier) UpdateSongTgAudioFileId(_ context.Context, _ songs_q.UpdateSongTgAudioFileIdParams) error {
+	return nil
+}
 func (f *fakeSongsQuerier) InsertSongTag(_ context.Context, _ songs_q.InsertSongTagParams) error {
 	return nil
 }

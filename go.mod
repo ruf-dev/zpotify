@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/Masterminds/squirrel v1.5.4
 	github.com/Red-Sock/go-swagger-ui v0.0.2
-	github.com/Red-Sock/go_tg v0.0.33
+	github.com/Red-Sock/go_tg v0.0.34-0.20260923100818-395a4e8c6288
 	github.com/anacrolix/torrent v1.60.0
 	github.com/dgraph-io/ristretto/v2 v2.3.0
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1

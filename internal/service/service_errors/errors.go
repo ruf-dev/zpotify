@@ -34,6 +34,11 @@ var (
 
 	ErrTelegramNotLinked = rerrors.New("telegram account is not linked", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusBadRequest))
 
+	// ErrTelegramRelayNotConfigured is returned when a track's Telegram
+	// file_id is not cached yet and no relay chat is configured to upload it
+	// through, so the lazy cache cannot be populated.
+	ErrTelegramRelayNotConfigured = rerrors.New("telegram relay chat is not configured", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusServiceUnavailable))
+
 	ErrEmptySearchQuery = rerrors.New("search query must not be empty", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
 
 	// ErrTorrentClientUnavailable is returned when a torrent operation is

@@ -7,9 +7,11 @@ import (
 	"fmt"
 	"io"
 	"path"
+	"strconv"
 	"strings"
 
 	"go.redsock.ru/rerrors"
+	"golang.org/x/sync/singleflight"
 
 	tgclient "go.zpotify.ru/zpotify/internal/clients/telegram"
 	"go.zpotify.ru/zpotify/internal/domain"
@@ -27,6 +29,7 @@ import (
 // so AudioService only depends on the shape it actually needs.
 type TelegramSender interface {
 	SendTrack(chatId int64, audio tgclient.TrackAudio) error
+	UploadForFileId(chatId int64, audio tgclient.TrackAudio) (string, error)
 }
 
 // defaultSearchLimit caps song search results when the request omits paging,
@@ -45,6 +48,12 @@ type AudioService struct {
 
 	telegramIdentityStorage storage.TelegramIdentityStorage
 	telegramSender          TelegramSender
+	telegramRelayChatId     int64
+
+	// telegramUploadGroup collapses concurrent EnsureTelegramFileId calls for
+	// the same songId into a single relay upload, keyed by
+	// strconv.FormatInt(songId, 10).
+	telegramUploadGroup singleflight.Group
 
 	filesCache files_cache.FilesCache
 }
@@ -54,6 +63,7 @@ func NewAudioService(
 	filesCache files_cache.FilesCache,
 	binaryStorage storage.BinaryFileStorage,
 	telegramSender TelegramSender,
+	telegramRelayChatId int64,
 ) *AudioService {
 	return &AudioService{
 		txManager: dataStorage.TxManager(),
@@ -67,6 +77,7 @@ func NewAudioService(
 
 		telegramIdentityStorage: dataStorage.TelegramIdentity(),
 		telegramSender:          telegramSender,
+		telegramRelayChatId:     telegramRelayChatId,
 
 		filesCache: filesCache,
 	}
@@ -361,6 +372,95 @@ func (s *AudioService) SendToTelegram(ctx context.Context, songId int64) error {
 	}
 
 	return nil
+}
+
+// GetCachedTelegramFileId returns songId's Telegram file_id if it has already
+// been minted by EnsureTelegramFileId, without uploading anything. ok is
+// false when nothing is cached yet.
+func (s *AudioService) GetCachedTelegramFileId(ctx context.Context, songId int64) (string, bool, error) {
+	cached, err := s.songsStorage.GetTgAudioFileId(ctx, songId)
+	if err != nil {
+		return "", false, rerrors.Wrap(err, "error getting cached telegram file id")
+	}
+
+	return cached.String, cached.Valid, nil
+}
+
+// EnsureTelegramFileId returns a Telegram file_id for songId's audio, usable
+// with InlineQueryResultCachedAudio. The first call for a song relay-uploads
+// it once to telegramRelayChatId and caches the resulting file_id; later
+// calls return the cached value without re-uploading. Concurrent calls for
+// the same songId collapse into a single upload via telegramUploadGroup.
+func (s *AudioService) EnsureTelegramFileId(ctx context.Context, songId int64) (string, error) {
+	cached, err := s.songsStorage.GetTgAudioFileId(ctx, songId)
+	if err != nil {
+		return "", rerrors.Wrap(err, "error getting cached telegram file id")
+	}
+	if cached.Valid {
+		return cached.String, nil
+	}
+
+	if s.telegramRelayChatId == 0 {
+		return "", rerrors.Wrap(service_errors.ErrTelegramRelayNotConfigured)
+	}
+
+	groupKey := strconv.FormatInt(songId, 10)
+
+	fileIdVal, err, _ := s.telegramUploadGroup.Do(groupKey, func() (interface{}, error) {
+		return s.uploadAndCacheTelegramFileId(ctx, songId)
+	})
+	if err != nil {
+		return "", rerrors.Wrap(err)
+	}
+
+	fileId, ok := fileIdVal.(string)
+	if !ok {
+		return "", rerrors.Wrap(fmt.Errorf("unexpected telegram upload group result type %T", fileIdVal))
+	}
+
+	return fileId, nil
+}
+
+// uploadAndCacheTelegramFileId relay-uploads songId's audio to
+// telegramRelayChatId and persists the resulting file_id. Only ever called
+// from within s.telegramUploadGroup.
+func (s *AudioService) uploadAndCacheTelegramFileId(ctx context.Context, songId int64) (string, error) {
+	song, err := s.getSongWithTags(ctx, songId)
+	if err != nil {
+		return "", rerrors.Wrap(err, "error getting song")
+	}
+
+	file, err := s.binaryStorage.GetFile(ctx, song.FilePath)
+	if err != nil {
+		return "", rerrors.Wrap(err, "error getting song file")
+	}
+	defer utils.CloseWithLog(file, song.FilePath)
+
+	performer := ""
+	if len(song.Artists) > 0 {
+		performer = song.Artists[0].Name
+	}
+
+	audio := tgclient.TrackAudio{
+		FileName:    path.Base(song.FilePath),
+		Content:     file,
+		Caption:     song.Title,
+		Performer:   performer,
+		Title:       song.Title,
+		DurationSec: int(song.Duration.Seconds()),
+	}
+
+	fileId, err := s.telegramSender.UploadForFileId(s.telegramRelayChatId, audio)
+	if err != nil {
+		return "", rerrors.Wrap(err, "error relay-uploading track to telegram")
+	}
+
+	err = s.songsStorage.SetTgAudioFileId(ctx, songId, fileId)
+	if err != nil {
+		return "", rerrors.Wrap(err, "error caching telegram file id")
+	}
+
+	return fileId, nil
 }
 
 func (s *AudioService) Delete(ctx context.Context, id int64) error {

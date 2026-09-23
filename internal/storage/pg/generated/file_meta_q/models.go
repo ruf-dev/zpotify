@@ -575,11 +575,12 @@ type SearchHistory struct {
 }
 
 type Song struct {
-	ID        int64
-	FileID    int64
-	Title     string
-	CreatedAt time.Time
-	TitleTsv  interface{}
+	ID            int64
+	FileID        int64
+	Title         string
+	CreatedAt     time.Time
+	TitleTsv      interface{}
+	TgAudioFileID sql.NullString
 }
 
 type SongBaseViewV1 struct {

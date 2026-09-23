@@ -6,6 +6,7 @@ package songs_q
 
 import (
 	"context"
+	"database/sql"
 )
 
 type Querier interface {
@@ -16,6 +17,7 @@ type Querier interface {
 	GetSongByFileId(ctx context.Context, fileID int64) (SongBaseViewV1, error)
 	GetSongById(ctx context.Context, id int64) (SongBaseViewV1, error)
 	GetSongTags(ctx context.Context, songID int64) ([]GetSongTagsRow, error)
+	GetSongTgAudioFileId(ctx context.Context, id int64) (sql.NullString, error)
 	InsertSongTag(ctx context.Context, arg InsertSongTagParams) error
 	// Features: tracks where the given artist appears but is not the primary
 	// artist (order_id != 0).
@@ -24,6 +26,7 @@ type Querier interface {
 	// given artist is the primary artist (order_id = 0).
 	ListArtistPrimarySongs(ctx context.Context, arg ListArtistPrimarySongsParams) ([]ListArtistPrimarySongsRow, error)
 	SearchSongsByTitle(ctx context.Context, arg SearchSongsByTitleParams) ([]SearchSongsByTitleRow, error)
+	UpdateSongTgAudioFileId(ctx context.Context, arg UpdateSongTgAudioFileIdParams) error
 	UpdateSongTitle(ctx context.Context, arg UpdateSongTitleParams) error
 }
 

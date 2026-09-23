@@ -48,6 +48,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/transport/song_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/grant_access"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/grant_creator_access"
+	"go.zpotify.ru/zpotify/internal/transport/telegram/inline"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/notify"
 	"go.zpotify.ru/zpotify/internal/transport/torrent_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/ui"
@@ -166,6 +167,10 @@ func (c *Custom) Init(app *App) (err error) {
 	c.tgConn.MustAddCommandHandler(grant_creator_access.New(c.Service.UserService(), int64(app.Cfg.Environment.TelegramNotificationsChatID)))
 	c.tgConn.MustAddCommandHandler(notify.New(c.Service.NotificationService(), int64(app.Cfg.Environment.TelegramNotificationsChatID)))
 	c.tgConn.MustAddCommandHandler(notify.NewConsent(c.Service.NotificationService(), int64(app.Cfg.Environment.TelegramNotificationsChatID)))
+
+	inlineHandler := inline.New(c.Service.SearchService(), c.Service.AudioService(), c.Service.AuthService(), c.tgConn)
+	c.tgConn.SetInlineQueryHandler(inlineHandler)
+	c.tgConn.SetChosenInlineResultHandler(inlineHandler)
 
 	torrentLookup := torrent_sync.NewClientLookup(c.torrentClient)
 	torrentSyncPeriod := time.Duration(app.Cfg.Environment.TorrentSyncPeriodSeconds) * time.Second

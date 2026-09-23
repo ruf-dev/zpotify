@@ -52,7 +52,8 @@ func (f *fakeTelegramIdentityStorage) GetByUserId(ctx context.Context, userId in
 // interface consumed by AudioService. It captures the arguments of the last
 // SendTrack call for assertions.
 type fakeTelegramSender struct {
-	sendTrackFn func(chatId int64, audio tgclient.TrackAudio) error
+	sendTrackFn       func(chatId int64, audio tgclient.TrackAudio) error
+	uploadForFileIdFn func(chatId int64, audio tgclient.TrackAudio) (string, error)
 
 	calledChatId int64
 	calledAudio  tgclient.TrackAudio
@@ -68,6 +69,17 @@ func (f *fakeTelegramSender) SendTrack(chatId int64, audio tgclient.TrackAudio) 
 		return nil
 	}
 	return f.sendTrackFn(chatId, audio)
+}
+
+func (f *fakeTelegramSender) UploadForFileId(chatId int64, audio tgclient.TrackAudio) (string, error) {
+	f.callCount++
+	f.calledChatId = chatId
+	f.calledAudio = audio
+
+	if f.uploadForFileIdFn == nil {
+		return "", nil
+	}
+	return f.uploadForFileIdFn(chatId, audio)
 }
 
 // fakeReadCloser is a pointer-identity-preserving io.ReadCloser test double,

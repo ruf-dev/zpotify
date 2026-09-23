@@ -170,6 +170,19 @@ func (q *Queries) GetSongTags(ctx context.Context, songID int64) ([]GetSongTagsR
 	return items, nil
 }
 
+const getSongTgAudioFileId = `-- name: GetSongTgAudioFileId :one
+SELECT tg_audio_file_id
+FROM songs
+WHERE id = $1
+`
+
+func (q *Queries) GetSongTgAudioFileId(ctx context.Context, id int64) (sql.NullString, error) {
+	row := q.db.QueryRowContext(ctx, getSongTgAudioFileId, id)
+	var tg_audio_file_id sql.NullString
+	err := row.Scan(&tg_audio_file_id)
+	return tg_audio_file_id, err
+}
+
 const insertSongTag = `-- name: InsertSongTag :exec
 INSERT INTO song_tags (song_id, kind, value, order_id)
 VALUES ($1, $2, $3, $4)
@@ -290,6 +303,22 @@ func (q *Queries) SearchSongsByTitle(ctx context.Context, arg SearchSongsByTitle
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateSongTgAudioFileId = `-- name: UpdateSongTgAudioFileId :exec
+UPDATE songs
+SET tg_audio_file_id = $2
+WHERE id = $1
+`
+
+type UpdateSongTgAudioFileIdParams struct {
+	ID            int64
+	TgAudioFileID sql.NullString
+}
+
+func (q *Queries) UpdateSongTgAudioFileId(ctx context.Context, arg UpdateSongTgAudioFileIdParams) error {
+	_, err := q.db.ExecContext(ctx, updateSongTgAudioFileId, arg.ID, arg.TgAudioFileID)
+	return err
 }
 
 const updateSongTitle = `-- name: UpdateSongTitle :exec

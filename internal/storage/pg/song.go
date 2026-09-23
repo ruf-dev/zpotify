@@ -338,6 +338,29 @@ func (s *SongsStorage) listArtistFeaturedSongs(ctx context.Context, artistUuid u
 	return songs, nil
 }
 
+func (s *SongsStorage) GetTgAudioFileId(ctx context.Context, songId int64) (sql.NullString, error) {
+	fileId, err := s.querier.GetSongTgAudioFileId(ctx, songId)
+	if err != nil {
+		return sql.NullString{}, wrapPgErr(err)
+	}
+
+	return fileId, nil
+}
+
+func (s *SongsStorage) SetTgAudioFileId(ctx context.Context, songId int64, fileId string) error {
+	params := songs_q.UpdateSongTgAudioFileIdParams{
+		ID:            songId,
+		TgAudioFileID: sql.NullString{String: fileId, Valid: true},
+	}
+
+	err := s.querier.UpdateSongTgAudioFileId(ctx, params)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
 func (s *SongsStorage) WithTx(tx *sql.Tx) storage.SongStorage {
 	return &SongsStorage{
 		db:      &txWrapper{tx},

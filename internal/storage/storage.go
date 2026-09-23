@@ -124,6 +124,9 @@ type SongStorage interface {
 	ClearSongTags(ctx context.Context, songId int64) error
 
 	ListByArtist(ctx context.Context, req domain.ListSongsByArtist) ([]domain.Song, error)
+
+	GetTgAudioFileId(ctx context.Context, songId int64) (sql.NullString, error)
+	SetTgAudioFileId(ctx context.Context, songId int64, fileId string) error
 }
 
 type ArtistStorage interface {

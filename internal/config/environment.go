@@ -12,6 +12,7 @@ type EnvironmentConfig struct {
 	LogFormat                     string
 	LogLevel                      string
 	OtelEndpoint                  string
+	PublicBaseURL                 string
 	TelegramClientID              string
 	TelegramNotificationsChatID   int
 	TelegramProxyURL              string

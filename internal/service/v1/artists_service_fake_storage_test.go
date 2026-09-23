@@ -235,6 +235,14 @@ func (f *fakeSongStorage) ListByArtist(ctx context.Context, req domain.ListSongs
 	return f.listByArtistFn(ctx, req)
 }
 
+func (f *fakeSongStorage) GetTgAudioFileId(_ context.Context, _ int64) (sql.NullString, error) {
+	return sql.NullString{}, nil
+}
+
+func (f *fakeSongStorage) SetTgAudioFileId(_ context.Context, _ int64, _ string) error {
+	return nil
+}
+
 func (f *fakeSongStorage) WithTx(_ *sql.Tx) storage.SongStorage {
 	return f
 }
