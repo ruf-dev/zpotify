@@ -3,6 +3,7 @@ package inline
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"path"
 	"strconv"
 	"strings"
@@ -169,13 +170,34 @@ func cachedAudioEligible(filePath string) bool {
 }
 
 // buildCoverURL returns the public URL Telegram can fetch for song's cover
-// art, or "" when song has no cover or no public base URL is configured.
+// art, or "" when song has no cover or the configured base URL isn't
+// reachable by Telegram's servers (e.g. localhost in dev) - a ThumbURL
+// Telegram can't fetch makes it reject the entire answerInlineQuery batch
+// with WEBDOCUMENT_URL_INVALID, not just drop the one thumbnail.
 func (h *Handler) buildCoverURL(song domain.SongBase) string {
-	if h.publicBaseURL == "" || song.CoverFilePath == "" {
+	if h.publicBaseURL == "" || song.CoverFilePath == "" || !isPubliclyReachable(h.publicBaseURL) {
 		return ""
 	}
 
 	return fmt.Sprintf("%s%s?songId=%d", h.publicBaseURL, coverPath, song.Id)
+}
+
+func isPubliclyReachable(baseURL string) bool {
+	parsed, err := url.Parse(baseURL)
+	if err != nil {
+		return false
+	}
+
+	if parsed.Scheme != "https" {
+		return false
+	}
+
+	switch strings.ToLower(parsed.Hostname()) {
+	case "", "localhost", "127.0.0.1", "::1":
+		return false
+	default:
+		return true
+	}
 }
 
 // HandleChosen finishes preparing the audio for a chosen inline result:
