@@ -28,7 +28,7 @@ var insecureCookieWarnOnce sync.Once
 // The Secure attribute on every cookie it sets is derived per request from
 // RequestSchemeAnnotator's metadata (see requestWasSecure) rather than a static config value.
 func CookieForwardResponseOption() func(context.Context, http.ResponseWriter, proto.Message) error {
-	return func(ctx context.Context, respWriter http.ResponseWriter, _ proto.Message) error {
+	return func(ctx context.Context, writer http.ResponseWriter, _ proto.Message) error {
 		serverMD, ok := runtime.ServerMetadataFromContext(ctx)
 		if !ok {
 			return nil
@@ -38,7 +38,7 @@ func CookieForwardResponseOption() func(context.Context, http.ResponseWriter, pr
 
 		if metadataValue(serverMD.HeaderMD, ClearAuthCookiesKey) == ClearAuthCookiesValue {
 			warnIfInsecure(secure)
-			clearAuthCookies(respWriter, secure)
+			clearAuthCookies(writer, secure)
 			return nil
 		}
 
@@ -50,12 +50,12 @@ func CookieForwardResponseOption() func(context.Context, http.ResponseWriter, pr
 		warnIfInsecure(secure)
 
 		accessExpiry := parseCookieExpiry(metadataValue(serverMD.HeaderMD, SetCookieAccessTokenExpiryKey))
-		setAuthCookie(respWriter, AccessTokenCookieName, accessToken, accessExpiry, true, secure, CookiePath)
+		setAuthCookie(writer, AccessTokenCookieName, accessToken, accessExpiry, true, secure, CookiePath)
 
 		refreshToken := metadataValue(serverMD.HeaderMD, SetCookieRefreshTokenKey)
 		if refreshToken != "" {
 			refreshExpiry := parseCookieExpiry(metadataValue(serverMD.HeaderMD, SetCookieRefreshTokenExpiryKey))
-			setAuthCookie(respWriter, RefreshTokenCookieName, refreshToken, refreshExpiry, true, secure, CookiePath)
+			setAuthCookie(writer, RefreshTokenCookieName, refreshToken, refreshExpiry, true, secure, CookiePath)
 		}
 
 		csrfToken, err := generateCSRFToken()
@@ -63,7 +63,7 @@ func CookieForwardResponseOption() func(context.Context, http.ResponseWriter, pr
 			log.Error().Err(err).Msg("error generating csrf token")
 			return nil
 		}
-		setAuthCookie(respWriter, CSRFCookieName, csrfToken, accessExpiry, false, secure, CSRFCookiePath)
+		setAuthCookie(writer, CSRFCookieName, csrfToken, accessExpiry, false, secure, CSRFCookiePath)
 
 		return nil
 	}
