@@ -168,7 +168,7 @@ func (c *Custom) Init(app *App) (err error) {
 	c.tgConn.MustAddCommandHandler(notify.New(c.Service.NotificationService(), int64(app.Cfg.Environment.TelegramNotificationsChatID)))
 	c.tgConn.MustAddCommandHandler(notify.NewConsent(c.Service.NotificationService(), int64(app.Cfg.Environment.TelegramNotificationsChatID)))
 
-	inlineHandler := inline.New(c.Service.SearchService(), c.Service.AudioService(), c.Service.AuthService(), c.tgConn)
+	inlineHandler := inline.New(c.Service.SearchService(), c.Service.AudioService(), c.Service.AuthService(), c.tgConn, app.Cfg.Environment.PublicBaseURL)
 	c.tgConn.SetInlineQueryHandler(inlineHandler)
 	c.tgConn.SetChosenInlineResultHandler(inlineHandler)
 

@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
 	"golang.org/x/sync/singleflight"
 
@@ -346,24 +347,13 @@ func (s *AudioService) SendToTelegram(ctx context.Context, songId int64) error {
 		return rerrors.Wrap(err, "error getting song")
 	}
 
-	file, err := s.binaryStorage.GetFile(ctx, song.FilePath)
+	audio, file, cover, err := s.buildTrackAudioForSend(ctx, song)
 	if err != nil {
-		return rerrors.Wrap(err, "error getting song file")
+		return rerrors.Wrap(err)
 	}
 	defer utils.CloseWithLog(file, song.FilePath)
-
-	performer := ""
-	if len(song.Artists) > 0 {
-		performer = song.Artists[0].Name
-	}
-
-	audio := tgclient.TrackAudio{
-		FileName:    path.Base(song.FilePath),
-		Content:     file,
-		Caption:     song.Title,
-		Performer:   performer,
-		Title:       song.Title,
-		DurationSec: int(song.Duration.Seconds()),
+	if cover != nil {
+		defer utils.CloseWithLog(cover, song.CoverFilePath)
 	}
 
 	err = s.telegramSender.SendTrack(identity.TelegramId, audio)
@@ -384,6 +374,68 @@ func (s *AudioService) GetCachedTelegramFileId(ctx context.Context, songId int64
 	}
 
 	return cached.String, cached.Valid, nil
+}
+
+// GetCoverImage returns songId's cover art file, for serving over an
+// unauthenticated public URL Telegram can fetch as an inline result
+// thumbnail. ok is false when the song has no cover.
+func (s *AudioService) GetCoverImage(ctx context.Context, songId int64) (io.ReadCloser, string, bool, error) {
+	song, err := s.songsStorage.GetById(ctx, songId)
+	if err != nil {
+		return nil, "", false, rerrors.Wrap(err, "error getting song")
+	}
+
+	if song.CoverFilePath == "" {
+		return nil, "", false, nil
+	}
+
+	stream, err := s.binaryStorage.GetFile(ctx, song.CoverFilePath)
+	if err != nil {
+		return nil, "", false, rerrors.Wrap(err, "error getting song cover file")
+	}
+
+	return stream, path.Ext(song.CoverFilePath), true, nil
+}
+
+// buildTrackAudioForSend builds a tgclient.TrackAudio for song's audio file,
+// with an embedded cover thumbnail when song has one. The returned file and
+// cover readers are owned by the caller, which must close them; cover is nil
+// when song has no cover or it could not be read (sent without a thumbnail
+// rather than failing the whole send).
+func (s *AudioService) buildTrackAudioForSend(ctx context.Context, song domain.Song) (tgclient.TrackAudio, io.ReadCloser, io.ReadCloser, error) {
+	file, err := s.binaryStorage.GetFile(ctx, song.FilePath)
+	if err != nil {
+		return tgclient.TrackAudio{}, nil, nil, rerrors.Wrap(err, "error getting song file")
+	}
+
+	performer := ""
+	if len(song.Artists) > 0 {
+		performer = song.Artists[0].Name
+	}
+
+	audio := tgclient.TrackAudio{
+		FileName:    path.Base(song.FilePath),
+		Content:     file,
+		Caption:     song.Title,
+		Performer:   performer,
+		Title:       song.Title,
+		DurationSec: int(song.Duration.Seconds()),
+	}
+
+	if song.CoverFilePath == "" {
+		return audio, file, nil, nil
+	}
+
+	cover, err := s.binaryStorage.GetFile(ctx, song.CoverFilePath)
+	if err != nil {
+		log.Warn().Err(err).Str("cover_file_path", song.CoverFilePath).Msg("error getting song cover file, sending without thumbnail")
+		return audio, file, nil, nil
+	}
+
+	audio.CoverFileName = path.Base(song.CoverFilePath)
+	audio.CoverContent = cover
+
+	return audio, file, cover, nil
 }
 
 // EnsureTelegramFileId returns a Telegram file_id for songId's audio, usable
@@ -430,24 +482,13 @@ func (s *AudioService) uploadAndCacheTelegramFileId(ctx context.Context, songId 
 		return "", rerrors.Wrap(err, "error getting song")
 	}
 
-	file, err := s.binaryStorage.GetFile(ctx, song.FilePath)
+	audio, file, cover, err := s.buildTrackAudioForSend(ctx, song)
 	if err != nil {
-		return "", rerrors.Wrap(err, "error getting song file")
+		return "", rerrors.Wrap(err)
 	}
 	defer utils.CloseWithLog(file, song.FilePath)
-
-	performer := ""
-	if len(song.Artists) > 0 {
-		performer = song.Artists[0].Name
-	}
-
-	audio := tgclient.TrackAudio{
-		FileName:    path.Base(song.FilePath),
-		Content:     file,
-		Caption:     song.Title,
-		Performer:   performer,
-		Title:       song.Title,
-		DurationSec: int(song.Duration.Seconds()),
+	if cover != nil {
+		defer utils.CloseWithLog(cover, song.CoverFilePath)
 	}
 
 	fileId, err := s.telegramSender.UploadForFileId(s.telegramRelayChatId, audio)

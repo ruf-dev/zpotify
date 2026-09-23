@@ -164,6 +164,10 @@ type AudioService interface {
 	// cached yet.
 	GetCachedTelegramFileId(ctx context.Context, songId int64) (fileId string, ok bool, err error)
 
+	// GetCoverImage returns songId's cover art file. ok is false when the
+	// song has no cover.
+	GetCoverImage(ctx context.Context, songId int64) (stream io.ReadCloser, ext string, ok bool, err error)
+
 	GetInfo(ctx context.Context, fileId int64) (domain.Song, error)
 	Save(ctx context.Context, req domain.AddAudio) (domain.SaveFileMetaResp, error)
 

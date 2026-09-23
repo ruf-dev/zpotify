@@ -22,6 +22,15 @@ const resultLimit = 8
 // to later edit the placeholder into the real audio.
 const loadingCallbackData = "noop"
 
+// hintResultId is the id of the non-actionable article shown for an empty
+// query - never a real song id, so HandleChosen can recognize and ignore it.
+const hintResultId = "hint"
+
+// coverPath is the wapi route serving a song's cover art over an
+// unauthenticated public URL Telegram can fetch as an inline result
+// thumbnail.
+const coverPath = "/wapi/song/cover"
+
 // InlineMessageEditor redelivers an already-known Telegram file_id into the
 // chat an inline message lives in, replacing its current content. Declared
 // here (consumer side) rather than in the telegram client package so Handler
@@ -40,6 +49,7 @@ type Handler struct {
 	audioService        service.AudioService
 	authService         service.AuthService
 	inlineMessageEditor InlineMessageEditor
+	publicBaseURL       string
 }
 
 func New(
@@ -47,12 +57,14 @@ func New(
 	audioService service.AudioService,
 	authService service.AuthService,
 	inlineMessageEditor InlineMessageEditor,
+	publicBaseURL string,
 ) *Handler {
 	return &Handler{
 		searchService:       searchService,
 		audioService:        audioService,
 		authService:         authService,
 		inlineMessageEditor: inlineMessageEditor,
+		publicBaseURL:       publicBaseURL,
 	}
 }
 
@@ -63,7 +75,7 @@ func New(
 // inline_message_id for HandleChosen to edit later).
 func (h *Handler) Handle(in *model.InlineQueryIn) ([]interface{}, error) {
 	if in.Query == "" {
-		return nil, nil
+		return []interface{}{h.buildHint()}, nil
 	}
 
 	userId, err := h.authService.GetOrCreateTelegramUser(context.Background(), in.From.ID, in.From.UserName)
@@ -93,6 +105,20 @@ func (h *Handler) Handle(in *model.InlineQueryIn) ([]interface{}, error) {
 	return results, nil
 }
 
+// buildHint answers an empty query with a non-actionable article, so the
+// user sees guidance instead of a blank results list. Its id is never a
+// valid song id - HandleChosen recognizes and ignores it.
+func (h *Handler) buildHint() interface{} {
+	hint := tgbotapi.NewInlineQueryResultArticle(
+		hintResultId,
+		"Search for a track",
+		"Search by track title or artist. Start typing…",
+	)
+	hint.Description = "Search by track title or artist. Start typing…"
+
+	return hint
+}
+
 func (h *Handler) buildResult(track domain.Song) interface{} {
 	id := strconv.FormatInt(track.SongBase.Id, 10)
 
@@ -116,7 +142,22 @@ func (h *Handler) buildResult(track domain.Song) interface{} {
 	)
 	placeholder.ReplyMarkup = &placeholderKeyboard
 
+	thumbURL := h.buildCoverURL(track.SongBase)
+	if thumbURL != "" {
+		placeholder.ThumbURL = thumbURL
+	}
+
 	return placeholder
+}
+
+// buildCoverURL returns the public URL Telegram can fetch for song's cover
+// art, or "" when song has no cover or no public base URL is configured.
+func (h *Handler) buildCoverURL(song domain.SongBase) string {
+	if h.publicBaseURL == "" || song.CoverFilePath == "" {
+		return ""
+	}
+
+	return fmt.Sprintf("%s%s?songId=%d", h.publicBaseURL, coverPath, song.Id)
 }
 
 // HandleChosen finishes preparing the audio for a chosen inline result:
@@ -125,6 +166,10 @@ func (h *Handler) buildResult(track domain.Song) interface{} {
 // result that was already answered as InlineQueryResultCachedAudio, since
 // Telegram never assigns those an InlineMessageID.
 func (h *Handler) HandleChosen(in *model.ChosenInlineResultIn) error {
+	if in.ResultID == hintResultId {
+		return nil
+	}
+
 	songId, err := strconv.ParseInt(in.ResultID, 10, 64)
 	if err != nil {
 		log.Error().Err(err).Str("result_id", in.ResultID).Msg("error parsing song id from chosen inline result")

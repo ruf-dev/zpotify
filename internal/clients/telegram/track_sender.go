@@ -6,6 +6,7 @@ import (
 	"github.com/Red-Sock/go_tg"
 	"github.com/Red-Sock/go_tg/model/response"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/rs/zerolog/log"
 	"go.redsock.ru/rerrors"
 )
 
@@ -18,6 +19,12 @@ type TrackAudio struct {
 	Performer   string
 	Title       string
 	DurationSec int
+
+	// CoverFileName and CoverContent, when set, embed a thumbnail on the
+	// uploaded audio file - shown by Telegram as its cover, in chat and in
+	// any inline result referencing the resulting file_id.
+	CoverFileName string
+	CoverContent  io.Reader
 }
 
 func (a TrackAudio) AsSingleTgMedia(chatId int64) tgbotapi.Chattable {
@@ -32,6 +39,13 @@ func (a TrackAudio) AsSingleTgMedia(chatId int64) tgbotapi.Chattable {
 	audio.Title = a.Title
 	audio.Duration = a.DurationSec
 
+	if a.CoverContent != nil {
+		audio.Thumb = tgbotapi.FileReader{
+			Name:   a.CoverFileName,
+			Reader: a.CoverContent,
+		}
+	}
+
 	return audio
 }
 
@@ -41,7 +55,16 @@ func (a TrackAudio) AsInputMedia() any {
 		Reader: a.Content,
 	}
 
-	return tgbotapi.NewInputMediaAudio(file)
+	media := tgbotapi.NewInputMediaAudio(file)
+
+	if a.CoverContent != nil {
+		media.Thumb = tgbotapi.FileReader{
+			Name:   a.CoverFileName,
+			Reader: a.CoverContent,
+		}
+	}
+
+	return media
 }
 
 // TrackSender delivers a track's audio file to a user's own Telegram chat
@@ -101,5 +124,13 @@ func (s *TrackSender) UploadForFileId(chatId int64, audio TrackAudio) (string, e
 		return "", rerrors.New("telegram response missing audio after relay upload")
 	}
 
-	return sent.Audio.FileID, nil
+	fileId := sent.Audio.FileID
+
+	err = s.bot.DeleteMessage(chatId, sent.MessageID)
+	if err != nil {
+		log.Warn().Err(err).Int64("chat_id", chatId).Int("message_id", sent.MessageID).
+			Msg("error deleting relay-upload message")
+	}
+
+	return fileId, nil
 }
