@@ -273,6 +273,7 @@ func (c *Custom) Init(app *App) (err error) {
 	wapiHandler := wapi.New(audioService, fileService, torrentService)
 	wapiHandler = middleware.HttpAuthMiddleware(
 		c.Service,
+		middleware.WithIgnoredPathAuthOption("/wapi/song/cover"),
 		middleware.WithDebug(app.Cfg.Environment.DebugAuth),
 	)(wapiHandler)
 	wapiHandler = middleware.CorsMiddleware(app.Cfg.Environment.CorsAllowedOrigins)(wapiHandler)
