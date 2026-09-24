@@ -1485,8 +1485,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/layouts/MainLayout.tsx": {
-    "mtime": 1789295598.767313,
-    "ast_hash": "d5eb545732805f0803f7a223661900d6",
+    "mtime": 1790270528.2191813,
+    "ast_hash": "bcc705a0f2436f00fad125d0022c9781",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/hooks/Dialog.tsx": {
@@ -2205,8 +2205,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/PlayerBarSegment/PlayerBarSegment.tsx": {
-    "mtime": 1786818737.3889422,
-    "ast_hash": "641b2553c9d920e08d9b817b470df363",
+    "mtime": 1790270610.2126756,
+    "ast_hash": "a5e62bf9cdced868b276b59e0fb2abd4",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/PlayerBarSegment/components/VolumeControl/VolumeControl.tsx": {
@@ -4377,6 +4377,26 @@
   "pkg/client/ZpotifyUI/src/pages/segments/MobileNavSegment/components/MobileLogoButton/MobileLogoButton.tsx": {
     "mtime": 1790267608.7043765,
     "ast_hash": "43e43d95fd51ae5d48b9ebd2f92568a1",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/MobilePlayerSegment/MobilePlayerSegment.tsx": {
+    "mtime": 1790270610.2128198,
+    "ast_hash": "bd3bc1b4d28b7c4dee66b6cc2102c39e",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/MobilePlayerSegment/components/MobilePlayerControls/MobilePlayerControls.tsx": {
+    "mtime": 1790270610.21282,
+    "ast_hash": "ac15ee7041842cf0793d47bd3f05ff8c",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/MobilePlayerSegment/components/MobilePlayerProgress/MobilePlayerProgress.tsx": {
+    "mtime": 1790270450.7561452,
+    "ast_hash": "fbe01b7e7d139205bb9767b5f33b5d5a",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/model/mobilePlayerUIStore.ts": {
+    "mtime": 1790270419.5011587,
+    "ast_hash": "ec6279b4ee0f5735e305a64fbf866fd1",
     "semantic_hash": ""
   }
 }
