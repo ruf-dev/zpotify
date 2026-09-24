@@ -400,8 +400,8 @@
     "semantic_hash": "e026a6674f2341a67053118987f91db7"
   },
   "internal/app/custom.go": {
-    "mtime": 1790159144.3971224,
-    "ast_hash": "c93549badf04d9f3536545e5b1f7b952",
+    "mtime": 1790161353.9891295,
+    "ast_hash": "40e50b89f223071f3c38fc9e3568adfc",
     "semantic_hash": ""
   },
   "internal/app/config.go": {
@@ -2850,8 +2850,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/MobileNavSegment/MobileNavSegment.tsx": {
-    "mtime": 1789924541.9329326,
-    "ast_hash": "1600afaff711c0e2a6ff5350fff181d5",
+    "mtime": 1790267617.728988,
+    "ast_hash": "631546641bb7786bc6f5a9b998d029fe",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/MobileNavSegment/components/MobileSearchButton/MobileSearchButton.tsx": {
@@ -4355,8 +4355,8 @@
     "semantic_hash": ""
   },
   "internal/transport/telegram/inline/inline.go": {
-    "mtime": 1790159981.5538857,
-    "ast_hash": "fa86f188ea9d397756c4027043736ff1",
+    "mtime": 1790160538.1656406,
+    "ast_hash": "1eeff7815e8e79f7e45a8648f6529fdb",
     "semantic_hash": ""
   },
   "migrations/20260923000000_add_song_tg_audio_file_id.sql": {
@@ -4372,6 +4372,11 @@
   "migrations/20260923010000_song_base_view_v2.sql": {
     "mtime": 1790159848.3587067,
     "ast_hash": "d54e42eb29078366e8dfeb8f09d8f018",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/segments/MobileNavSegment/components/MobileLogoButton/MobileLogoButton.tsx": {
+    "mtime": 1790267608.7043765,
+    "ast_hash": "43e43d95fd51ae5d48b9ebd2f92568a1",
     "semantic_hash": ""
   }
 }
