@@ -6,7 +6,7 @@
     right: 0;
     height: var(--mobile-nav-height);
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 0 var(--header-padding-x);
     background: rgb(0 0 0 / 92%);
     backdrop-filter: blur(0.75rem);
