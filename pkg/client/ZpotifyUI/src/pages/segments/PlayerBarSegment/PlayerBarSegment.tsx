@@ -8,6 +8,7 @@ import { formatDuration } from '@/shared/lib/time.ts';
 import cls from '@/pages/segments/PlayerBarSegment/PlayerBarSegment.module.css';
 import VolumeControl from '@/pages/segments/PlayerBarSegment/components/VolumeControl/VolumeControl';
 import { useIsSongCached } from '@/shared/model/audioCacheStore.ts';
+import { useMobilePlayerUI } from '@/shared/model/mobilePlayerUIStore.ts';
 import CachedIndicator from '@/shared/ui/CachedIndicator.tsx';
 import { artistPath } from '@/app/routing/paths.ts';
 
@@ -42,6 +43,7 @@ function trackInfoKey(trackPath: string | null, songTitle: string | null): strin
 export default function PlayerBarSegment() {
     const audioPlayer = useAudioPlayer();
     const navigate = useNavigate();
+    const openMobilePlayer = useMobilePlayerUI((state) => state.open);
     const progressTrackRef = useRef<HTMLDivElement>(null);
 
     const {
@@ -83,8 +85,17 @@ export default function PlayerBarSegment() {
         audioPlayer.playNext();
     }
 
+    function handleBarClick() {
+        if (audioPlayer.trackPath !== null) openMobilePlayer();
+    }
+
+    function handleControlClick(e: React.MouseEvent, action: () => void) {
+        e.stopPropagation();
+        action();
+    }
+
     return (
-        <div className={cls.PlayerBarContainer}>
+        <div className={cls.PlayerBarContainer} onClick={handleBarClick}>
             <div className={cls.PlayerBufferedBackground} style={{ width: `${buffered}%` }} />
             <div className={cls.PlayerProgressBackground} style={{ width: `${progress}%` }} />
             <div className={cls.TrackInfoWrapper}>
@@ -144,7 +155,7 @@ export default function PlayerBarSegment() {
 
             <div className={cls.ControlsCenterWrapper}>
                 <div className={cls.ButtonsRow}>
-                    <button className={cls.ControlButton} onClick={handlePlayPrev}>
+                    <button className={cls.ControlButton} onClick={(e) => handleControlClick(e, handlePlayPrev)}>
                         <svg
                             width="14"
                             height="14"
@@ -159,7 +170,7 @@ export default function PlayerBarSegment() {
 
                     <button
                         className={cn(cls.PlayPauseButton, isPlaying && cls.PlayPauseButtonPlaying)}
-                        onClick={handleTogglePlay}
+                        onClick={(e) => handleControlClick(e, handleTogglePlay)}
                     >
                         {isPlaying ? (
                             <svg
@@ -183,7 +194,7 @@ export default function PlayerBarSegment() {
                         )}
                     </button>
 
-                    <button className={cls.ControlButton} onClick={handlePlayNext}>
+                    <button className={cls.ControlButton} onClick={(e) => handleControlClick(e, handlePlayNext)}>
                         <svg
                             width="14"
                             height="14"

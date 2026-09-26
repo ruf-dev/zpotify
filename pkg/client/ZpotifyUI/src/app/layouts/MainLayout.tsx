@@ -13,6 +13,7 @@ import { useSidebarUI } from '@/shared/model/sidebarUIStore.ts';
 import SidebarSegment from '@/pages/segments/SidebarSegment/SidebarSegment.tsx';
 import PlayerBarSegment from '@/pages/segments/PlayerBarSegment/PlayerBarSegment.tsx';
 import MobileNavSegment from '@/pages/segments/MobileNavSegment/MobileNavSegment.tsx';
+import MobilePlayerSegment from '@/pages/segments/MobilePlayerSegment/MobilePlayerSegment.tsx';
 
 export default function MainLayout() {
     const authStatus = useUser((state) => state.authStatus);
@@ -66,6 +67,7 @@ export default function MainLayout() {
             </div>
 
             <MobileNavSegment />
+            <MobilePlayerSegment />
 
             {!showPlayerBar && (
                 <div className={cls.Player}>

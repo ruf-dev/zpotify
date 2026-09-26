@@ -1,0 +1,63 @@
+.MobilePlayerProgressContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.TrackWrapper {
+    position: relative;
+    width: 100%;
+    height: var(--space-lg);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.TrackWrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 0.25rem;
+    transform: translateY(-50%);
+    background: var(--color-border-light);
+    border-radius: var(--border-radius-sm);
+    pointer-events: none;
+}
+
+.BufferedFill {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 0.25rem;
+    transform: translateY(-50%);
+    background: var(--color-fg-disabled);
+    border-radius: var(--border-radius-sm);
+    transition: width var(--ease-quick);
+    pointer-events: none;
+}
+
+.ProgressFill {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 0.25rem;
+    transform: translateY(-50%);
+    background: var(--color-fg-accent);
+    border-radius: var(--border-radius-sm);
+    transition: width var(--ease-quick);
+    pointer-events: none;
+}
+
+.TimeRow {
+    display: flex;
+    justify-content: space-between;
+}
+
+.TimeLabel {
+    font-size: var(--font-size-sm);
+    color: var(--color-fg-disabled);
+    font-variant-numeric: tabular-nums;
+}

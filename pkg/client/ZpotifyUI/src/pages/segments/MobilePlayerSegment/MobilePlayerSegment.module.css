@@ -1,0 +1,86 @@
+.MobilePlayerContainer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: var(--mobile-nav-height);
+    overflow: hidden;
+    pointer-events: none;
+}
+
+@media (orientation: portrait) {
+    .MobilePlayerContainer {
+        display: block;
+    }
+}
+
+.Sheet {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--color-bg-base);
+    padding: var(--space-4xl) var(--space-2xl) var(--space-4xl);
+    pointer-events: auto;
+    touch-action: none;
+}
+
+.DragHandle {
+    width: var(--space-8);
+    height: 0.25rem;
+    border-radius: var(--border-radius-sm);
+    background: var(--color-border-bright);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.CoverInfoWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2xl);
+    margin-top: auto;
+}
+
+.Cover,
+.CoverPlaceholder {
+    width: 80vw;
+    max-width: 20rem;
+    aspect-ratio: 1;
+    border-radius: var(--border-radius-md);
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.CoverPlaceholder {
+    background: var(--color-bg-accent);
+}
+
+.TrackInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    text-align: center;
+}
+
+.SongTitle {
+    font-size: var(--font-size-3xl);
+    font-weight: 600;
+    color: var(--color-fg-primary);
+}
+
+.SongArtist {
+    font-size: var(--font-size-lg);
+    color: var(--color-fg-secondary);
+}
+
+.ActionsWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+    margin-top: auto;
+}

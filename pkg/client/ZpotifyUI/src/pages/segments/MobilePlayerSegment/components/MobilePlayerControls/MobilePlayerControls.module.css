@@ -1,0 +1,55 @@
+@keyframes pPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgb(217 0 127 / 18%); }
+    50%       { box-shadow: 0 0 0 var(--space-4xl) rgb(217 0 127 / 0%); }
+}
+
+.MobilePlayerControlsContainer {
+    display: flex;
+    gap: var(--space-4xl);
+    align-items: center;
+    justify-content: center;
+}
+
+.ControlButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: var(--color-fg-secondary);
+    transition: color var(--ease-quick);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        color: var(--color-fg-primary);
+    }
+}
+
+.PlayPauseButton {
+    width: 3.75rem;
+    height: 3.75rem;
+    background: var(--color-fg-accent);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-bg-base);
+    transition: transform var(--ease-quick);
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+.PlayPauseButtonPlaying {
+    animation: pPulse 2s ease-in-out infinite;
+}
+
+.PlayPauseIcon {
+    width: var(--space-4xl);
+    height: var(--space-4xl);
+}
