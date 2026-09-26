@@ -1,0 +1,12 @@
+.git
+/data
+examples/data
+dist
+node_modules
+.idea
+proto_modules
+.DS_Store
+/custom-gcl
+tests/load/tank_errors.log
+tests/logs
+tests/data
