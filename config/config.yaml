@@ -46,6 +46,9 @@ environment:
     - name: otel_endpoint
       type: string
       value: ""
+    - name: public_base_url
+      type: string
+      value: ""
     - name: telegram_client_id
       type: string
       value: ""
