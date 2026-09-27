@@ -7,6 +7,8 @@ import { useAudioSettings } from '@/entities/audio-settings/useAudioSettings.ts'
 import { useAudioCacheStore } from '@/shared/model/audioCacheStore.ts';
 
 const EARLY_ADVANCE_SECONDS = 0.3;
+const MAX_RESUME_RETRIES = 4;
+const RESUME_RETRY_DELAY_MS = 500;
 
 export interface ArtistNamePart {
     uuid?: string;
@@ -140,6 +142,8 @@ class AudioPlayerImpl implements AudioPlayer {
     private preloadedNextTrackPath: string | null = null;
     private preloadedNextBlobUrl: string | null = null;
     private advancedForTrack: string | null = null;
+    private userInitiatedPause = false;
+    private resumeRetries = 0;
 
     constructor() {
         this.audio = new Audio();
@@ -222,10 +226,12 @@ class AudioPlayerImpl implements AudioPlayer {
         });
 
         this.audio.addEventListener('pause', () => {
+            const wasPlaying = useAudioStore.getState().isPlaying;
             useAudioStore.setState({ isPlaying: false, isLoading: false });
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.playbackState = 'paused';
             }
+            this.maybeRetryUnexpectedPause(wasPlaying);
         });
 
         this.audio.addEventListener('error', (e) => {
@@ -249,6 +255,7 @@ class AudioPlayerImpl implements AudioPlayer {
 
         navigator.mediaSession.setActionHandler('play', () => this.startPlay());
         navigator.mediaSession.setActionHandler('pause', () => {
+            this.userInitiatedPause = true;
             this.audio.pause();
             useAudioStore.setState({ isPlaying: false });
         });
@@ -338,6 +345,7 @@ class AudioPlayerImpl implements AudioPlayer {
         const { trackPath, isPlaying, isLoading } = useAudioStore.getState();
         if (trackPath == null) return false;
         if (isPlaying || isLoading) {
+            this.userInitiatedPause = true;
             this.audio.pause();
             useAudioStore.setState({ isPlaying: false, isLoading: false });
         } else {
@@ -396,6 +404,25 @@ class AudioPlayerImpl implements AudioPlayer {
         this.playNext();
     }
 
+    // On Android, resuming playback right after a track transition while the screen is locked
+    // can be granted then silently revoked by the OS audio-focus handshake - observed as a few
+    // seconds of audio, an automatic pause, then needing several manual play taps before it
+    // sticks. Auto-retry play() a few times to do what those taps do, without the user.
+    private maybeRetryUnexpectedPause(wasPlaying: boolean): void {
+        if (this.userInitiatedPause) {
+            this.userInitiatedPause = false;
+            return;
+        }
+        if (!wasPlaying || !document.hidden || this.audio.ended) return;
+        if (this.resumeRetries >= MAX_RESUME_RETRIES) return;
+
+        this.resumeRetries++;
+        setTimeout(() => {
+            if (useAudioStore.getState().isPlaying) return;
+            this.startPlay();
+        }, RESUME_RETRY_DELAY_MS);
+    }
+
     private maybePreloadNextTrack(progress: number): void {
         const { preloadNextTrack, preloadNextTrackPercent } = useAudioSettings.getState();
         if (!preloadNextTrack) return;
@@ -442,6 +469,7 @@ class AudioPlayerImpl implements AudioPlayer {
         this.revokeCurrentObjectUrl();
         this.preloadedNextForTrack = null;
         this.advancedForTrack = null;
+        this.resumeRetries = 0;
 
         let src = trackUrl;
         if (this.preloadedNextTrackPath === trackPath && this.preloadedNextBlobUrl) {
