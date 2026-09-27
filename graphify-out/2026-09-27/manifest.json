@@ -2335,8 +2335,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/usePlayer.ts": {
-    "mtime": 1789297416.7622533,
-    "ast_hash": "b748f08a7a107ec9521ab9e9df1fe3a1",
+    "mtime": 1790488004.9561844,
+    "ast_hash": "aec09dcf2fb8562426c12a2fb3fdb8cb",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/MusicPlayer/PlayerControls.tsx": {
