@@ -6,6 +6,8 @@ import { cacheAudio, getCachedAudio, getTrackUrl } from '@/shared/lib/audioCache
 import { useAudioSettings } from '@/entities/audio-settings/useAudioSettings.ts';
 import { useAudioCacheStore } from '@/shared/model/audioCacheStore.ts';
 
+const EARLY_ADVANCE_SECONDS = 0.3;
+
 export interface ArtistNamePart {
     uuid?: string;
     name: string;
@@ -137,6 +139,7 @@ class AudioPlayerImpl implements AudioPlayer {
     private preloadedNextForTrack: string | null = null;
     private preloadedNextTrackPath: string | null = null;
     private preloadedNextBlobUrl: string | null = null;
+    private advancedForTrack: string | null = null;
 
     constructor() {
         this.audio = new Audio();
@@ -183,6 +186,7 @@ class AudioPlayerImpl implements AudioPlayer {
             this.maybePreloadNextTrack(progress);
             this.updateBuffered();
             this.updatePositionState();
+            this.maybeAdvanceBeforeEnd();
         });
 
         this.audio.addEventListener('progress', () => {
@@ -231,6 +235,7 @@ class AudioPlayerImpl implements AudioPlayer {
         });
 
         this.audio.addEventListener('ended', () => {
+            if (this.advancedForTrack === this.loadedTrackPath) return;
             this.playNext();
         });
 
@@ -372,6 +377,25 @@ class AudioPlayerImpl implements AudioPlayer {
         }
     }
 
+    // iOS WebKit tears down the backgrounded page's audio session the instant a track's `ended`
+    // event fires with nothing else playing, and a backgrounded page cannot reactivate it - so a
+    // play() issued from the `ended` handler itself silently does nothing until the app is
+    // foregrounded again. Swapping to the next track a fraction of a second BEFORE natural end,
+    // while the session is still alive, avoids that dead zone entirely. `ended` stays as a
+    // fallback for streams whose duration isn't known ahead of time.
+    private maybeAdvanceBeforeEnd(): void {
+        const duration = this.audio.duration;
+        if (!duration || !isFinite(duration)) return;
+        if (this.loadedTrackPath === null || this.advancedForTrack === this.loadedTrackPath) return;
+        if (duration - this.audio.currentTime > EARLY_ADVANCE_SECONDS) return;
+
+        const { queue, queueIndex } = useAudioStore.getState();
+        if (!queue[queueIndex + 1]) return;
+
+        this.advancedForTrack = this.loadedTrackPath;
+        this.playNext();
+    }
+
     private maybePreloadNextTrack(progress: number): void {
         const { preloadNextTrack, preloadNextTrackPercent } = useAudioSettings.getState();
         if (!preloadNextTrack) return;
@@ -417,6 +441,7 @@ class AudioPlayerImpl implements AudioPlayer {
 
         this.revokeCurrentObjectUrl();
         this.preloadedNextForTrack = null;
+        this.advancedForTrack = null;
 
         let src = trackUrl;
         if (this.preloadedNextTrackPath === trackPath && this.preloadedNextBlobUrl) {
