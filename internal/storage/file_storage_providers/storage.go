@@ -62,37 +62,35 @@ func (l LocalStorageProvider) ListFiles(_ context.Context, userId int64) ([]stri
 		return nil, rerrors.Wrap(err, "error reading user temporary directory")
 	}
 
-	var files []string
+	files := l.collectFiles(userTmpDir, entries, nil)
+
+	return files, nil
+}
+
+// collectFiles appends the root-relative path of every file under relDir, at
+// any depth, to files. An unreadable subdirectory is logged and skipped so it
+// cannot fail the whole listing.
+func (l LocalStorageProvider) collectFiles(relDir string, entries []os.DirEntry, files []string) []string {
 	for _, entry := range entries {
+		entryPath := path.Join(relDir, entry.Name())
 		if !entry.IsDir() {
-			filePath := path.Join(userTmpDir, entry.Name())
-			files = append(files, filePath)
+			files = append(files, entryPath)
 			continue
 		}
 
-		// Scope is capped at one folder level: look one level into this
-		// subdirectory, but don't recurse into any subdirectory it in turn
-		// contains.
-		subDir := path.Join(userTmpDir, entry.Name())
-		subEntries, subErr := os.ReadDir(path.Join(l.root, subDir))
-		if subErr != nil {
+		subEntries, err := os.ReadDir(path.Join(l.root, entryPath))
+		if err != nil {
 			log.Warn().
-				Err(subErr).
-				Str("path", subDir).
+				Err(err).
+				Str("path", entryPath).
 				Msg("error reading user temporary subdirectory, skipping it")
 			continue
 		}
 
-		for _, subEntry := range subEntries {
-			if subEntry.IsDir() {
-				continue
-			}
-			filePath := path.Join(subDir, subEntry.Name())
-			files = append(files, filePath)
-		}
+		files = l.collectFiles(entryPath, subEntries, files)
 	}
 
-	return files, nil
+	return files
 }
 
 func (l LocalStorageProvider) Move(_ context.Context, fromPath, newPath string) error {

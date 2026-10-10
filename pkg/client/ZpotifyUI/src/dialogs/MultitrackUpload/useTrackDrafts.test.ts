@@ -18,6 +18,15 @@ describe('createTracksFromExistingFiles', () => {
         expect('file' in track).toBe(false);
     });
 
+    it('keeps the full nested directory as folderName for deeply nested SongFile paths', () => {
+        const songFiles: SongFile[] = [{ id: 'f3', path: 'tmp/u1/The Wall/Root/CD1/01.flac' }];
+
+        const [track] = createTracksFromExistingFiles(songFiles);
+
+        expect(track.folderName).toBe('The Wall/Root/CD1');
+        expect(track.title).toBe('01');
+    });
+
     it('handles a flat (non-foldered) SongFile path', () => {
         const songFiles: SongFile[] = [{ id: 'f2', path: 'tmp/u1/track-two.mp3' }];
 

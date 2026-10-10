@@ -1,0 +1,8 @@
+.TrackFolderNodeContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin-left: 1.25rem;
+    padding-left: 0.625rem;
+    border-left: 0.0625rem solid var(--color-border);
+}

@@ -36,7 +36,7 @@ vi.mock('@/dialogs/AddTrack/screens/useTorrentJobs.ts', () => ({
 }));
 
 function makeFile(id: string, folder: string): SongFile {
-    return { id, path: `tmp/user1/${folder}/${id}.mp3` } as SongFile;
+    return { id, path: `tmp/user1/${folder}/${id}.mp3` };
 }
 
 function makeJob(overrides: Partial<TorrentJob>): TorrentJob {
@@ -115,5 +115,34 @@ describe('PendingFilesScreen folder wiring', () => {
         fireEvent.click(screen.getByText('Manage'));
 
         expect(handleManageTorrentSpy).toHaveBeenCalledWith(job);
+    });
+
+    it('shows nested folder headers after expanding each level', () => {
+        mockFiles = [{ id: 'n1', path: 'tmp/1/The Wall/Root/CD1/a.flac' }];
+
+        const ctx = makeContext({});
+        render(<PendingFilesScreen {...ctx} />);
+
+        expect(screen.getByText('The Wall')).not.toBeNull();
+        fireEvent.click(screen.getByText('The Wall'));
+        expect(screen.getByText('Root')).not.toBeNull();
+        fireEvent.click(screen.getByText('Root'));
+        expect(screen.getByText('CD1')).not.toBeNull();
+        fireEvent.click(screen.getByText('CD1'));
+        expect(screen.getByText('a.flac')).not.toBeNull();
+    });
+
+    it('creates a playlist named after the leaf folder with all descendant files from a nested folder header', () => {
+        const nested: SongFile = { id: 'n1', path: 'tmp/1/The Wall/Root/CD1/a.flac' };
+        const direct: SongFile = { id: 'n2', path: 'tmp/1/The Wall/b.flac' };
+        mockFiles = [nested, direct];
+
+        const handleCreatePlaylistFromFolderSpy = vi.fn();
+        const ctx = makeContext({ handleCreatePlaylistFromFolder: handleCreatePlaylistFromFolderSpy });
+        render(<PendingFilesScreen {...ctx} />);
+
+        fireEvent.click(screen.getAllByText('Create playlist')[0]);
+
+        expect(handleCreatePlaylistFromFolderSpy).toHaveBeenCalledWith('The Wall', [nested, direct]);
     });
 });

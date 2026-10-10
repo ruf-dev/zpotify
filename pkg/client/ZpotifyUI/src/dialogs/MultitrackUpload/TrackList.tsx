@@ -10,8 +10,9 @@ import TrackRow from '@/dialogs/MultitrackUpload/TrackRow';
 import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { useTrackDrag } from '@/dialogs/MultitrackUpload/useTrackDrag';
 import { canCleanTrackNumbers } from '@/dialogs/MultitrackUpload/utils';
-import { groupTracksByFolder, folderProgress } from '@/dialogs/MultitrackUpload/groupTracksByFolder';
-import FolderGroupHeader from '@/components/FolderGroupHeader/FolderGroupHeader';
+import { groupTracksByFolder } from '@/dialogs/MultitrackUpload/groupTracksByFolder';
+import type { TrackGroupEntry } from '@/dialogs/MultitrackUpload/groupTracksByFolder';
+import TrackFolderNode from '@/dialogs/MultitrackUpload/components/TrackFolderNode/TrackFolderNode';
 import cls from '@/dialogs/MultitrackUpload/TrackList.module.css';
 
 interface TrackListProps {
@@ -40,7 +41,7 @@ export default function TrackList(props: TrackListProps) {
     const drag = useTrackDrag(props.tracks.length, props.onReorder);
     const [isHoveringClean, setIsHoveringClean] = useState(false);
     const [isCleaningNumbers, setIsCleaningNumbers] = useState(false);
-    const [collapsedFolders, setCollapsedFolders] = useState<Set<string>>(new Set());
+    const [collapsedPaths, setCollapsedPaths] = useState<Set<string>>(new Set());
 
     const count = props.tracks.length;
     const headerLabel = count === 1 ? 'TRACK · 1' : `TRACKS · ${count}`;
@@ -48,7 +49,7 @@ export default function TrackList(props: TrackListProps) {
     const canCleanNames = canCleanTrackNumbers(props.tracks.map((t) => t.title));
     const previewCleanNumbers = canCleanNames && isHoveringClean;
     const cleaningNumbers = canCleanNames && isCleaningNumbers;
-    const segments = props.flatList ? undefined : groupTracksByFolder(props.tracks);
+    const entries = props.flatList ? undefined : groupTracksByFolder(props.tracks);
 
     function handleCleanNamesClick() {
         // Without a hover-preview frame (touch devices never fire it), the prefix span would
@@ -67,11 +68,11 @@ export default function TrackList(props: TrackListProps) {
         });
     }
 
-    function toggleFolder(folderName: string) {
-        setCollapsedFolders((prev) => {
+    function toggleFolder(path: string) {
+        setCollapsedPaths((prev) => {
             const next = new Set(prev);
-            if (next.has(folderName)) next.delete(folderName);
-            else next.add(folderName);
+            if (next.has(path)) next.delete(path);
+            else next.add(path);
             return next;
         });
     }
@@ -103,6 +104,20 @@ export default function TrackList(props: TrackListProps) {
         );
     }
 
+    function renderEntry(entry: TrackGroupEntry) {
+        if (entry.kind === 'track') return renderTrackRow(entry.track, entry.index);
+        return (
+            <TrackFolderNode
+                key={`folder-${entry.folder.path}-${entry.folder.startIndex}`}
+                folder={entry.folder}
+                depth={0}
+                collapsedPaths={collapsedPaths}
+                onToggle={toggleFolder}
+                renderTrack={renderTrackRow}
+            />
+        );
+    }
+
     return (
         <div className={cls.TrackListContainer}>
             <div className={cls.ListHeader}>
@@ -126,37 +141,7 @@ export default function TrackList(props: TrackListProps) {
             <div className={cls.RowsWrapper}>
                 {props.flatList
                     ? props.tracks.map((track, idx) => renderTrackRow(track, idx))
-                    : segments!.flatMap((segment) => {
-                          if (segment.folderName === undefined) {
-                              return [renderTrackRow(segment.tracks[0], segment.startIndex)];
-                          }
-
-                          const folderName = segment.folderName;
-                          const collapsed = collapsedFolders.has(folderName);
-                          const nodes = [
-                              <FolderGroupHeader
-                                  key={`folder-header-${folderName}-${segment.startIndex}`}
-                                  name={folderName}
-                                  trackCount={segment.tracks.length}
-                                  progress={folderProgress(segment.tracks)}
-                                  collapsed={collapsed}
-                                  onToggle={() => toggleFolder(folderName)}
-                              />,
-                          ];
-
-                          if (!collapsed) {
-                              nodes.push(
-                                  <div
-                                      key={`folder-tracks-${folderName}-${segment.startIndex}`}
-                                      className={cls.FolderTrackIndent}
-                                  >
-                                      {segment.tracks.map((track, i) => renderTrackRow(track, segment.startIndex + i))}
-                                  </div>,
-                              );
-                          }
-
-                          return nodes;
-                      })}
+                    : entries!.map(renderEntry)}
             </div>
 
             {ghostTrack &&

@@ -1,49 +1,19 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from '@vervstack/chures';
-import cn from 'classnames';
 
 import cls from '@/dialogs/AddTrack/screens/PendingFilesScreen.module.css';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 import FileItem from '@/dialogs/AddTrack/screens/components/FileItem/FileItem';
 import TorrentJobItem from '@/dialogs/AddTrack/screens/components/TorrentJobItem/TorrentJobItem';
+import PendingFolderNode from '@/dialogs/AddTrack/screens/components/PendingFolderNode/PendingFolderNode';
 import BatchUploadSection from '@/dialogs/AddTrack/screens/components/BatchUploadSection/BatchUploadSection';
 import Checkbox from '@/components/Checkbox/Checkbox';
-import FolderGroupHeader from '@/components/FolderGroupHeader/FolderGroupHeader';
 import { usePendingFiles } from '@/dialogs/AddTrack/screens/usePendingFiles.tsx';
 import { useTorrentJobs } from '@/dialogs/AddTrack/screens/useTorrentJobs.ts';
 import { parseSongFilePath } from '@/dialogs/AddTrack/screens/parseSongFilePath.ts';
+import { buildFolderTree } from '@/shared/lib/folderTree.ts';
 import { isTerminalTorrentStatus } from '@/shared/lib/torrentStatus.ts';
 import type { SongFile } from '@/app/api/zpotify';
-
-interface GroupedFiles {
-    folders: Map<string, SongFile[]>;
-    ungrouped: SongFile[];
-}
-
-function groupFilesByFolder(files: SongFile[]): GroupedFiles {
-    const folders = new Map<string, SongFile[]>();
-    const ungrouped: SongFile[] = [];
-
-    files.forEach((file) => {
-        const { folderName } = parseSongFilePath(file.path);
-        if (folderName === undefined) {
-            ungrouped.push(file);
-            return;
-        }
-        const group = folders.get(folderName);
-        if (group) {
-            group.push(file);
-        } else {
-            folders.set(folderName, [file]);
-        }
-    });
-
-    return { folders, ungrouped };
-}
-
-function isFolderSelected(groupFiles: SongFile[], selectedIds: Set<string>): boolean {
-    return groupFiles.length > 0 && groupFiles.every((f) => selectedIds.has(f.id ?? ''));
-}
 
 export default function PendingFilesScreen({
     handleSelectFromLibrary,
@@ -54,13 +24,17 @@ export default function PendingFilesScreen({
 }: AddTrackContext) {
     const pendingFiles = usePendingFiles();
     const torrentJobs = useTorrentJobs();
-    const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
+    const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
+    const folderTree = useMemo(
+        () => buildFolderTree(pendingFiles.files, (file) => parseSongFilePath(file.path).folderName),
+        [pendingFiles.files],
+    );
 
-    function toggleFolder(folderName: string) {
-        setExpandedFolders((prev) => {
+    function toggleFolder(path: string) {
+        setExpandedPaths((prev) => {
             const next = new Set(prev);
-            if (next.has(folderName)) next.delete(folderName);
-            else next.add(folderName);
+            if (next.has(path)) next.delete(path);
+            else next.add(path);
             return next;
         });
     }
@@ -98,7 +72,6 @@ export default function PendingFilesScreen({
         );
     }
 
-    const grouped = groupFilesByFolder(pendingFiles.files);
     const hasActiveTorrentJob = torrentJobs.jobs.some((job) => !isTerminalTorrentStatus(job.status));
 
     return (
@@ -131,40 +104,19 @@ export default function PendingFilesScreen({
                         </div>
                     </div>
                     <div className={cls.FileList}>
-                        {Array.from(grouped.folders.entries()).map(([folderName, groupFiles]) => {
-                            const collapsed = !expandedFolders.has(folderName);
-                            const folderSelected = isFolderSelected(groupFiles, pendingFiles.selectedIds);
-                            return (
-                                <div key={folderName} className={cls.FolderGroup}>
-                                    <FolderGroupHeader
-                                        name={folderName}
-                                        trackCount={groupFiles.length}
-                                        progress={100}
-                                        collapsed={collapsed}
-                                        onToggle={() => toggleFolder(folderName)}
-                                        folderSelected={folderSelected}
-                                        onToggleSelectFolder={(checked) =>
-                                            pendingFiles.handleToggleSelectFolder(
-                                                groupFiles.map((f) => f.id ?? ''),
-                                                checked,
-                                            )
-                                        }
-                                        onCreatePlaylist={() => handleCreatePlaylistFromFolder(folderName, groupFiles)}
-                                    />
-                                    <div
-                                        className={cn(
-                                            cls.FolderTrackIndent,
-                                            !collapsed && cls.FolderTrackIndentExpanded,
-                                        )}
-                                    >
-                                        <div className={cls.FolderTrackIndentInner}>
-                                            {groupFiles.map(renderFileItem)}
-                                        </div>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                        {grouped.ungrouped.map(renderFileItem)}
+                        {folderTree.children.map((node) => (
+                            <PendingFolderNode
+                                key={node.path}
+                                node={node}
+                                expandedPaths={expandedPaths}
+                                selectedIds={pendingFiles.selectedIds}
+                                onToggle={toggleFolder}
+                                onToggleSelectFolder={pendingFiles.handleToggleSelectFolder}
+                                onCreatePlaylist={handleCreatePlaylistFromFolder}
+                                renderFile={renderFileItem}
+                            />
+                        ))}
+                        {folderTree.items.map(renderFileItem)}
                     </div>
                 </>
             )}

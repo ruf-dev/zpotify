@@ -15,6 +15,12 @@ describe('parseSongFilePath', () => {
         expect(result).toEqual({ folderName: 'my-album', fileName: 'abc123.mp3' });
     });
 
+    it('keeps the full nested directory as the folder name for deeper paths', () => {
+        const result = parseSongFilePath('tmp/user-1/The Wall/Pink Floyd - The Wall/CD1/01.flac');
+
+        expect(result).toEqual({ folderName: 'The Wall/Pink Floyd - The Wall/CD1', fileName: '01.flac' });
+    });
+
     it('falls back to "unknown file" for an empty or undefined path', () => {
         expect(parseSongFilePath(undefined)).toEqual({ folderName: undefined, fileName: 'unknown file' });
         expect(parseSongFilePath('')).toEqual({ folderName: undefined, fileName: 'unknown file' });

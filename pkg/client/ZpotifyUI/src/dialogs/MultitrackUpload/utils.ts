@@ -5,8 +5,8 @@ import { parseSongFilePath } from '@/dialogs/AddTrack/screens/parseSongFilePath.
 export function isSingleFolderInput(folders: DroppedFolder[], existingFiles: SongFile[]): boolean {
     if (folders.length > 0) return folders.length === 1 && existingFiles.length === 0;
     if (existingFiles.length === 0) return false;
-    const folderNames = new Set(existingFiles.map((f) => parseSongFilePath(f.path).folderName));
-    return folderNames.size === 1 && !folderNames.has(undefined);
+    const topLevelFolders = new Set(existingFiles.map((f) => parseSongFilePath(f.path).folderName?.split('/')[0]));
+    return topLevelFolders.size === 1 && !topLevelFolders.has(undefined);
 }
 
 export function cleanTitle(filename: string): string {

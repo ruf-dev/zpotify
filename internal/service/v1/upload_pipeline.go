@@ -38,8 +38,8 @@ type uploadRequest struct {
 	UserId int64
 	// FileNameWithExt is the desired final file name, extension included.
 	FileNameWithExt string
-	// FolderRelDir is an already-sanitized folder segment, or "" for the
-	// user's temp root.
+	// FolderRelDir is an already-sanitized relative folder path of one or
+	// more '/'-joined segments, or "" for the user's temp root.
 	FolderRelDir string
 	Content      io.Reader
 	// MaxSongSizeBytes caps a single file; exceeding it aborts the upload.

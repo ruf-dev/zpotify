@@ -7,6 +7,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 	"sync"
 
 	"github.com/anacrolix/torrent"
@@ -623,6 +624,12 @@ func (s *TorrentService) importOneFile(
 		return entry
 	}
 
+	folderRelDir, err := torrentImportFolder(row.FolderName, torrentPath)
+	if err != nil {
+		entry.Error = rerrors.Wrap(err, "error resolving torrent file folder").Error()
+		return entry
+	}
+
 	src, err := os.Open(diskPath)
 	if err != nil {
 		entry.Error = rerrors.Wrap(err, "error opening downloaded torrent file").Error()
@@ -633,7 +640,7 @@ func (s *TorrentService) importOneFile(
 	uploadReq := uploadRequest{
 		UserId:              row.UserId,
 		FileNameWithExt:     path.Base(torrentPath),
-		FolderRelDir:        row.FolderName,
+		FolderRelDir:        folderRelDir,
 		Content:             src,
 		MaxSongSizeBytes:    permissions.MaxSongSizeBytes,
 		MaxTotalUploadBytes: permissions.MaxTotalUploadBytes,
@@ -651,6 +658,28 @@ func (s *TorrentService) importOneFile(
 	entry.Error = ""
 
 	return entry
+}
+
+// torrentImportFolder returns the user-relative folder a torrent file lands in:
+// the job folder (rootFolder, already sanitized; may be empty) followed by the
+// file's own directories inside the torrent, each validated as a single
+// path segment.
+func torrentImportFolder(rootFolder string, torrentPath string) (string, error) {
+	segments := []string{rootFolder}
+
+	torrentDir := path.Dir(torrentPath)
+	if torrentDir != "." {
+		for _, segment := range strings.Split(torrentDir, "/") {
+			sanitized, err := utils.SanitizeFolderName(segment)
+			if err != nil {
+				return "", rerrors.Wrap(err, "unsafe torrent directory name")
+			}
+
+			segments = append(segments, sanitized)
+		}
+	}
+
+	return path.Join(segments...), nil
 }
 
 // resolveTorrentFilePath maps a torrent-relative file path to its location in
