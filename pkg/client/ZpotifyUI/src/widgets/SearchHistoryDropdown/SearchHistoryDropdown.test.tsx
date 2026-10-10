@@ -18,9 +18,11 @@ vi.mock('@/shared/lib/useIsMobile.ts', () => ({
 const fetchSpy = vi.fn();
 const setQuerySpy = vi.fn();
 let entries: SearchHistoryEntry[] = [];
+let isLoading = false;
 vi.mock('@/entities/search/useSearchHistory.ts', () => ({
-    useSearchHistory: (selector: (s: { entries: SearchHistoryEntry[]; fetch: typeof fetchSpy }) => unknown) =>
-        selector({ entries, fetch: fetchSpy }),
+    useSearchHistory: (
+        selector: (s: { entries: SearchHistoryEntry[]; isLoading: boolean; fetch: typeof fetchSpy }) => unknown,
+    ) => selector({ entries, isLoading, fetch: fetchSpy }),
 }));
 vi.mock('@/entities/search/useSearchQuery.ts', () => ({
     useSearchQuery: (selector: (s: { setQuery: typeof setQuerySpy }) => unknown) => selector({ setQuery: setQuerySpy }),
@@ -51,6 +53,7 @@ describe('SearchHistoryDropdown', () => {
         cleanup();
         vi.clearAllMocks();
         entries = [];
+        isLoading = false;
         isMobile = false;
     });
 
@@ -67,6 +70,15 @@ describe('SearchHistoryDropdown', () => {
 
         expect(screen.queryByText('Recent searches')).toBeNull();
         expect(screen.queryByText('Recently viewed')).toBeNull();
+    });
+
+    it('renders the loading skeleton instead of nothing while the first fetch is in flight', () => {
+        entries = [];
+        isLoading = true;
+        renderDropdown(true);
+
+        expect(screen.queryByText('Recent searches')).toBeNull();
+        expect(screen.getByRole('status', { name: 'Loading search history' })).toBeTruthy();
     });
 
     it('sets the search query and closes when a recent query is clicked', () => {

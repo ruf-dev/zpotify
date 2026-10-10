@@ -1,0 +1,18 @@
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.PlaylistCardSkeletonContainer {
+    grid-column: span 2;
+    aspect-ratio: 2 / 1;
+    background: linear-gradient(
+        90deg,
+        var(--color-bg-accent) 25%,
+        var(--color-bg-hover-mid) 50%,
+        var(--color-bg-accent) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite linear;
+    border-radius: var(--border-radius-md);
+}

@@ -5,11 +5,14 @@ import cn from 'classnames';
 import { playlistService } from '@/shared/api/PlaylistService';
 import { usePlaylistListRefresh } from '@/entities/playlist/usePlaylistListRefresh';
 import PlaylistRow from '@/pages/segments/SidebarSegment/components/PlaylistRow/PlaylistRow';
+import PlaylistRowSkeleton from '@/pages/segments/SidebarSegment/components/PlaylistRowSkeleton/PlaylistRowSkeleton';
 import type { PlaylistRowData } from '@/pages/segments/SidebarSegment/components/PlaylistRow/PlaylistRow';
 import cls from '@/pages/segments/SidebarSegment/Widget/SidebarPlaylistsWidget/SidebarPlaylistsWidget.module.css';
 import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
 
 type PlaylistItem = PlaylistRowData;
+
+const SKELETON_ROW_COUNT = 4;
 
 function uuidToHslColor(uuid: string): string {
     let hash = 0;
@@ -56,6 +59,10 @@ export default function SidebarPlaylistsWidget({ isCollapsed }: SidebarPlaylists
     return (
         <div className={cls.SidebarPlaylistsWidgetContainer}>
             <span className={cn(cls.SectionLabel, isCollapsed && cls.SectionLabelHidden)}>Your Library</span>
+            {!loaded &&
+                Array.from({ length: SKELETON_ROW_COUNT }).map((_, idx) => (
+                    <PlaylistRowSkeleton key={idx} isCollapsed={isCollapsed} />
+                ))}
             {loaded && playlists.length === 0 && (
                 <div className={cn(cls.EmptyState, isCollapsed && cls.EmptyStateHidden)}>
                     <span className={cls.EmptyStateText}>No playlists yet</span>

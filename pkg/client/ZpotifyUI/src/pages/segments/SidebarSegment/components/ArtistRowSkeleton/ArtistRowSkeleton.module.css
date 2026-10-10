@@ -1,0 +1,97 @@
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.ShimmerBlock {
+    background: linear-gradient(
+        90deg,
+        var(--color-bg-accent) 25%,
+        var(--color-bg-hover-mid) 50%,
+        var(--color-bg-accent) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite linear;
+    border-radius: var(--border-radius-sm);
+}
+
+@keyframes avatarSpin {
+    to { transform: rotate(1turn); }
+}
+
+.ArtistRowSkeletonContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.35rem 1rem;
+
+    &.Collapsed {
+        padding: 0.35rem;
+        justify-content: center;
+        gap: 0;
+    }
+}
+
+.AvatarSkeleton {
+    position: relative;
+    overflow: hidden;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--color-bg-accent);
+    flex-shrink: 0;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: -50%;
+        background: conic-gradient(
+            from 0deg,
+            transparent 0deg,
+            var(--color-bg-hover-mid) 90deg,
+            transparent 200deg
+        );
+        animation: avatarSpin 1.2s linear infinite;
+    }
+}
+
+.AvatarCollapsed {
+    width: 1.625rem;
+    height: 1.625rem;
+}
+
+.InfoWrapper {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-width: 8rem;
+    opacity: 1;
+    transition: opacity var(--ease-quick), max-width var(--ease-quick);
+}
+
+.InfoWrapperHidden {
+    opacity: 0;
+    max-width: 0;
+}
+
+.Name {
+    width: 5.5rem;
+    height: var(--font-size-sm);
+}
+
+@media (orientation: portrait) {
+    .ArtistRowSkeletonContainer {
+        gap: var(--space-md);
+        padding: var(--space-sm) var(--space-lg);
+    }
+
+    .AvatarSkeleton {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .Name {
+        height: var(--font-size-lg);
+    }
+}

@@ -21,7 +21,7 @@ interface UseSearchPageResult {
     query: string;
     filters: SearchFilters;
     toggleFilter: (key: FilterKey) => void;
-    loading: boolean;
+    isLoading: boolean;
     visibleTracks: SearchTrackResult[];
     visibleArtists: SearchArtistResult[];
     visibleAlbums: SearchAlbumResult[];
@@ -38,12 +38,12 @@ export function useSearchPage(): UseSearchPageResult {
         playlists: true,
     });
     const [response, setResponse] = useState<SearchResponse>(EMPTY_RESPONSE);
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const reqIdRef = useRef(0);
 
     useEffect(
         function fetchResults() {
-            setLoading(true);
+            setIsLoading(true);
             const reqId = ++reqIdRef.current;
             const handle = setTimeout(function runSearch() {
                 const trimmedQuery = query.trim();
@@ -57,7 +57,7 @@ export function useSearchPage(): UseSearchPageResult {
                         if (reqIdRef.current === reqId) setResponse(EMPTY_RESPONSE);
                     })
                     .finally(() => {
-                        if (reqIdRef.current === reqId) setLoading(false);
+                        if (reqIdRef.current === reqId) setIsLoading(false);
                     });
             }, DEBOUNCE_MS);
 
@@ -85,7 +85,7 @@ export function useSearchPage(): UseSearchPageResult {
         query,
         filters,
         toggleFilter,
-        loading,
+        isLoading,
         visibleTracks,
         visibleArtists,
         visibleAlbums,

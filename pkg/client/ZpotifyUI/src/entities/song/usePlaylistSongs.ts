@@ -62,6 +62,7 @@ export function usePlaylistSongs(id: string | undefined) {
     }
 
     const isInitialLoading = isLoading && loadedIdRef.current !== id;
+    const isLoadingMore = isLoading && !isInitialLoading && songs.length > 0;
 
-    return { songs, totalSongs, isLoading, isInitialLoading, isListEnded, loadMore };
+    return { songs, totalSongs, isLoading, isInitialLoading, isLoadingMore, isListEnded, loadMore };
 }

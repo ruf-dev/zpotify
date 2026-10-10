@@ -4,6 +4,7 @@ import { searchHistoryService, type SearchHistoryEntry } from '@/shared/api/Sear
 
 interface SearchHistoryState {
     entries: SearchHistoryEntry[];
+    isLoading: boolean;
     fetch: () => void;
     recordQuery: (query: string) => void;
     recordFinding: (
@@ -17,11 +18,12 @@ interface SearchHistoryState {
 
 export const useSearchHistory = create<SearchHistoryState>((set) => ({
     entries: [],
+    isLoading: true,
     fetch: () => {
         searchHistoryService
             .list()
-            .then((entries) => set({ entries }))
-            .catch(() => {});
+            .then((entries) => set({ entries, isLoading: false }))
+            .catch(() => set({ isLoading: false }));
     },
     recordQuery: (query) => {
         searchHistoryService.recordQuery(query).catch(() => {});

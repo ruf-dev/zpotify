@@ -16,7 +16,7 @@ export default function AlbumPage() {
     const highlightTrackId = searchParams.get('track') ?? undefined;
     const userData = useUser((state) => state.userData);
     const { playlist, isLoading: playlistLoading } = usePlaylist(id);
-    const { songs, isInitialLoading: songsLoading, isListEnded, loadMore } = usePlaylistSongs(id);
+    const { songs, isInitialLoading: songsLoading, isLoadingMore, isListEnded, loadMore } = usePlaylistSongs(id);
 
     const notAnAlbum = !!playlist && !isAlbum(playlist);
 
@@ -38,6 +38,7 @@ export default function AlbumPage() {
             songs={songs}
             username={userData.username ?? ''}
             isListEnded={isListEnded}
+            isLoadingMore={isLoadingMore}
             onLoadMore={loadMore}
             highlightTrackId={highlightTrackId}
         />

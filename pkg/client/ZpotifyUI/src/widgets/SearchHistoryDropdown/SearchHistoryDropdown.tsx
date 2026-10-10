@@ -10,6 +10,7 @@ import { useSearchHistory } from '@/entities/search/useSearchHistory.ts';
 import { useSearchQuery } from '@/entities/search/useSearchQuery.ts';
 import { useIsMobile } from '@/shared/lib/useIsMobile.ts';
 import type { SearchHistoryEntry } from '@/shared/api/SearchHistoryService.ts';
+import HistoryListSkeleton from '@/widgets/SearchHistoryDropdown/components/HistoryListSkeleton/HistoryListSkeleton.tsx';
 import cls from '@/widgets/SearchHistoryDropdown/SearchHistoryDropdown.module.css';
 
 const MOBILE_ENTRY_LIMIT = 3;
@@ -39,6 +40,7 @@ export default function SearchHistoryDropdown(props: SearchHistoryDropdownProps)
     const panelRef = useRef<HTMLDivElement>(null);
 
     const entries = useSearchHistory((s) => s.entries);
+    const isLoading = useSearchHistory((s) => s.isLoading);
     const fetchHistory = useSearchHistory((s) => s.fetch);
     const setQuery = useSearchQuery((s) => s.setQuery);
     const navigate = useNavigate();
@@ -91,7 +93,9 @@ export default function SearchHistoryDropdown(props: SearchHistoryDropdownProps)
     const recentQueries = visibleEntries.filter((entry) => !entry.findingType);
     const recentFindings = visibleEntries.filter((entry) => !!entry.findingType);
 
-    if (recentQueries.length === 0 && recentFindings.length === 0) return null;
+    const isShowingSkeleton = isLoading && entries.length === 0;
+
+    if (!isShowingSkeleton && recentQueries.length === 0 && recentFindings.length === 0) return null;
 
     return createPortal(
         <div
@@ -99,6 +103,7 @@ export default function SearchHistoryDropdown(props: SearchHistoryDropdownProps)
             className={cls.SearchHistoryDropdownContainer}
             style={{ position: 'fixed', top: anchorRect.bottom + 8, left: anchorRect.left, width: anchorRect.width }}
         >
+            {isShowingSkeleton && <HistoryListSkeleton />}
             {recentQueries.length > 0 && (
                 <div className={cls.Section}>
                     <span className={cls.SectionLabel}>Recent searches</span>

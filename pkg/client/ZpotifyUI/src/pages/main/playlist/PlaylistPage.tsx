@@ -18,7 +18,7 @@ export default function PlaylistPage() {
     const highlightTrackId = searchParams.get('track') ?? undefined;
     const userData = useUser((state) => state.userData);
     const { playlist, isLoading: playlistLoading, error: playlistError } = usePlaylist(id);
-    const { songs, isInitialLoading: songsLoading, isListEnded, loadMore } = usePlaylistSongs(id);
+    const { songs, isInitialLoading: songsLoading, isLoadingMore, isListEnded, loadMore } = usePlaylistSongs(id);
 
     const isActuallyAlbum = !!playlist && isAlbum(playlist);
     const isNotFound = playlistError instanceof ServiceError && playlistError.code === Errors.NOT_FOUND;
@@ -43,6 +43,7 @@ export default function PlaylistPage() {
             songs={songs}
             username={userData.username ?? ''}
             isListEnded={isListEnded}
+            isLoadingMore={isLoadingMore}
             onLoadMore={loadMore}
             highlightTrackId={highlightTrackId}
         />

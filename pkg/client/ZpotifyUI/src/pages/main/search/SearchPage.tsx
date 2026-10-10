@@ -4,6 +4,7 @@ import AlbumCard from '@/widgets/PlaylistsLibrarySegment/components/AlbumCard/Al
 import PlaylistCardWide from '@/widgets/PlaylistsLibrarySegment/components/PlaylistCardWide/PlaylistCardWide.tsx';
 import FilterChips from '@/pages/main/search/components/FilterChips/FilterChips.tsx';
 import SectionLabel from '@/pages/main/search/components/SectionLabel/SectionLabel.tsx';
+import SearchResultsSkeleton from '@/pages/main/search/components/SearchResultsSkeleton/SearchResultsSkeleton.tsx';
 import EmptyState from '@/pages/main/search/components/EmptyState/EmptyState.tsx';
 import ArtistCard from '@/pages/main/search/components/ArtistCard/ArtistCard.tsx';
 import MobileSearchInput from '@/pages/main/search/components/MobileSearchInput/MobileSearchInput.tsx';
@@ -159,6 +160,10 @@ export default function SearchPage() {
     }
 
     function renderResults() {
+        if (page.totalResults === 0 && page.isLoading) {
+            return <SearchResultsSkeleton filters={page.filters} />;
+        }
+
         if (page.query.trim().length > 0 && page.totalResults === 0) {
             return <EmptyState query={page.query.trim()} />;
         }

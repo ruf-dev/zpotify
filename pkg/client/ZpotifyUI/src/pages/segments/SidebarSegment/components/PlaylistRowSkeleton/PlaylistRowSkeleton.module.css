@@ -1,0 +1,82 @@
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.ShimmerBlock {
+    background: linear-gradient(
+        90deg,
+        var(--color-bg-accent) 25%,
+        var(--color-bg-hover-mid) 50%,
+        var(--color-bg-accent) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite linear;
+    border-radius: var(--border-radius-sm);
+}
+
+.PlaylistRowSkeletonContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 1rem;
+
+    &.Collapsed {
+        padding: 0.35rem;
+        justify-content: center;
+        gap: 0;
+    }
+}
+
+.Cover {
+    width: 1.625rem;
+    height: 1.625rem;
+    border-radius: var(--space-xs);
+    flex-shrink: 0;
+}
+
+.InfoWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    overflow: hidden;
+    max-width: 8rem;
+    opacity: 1;
+    transition: opacity var(--ease-quick), max-width var(--ease-quick);
+}
+
+.InfoWrapperHidden {
+    opacity: 0;
+    max-width: 0;
+}
+
+.Name {
+    width: 6rem;
+    height: var(--font-size-sm);
+}
+
+.Tracks {
+    width: 3rem;
+    height: 0.4375rem;
+}
+
+@media (orientation: portrait) {
+    .PlaylistRowSkeletonContainer {
+        gap: var(--space-md);
+        padding: var(--space-sm) var(--space-lg);
+    }
+
+    .Cover {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .Name {
+        height: var(--font-size-lg);
+    }
+
+    .Tracks {
+        height: var(--font-size-xs);
+    }
+}

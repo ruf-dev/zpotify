@@ -1,19 +1,31 @@
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
 .HeroSkeleton {
     width: 100%;
     aspect-ratio: var(--artist-cover-aspect-ratio);
-    background: var(--color-bg-card);
-    animation: pulse 1.4s ease-in-out infinite;
+    background: linear-gradient(
+        90deg,
+        var(--color-bg-accent) 25%,
+        var(--color-bg-hover-mid) 50%,
+        var(--color-bg-accent) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite linear;
 }
 
 .RowsSkeleton {
     height: 16rem;
     margin: var(--space-2xl);
     border-radius: var(--border-radius-md);
-    background: var(--color-bg-card);
-    animation: pulse 1.4s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 0.6; }
-    50%      { opacity: 1; }
+    background: linear-gradient(
+        90deg,
+        var(--color-bg-accent) 25%,
+        var(--color-bg-hover-mid) 50%,
+        var(--color-bg-accent) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite linear;
 }

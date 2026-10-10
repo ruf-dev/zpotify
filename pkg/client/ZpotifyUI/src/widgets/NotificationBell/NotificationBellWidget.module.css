@@ -64,3 +64,40 @@
     color: var(--color-fg-tertiary);
     font-style: italic;
 }
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.ShimmerBlock {
+    background: linear-gradient(
+        90deg,
+        var(--color-bg-accent) 25%,
+        var(--color-bg-hover-mid) 50%,
+        var(--color-bg-accent) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite linear;
+    border-radius: var(--border-radius-sm);
+}
+
+.SkeletonRowContainer {
+    padding: 0.625rem 0.875rem;
+}
+
+.SkeletonBody {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.SkeletonTitle {
+    width: 75%;
+    height: 1rem;
+}
+
+.SkeletonDate {
+    width: 25%;
+    height: 0.75rem;
+}

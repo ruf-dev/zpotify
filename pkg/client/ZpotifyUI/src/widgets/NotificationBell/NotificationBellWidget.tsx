@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 
 import { BellIcon } from '@/assets/icons/BellIcon.tsx';
 import NotificationRow from '@/widgets/NotificationBell/components/NotificationRow/NotificationRow';
+import NotificationBellSkeleton from '@/widgets/NotificationBell/NotificationBellSkeleton';
 import cls from '@/widgets/NotificationBell/NotificationBellWidget.module.css';
 import useNotifications from '@/entities/notification/useNotifications.ts';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
@@ -85,7 +86,7 @@ export default function NotificationBellWidget() {
                             <span className={cls.PanelTitle}>Notifications</span>
                         </div>
                         <div className={cls.RowsList}>
-                            {isLoading && notifications.length === 0 && <span className={cls.EmptyHint}>Loading…</span>}
+                            {isLoading && notifications.length === 0 && <NotificationBellSkeleton />}
                             {!isLoading && notifications.length === 0 && (
                                 <span className={cls.EmptyHint}>No notifications yet</span>
                             )}

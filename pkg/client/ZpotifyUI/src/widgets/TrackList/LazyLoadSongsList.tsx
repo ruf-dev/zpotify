@@ -5,8 +5,11 @@ import cls from '@/widgets/TrackList/InfiniteSongsList.module.css';
 import { useListSongs } from '@/entities/song/useListSongs.ts';
 import useAudioPlayer from '@/widgets/MusicPlayer/usePlayer.ts';
 import { toQueueTracks } from '@/widgets/MusicPlayer/toQueueTracks.ts';
+import TrackRowSkeleton from '@/widgets/PlaylistScreen/components/TrackRowSkeleton/TrackRowSkeleton.tsx';
 import SongListWidget from '@/widgets/TrackList/TrackListWidget.tsx';
 import ZButton from '@/shared/ui/ZButton/ZButton.tsx';
+
+const INITIAL_SKELETON_ROWS = 5;
 
 interface InfiniteSongsListProps {
     playlistId: string;
@@ -24,7 +27,10 @@ export default function LazyLoadSongsList({
     coverUrl,
 }: InfiniteSongsListProps) {
     const audioPlayer = useAudioPlayer();
-    const { songs, isListEnded, loadMore, loadShuffled } = useListSongs(playlistId, { onTotal, autoLoadAll });
+    const { songs, isListEnded, isInitialLoading, isLoadingMore, loadMore, loadShuffled } = useListSongs(playlistId, {
+        onTotal,
+        autoLoadAll,
+    });
 
     useEffect(() => {
         const hash = audioPlayer.shuffleHash?.toString();
@@ -41,8 +47,10 @@ export default function LazyLoadSongsList({
 
     return (
         <div className={cn(cls.InfiniteSongsListContainer, { [cls.scrollable]: fixedSize })}>
+            {isInitialLoading ? <TrackRowSkeleton count={INITIAL_SKELETON_ROWS} /> : null}
             <SongListWidget songs={songs} audioPlayer={audioPlayer} coverUrl={coverUrl} queueSourceId={playlistId} />
-            {!autoLoadAll && !isListEnded ? <ZButton title={'Load more'} onClick={loadMore} /> : null}
+            {isLoadingMore ? <TrackRowSkeleton /> : null}
+            {!autoLoadAll && !isListEnded && !isLoadingMore ? <ZButton title={'Load more'} onClick={loadMore} /> : null}
         </div>
     );
 }

@@ -9,10 +9,15 @@ export function useHomeSegments() {
     const toaster = useToaster();
     const savedIdx = parseInt(localStorage.getItem('zp_tab_idx') || '0', 10);
     const [segments, setSegments] = useState<HomeSegment[]>([]);
+    const [isInitialLoading, setIsInitialLoading] = useState(true);
     const [activeIdx, setActiveIdx] = useState(!isNaN(savedIdx) ? savedIdx : 0);
 
     useEffect(() => {
-        settingsService.ListHomeSegments().then(setSegments).catch(toaster.catch);
+        settingsService
+            .ListHomeSegments()
+            .then(setSegments)
+            .catch(toaster.catch)
+            .finally(() => setIsInitialLoading(false));
     }, []);
 
     useEffect(() => {
@@ -28,5 +33,5 @@ export function useHomeSegments() {
         localStorage.setItem('zp_tab_idx', String(idx));
     }
 
-    return { segments, tabs, activeIdx, handleChange };
+    return { segments, tabs, activeIdx, isInitialLoading, handleChange };
 }

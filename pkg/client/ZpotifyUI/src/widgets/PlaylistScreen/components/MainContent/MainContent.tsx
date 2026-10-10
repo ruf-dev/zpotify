@@ -10,6 +10,7 @@ import { ClockIcon } from '@/assets/icons/ClockIcon.tsx';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import TrackRow from '@/widgets/PlaylistScreen/components/TrackRow/TrackRow.tsx';
+import TrackRowSkeleton from '@/widgets/PlaylistScreen/components/TrackRowSkeleton/TrackRowSkeleton.tsx';
 import CommentsSection from '@/widgets/PlaylistScreen/components/CommentsSection/CommentsSection.tsx';
 import AddTracksPanel from '@/widgets/PlaylistScreen/widgets/AddTracksPanel/AddTracksPanel.tsx';
 import ZButton from '@/shared/ui/ZButton/ZButton.tsx';
@@ -38,6 +39,7 @@ export interface MainContentProps {
     playlistIsAlbum?: boolean;
     playlistArtists?: ArtistItem[];
     isListEnded?: boolean;
+    isLoadingMore?: boolean;
     onLoadMore?: () => void;
     highlightTrackId?: string;
 }
@@ -59,6 +61,7 @@ export default function MainContent({
     playlistIsAlbum,
     playlistArtists,
     isListEnded,
+    isLoadingMore,
     onLoadMore,
     highlightTrackId,
 }: MainContentProps) {
@@ -264,9 +267,10 @@ export default function MainContent({
                         />
                     );
                 })}
+                {isLoadingMore && <TrackRowSkeleton />}
             </div>
 
-            {onLoadMore && !isListEnded && <ZButton title={'Load more'} onClick={onLoadMore} />}
+            {onLoadMore && !isListEnded && !isLoadingMore && <ZButton title={'Load more'} onClick={onLoadMore} />}
 
             {commentsEnabled && <CommentsSection username={username} />}
         </div>

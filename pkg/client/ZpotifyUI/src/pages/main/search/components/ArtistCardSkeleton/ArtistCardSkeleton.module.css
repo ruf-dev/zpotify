@@ -1,0 +1,61 @@
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@keyframes avatarSpin {
+    to { transform: rotate(1turn); }
+}
+
+.ArtistCardSkeletonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-lg) var(--space-md);
+
+    & .Avatar {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        background: var(--color-bg-accent);
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                var(--color-bg-hover-mid) 90deg,
+                transparent 200deg
+            );
+            animation: avatarSpin 1.2s linear infinite;
+        }
+    }
+
+    & .Name,
+    & .Sub {
+        background: linear-gradient(
+            90deg,
+            var(--color-bg-accent) 25%,
+            var(--color-bg-hover-mid) 50%,
+            var(--color-bg-accent) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite linear;
+        border-radius: var(--border-radius-sm);
+    }
+
+    & .Name {
+        width: 70%;
+        height: 1rem;
+    }
+
+    & .Sub {
+        width: 40%;
+        height: 0.75rem;
+    }
+}

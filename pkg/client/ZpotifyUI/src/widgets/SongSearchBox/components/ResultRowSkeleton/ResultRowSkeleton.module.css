@@ -1,0 +1,65 @@
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.ResultRowSkeletonContainer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+
+    & .Cover,
+    & .Title,
+    & .Artists,
+    & .Duration {
+        background: linear-gradient(
+            90deg,
+            var(--color-bg-accent) 25%,
+            var(--color-bg-hover-mid) 50%,
+            var(--color-bg-accent) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite linear;
+        border-radius: var(--border-radius-sm);
+    }
+
+    & .Cover {
+        flex-shrink: 0;
+        width: 2rem;
+        height: 2rem;
+    }
+
+    & .Text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        flex: 1;
+        min-width: 0;
+    }
+
+    & .Title {
+        width: 45%;
+        height: 0.875rem;
+    }
+
+    & .Artists {
+        width: 30%;
+        height: 0.75rem;
+    }
+
+    & .Duration {
+        flex-shrink: 0;
+        width: 2rem;
+        height: 0.75rem;
+    }
+
+    & .AddIcon {
+        flex-shrink: 0;
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: var(--border-radius-circle);
+        background: var(--color-bg-accent);
+    }
+}

@@ -8,6 +8,7 @@ import { songsService } from '@/shared/api/Songs.ts';
 import { formatDuration } from '@/shared/lib/time';
 import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
 import CoverWithFallback from '@/components/CoverWithFallback/CoverWithFallback.tsx';
+import ResultRowSkeleton from '@/widgets/SongSearchBox/components/ResultRowSkeleton/ResultRowSkeleton.tsx';
 import cls from '@/widgets/SongSearchBox/SongSearchBox.module.css';
 
 interface SongSearchBoxProps {
@@ -16,22 +17,24 @@ interface SongSearchBoxProps {
 }
 
 const DEBOUNCE_MS = 250;
+const SKELETON_ROW_COUNT = 3;
+const SKELETON_ROW_KEYS = Array.from({ length: SKELETON_ROW_COUNT }, (_, idx) => idx);
 
 export default function SongSearchBox({ excludedIds, onAddSong }: SongSearchBoxProps) {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<SongBase[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const reqIdRef = useRef(0);
 
     useEffect(() => {
         const trimmed = query.trim();
         if (trimmed.length === 0) {
             setResults([]);
-            setLoading(false);
+            setIsLoading(false);
             return;
         }
 
-        setLoading(true);
+        setIsLoading(true);
         const reqId = ++reqIdRef.current;
         const handle = setTimeout(function runSearch() {
             songsService
@@ -43,7 +46,7 @@ export default function SongSearchBox({ excludedIds, onAddSong }: SongSearchBoxP
                     if (reqIdRef.current === reqId) setResults([]);
                 })
                 .finally(() => {
-                    if (reqIdRef.current === reqId) setLoading(false);
+                    if (reqIdRef.current === reqId) setIsLoading(false);
                 });
         }, DEBOUNCE_MS);
 
@@ -68,8 +71,8 @@ export default function SongSearchBox({ excludedIds, onAddSong }: SongSearchBoxP
 
             {showPanel && (
                 <div className={cls.ResultsPanel}>
-                    {loading ? (
-                        <div className={cls.HintRow}>searching…</div>
+                    {isLoading && visible.length === 0 ? (
+                        SKELETON_ROW_KEYS.map((key) => <ResultRowSkeleton key={key} />)
                     ) : visible.length === 0 ? (
                         <div className={cls.HintRow}>no songs found</div>
                     ) : (

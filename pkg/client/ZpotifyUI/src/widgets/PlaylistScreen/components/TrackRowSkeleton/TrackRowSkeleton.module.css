@@ -1,0 +1,88 @@
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.TrackRowSkeletonContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+
+    & .Row {
+        display: grid;
+        grid-template-columns: 2.5rem 1fr 2rem 3rem 1.5rem 0;
+        gap: 0.5rem;
+        padding: 0.55rem 1rem;
+        align-items: center;
+        border-left: 0.125rem solid transparent;
+    }
+
+    & .NumCell {
+        display: grid;
+        place-items: center;
+    }
+
+    & .TitleCell {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        gap: 0.1rem;
+    }
+
+    & .DurationCell {
+        grid-column: 4;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    & .ShimmerBlock {
+        background: linear-gradient(
+            90deg,
+            var(--color-bg-accent) 25%,
+            var(--color-bg-hover-mid) 50%,
+            var(--color-bg-accent) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite linear;
+        border-radius: var(--border-radius-sm);
+    }
+
+    & .NumBlock {
+        width: 1rem;
+        height: var(--font-size-base);
+    }
+
+    & .TitleBlock {
+        width: 60%;
+        height: var(--font-size-md);
+    }
+
+    & .ArtistBlock {
+        width: 35%;
+        height: var(--font-size-sm);
+    }
+
+    & .DurationBlock {
+        width: 2rem;
+        height: var(--font-size-sm);
+    }
+}
+
+@media (orientation: portrait) {
+    .TrackRowSkeletonContainer {
+        & .Row {
+            grid-template-columns: 1fr 2rem 3rem 1.5rem 0;
+            gap: 0.25rem;
+            padding: 1rem 0.5rem;
+        }
+
+        & .NumCell {
+            display: none;
+        }
+
+        & .DurationCell {
+            grid-column: 3;
+        }
+    }
+}

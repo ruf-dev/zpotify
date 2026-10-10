@@ -26,6 +26,7 @@ export function useListSongs(playlistId: string, options: UseListSongsOptions = 
     const [totalSongs, setTotalSongs] = useState(0);
     const [isListEnded, setIsListEnded] = useState(false);
     const [pageKey, setPageKey] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         register(playlistId);
@@ -39,10 +40,13 @@ export function useListSongs(playlistId: string, options: UseListSongsOptions = 
         setOffset(0);
         setTotalSongs(0);
         setIsListEnded(false);
+        setIsLoading(true);
         setPageKey((k) => k + 1);
     }, [version]);
 
     function loadPage(pageOffset: number, hash?: string) {
+        let isContinuing = false;
+        setIsLoading(true);
         playlistService
             .ListSongs(playlistId, pageOffset, SONGS_PER_PAGE, hash)
             .then((resp) => {
@@ -52,10 +56,14 @@ export function useListSongs(playlistId: string, options: UseListSongsOptions = 
                 setTotalSongs(total);
                 if (onTotal != null && resp.total != null) onTotal(resp.total);
                 if (autoLoadAll && pageOffset + SONGS_PER_PAGE < total) {
+                    isContinuing = true;
                     setOffset((prev) => prev + SONGS_PER_PAGE);
                 }
             })
-            .catch(toaster.catch);
+            .catch(toaster.catch)
+            .finally(() => {
+                if (!isContinuing) setIsLoading(false);
+            });
     }
 
     useEffect(() => {
@@ -83,5 +91,8 @@ export function useListSongs(playlistId: string, options: UseListSongsOptions = 
             .then((shuffled) => shuffled ?? []);
     }
 
-    return { songs, totalSongs, isListEnded, loadMore, loadShuffled };
+    const isInitialLoading = isLoading && songs.length === 0;
+    const isLoadingMore = isLoading && songs.length > 0;
+
+    return { songs, totalSongs, isListEnded, isInitialLoading, isLoadingMore, loadMore, loadShuffled };
 }

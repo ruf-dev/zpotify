@@ -1,0 +1,61 @@
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.TrackRowSkeletonContainer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--color-border);
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    & .Cover,
+    & .Title,
+    & .Artist,
+    & .Duration {
+        background: linear-gradient(
+            90deg,
+            var(--color-bg-accent) 25%,
+            var(--color-bg-hover-mid) 50%,
+            var(--color-bg-accent) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite linear;
+        border-radius: var(--border-radius-sm);
+    }
+
+    & .Cover {
+        flex-shrink: 0;
+        width: var(--icon-circle-md);
+        height: var(--icon-circle-md);
+    }
+
+    & .Info {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.375rem;
+    }
+
+    & .Title {
+        width: 40%;
+        height: 1rem;
+    }
+
+    & .Artist {
+        width: 25%;
+        height: 0.75rem;
+    }
+
+    & .Duration {
+        flex-shrink: 0;
+        width: 2rem;
+        height: 0.75rem;
+    }
+}

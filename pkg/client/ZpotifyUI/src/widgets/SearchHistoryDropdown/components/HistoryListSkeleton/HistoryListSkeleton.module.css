@@ -1,0 +1,46 @@
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.HistoryListSkeletonContainer {
+    padding: 0.5rem 0;
+
+    & .Label,
+    & .Icon,
+    & .Text {
+        background: linear-gradient(
+            90deg,
+            var(--color-bg-accent) 25%,
+            var(--color-bg-hover-mid) 50%,
+            var(--color-bg-accent) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite linear;
+        border-radius: var(--border-radius-sm);
+    }
+
+    & .Label {
+        width: 7rem;
+        height: 0.75rem;
+        margin: 0.25rem 0.875rem 0.375rem;
+    }
+
+    & .Row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.875rem;
+    }
+
+    & .Icon {
+        flex-shrink: 0;
+        width: 1rem;
+        height: 1rem;
+    }
+
+    & .Text {
+        width: 50%;
+        height: 0.875rem;
+    }
+}

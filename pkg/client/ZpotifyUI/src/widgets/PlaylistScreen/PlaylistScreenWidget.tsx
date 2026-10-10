@@ -37,6 +37,7 @@ interface Props {
     songs: SongBase[];
     username: string;
     isListEnded?: boolean;
+    isLoadingMore?: boolean;
     onLoadMore?: () => void;
     highlightTrackId?: string;
 }
@@ -46,6 +47,7 @@ export default function PlaylistScreenWidget({
     songs,
     username,
     isListEnded,
+    isLoadingMore,
     onLoadMore,
     highlightTrackId,
 }: Props) {
@@ -190,6 +192,7 @@ export default function PlaylistScreenWidget({
                     playlistIsAlbum={playlist ? isAlbum(playlist) : false}
                     playlistArtists={playlist ? mapPlaylistArtists(playlist) : []}
                     isListEnded={isListEnded}
+                    isLoadingMore={isLoadingMore}
                     onLoadMore={onLoadMore}
                     highlightTrackId={highlightTrackId}
                 />

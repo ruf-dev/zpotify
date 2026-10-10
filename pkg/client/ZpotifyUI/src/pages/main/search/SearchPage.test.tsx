@@ -28,12 +28,13 @@ vi.mock('@/pages/main/search/components/MobileSearchInput/MobileSearchInput.tsx'
 }));
 
 let visibleTracks: SearchTrackResult[] = [];
+let isLoading = false;
 vi.mock('@/pages/main/search/useSearchPage.ts', () => ({
     useSearchPage: () => ({
         query: 'test',
         filters: { tracks: true, artists: true, albums: true, playlists: true },
         toggleFilter: vi.fn(),
-        loading: false,
+        isLoading,
         visibleTracks,
         visibleArtists: [],
         visibleAlbums: [],
@@ -58,6 +59,7 @@ describe('SearchPage handlePlayTrack branching', () => {
         cleanup();
         vi.clearAllMocks();
         visibleTracks = [];
+        isLoading = false;
     });
 
     it('navigates to the album path when the track belongs to an album', () => {
@@ -116,5 +118,19 @@ describe('SearchPage handlePlayTrack branching', () => {
 
         expect(navigateSpy).toHaveBeenCalledWith('/artist/artist-1');
         expect(recordFindingSpy).toHaveBeenCalledWith('test', 'artist', 'artist-1', 'Artist', '');
+    });
+
+    it('does not show the empty state while the search is loading', () => {
+        isLoading = true;
+
+        render(<SearchPage />);
+
+        expect(screen.queryByText(/No results for/)).toBeNull();
+    });
+
+    it('shows the empty state once loading finished with no results', () => {
+        render(<SearchPage />);
+
+        expect(screen.getByText(/No results for/)).toBeTruthy();
     });
 });

@@ -2,11 +2,12 @@ import React from 'react';
 
 import cls from '@/pages/main/home/HomePage.module.css';
 import SegmentTabBar from '@/components/tabs/SegmentTabBar.tsx';
+import HomeSkeleton from '@/pages/main/home/components/HomeSkeleton/HomeSkeleton.tsx';
 import SegmentCarousel from '@/components/carousel/SegmentCarousel.tsx';
 import { useHomeSegments } from '@/widgets/HomeSegments/useHomeSegments.ts';
 
 export default function HomePage() {
-    const { segments, tabs, activeIdx, handleChange } = useHomeSegments();
+    const { segments, tabs, activeIdx, isInitialLoading, handleChange } = useHomeSegments();
 
     const activeTab = tabs[activeIdx];
 
@@ -24,15 +25,21 @@ export default function HomePage() {
     return (
         <div className={cls.HomePage}>
             <div className={cls.ContentArea}>
-                {tabs.length > 0 && (
-                    <SegmentTabBar tabs={tabs} activeId={activeTab?.id ?? ''} onChange={handleTabClick} />
+                {isInitialLoading ? (
+                    <HomeSkeleton />
+                ) : (
+                    <>
+                        {tabs.length > 0 && (
+                            <SegmentTabBar tabs={tabs} activeId={activeTab?.id ?? ''} onChange={handleTabClick} />
+                        )}
+                        <SegmentCarousel
+                            activeIdx={activeIdx}
+                            count={segments.length}
+                            onChange={handleChange}
+                            renderSlide={renderSlide}
+                        />
+                    </>
                 )}
-                <SegmentCarousel
-                    activeIdx={activeIdx}
-                    count={segments.length}
-                    onChange={handleChange}
-                    renderSlide={renderSlide}
-                />
             </div>
         </div>
     );
