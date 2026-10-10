@@ -1860,8 +1860,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/AddTrackDialog.tsx": {
-    "mtime": 1789900150.1411018,
-    "ast_hash": "f14b465c2e0d54991b38e997bf678d1b",
+    "mtime": 1791662251.0073123,
+    "ast_hash": "b8c105200200371c49771e41f2726cf5",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/PendingFilesScreen.tsx": {
@@ -1875,8 +1875,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/ChooseScreen.tsx": {
-    "mtime": 1789900174.5311832,
-    "ast_hash": "0af20f86638107c76d0974ce83ea2881",
+    "mtime": 1791662077.8340504,
+    "ast_hash": "29ab219a4e9c43ed2a227fd100dba2cf",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/CreatePlaylistCard/CreatePlaylistCard.tsx": {
@@ -3830,8 +3830,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/PendingFilesScreen.test.tsx": {
-    "mtime": 1791653805.34919,
-    "ast_hash": "3ebd1a359059cc3b9358cd0815a18890",
+    "mtime": 1791662145.9789755,
+    "ast_hash": "77fdd9def9330b57bf9c2d6fe7ebb036",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_torrents.pb.go": {
@@ -3940,8 +3940,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/DropZoneScreen.test.tsx": {
-    "mtime": 1789403163.4486907,
-    "ast_hash": "f096184819d8a01c8bb346db070ee90d",
+    "mtime": 1791662145.9786787,
+    "ast_hash": "9191df0a6962bb399bd59daf41371071",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/TorrentJobItem/TorrentJobItem.test.tsx": {
@@ -4140,8 +4140,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/torrent_files.go": {
-    "mtime": 1791661637.7491128,
-    "ast_hash": "bd570b42f852d52bafe31fd524494710",
+    "mtime": 1791662122.16727,
+    "ast_hash": "615aa319776058f71046b8087882e83e",
     "semantic_hash": ""
   },
   "internal/transport/torrent_api_impl/get_torrent_file.go": {
@@ -4160,8 +4160,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/TorrentFilesScreen.tsx": {
-    "mtime": 1789403245.051334,
-    "ast_hash": "1b3a588b94429939efdbf51d319531f6",
+    "mtime": 1791662077.8327615,
+    "ast_hash": "bd03d1c45c05520781685f7145574b37",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/TorrentFileRow/TorrentFileRow.tsx": {
@@ -4170,13 +4170,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/useTorrentFileSelection.ts": {
-    "mtime": 1789403044.8410287,
-    "ast_hash": "6e204bbb3b220ce7a8bd79551df38b10",
+    "mtime": 1791662077.832277,
+    "ast_hash": "9979b3ffddbbb33ead8070e23383a936",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/TorrentFilesScreen.test.tsx": {
-    "mtime": 1789403298.891623,
-    "ast_hash": "60081e9f4d2b808bc3171c94ceb21c6a",
+    "mtime": 1791662077.8349295,
+    "ast_hash": "86a6b719bb2d2e0d4c2dccd903b3e289",
     "semantic_hash": ""
   },
   "internal/service/v1/torrent_client_test.go": {
@@ -4512,6 +4512,46 @@
   "internal/transport/torrent_api_impl/discard_torrent_file.go": {
     "mtime": 1791661637.750673,
     "ast_hash": "73c09d8852e804dcdebbc354c0740a3b",
+    "semantic_hash": ""
+  },
+  "internal/service/v1/torrent_magnet_test.go": {
+    "mtime": 1791662236.2755032,
+    "ast_hash": "2cd392a1432af8906a0e6a57490af46e",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/TorrentFilesScreen.resolving.test.tsx": {
+    "mtime": 1791662091.6171448,
+    "ast_hash": "c2e611bee25293d89da6f85cae42aafa",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/MagnetLinkField/MagnetLinkField.test.tsx": {
+    "mtime": 1791662059.2885313,
+    "ast_hash": "06ccb16589bcd260151591c8bf440356",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/MagnetLinkField/MagnetLinkField.tsx": {
+    "mtime": 1791662059.28428,
+    "ast_hash": "f04172ec886cea54ec0cb2492e49df90",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/ResolvingTorrentStatus/ResolvingTorrentStatus.tsx": {
+    "mtime": 1791662059.2907827,
+    "ast_hash": "2169e6720aacf0dbd0dd859f7527210c",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/useTorrentFileSelection.test.ts": {
+    "mtime": 1791662091.6195812,
+    "ast_hash": "695006c5a335a49d703da21fcfbe2e63",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/features/upload/magnetLink.test.ts": {
+    "mtime": 1791662059.2819626,
+    "ast_hash": "679f18c4232f245c60824ab7394f61f0",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/features/upload/magnetLink.ts": {
+    "mtime": 1791662059.2796109,
+    "ast_hash": "6ebcad313b51c4f451eb4f8cd8ff7e9e",
     "semantic_hash": ""
   }
 }
