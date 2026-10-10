@@ -3925,8 +3925,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/torrent_service.go": {
-    "mtime": 1791661672.8476982,
-    "ast_hash": "23ecb41ebd6bd17594ff730fea63593c",
+    "mtime": 1791662398.628893,
+    "ast_hash": "88c418de35598ba5d98bddca81709074",
     "semantic_hash": ""
   },
   "internal/service/v1/upload_pipeline.go": {
@@ -4140,8 +4140,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/torrent_files.go": {
-    "mtime": 1791662122.16727,
-    "ast_hash": "615aa319776058f71046b8087882e83e",
+    "mtime": 1791662296.6020765,
+    "ast_hash": "705c63779e5d2a712e6f0f4736d3ab36",
     "semantic_hash": ""
   },
   "internal/transport/torrent_api_impl/get_torrent_file.go": {
