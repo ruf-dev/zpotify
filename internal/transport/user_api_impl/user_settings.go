@@ -29,7 +29,8 @@ func (impl *Impl) GetUserSettings(ctx context.Context, _ *zpotify_api.GetUserSet
 
 func toPbUserSettings(settings domain.UserSettings) (*zpotify_api.UserSettings, error) {
 	pbSettings := &zpotify_api.UserSettings{
-		HomeSegments: nil,
+		IsTorrentSearchAvailable: settings.IsTorrentSearchAvailable,
+		HomeSegments:             nil,
 		Ui: &zpotify_api.UiSettings{
 			Locale: settings.Ui.Locale,
 		},

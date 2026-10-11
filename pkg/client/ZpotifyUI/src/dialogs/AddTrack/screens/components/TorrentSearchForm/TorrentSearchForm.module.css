@@ -1,0 +1,17 @@
+.TorrentSearchFormContainer {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+
+    & .InputWrapper {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+@media (orientation: portrait) {
+    .TorrentSearchFormContainer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

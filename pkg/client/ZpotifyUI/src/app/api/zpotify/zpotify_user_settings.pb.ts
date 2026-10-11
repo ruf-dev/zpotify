@@ -18,6 +18,7 @@ type OneOf<T> =
 export type UserSettings = {
   homeSegments?: HomePageSegment[];
   ui?: UiSettings;
+  isTorrentSearchAvailable?: boolean;
 };
 
 export type HomePageSegmentPlaylistSegment = {

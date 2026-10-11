@@ -7,13 +7,15 @@
 package zpotify_api
 
 import (
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
+
 	_ "go.redsock.ru/protoc-gen-npm/npmplugin"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 )
 
 const (
@@ -824,6 +826,164 @@ func (*AddTorrentMagnet) Descriptor() ([]byte, []int) {
 	return file_zpotify_service_torrents_proto_rawDescGZIP(), []int{14}
 }
 
+type TorrentSearchResult struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Opaque server-issued handle for AddTorrentSearchResult.
+	Id          string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Title       string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	SizeBytes   int64                  `protobuf:"varint,3,opt,name=size_bytes,json=sizeBytes,proto3" json:"size_bytes,omitempty"`
+	Indexer     string                 `protobuf:"bytes,4,opt,name=indexer,proto3" json:"indexer,omitempty"`
+	PublishedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=published_at,json=publishedAt,proto3" json:"published_at,omitempty"`
+	// Some user already has a non-failed, non-canceled job for this info hash.
+	IsAlreadyImported bool `protobuf:"varint,6,opt,name=is_already_imported,json=isAlreadyImported,proto3" json:"is_already_imported,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *TorrentSearchResult) Reset() {
+	*x = TorrentSearchResult{}
+	mi := &file_zpotify_service_torrents_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TorrentSearchResult) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TorrentSearchResult) ProtoMessage() {}
+
+func (x *TorrentSearchResult) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_torrents_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TorrentSearchResult.ProtoReflect.Descriptor instead.
+func (*TorrentSearchResult) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_torrents_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *TorrentSearchResult) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *TorrentSearchResult) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *TorrentSearchResult) GetSizeBytes() int64 {
+	if x != nil {
+		return x.SizeBytes
+	}
+	return 0
+}
+
+func (x *TorrentSearchResult) GetIndexer() string {
+	if x != nil {
+		return x.Indexer
+	}
+	return ""
+}
+
+func (x *TorrentSearchResult) GetPublishedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.PublishedAt
+	}
+	return nil
+}
+
+func (x *TorrentSearchResult) GetIsAlreadyImported() bool {
+	if x != nil {
+		return x.IsAlreadyImported
+	}
+	return false
+}
+
+type SearchTorrents struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SearchTorrents) Reset() {
+	*x = SearchTorrents{}
+	mi := &file_zpotify_service_torrents_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SearchTorrents) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchTorrents) ProtoMessage() {}
+
+func (x *SearchTorrents) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_torrents_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchTorrents.ProtoReflect.Descriptor instead.
+func (*SearchTorrents) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_torrents_proto_rawDescGZIP(), []int{16}
+}
+
+type AddTorrentSearchResult struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AddTorrentSearchResult) Reset() {
+	*x = AddTorrentSearchResult{}
+	mi := &file_zpotify_service_torrents_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddTorrentSearchResult) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddTorrentSearchResult) ProtoMessage() {}
+
+func (x *AddTorrentSearchResult) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_torrents_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddTorrentSearchResult.ProtoReflect.Descriptor instead.
+func (*AddTorrentSearchResult) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_torrents_proto_rawDescGZIP(), []int{17}
+}
+
 type DiscardTorrentFile struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -832,7 +992,7 @@ type DiscardTorrentFile struct {
 
 func (x *DiscardTorrentFile) Reset() {
 	*x = DiscardTorrentFile{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[15]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -844,7 +1004,7 @@ func (x *DiscardTorrentFile) String() string {
 func (*DiscardTorrentFile) ProtoMessage() {}
 
 func (x *DiscardTorrentFile) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[15]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -857,7 +1017,7 @@ func (x *DiscardTorrentFile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DiscardTorrentFile.ProtoReflect.Descriptor instead.
 func (*DiscardTorrentFile) Descriptor() ([]byte, []int) {
-	return file_zpotify_service_torrents_proto_rawDescGZIP(), []int{15}
+	return file_zpotify_service_torrents_proto_rawDescGZIP(), []int{18}
 }
 
 type ListTorrentJobs_Request struct {
@@ -869,7 +1029,7 @@ type ListTorrentJobs_Request struct {
 
 func (x *ListTorrentJobs_Request) Reset() {
 	*x = ListTorrentJobs_Request{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[16]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -881,7 +1041,7 @@ func (x *ListTorrentJobs_Request) String() string {
 func (*ListTorrentJobs_Request) ProtoMessage() {}
 
 func (x *ListTorrentJobs_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[16]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -913,7 +1073,7 @@ type ListTorrentJobs_Response struct {
 
 func (x *ListTorrentJobs_Response) Reset() {
 	*x = ListTorrentJobs_Response{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[17]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -925,7 +1085,7 @@ func (x *ListTorrentJobs_Response) String() string {
 func (*ListTorrentJobs_Response) ProtoMessage() {}
 
 func (x *ListTorrentJobs_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[17]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -957,7 +1117,7 @@ type GetTorrentJob_Request struct {
 
 func (x *GetTorrentJob_Request) Reset() {
 	*x = GetTorrentJob_Request{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[18]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -969,7 +1129,7 @@ func (x *GetTorrentJob_Request) String() string {
 func (*GetTorrentJob_Request) ProtoMessage() {}
 
 func (x *GetTorrentJob_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[18]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1001,7 +1161,7 @@ type GetTorrentJob_Response struct {
 
 func (x *GetTorrentJob_Response) Reset() {
 	*x = GetTorrentJob_Response{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[19]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1013,7 +1173,7 @@ func (x *GetTorrentJob_Response) String() string {
 func (*GetTorrentJob_Response) ProtoMessage() {}
 
 func (x *GetTorrentJob_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[19]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1045,7 +1205,7 @@ type CancelTorrentJob_Request struct {
 
 func (x *CancelTorrentJob_Request) Reset() {
 	*x = CancelTorrentJob_Request{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[20]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1057,7 +1217,7 @@ func (x *CancelTorrentJob_Request) String() string {
 func (*CancelTorrentJob_Request) ProtoMessage() {}
 
 func (x *CancelTorrentJob_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[20]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1088,7 +1248,7 @@ type CancelTorrentJob_Response struct {
 
 func (x *CancelTorrentJob_Response) Reset() {
 	*x = CancelTorrentJob_Response{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[21]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1100,7 +1260,7 @@ func (x *CancelTorrentJob_Response) String() string {
 func (*CancelTorrentJob_Response) ProtoMessage() {}
 
 func (x *CancelTorrentJob_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[21]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1125,7 +1285,7 @@ type PauseTorrentJob_Request struct {
 
 func (x *PauseTorrentJob_Request) Reset() {
 	*x = PauseTorrentJob_Request{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[22]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1137,7 +1297,7 @@ func (x *PauseTorrentJob_Request) String() string {
 func (*PauseTorrentJob_Request) ProtoMessage() {}
 
 func (x *PauseTorrentJob_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[22]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1168,7 +1328,7 @@ type PauseTorrentJob_Response struct {
 
 func (x *PauseTorrentJob_Response) Reset() {
 	*x = PauseTorrentJob_Response{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[23]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1180,7 +1340,7 @@ func (x *PauseTorrentJob_Response) String() string {
 func (*PauseTorrentJob_Response) ProtoMessage() {}
 
 func (x *PauseTorrentJob_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[23]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1205,7 +1365,7 @@ type ResumeTorrentJob_Request struct {
 
 func (x *ResumeTorrentJob_Request) Reset() {
 	*x = ResumeTorrentJob_Request{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[24]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1217,7 +1377,7 @@ func (x *ResumeTorrentJob_Request) String() string {
 func (*ResumeTorrentJob_Request) ProtoMessage() {}
 
 func (x *ResumeTorrentJob_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[24]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1248,7 +1408,7 @@ type ResumeTorrentJob_Response struct {
 
 func (x *ResumeTorrentJob_Response) Reset() {
 	*x = ResumeTorrentJob_Response{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[25]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1260,7 +1420,7 @@ func (x *ResumeTorrentJob_Response) String() string {
 func (*ResumeTorrentJob_Response) ProtoMessage() {}
 
 func (x *ResumeTorrentJob_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[25]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1285,7 +1445,7 @@ type DeleteTorrentJob_Request struct {
 
 func (x *DeleteTorrentJob_Request) Reset() {
 	*x = DeleteTorrentJob_Request{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[26]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1297,7 +1457,7 @@ func (x *DeleteTorrentJob_Request) String() string {
 func (*DeleteTorrentJob_Request) ProtoMessage() {}
 
 func (x *DeleteTorrentJob_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[26]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1328,7 +1488,7 @@ type DeleteTorrentJob_Response struct {
 
 func (x *DeleteTorrentJob_Response) Reset() {
 	*x = DeleteTorrentJob_Response{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[27]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1340,7 +1500,7 @@ func (x *DeleteTorrentJob_Response) String() string {
 func (*DeleteTorrentJob_Response) ProtoMessage() {}
 
 func (x *DeleteTorrentJob_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[27]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1366,7 +1526,7 @@ type WatchTorrentJobs_Request struct {
 
 func (x *WatchTorrentJobs_Request) Reset() {
 	*x = WatchTorrentJobs_Request{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[28]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1378,7 +1538,7 @@ func (x *WatchTorrentJobs_Request) String() string {
 func (*WatchTorrentJobs_Request) ProtoMessage() {}
 
 func (x *WatchTorrentJobs_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[28]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1417,7 +1577,7 @@ type WatchTorrentJobs_Response struct {
 
 func (x *WatchTorrentJobs_Response) Reset() {
 	*x = WatchTorrentJobs_Response{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[29]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1429,7 +1589,7 @@ func (x *WatchTorrentJobs_Response) String() string {
 func (*WatchTorrentJobs_Response) ProtoMessage() {}
 
 func (x *WatchTorrentJobs_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[29]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1461,7 +1621,7 @@ type GetTorrentFile_Request struct {
 
 func (x *GetTorrentFile_Request) Reset() {
 	*x = GetTorrentFile_Request{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[30]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1473,7 +1633,7 @@ func (x *GetTorrentFile_Request) String() string {
 func (*GetTorrentFile_Request) ProtoMessage() {}
 
 func (x *GetTorrentFile_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[30]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1505,7 +1665,7 @@ type GetTorrentFile_Response struct {
 
 func (x *GetTorrentFile_Response) Reset() {
 	*x = GetTorrentFile_Response{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[31]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1517,7 +1677,7 @@ func (x *GetTorrentFile_Response) String() string {
 func (*GetTorrentFile_Response) ProtoMessage() {}
 
 func (x *GetTorrentFile_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[31]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1551,7 +1711,7 @@ type SubmitTorrentFile_Request struct {
 
 func (x *SubmitTorrentFile_Request) Reset() {
 	*x = SubmitTorrentFile_Request{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[32]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1563,7 +1723,7 @@ func (x *SubmitTorrentFile_Request) String() string {
 func (*SubmitTorrentFile_Request) ProtoMessage() {}
 
 func (x *SubmitTorrentFile_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[32]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1609,7 +1769,7 @@ type SubmitTorrentFile_Response struct {
 
 func (x *SubmitTorrentFile_Response) Reset() {
 	*x = SubmitTorrentFile_Response{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[33]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1621,7 +1781,7 @@ func (x *SubmitTorrentFile_Response) String() string {
 func (*SubmitTorrentFile_Response) ProtoMessage() {}
 
 func (x *SubmitTorrentFile_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[33]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1653,7 +1813,7 @@ type AddTorrentMagnet_Request struct {
 
 func (x *AddTorrentMagnet_Request) Reset() {
 	*x = AddTorrentMagnet_Request{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[34]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1665,7 +1825,7 @@ func (x *AddTorrentMagnet_Request) String() string {
 func (*AddTorrentMagnet_Request) ProtoMessage() {}
 
 func (x *AddTorrentMagnet_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[34]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1701,7 +1861,7 @@ type AddTorrentMagnet_Response struct {
 
 func (x *AddTorrentMagnet_Response) Reset() {
 	*x = AddTorrentMagnet_Response{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[35]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1713,7 +1873,7 @@ func (x *AddTorrentMagnet_Response) String() string {
 func (*AddTorrentMagnet_Response) ProtoMessage() {}
 
 func (x *AddTorrentMagnet_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[35]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1772,6 +1932,220 @@ func (*AddTorrentMagnet_Response_UploadId) isAddTorrentMagnet_Response_Result() 
 
 func (*AddTorrentMagnet_Response_ExistingJobId) isAddTorrentMagnet_Response_Result() {}
 
+type SearchTorrents_Request struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Query         string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SearchTorrents_Request) Reset() {
+	*x = SearchTorrents_Request{}
+	mi := &file_zpotify_service_torrents_proto_msgTypes[39]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SearchTorrents_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchTorrents_Request) ProtoMessage() {}
+
+func (x *SearchTorrents_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_torrents_proto_msgTypes[39]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchTorrents_Request.ProtoReflect.Descriptor instead.
+func (*SearchTorrents_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_torrents_proto_rawDescGZIP(), []int{16, 0}
+}
+
+func (x *SearchTorrents_Request) GetQuery() string {
+	if x != nil {
+		return x.Query
+	}
+	return ""
+}
+
+type SearchTorrents_Response struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Results       []*TorrentSearchResult `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SearchTorrents_Response) Reset() {
+	*x = SearchTorrents_Response{}
+	mi := &file_zpotify_service_torrents_proto_msgTypes[40]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SearchTorrents_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchTorrents_Response) ProtoMessage() {}
+
+func (x *SearchTorrents_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_torrents_proto_msgTypes[40]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchTorrents_Response.ProtoReflect.Descriptor instead.
+func (*SearchTorrents_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_torrents_proto_rawDescGZIP(), []int{16, 1}
+}
+
+func (x *SearchTorrents_Response) GetResults() []*TorrentSearchResult {
+	if x != nil {
+		return x.Results
+	}
+	return nil
+}
+
+type AddTorrentSearchResult_Request struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AddTorrentSearchResult_Request) Reset() {
+	*x = AddTorrentSearchResult_Request{}
+	mi := &file_zpotify_service_torrents_proto_msgTypes[41]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddTorrentSearchResult_Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddTorrentSearchResult_Request) ProtoMessage() {}
+
+func (x *AddTorrentSearchResult_Request) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_torrents_proto_msgTypes[41]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddTorrentSearchResult_Request.ProtoReflect.Descriptor instead.
+func (*AddTorrentSearchResult_Request) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_torrents_proto_rawDescGZIP(), []int{17, 0}
+}
+
+func (x *AddTorrentSearchResult_Request) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type AddTorrentSearchResult_Response struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Result:
+	//
+	//	*AddTorrentSearchResult_Response_UploadId
+	//	*AddTorrentSearchResult_Response_ExistingJobId
+	Result        isAddTorrentSearchResult_Response_Result `protobuf_oneof:"result"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AddTorrentSearchResult_Response) Reset() {
+	*x = AddTorrentSearchResult_Response{}
+	mi := &file_zpotify_service_torrents_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddTorrentSearchResult_Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddTorrentSearchResult_Response) ProtoMessage() {}
+
+func (x *AddTorrentSearchResult_Response) ProtoReflect() protoreflect.Message {
+	mi := &file_zpotify_service_torrents_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddTorrentSearchResult_Response.ProtoReflect.Descriptor instead.
+func (*AddTorrentSearchResult_Response) Descriptor() ([]byte, []int) {
+	return file_zpotify_service_torrents_proto_rawDescGZIP(), []int{17, 1}
+}
+
+func (x *AddTorrentSearchResult_Response) GetResult() isAddTorrentSearchResult_Response_Result {
+	if x != nil {
+		return x.Result
+	}
+	return nil
+}
+
+func (x *AddTorrentSearchResult_Response) GetUploadId() string {
+	if x != nil {
+		if x, ok := x.Result.(*AddTorrentSearchResult_Response_UploadId); ok {
+			return x.UploadId
+		}
+	}
+	return ""
+}
+
+func (x *AddTorrentSearchResult_Response) GetExistingJobId() int64 {
+	if x != nil {
+		if x, ok := x.Result.(*AddTorrentSearchResult_Response_ExistingJobId); ok {
+			return x.ExistingJobId
+		}
+	}
+	return 0
+}
+
+type isAddTorrentSearchResult_Response_Result interface {
+	isAddTorrentSearchResult_Response_Result()
+}
+
+type AddTorrentSearchResult_Response_UploadId struct {
+	UploadId string `protobuf:"bytes,1,opt,name=upload_id,json=uploadId,proto3,oneof"`
+}
+
+type AddTorrentSearchResult_Response_ExistingJobId struct {
+	ExistingJobId int64 `protobuf:"varint,2,opt,name=existing_job_id,json=existingJobId,proto3,oneof"`
+}
+
+func (*AddTorrentSearchResult_Response_UploadId) isAddTorrentSearchResult_Response_Result() {}
+
+func (*AddTorrentSearchResult_Response_ExistingJobId) isAddTorrentSearchResult_Response_Result() {}
+
 type DiscardTorrentFile_Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -1781,7 +2155,7 @@ type DiscardTorrentFile_Request struct {
 
 func (x *DiscardTorrentFile_Request) Reset() {
 	*x = DiscardTorrentFile_Request{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[36]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1793,7 +2167,7 @@ func (x *DiscardTorrentFile_Request) String() string {
 func (*DiscardTorrentFile_Request) ProtoMessage() {}
 
 func (x *DiscardTorrentFile_Request) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[36]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1806,7 +2180,7 @@ func (x *DiscardTorrentFile_Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DiscardTorrentFile_Request.ProtoReflect.Descriptor instead.
 func (*DiscardTorrentFile_Request) Descriptor() ([]byte, []int) {
-	return file_zpotify_service_torrents_proto_rawDescGZIP(), []int{15, 0}
+	return file_zpotify_service_torrents_proto_rawDescGZIP(), []int{18, 0}
 }
 
 func (x *DiscardTorrentFile_Request) GetId() string {
@@ -1824,7 +2198,7 @@ type DiscardTorrentFile_Response struct {
 
 func (x *DiscardTorrentFile_Response) Reset() {
 	*x = DiscardTorrentFile_Response{}
-	mi := &file_zpotify_service_torrents_proto_msgTypes[37]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1836,7 +2210,7 @@ func (x *DiscardTorrentFile_Response) String() string {
 func (*DiscardTorrentFile_Response) ProtoMessage() {}
 
 func (x *DiscardTorrentFile_Response) ProtoReflect() protoreflect.Message {
-	mi := &file_zpotify_service_torrents_proto_msgTypes[37]
+	mi := &file_zpotify_service_torrents_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1849,14 +2223,14 @@ func (x *DiscardTorrentFile_Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DiscardTorrentFile_Response.ProtoReflect.Descriptor instead.
 func (*DiscardTorrentFile_Response) Descriptor() ([]byte, []int) {
-	return file_zpotify_service_torrents_proto_rawDescGZIP(), []int{15, 1}
+	return file_zpotify_service_torrents_proto_rawDescGZIP(), []int{18, 1}
 }
 
 var File_zpotify_service_torrents_proto protoreflect.FileDescriptor
 
 const file_zpotify_service_torrents_proto_rawDesc = "" +
 	"\n" +
-	"\x1ezpotify_service_torrents.proto\x12\vzpotify_api\x1a\tnpm.proto\x1a\x1cgoogle/api/annotations.proto\"\xd4\x02\n" +
+	"\x1ezpotify_service_torrents.proto\x12\vzpotify_api\x1a\tnpm.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\"\xd4\x02\n" +
 	"\n" +
 	"TorrentJob\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12!\n" +
@@ -1953,6 +2327,26 @@ const file_zpotify_service_torrents_proto_rawDesc = "" +
 	"\bResponse\x12\x1d\n" +
 	"\tupload_id\x18\x01 \x01(\tH\x00R\buploadId\x12(\n" +
 	"\x0fexisting_job_id\x18\x02 \x01(\x03H\x00R\rexistingJobIdB\b\n" +
+	"\x06result\"\xe3\x01\n" +
+	"\x13TorrentSearchResult\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x1d\n" +
+	"\n" +
+	"size_bytes\x18\x03 \x01(\x03R\tsizeBytes\x12\x18\n" +
+	"\aindexer\x18\x04 \x01(\tR\aindexer\x12=\n" +
+	"\fpublished_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\vpublishedAt\x12.\n" +
+	"\x13is_already_imported\x18\x06 \x01(\bR\x11isAlreadyImported\"y\n" +
+	"\x0eSearchTorrents\x1a\x1f\n" +
+	"\aRequest\x12\x14\n" +
+	"\x05query\x18\x01 \x01(\tR\x05query\x1aF\n" +
+	"\bResponse\x12:\n" +
+	"\aresults\x18\x01 \x03(\v2 .zpotify_api.TorrentSearchResultR\aresults\"\x92\x01\n" +
+	"\x16AddTorrentSearchResult\x1a\x19\n" +
+	"\aRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x1a]\n" +
+	"\bResponse\x12\x1d\n" +
+	"\tupload_id\x18\x01 \x01(\tH\x00R\buploadId\x12(\n" +
+	"\x0fexisting_job_id\x18\x02 \x01(\x03H\x00R\rexistingJobIdB\b\n" +
 	"\x06result\";\n" +
 	"\x12DiscardTorrentFile\x1a\x19\n" +
 	"\aRequest\x12\x0e\n" +
@@ -1963,7 +2357,7 @@ const file_zpotify_service_torrents_proto_rawDesc = "" +
 	"\x1dTORRENT_FILE_KIND_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17TORRENT_FILE_KIND_TRACK\x10\x01\x12\x1b\n" +
 	"\x17TORRENT_FILE_KIND_COVER\x10\x02\x12\x1b\n" +
-	"\x17TORRENT_FILE_KIND_OTHER\x10\x032\xda\v\n" +
+	"\x17TORRENT_FILE_KIND_OTHER\x10\x032\xf3\r\n" +
 	"\n" +
 	"TorrentAPI\x12}\n" +
 	"\x0fListTorrentJobs\x12$.zpotify_api.ListTorrentJobs.Request\x1a%.zpotify_api.ListTorrentJobs.Response\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/torrents/list\x12x\n" +
@@ -1975,7 +2369,9 @@ const file_zpotify_service_torrents_proto_rawDesc = "" +
 	"\x10WatchTorrentJobs\x12%.zpotify_api.WatchTorrentJobs.Request\x1a&.zpotify_api.WatchTorrentJobs.Response\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/torrents/watch0\x01\x12}\n" +
 	"\x0eGetTorrentFile\x12#.zpotify_api.GetTorrentFile.Request\x1a$.zpotify_api.GetTorrentFile.Response\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/api/torrents/files/{id}\x12\x90\x01\n" +
 	"\x11SubmitTorrentFile\x12&.zpotify_api.SubmitTorrentFile.Request\x1a'.zpotify_api.SubmitTorrentFile.Response\"*\x82\xd3\xe4\x93\x02$:\x01*\"\x1f/api/torrents/files/{id}/submit\x12\x82\x01\n" +
-	"\x10AddTorrentMagnet\x12%.zpotify_api.AddTorrentMagnet.Request\x1a&.zpotify_api.AddTorrentMagnet.Response\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/torrents/magnet\x12\x94\x01\n" +
+	"\x10AddTorrentMagnet\x12%.zpotify_api.AddTorrentMagnet.Request\x1a&.zpotify_api.AddTorrentMagnet.Response\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/torrents/magnet\x12|\n" +
+	"\x0eSearchTorrents\x12#.zpotify_api.SearchTorrents.Request\x1a$.zpotify_api.SearchTorrents.Response\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/torrents/search\x12\x98\x01\n" +
+	"\x16AddTorrentSearchResult\x12+.zpotify_api.AddTorrentSearchResult.Request\x1a,.zpotify_api.AddTorrentSearchResult.Response\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/torrents/search/add\x12\x94\x01\n" +
 	"\x12DiscardTorrentFile\x12'.zpotify_api.DiscardTorrentFile.Request\x1a(.zpotify_api.DiscardTorrentFile.Response\"+\x82\xd3\xe4\x93\x02%:\x01*\" /api/torrents/files/{id}/discardBA\x92\x82\x19\f@zpotify/api\n" +
 	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
@@ -1992,84 +2388,98 @@ func file_zpotify_service_torrents_proto_rawDescGZIP() []byte {
 }
 
 var file_zpotify_service_torrents_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_zpotify_service_torrents_proto_msgTypes = make([]protoimpl.MessageInfo, 38)
+var file_zpotify_service_torrents_proto_msgTypes = make([]protoimpl.MessageInfo, 45)
 var file_zpotify_service_torrents_proto_goTypes = []any{
-	(TorrentFileKind)(0),                // 0: zpotify_api.TorrentFileKind
-	(*TorrentJob)(nil),                  // 1: zpotify_api.TorrentJob
-	(*ImportedFile)(nil),                // 2: zpotify_api.ImportedFile
-	(*TorrentFileProgress)(nil),         // 3: zpotify_api.TorrentFileProgress
-	(*ListTorrentJobs)(nil),             // 4: zpotify_api.ListTorrentJobs
-	(*GetTorrentJob)(nil),               // 5: zpotify_api.GetTorrentJob
-	(*CancelTorrentJob)(nil),            // 6: zpotify_api.CancelTorrentJob
-	(*PauseTorrentJob)(nil),             // 7: zpotify_api.PauseTorrentJob
-	(*ResumeTorrentJob)(nil),            // 8: zpotify_api.ResumeTorrentJob
-	(*DeleteTorrentJob)(nil),            // 9: zpotify_api.DeleteTorrentJob
-	(*WatchTorrentJobs)(nil),            // 10: zpotify_api.WatchTorrentJobs
-	(*TorrentFile)(nil),                 // 11: zpotify_api.TorrentFile
-	(*TorrentFileEntry)(nil),            // 12: zpotify_api.TorrentFileEntry
-	(*GetTorrentFile)(nil),              // 13: zpotify_api.GetTorrentFile
-	(*SubmitTorrentFile)(nil),           // 14: zpotify_api.SubmitTorrentFile
-	(*AddTorrentMagnet)(nil),            // 15: zpotify_api.AddTorrentMagnet
-	(*DiscardTorrentFile)(nil),          // 16: zpotify_api.DiscardTorrentFile
-	(*ListTorrentJobs_Request)(nil),     // 17: zpotify_api.ListTorrentJobs.Request
-	(*ListTorrentJobs_Response)(nil),    // 18: zpotify_api.ListTorrentJobs.Response
-	(*GetTorrentJob_Request)(nil),       // 19: zpotify_api.GetTorrentJob.Request
-	(*GetTorrentJob_Response)(nil),      // 20: zpotify_api.GetTorrentJob.Response
-	(*CancelTorrentJob_Request)(nil),    // 21: zpotify_api.CancelTorrentJob.Request
-	(*CancelTorrentJob_Response)(nil),   // 22: zpotify_api.CancelTorrentJob.Response
-	(*PauseTorrentJob_Request)(nil),     // 23: zpotify_api.PauseTorrentJob.Request
-	(*PauseTorrentJob_Response)(nil),    // 24: zpotify_api.PauseTorrentJob.Response
-	(*ResumeTorrentJob_Request)(nil),    // 25: zpotify_api.ResumeTorrentJob.Request
-	(*ResumeTorrentJob_Response)(nil),   // 26: zpotify_api.ResumeTorrentJob.Response
-	(*DeleteTorrentJob_Request)(nil),    // 27: zpotify_api.DeleteTorrentJob.Request
-	(*DeleteTorrentJob_Response)(nil),   // 28: zpotify_api.DeleteTorrentJob.Response
-	(*WatchTorrentJobs_Request)(nil),    // 29: zpotify_api.WatchTorrentJobs.Request
-	(*WatchTorrentJobs_Response)(nil),   // 30: zpotify_api.WatchTorrentJobs.Response
-	(*GetTorrentFile_Request)(nil),      // 31: zpotify_api.GetTorrentFile.Request
-	(*GetTorrentFile_Response)(nil),     // 32: zpotify_api.GetTorrentFile.Response
-	(*SubmitTorrentFile_Request)(nil),   // 33: zpotify_api.SubmitTorrentFile.Request
-	(*SubmitTorrentFile_Response)(nil),  // 34: zpotify_api.SubmitTorrentFile.Response
-	(*AddTorrentMagnet_Request)(nil),    // 35: zpotify_api.AddTorrentMagnet.Request
-	(*AddTorrentMagnet_Response)(nil),   // 36: zpotify_api.AddTorrentMagnet.Response
-	(*DiscardTorrentFile_Request)(nil),  // 37: zpotify_api.DiscardTorrentFile.Request
-	(*DiscardTorrentFile_Response)(nil), // 38: zpotify_api.DiscardTorrentFile.Response
+	(TorrentFileKind)(0),                    // 0: zpotify_api.TorrentFileKind
+	(*TorrentJob)(nil),                      // 1: zpotify_api.TorrentJob
+	(*ImportedFile)(nil),                    // 2: zpotify_api.ImportedFile
+	(*TorrentFileProgress)(nil),             // 3: zpotify_api.TorrentFileProgress
+	(*ListTorrentJobs)(nil),                 // 4: zpotify_api.ListTorrentJobs
+	(*GetTorrentJob)(nil),                   // 5: zpotify_api.GetTorrentJob
+	(*CancelTorrentJob)(nil),                // 6: zpotify_api.CancelTorrentJob
+	(*PauseTorrentJob)(nil),                 // 7: zpotify_api.PauseTorrentJob
+	(*ResumeTorrentJob)(nil),                // 8: zpotify_api.ResumeTorrentJob
+	(*DeleteTorrentJob)(nil),                // 9: zpotify_api.DeleteTorrentJob
+	(*WatchTorrentJobs)(nil),                // 10: zpotify_api.WatchTorrentJobs
+	(*TorrentFile)(nil),                     // 11: zpotify_api.TorrentFile
+	(*TorrentFileEntry)(nil),                // 12: zpotify_api.TorrentFileEntry
+	(*GetTorrentFile)(nil),                  // 13: zpotify_api.GetTorrentFile
+	(*SubmitTorrentFile)(nil),               // 14: zpotify_api.SubmitTorrentFile
+	(*AddTorrentMagnet)(nil),                // 15: zpotify_api.AddTorrentMagnet
+	(*TorrentSearchResult)(nil),             // 16: zpotify_api.TorrentSearchResult
+	(*SearchTorrents)(nil),                  // 17: zpotify_api.SearchTorrents
+	(*AddTorrentSearchResult)(nil),          // 18: zpotify_api.AddTorrentSearchResult
+	(*DiscardTorrentFile)(nil),              // 19: zpotify_api.DiscardTorrentFile
+	(*ListTorrentJobs_Request)(nil),         // 20: zpotify_api.ListTorrentJobs.Request
+	(*ListTorrentJobs_Response)(nil),        // 21: zpotify_api.ListTorrentJobs.Response
+	(*GetTorrentJob_Request)(nil),           // 22: zpotify_api.GetTorrentJob.Request
+	(*GetTorrentJob_Response)(nil),          // 23: zpotify_api.GetTorrentJob.Response
+	(*CancelTorrentJob_Request)(nil),        // 24: zpotify_api.CancelTorrentJob.Request
+	(*CancelTorrentJob_Response)(nil),       // 25: zpotify_api.CancelTorrentJob.Response
+	(*PauseTorrentJob_Request)(nil),         // 26: zpotify_api.PauseTorrentJob.Request
+	(*PauseTorrentJob_Response)(nil),        // 27: zpotify_api.PauseTorrentJob.Response
+	(*ResumeTorrentJob_Request)(nil),        // 28: zpotify_api.ResumeTorrentJob.Request
+	(*ResumeTorrentJob_Response)(nil),       // 29: zpotify_api.ResumeTorrentJob.Response
+	(*DeleteTorrentJob_Request)(nil),        // 30: zpotify_api.DeleteTorrentJob.Request
+	(*DeleteTorrentJob_Response)(nil),       // 31: zpotify_api.DeleteTorrentJob.Response
+	(*WatchTorrentJobs_Request)(nil),        // 32: zpotify_api.WatchTorrentJobs.Request
+	(*WatchTorrentJobs_Response)(nil),       // 33: zpotify_api.WatchTorrentJobs.Response
+	(*GetTorrentFile_Request)(nil),          // 34: zpotify_api.GetTorrentFile.Request
+	(*GetTorrentFile_Response)(nil),         // 35: zpotify_api.GetTorrentFile.Response
+	(*SubmitTorrentFile_Request)(nil),       // 36: zpotify_api.SubmitTorrentFile.Request
+	(*SubmitTorrentFile_Response)(nil),      // 37: zpotify_api.SubmitTorrentFile.Response
+	(*AddTorrentMagnet_Request)(nil),        // 38: zpotify_api.AddTorrentMagnet.Request
+	(*AddTorrentMagnet_Response)(nil),       // 39: zpotify_api.AddTorrentMagnet.Response
+	(*SearchTorrents_Request)(nil),          // 40: zpotify_api.SearchTorrents.Request
+	(*SearchTorrents_Response)(nil),         // 41: zpotify_api.SearchTorrents.Response
+	(*AddTorrentSearchResult_Request)(nil),  // 42: zpotify_api.AddTorrentSearchResult.Request
+	(*AddTorrentSearchResult_Response)(nil), // 43: zpotify_api.AddTorrentSearchResult.Response
+	(*DiscardTorrentFile_Request)(nil),      // 44: zpotify_api.DiscardTorrentFile.Request
+	(*DiscardTorrentFile_Response)(nil),     // 45: zpotify_api.DiscardTorrentFile.Response
+	(*timestamppb.Timestamp)(nil),           // 46: google.protobuf.Timestamp
 }
 var file_zpotify_service_torrents_proto_depIdxs = []int32{
 	2,  // 0: zpotify_api.TorrentJob.imported_files:type_name -> zpotify_api.ImportedFile
 	3,  // 1: zpotify_api.TorrentJob.files:type_name -> zpotify_api.TorrentFileProgress
 	12, // 2: zpotify_api.TorrentFile.files:type_name -> zpotify_api.TorrentFileEntry
 	0,  // 3: zpotify_api.TorrentFileEntry.kind:type_name -> zpotify_api.TorrentFileKind
-	1,  // 4: zpotify_api.ListTorrentJobs.Response.jobs:type_name -> zpotify_api.TorrentJob
-	1,  // 5: zpotify_api.GetTorrentJob.Response.job:type_name -> zpotify_api.TorrentJob
-	1,  // 6: zpotify_api.WatchTorrentJobs.Response.job:type_name -> zpotify_api.TorrentJob
-	11, // 7: zpotify_api.GetTorrentFile.Response.file:type_name -> zpotify_api.TorrentFile
-	17, // 8: zpotify_api.TorrentAPI.ListTorrentJobs:input_type -> zpotify_api.ListTorrentJobs.Request
-	19, // 9: zpotify_api.TorrentAPI.GetTorrentJob:input_type -> zpotify_api.GetTorrentJob.Request
-	21, // 10: zpotify_api.TorrentAPI.CancelTorrentJob:input_type -> zpotify_api.CancelTorrentJob.Request
-	23, // 11: zpotify_api.TorrentAPI.PauseTorrentJob:input_type -> zpotify_api.PauseTorrentJob.Request
-	25, // 12: zpotify_api.TorrentAPI.ResumeTorrentJob:input_type -> zpotify_api.ResumeTorrentJob.Request
-	27, // 13: zpotify_api.TorrentAPI.DeleteTorrentJob:input_type -> zpotify_api.DeleteTorrentJob.Request
-	29, // 14: zpotify_api.TorrentAPI.WatchTorrentJobs:input_type -> zpotify_api.WatchTorrentJobs.Request
-	31, // 15: zpotify_api.TorrentAPI.GetTorrentFile:input_type -> zpotify_api.GetTorrentFile.Request
-	33, // 16: zpotify_api.TorrentAPI.SubmitTorrentFile:input_type -> zpotify_api.SubmitTorrentFile.Request
-	35, // 17: zpotify_api.TorrentAPI.AddTorrentMagnet:input_type -> zpotify_api.AddTorrentMagnet.Request
-	37, // 18: zpotify_api.TorrentAPI.DiscardTorrentFile:input_type -> zpotify_api.DiscardTorrentFile.Request
-	18, // 19: zpotify_api.TorrentAPI.ListTorrentJobs:output_type -> zpotify_api.ListTorrentJobs.Response
-	20, // 20: zpotify_api.TorrentAPI.GetTorrentJob:output_type -> zpotify_api.GetTorrentJob.Response
-	22, // 21: zpotify_api.TorrentAPI.CancelTorrentJob:output_type -> zpotify_api.CancelTorrentJob.Response
-	24, // 22: zpotify_api.TorrentAPI.PauseTorrentJob:output_type -> zpotify_api.PauseTorrentJob.Response
-	26, // 23: zpotify_api.TorrentAPI.ResumeTorrentJob:output_type -> zpotify_api.ResumeTorrentJob.Response
-	28, // 24: zpotify_api.TorrentAPI.DeleteTorrentJob:output_type -> zpotify_api.DeleteTorrentJob.Response
-	30, // 25: zpotify_api.TorrentAPI.WatchTorrentJobs:output_type -> zpotify_api.WatchTorrentJobs.Response
-	32, // 26: zpotify_api.TorrentAPI.GetTorrentFile:output_type -> zpotify_api.GetTorrentFile.Response
-	34, // 27: zpotify_api.TorrentAPI.SubmitTorrentFile:output_type -> zpotify_api.SubmitTorrentFile.Response
-	36, // 28: zpotify_api.TorrentAPI.AddTorrentMagnet:output_type -> zpotify_api.AddTorrentMagnet.Response
-	38, // 29: zpotify_api.TorrentAPI.DiscardTorrentFile:output_type -> zpotify_api.DiscardTorrentFile.Response
-	19, // [19:30] is the sub-list for method output_type
-	8,  // [8:19] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	46, // 4: zpotify_api.TorrentSearchResult.published_at:type_name -> google.protobuf.Timestamp
+	1,  // 5: zpotify_api.ListTorrentJobs.Response.jobs:type_name -> zpotify_api.TorrentJob
+	1,  // 6: zpotify_api.GetTorrentJob.Response.job:type_name -> zpotify_api.TorrentJob
+	1,  // 7: zpotify_api.WatchTorrentJobs.Response.job:type_name -> zpotify_api.TorrentJob
+	11, // 8: zpotify_api.GetTorrentFile.Response.file:type_name -> zpotify_api.TorrentFile
+	16, // 9: zpotify_api.SearchTorrents.Response.results:type_name -> zpotify_api.TorrentSearchResult
+	20, // 10: zpotify_api.TorrentAPI.ListTorrentJobs:input_type -> zpotify_api.ListTorrentJobs.Request
+	22, // 11: zpotify_api.TorrentAPI.GetTorrentJob:input_type -> zpotify_api.GetTorrentJob.Request
+	24, // 12: zpotify_api.TorrentAPI.CancelTorrentJob:input_type -> zpotify_api.CancelTorrentJob.Request
+	26, // 13: zpotify_api.TorrentAPI.PauseTorrentJob:input_type -> zpotify_api.PauseTorrentJob.Request
+	28, // 14: zpotify_api.TorrentAPI.ResumeTorrentJob:input_type -> zpotify_api.ResumeTorrentJob.Request
+	30, // 15: zpotify_api.TorrentAPI.DeleteTorrentJob:input_type -> zpotify_api.DeleteTorrentJob.Request
+	32, // 16: zpotify_api.TorrentAPI.WatchTorrentJobs:input_type -> zpotify_api.WatchTorrentJobs.Request
+	34, // 17: zpotify_api.TorrentAPI.GetTorrentFile:input_type -> zpotify_api.GetTorrentFile.Request
+	36, // 18: zpotify_api.TorrentAPI.SubmitTorrentFile:input_type -> zpotify_api.SubmitTorrentFile.Request
+	38, // 19: zpotify_api.TorrentAPI.AddTorrentMagnet:input_type -> zpotify_api.AddTorrentMagnet.Request
+	40, // 20: zpotify_api.TorrentAPI.SearchTorrents:input_type -> zpotify_api.SearchTorrents.Request
+	42, // 21: zpotify_api.TorrentAPI.AddTorrentSearchResult:input_type -> zpotify_api.AddTorrentSearchResult.Request
+	44, // 22: zpotify_api.TorrentAPI.DiscardTorrentFile:input_type -> zpotify_api.DiscardTorrentFile.Request
+	21, // 23: zpotify_api.TorrentAPI.ListTorrentJobs:output_type -> zpotify_api.ListTorrentJobs.Response
+	23, // 24: zpotify_api.TorrentAPI.GetTorrentJob:output_type -> zpotify_api.GetTorrentJob.Response
+	25, // 25: zpotify_api.TorrentAPI.CancelTorrentJob:output_type -> zpotify_api.CancelTorrentJob.Response
+	27, // 26: zpotify_api.TorrentAPI.PauseTorrentJob:output_type -> zpotify_api.PauseTorrentJob.Response
+	29, // 27: zpotify_api.TorrentAPI.ResumeTorrentJob:output_type -> zpotify_api.ResumeTorrentJob.Response
+	31, // 28: zpotify_api.TorrentAPI.DeleteTorrentJob:output_type -> zpotify_api.DeleteTorrentJob.Response
+	33, // 29: zpotify_api.TorrentAPI.WatchTorrentJobs:output_type -> zpotify_api.WatchTorrentJobs.Response
+	35, // 30: zpotify_api.TorrentAPI.GetTorrentFile:output_type -> zpotify_api.GetTorrentFile.Response
+	37, // 31: zpotify_api.TorrentAPI.SubmitTorrentFile:output_type -> zpotify_api.SubmitTorrentFile.Response
+	39, // 32: zpotify_api.TorrentAPI.AddTorrentMagnet:output_type -> zpotify_api.AddTorrentMagnet.Response
+	41, // 33: zpotify_api.TorrentAPI.SearchTorrents:output_type -> zpotify_api.SearchTorrents.Response
+	43, // 34: zpotify_api.TorrentAPI.AddTorrentSearchResult:output_type -> zpotify_api.AddTorrentSearchResult.Response
+	45, // 35: zpotify_api.TorrentAPI.DiscardTorrentFile:output_type -> zpotify_api.DiscardTorrentFile.Response
+	23, // [23:36] is the sub-list for method output_type
+	10, // [10:23] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_service_torrents_proto_init() }
@@ -2077,10 +2487,14 @@ func file_zpotify_service_torrents_proto_init() {
 	if File_zpotify_service_torrents_proto != nil {
 		return
 	}
-	file_zpotify_service_torrents_proto_msgTypes[28].OneofWrappers = []any{}
-	file_zpotify_service_torrents_proto_msgTypes[35].OneofWrappers = []any{
+	file_zpotify_service_torrents_proto_msgTypes[31].OneofWrappers = []any{}
+	file_zpotify_service_torrents_proto_msgTypes[38].OneofWrappers = []any{
 		(*AddTorrentMagnet_Response_UploadId)(nil),
 		(*AddTorrentMagnet_Response_ExistingJobId)(nil),
+	}
+	file_zpotify_service_torrents_proto_msgTypes[42].OneofWrappers = []any{
+		(*AddTorrentSearchResult_Response_UploadId)(nil),
+		(*AddTorrentSearchResult_Response_ExistingJobId)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -2088,7 +2502,7 @@ func file_zpotify_service_torrents_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_service_torrents_proto_rawDesc), len(file_zpotify_service_torrents_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   38,
+			NumMessages:   45,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

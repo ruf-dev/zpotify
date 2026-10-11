@@ -13,6 +13,7 @@ const STEP_TITLES: Record<ModalStep, string> = {
     drop: 'upload new track',
     pending: 'pending uploads',
     torrentFiles: 'select files to download',
+    search: 'search torrents',
 };
 
 interface PanelHeaderProps {

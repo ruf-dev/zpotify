@@ -186,6 +186,70 @@
         ]
       }
     },
+    "/api/torrents/search": {
+      "post": {
+        "operationId": "TorrentAPI_SearchTorrents",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiSearchTorrentsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiSearchTorrentsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TorrentAPI"
+        ]
+      }
+    },
+    "/api/torrents/search/add": {
+      "post": {
+        "operationId": "TorrentAPI_AddTorrentSearchResult",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiAddTorrentSearchResultResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiAddTorrentSearchResultRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TorrentAPI"
+        ]
+      }
+    },
     "/api/torrents/watch": {
       "post": {
         "operationId": "TorrentAPI_WatchTorrentJobs",
@@ -432,6 +496,26 @@
         }
       }
     },
+    "zpotify_apiAddTorrentSearchResultRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiAddTorrentSearchResultResponse": {
+      "type": "object",
+      "properties": {
+        "uploadId": {
+          "type": "string"
+        },
+        "existingJobId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "zpotify_apiCancelTorrentJobResponse": {
       "type": "object"
     },
@@ -506,6 +590,26 @@
     },
     "zpotify_apiResumeTorrentJobResponse": {
       "type": "object"
+    },
+    "zpotify_apiSearchTorrentsRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiSearchTorrentsResponse": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiTorrentSearchResult"
+          }
+        }
+      }
     },
     "zpotify_apiSubmitTorrentFileResponse": {
       "type": "object",
@@ -639,6 +743,33 @@
             "type": "object",
             "$ref": "#/definitions/zpotify_apiTorrentFileProgress"
           }
+        }
+      }
+    },
+    "zpotify_apiTorrentSearchResult": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Opaque server-issued handle for AddTorrentSearchResult."
+        },
+        "title": {
+          "type": "string"
+        },
+        "sizeBytes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "indexer": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isAlreadyImported": {
+          "type": "boolean",
+          "description": "Some user already has a non-failed, non-canceled job for this info hash."
         }
       }
     },

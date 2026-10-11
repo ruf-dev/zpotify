@@ -29,6 +29,12 @@ environment:
   - name: torrent_metadata_timeout_seconds
     type: int
     value: 5
+  - name: prowlarr_url
+    type: string
+    value: ""
+  - name: prowlarr_api_key
+    type: string
+    value: ""
   - name: log_format
     type: string
     enum: [JSON, TEXT]

@@ -33,8 +33,9 @@ type UserUiSettings struct {
 }
 
 type UserSettings struct {
-	Ui           UserUiSettings
-	HomeSegments []UserHomeSegment
+	Ui                       UserUiSettings
+	HomeSegments             []UserHomeSegment
+	IsTorrentSearchAvailable bool
 }
 
 type UserPermissions struct {

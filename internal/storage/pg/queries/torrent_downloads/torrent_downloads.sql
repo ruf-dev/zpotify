@@ -65,3 +65,9 @@ WHERE id = @id;
 DELETE FROM torrent_downloads
 WHERE id = @id
   AND user_id = @user_id;
+
+-- name: ListImportedTorrentInfoHashes :many
+SELECT DISTINCT info_hash
+FROM torrent_downloads
+WHERE info_hash = ANY (@info_hashes::TEXT[])
+  AND status NOT IN ('failed', 'canceled');

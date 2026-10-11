@@ -26,6 +26,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/async/provider/pgqueue"
 	"go.zpotify.ru/zpotify/internal/background"
 	"go.zpotify.ru/zpotify/internal/background/sessions_gc"
+	"go.zpotify.ru/zpotify/internal/background/torrent_search_health"
 	"go.zpotify.ru/zpotify/internal/background/torrent_sync"
 	"go.zpotify.ru/zpotify/internal/clients/postgres"
 	tgclient "go.zpotify.ru/zpotify/internal/clients/telegram"
@@ -159,7 +160,17 @@ func (c *Custom) Init(app *App) (err error) {
 
 	torrentService := v1.NewTorrentService(c.dataStorage, c.binaryStorage, c.torrentClient, torrentServiceCfg)
 
-	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, adminNotifier, trackSender, torrentService, app.Cfg)
+	torrentSearchCfg := v1.TorrentSearchServiceConfig{
+		ProwlarrUrl:    app.Cfg.Environment.ProwlarrURL,
+		ProwlarrApiKey: app.Cfg.Environment.ProwlarrAPIKey,
+	}
+
+	torrentSearchService, err := v1.NewTorrentSearchService(c.dataStorage, torrentService, torrentSearchCfg)
+	if err != nil {
+		return rerrors.Wrap(err, "error creating torrent search service")
+	}
+
+	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, adminNotifier, trackSender, torrentService, torrentSearchService, app.Cfg)
 	if err != nil {
 		return rerrors.Wrap(err, "error creating service")
 	}
@@ -179,6 +190,7 @@ func (c *Custom) Init(app *App) (err error) {
 	c.BackgroundWorker = background.New(
 		sessions_gc.New(c.dataStorage),
 		torrent_sync.New(c.dataStorage, torrentLookup, torrentService, torrentSyncPeriod),
+		torrent_search_health.New(torrentSearchService),
 	)
 
 	gcHandler := gc_handler.New(c.binaryStorage)

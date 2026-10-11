@@ -11,6 +11,7 @@ import { torrentService } from '@/shared/api/TorrentService.ts';
 import { parseDuplicateTorrentJobId } from '@/dialogs/AddTrack/parseDuplicateTorrentJobId.ts';
 import ChooseScreen from '@/dialogs/AddTrack/screens/ChooseScreen';
 import DropZoneScreen from '@/dialogs/AddTrack/screens/DropZoneScreen';
+import SearchScreen from '@/dialogs/AddTrack/screens/SearchScreen';
 import PendingFilesScreen from '@/dialogs/AddTrack/screens/PendingFilesScreen';
 import TorrentFilesScreen from '@/dialogs/AddTrack/screens/TorrentFilesScreen';
 import MultitrackUploadModal from '@/dialogs/MultitrackUpload/MultitrackUploadModal';
@@ -22,7 +23,7 @@ import type { TrackDraft } from '@/dialogs/MultitrackUpload/TrackRow';
 import { useBatchUpload } from '@/dialogs/AddTrack/useBatchUpload';
 import { useBackGuard } from '@/shared/lib/useBackGuard';
 
-export type ModalStep = 'choose' | 'drop' | 'pending' | 'torrentFiles';
+export type ModalStep = 'choose' | 'drop' | 'pending' | 'torrentFiles' | 'search';
 
 export interface AddTrackContext {
     goTo: (step: ModalStep) => void;
@@ -41,6 +42,7 @@ export interface AddTrackContext {
     submittingTorrentFile: boolean;
     handleSubmitTorrentFile: (selectedPaths: string[], torrentName: string) => void;
     handleMagnetLink: (magnetUri: string) => void;
+    handleTorrentSearchResult: (resultId: string) => void;
     discardPendingTorrentUpload: () => void;
 }
 
@@ -48,6 +50,7 @@ const BACK_STEPS: Partial<Record<ModalStep, ModalStep>> = {
     drop: 'choose',
     pending: 'choose',
     torrentFiles: 'choose',
+    search: 'choose',
 };
 
 const SCREENS: Record<ModalStep, ComponentType<AddTrackContext>> = {
@@ -55,6 +58,7 @@ const SCREENS: Record<ModalStep, ComponentType<AddTrackContext>> = {
     drop: DropZoneScreen,
     pending: PendingFilesScreen,
     torrentFiles: TorrentFilesScreen,
+    search: SearchScreen,
 };
 
 interface AddTrackDialogProps {
@@ -158,21 +162,33 @@ export default function AddTrackDialog({ initialStep = 'choose', initialMagnet }
             .finally(() => setUploading(false));
     }
 
+    function handleTorrentAddResult(res: { uploadId?: string; existingJobId?: string }) {
+        if (res.existingJobId) {
+            openExistingTorrentJob(res.existingJobId);
+            return;
+        }
+        if (!res.uploadId) return;
+
+        setPendingTorrentUpload({ id: res.uploadId, folderName: '' });
+        setStep('torrentFiles');
+    }
+
     function handleMagnetLink(magnetUri: string) {
         setUploadError(null);
         setUploading(true);
         torrentService
             .AddTorrentMagnet({ magnetUri })
-            .then((res) => {
-                if (res.existingJobId) {
-                    openExistingTorrentJob(res.existingJobId);
-                    return;
-                }
-                if (!res.uploadId) return;
+            .then(handleTorrentAddResult)
+            .catch((err: unknown) => toaster.catch(err as ServiceError))
+            .finally(() => setUploading(false));
+    }
 
-                setPendingTorrentUpload({ id: res.uploadId, folderName: '' });
-                setStep('torrentFiles');
-            })
+    function handleTorrentSearchResult(resultId: string) {
+        setUploadError(null);
+        setUploading(true);
+        torrentService
+            .AddTorrentSearchResult({ id: resultId })
+            .then(handleTorrentAddResult)
             .catch((err: unknown) => toaster.catch(err as ServiceError))
             .finally(() => setUploading(false));
     }
@@ -282,6 +298,7 @@ export default function AddTrackDialog({ initialStep = 'choose', initialMagnet }
         submittingTorrentFile,
         handleSubmitTorrentFile,
         handleMagnetLink,
+        handleTorrentSearchResult,
         discardPendingTorrentUpload,
     };
 

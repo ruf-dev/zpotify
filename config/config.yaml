@@ -46,6 +46,12 @@ environment:
     - name: otel_endpoint
       type: string
       value: ""
+    - name: prowlarr_api_key
+      type: string
+      value: ""
+    - name: prowlarr_url
+      type: string
+      value: ""
     - name: public_base_url
       type: string
       value: ""

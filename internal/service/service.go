@@ -30,6 +30,7 @@ type Service interface {
 	SearchService() SearchService
 	SearchHistoryService() SearchHistoryService
 	TorrentService() TorrentService
+	TorrentSearchService() TorrentSearchService
 }
 
 type service struct {
@@ -45,6 +46,7 @@ type service struct {
 	searchService        SearchService
 	searchHistoryService SearchHistoryService
 	torrentService       TorrentService
+	torrentSearchService TorrentSearchService
 }
 
 // New builds the service facade. torrentService is constructed by the caller
@@ -55,6 +57,7 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 	fileStorage storage.BinaryFileStorage, adminNotifier auth.AdminNotifier,
 	telegramSender v1.TelegramSender,
 	torrentService *v1.TorrentService,
+	torrentSearchService *v1.TorrentSearchService,
 	cfg config.Config,
 ) (Service, error) {
 	var jwksHttpClient *http.Client
@@ -85,7 +88,7 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 
 	return &service{
 		audioService:         audioService,
-		userService:          v1.NewUserService(dataStorage),
+		userService:          v1.NewUserService(dataStorage, torrentSearchService),
 		authService:          authSvc,
 		playlistService:      playlistService,
 		artistsService:       artistsService,
@@ -96,6 +99,7 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 		searchService:        v1.NewSearchService(audioService, artistsService, playlistService),
 		searchHistoryService: v1.NewSearchHistoryService(dataStorage),
 		torrentService:       torrentService,
+		torrentSearchService: torrentSearchService,
 	}, nil
 }
 
@@ -145,6 +149,10 @@ func (s *service) SearchHistoryService() SearchHistoryService {
 
 func (s *service) TorrentService() TorrentService {
 	return s.torrentService
+}
+
+func (s *service) TorrentSearchService() TorrentSearchService {
+	return s.torrentSearchService
 }
 
 type AudioService interface {
@@ -311,6 +319,12 @@ type TorrentService interface {
 	// DiscardTorrentFile drops a not-yet-submitted upload handle and, for a
 	// magnet, stops fetching it.
 	DiscardTorrentFile(ctx context.Context, id string) error
+}
+
+// TorrentSearchService finds torrents through the configured Prowlarr instance and hands a picked result to the torrent import flow.
+type TorrentSearchService interface {
+	Search(ctx context.Context, query string) ([]domain.TorrentSearchResult, error)
+	AddResult(ctx context.Context, resultId string) (domain.TorrentMagnetAdd, error)
 }
 
 type FeatureFlagsService interface {

@@ -76,6 +76,10 @@ type fakeTorrentStorage struct {
 	listError error
 }
 
+func (f *fakeTorrentStorage) ListImportedInfoHashes(_ context.Context, _ []string) ([]string, error) {
+	return nil, nil
+}
+
 func (f *fakeTorrentStorage) WithTx(_ *sql.Tx) storage.TorrentDownloadStorage {
 	return f
 }

@@ -24,11 +24,12 @@ const (
 )
 
 type UserSettings struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	HomeSegments  []*HomePageSegment     `protobuf:"bytes,1,rep,name=home_segments,json=homeSegments,proto3" json:"home_segments,omitempty"`
-	Ui            *UiSettings            `protobuf:"bytes,2,opt,name=ui,proto3" json:"ui,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                    protoimpl.MessageState `protogen:"open.v1"`
+	HomeSegments             []*HomePageSegment     `protobuf:"bytes,1,rep,name=home_segments,json=homeSegments,proto3" json:"home_segments,omitempty"`
+	Ui                       *UiSettings            `protobuf:"bytes,2,opt,name=ui,proto3" json:"ui,omitempty"`
+	IsTorrentSearchAvailable bool                   `protobuf:"varint,3,opt,name=is_torrent_search_available,json=isTorrentSearchAvailable,proto3" json:"is_torrent_search_available,omitempty"`
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *UserSettings) Reset() {
@@ -73,6 +74,13 @@ func (x *UserSettings) GetUi() *UiSettings {
 		return x.Ui
 	}
 	return nil
+}
+
+func (x *UserSettings) GetIsTorrentSearchAvailable() bool {
+	if x != nil {
+		return x.IsTorrentSearchAvailable
+	}
+	return false
 }
 
 type HomePageSegment struct {
@@ -390,10 +398,11 @@ var File_zpotify_user_settings_proto protoreflect.FileDescriptor
 
 const file_zpotify_user_settings_proto_rawDesc = "" +
 	"\n" +
-	"\x1bzpotify_user_settings.proto\x12\vzpotify_api\x1a\tnpm.proto\"z\n" +
+	"\x1bzpotify_user_settings.proto\x12\vzpotify_api\x1a\tnpm.proto\"\xb9\x01\n" +
 	"\fUserSettings\x12A\n" +
 	"\rhome_segments\x18\x01 \x03(\v2\x1c.zpotify_api.HomePageSegmentR\fhomeSegments\x12'\n" +
-	"\x02ui\x18\x02 \x01(\v2\x17.zpotify_api.UiSettingsR\x02ui\"\xdb\x03\n" +
+	"\x02ui\x18\x02 \x01(\v2\x17.zpotify_api.UiSettingsR\x02ui\x12=\n" +
+	"\x1bis_torrent_search_available\x18\x03 \x01(\bR\x18isTorrentSearchAvailable\"\xdb\x03\n" +
 	"\x0fHomePageSegment\x12Y\n" +
 	"\x10playlist_segment\x18\x01 \x01(\v2,.zpotify_api.HomePageSegment.PlaylistSegmentH\x00R\x0fplaylistSegment\x12X\n" +
 	"\x12management_segment\x18\x02 \x01(\v2'.zpotify_api.HomePageSegment.ManagementH\x00R\x11managementSegment\x12V\n" +

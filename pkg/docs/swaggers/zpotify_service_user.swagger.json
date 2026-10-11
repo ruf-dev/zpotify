@@ -200,6 +200,9 @@
         },
         "ui": {
           "$ref": "#/definitions/zpotify_apiUiSettings"
+        },
+        "isTorrentSearchAvailable": {
+          "type": "boolean"
         }
       }
     }

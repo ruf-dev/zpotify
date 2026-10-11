@@ -391,6 +391,60 @@ func local_request_TorrentAPI_AddTorrentMagnet_0(ctx context.Context, marshaler 
 	return msg, metadata, err
 }
 
+func request_TorrentAPI_SearchTorrents_0(ctx context.Context, marshaler runtime.Marshaler, client TorrentAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq SearchTorrents_Request
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	msg, err := client.SearchTorrents(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_TorrentAPI_SearchTorrents_0(ctx context.Context, marshaler runtime.Marshaler, server TorrentAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq SearchTorrents_Request
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.SearchTorrents(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+func request_TorrentAPI_AddTorrentSearchResult_0(ctx context.Context, marshaler runtime.Marshaler, client TorrentAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq AddTorrentSearchResult_Request
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	msg, err := client.AddTorrentSearchResult(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_TorrentAPI_AddTorrentSearchResult_0(ctx context.Context, marshaler runtime.Marshaler, server TorrentAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq AddTorrentSearchResult_Request
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.AddTorrentSearchResult(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 func request_TorrentAPI_DiscardTorrentFile_0(ctx context.Context, marshaler runtime.Marshaler, client TorrentAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq DiscardTorrentFile_Request
@@ -629,6 +683,46 @@ func RegisterTorrentAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux,
 		}
 		forward_TorrentAPI_AddTorrentMagnet_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodPost, pattern_TorrentAPI_SearchTorrents_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zpotify_api.TorrentAPI/SearchTorrents", runtime.WithHTTPPathPattern("/api/torrents/search"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_TorrentAPI_SearchTorrents_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_TorrentAPI_SearchTorrents_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_TorrentAPI_AddTorrentSearchResult_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zpotify_api.TorrentAPI/AddTorrentSearchResult", runtime.WithHTTPPathPattern("/api/torrents/search/add"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_TorrentAPI_AddTorrentSearchResult_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_TorrentAPI_AddTorrentSearchResult_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodPost, pattern_TorrentAPI_DiscardTorrentFile_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -859,6 +953,40 @@ func RegisterTorrentAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux,
 		}
 		forward_TorrentAPI_AddTorrentMagnet_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodPost, pattern_TorrentAPI_SearchTorrents_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zpotify_api.TorrentAPI/SearchTorrents", runtime.WithHTTPPathPattern("/api/torrents/search"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_TorrentAPI_SearchTorrents_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_TorrentAPI_SearchTorrents_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_TorrentAPI_AddTorrentSearchResult_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zpotify_api.TorrentAPI/AddTorrentSearchResult", runtime.WithHTTPPathPattern("/api/torrents/search/add"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_TorrentAPI_AddTorrentSearchResult_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_TorrentAPI_AddTorrentSearchResult_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodPost, pattern_TorrentAPI_DiscardTorrentFile_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -880,29 +1008,33 @@ func RegisterTorrentAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux,
 }
 
 var (
-	pattern_TorrentAPI_ListTorrentJobs_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "torrents", "list"}, ""))
-	pattern_TorrentAPI_GetTorrentJob_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"api", "torrents", "job_id"}, ""))
-	pattern_TorrentAPI_CancelTorrentJob_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"api", "torrents", "job_id", "cancel"}, ""))
-	pattern_TorrentAPI_PauseTorrentJob_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"api", "torrents", "job_id", "pause"}, ""))
-	pattern_TorrentAPI_ResumeTorrentJob_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"api", "torrents", "job_id", "resume"}, ""))
-	pattern_TorrentAPI_DeleteTorrentJob_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"api", "torrents", "job_id"}, ""))
-	pattern_TorrentAPI_WatchTorrentJobs_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "torrents", "watch"}, ""))
-	pattern_TorrentAPI_GetTorrentFile_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "torrents", "files", "id"}, ""))
-	pattern_TorrentAPI_SubmitTorrentFile_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "torrents", "files", "id", "submit"}, ""))
-	pattern_TorrentAPI_AddTorrentMagnet_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "torrents", "magnet"}, ""))
-	pattern_TorrentAPI_DiscardTorrentFile_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "torrents", "files", "id", "discard"}, ""))
+	pattern_TorrentAPI_ListTorrentJobs_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "torrents", "list"}, ""))
+	pattern_TorrentAPI_GetTorrentJob_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"api", "torrents", "job_id"}, ""))
+	pattern_TorrentAPI_CancelTorrentJob_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"api", "torrents", "job_id", "cancel"}, ""))
+	pattern_TorrentAPI_PauseTorrentJob_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"api", "torrents", "job_id", "pause"}, ""))
+	pattern_TorrentAPI_ResumeTorrentJob_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"api", "torrents", "job_id", "resume"}, ""))
+	pattern_TorrentAPI_DeleteTorrentJob_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"api", "torrents", "job_id"}, ""))
+	pattern_TorrentAPI_WatchTorrentJobs_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "torrents", "watch"}, ""))
+	pattern_TorrentAPI_GetTorrentFile_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "torrents", "files", "id"}, ""))
+	pattern_TorrentAPI_SubmitTorrentFile_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "torrents", "files", "id", "submit"}, ""))
+	pattern_TorrentAPI_AddTorrentMagnet_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "torrents", "magnet"}, ""))
+	pattern_TorrentAPI_SearchTorrents_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "torrents", "search"}, ""))
+	pattern_TorrentAPI_AddTorrentSearchResult_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "torrents", "search", "add"}, ""))
+	pattern_TorrentAPI_DiscardTorrentFile_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "torrents", "files", "id", "discard"}, ""))
 )
 
 var (
-	forward_TorrentAPI_ListTorrentJobs_0    = runtime.ForwardResponseMessage
-	forward_TorrentAPI_GetTorrentJob_0      = runtime.ForwardResponseMessage
-	forward_TorrentAPI_CancelTorrentJob_0   = runtime.ForwardResponseMessage
-	forward_TorrentAPI_PauseTorrentJob_0    = runtime.ForwardResponseMessage
-	forward_TorrentAPI_ResumeTorrentJob_0   = runtime.ForwardResponseMessage
-	forward_TorrentAPI_DeleteTorrentJob_0   = runtime.ForwardResponseMessage
-	forward_TorrentAPI_WatchTorrentJobs_0   = runtime.ForwardResponseStream
-	forward_TorrentAPI_GetTorrentFile_0     = runtime.ForwardResponseMessage
-	forward_TorrentAPI_SubmitTorrentFile_0  = runtime.ForwardResponseMessage
-	forward_TorrentAPI_AddTorrentMagnet_0   = runtime.ForwardResponseMessage
-	forward_TorrentAPI_DiscardTorrentFile_0 = runtime.ForwardResponseMessage
+	forward_TorrentAPI_ListTorrentJobs_0        = runtime.ForwardResponseMessage
+	forward_TorrentAPI_GetTorrentJob_0          = runtime.ForwardResponseMessage
+	forward_TorrentAPI_CancelTorrentJob_0       = runtime.ForwardResponseMessage
+	forward_TorrentAPI_PauseTorrentJob_0        = runtime.ForwardResponseMessage
+	forward_TorrentAPI_ResumeTorrentJob_0       = runtime.ForwardResponseMessage
+	forward_TorrentAPI_DeleteTorrentJob_0       = runtime.ForwardResponseMessage
+	forward_TorrentAPI_WatchTorrentJobs_0       = runtime.ForwardResponseStream
+	forward_TorrentAPI_GetTorrentFile_0         = runtime.ForwardResponseMessage
+	forward_TorrentAPI_SubmitTorrentFile_0      = runtime.ForwardResponseMessage
+	forward_TorrentAPI_AddTorrentMagnet_0       = runtime.ForwardResponseMessage
+	forward_TorrentAPI_SearchTorrents_0         = runtime.ForwardResponseMessage
+	forward_TorrentAPI_AddTorrentSearchResult_0 = runtime.ForwardResponseMessage
+	forward_TorrentAPI_DiscardTorrentFile_0     = runtime.ForwardResponseMessage
 )

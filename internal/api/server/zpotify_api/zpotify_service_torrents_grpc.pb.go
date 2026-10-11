@@ -20,17 +20,19 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	TorrentAPI_ListTorrentJobs_FullMethodName    = "/zpotify_api.TorrentAPI/ListTorrentJobs"
-	TorrentAPI_GetTorrentJob_FullMethodName      = "/zpotify_api.TorrentAPI/GetTorrentJob"
-	TorrentAPI_CancelTorrentJob_FullMethodName   = "/zpotify_api.TorrentAPI/CancelTorrentJob"
-	TorrentAPI_PauseTorrentJob_FullMethodName    = "/zpotify_api.TorrentAPI/PauseTorrentJob"
-	TorrentAPI_ResumeTorrentJob_FullMethodName   = "/zpotify_api.TorrentAPI/ResumeTorrentJob"
-	TorrentAPI_DeleteTorrentJob_FullMethodName   = "/zpotify_api.TorrentAPI/DeleteTorrentJob"
-	TorrentAPI_WatchTorrentJobs_FullMethodName   = "/zpotify_api.TorrentAPI/WatchTorrentJobs"
-	TorrentAPI_GetTorrentFile_FullMethodName     = "/zpotify_api.TorrentAPI/GetTorrentFile"
-	TorrentAPI_SubmitTorrentFile_FullMethodName  = "/zpotify_api.TorrentAPI/SubmitTorrentFile"
-	TorrentAPI_AddTorrentMagnet_FullMethodName   = "/zpotify_api.TorrentAPI/AddTorrentMagnet"
-	TorrentAPI_DiscardTorrentFile_FullMethodName = "/zpotify_api.TorrentAPI/DiscardTorrentFile"
+	TorrentAPI_ListTorrentJobs_FullMethodName        = "/zpotify_api.TorrentAPI/ListTorrentJobs"
+	TorrentAPI_GetTorrentJob_FullMethodName          = "/zpotify_api.TorrentAPI/GetTorrentJob"
+	TorrentAPI_CancelTorrentJob_FullMethodName       = "/zpotify_api.TorrentAPI/CancelTorrentJob"
+	TorrentAPI_PauseTorrentJob_FullMethodName        = "/zpotify_api.TorrentAPI/PauseTorrentJob"
+	TorrentAPI_ResumeTorrentJob_FullMethodName       = "/zpotify_api.TorrentAPI/ResumeTorrentJob"
+	TorrentAPI_DeleteTorrentJob_FullMethodName       = "/zpotify_api.TorrentAPI/DeleteTorrentJob"
+	TorrentAPI_WatchTorrentJobs_FullMethodName       = "/zpotify_api.TorrentAPI/WatchTorrentJobs"
+	TorrentAPI_GetTorrentFile_FullMethodName         = "/zpotify_api.TorrentAPI/GetTorrentFile"
+	TorrentAPI_SubmitTorrentFile_FullMethodName      = "/zpotify_api.TorrentAPI/SubmitTorrentFile"
+	TorrentAPI_AddTorrentMagnet_FullMethodName       = "/zpotify_api.TorrentAPI/AddTorrentMagnet"
+	TorrentAPI_SearchTorrents_FullMethodName         = "/zpotify_api.TorrentAPI/SearchTorrents"
+	TorrentAPI_AddTorrentSearchResult_FullMethodName = "/zpotify_api.TorrentAPI/AddTorrentSearchResult"
+	TorrentAPI_DiscardTorrentFile_FullMethodName     = "/zpotify_api.TorrentAPI/DiscardTorrentFile"
 )
 
 // TorrentAPIClient is the client API for TorrentAPI service.
@@ -47,6 +49,8 @@ type TorrentAPIClient interface {
 	GetTorrentFile(ctx context.Context, in *GetTorrentFile_Request, opts ...grpc.CallOption) (*GetTorrentFile_Response, error)
 	SubmitTorrentFile(ctx context.Context, in *SubmitTorrentFile_Request, opts ...grpc.CallOption) (*SubmitTorrentFile_Response, error)
 	AddTorrentMagnet(ctx context.Context, in *AddTorrentMagnet_Request, opts ...grpc.CallOption) (*AddTorrentMagnet_Response, error)
+	SearchTorrents(ctx context.Context, in *SearchTorrents_Request, opts ...grpc.CallOption) (*SearchTorrents_Response, error)
+	AddTorrentSearchResult(ctx context.Context, in *AddTorrentSearchResult_Request, opts ...grpc.CallOption) (*AddTorrentSearchResult_Response, error)
 	DiscardTorrentFile(ctx context.Context, in *DiscardTorrentFile_Request, opts ...grpc.CallOption) (*DiscardTorrentFile_Response, error)
 }
 
@@ -167,6 +171,26 @@ func (c *torrentAPIClient) AddTorrentMagnet(ctx context.Context, in *AddTorrentM
 	return out, nil
 }
 
+func (c *torrentAPIClient) SearchTorrents(ctx context.Context, in *SearchTorrents_Request, opts ...grpc.CallOption) (*SearchTorrents_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SearchTorrents_Response)
+	err := c.cc.Invoke(ctx, TorrentAPI_SearchTorrents_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *torrentAPIClient) AddTorrentSearchResult(ctx context.Context, in *AddTorrentSearchResult_Request, opts ...grpc.CallOption) (*AddTorrentSearchResult_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddTorrentSearchResult_Response)
+	err := c.cc.Invoke(ctx, TorrentAPI_AddTorrentSearchResult_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *torrentAPIClient) DiscardTorrentFile(ctx context.Context, in *DiscardTorrentFile_Request, opts ...grpc.CallOption) (*DiscardTorrentFile_Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(DiscardTorrentFile_Response)
@@ -191,6 +215,8 @@ type TorrentAPIServer interface {
 	GetTorrentFile(context.Context, *GetTorrentFile_Request) (*GetTorrentFile_Response, error)
 	SubmitTorrentFile(context.Context, *SubmitTorrentFile_Request) (*SubmitTorrentFile_Response, error)
 	AddTorrentMagnet(context.Context, *AddTorrentMagnet_Request) (*AddTorrentMagnet_Response, error)
+	SearchTorrents(context.Context, *SearchTorrents_Request) (*SearchTorrents_Response, error)
+	AddTorrentSearchResult(context.Context, *AddTorrentSearchResult_Request) (*AddTorrentSearchResult_Response, error)
 	DiscardTorrentFile(context.Context, *DiscardTorrentFile_Request) (*DiscardTorrentFile_Response, error)
 	mustEmbedUnimplementedTorrentAPIServer()
 }
@@ -231,6 +257,12 @@ func (UnimplementedTorrentAPIServer) SubmitTorrentFile(context.Context, *SubmitT
 }
 func (UnimplementedTorrentAPIServer) AddTorrentMagnet(context.Context, *AddTorrentMagnet_Request) (*AddTorrentMagnet_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method AddTorrentMagnet not implemented")
+}
+func (UnimplementedTorrentAPIServer) SearchTorrents(context.Context, *SearchTorrents_Request) (*SearchTorrents_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method SearchTorrents not implemented")
+}
+func (UnimplementedTorrentAPIServer) AddTorrentSearchResult(context.Context, *AddTorrentSearchResult_Request) (*AddTorrentSearchResult_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method AddTorrentSearchResult not implemented")
 }
 func (UnimplementedTorrentAPIServer) DiscardTorrentFile(context.Context, *DiscardTorrentFile_Request) (*DiscardTorrentFile_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method DiscardTorrentFile not implemented")
@@ -429,6 +461,42 @@ func _TorrentAPI_AddTorrentMagnet_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TorrentAPI_SearchTorrents_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchTorrents_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TorrentAPIServer).SearchTorrents(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TorrentAPI_SearchTorrents_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TorrentAPIServer).SearchTorrents(ctx, req.(*SearchTorrents_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TorrentAPI_AddTorrentSearchResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddTorrentSearchResult_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TorrentAPIServer).AddTorrentSearchResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TorrentAPI_AddTorrentSearchResult_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TorrentAPIServer).AddTorrentSearchResult(ctx, req.(*AddTorrentSearchResult_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _TorrentAPI_DiscardTorrentFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DiscardTorrentFile_Request)
 	if err := dec(in); err != nil {
@@ -489,6 +557,14 @@ var TorrentAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddTorrentMagnet",
 			Handler:    _TorrentAPI_AddTorrentMagnet_Handler,
+		},
+		{
+			MethodName: "SearchTorrents",
+			Handler:    _TorrentAPI_SearchTorrents_Handler,
+		},
+		{
+			MethodName: "AddTorrentSearchResult",
+			Handler:    _TorrentAPI_AddTorrentSearchResult_Handler,
 		},
 		{
 			MethodName: "DiscardTorrentFile",

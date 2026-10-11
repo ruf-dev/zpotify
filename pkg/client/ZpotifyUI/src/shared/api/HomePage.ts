@@ -10,12 +10,19 @@ import { HomePageSegment, InitReq, UserAPI } from '@/app/api/zpotify';
 
 export interface ISettingsService {
     ListHomeSegments(): Promise<HomeSegment[]>;
+    IsTorrentSearchAvailable(): Promise<boolean>;
 }
 
 export class SettingsService extends BaseService implements ISettingsService {
     async ListHomeSegments(): Promise<HomeSegment[]> {
         return this.executeAuthApiCall(async (initReq: InitReq) => {
             return UserAPI.GetUserSettings({}, initReq).then((r) => toHomeSegments(r.settings?.homeSegments || []));
+        });
+    }
+
+    async IsTorrentSearchAvailable(): Promise<boolean> {
+        return this.executeAuthApiCall(async (initReq: InitReq) => {
+            return UserAPI.GetUserSettings({}, initReq).then((r) => r.settings?.isTorrentSearchAvailable === true);
         });
     }
 }

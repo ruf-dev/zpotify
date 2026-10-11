@@ -14,6 +14,7 @@ type Querier interface {
 	GetTorrentDownloadByUserAndInfoHash(ctx context.Context, arg GetTorrentDownloadByUserAndInfoHashParams) (TorrentDownload, error)
 	InsertTorrentDownload(ctx context.Context, arg InsertTorrentDownloadParams) (TorrentDownload, error)
 	ListActiveTorrentDownloads(ctx context.Context) ([]TorrentDownload, error)
+	ListImportedTorrentInfoHashes(ctx context.Context, infoHashes []string) ([]string, error)
 	ListTorrentDownloadsByUser(ctx context.Context, arg ListTorrentDownloadsByUserParams) ([]TorrentDownload, error)
 	SetTorrentDownloadError(ctx context.Context, arg SetTorrentDownloadErrorParams) error
 	SetTorrentDownloadImportedFiles(ctx context.Context, arg SetTorrentDownloadImportedFilesParams) error

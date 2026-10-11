@@ -283,3 +283,12 @@ func toTorrentDownloadDomain(row torrent_downloads_q.TorrentDownload) (domain.To
 
 	return dl, nil
 }
+
+func (s *TorrentDownloadsStorage) ListImportedInfoHashes(ctx context.Context, infoHashes []string) ([]string, error) {
+	hashes, err := s.q.ListImportedTorrentInfoHashes(ctx, infoHashes)
+	if err != nil {
+		return nil, wrapPgErr(err)
+	}
+
+	return hashes, nil
+}

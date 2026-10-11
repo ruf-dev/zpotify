@@ -311,6 +311,9 @@ type TorrentDownloadStorage interface {
 	// info hash, if one already exists.
 	GetByUserAndInfoHash(ctx context.Context, userId int64, infoHash string) (sql.Null[domain.TorrentDownload], error)
 
+	// ListImportedInfoHashes returns the subset of infoHashes that any user has a non-failed, non-canceled job for.
+	ListImportedInfoHashes(ctx context.Context, infoHashes []string) ([]string, error)
+
 	// ListByUser - lists torrent downloads for a user, optionally filtered by folderName
 	// (empty folderName returns all folders).
 	ListByUser(ctx context.Context, userId int64, folderName string) ([]domain.TorrentDownload, error)

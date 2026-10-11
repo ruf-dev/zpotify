@@ -43,6 +43,10 @@ func newFakeTorrentDownloadStorage() *fakeTorrentDownloadStorage {
 	return &fakeTorrentDownloadStorage{byId: make(map[int64]domain.TorrentDownload)}
 }
 
+func (f *fakeTorrentDownloadStorage) ListImportedInfoHashes(_ context.Context, _ []string) ([]string, error) {
+	return nil, nil
+}
+
 func (f *fakeTorrentDownloadStorage) WithTx(_ *sql.Tx) storage.TorrentDownloadStorage {
 	return f
 }

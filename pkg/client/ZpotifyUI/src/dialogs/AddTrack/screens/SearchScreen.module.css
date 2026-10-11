@@ -1,0 +1,29 @@
+@keyframes slideIn {
+    from { transform: translateX(1.125rem); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+}
+
+.SearchScreenContainer {
+    animation: slideIn 0.2s ease both;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    width: 100%;
+
+    & .Hint {
+        padding: 1.5rem 1rem;
+        font-size: var(--font-size-base);
+        color: var(--color-fg-secondary);
+        text-align: center;
+    }
+
+    & .ResultList {
+        display: flex;
+        flex-direction: column;
+        gap: 0.375rem;
+        max-height: 24rem;
+        overflow-y: auto;
+    }
+}

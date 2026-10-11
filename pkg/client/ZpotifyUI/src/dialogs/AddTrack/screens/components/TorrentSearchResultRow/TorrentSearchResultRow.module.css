@@ -1,0 +1,59 @@
+.TorrentSearchResultRowContainer {
+    border-radius: var(--border-radius-sm);
+    border: 0.0625rem solid var(--color-border);
+    background: var(--color-bg-card);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+        background: var(--color-bg-hover-mid);
+        border-color: var(--color-border-light);
+    }
+
+    & .RowButton {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.25rem 0.75rem;
+        width: 100%;
+        padding: 0.625rem 0.75rem;
+        text-align: left;
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+
+    & .Title {
+        flex-basis: 100%;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: var(--font-size-base);
+        color: var(--color-fg-primary);
+    }
+
+    & .Meta {
+        font-size: var(--font-size-sm);
+        color: var(--color-fg-secondary);
+    }
+
+    & .LosslessBadge,
+    & .ImportedMark {
+        padding: 0.0625rem 0.375rem;
+        border-radius: var(--border-radius-sm);
+        font-size: var(--font-size-xs);
+    }
+
+    & .LosslessBadge {
+        color: var(--color-success);
+        border: 0.0625rem solid var(--color-success);
+    }
+
+    & .ImportedMark {
+        color: var(--color-fg-accent);
+        border: 0.0625rem solid var(--color-accent-border);
+        background: var(--color-accent-dim);
+    }
+}

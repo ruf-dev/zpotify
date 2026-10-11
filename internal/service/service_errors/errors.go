@@ -45,6 +45,11 @@ var (
 	// attempted while the bittorrent client failed to start or is not wired.
 	ErrTorrentClientUnavailable = rerrors.New("torrent client is unavailable", codes.Unavailable, rerrors.WithHttpStatus(http.StatusServiceUnavailable))
 
+	ErrTorrentSearchUnavailable     = rerrors.New("torrent search is unavailable", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusPreconditionFailed))
+	ErrTorrentSearchIndexerFailed   = rerrors.New("torrent search indexer failed", codes.Unavailable, rerrors.WithHttpStatus(http.StatusBadGateway))
+	ErrInvalidTorrentSearchQuery    = rerrors.New("torrent search query is empty", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
+	ErrInvalidTorrentSearchResultId = rerrors.New("invalid torrent search result id", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
+
 	// ErrInvalidTorrentFile is returned for input that is not a parsable
 	// .torrent file.
 	ErrInvalidTorrentFile = rerrors.New("invalid torrent file", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))

@@ -16,12 +16,14 @@ import (
 type Impl struct {
 	zpotify_api.UnimplementedTorrentAPIServer
 
-	torrentService service.TorrentService
+	torrentService       service.TorrentService
+	torrentSearchService service.TorrentSearchService
 }
 
 func New(srv service.Service) *Impl {
 	return &Impl{
-		torrentService: srv.TorrentService(),
+		torrentService:       srv.TorrentService(),
+		torrentSearchService: srv.TorrentSearchService(),
 	}
 }
 

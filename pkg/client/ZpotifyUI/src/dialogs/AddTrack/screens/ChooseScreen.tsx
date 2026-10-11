@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Button } from '@vervstack/chures';
 
 import cls from '@/dialogs/AddTrack/screens/ChooseScreen.module.css';
 import useUser from '@/entities/user/useUser.ts';
@@ -10,6 +11,7 @@ import UploadCard from '@/dialogs/AddTrack/screens/components/UploadCard/UploadC
 import MagnetLinkField from '@/dialogs/AddTrack/screens/components/MagnetLinkField/MagnetLinkField';
 import RecentTorrentsPanel from '@/dialogs/AddTrack/screens/components/RecentTorrentsPanel/RecentTorrentsPanel';
 import { useWatchTorrentJobs } from '@/dialogs/AddTrack/screens/useWatchTorrentJobs';
+import { useTorrentSearchAvailability } from '@/features/upload/useTorrentSearchAvailability.ts';
 import { isTerminalTorrentStatus } from '@/shared/lib/torrentStatus.ts';
 import ClipboardAccessButton from '@/dialogs/AddTrack/screens/components/ClipboardAccessButton/ClipboardAccessButton';
 
@@ -26,6 +28,7 @@ export default function ChooseScreen({
     const [loading, setLoading] = useState(true);
     const [clipboardMagnet, setClipboardMagnet] = useState('');
     const { jobs, loading: torrentLoading } = useWatchTorrentJobs();
+    const isTorrentSearchAvailable = useTorrentSearchAvailability();
 
     useEffect(() => {
         fileService
@@ -41,6 +44,10 @@ export default function ChooseScreen({
     function handleTorrentFileSelected(file: File) {
         handleTorrentFile(file);
         goTo('drop');
+    }
+
+    function handleOpenSearch() {
+        goTo('search');
     }
 
     return (
@@ -66,6 +73,11 @@ export default function ChooseScreen({
                     <MagnetLinkField initialValue={clipboardMagnet} disabled={uploading} onSubmit={handleMagnetLink} />
                 </div>
                 <ClipboardAccessButton onMagnet={setClipboardMagnet} />
+                {isTorrentSearchAvailable && (
+                    <Button variant="ghost" onClick={handleOpenSearch}>
+                        Search torrents
+                    </Button>
+                )}
             </div>
 
             <RecentTorrentsPanel jobs={jobs} loading={torrentLoading} onFile={handleTorrentFileSelected} />

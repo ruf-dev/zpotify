@@ -9,6 +9,8 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+
+	"github.com/lib/pq"
 )
 
 const deleteTorrentDownload = `-- name: DeleteTorrentDownload :exec
@@ -171,6 +173,36 @@ func (q *Queries) ListActiveTorrentDownloads(ctx context.Context) ([]TorrentDown
 			return nil, err
 		}
 		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listImportedTorrentInfoHashes = `-- name: ListImportedTorrentInfoHashes :many
+SELECT DISTINCT info_hash
+FROM torrent_downloads
+WHERE info_hash = ANY ($1::TEXT[])
+  AND status NOT IN ('failed', 'canceled')
+`
+
+func (q *Queries) ListImportedTorrentInfoHashes(ctx context.Context, infoHashes []string) ([]string, error) {
+	rows, err := q.db.QueryContext(ctx, listImportedTorrentInfoHashes, pq.Array(infoHashes))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []string{}
+	for rows.Next() {
+		var info_hash string
+		if err := rows.Scan(&info_hash); err != nil {
+			return nil, err
+		}
+		items = append(items, info_hash)
 	}
 	if err := rows.Close(); err != nil {
 		return nil, err

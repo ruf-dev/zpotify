@@ -1,0 +1,37 @@
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.TorrentSearchSkeletonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+
+    & .SkeletonRow {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.625rem 0.75rem;
+        border-radius: var(--border-radius-sm);
+        border: 0.0625rem solid var(--color-border);
+    }
+
+    & .TitleBlock,
+    & .MetaBlock {
+        background: linear-gradient(90deg, var(--color-bg-accent) 25%, var(--color-bg-hover-mid) 50%, var(--color-bg-accent) 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite linear;
+        border-radius: var(--border-radius-sm);
+    }
+
+    & .TitleBlock {
+        height: 0.875rem;
+        width: 80%;
+    }
+
+    & .MetaBlock {
+        height: 0.625rem;
+        width: 45%;
+    }
+}
