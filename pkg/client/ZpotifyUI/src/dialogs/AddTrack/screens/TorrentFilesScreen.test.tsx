@@ -51,6 +51,8 @@ function makeContext(overrides: Partial<AddTrackContext> = {}): AddTrackContext 
         pendingTorrentUpload: { id: 'torrent1', folderName: 'ubuntu' },
         submittingTorrentFile: false,
         handleSubmitTorrentFile: vi.fn(),
+        handleMagnetLink: vi.fn(),
+        discardPendingTorrentUpload: vi.fn(),
         ...overrides,
     };
 }
@@ -103,7 +105,7 @@ describe('TorrentFilesScreen', () => {
 
         fireEvent.click(screen.getByText(/selected/));
 
-        expect(handleSubmitTorrentFileSpy).toHaveBeenCalledWith(['Album/02 - Song.mp3']);
+        expect(handleSubmitTorrentFileSpy).toHaveBeenCalledWith(['Album/02 - Song.mp3'], 'ubuntu.torrent');
     });
 
     it('calls handleSubmitTorrentFile with the currently selected paths on submit', async () => {
@@ -115,6 +117,6 @@ describe('TorrentFilesScreen', () => {
 
         fireEvent.click(screen.getByText(/selected/));
 
-        expect(handleSubmitTorrentFileSpy).toHaveBeenCalledWith(['Album/01 - Song.mp3']);
+        expect(handleSubmitTorrentFileSpy).toHaveBeenCalledWith(['Album/01 - Song.mp3'], 'ubuntu.torrent');
     });
 });

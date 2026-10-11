@@ -5,8 +5,12 @@ import { torrentService } from '@/shared/api/TorrentService.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { ServiceError } from '@/shared/api/Errors.ts';
 
+const RESOLVE_POLL_INTERVAL_MS = 2000;
+
 export function useTorrentFileSelection(id: string) {
     const [loading, setLoading] = useState(true);
+    const [resolving, setResolving] = useState(false);
+    const [failed, setFailed] = useState(false);
     const [torrentName, setTorrentName] = useState('');
     const [entries, setEntries] = useState<TorrentFileEntry[]>([]);
     const [selectedPaths, setSelectedPaths] = useState<Set<string>>(new Set());
@@ -18,17 +22,49 @@ export function useTorrentFileSelection(id: string) {
             return;
         }
 
+        let isCancelled = false;
+        let pollTimer: ReturnType<typeof setTimeout> | undefined;
+
         setLoading(true);
-        torrentService
-            .GetTorrentFile({ id })
-            .then((res) => {
-                const fileEntries = res.file?.files ?? [];
-                setTorrentName(res.file?.torrentName ?? '');
-                setEntries(fileEntries);
-                setSelectedPaths(new Set(fileEntries.filter((e) => e.supported).map((e) => e.path ?? '')));
-            })
-            .catch((err: unknown) => toaster.catch(err as ServiceError))
-            .finally(() => setLoading(false));
+        setResolving(false);
+        setFailed(false);
+
+        function poll() {
+            torrentService
+                .GetTorrentFile({ id })
+                .then((res) => {
+                    if (isCancelled) return;
+
+                    setTorrentName(res.file?.torrentName ?? '');
+                    if (res.file?.isResolving) {
+                        setResolving(true);
+                        pollTimer = setTimeout(poll, RESOLVE_POLL_INTERVAL_MS);
+                        return;
+                    }
+
+                    const fileEntries = res.file?.files ?? [];
+                    setResolving(false);
+                    setEntries(fileEntries);
+                    setSelectedPaths(new Set(fileEntries.filter((e) => e.supported).map((e) => e.path ?? '')));
+                })
+                .catch((err: unknown) => {
+                    if (isCancelled) return;
+
+                    setResolving(false);
+                    setFailed(true);
+                    toaster.catch(err as ServiceError);
+                })
+                .finally(() => {
+                    if (!isCancelled) setLoading(false);
+                });
+        }
+
+        poll();
+
+        return () => {
+            isCancelled = true;
+            clearTimeout(pollTimer);
+        };
     }, [id]);
 
     const supportedPaths = useMemo(() => entries.filter((e) => e.supported).map((e) => e.path ?? ''), [entries]);
@@ -53,6 +89,8 @@ export function useTorrentFileSelection(id: string) {
 
     return {
         loading,
+        resolving,
+        failed,
         torrentName,
         entries,
         selectedPaths,

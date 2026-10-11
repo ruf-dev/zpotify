@@ -7,6 +7,15 @@
 
 import * as fm from "./fetch.pb";
 
+type Absent<T, K extends keyof T> = { [k in Exclude<keyof T, K>]?: undefined };
+
+type OneOf<T> =
+  | { [k in keyof T]?: undefined }
+  | (keyof T extends infer K
+      ? K extends string & keyof T
+        ? { [k in K]: T[K] } & Absent<T, K>
+        : never
+      : never);
 
 export type TorrentJob = {
   id?: string;
@@ -102,6 +111,7 @@ export type TorrentFile = {
   id?: string;
   torrentName?: string;
   files?: TorrentFileEntry[];
+  isResolving?: boolean;
 };
 
 export type TorrentFileEntry = {
@@ -132,6 +142,29 @@ export type SubmitTorrentFileResponse = {
 
 export type SubmitTorrentFile = Record<string, never>;
 
+export type AddTorrentMagnetRequest = {
+  magnetUri?: string;
+};
+
+type BaseAddTorrentMagnetResponse = {
+};
+
+export type AddTorrentMagnetResponse = BaseAddTorrentMagnetResponse &
+  OneOf<{
+    uploadId: string;
+    existingJobId: string;
+  }>;
+
+export type AddTorrentMagnet = Record<string, never>;
+
+export type DiscardTorrentFileRequest = {
+  id?: string;
+};
+
+export type DiscardTorrentFileResponse = Record<string, never>;
+
+export type DiscardTorrentFile = Record<string, never>;
+
 export class TorrentAPI {
   static ListTorrentJobs(this:void, req: ListTorrentJobsRequest, initReq?: fm.InitReq): Promise<ListTorrentJobsResponse> {
     return fm.fetchRequest<ListTorrentJobsResponse>(`/api/torrents/list`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
@@ -159,5 +192,11 @@ export class TorrentAPI {
   }
   static SubmitTorrentFile(this:void, req: SubmitTorrentFileRequest, initReq?: fm.InitReq): Promise<SubmitTorrentFileResponse> {
     return fm.fetchRequest<SubmitTorrentFileResponse>(`/api/torrents/files/${req.id}/submit`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static AddTorrentMagnet(this:void, req: AddTorrentMagnetRequest, initReq?: fm.InitReq): Promise<AddTorrentMagnetResponse> {
+    return fm.fetchRequest<AddTorrentMagnetResponse>(`/api/torrents/magnet`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
+  }
+  static DiscardTorrentFile(this:void, req: DiscardTorrentFileRequest, initReq?: fm.InitReq): Promise<DiscardTorrentFileResponse> {
+    return fm.fetchRequest<DiscardTorrentFileResponse>(`/api/torrents/files/${req.id}/discard`, {...initReq, method: "POST", body: JSON.stringify(req, fm.replacer)});
   }
 }

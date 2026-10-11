@@ -109,6 +109,17 @@ type TorrentFile struct {
 	Id          string
 	TorrentName string
 	Files       []TorrentFileEntry
+	// IsResolving marks a magnet upload whose metadata is not fetched yet;
+	// Files is empty until it is.
+	IsResolving bool
+}
+
+// TorrentMagnetAdd is the outcome of submitting a magnet link: either a new
+// upload handle, or the id of the caller's already active job for the same
+// info hash. Exactly one is set.
+type TorrentMagnetAdd struct {
+	UploadId      string
+	ExistingJobId int64
 }
 
 // TorrentFileEntry is one file listed inside an uploaded .torrent's info

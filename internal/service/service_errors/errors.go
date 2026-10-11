@@ -46,8 +46,20 @@ var (
 	ErrTorrentClientUnavailable = rerrors.New("torrent client is unavailable", codes.Unavailable, rerrors.WithHttpStatus(http.StatusServiceUnavailable))
 
 	// ErrInvalidTorrentFile is returned for input that is not a parsable
-	// .torrent file, including magnet links (which carry no info dict).
+	// .torrent file.
 	ErrInvalidTorrentFile = rerrors.New("invalid torrent file", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
+
+	// ErrInvalidMagnet is returned when a magnet URI is unparsable or is not
+	// an xt=urn:btih (BitTorrent v1) magnet.
+	ErrInvalidMagnet = rerrors.New("invalid magnet link", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
+
+	// ErrTorrentMetadataTimeout is returned when a magnet's metadata could not
+	// be fetched from peers within the configured timeout.
+	ErrTorrentMetadataTimeout = rerrors.New("could not fetch torrent metadata from peers", codes.DeadlineExceeded, rerrors.WithHttpStatus(http.StatusGatewayTimeout))
+
+	// ErrTorrentMetadataPending is returned by SubmitTorrentFile on a magnet
+	// handle whose metadata is still being fetched.
+	ErrTorrentMetadataPending = rerrors.New("torrent metadata is still being fetched", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusConflict))
 
 	// ErrTorrentHasNoAudioFiles is returned when none of a torrent's files is
 	// in a supported audio format, so there would be nothing to import.

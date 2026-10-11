@@ -2,6 +2,9 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 import { useEffect } from 'react';
 
+import { useDialog } from '@/app/hooks/Dialog.tsx';
+import ClipboardMagnetPromptDialog from '@/dialogs/ClipboardMagnetPrompt/ClipboardMagnetPromptDialog.tsx';
+import { useClipboardMagnetDetector, type DetectedMagnet } from '@/features/upload/useClipboardMagnetDetector.ts';
 import cls from '@/app/layouts/MainLayout.module.css';
 import useUser from '@/entities/user/useUser.ts';
 import { Path } from '@/app/routing/paths.ts';
@@ -21,6 +24,14 @@ export default function MainLayout() {
     const showSidebar = useUISettings((state) => state.showSidebar);
     const showPlayerBar = useUISettings((state) => state.showPlayerBar);
     const isSidebarCollapsed = useSidebarUI((state) => state.isCollapsed);
+
+    const OpenDialog = useDialog((state) => state.OpenDialog);
+
+    function handleMagnetDetected(magnet: DetectedMagnet) {
+        OpenDialog(<ClipboardMagnetPromptDialog {...magnet} />);
+    }
+
+    useClipboardMagnetDetector(handleMagnetDetected);
 
     const audioPlayer = useAudioPlayer();
     const effectiveShowPlayerBar = showPlayerBar && audioPlayer.trackPath !== null;

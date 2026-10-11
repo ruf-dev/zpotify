@@ -20,6 +20,7 @@ type EnvironmentConfig struct {
 	TorrentDownloadDir            string
 	TorrentListenPort             int
 	TorrentMaxConcurrentDownloads int
+	TorrentMetadataTimeoutSeconds int
 	TorrentSeedAfterComplete      bool
 	TorrentSeedTimeLimitMinutes   int
 	TorrentSyncPeriodSeconds      int

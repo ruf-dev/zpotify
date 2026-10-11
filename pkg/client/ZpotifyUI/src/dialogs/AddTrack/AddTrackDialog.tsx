@@ -1,4 +1,4 @@
-import { useState, type ComponentType } from 'react';
+import { useEffect, useRef, useState, type ComponentType } from 'react';
 
 import type { SongFile, TorrentJob } from '@/app/api/zpotify';
 import cls from '@/dialogs/AddTrack/AddTrackDialog.module.css';
@@ -39,7 +39,9 @@ export interface AddTrackContext {
     handleOpenBatchFolder: (folderName: string) => void;
     pendingTorrentUpload: { id: string; folderName: string } | null;
     submittingTorrentFile: boolean;
-    handleSubmitTorrentFile: (selectedPaths: string[]) => void;
+    handleSubmitTorrentFile: (selectedPaths: string[], torrentName: string) => void;
+    handleMagnetLink: (magnetUri: string) => void;
+    discardPendingTorrentUpload: () => void;
 }
 
 const BACK_STEPS: Partial<Record<ModalStep, ModalStep>> = {
@@ -57,9 +59,10 @@ const SCREENS: Record<ModalStep, ComponentType<AddTrackContext>> = {
 
 interface AddTrackDialogProps {
     initialStep?: ModalStep;
+    initialMagnet?: string;
 }
 
-export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialogProps) {
+export default function AddTrackDialog({ initialStep = 'choose', initialMagnet }: AddTrackDialogProps) {
     const { CloseDialog, OpenDialog } = useDialog();
     const toaster = useToaster();
 
@@ -68,10 +71,41 @@ export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialo
     const [uploadError, setUploadError] = useState<string | null>(null);
     const [pendingTorrentUpload, setPendingTorrentUpload] = useState<{ id: string; folderName: string } | null>(null);
     const [submittingTorrentFile, setSubmittingTorrentFile] = useState(false);
+    const pendingTorrentUploadRef = useRef(pendingTorrentUpload);
+    pendingTorrentUploadRef.current = pendingTorrentUpload;
     const batchUpload = useBatchUpload();
     const backStep = BACK_STEPS[step];
+    const isInitialMagnetHandledRef = useRef(false);
 
-    useBackGuard(!!backStep, () => setStep(backStep!));
+    useBackGuard(!!backStep, handleBack);
+
+    useEffect(() => {
+        return () => {
+            const pending = pendingTorrentUploadRef.current;
+            if (pending) torrentService.DiscardTorrentFile({ id: pending.id }).catch(() => undefined);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!initialMagnet || isInitialMagnetHandledRef.current) return;
+
+        isInitialMagnetHandledRef.current = true;
+        handleMagnetLink(initialMagnet);
+    }, []);
+
+    function discardPendingTorrentUpload() {
+        const pending = pendingTorrentUploadRef.current;
+        if (!pending) return;
+
+        pendingTorrentUploadRef.current = null;
+        torrentService.DiscardTorrentFile({ id: pending.id }).catch(() => undefined);
+        setPendingTorrentUpload(null);
+    }
+
+    function handleBack() {
+        discardPendingTorrentUpload();
+        setStep(backStep!);
+    }
 
     function handleFiles(files: File[]) {
         if (files.length === 0) return;
@@ -124,14 +158,33 @@ export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialo
             .finally(() => setUploading(false));
     }
 
-    function handleSubmitTorrentFile(selectedPaths: string[]) {
+    function handleMagnetLink(magnetUri: string) {
+        setUploadError(null);
+        setUploading(true);
+        torrentService
+            .AddTorrentMagnet({ magnetUri })
+            .then((res) => {
+                if (res.existingJobId) {
+                    openExistingTorrentJob(res.existingJobId);
+                    return;
+                }
+                if (!res.uploadId) return;
+
+                setPendingTorrentUpload({ id: res.uploadId, folderName: '' });
+                setStep('torrentFiles');
+            })
+            .catch((err: unknown) => toaster.catch(err as ServiceError))
+            .finally(() => setUploading(false));
+    }
+
+    function handleSubmitTorrentFile(selectedPaths: string[], torrentName: string) {
         if (!pendingTorrentUpload) return;
 
         setSubmittingTorrentFile(true);
         torrentService
             .SubmitTorrentFile({
                 id: pendingTorrentUpload.id,
-                folderName: pendingTorrentUpload.folderName,
+                folderName: pendingTorrentUpload.folderName || torrentName,
                 selectedPaths,
             })
             .then(() => {
@@ -228,6 +281,8 @@ export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialo
         pendingTorrentUpload,
         submittingTorrentFile,
         handleSubmitTorrentFile,
+        handleMagnetLink,
+        discardPendingTorrentUpload,
     };
 
     const Screen = SCREENS[step];
@@ -238,7 +293,7 @@ export default function AddTrackDialog({ initialStep = 'choose' }: AddTrackDialo
                 step={step}
                 backStep={backStep}
                 uploading={uploading}
-                onBack={() => setStep(backStep!)}
+                onBack={handleBack}
                 onClose={CloseDialog}
             />
 

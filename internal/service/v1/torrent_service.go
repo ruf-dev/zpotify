@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/anacrolix/torrent"
 	"github.com/anacrolix/torrent/metainfo"
@@ -38,6 +39,9 @@ type TorrentServiceConfig struct {
 	// SeedTimeLimitMinutes is reserved for a future seed-time cap. Nothing
 	// enforces it yet; it is carried so the config plumbing already exists.
 	SeedTimeLimitMinutes int
+	// MetadataTimeout is how long a magnet upload waits for its info dict
+	// from peers before giving up.
+	MetadataTimeout time.Duration
 }
 
 // torrentBroadcaster is the pub/sub side WatchJobs subscribes to. Satisfied by
@@ -163,7 +167,7 @@ func (s *TorrentService) SubmitTorrent(ctx context.Context, torrentFileBytes []b
 
 	audioFiles := applyAudioOnlyPriority(tor)
 	if len(audioFiles) == 0 {
-		tor.Drop()
+		s.dropUnusedTorrent(ctx, infoHash)
 		return 0, rerrors.Wrap(service_errors.ErrTorrentHasNoAudioFiles)
 	}
 
@@ -191,7 +195,7 @@ func (s *TorrentService) finalizeTorrentSubmission(
 	fileProgress := make([]domain.TorrentFileProgress, 0, len(selectedFiles))
 	for _, file := range selectedFiles {
 		if file.Length() > uCtx.Permissions.MaxSongSizeBytes {
-			tor.Drop()
+			s.dropUnusedTorrent(ctx, infoHash)
 			return 0, rerrors.Wrap(service_errors.ErrSongSizeLimitExceeded, file.Path())
 		}
 		totalBytes += file.Length()
@@ -201,7 +205,7 @@ func (s *TorrentService) finalizeTorrentSubmission(
 	}
 
 	if totalBytes > uCtx.Permissions.MaxTotalUploadBytes {
-		tor.Drop()
+		s.dropUnusedTorrent(ctx, infoHash)
 		return 0, rerrors.Wrap(service_errors.ErrTotalUploadSizeLimitExceeded)
 	}
 
@@ -214,7 +218,7 @@ func (s *TorrentService) finalizeTorrentSubmission(
 
 	row, err := s.torrentStorage.Add(ctx, newDownload)
 	if err != nil {
-		tor.Drop()
+		s.dropUnusedTorrent(ctx, infoHash)
 		return 0, rerrors.Wrap(err, "error saving torrent download")
 	}
 

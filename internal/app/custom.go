@@ -154,6 +154,7 @@ func (c *Custom) Init(app *App) (err error) {
 		MaxConcurrentDownloads: app.Cfg.Environment.TorrentMaxConcurrentDownloads,
 		SeedAfterComplete:      app.Cfg.Environment.TorrentSeedAfterComplete,
 		SeedTimeLimitMinutes:   app.Cfg.Environment.TorrentSeedTimeLimitMinutes,
+		MetadataTimeout:        time.Duration(app.Cfg.Environment.TorrentMetadataTimeoutSeconds) * time.Second,
 	}
 
 	torrentService := v1.NewTorrentService(c.dataStorage, c.binaryStorage, c.torrentClient, torrentServiceCfg)

@@ -7,15 +7,24 @@ import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 import CreatePlaylistCard from '@/dialogs/AddTrack/screens/components/CreatePlaylistCard/CreatePlaylistCard';
 import LibraryCard from '@/dialogs/AddTrack/screens/components/LibraryCard/LibraryCard';
 import UploadCard from '@/dialogs/AddTrack/screens/components/UploadCard/UploadCard';
+import MagnetLinkField from '@/dialogs/AddTrack/screens/components/MagnetLinkField/MagnetLinkField';
 import RecentTorrentsPanel from '@/dialogs/AddTrack/screens/components/RecentTorrentsPanel/RecentTorrentsPanel';
 import { useWatchTorrentJobs } from '@/dialogs/AddTrack/screens/useWatchTorrentJobs';
 import { isTerminalTorrentStatus } from '@/shared/lib/torrentStatus.ts';
+import ClipboardAccessButton from '@/dialogs/AddTrack/screens/components/ClipboardAccessButton/ClipboardAccessButton';
 
-export default function ChooseScreen({ goTo, handleCreatePlaylist, handleTorrentFile }: AddTrackContext) {
+export default function ChooseScreen({
+    goTo,
+    uploading,
+    handleCreatePlaylist,
+    handleTorrentFile,
+    handleMagnetLink,
+}: AddTrackContext) {
     const { userData } = useUser();
 
     const [pendingCount, setPendingCount] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [clipboardMagnet, setClipboardMagnet] = useState('');
     const { jobs, loading: torrentLoading } = useWatchTorrentJobs();
 
     useEffect(() => {
@@ -50,6 +59,13 @@ export default function ChooseScreen({ goTo, handleCreatePlaylist, handleTorrent
                     maxPendingTracks={maxPendingTracks}
                     onClick={() => goTo('drop')}
                 />
+            </div>
+
+            <div className={cls.MagnetRow}>
+                <div className={cls.MagnetFieldWrapper}>
+                    <MagnetLinkField initialValue={clipboardMagnet} disabled={uploading} onSubmit={handleMagnetLink} />
+                </div>
+                <ClipboardAccessButton onMagnet={setClipboardMagnet} />
             </div>
 
             <RecentTorrentsPanel jobs={jobs} loading={torrentLoading} onFile={handleTorrentFileSelected} />

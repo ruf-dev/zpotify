@@ -1,0 +1,55 @@
+.ClipboardMagnetPromptDialogContainer {
+    display: flex;
+    flex-direction: column;
+    width: 26rem;
+    max-width: 100%;
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--color-border-light);
+    overflow: hidden;
+    position: relative;
+
+    & .Header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--space-md) var(--space-lg);
+        border-bottom: 1px solid var(--color-border);
+        flex-shrink: 0;
+    }
+
+    & .Title {
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        color: var(--color-fg-primary);
+    }
+
+    & .Body {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+        padding: var(--space-lg);
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
+    & .Name {
+        font-size: var(--font-size-xl);
+        color: var(--color-fg-primary);
+        overflow-wrap: anywhere;
+    }
+
+    & .Hash {
+        font-family: monospace;
+        font-size: var(--font-size-md);
+        color: var(--color-fg-secondary);
+    }
+
+    & .Actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-sm);
+        padding: 0 var(--space-lg) var(--space-lg);
+    }
+}

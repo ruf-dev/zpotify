@@ -12,6 +12,8 @@ interface UISettings {
     setShowSidebar: (v: boolean) => void;
     showPlayerBar: boolean;
     setShowPlayerBar: (v: boolean) => void;
+    isClipboardMagnetPromptEnabled: boolean;
+    setClipboardMagnetPromptEnabled: (v: boolean) => void;
 }
 
 export const useUISettings = create<UISettings>()(
@@ -28,6 +30,9 @@ export const useUISettings = create<UISettings>()(
 
             showPlayerBar: true,
             setShowPlayerBar: (v: boolean) => set({ showPlayerBar: v }),
+
+            isClipboardMagnetPromptEnabled: true,
+            setClipboardMagnetPromptEnabled: (v: boolean) => set({ isClipboardMagnetPromptEnabled: v }),
         }),
         { name: 'zpotify-ui-settings' },
     ),

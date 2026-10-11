@@ -26,6 +26,9 @@ environment:
   - name: torrent_listen_port
     type: int
     value: 42169
+  - name: torrent_metadata_timeout_seconds
+    type: int
+    value: 5
   - name: log_format
     type: string
     enum: [JSON, TEXT]

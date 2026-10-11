@@ -68,6 +68,20 @@ service TorrentAPI {
       body: "*"
     };
   }
+
+  rpc AddTorrentMagnet(AddTorrentMagnet.Request) returns (AddTorrentMagnet.Response) {
+    option (google.api.http) = {
+      post: "/api/torrents/magnet"
+      body: "*"
+    };
+  }
+
+  rpc DiscardTorrentFile(DiscardTorrentFile.Request) returns (DiscardTorrentFile.Response) {
+    option (google.api.http) = {
+      post: "/api/torrents/files/{id}/discard"
+      body: "*"
+    };
+  }
 }
 
 message TorrentJob {
@@ -164,6 +178,8 @@ message TorrentFile {
   string id = 1;
   string torrent_name = 2;
   repeated TorrentFileEntry files = 3;
+  // Metadata is still being fetched from peers; files is empty until it arrives.
+  bool is_resolving = 4;
 }
 
 message TorrentFileEntry {
@@ -192,4 +208,27 @@ message SubmitTorrentFile {
   message Response {
     int64 job_id = 1;
   }
+}
+
+message AddTorrentMagnet {
+  message Request {
+    string magnet_uri = 1;
+  }
+
+  message Response {
+    oneof result {
+      // Handle for GetTorrentFile / SubmitTorrentFile / DiscardTorrentFile.
+      string upload_id = 1;
+      // The caller already has an active job for this info hash.
+      int64 existing_job_id = 2;
+    }
+  }
+}
+
+message DiscardTorrentFile {
+  message Request {
+    string id = 1;
+  }
+
+  message Response {}
 }

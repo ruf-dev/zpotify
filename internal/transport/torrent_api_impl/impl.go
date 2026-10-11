@@ -104,6 +104,7 @@ func toTorrentFile(file domain.TorrentFile) *zpotify_api.TorrentFile {
 		Id:          file.Id,
 		TorrentName: file.TorrentName,
 		Files:       apiEntries,
+		IsResolving: file.IsResolving,
 	}
 
 	return apiFile

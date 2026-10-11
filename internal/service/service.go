@@ -303,6 +303,14 @@ type TorrentService interface {
 	// download, restricted to the given selected paths, and returns the id
 	// of the newly created tracking job.
 	SubmitTorrentFile(ctx context.Context, id string, folderName string, selectedPaths []string) (int64, error)
+	// AddTorrentMagnet starts fetching a magnet link's metadata from peers
+	// and caches it under an opaque upload handle (same handle space as
+	// UploadTorrentFile). Returns the caller's existing job instead when the
+	// info hash is already active for them.
+	AddTorrentMagnet(ctx context.Context, magnetUri string) (domain.TorrentMagnetAdd, error)
+	// DiscardTorrentFile drops a not-yet-submitted upload handle and, for a
+	// magnet, stops fetching it.
+	DiscardTorrentFile(ctx context.Context, id string) error
 }
 
 type FeatureFlagsService interface {

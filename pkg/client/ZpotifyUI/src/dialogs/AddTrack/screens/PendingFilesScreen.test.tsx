@@ -60,6 +60,8 @@ function makeContext(overrides: Partial<AddTrackContext>): AddTrackContext {
         pendingTorrentUpload: null,
         submittingTorrentFile: false,
         handleSubmitTorrentFile: vi.fn(),
+        handleMagnetLink: vi.fn(),
+        discardPendingTorrentUpload: vi.fn(),
         ...overrides,
     };
 }

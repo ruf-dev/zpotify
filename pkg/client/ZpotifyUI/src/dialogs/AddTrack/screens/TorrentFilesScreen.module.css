@@ -18,6 +18,13 @@
     padding: 2rem 0;
 }
 
+.FailedMessage {
+    color: var(--color-error);
+    font-size: var(--font-size-sm);
+    text-align: center;
+    padding: 2rem 0;
+}
+
 .TorrentName {
     font-size: var(--font-size-sm);
     color: var(--color-fg-primary);

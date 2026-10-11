@@ -13,6 +13,17 @@
     width: 100%;
 }
 
+.MagnetRow {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+
+    & .MagnetFieldWrapper {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
 .GridWrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -28,5 +39,10 @@
     .GridWrapper {
         display: flex;
         flex-direction: column;
+    }
+
+    .MagnetRow {
+        flex-direction: column;
+        align-items: stretch;
     }
 }
