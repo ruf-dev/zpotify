@@ -780,47 +780,47 @@
     "semantic_hash": "198da2d87ea47feb62bf88a3c9736d1e"
   },
   "internal/api/server/zpotify_api/zpotify_service_user.pb.gw.go": {
-    "mtime": 1791661777.3414133,
+    "mtime": 1791717230.222901,
     "ast_hash": "df2b2fccdb6f2ceb1062012baccc3f9d",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_api.pb.go": {
-    "mtime": 1791661671.7696652,
+    "mtime": 1791717230.2159505,
     "ast_hash": "c075cc3be33c31ff006043afeeb31fdb",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_song.pb.gw.go": {
-    "mtime": 1791661777.3410811,
+    "mtime": 1791717230.220821,
     "ast_hash": "ba03326c25f15054835e4c14c372c5b3",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_files.pb.gw.go": {
-    "mtime": 1791661777.3395977,
+    "mtime": 1791717230.2183425,
     "ast_hash": "f3fa579712b7f1a9ecc1e7b08d96b9f3",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_api_grpc.pb.go": {
-    "mtime": 1791661777.3379283,
+    "mtime": 1791717230.2164097,
     "ast_hash": "b1bb88f1a0c5603892a1b48461adee64",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_auth.pb.gw.go": {
-    "mtime": 1791661777.3388264,
+    "mtime": 1791717230.2171507,
     "ast_hash": "4716e4febe5719d1b307aeec4261b8b1",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_api.pb.gw.go": {
-    "mtime": 1791661777.3375504,
+    "mtime": 1791717230.2162085,
     "ast_hash": "6d17ec0a51bbc6be1278137d65b11a13",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_common.pb.go": {
-    "mtime": 1791661671.7620585,
+    "mtime": 1791717230.2155013,
     "ast_hash": "5426576b686d3a1697bcb014ea3ff3dd",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_auth_grpc.pb.go": {
-    "mtime": 1791661777.339077,
+    "mtime": 1791717230.2172887,
     "ast_hash": "02e5d7dd0649568dc6c51a9f9abd2fef",
     "semantic_hash": ""
   },
@@ -830,12 +830,12 @@
     "semantic_hash": "0875bdb16125ed9f592bc10d40b5ff20"
   },
   "internal/api/server/zpotify_api/zpotify_service_files.pb.go": {
-    "mtime": 1791661671.885494,
+    "mtime": 1791717230.2181873,
     "ast_hash": "be0905178521e9a5e95149d356669d20",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_files_grpc.pb.go": {
-    "mtime": 1791661777.3398075,
+    "mtime": 1791717230.2188015,
     "ast_hash": "0b5716f70e7ecd4f6bad652301980aeb",
     "semantic_hash": ""
   },
@@ -845,67 +845,67 @@
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_user.pb.go": {
-    "mtime": 1791661672.0990896,
+    "mtime": 1791717230.2225547,
     "ast_hash": "4dfa12b665cdf1c213fd2230fc9cb1b1",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_user.pb.go": {
-    "mtime": 1791661672.120405,
+    "mtime": 1791717230.223308,
     "ast_hash": "a4850f561cfced809602ae030e5dead6",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_auth.pb.go": {
-    "mtime": 1791661671.8189034,
+    "mtime": 1791717230.2170095,
     "ast_hash": "213609027bd55bf7a4357d411d4bd2a0",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_playlist_grpc.pb.go": {
-    "mtime": 1791661777.3406026,
+    "mtime": 1791717230.2201598,
     "ast_hash": "afbe055c0a134cfaabe33a8108fefb45",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_playlist.pb.gw.go": {
-    "mtime": 1791661777.3404713,
+    "mtime": 1791717230.2200391,
     "ast_hash": "0a874295aa73c1eb3b1e2d8334867263",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_artists_grpc.pb.go": {
-    "mtime": 1791661777.3385847,
+    "mtime": 1791717230.216894,
     "ast_hash": "ffdcbd6cc80cec29b69d3f5cb510e7c1",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_song.pb.go": {
-    "mtime": 1791661672.0393503,
+    "mtime": 1791717230.220668,
     "ast_hash": "a3ae76e9112ae08d9efca2a32db6e42f",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_user_settings.pb.go": {
-    "mtime": 1791661672.1281784,
+    "mtime": 1791717230.2234654,
     "ast_hash": "ccb0071d23279c6c6756655f242ce5eb",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_artists.pb.go": {
-    "mtime": 1791661671.7930818,
+    "mtime": 1791717230.216579,
     "ast_hash": "c8b3c34d16b088575c262724f13f8ab1",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_song_grpc.pb.go": {
-    "mtime": 1791661777.341296,
+    "mtime": 1791717230.2223945,
     "ast_hash": "efc87bf776e32a72d61854195e5847d5",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_playlist.pb.go": {
-    "mtime": 1791661671.971547,
+    "mtime": 1791717230.2198963,
     "ast_hash": "616fe4c110a2335ab8591e50ee036829",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_artists.pb.gw.go": {
-    "mtime": 1791661777.338244,
+    "mtime": 1791717230.2167485,
     "ast_hash": "658ea7ffba922c011d948598c8769803",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_user_grpc.pb.go": {
-    "mtime": 1791661777.3415277,
+    "mtime": 1791717230.2231045,
     "ast_hash": "c7b7a8f0a5f11aa294cf6dc0c7ab0718",
     "semantic_hash": ""
   },
@@ -920,8 +920,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/file_service.go": {
-    "mtime": 1789646257.66362,
-    "ast_hash": "4b4cd20de00b022e6fef5f7e0c21529a",
+    "mtime": 1791717218.849824,
+    "ast_hash": "d9cd45a8c607f1ebf2be3d81714b1263",
     "semantic_hash": ""
   },
   "internal/service/v1/user_service.go": {
@@ -1050,12 +1050,12 @@
     "semantic_hash": "7a281cdb9908775e7c7d549ae5877853"
   },
   "pkg/docs/docs.swagger_ui.go": {
-    "mtime": 1791661832.3921564,
+    "mtime": 1791717234.8254392,
     "ast_hash": "8aed9bdf3bf884226bae53f04f221193",
     "semantic_hash": ""
   },
   "pkg/docs/swaggers/zpotify_service_auth.swagger.json": {
-    "mtime": 1791661645.3351607,
+    "mtime": 1791717225.9650114,
     "ast_hash": "dcda1cf2abfe71a2506e486e4b15bc7e",
     "semantic_hash": "dcda1cf2abfe71a2506e486e4b15bc7e"
   },
@@ -1070,17 +1070,17 @@
     "semantic_hash": "2f7541663b2751a4435151a492273330"
   },
   "pkg/docs/swaggers/zpotify_user.swagger.json": {
-    "mtime": 1791661645.3358777,
+    "mtime": 1791717225.9668229,
     "ast_hash": "265e1cc1dd81d2167a559126e4aafa5e",
     "semantic_hash": "265e1cc1dd81d2167a559126e4aafa5e"
   },
   "pkg/docs/swaggers/zpotify_service_api.swagger.json": {
-    "mtime": 1791661645.3349705,
+    "mtime": 1791717225.9642875,
     "ast_hash": "fa4b7cb25325b6badca9a1c3114302fe",
     "semantic_hash": ""
   },
   "pkg/docs/swaggers/zpotify_user_settings.swagger.json": {
-    "mtime": 1791661645.3359272,
+    "mtime": 1791717225.9672384,
     "ast_hash": "926c21db044a31166a68c4bb66256fcd",
     "semantic_hash": "926c21db044a31166a68c4bb66256fcd"
   },
@@ -1090,22 +1090,22 @@
     "semantic_hash": "c01a625a0d919ce9f3d40634219640cb"
   },
   "pkg/docs/swaggers/zpotify_service_artists.swagger.json": {
-    "mtime": 1791661645.3350487,
+    "mtime": 1791717225.964758,
     "ast_hash": "84c09288441f8925c07347bdf9cd1858",
     "semantic_hash": ""
   },
   "pkg/docs/swaggers/zpotify_service_user.swagger.json": {
-    "mtime": 1791661645.33581,
+    "mtime": 1791717225.9665015,
     "ast_hash": "25e07abc4b88510e6a0a1efd98c95d83",
     "semantic_hash": ""
   },
   "pkg/docs/swaggers/zpotify_common.swagger.json": {
-    "mtime": 1791661645.3348944,
+    "mtime": 1791717225.964193,
     "ast_hash": "1be98415490d6bf1f26764d448e57212",
     "semantic_hash": "1be98415490d6bf1f26764d448e57212"
   },
   "pkg/docs/swaggers/zpotify_service_playlist.swagger.json": {
-    "mtime": 1791661645.3354902,
+    "mtime": 1791717225.965802,
     "ast_hash": "b77755546e1cc278087480e52673c99c",
     "semantic_hash": ""
   },
@@ -1115,12 +1115,12 @@
     "semantic_hash": "491318e4236b1b0a4f3415d0c33b2ef1"
   },
   "pkg/docs/swaggers/zpotify_service_song.swagger.json": {
-    "mtime": 1791661645.335651,
+    "mtime": 1791717225.9661062,
     "ast_hash": "07f73f91c7ed8343e6172b3056b636f5",
     "semantic_hash": ""
   },
   "pkg/docs/swaggers/zpotify_service_files.swagger.json": {
-    "mtime": 1791661645.3352969,
+    "mtime": 1791717225.965287,
     "ast_hash": "454263b825f14b68d6c23e2abdf07587",
     "semantic_hash": ""
   },
@@ -1345,17 +1345,17 @@
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_feature_flags_grpc.pb.go": {
-    "mtime": 1791661777.3393075,
+    "mtime": 1791717230.2180095,
     "ast_hash": "4209259b94a64d0cadc7a52bf7c3ccb4",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_feature_flags.pb.go": {
-    "mtime": 1791661671.8490717,
+    "mtime": 1791717230.217414,
     "ast_hash": "205ed24e254b1466b1d70d6b288f099c",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_feature_flags.pb.gw.go": {
-    "mtime": 1791661777.3391955,
+    "mtime": 1791717230.2177603,
     "ast_hash": "8960246ade8da0ccfd8a22c444f7efa4",
     "semantic_hash": ""
   },
@@ -1370,7 +1370,7 @@
     "semantic_hash": ""
   },
   "pkg/docs/swaggers/zpotify_service_feature_flags.swagger.json": {
-    "mtime": 1791661645.3352265,
+    "mtime": 1791717225.9651504,
     "ast_hash": "266bbcc9ab0d64c0fd79d4a737302b63",
     "semantic_hash": ""
   },
@@ -1500,67 +1500,67 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_song.pb.ts": {
-    "mtime": 1791661788.060959,
+    "mtime": 1791717236.151611,
     "ast_hash": "e8e8aec13b74afa92bc62ee00f80f377",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_user_settings.pb.ts": {
-    "mtime": 1791661788.0614479,
+    "mtime": 1791717236.1519582,
     "ast_hash": "62f234683c612c9834bb4f17d38817eb",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_artists.pb.ts": {
-    "mtime": 1791661788.0598316,
+    "mtime": 1791717236.150636,
     "ast_hash": "57a7d77ea0be42b0ba4b4b6f71d374f9",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_playlist.pb.ts": {
-    "mtime": 1791661788.0608156,
+    "mtime": 1791717236.1514113,
     "ast_hash": "ae680b9bd21eb998a015905c934778bb",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_user.pb.ts": {
-    "mtime": 1791661788.0611281,
+    "mtime": 1791717236.1518028,
     "ast_hash": "e2ed3bd3dfeff35c1e271e49f46db0ae",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_user.pb.ts": {
-    "mtime": 1791661788.0611782,
+    "mtime": 1791717236.151854,
     "ast_hash": "59264b4bd27e8107185237dce742cd4b",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_auth.pb.ts": {
-    "mtime": 1791661788.0602891,
+    "mtime": 1791717236.1508765,
     "ast_hash": "b0f6996d7061a81d76189b7832bf39c6",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_common.pb.ts": {
-    "mtime": 1791661788.0594914,
+    "mtime": 1791717236.150408,
     "ast_hash": "690244e37ce80b029268482a3607bb59",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_files.pb.ts": {
-    "mtime": 1791661788.0604029,
+    "mtime": 1791717236.1509852,
     "ast_hash": "09d5e9a910b26a3082c6de2115421922",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_feature_flags.pb.ts": {
-    "mtime": 1791661788.0603485,
+    "mtime": 1791717236.150933,
     "ast_hash": "362bbfdf3de02e6851e014a5987e94d3",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/index.ts": {
-    "mtime": 1791661788.058781,
+    "mtime": 1791717236.1498625,
     "ast_hash": "9a9ffd926d2803f1183880aa04e4629d",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/fetch.pb.ts": {
-    "mtime": 1791661788.0592453,
+    "mtime": 1791717236.1503327,
     "ast_hash": "611a00bd7dd14cbdfe7c5ea6170b6625",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_api.pb.ts": {
-    "mtime": 1791661788.0597715,
+    "mtime": 1791717236.150473,
     "ast_hash": "b6f192f3118363cbe6d5ab0cd37d792f",
     "semantic_hash": ""
   },
@@ -3040,17 +3040,17 @@
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_home.pb.go": {
-    "mtime": 1791661671.910389,
+    "mtime": 1791717230.218992,
     "ast_hash": "1986bacdc9393b2d1f29396b86ef66df",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_home.pb.gw.go": {
-    "mtime": 1791661777.339957,
+    "mtime": 1791717230.219221,
     "ast_hash": "ada49ee6d300ccacff06c02c950334bc",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_home_grpc.pb.go": {
-    "mtime": 1791661777.3400848,
+    "mtime": 1791717230.2193503,
     "ast_hash": "5ccf7744e402953d83b8c1c5bb34d15b",
     "semantic_hash": ""
   },
@@ -3085,12 +3085,12 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_home.pb.ts": {
-    "mtime": 1791661788.0604584,
+    "mtime": 1791717236.151197,
     "ast_hash": "0fd67268b9043789aa4756e216994ae0",
     "semantic_hash": ""
   },
   "pkg/docs/swaggers/zpotify_service_home.swagger.json": {
-    "mtime": 1791661645.335367,
+    "mtime": 1791717225.9653628,
     "ast_hash": "2cdd8e8cd3c6844a70a7f157a75f04c9",
     "semantic_hash": ""
   },
@@ -3150,17 +3150,17 @@
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_notification.pb.go": {
-    "mtime": 1791661671.9380329,
+    "mtime": 1791717230.2194958,
     "ast_hash": "d4e93f06f938c51f6f080259ef0ac561",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_notification.pb.gw.go": {
-    "mtime": 1791661777.3402007,
+    "mtime": 1791717230.219622,
     "ast_hash": "12ab513817871f3e5eb20fc8e67e8b58",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_notification_grpc.pb.go": {
-    "mtime": 1791661777.3403628,
+    "mtime": 1791717230.2197578,
     "ast_hash": "773ea3e6f47885cb54baa063cb28ba10",
     "semantic_hash": ""
   },
@@ -3245,7 +3245,7 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_notification.pb.ts": {
-    "mtime": 1791661788.0605195,
+    "mtime": 1791717236.1512544,
     "ast_hash": "c26d9a310126e56ddd115b38f5b9d2de",
     "semantic_hash": ""
   },
@@ -3275,7 +3275,7 @@
     "semantic_hash": ""
   },
   "pkg/docs/swaggers/zpotify_service_notification.swagger.json": {
-    "mtime": 1791661645.335428,
+    "mtime": 1791717225.9654965,
     "ast_hash": "de733c059193033103ea725e9e2583a3",
     "semantic_hash": ""
   },
@@ -3465,17 +3465,17 @@
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_search.pb.go": {
-    "mtime": 1791661672.0108082,
+    "mtime": 1791717230.2202907,
     "ast_hash": "a07aca33efc08f50197916a36c715028",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_search.pb.gw.go": {
-    "mtime": 1791661777.3407118,
+    "mtime": 1791717230.2204146,
     "ast_hash": "b2b9bfff763051c062c1f3451bcbb24b",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_search_grpc.pb.go": {
-    "mtime": 1791661777.3408542,
+    "mtime": 1791717230.2205462,
     "ast_hash": "374baf8f7311f03fa191f96800f493ab",
     "semantic_hash": ""
   },
@@ -3490,12 +3490,12 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_search.pb.ts": {
-    "mtime": 1791661788.0609012,
+    "mtime": 1791717236.1515543,
     "ast_hash": "7993040d698779d979590ed3be916be5",
     "semantic_hash": ""
   },
   "pkg/docs/swaggers/zpotify_service_search.swagger.json": {
-    "mtime": 1791661645.3355474,
+    "mtime": 1791717225.966024,
     "ast_hash": "a6e7878f7b6830257a5a134d3444d065",
     "semantic_hash": ""
   },
@@ -3810,8 +3810,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/components/FolderGroupHeader/FolderGroupHeader.tsx": {
-    "mtime": 1791714552.6602106,
-    "ast_hash": "914d3a70160e7e613245b149febea6e4",
+    "mtime": 1791717264.2602894,
+    "ast_hash": "b2c33cf54f38fb5e43b9e247b773a977",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/components/FolderGroupHeader/FolderGroupHeader.test.tsx": {
@@ -3835,17 +3835,17 @@
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_torrents.pb.go": {
-    "mtime": 1791661672.0711455,
-    "ast_hash": "d43c32295d29943cb796654415bc3d30",
+    "mtime": 1791717225.9726422,
+    "ast_hash": "be681920adf3a2124f7adf9b2b7992cf",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_torrents.pb.gw.go": {
-    "mtime": 1791661645.3380651,
+    "mtime": 1791717225.9730566,
     "ast_hash": "54ab06fd8de3f5a2d095e8a7b9e23afd",
     "semantic_hash": ""
   },
   "internal/api/server/zpotify_api/zpotify_service_torrents_grpc.pb.go": {
-    "mtime": 1791661672.090937,
+    "mtime": 1791717234.8252244,
     "ast_hash": "905a9e449fffe9ca4fcbfa339a0c927c",
     "semantic_hash": ""
   },
@@ -3880,13 +3880,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/api/zpotify/zpotify_service_torrents.pb.ts": {
-    "mtime": 1791661788.0610628,
-    "ast_hash": "f2f87097b42de180a848dd3534dfc5a0",
+    "mtime": 1791717236.1516662,
+    "ast_hash": "4b54498179bdf8cc6788a8306451573a",
     "semantic_hash": ""
   },
   "pkg/docs/swaggers/zpotify_service_torrents.swagger.json": {
-    "mtime": 1791661645.335718,
-    "ast_hash": "116b5f4d265779d0f51035eece2a3410",
+    "mtime": 1791717225.9661674,
+    "ast_hash": "5dfda1f625b390d56f7dda0e34ee66e5",
     "semantic_hash": ""
   },
   "docs/release_notes/v1.1.2.md": {
@@ -3895,8 +3895,8 @@
     "semantic_hash": ""
   },
   "internal/domain/torrent.go": {
-    "mtime": 1791661637.7477424,
-    "ast_hash": "d672732c8b92a4e90ed4685ddcc6293b",
+    "mtime": 1791717223.631032,
+    "ast_hash": "9fdf3cee158994ac90c74051bb2d626b",
     "semantic_hash": ""
   },
   "internal/storage/pg/torrent_downloads.go": {
@@ -4015,8 +4015,8 @@
     "semantic_hash": ""
   },
   "internal/transport/torrent_api_impl/impl.go": {
-    "mtime": 1791661637.7504969,
-    "ast_hash": "41db9e1ea5b17b8a20c476ede30b51d6",
+    "mtime": 1791717218.8502717,
+    "ast_hash": "90a69877dccbda8215bf70cd11c75bb4",
     "semantic_hash": ""
   },
   "internal/transport/torrent_api_impl/list_torrent_jobs.go": {
@@ -4140,8 +4140,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/torrent_files.go": {
-    "mtime": 1791662296.6020765,
-    "ast_hash": "705c63779e5d2a712e6f0f4736d3ab36",
+    "mtime": 1791717218.8493533,
+    "ast_hash": "a10403740092b838c91be704e7b733c4",
     "semantic_hash": ""
   },
   "internal/transport/torrent_api_impl/get_torrent_file.go": {
@@ -4160,8 +4160,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/TorrentFilesScreen.tsx": {
-    "mtime": 1791714552.6627195,
-    "ast_hash": "1129dc2d2ab5814a3737058cfa5a847d",
+    "mtime": 1791717264.2615132,
+    "ast_hash": "fca135b1ebe4dfa89328b7ade7691f13",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/TorrentFileRow/TorrentFileRow.tsx": {
@@ -4175,13 +4175,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/TorrentFilesScreen.test.tsx": {
-    "mtime": 1791714909.3248615,
-    "ast_hash": "d52f7889327abe0d4334af8ac8f0a995",
+    "mtime": 1791717418.9673545,
+    "ast_hash": "86e931486f20de179408c1344c2d1694",
     "semantic_hash": ""
   },
   "internal/service/v1/torrent_client_test.go": {
-    "mtime": 1789409563.4018085,
-    "ast_hash": "184fd80cd6012e0509e85c82a468bd89",
+    "mtime": 1791717223.6320298,
+    "ast_hash": "34e181bd126f7662f9d6c4fbb20a8a17",
     "semantic_hash": ""
   },
   "internal/service/v1/torrent_files_test.go": {
@@ -4520,8 +4520,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/TorrentFilesScreen.resolving.test.tsx": {
-    "mtime": 1791662091.6171448,
-    "ast_hash": "c2e611bee25293d89da6f85cae42aafa",
+    "mtime": 1791717506.7884204,
+    "ast_hash": "f6c288f249fc90ace765167e6bd68d53",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/MagnetLinkField/MagnetLinkField.test.tsx": {
@@ -4590,18 +4590,18 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/TorrentFolderNode/TorrentFolderNode.tsx": {
-    "mtime": 1791714549.9015539,
-    "ast_hash": "77aaa47f5d1cc680082ed6df9fa4646d",
+    "mtime": 1791717264.260816,
+    "ast_hash": "fb5ee31a77fb5808518f34440a96daf4",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/processes/torrentFileTree.test.ts": {
-    "mtime": 1791714751.365336,
-    "ast_hash": "62416e61e49abba6aeaccc1609d12905",
+    "mtime": 1791717420.7805238,
+    "ast_hash": "ddfb8ea5fc2a83f014300d9aac3794f2",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/processes/torrentFileTree.ts": {
-    "mtime": 1791714549.8949015,
-    "ast_hash": "5f1b4679232cf001547616e2a57bc345",
+    "mtime": 1791717418.9665291,
+    "ast_hash": "ef73060ed26a4e8a65bc635c842b4cb5",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/assets/icons/MagnetIcon.tsx": {
@@ -4617,6 +4617,11 @@
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/processes/resolvingStatusText.ts": {
     "mtime": 1791716191.485417,
     "ast_hash": "6c5c6d3602de5e0237212ad041f5a58d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/shared/api/TorrentFileKinds.ts": {
+    "mtime": 1791717418.9419706,
+    "ast_hash": "c3d32bbab33766759f9c133e324e9b99",
     "semantic_hash": ""
   }
 }
