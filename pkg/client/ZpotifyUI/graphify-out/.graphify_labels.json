@@ -116,5 +116,17 @@
   "114": "useEagerFileUpload.ts",
   "115": "Input.tsx",
   "116": "NotificationRow.tsx",
-  "117": "EditableText.tsx"
+  "117": "EditableText.tsx",
+  "118": "PlaylistHomeSegment.tsx",
+  "119": ".ListLibrary",
+  "120": "cacheAudio",
+  "121": "AddTorrentMagnetRequest",
+  "122": "GetTorrentFileResponse",
+  "123": "GetTorrentJobRequest",
+  "124": "ListTorrentJobsRequest",
+  "125": "PauseTorrentJobRequest",
+  "126": "SubmitTorrentFileRequest",
+  "127": "TrackRow.test.tsx",
+  "128": "DescriptionSection.tsx",
+  "129": "CLAUDE.local.md"
 }
