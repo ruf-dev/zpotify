@@ -4705,8 +4705,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/processes/torrentSearchResult.test.ts": {
-    "mtime": 1791720769.5168087,
-    "ast_hash": "84177efc3df618abdf02567384469997",
+    "mtime": 1791720856.4973245,
+    "ast_hash": "acfcc0e3f57c15a0ac84fffd41e36ed7",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/processes/torrentSearchResult.ts": {
@@ -4717,6 +4717,11 @@
   "pkg/client/ZpotifyUI/src/features/upload/useTorrentSearchAvailability.ts": {
     "mtime": 1791720353.3246768,
     "ast_hash": "ca56ff9fb8b7e5885d0f0b07dc0529e9",
+    "semantic_hash": ""
+  },
+  "internal/service/v1/torrent_search_e2e_test.go": {
+    "mtime": 1791720887.251163,
+    "ast_hash": "10835c06e01fdcad9ec66afbc52e4d5c",
     "semantic_hash": ""
   }
 }
