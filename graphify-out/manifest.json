@@ -1485,8 +1485,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/layouts/MainLayout.tsx": {
-    "mtime": 1790270528.2191813,
-    "ast_hash": "bcc705a0f2436f00fad125d0022c9781",
+    "mtime": 1791705915.574996,
+    "ast_hash": "add65587d2c281942dbcb97103768a3c",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/app/hooks/Dialog.tsx": {
@@ -1860,8 +1860,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/AddTrackDialog.tsx": {
-    "mtime": 1791662251.0073123,
-    "ast_hash": "b8c105200200371c49771e41f2726cf5",
+    "mtime": 1791705915.5733075,
+    "ast_hash": "f7f3abdb7f37fa391128a289b8bbfe16",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/PendingFilesScreen.tsx": {
@@ -1875,8 +1875,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/ChooseScreen.tsx": {
-    "mtime": 1791662077.8340504,
-    "ast_hash": "29ab219a4e9c43ed2a227fd100dba2cf",
+    "mtime": 1791705915.573708,
+    "ast_hash": "ea64ae9ec2a4561327cc64ceed7e9eda",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/CreatePlaylistCard/CreatePlaylistCard.tsx": {
@@ -2295,8 +2295,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/AppearanceScreen/AppearanceScreen.tsx": {
-    "mtime": 1783271179.7993252,
-    "ast_hash": "486ffacfe1fe71192e929e7225eef312",
+    "mtime": 1791705915.5728154,
+    "ast_hash": "a90c26a2201f91bec2ecfae209ed186e",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/ServerScreen/ServerScreen.tsx": {
@@ -2530,8 +2530,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/entities/ui-settings/useUISettings.ts": {
-    "mtime": 1786827866.8204339,
-    "ast_hash": "c9bd67fa7a1e49581e0f1da8e53ad798",
+    "mtime": 1791705894.9842608,
+    "ast_hash": "c9cc90c0428a8097572f43376412aa41",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/entities/audio-settings/useAudioSettings.ts": {
@@ -4545,13 +4545,48 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/features/upload/magnetLink.test.ts": {
-    "mtime": 1791662059.2819626,
-    "ast_hash": "679f18c4232f245c60824ab7394f61f0",
+    "mtime": 1791706000.2350845,
+    "ast_hash": "24f35f0f116a6f2a4852b496344e7fd3",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/features/upload/magnetLink.ts": {
-    "mtime": 1791662059.2796109,
-    "ast_hash": "6ebcad313b51c4f451eb4f8cd8ff7e9e",
+    "mtime": 1791705875.9885898,
+    "ast_hash": "f32270379060db63582479f69b93663d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/ClipboardAccessButton/ClipboardAccessButton.test.tsx": {
+    "mtime": 1791705934.3201725,
+    "ast_hash": "c308539b72386797a624f0b5d778a35f",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/ClipboardAccessButton/ClipboardAccessButton.tsx": {
+    "mtime": 1791705915.581613,
+    "ast_hash": "33182df3d020a18ed86b1882f45ff31d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/ClipboardMagnetPrompt/ClipboardMagnetPromptDialog.test.tsx": {
+    "mtime": 1791705934.3222377,
+    "ast_hash": "2ff5df1f2ae4273a14aeef272932b509",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/ClipboardMagnetPrompt/ClipboardMagnetPromptDialog.tsx": {
+    "mtime": 1791705915.5857074,
+    "ast_hash": "1225b91a01acf63c41aeb51bb0e5b116",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/features/upload/processes/clipboardMagnetPrompt.test.ts": {
+    "mtime": 1791706000.2502608,
+    "ast_hash": "019baf7c87cdca12772d16def6641edf",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/features/upload/processes/clipboardMagnetPrompt.ts": {
+    "mtime": 1791705894.9599423,
+    "ast_hash": "cdaa2954d9337a17a0cbbfb4d6f73caf",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/features/upload/useClipboardMagnetDetector.ts": {
+    "mtime": 1791705894.9642255,
+    "ast_hash": "6e82c480416ab2499e81094d832b216f",
     "semantic_hash": ""
   }
 }
