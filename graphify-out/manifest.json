@@ -4535,8 +4535,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/components/ResolvingTorrentStatus/ResolvingTorrentStatus.tsx": {
-    "mtime": 1791662059.2907827,
-    "ast_hash": "2169e6720aacf0dbd0dd859f7527210c",
+    "mtime": 1791716273.3556082,
+    "ast_hash": "693866b605c7e58dfa58bf9ee0de2804",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/useTorrentFileSelection.test.ts": {
@@ -4602,6 +4602,21 @@
   "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/processes/torrentFileTree.ts": {
     "mtime": 1791714549.8949015,
     "ast_hash": "5f1b4679232cf001547616e2a57bc345",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/assets/icons/MagnetIcon.tsx": {
+    "mtime": 1791716191.4827216,
+    "ast_hash": "45cc319b9152247af8b8d2a219661f71",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/processes/resolvingStatusText.test.ts": {
+    "mtime": 1791716191.489289,
+    "ast_hash": "2d0ff594d3ad4edbac2d49584140f98d",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/dialogs/AddTrack/screens/processes/resolvingStatusText.ts": {
+    "mtime": 1791716191.485417,
+    "ast_hash": "6c5c6d3602de5e0237212ad041f5a58d",
     "semantic_hash": ""
   }
 }
