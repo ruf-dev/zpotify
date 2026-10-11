@@ -18,6 +18,7 @@ function renderScreen(selection: Partial<Selection>) {
         failed: false,
         torrentName: '',
         entries: [],
+        tree: { items: [], children: [] },
         selectedPaths: new Set<string>(),
         allSelected: false,
     };

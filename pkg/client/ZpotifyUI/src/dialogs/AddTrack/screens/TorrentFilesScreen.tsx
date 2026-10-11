@@ -1,10 +1,13 @@
+import { useMemo, useState } from 'react';
 import { Button } from '@vervstack/chures';
 
 import cls from '@/dialogs/AddTrack/screens/TorrentFilesScreen.module.css';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 import Checkbox from '@/components/Checkbox/Checkbox';
 import ResolvingTorrentStatus from '@/dialogs/AddTrack/screens/components/ResolvingTorrentStatus/ResolvingTorrentStatus';
+import TorrentFolderNode from '@/dialogs/AddTrack/screens/components/TorrentFolderNode/TorrentFolderNode';
 import TorrentFileRow from '@/dialogs/AddTrack/screens/components/TorrentFileRow/TorrentFileRow';
+import { collectFolderPaths } from '@/dialogs/AddTrack/screens/processes/torrentFileTree.ts';
 import { useTorrentFileSelection } from '@/dialogs/AddTrack/screens/useTorrentFileSelection.ts';
 
 export default function TorrentFilesScreen({
@@ -15,6 +18,23 @@ export default function TorrentFilesScreen({
     goTo,
 }: AddTrackContext) {
     const selection = useTorrentFileSelection(pendingTorrentUpload?.id ?? '');
+    const [collapsedPaths, setCollapsedPaths] = useState<Set<string>>(new Set());
+
+    const folderPaths = useMemo(() => collectFolderPaths(selection.tree), [selection.tree]);
+    const isAnyFolderExpanded = folderPaths.some((path) => !collapsedPaths.has(path));
+
+    function handleToggleCollapseAll() {
+        setCollapsedPaths(isAnyFolderExpanded ? new Set(folderPaths) : new Set());
+    }
+
+    function handleToggleCollapse(path: string) {
+        setCollapsedPaths((prev) => {
+            const next = new Set(prev);
+            if (next.has(path)) next.delete(path);
+            else next.add(path);
+            return next;
+        });
+    }
 
     function handleCancel() {
         discardPendingTorrentUpload();
@@ -65,13 +85,30 @@ export default function TorrentFilesScreen({
             <div className={cls.ActionsRow}>
                 <Checkbox
                     checked={selection.allSelected}
+                    isIndeterminate={selection.isPartiallySelected}
                     onChange={selection.handleToggleSelectAll}
                     label="Select all"
                 />
+                {folderPaths.length > 0 && (
+                    <Button variant="ghost" onClick={handleToggleCollapseAll}>
+                        {isAnyFolderExpanded ? 'Collapse all' : 'Expand all'}
+                    </Button>
+                )}
             </div>
 
             <div className={cls.FileList}>
-                {selection.entries.map((entry) => (
+                {selection.tree.children.map((node) => (
+                    <TorrentFolderNode
+                        key={node.path}
+                        node={node}
+                        collapsedPaths={collapsedPaths}
+                        selectedPaths={selection.selectedPaths}
+                        onToggleCollapse={handleToggleCollapse}
+                        onSetFolderSelected={selection.handleSetFolderSelected}
+                        onToggleSelect={selection.handleToggleSelect}
+                    />
+                ))}
+                {selection.tree.items.map((entry) => (
                     <TorrentFileRow
                         key={entry.path}
                         entry={entry}

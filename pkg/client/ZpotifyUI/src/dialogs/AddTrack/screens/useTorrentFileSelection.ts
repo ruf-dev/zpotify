@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import type { TorrentFileEntry } from '@/app/api/zpotify';
+import { buildTorrentFileTree } from '@/dialogs/AddTrack/screens/processes/torrentFileTree.ts';
 import { torrentService } from '@/shared/api/TorrentService.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { ServiceError } from '@/shared/api/Errors.ts';
@@ -74,6 +75,21 @@ export function useTorrentFileSelection(id: string) {
         [supportedPaths, selectedPaths],
     );
 
+    const isPartiallySelected = useMemo(
+        () => !allSelected && supportedPaths.some((path) => selectedPaths.has(path)),
+        [allSelected, supportedPaths, selectedPaths],
+    );
+
+    const tree = useMemo(() => buildTorrentFileTree(entries), [entries]);
+
+    function handleSetFolderSelected(paths: string[], checked: boolean) {
+        setSelectedPaths((prev) => {
+            const next = new Set(prev);
+            paths.forEach((path) => (checked ? next.add(path) : next.delete(path)));
+            return next;
+        });
+    }
+
     function handleToggleSelect(path: string) {
         setSelectedPaths((prev) => {
             const next = new Set(prev);
@@ -95,6 +111,9 @@ export function useTorrentFileSelection(id: string) {
         entries,
         selectedPaths,
         allSelected,
+        isPartiallySelected,
+        tree,
+        handleSetFolderSelected,
         handleToggleSelect,
         handleToggleSelectAll,
     };

@@ -17,6 +17,13 @@ type OneOf<T> =
         : never
       : never);
 
+export enum TorrentFileKind {
+  TORRENT_FILE_KIND_UNSPECIFIED = "TORRENT_FILE_KIND_UNSPECIFIED",
+  TORRENT_FILE_KIND_TRACK = "TORRENT_FILE_KIND_TRACK",
+  TORRENT_FILE_KIND_COVER = "TORRENT_FILE_KIND_COVER",
+  TORRENT_FILE_KIND_OTHER = "TORRENT_FILE_KIND_OTHER",
+}
+
 export type TorrentJob = {
   id?: string;
   torrentName?: string;
@@ -118,6 +125,7 @@ export type TorrentFileEntry = {
   path?: string;
   sizeBytes?: string;
   supported?: boolean;
+  kind?: TorrentFileKind;
 };
 
 export type GetTorrentFileRequest = {

@@ -122,12 +122,22 @@ type TorrentMagnetAdd struct {
 	ExistingJobId int64
 }
 
+// TorrentFileKind classifies a torrent entry for the file picker.
+type TorrentFileKind int
+
+const (
+	TorrentFileKindOther TorrentFileKind = iota
+	TorrentFileKindTrack
+	TorrentFileKindCover
+)
+
 // TorrentFileEntry is one file listed inside an uploaded .torrent's info
 // dict, before any of it has been downloaded.
 type TorrentFileEntry struct {
 	Path      string
 	SizeBytes int64
 	Supported bool
+	Kind      TorrentFileKind
 }
 
 // DecodeTorrentImportedFiles parses entries written by

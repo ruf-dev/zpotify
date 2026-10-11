@@ -87,6 +87,12 @@ func toTorrentJob(row domain.TorrentDownload) *zpotify_api.TorrentJob {
 	return job
 }
 
+var torrentFileKindDomainToProto = map[domain.TorrentFileKind]zpotify_api.TorrentFileKind{
+	domain.TorrentFileKindTrack: zpotify_api.TorrentFileKind_TORRENT_FILE_KIND_TRACK,
+	domain.TorrentFileKindCover: zpotify_api.TorrentFileKind_TORRENT_FILE_KIND_COVER,
+	domain.TorrentFileKindOther: zpotify_api.TorrentFileKind_TORRENT_FILE_KIND_OTHER,
+}
+
 // toTorrentFile converts an uploaded-but-not-yet-submitted torrent file into
 // its API shape.
 func toTorrentFile(file domain.TorrentFile) *zpotify_api.TorrentFile {
@@ -96,6 +102,7 @@ func toTorrentFile(file domain.TorrentFile) *zpotify_api.TorrentFile {
 			Path:      entry.Path,
 			SizeBytes: entry.SizeBytes,
 			Supported: entry.Supported,
+			Kind:      torrentFileKindDomainToProto[entry.Kind],
 		}
 		apiEntries = append(apiEntries, apiEntry)
 	}

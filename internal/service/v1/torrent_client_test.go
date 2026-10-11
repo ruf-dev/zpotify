@@ -185,9 +185,9 @@ func TestTorrentFileEntriesOf_MultiFileTorrent(t *testing.T) {
 	entries := torrentFileEntriesOf(info)
 
 	want := []domain.TorrentFileEntry{
-		{Path: "Album/Track One.mp3", SizeBytes: 100, Supported: true},
-		{Path: "Album/Artwork.jpg", SizeBytes: 50, Supported: true},
-		{Path: "Album/liner notes.txt", SizeBytes: 10, Supported: false},
+		{Path: "Album/Track One.mp3", SizeBytes: 100, Supported: true, Kind: domain.TorrentFileKindTrack},
+		{Path: "Album/Artwork.jpg", SizeBytes: 50, Supported: true, Kind: domain.TorrentFileKindCover},
+		{Path: "Album/liner notes.txt", SizeBytes: 10, Supported: false, Kind: domain.TorrentFileKindOther},
 	}
 	assert.Equal(t, want, entries)
 }
@@ -203,7 +203,7 @@ func TestTorrentFileEntriesOf_SingleFileTorrent(t *testing.T) {
 	entries := torrentFileEntriesOf(info)
 
 	want := []domain.TorrentFileEntry{
-		{Path: "song.flac", SizeBytes: 12345, Supported: true},
+		{Path: "song.flac", SizeBytes: 12345, Supported: true, Kind: domain.TorrentFileKindTrack},
 	}
 	assert.Equal(t, want, entries)
 }

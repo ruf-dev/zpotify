@@ -9,16 +9,19 @@ import cls from '@/components/FolderGroupHeader/FolderGroupHeader.module.css';
 interface FolderGroupHeaderProps {
     name: string;
     trackCount: number;
+    countLabel?: string;
     progress: number;
     collapsed: boolean;
     onToggle: () => void;
     folderSelected?: boolean;
+    isFolderPartial?: boolean;
+    isSelectFolderDisabled?: boolean;
     onToggleSelectFolder?: (checked: boolean) => void;
     onCreatePlaylist?: () => void;
 }
 
 export default function FolderGroupHeader(props: FolderGroupHeaderProps) {
-    const trackCountLabel = props.trackCount === 1 ? '1 track' : `${props.trackCount} tracks`;
+    const trackCountLabel = props.countLabel ?? (props.trackCount === 1 ? '1 track' : `${props.trackCount} tracks`);
 
     function handleSelectWrapperClick(e: React.MouseEvent) {
         e.stopPropagation();
@@ -43,7 +46,12 @@ export default function FolderGroupHeader(props: FolderGroupHeaderProps) {
 
             {props.onToggleSelectFolder && (
                 <span className={cls.SelectFolderWrapper} onClick={handleSelectWrapperClick}>
-                    <Checkbox checked={props.folderSelected ?? false} onChange={props.onToggleSelectFolder} />
+                    <Checkbox
+                        checked={props.folderSelected ?? false}
+                        isIndeterminate={props.isFolderPartial}
+                        disabled={props.isSelectFolderDisabled}
+                        onChange={props.onToggleSelectFolder}
+                    />
                 </span>
             )}
 

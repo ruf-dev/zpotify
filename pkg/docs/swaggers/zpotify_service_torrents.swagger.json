@@ -567,8 +567,21 @@
         },
         "supported": {
           "type": "boolean"
+        },
+        "kind": {
+          "$ref": "#/definitions/zpotify_apiTorrentFileKind"
         }
       }
+    },
+    "zpotify_apiTorrentFileKind": {
+      "type": "string",
+      "enum": [
+        "TORRENT_FILE_KIND_UNSPECIFIED",
+        "TORRENT_FILE_KIND_TRACK",
+        "TORRENT_FILE_KIND_COVER",
+        "TORRENT_FILE_KIND_OTHER"
+      ],
+      "default": "TORRENT_FILE_KIND_UNSPECIFIED"
     },
     "zpotify_apiTorrentFileProgress": {
       "type": "object",

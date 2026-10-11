@@ -182,10 +182,18 @@ message TorrentFile {
   bool is_resolving = 4;
 }
 
+enum TorrentFileKind {
+  TORRENT_FILE_KIND_UNSPECIFIED = 0;
+  TORRENT_FILE_KIND_TRACK = 1;
+  TORRENT_FILE_KIND_COVER = 2;
+  TORRENT_FILE_KIND_OTHER = 3;
+}
+
 message TorrentFileEntry {
   string path = 1;
   int64 size_bytes = 2;
   bool supported = 3;
+  TorrentFileKind kind = 4;
 }
 
 message GetTorrentFile {

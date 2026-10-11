@@ -399,6 +399,7 @@ func torrentFileEntriesOf(info *metainfo.Info) []domain.TorrentFileEntry {
 			Path:      filePath,
 			SizeBytes: fileInfo.Length,
 			Supported: isSupportedUpload(filePath),
+			Kind:      torrentFileKindOf(filePath),
 		}
 		entries = append(entries, entry)
 	}

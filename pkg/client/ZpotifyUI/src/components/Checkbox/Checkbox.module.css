@@ -42,6 +42,19 @@
     color: var(--color-bg-card);
 }
 
+.Box.Indeterminate {
+    background: var(--color-fg-accent);
+    border-color: var(--color-fg-accent);
+    color: var(--color-bg-card);
+}
+
+.Dash {
+    width: 0.5rem;
+    height: 0.125rem;
+    border-radius: 0.0625rem;
+    background: currentcolor;
+}
+
 .Input:focus-visible + .Box {
     border-color: var(--color-fg-accent);
 }

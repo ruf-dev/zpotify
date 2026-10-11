@@ -116,6 +116,17 @@ func isCoverImageUpload(name string) bool {
 	return ok
 }
 
+// torrentFileKindOf classifies a torrent entry for the file picker.
+func torrentFileKindOf(name string) domain.TorrentFileKind {
+	if audio_parsers.IsSupported(name) {
+		return domain.TorrentFileKindTrack
+	}
+	if isCoverImageUpload(name) {
+		return domain.TorrentFileKindCover
+	}
+	return domain.TorrentFileKindOther
+}
+
 // sniffHeaderSize is the number of bytes http.DetectContentType inspects to
 // determine a file's content type.
 const sniffHeaderSize = 512
