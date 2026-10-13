@@ -11,14 +11,14 @@ import {
 interface TorrentSearchResultRowProps {
     result: TorrentSearchResult;
     isDisabled: boolean;
-    onPick: (id: string) => void;
+    onPick: (result: TorrentSearchResult) => void;
 }
 
 export default function TorrentSearchResultRow({ result, isDisabled, onPick }: TorrentSearchResultRowProps) {
     const title = result.title ?? '';
 
     function handlePick() {
-        if (result.id) onPick(result.id);
+        if (result.id) onPick(result);
     }
 
     return (

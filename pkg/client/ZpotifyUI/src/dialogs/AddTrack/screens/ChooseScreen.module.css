@@ -24,6 +24,11 @@
     }
 }
 
+.SearchRow {
+    display: flex;
+    justify-content: center;
+}
+
 .GridWrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;

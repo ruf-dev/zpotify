@@ -1,0 +1,63 @@
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.TorrentFilesSkeletonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    & .Title {
+        font-size: var(--font-size-sm);
+        color: var(--color-fg-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0 0.25rem;
+        margin-bottom: 0.25rem;
+    }
+
+    & .ActionsBlock,
+    & .CheckboxBlock,
+    & .NameBlock,
+    & .SizeBlock {
+        background: linear-gradient(90deg, var(--color-bg-accent) 25%, var(--color-bg-hover-mid) 50%, var(--color-bg-accent) 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite linear;
+        border-radius: var(--border-radius-sm);
+    }
+
+    & .ActionsBlock {
+        height: 1.5rem;
+        width: 30%;
+        margin: 0 0.25rem 0.25rem;
+    }
+
+    & .SkeletonRow {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: var(--border-radius-md);
+        background: var(--color-bg-card);
+        border: 0.0625rem solid var(--color-border);
+    }
+
+    & .CheckboxBlock {
+        flex-shrink: 0;
+        width: 1rem;
+        height: 1rem;
+    }
+
+    & .NameBlock {
+        max-width: 60%;
+        height: 0.875rem;
+    }
+
+    & .SizeBlock {
+        margin-left: auto;
+        width: 3rem;
+        height: 0.875rem;
+    }
+}

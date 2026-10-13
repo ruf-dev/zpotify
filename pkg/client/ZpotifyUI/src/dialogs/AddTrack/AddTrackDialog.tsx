@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ComponentType } from 'react';
 
-import type { SongFile, TorrentJob } from '@/app/api/zpotify';
+import type { SongFile, TorrentJob, TorrentSearchResult } from '@/app/api/zpotify';
 import cls from '@/dialogs/AddTrack/AddTrackDialog.module.css';
 import PanelHeader from '@/dialogs/AddTrack/components/PanelHeader/PanelHeader';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
@@ -42,14 +42,17 @@ export interface AddTrackContext {
     submittingTorrentFile: boolean;
     handleSubmitTorrentFile: (selectedPaths: string[], torrentName: string) => void;
     handleMagnetLink: (magnetUri: string) => void;
-    handleTorrentSearchResult: (resultId: string) => void;
+    handleTorrentSearchResult: (result: TorrentSearchResult) => void;
     discardPendingTorrentUpload: () => void;
+    pickedTorrentTitle: string;
+    searchQuery: string;
+    handleSearch: (query: string) => void;
+    goBack: () => void;
 }
 
 const BACK_STEPS: Partial<Record<ModalStep, ModalStep>> = {
     drop: 'choose',
     pending: 'choose',
-    torrentFiles: 'choose',
     search: 'choose',
 };
 
@@ -64,9 +67,14 @@ const SCREENS: Record<ModalStep, ComponentType<AddTrackContext>> = {
 interface AddTrackDialogProps {
     initialStep?: ModalStep;
     initialMagnet?: string;
+    initialSearchQuery?: string;
 }
 
-export default function AddTrackDialog({ initialStep = 'choose', initialMagnet }: AddTrackDialogProps) {
+export default function AddTrackDialog({
+    initialStep = 'choose',
+    initialMagnet,
+    initialSearchQuery,
+}: AddTrackDialogProps) {
     const { CloseDialog, OpenDialog } = useDialog();
     const toaster = useToaster();
 
@@ -78,7 +86,11 @@ export default function AddTrackDialog({ initialStep = 'choose', initialMagnet }
     const pendingTorrentUploadRef = useRef(pendingTorrentUpload);
     pendingTorrentUploadRef.current = pendingTorrentUpload;
     const batchUpload = useBatchUpload();
-    const backStep = BACK_STEPS[step];
+    const [searchQuery, setSearchQuery] = useState((initialSearchQuery ?? '').trim());
+    const [torrentFilesOrigin, setTorrentFilesOrigin] = useState<ModalStep>('choose');
+    const [pickedTorrentTitle, setPickedTorrentTitle] = useState('');
+    const addTorrentRequestRef = useRef(0);
+    const backStep = step === 'torrentFiles' ? torrentFilesOrigin : BACK_STEPS[step];
     const isInitialMagnetHandledRef = useRef(false);
 
     useBackGuard(!!backStep, handleBack);
@@ -107,6 +119,8 @@ export default function AddTrackDialog({ initialStep = 'choose', initialMagnet }
     }
 
     function handleBack() {
+        addTorrentRequestRef.current += 1;
+        if (step === 'torrentFiles') setUploading(false);
         discardPendingTorrentUpload();
         setStep(backStep!);
     }
@@ -142,6 +156,8 @@ export default function AddTrackDialog({ initialStep = 'choose', initialMagnet }
 
     function handleTorrentFile(file: File) {
         const folderName = file.name.replace(/\.torrent$/i, '');
+        setTorrentFilesOrigin('choose');
+        setPickedTorrentTitle('');
         setUploadError(null);
         setUploading(true);
         webApiService
@@ -174,6 +190,8 @@ export default function AddTrackDialog({ initialStep = 'choose', initialMagnet }
     }
 
     function handleMagnetLink(magnetUri: string) {
+        setTorrentFilesOrigin('choose');
+        setPickedTorrentTitle('');
         setUploadError(null);
         setUploading(true);
         torrentService
@@ -183,14 +201,35 @@ export default function AddTrackDialog({ initialStep = 'choose', initialMagnet }
             .finally(() => setUploading(false));
     }
 
-    function handleTorrentSearchResult(resultId: string) {
+    function handleTorrentSearchResult(result: TorrentSearchResult) {
+        if (!result.id) return;
+
+        addTorrentRequestRef.current += 1;
+        const requestNumber = addTorrentRequestRef.current;
         setUploadError(null);
+        setTorrentFilesOrigin('search');
+        setPickedTorrentTitle(result.title ?? '');
         setUploading(true);
+        setStep('torrentFiles');
         torrentService
-            .AddTorrentSearchResult({ id: resultId })
-            .then(handleTorrentAddResult)
-            .catch((err: unknown) => toaster.catch(err as ServiceError))
-            .finally(() => setUploading(false));
+            .AddTorrentSearchResult({ id: result.id })
+            .then((res) => {
+                if (requestNumber !== addTorrentRequestRef.current) {
+                    if (res.uploadId) torrentService.DiscardTorrentFile({ id: res.uploadId }).catch(() => undefined);
+                    return;
+                }
+                if (!res.uploadId) setStep('search');
+                handleTorrentAddResult(res);
+            })
+            .catch((err: unknown) => {
+                if (requestNumber !== addTorrentRequestRef.current) return;
+
+                toaster.catch(err as ServiceError);
+                setStep('search');
+            })
+            .finally(() => {
+                if (requestNumber === addTorrentRequestRef.current) setUploading(false);
+            });
     }
 
     function handleSubmitTorrentFile(selectedPaths: string[], torrentName: string) {
@@ -300,6 +339,10 @@ export default function AddTrackDialog({ initialStep = 'choose', initialMagnet }
         handleMagnetLink,
         handleTorrentSearchResult,
         discardPendingTorrentUpload,
+        pickedTorrentTitle,
+        searchQuery,
+        handleSearch: setSearchQuery,
+        goBack: handleBack,
     };
 
     const Screen = SCREENS[step];

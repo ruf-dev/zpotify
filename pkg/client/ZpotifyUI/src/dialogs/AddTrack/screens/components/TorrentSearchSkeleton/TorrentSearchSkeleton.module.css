@@ -15,6 +15,7 @@
         padding: 0.625rem 0.75rem;
         border-radius: var(--border-radius-sm);
         border: 0.0625rem solid var(--color-border);
+        background: var(--color-bg-card);
     }
 
     & .TitleBlock,

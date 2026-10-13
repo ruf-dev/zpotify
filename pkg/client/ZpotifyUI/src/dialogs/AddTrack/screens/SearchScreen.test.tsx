@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -41,8 +42,23 @@ function makeContext(overrides: Partial<AddTrackContext>): AddTrackContext {
         handleMagnetLink: vi.fn(),
         handleTorrentSearchResult: vi.fn(),
         discardPendingTorrentUpload: vi.fn(),
+        pickedTorrentTitle: '',
+        searchQuery: '',
+        handleSearch: vi.fn(),
+        goBack: vi.fn(),
         ...overrides,
     };
+}
+
+function SearchScreenHost({ ctx }: { ctx: AddTrackContext }) {
+    const [searchQuery, setSearchQuery] = useState(ctx.searchQuery);
+
+    function handleSearch(query: string) {
+        ctx.handleSearch(query);
+        setSearchQuery(query);
+    }
+
+    return <SearchScreen {...ctx} searchQuery={searchQuery} handleSearch={handleSearch} />;
 }
 
 function renderScreen(overrides: Partial<AddTrackContext> = {}) {
@@ -50,7 +66,7 @@ function renderScreen(overrides: Partial<AddTrackContext> = {}) {
     const queryClient = new QueryClient();
     render(
         <QueryClientProvider client={queryClient}>
-            <SearchScreen {...ctx} />
+            <SearchScreenHost ctx={ctx} />
         </QueryClientProvider>,
     );
     return ctx;
@@ -79,6 +95,15 @@ describe('SearchScreen', () => {
         cleanup();
     });
 
+    it('searches immediately with the prefilled query when searchQuery is set', async () => {
+        vi.mocked(torrentService.SearchTorrents).mockResolvedValue({ results: [result] });
+        renderScreen({ searchQuery: 'radiohead' });
+
+        expect((screen.getByRole('textbox') as HTMLInputElement).value).toBe('radiohead');
+        expect(await screen.findByText('Artist - Album [FLAC]')).toBeTruthy();
+        expect(torrentService.SearchTorrents).toHaveBeenCalledWith({ query: 'radiohead' });
+    });
+
     it('renders result rows when a query is submitted', async () => {
         vi.mocked(torrentService.SearchTorrents).mockResolvedValue({ results: [result] });
         renderScreen();
@@ -89,14 +114,22 @@ describe('SearchScreen', () => {
         expect(torrentService.SearchTorrents).toHaveBeenCalledWith({ query: 'artist' });
     });
 
-    it('calls handleTorrentSearchResult with the id when a row is clicked', async () => {
+    it('calls handleTorrentSearchResult with the result when a row is clicked', async () => {
         vi.mocked(torrentService.SearchTorrents).mockResolvedValue({ results: [result] });
         const ctx = renderScreen();
 
         searchFor('artist');
         fireEvent.click(await screen.findByText('Artist - Album [FLAC]'));
 
-        expect(ctx.handleTorrentSearchResult).toHaveBeenCalledWith('r1');
+        expect(ctx.handleTorrentSearchResult).toHaveBeenCalledWith(expect.objectContaining({ id: 'r1' }));
+    });
+
+    it('calls handleSearch with the query when the form is submitted', () => {
+        const ctx = renderScreen();
+
+        searchFor('artist');
+
+        expect(ctx.handleSearch).toHaveBeenCalledWith('artist');
     });
 
     it('shows Lossless and Already imported marks when the result qualifies', async () => {

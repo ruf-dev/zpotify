@@ -10,8 +10,7 @@ vi.mock('@/dialogs/AddTrack/screens/useTorrentFileSelection.ts', () => ({ useTor
 type Selection = ReturnType<typeof useTorrentFileSelection>;
 
 function renderScreen(selection: Partial<Selection>) {
-    const goTo = vi.fn();
-    const discardPendingTorrentUpload = vi.fn();
+    const goBack = vi.fn();
     const base: Partial<Selection> = {
         loading: false,
         resolving: false,
@@ -25,15 +24,15 @@ function renderScreen(selection: Partial<Selection>) {
     vi.mocked(useTorrentFileSelection).mockReturnValue({ ...base, ...selection } as Partial<Selection> as Selection);
 
     const ctx: Partial<AddTrackContext> = {
-        goTo,
-        discardPendingTorrentUpload,
+        goBack,
+        pickedTorrentTitle: '',
         pendingTorrentUpload: { id: 'magnet1', folderName: '' },
         submittingTorrentFile: false,
         handleSubmitTorrentFile: vi.fn(),
     };
     render(<TorrentFilesScreen {...(ctx as Partial<AddTrackContext> as AddTrackContext)} />);
 
-    return { goTo, discardPendingTorrentUpload };
+    return { goBack };
 }
 
 describe('TorrentFilesScreen resolving state', () => {
@@ -49,22 +48,21 @@ describe('TorrentFilesScreen resolving state', () => {
         expect(screen.getByText('ubuntu-24.04')).not.toBeNull();
     });
 
-    it('discards the upload and returns to choose when Cancel is clicked while resolving', () => {
-        const { goTo, discardPendingTorrentUpload } = renderScreen({ resolving: true });
+    it('goes back when Cancel is clicked while resolving', () => {
+        const { goBack } = renderScreen({ resolving: true });
 
         fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
 
-        expect(discardPendingTorrentUpload).toHaveBeenCalled();
-        expect(goTo).toHaveBeenCalledWith('choose');
+        expect(goBack).toHaveBeenCalled();
     });
 
     it('shows the failure message and a Back button when resolving failed', () => {
-        const { goTo } = renderScreen({ failed: true });
+        const { goBack } = renderScreen({ failed: true });
 
         expect(screen.getByText('could not fetch torrent metadata from peers')).not.toBeNull();
 
         fireEvent.click(screen.getByRole('button', { name: 'Back' }));
 
-        expect(goTo).toHaveBeenCalledWith('choose');
+        expect(goBack).toHaveBeenCalled();
     });
 });

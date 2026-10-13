@@ -55,6 +55,10 @@ function makeContext(overrides: Partial<AddTrackContext> = {}): AddTrackContext 
         handleMagnetLink: vi.fn(),
         handleTorrentSearchResult: vi.fn(),
         discardPendingTorrentUpload: vi.fn(),
+        pickedTorrentTitle: '',
+        searchQuery: '',
+        handleSearch: vi.fn(),
+        goBack: vi.fn(),
         ...overrides,
     };
 }
@@ -120,6 +124,29 @@ describe('TorrentFilesScreen', () => {
         fireEvent.click(screen.getByText(/selected/));
 
         expect(handleSubmitTorrentFileSpy).toHaveBeenCalledWith(['Album/01 - Song.mp3'], 'ubuntu.torrent');
+    });
+});
+
+describe('TorrentFilesScreen torrent being added', () => {
+    afterEach(() => {
+        cleanup();
+        vi.clearAllMocks();
+        mockResponse = makeResponse();
+    });
+
+    it('shows the skeleton with the picked title while the torrent is being added', () => {
+        render(
+            <TorrentFilesScreen
+                {...makeContext({
+                    pendingTorrentUpload: null,
+                    uploading: true,
+                    pickedTorrentTitle: 'Radiohead - OK Computer',
+                })}
+            />,
+        );
+
+        expect(screen.getByLabelText('Loading torrent files')).not.toBeNull();
+        expect(screen.getByText('Radiohead - OK Computer')).not.toBeNull();
     });
 });
 

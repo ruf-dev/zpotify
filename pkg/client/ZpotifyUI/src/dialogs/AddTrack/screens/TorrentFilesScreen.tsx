@@ -5,6 +5,7 @@ import cls from '@/dialogs/AddTrack/screens/TorrentFilesScreen.module.css';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 import Checkbox from '@/components/Checkbox/Checkbox';
 import ResolvingTorrentStatus from '@/dialogs/AddTrack/screens/components/ResolvingTorrentStatus/ResolvingTorrentStatus';
+import TorrentFilesSkeleton from '@/dialogs/AddTrack/screens/components/TorrentFilesSkeleton/TorrentFilesSkeleton';
 import TorrentFolderNode from '@/dialogs/AddTrack/screens/components/TorrentFolderNode/TorrentFolderNode';
 import TorrentFileRow from '@/dialogs/AddTrack/screens/components/TorrentFileRow/TorrentFileRow';
 import { collectFolderPaths } from '@/dialogs/AddTrack/screens/processes/torrentFileTree.ts';
@@ -14,8 +15,9 @@ export default function TorrentFilesScreen({
     pendingTorrentUpload,
     handleSubmitTorrentFile,
     submittingTorrentFile,
-    discardPendingTorrentUpload,
-    goTo,
+    uploading,
+    pickedTorrentTitle,
+    goBack,
 }: AddTrackContext) {
     const selection = useTorrentFileSelection(pendingTorrentUpload?.id ?? '');
     const [collapsedPaths, setCollapsedPaths] = useState<Set<string>>(new Set());
@@ -37,8 +39,7 @@ export default function TorrentFilesScreen({
     }
 
     function handleCancel() {
-        discardPendingTorrentUpload();
-        goTo('choose');
+        goBack();
     }
 
     function handleSubmit() {
@@ -46,13 +47,17 @@ export default function TorrentFilesScreen({
     }
 
     if (!pendingTorrentUpload) {
-        return <div className={cls.TorrentFilesScreenContainer} />;
+        return (
+            <div className={cls.TorrentFilesScreenContainer}>
+                {uploading && <TorrentFilesSkeleton title={pickedTorrentTitle} />}
+            </div>
+        );
     }
 
     if (selection.loading) {
         return (
             <div className={cls.TorrentFilesScreenContainer}>
-                <div className={cls.Loading}>loading torrent files…</div>
+                <TorrentFilesSkeleton title={selection.torrentName || pickedTorrentTitle} />
             </div>
         );
     }

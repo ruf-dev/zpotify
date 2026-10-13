@@ -1,0 +1,32 @@
+.TorrentSearchLinkContainer {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    & .Link {
+        color: var(--color-fg-accent);
+        font-size: var(--font-size-sm);
+        text-decoration: underline;
+
+        &:hover:not(:disabled) {
+            color: var(--color-fg-primary);
+        }
+
+        &:disabled {
+            color: var(--color-fg-disabled);
+            /* hover must reach the wrapper so its title tooltip shows; disabled buttons swallow it in some browsers */
+            pointer-events: none;
+        }
+    }
+
+    & .WarningIcon {
+        width: 0.875rem;
+        height: 0.875rem;
+        flex-shrink: 0;
+        color: var(--color-warning);
+    }
+
+    &.IsUnreachable {
+        cursor: help;
+    }
+}

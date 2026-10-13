@@ -1,0 +1,13 @@
+.TrackerSearchPromptWidgetContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.375rem;
+    padding: var(--space-2xl) var(--space-lg);
+
+    & .Text {
+        color: var(--color-fg-secondary);
+        font-size: var(--font-size-sm);
+    }
+}

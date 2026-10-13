@@ -122,6 +122,15 @@ type TorrentMagnetAdd struct {
 	ExistingJobId int64
 }
 
+// TorrentSearchStatus is the torrent search state as seen by one user.
+type TorrentSearchStatus int
+
+const (
+	TorrentSearchStatusDisabled TorrentSearchStatus = iota
+	TorrentSearchStatusUnreachable
+	TorrentSearchStatusAvailable
+)
+
 // TorrentFileKind classifies a torrent entry for the file picker.
 type TorrentFileKind int
 

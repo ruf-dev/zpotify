@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import cls from '@/dialogs/AddTrack/screens/SearchScreen.module.css';
@@ -19,13 +19,16 @@ function errorMessage(error: unknown): string {
     return 'Search failed';
 }
 
-export default function SearchScreen({ uploading, handleTorrentSearchResult }: AddTrackContext) {
-    const [submittedQuery, setSubmittedQuery] = useState('');
-
+export default function SearchScreen({
+    uploading,
+    handleTorrentSearchResult,
+    searchQuery,
+    handleSearch,
+}: AddTrackContext) {
     const query = useQuery({
-        queryKey: ['torrentSearch', submittedQuery],
-        queryFn: () => torrentService.SearchTorrents({ query: submittedQuery }).then((r) => r.results ?? []),
-        enabled: submittedQuery !== '',
+        queryKey: ['torrentSearch', searchQuery],
+        queryFn: () => torrentService.SearchTorrents({ query: searchQuery }).then((r) => r.results ?? []),
+        enabled: searchQuery !== '',
         retry: false,
     });
 
@@ -47,7 +50,7 @@ export default function SearchScreen({ uploading, handleTorrentSearchResult }: A
     }
 
     function renderBody() {
-        if (submittedQuery === '') {
+        if (searchQuery === '') {
             return <span className={cls.Hint}>Search by artist, album or track name</span>;
         }
         if (query.isLoading) return <TorrentSearchSkeleton />;
@@ -59,7 +62,7 @@ export default function SearchScreen({ uploading, handleTorrentSearchResult }: A
 
     return (
         <div className={cls.SearchScreenContainer}>
-            <TorrentSearchForm isDisabled={uploading} onSearch={setSubmittedQuery} />
+            <TorrentSearchForm isDisabled={uploading} initialValue={searchQuery} onSearch={handleSearch} />
             {renderBody()}
         </div>
     );

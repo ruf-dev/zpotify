@@ -15,10 +15,17 @@ type OneOf<T> =
         : never
       : never);
 
+export enum TorrentSearchStatus {
+  TORRENT_SEARCH_STATUS_UNSPECIFIED = "TORRENT_SEARCH_STATUS_UNSPECIFIED",
+  TORRENT_SEARCH_STATUS_DISABLED = "TORRENT_SEARCH_STATUS_DISABLED",
+  TORRENT_SEARCH_STATUS_UNREACHABLE = "TORRENT_SEARCH_STATUS_UNREACHABLE",
+  TORRENT_SEARCH_STATUS_AVAILABLE = "TORRENT_SEARCH_STATUS_AVAILABLE",
+}
+
 export type UserSettings = {
   homeSegments?: HomePageSegment[];
   ui?: UiSettings;
-  isTorrentSearchAvailable?: boolean;
+  torrentSearchStatus?: TorrentSearchStatus;
 };
 
 export type HomePageSegmentPlaylistSegment = {

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Button } from '@vervstack/chures';
 
 import cls from '@/dialogs/AddTrack/screens/ChooseScreen.module.css';
 import useUser from '@/entities/user/useUser.ts';
@@ -11,8 +10,10 @@ import UploadCard from '@/dialogs/AddTrack/screens/components/UploadCard/UploadC
 import MagnetLinkField from '@/dialogs/AddTrack/screens/components/MagnetLinkField/MagnetLinkField';
 import RecentTorrentsPanel from '@/dialogs/AddTrack/screens/components/RecentTorrentsPanel/RecentTorrentsPanel';
 import { useWatchTorrentJobs } from '@/dialogs/AddTrack/screens/useWatchTorrentJobs';
-import { useTorrentSearchAvailability } from '@/features/upload/useTorrentSearchAvailability.ts';
+import { useTorrentSearchStatus } from '@/features/upload/useTorrentSearchStatus.ts';
+import TorrentSearchLink from '@/components/TorrentSearchLink/TorrentSearchLink.tsx';
 import { isTerminalTorrentStatus } from '@/shared/lib/torrentStatus.ts';
+import { isTorrentSearchVisible } from '@/shared/lib/torrentSearchStatus.ts';
 import ClipboardAccessButton from '@/dialogs/AddTrack/screens/components/ClipboardAccessButton/ClipboardAccessButton';
 
 export default function ChooseScreen({
@@ -28,7 +29,7 @@ export default function ChooseScreen({
     const [loading, setLoading] = useState(true);
     const [clipboardMagnet, setClipboardMagnet] = useState('');
     const { jobs, loading: torrentLoading } = useWatchTorrentJobs();
-    const isTorrentSearchAvailable = useTorrentSearchAvailability();
+    const torrentSearchStatus = useTorrentSearchStatus();
 
     useEffect(() => {
         fileService
@@ -73,12 +74,17 @@ export default function ChooseScreen({
                     <MagnetLinkField initialValue={clipboardMagnet} disabled={uploading} onSubmit={handleMagnetLink} />
                 </div>
                 <ClipboardAccessButton onMagnet={setClipboardMagnet} />
-                {isTorrentSearchAvailable && (
-                    <Button variant="ghost" onClick={handleOpenSearch}>
-                        Search torrents
-                    </Button>
-                )}
             </div>
+
+            {isTorrentSearchVisible(torrentSearchStatus) && (
+                <div className={cls.SearchRow}>
+                    <TorrentSearchLink
+                        status={torrentSearchStatus}
+                        label="Search on torrent trackers"
+                        onClick={handleOpenSearch}
+                    />
+                </div>
+            )}
 
             <RecentTorrentsPanel jobs={jobs} loading={torrentLoading} onFile={handleTorrentFileSelected} />
         </div>

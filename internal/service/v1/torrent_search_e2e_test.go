@@ -391,7 +391,7 @@ func Test_TorrentSearch_UnavailableWhenProwlarrUnhealthy(t *testing.T) {
 	err := svc.CheckHealth(context.Background())
 	require.Error(t, err)
 
-	require.False(t, svc.IsAvailable(fx.userCtx()))
+	require.Equal(t, domain.TorrentSearchStatusUnreachable, svc.Status(fx.userCtx()))
 
 	_, err = svc.Search(fx.userCtx(), "query")
 	require.ErrorIs(t, err, service_errors.ErrTorrentSearchUnavailable)
@@ -405,7 +405,7 @@ func Test_TorrentSearch_UnavailableWhenNotConfigured(t *testing.T) {
 	err := svc.CheckHealth(context.Background())
 	require.NoError(t, err)
 
-	require.False(t, svc.IsAvailable(fx.userCtx()))
+	require.Equal(t, domain.TorrentSearchStatusDisabled, svc.Status(fx.userCtx()))
 
 	_, err = svc.Search(fx.userCtx(), "query")
 	require.ErrorIs(t, err, service_errors.ErrTorrentSearchUnavailable)
@@ -416,8 +416,8 @@ func Test_TorrentSearch_DeniedWithoutUploadPermission(t *testing.T) {
 	svc := fx.newHealthyService(t)
 	deniedCtx := contextWithPermissions(fx.userId, domain.UserPermissions{CanUpload: false})
 
-	require.True(t, svc.IsAvailable(fx.userCtx()))
-	require.False(t, svc.IsAvailable(deniedCtx))
+	require.Equal(t, domain.TorrentSearchStatusAvailable, svc.Status(fx.userCtx()))
+	require.Equal(t, domain.TorrentSearchStatusDisabled, svc.Status(deniedCtx))
 
 	_, err := svc.Search(deniedCtx, "query")
 	require.ErrorIs(t, err, user_errors.ErrPermissionDenied)

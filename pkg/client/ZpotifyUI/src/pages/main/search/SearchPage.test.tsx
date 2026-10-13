@@ -27,6 +27,10 @@ vi.mock('@/pages/main/search/components/MobileSearchInput/MobileSearchInput.tsx'
     default: () => null,
 }));
 
+vi.mock('@/pages/main/search/Widget/TrackerSearchPromptWidget/TrackerSearchPromptWidget.tsx', () => ({
+    default: () => null,
+}));
+
 let visibleTracks: SearchTrackResult[] = [];
 let isLoading = false;
 vi.mock('@/pages/main/search/useSearchPage.ts', () => ({

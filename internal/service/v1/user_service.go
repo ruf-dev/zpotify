@@ -17,19 +17,19 @@ import (
 	"go.zpotify.ru/zpotify/internal/user_errors"
 )
 
-type torrentSearchAvailability interface {
-	IsAvailable(ctx context.Context) bool
+type torrentSearchStatusProvider interface {
+	Status(ctx context.Context) domain.TorrentSearchStatus
 }
 
 type UserService struct {
 	userStorage     storage.UserStorage
 	settingsStorage storage.UserSettingsStorage
-	torrentSearch   torrentSearchAvailability
+	torrentSearch   torrentSearchStatusProvider
 
 	txManager *tx_manager.TxManager
 }
 
-func NewUserService(dataStorage storage.Storage, torrentSearch torrentSearchAvailability) *UserService {
+func NewUserService(dataStorage storage.Storage, torrentSearch torrentSearchStatusProvider) *UserService {
 	return &UserService{
 		userStorage:     dataStorage.User(),
 		settingsStorage: dataStorage.UserSettings(),
@@ -186,7 +186,7 @@ func (u *UserService) GetSettings(ctx context.Context) (settings domain.UserSett
 		settings.Ui = defaultUiSettings()
 	}
 
-	settings.IsTorrentSearchAvailable = u.torrentSearch.IsAvailable(ctx)
+	settings.TorrentSearchStatus = u.torrentSearch.Status(ctx)
 
 	return settings, nil
 }

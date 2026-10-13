@@ -5,6 +5,7 @@ import PlaylistCardWide from '@/widgets/PlaylistsLibrarySegment/components/Playl
 import FilterChips from '@/pages/main/search/components/FilterChips/FilterChips.tsx';
 import SectionLabel from '@/pages/main/search/components/SectionLabel/SectionLabel.tsx';
 import SearchResultsSkeleton from '@/pages/main/search/components/SearchResultsSkeleton/SearchResultsSkeleton.tsx';
+import TrackerSearchPromptWidget from '@/pages/main/search/Widget/TrackerSearchPromptWidget/TrackerSearchPromptWidget.tsx';
 import EmptyState from '@/pages/main/search/components/EmptyState/EmptyState.tsx';
 import ArtistCard from '@/pages/main/search/components/ArtistCard/ArtistCard.tsx';
 import MobileSearchInput from '@/pages/main/search/components/MobileSearchInput/MobileSearchInput.tsx';
@@ -164,8 +165,15 @@ export default function SearchPage() {
             return <SearchResultsSkeleton filters={page.filters} />;
         }
 
-        if (page.query.trim().length > 0 && page.totalResults === 0) {
-            return <EmptyState query={page.query.trim()} />;
+        const trimmedQuery = page.query.trim();
+
+        if (trimmedQuery.length > 0 && page.totalResults === 0) {
+            return (
+                <>
+                    <EmptyState query={trimmedQuery} />
+                    <TrackerSearchPromptWidget query={trimmedQuery} />
+                </>
+            );
         }
 
         return (
@@ -174,6 +182,7 @@ export default function SearchPage() {
                 {renderArtists()}
                 {renderAlbums()}
                 {renderPlaylists()}
+                {trimmedQuery.length > 0 && <TrackerSearchPromptWidget query={trimmedQuery} />}
             </>
         );
     }

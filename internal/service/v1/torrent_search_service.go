@@ -56,14 +56,18 @@ func NewTorrentSearchService(
 	return s, nil
 }
 
-// IsAvailable reports whether the caller may search right now.
-func (s *TorrentSearchService) IsAvailable(ctx context.Context) bool {
+// Status reports the caller's view of torrent search: hidden, configured but unreachable, or usable.
+func (s *TorrentSearchService) Status(ctx context.Context) domain.TorrentSearchStatus {
 	uCtx, ok := user_context.GetUserContext(ctx)
-	if !ok {
-		return false
+	if !ok || !uCtx.Permissions.CanUpload || s.prowlarr == nil {
+		return domain.TorrentSearchStatusDisabled
 	}
 
-	return uCtx.Permissions.CanUpload && s.prowlarr != nil && s.isHealthy.Load()
+	if !s.isHealthy.Load() {
+		return domain.TorrentSearchStatusUnreachable
+	}
+
+	return domain.TorrentSearchStatusAvailable
 }
 
 // CheckHealth pings Prowlarr and records the result; a no-op when Prowlarr is not configured.

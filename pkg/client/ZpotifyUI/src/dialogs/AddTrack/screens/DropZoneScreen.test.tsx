@@ -31,6 +31,10 @@ function makeContext(overrides: Partial<AddTrackContext>): AddTrackContext {
         handleMagnetLink: vi.fn(),
         handleTorrentSearchResult: vi.fn(),
         discardPendingTorrentUpload: vi.fn(),
+        pickedTorrentTitle: '',
+        searchQuery: '',
+        handleSearch: vi.fn(),
+        goBack: vi.fn(),
         ...overrides,
     };
 }

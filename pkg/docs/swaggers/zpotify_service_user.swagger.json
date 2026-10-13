@@ -166,6 +166,16 @@
         }
       }
     },
+    "zpotify_apiTorrentSearchStatus": {
+      "type": "string",
+      "enum": [
+        "TORRENT_SEARCH_STATUS_UNSPECIFIED",
+        "TORRENT_SEARCH_STATUS_DISABLED",
+        "TORRENT_SEARCH_STATUS_UNREACHABLE",
+        "TORRENT_SEARCH_STATUS_AVAILABLE"
+      ],
+      "default": "TORRENT_SEARCH_STATUS_UNSPECIFIED"
+    },
     "zpotify_apiUiSettings": {
       "type": "object",
       "properties": {
@@ -201,8 +211,8 @@
         "ui": {
           "$ref": "#/definitions/zpotify_apiUiSettings"
         },
-        "isTorrentSearchAvailable": {
-          "type": "boolean"
+        "torrentSearchStatus": {
+          "$ref": "#/definitions/zpotify_apiTorrentSearchStatus"
         }
       }
     }

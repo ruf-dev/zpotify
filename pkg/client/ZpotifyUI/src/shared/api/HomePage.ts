@@ -6,11 +6,11 @@ import {
     FeedSegmentInfo,
 } from '@/shared/model/HomeSegments.tsx';
 import { BaseService } from '@/shared/api/BaseService.ts';
-import { HomePageSegment, InitReq, UserAPI } from '@/app/api/zpotify';
+import { HomePageSegment, InitReq, TorrentSearchStatus, UserAPI } from '@/app/api/zpotify';
 
 export interface ISettingsService {
     ListHomeSegments(): Promise<HomeSegment[]>;
-    IsTorrentSearchAvailable(): Promise<boolean>;
+    GetTorrentSearchStatus(): Promise<TorrentSearchStatus>;
 }
 
 export class SettingsService extends BaseService implements ISettingsService {
@@ -20,9 +20,11 @@ export class SettingsService extends BaseService implements ISettingsService {
         });
     }
 
-    async IsTorrentSearchAvailable(): Promise<boolean> {
+    async GetTorrentSearchStatus(): Promise<TorrentSearchStatus> {
         return this.executeAuthApiCall(async (initReq: InitReq) => {
-            return UserAPI.GetUserSettings({}, initReq).then((r) => r.settings?.isTorrentSearchAvailable === true);
+            return UserAPI.GetUserSettings({}, initReq).then(
+                (r) => r.settings?.torrentSearchStatus ?? TorrentSearchStatus.TORRENT_SEARCH_STATUS_UNSPECIFIED,
+            );
         });
     }
 }

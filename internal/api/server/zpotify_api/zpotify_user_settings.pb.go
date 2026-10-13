@@ -7,13 +7,12 @@
 package zpotify_api
 
 import (
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
-
 	_ "go.redsock.ru/protoc-gen-npm/npmplugin"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
 )
 
 const (
@@ -23,13 +22,65 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type TorrentSearchStatus int32
+
+const (
+	TorrentSearchStatus_TORRENT_SEARCH_STATUS_UNSPECIFIED TorrentSearchStatus = 0
+	TorrentSearchStatus_TORRENT_SEARCH_STATUS_DISABLED    TorrentSearchStatus = 1
+	TorrentSearchStatus_TORRENT_SEARCH_STATUS_UNREACHABLE TorrentSearchStatus = 2
+	TorrentSearchStatus_TORRENT_SEARCH_STATUS_AVAILABLE   TorrentSearchStatus = 3
+)
+
+// Enum value maps for TorrentSearchStatus.
+var (
+	TorrentSearchStatus_name = map[int32]string{
+		0: "TORRENT_SEARCH_STATUS_UNSPECIFIED",
+		1: "TORRENT_SEARCH_STATUS_DISABLED",
+		2: "TORRENT_SEARCH_STATUS_UNREACHABLE",
+		3: "TORRENT_SEARCH_STATUS_AVAILABLE",
+	}
+	TorrentSearchStatus_value = map[string]int32{
+		"TORRENT_SEARCH_STATUS_UNSPECIFIED": 0,
+		"TORRENT_SEARCH_STATUS_DISABLED":    1,
+		"TORRENT_SEARCH_STATUS_UNREACHABLE": 2,
+		"TORRENT_SEARCH_STATUS_AVAILABLE":   3,
+	}
+)
+
+func (x TorrentSearchStatus) Enum() *TorrentSearchStatus {
+	p := new(TorrentSearchStatus)
+	*p = x
+	return p
+}
+
+func (x TorrentSearchStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (TorrentSearchStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_zpotify_user_settings_proto_enumTypes[0].Descriptor()
+}
+
+func (TorrentSearchStatus) Type() protoreflect.EnumType {
+	return &file_zpotify_user_settings_proto_enumTypes[0]
+}
+
+func (x TorrentSearchStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use TorrentSearchStatus.Descriptor instead.
+func (TorrentSearchStatus) EnumDescriptor() ([]byte, []int) {
+	return file_zpotify_user_settings_proto_rawDescGZIP(), []int{0}
+}
+
 type UserSettings struct {
-	state                    protoimpl.MessageState `protogen:"open.v1"`
-	HomeSegments             []*HomePageSegment     `protobuf:"bytes,1,rep,name=home_segments,json=homeSegments,proto3" json:"home_segments,omitempty"`
-	Ui                       *UiSettings            `protobuf:"bytes,2,opt,name=ui,proto3" json:"ui,omitempty"`
-	IsTorrentSearchAvailable bool                   `protobuf:"varint,3,opt,name=is_torrent_search_available,json=isTorrentSearchAvailable,proto3" json:"is_torrent_search_available,omitempty"`
-	unknownFields            protoimpl.UnknownFields
-	sizeCache                protoimpl.SizeCache
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	HomeSegments        []*HomePageSegment     `protobuf:"bytes,1,rep,name=home_segments,json=homeSegments,proto3" json:"home_segments,omitempty"`
+	Ui                  *UiSettings            `protobuf:"bytes,2,opt,name=ui,proto3" json:"ui,omitempty"`
+	TorrentSearchStatus TorrentSearchStatus    `protobuf:"varint,4,opt,name=torrent_search_status,json=torrentSearchStatus,proto3,enum=zpotify_api.TorrentSearchStatus" json:"torrent_search_status,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *UserSettings) Reset() {
@@ -76,11 +127,11 @@ func (x *UserSettings) GetUi() *UiSettings {
 	return nil
 }
 
-func (x *UserSettings) GetIsTorrentSearchAvailable() bool {
+func (x *UserSettings) GetTorrentSearchStatus() TorrentSearchStatus {
 	if x != nil {
-		return x.IsTorrentSearchAvailable
+		return x.TorrentSearchStatus
 	}
-	return false
+	return TorrentSearchStatus_TORRENT_SEARCH_STATUS_UNSPECIFIED
 }
 
 type HomePageSegment struct {
@@ -398,11 +449,11 @@ var File_zpotify_user_settings_proto protoreflect.FileDescriptor
 
 const file_zpotify_user_settings_proto_rawDesc = "" +
 	"\n" +
-	"\x1bzpotify_user_settings.proto\x12\vzpotify_api\x1a\tnpm.proto\"\xb9\x01\n" +
+	"\x1bzpotify_user_settings.proto\x12\vzpotify_api\x1a\tnpm.proto\"\xf3\x01\n" +
 	"\fUserSettings\x12A\n" +
 	"\rhome_segments\x18\x01 \x03(\v2\x1c.zpotify_api.HomePageSegmentR\fhomeSegments\x12'\n" +
-	"\x02ui\x18\x02 \x01(\v2\x17.zpotify_api.UiSettingsR\x02ui\x12=\n" +
-	"\x1bis_torrent_search_available\x18\x03 \x01(\bR\x18isTorrentSearchAvailable\"\xdb\x03\n" +
+	"\x02ui\x18\x02 \x01(\v2\x17.zpotify_api.UiSettingsR\x02ui\x12T\n" +
+	"\x15torrent_search_status\x18\x04 \x01(\x0e2 .zpotify_api.TorrentSearchStatusR\x13torrentSearchStatusJ\x04\b\x03\x10\x04R\x1bis_torrent_search_available\"\xdb\x03\n" +
 	"\x0fHomePageSegment\x12Y\n" +
 	"\x10playlist_segment\x18\x01 \x01(\v2,.zpotify_api.HomePageSegment.PlaylistSegmentH\x00R\x0fplaylistSegment\x12X\n" +
 	"\x12management_segment\x18\x02 \x01(\v2'.zpotify_api.HomePageSegment.ManagementH\x00R\x11managementSegment\x12V\n" +
@@ -418,7 +469,12 @@ const file_zpotify_user_settings_proto_rawDesc = "" +
 	"\asegment\"$\n" +
 	"\n" +
 	"UiSettings\x12\x16\n" +
-	"\x06locale\x18\x01 \x01(\tR\x06localeBA\x92\x82\x19\f@zpotify/api\n" +
+	"\x06locale\x18\x01 \x01(\tR\x06locale*\xac\x01\n" +
+	"\x13TorrentSearchStatus\x12%\n" +
+	"!TORRENT_SEARCH_STATUS_UNSPECIFIED\x10\x00\x12\"\n" +
+	"\x1eTORRENT_SEARCH_STATUS_DISABLED\x10\x01\x12%\n" +
+	"!TORRENT_SEARCH_STATUS_UNREACHABLE\x10\x02\x12#\n" +
+	"\x1fTORRENT_SEARCH_STATUS_AVAILABLE\x10\x03BA\x92\x82\x19\f@zpotify/api\n" +
 	"\x13ru.zpotify.api.grpcP\x01Z\x18/zpotify_api;zpotify_apib\x06proto3"
 
 var (
@@ -433,28 +489,31 @@ func file_zpotify_user_settings_proto_rawDescGZIP() []byte {
 	return file_zpotify_user_settings_proto_rawDescData
 }
 
+var file_zpotify_user_settings_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_zpotify_user_settings_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_zpotify_user_settings_proto_goTypes = []any{
-	(*UserSettings)(nil),                    // 0: zpotify_api.UserSettings
-	(*HomePageSegment)(nil),                 // 1: zpotify_api.HomePageSegment
-	(*UiSettings)(nil),                      // 2: zpotify_api.UiSettings
-	(*HomePageSegment_PlaylistSegment)(nil), // 3: zpotify_api.HomePageSegment.PlaylistSegment
-	(*HomePageSegment_Management)(nil),      // 4: zpotify_api.HomePageSegment.Management
-	(*HomePageSegment_LibrarySegment)(nil),  // 5: zpotify_api.HomePageSegment.LibrarySegment
-	(*HomePageSegment_FeedSegment)(nil),     // 6: zpotify_api.HomePageSegment.FeedSegment
+	(TorrentSearchStatus)(0),                // 0: zpotify_api.TorrentSearchStatus
+	(*UserSettings)(nil),                    // 1: zpotify_api.UserSettings
+	(*HomePageSegment)(nil),                 // 2: zpotify_api.HomePageSegment
+	(*UiSettings)(nil),                      // 3: zpotify_api.UiSettings
+	(*HomePageSegment_PlaylistSegment)(nil), // 4: zpotify_api.HomePageSegment.PlaylistSegment
+	(*HomePageSegment_Management)(nil),      // 5: zpotify_api.HomePageSegment.Management
+	(*HomePageSegment_LibrarySegment)(nil),  // 6: zpotify_api.HomePageSegment.LibrarySegment
+	(*HomePageSegment_FeedSegment)(nil),     // 7: zpotify_api.HomePageSegment.FeedSegment
 }
 var file_zpotify_user_settings_proto_depIdxs = []int32{
-	1, // 0: zpotify_api.UserSettings.home_segments:type_name -> zpotify_api.HomePageSegment
-	2, // 1: zpotify_api.UserSettings.ui:type_name -> zpotify_api.UiSettings
-	3, // 2: zpotify_api.HomePageSegment.playlist_segment:type_name -> zpotify_api.HomePageSegment.PlaylistSegment
-	4, // 3: zpotify_api.HomePageSegment.management_segment:type_name -> zpotify_api.HomePageSegment.Management
-	5, // 4: zpotify_api.HomePageSegment.library_segment:type_name -> zpotify_api.HomePageSegment.LibrarySegment
-	6, // 5: zpotify_api.HomePageSegment.feed_segment:type_name -> zpotify_api.HomePageSegment.FeedSegment
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	2, // 0: zpotify_api.UserSettings.home_segments:type_name -> zpotify_api.HomePageSegment
+	3, // 1: zpotify_api.UserSettings.ui:type_name -> zpotify_api.UiSettings
+	0, // 2: zpotify_api.UserSettings.torrent_search_status:type_name -> zpotify_api.TorrentSearchStatus
+	4, // 3: zpotify_api.HomePageSegment.playlist_segment:type_name -> zpotify_api.HomePageSegment.PlaylistSegment
+	5, // 4: zpotify_api.HomePageSegment.management_segment:type_name -> zpotify_api.HomePageSegment.Management
+	6, // 5: zpotify_api.HomePageSegment.library_segment:type_name -> zpotify_api.HomePageSegment.LibrarySegment
+	7, // 6: zpotify_api.HomePageSegment.feed_segment:type_name -> zpotify_api.HomePageSegment.FeedSegment
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_user_settings_proto_init() }
@@ -473,13 +532,14 @@ func file_zpotify_user_settings_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_user_settings_proto_rawDesc), len(file_zpotify_user_settings_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_zpotify_user_settings_proto_goTypes,
 		DependencyIndexes: file_zpotify_user_settings_proto_depIdxs,
+		EnumInfos:         file_zpotify_user_settings_proto_enumTypes,
 		MessageInfos:      file_zpotify_user_settings_proto_msgTypes,
 	}.Build()
 	File_zpotify_user_settings_proto = out.File

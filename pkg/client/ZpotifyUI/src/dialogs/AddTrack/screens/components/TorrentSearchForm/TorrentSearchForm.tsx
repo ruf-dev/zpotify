@@ -6,11 +6,12 @@ import Input from '@/shared/ui/Input.tsx';
 
 interface TorrentSearchFormProps {
     isDisabled: boolean;
+    initialValue?: string;
     onSearch: (query: string) => void;
 }
 
-export default function TorrentSearchForm({ isDisabled, onSearch }: TorrentSearchFormProps) {
-    const [draft, setDraft] = useState('');
+export default function TorrentSearchForm({ isDisabled, initialValue, onSearch }: TorrentSearchFormProps) {
+    const [draft, setDraft] = useState(initialValue ?? '');
 
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();

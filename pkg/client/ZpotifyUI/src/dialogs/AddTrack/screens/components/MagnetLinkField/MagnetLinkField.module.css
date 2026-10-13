@@ -1,6 +1,6 @@
 .MagnetLinkFieldContainer {
     display: flex;
-    align-items: flex-end;
+    align-items: stretch;
     gap: 0.5rem;
 
     & .InputWrapper {

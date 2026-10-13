@@ -27,10 +27,16 @@ func (impl *Impl) GetUserSettings(ctx context.Context, _ *zpotify_api.GetUserSet
 	}, nil
 }
 
+var torrentSearchStatusDomainToProto = map[domain.TorrentSearchStatus]zpotify_api.TorrentSearchStatus{
+	domain.TorrentSearchStatusDisabled:    zpotify_api.TorrentSearchStatus_TORRENT_SEARCH_STATUS_DISABLED,
+	domain.TorrentSearchStatusUnreachable: zpotify_api.TorrentSearchStatus_TORRENT_SEARCH_STATUS_UNREACHABLE,
+	domain.TorrentSearchStatusAvailable:   zpotify_api.TorrentSearchStatus_TORRENT_SEARCH_STATUS_AVAILABLE,
+}
+
 func toPbUserSettings(settings domain.UserSettings) (*zpotify_api.UserSettings, error) {
 	pbSettings := &zpotify_api.UserSettings{
-		IsTorrentSearchAvailable: settings.IsTorrentSearchAvailable,
-		HomeSegments:             nil,
+		TorrentSearchStatus: torrentSearchStatusDomainToProto[settings.TorrentSearchStatus],
+		HomeSegments:        nil,
 		Ui: &zpotify_api.UiSettings{
 			Locale: settings.Ui.Locale,
 		},

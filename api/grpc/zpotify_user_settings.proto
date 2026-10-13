@@ -9,10 +9,20 @@ option (npm_package) = "@zpotify/api";
 option java_package = "ru.zpotify.api.grpc";
 option java_multiple_files = true;
 
+enum TorrentSearchStatus {
+  TORRENT_SEARCH_STATUS_UNSPECIFIED = 0;
+  TORRENT_SEARCH_STATUS_DISABLED = 1;
+  TORRENT_SEARCH_STATUS_UNREACHABLE = 2;
+  TORRENT_SEARCH_STATUS_AVAILABLE = 3;
+}
+
 message UserSettings {
+  reserved 3;
+  reserved "is_torrent_search_available";
+
   repeated HomePageSegment home_segments = 1;
   UiSettings ui = 2;
-  bool is_torrent_search_available = 3;
+  TorrentSearchStatus torrent_search_status = 4;
 }
 
 message HomePageSegment {
