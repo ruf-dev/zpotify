@@ -47,6 +47,24 @@ describe('buildTorrentFileTree', () => {
         expect(tree.children[0].items.map((e) => e.path)).toEqual(['R/x/one.mp3', 'R/x/two.mp3', 'R/x/cover.jpg']);
     });
 
+    it('sorts files naturally within the supported group', () => {
+        const tree = buildTorrentFileTree([file('R/06.mp3'), file('R/02.mp3'), file('R/10.mp3'), file('R/03.mp3')]);
+
+        expect(tree.items.map((e) => e.path)).toEqual(['R/02.mp3', 'R/03.mp3', 'R/06.mp3', 'R/10.mp3']);
+    });
+
+    it('keeps an alphabetically earlier unsupported file after supported ones', () => {
+        const tree = buildTorrentFileTree([file('R/a-cover.jpg', false), file('R/z.mp3')]);
+
+        expect(tree.items.map((e) => e.path)).toEqual(['R/z.mp3', 'R/a-cover.jpg']);
+    });
+
+    it('sorts child folders naturally', () => {
+        const tree = buildTorrentFileTree([file('R/CD10/a.mp3'), file('R/CD2/b.mp3')]);
+
+        expect(tree.children.map((n) => n.name)).toEqual(['CD2', 'CD10']);
+    });
+
     it('builds nested folders with unique relative paths', () => {
         const tree = buildTorrentFileTree([file('R/a/b/c.mp3'), file('R/a/d.mp3')]);
 

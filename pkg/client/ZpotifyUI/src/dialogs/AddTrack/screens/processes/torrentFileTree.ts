@@ -2,6 +2,7 @@ import type { TorrentFileEntry } from '@/app/api/zpotify';
 import { TORRENT_FILE_KINDS } from '@/shared/api/TorrentFileKinds.ts';
 import { buildFolderTree, collectFolderItems } from '@/shared/lib/folderTree.ts';
 import type { FolderNode, FolderTree } from '@/shared/lib/folderTree.ts';
+import { naturalCompare } from '@/shared/lib/naturalCompare.ts';
 
 function splitPath(entry: TorrentFileEntry): string[] {
     return (entry.path ?? '').split('/').filter((segment) => segment.length > 0);
@@ -18,14 +19,26 @@ function hasSingleSharedRoot(entries: TorrentFileEntry[]): boolean {
     return firstSegments[0] !== undefined && firstSegments.every((segment) => segment === firstSegments[0]);
 }
 
+function byPathNatural(a: TorrentFileEntry, b: TorrentFileEntry): number {
+    return naturalCompare(a.path ?? '', b.path ?? '');
+}
+
+function byNameNatural(a: FolderNode<TorrentFileEntry>, b: FolderNode<TorrentFileEntry>): number {
+    return naturalCompare(a.name, b.name);
+}
+
 function supportedFirst(items: TorrentFileEntry[]): TorrentFileEntry[] {
-    const supported = items.filter((item) => item.supported === true);
-    const unsupported = items.filter((item) => item.supported !== true);
+    const supported = items.filter((item) => item.supported === true).sort(byPathNatural);
+    const unsupported = items.filter((item) => item.supported !== true).sort(byPathNatural);
     return [...supported, ...unsupported];
 }
 
+function sortFolders(nodes: FolderNode<TorrentFileEntry>[]): FolderNode<TorrentFileEntry>[] {
+    return [...nodes].sort(byNameNatural);
+}
+
 function orderNode(node: FolderNode<TorrentFileEntry>): FolderNode<TorrentFileEntry> {
-    return { ...node, items: supportedFirst(node.items), children: node.children.map(orderNode) };
+    return { ...node, items: supportedFirst(node.items), children: sortFolders(node.children).map(orderNode) };
 }
 
 export function buildTorrentFileTree(entries: TorrentFileEntry[]): FolderTree<TorrentFileEntry> {
@@ -36,7 +49,7 @@ export function buildTorrentFileTree(entries: TorrentFileEntry[]): FolderTree<To
     }
 
     const tree = buildFolderTree(entries, folderOf);
-    return { items: supportedFirst(tree.items), children: tree.children.map(orderNode) };
+    return { items: supportedFirst(tree.items), children: sortFolders(tree.children).map(orderNode) };
 }
 
 export interface FolderSelectionState {

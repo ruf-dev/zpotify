@@ -1,4 +1,5 @@
 import type { ImportedFile, TorrentFileProgress } from '@/app/api/zpotify';
+import { naturalCompare } from '@/shared/lib/naturalCompare.ts';
 
 export interface TorrentFileRow {
     path: string;
@@ -37,5 +38,5 @@ export function mergeTorrentFiles(files: TorrentFileProgress[], importedFiles: I
         });
     }
 
-    return Array.from(rows.values());
+    return Array.from(rows.values()).sort((a, b) => naturalCompare(a.path, b.path));
 }

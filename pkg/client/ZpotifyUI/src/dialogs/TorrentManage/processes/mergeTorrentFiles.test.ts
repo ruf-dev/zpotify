@@ -40,6 +40,15 @@ describe('mergeTorrentFiles', () => {
         ]);
     });
 
+    it('returns rows sorted naturally by path', () => {
+        const rows = mergeTorrentFiles(
+            [{ path: 'Track 10.mp3' }, { path: 'Track 2.mp3' }],
+            [{ torrentPath: 'Track 1.mp3', status: 'ok' }],
+        );
+
+        expect(rows.map((row) => row.path)).toEqual(['Track 1.mp3', 'Track 2.mp3', 'Track 10.mp3']);
+    });
+
     it('skips entries with no path', () => {
         const rows = mergeTorrentFiles([{ downloadedBytes: '1' }], [{ status: 'ok' }]);
 
