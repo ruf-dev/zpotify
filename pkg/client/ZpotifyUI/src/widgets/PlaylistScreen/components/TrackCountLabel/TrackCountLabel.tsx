@@ -3,9 +3,14 @@ import cls from '@/widgets/PlaylistScreen/components/TrackCountLabel/TrackCountL
 export interface TrackCountLabelProps {
     displayValue: string;
     totalDuration: string;
+    isSingle?: boolean;
 }
 
-export default function TrackCountLabel({ displayValue, totalDuration }: TrackCountLabelProps) {
+export default function TrackCountLabel({ displayValue, totalDuration, isSingle }: TrackCountLabelProps) {
+    if (isSingle) {
+        return <span>{totalDuration}</span>;
+    }
+
     return (
         <>
             <span className={cls.Display}>{displayValue}</span>

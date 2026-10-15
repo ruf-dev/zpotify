@@ -36,6 +36,7 @@ type Playlist struct {
 	Permissions   *PlaylistPermissions
 	OwnerUsername string
 	CreatedAt     time.Time
+	Kind          generated.PlaylistKind
 }
 
 type ChangeSongsOrderParams struct {
@@ -51,6 +52,7 @@ type CreatePlaylistParams struct {
 	CoverFileId *int64
 	Year        *int32
 	Tags        []AlbumTag
+	Kind        generated.PlaylistKind
 }
 
 type UpdatePlaylistParams struct {
@@ -98,6 +100,8 @@ type PlaylistFilter struct {
 	// ArtistUuid scopes results to albums where this artist is the primary
 	// artist (playlists_artists.order_id = 0).
 	ArtistUuid sql.Null[string]
+	// Kind restricts results to an exact playlist kind.
+	Kind sql.Null[generated.PlaylistKind]
 }
 
 type ListPlaylists struct {

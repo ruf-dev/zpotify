@@ -69,8 +69,8 @@ func (q *Queries) ClearPlaylistArtists(ctx context.Context, playlistUuid uuid.UU
 
 const createPlaylist = `-- name: CreatePlaylist :one
 WITH created_playlist AS (
-    INSERT INTO playlists (name, description, is_public, owner_id, year)
-        VALUES ($1, $2, $3, $4, $5)
+    INSERT INTO playlists (name, description, is_public, owner_id, year, kind)
+        VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING uuid)
 INSERT INTO user_playlists (user_id, playlist_id, order_id, can_add_songs, can_delete_songs, can_edit)
 VALUES ($4,
@@ -88,6 +88,7 @@ type CreatePlaylistParams struct {
 	IsPublic    bool
 	UserID      int64
 	Year        sql.NullInt32
+	Kind        PlaylistKind
 }
 
 func (q *Queries) CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) (uuid.UUID, error) {
@@ -97,6 +98,7 @@ func (q *Queries) CreatePlaylist(ctx context.Context, arg CreatePlaylistParams) 
 		arg.IsPublic,
 		arg.UserID,
 		arg.Year,
+		arg.Kind,
 	)
 	var playlist_id uuid.UUID
 	err := row.Scan(&playlist_id)
@@ -213,6 +215,7 @@ SELECT playlists.uuid,
        fm.file_path AS cover_file_path,
        playlists.year,
        playlists.song_count,
+       playlists.kind,
        owner.username AS owner_username
 FROM playlists
          LEFT JOIN user_playlists AS up
@@ -241,6 +244,7 @@ type GetPlaylistWithAuthRow struct {
 	CoverFilePath sql.NullString
 	Year          sql.NullInt32
 	SongCount     int32
+	Kind          PlaylistKind
 	OwnerUsername sql.NullString
 }
 
@@ -256,6 +260,7 @@ func (q *Queries) GetPlaylistWithAuth(ctx context.Context, arg GetPlaylistWithAu
 		&i.CoverFilePath,
 		&i.Year,
 		&i.SongCount,
+		&i.Kind,
 		&i.OwnerUsername,
 	)
 	return i, err
@@ -315,9 +320,10 @@ SELECT uuid,
        cover_file_path,
        song_count,
        year,
+       kind,
        artist_info,
        ts_rank(name_tsv, to_tsquery('simple', $1::text)) AS score
-FROM playlist_search_view_v1
+FROM playlist_search_view_v2
 WHERE name_tsv @@ to_tsquery('simple', $1::text)
 ORDER BY ts_rank(name_tsv, to_tsquery('simple', $1::text)) DESC, uuid
 LIMIT $3 OFFSET $2
@@ -338,6 +344,7 @@ type SearchPlaylistsByNameRow struct {
 	CoverFilePath sql.NullString
 	SongCount     int32
 	Year          sql.NullInt32
+	Kind          PlaylistKind
 	ArtistInfo    json.RawMessage
 	Score         float32
 }
@@ -360,6 +367,7 @@ func (q *Queries) SearchPlaylistsByName(ctx context.Context, arg SearchPlaylists
 			&i.CoverFilePath,
 			&i.SongCount,
 			&i.Year,
+			&i.Kind,
 			&i.ArtistInfo,
 			&i.Score,
 		); err != nil {

@@ -1,0 +1,39 @@
+.CreateSelectionBarContainer {
+    position: sticky;
+    bottom: 0;
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transform: translateY(var(--space-sm));
+    background: var(--color-bg-secondary);
+    transition:
+        grid-template-rows var(--ease-default),
+        opacity var(--ease-default),
+        transform var(--ease-default),
+        visibility var(--ease-default);
+    visibility: hidden;
+
+    &.Visible {
+        grid-template-rows: 1fr;
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+    }
+
+    & .Inner {
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    & .Content {
+        display: flex;
+        justify-content: flex-end;
+        padding-top: var(--space-sm);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .CreateSelectionBarContainer {
+        transition: none;
+    }
+}

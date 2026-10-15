@@ -12,10 +12,18 @@ interface FileItemProps {
     selected: boolean;
     onSelect: (f: SongFile) => void;
     onDelete: (f: SongFile) => void;
+    onCreateSingle: (f: SongFile) => void;
     onToggleSelect: (f: SongFile, selected: boolean) => void;
 }
 
-export default function FileItem({ file, selected, onSelect, onDelete, onToggleSelect }: FileItemProps) {
+export default function FileItem({
+    file,
+    selected,
+    onSelect,
+    onDelete,
+    onCreateSingle,
+    onToggleSelect,
+}: FileItemProps) {
     const { fileName: name } = parseSongFilePath(file.path);
 
     function handleClick() {
@@ -25,6 +33,11 @@ export default function FileItem({ file, selected, onSelect, onDelete, onToggleS
     function handleDeleteClick(e: React.MouseEvent) {
         e.stopPropagation();
         onDelete(file);
+    }
+
+    function handleCreateSingleClick(e: React.MouseEvent) {
+        e.stopPropagation();
+        onCreateSingle(file);
     }
 
     function handleToggleClick(e: React.MouseEvent) {
@@ -44,6 +57,14 @@ export default function FileItem({ file, selected, onSelect, onDelete, onToggleS
                 <MusicFileIcon width={14} height={14} />
             </div>
             <span className={cls.FileName}>{name}</span>
+            <Button
+                variant="ghost"
+                className={cls.CreateSingleButton}
+                aria-label={`Create single ${name}`}
+                onClick={handleCreateSingleClick}
+            >
+                Create single
+            </Button>
             <Button variant="iconDanger" aria-label={`Delete ${name}`} onClick={handleDeleteClick}>
                 <TrashIcon />
             </Button>

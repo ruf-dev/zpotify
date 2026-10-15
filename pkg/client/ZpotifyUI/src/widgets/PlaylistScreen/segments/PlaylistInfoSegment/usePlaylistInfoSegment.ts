@@ -11,6 +11,7 @@ import type { TrackCountLabelProps } from '@/widgets/PlaylistScreen/components/T
 import type { PlaylistOwnerLabelProps } from '@/widgets/PlaylistScreen/components/PlaylistOwnerLabel/PlaylistOwnerLabel.tsx';
 import type { PlaylistControlsProps } from '@/widgets/PlaylistScreen/widgets/PlaylistControls/PlaylistControls.tsx';
 import { isAlbum } from '@/entities/playlist/isAlbum.ts';
+import { isSingle } from '@/entities/playlist/isSingle.ts';
 import { getLikedPlaylistCoverFallback } from '@/entities/playlist/likedPlaylistCoverFallback.ts';
 import { usePlaylistListRefresh } from '@/entities/playlist/usePlaylistListRefresh.ts';
 import useUser from '@/entities/user/useUser.ts';
@@ -29,6 +30,11 @@ export interface UsePlaylistInfoSegmentParams {
     editMode: boolean;
     onEnterEditMode: () => void;
     onExitEditMode: () => void;
+}
+
+function resolveTypeLabel(playlist: Playlist): string {
+    if (isSingle(playlist)) return 'single';
+    return isAlbum(playlist) ? 'album' : 'playlist';
 }
 
 export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
@@ -126,6 +132,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
     }
 
     const playlistIsAlbum = isAlbum(playlist);
+    const typeLabel = resolveTypeLabel(playlist);
     const showYear = playlist.year != null || editMode;
 
     const likedCoverFallback = getLikedPlaylistCoverFallback(
@@ -162,6 +169,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
     const trackCountProps: TrackCountLabelProps = {
         displayValue: `${params.trackCount} tracks`,
         totalDuration: params.totalDuration,
+        isSingle: isSingle(playlist),
     };
 
     const ownerLabelProps: PlaylistOwnerLabelProps = {
@@ -192,6 +200,7 @@ export function usePlaylistInfoSegment(params: UsePlaylistInfoSegmentParams) {
 
     return {
         playlistIsAlbum,
+        typeLabel,
         showYear,
 
         aboutExpanded,

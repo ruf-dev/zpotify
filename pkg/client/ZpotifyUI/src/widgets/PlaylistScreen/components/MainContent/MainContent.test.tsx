@@ -5,14 +5,20 @@ vi.mock('@/widgets/PlaylistScreen/components/TrackRow/TrackRow.tsx', () => ({
     default: (props: {
         song: { id?: string };
         isHighlighted?: boolean;
+        canReorder?: boolean;
         rowRef?: (el: HTMLDivElement | null) => void;
     }) => (
         <div
             ref={props.rowRef}
             data-testid={`row-${props.song.id}`}
             data-highlighted={props.isHighlighted ? 'true' : 'false'}
+            data-reorderable={props.canReorder ? 'true' : 'false'}
         />
     ),
+}));
+
+vi.mock('@/widgets/PlaylistScreen/widgets/AddTracksPanel/AddTracksPanel.tsx', () => ({
+    default: () => <div>add tracks panel</div>,
 }));
 
 import MainContent from '@/widgets/PlaylistScreen/components/MainContent/MainContent.tsx';
@@ -116,5 +122,46 @@ describe('MainContent highlight-on-open', () => {
 
         expect(scrollIntoViewSpy).toHaveBeenCalledTimes(1);
         expect(screen.getByTestId('row-1').getAttribute('data-highlighted')).toBe('true');
+    });
+
+    it('offers the add-tracks panel and reordering to the owner of an editable playlist', () => {
+        render(
+            <MainContent
+                songs={[makeSong('1')]}
+                currentTrackPath={null}
+                isAudioPlaying={false}
+                isAudioLoading={false}
+                onPlaySong={vi.fn()}
+                onReorder={vi.fn()}
+                username="alex"
+                canEdit
+                editMode
+                playlistUuid="p1"
+            />,
+        );
+
+        expect(screen.getByText('add tracks panel')).toBeTruthy();
+        expect(screen.getByTestId('row-1').getAttribute('data-reorderable')).toBe('true');
+    });
+
+    it('hides the add-tracks panel and reordering for a single even in edit mode', () => {
+        render(
+            <MainContent
+                songs={[makeSong('1')]}
+                currentTrackPath={null}
+                isAudioPlaying={false}
+                isAudioLoading={false}
+                onPlaySong={vi.fn()}
+                onReorder={vi.fn()}
+                username="alex"
+                canEdit
+                editMode
+                playlistUuid="p1"
+                playlistIsSingle
+            />,
+        );
+
+        expect(screen.queryByText('add tracks panel')).toBeNull();
+        expect(screen.getByTestId('row-1').getAttribute('data-reorderable')).toBe('false');
     });
 });

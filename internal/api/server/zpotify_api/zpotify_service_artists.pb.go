@@ -768,8 +768,8 @@ type GetArtistPage_Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Artist        *Artist                `protobuf:"bytes,1,opt,name=artist,proto3" json:"artist,omitempty"`
 	Albums        []*Playlist            `protobuf:"bytes,2,rep,name=albums,proto3" json:"albums,omitempty"`
-	Singles       []*SongBase            `protobuf:"bytes,3,rep,name=singles,proto3" json:"singles,omitempty"`
 	Features      []*SongBase            `protobuf:"bytes,4,rep,name=features,proto3" json:"features,omitempty"`
+	Singles       []*Playlist            `protobuf:"bytes,5,rep,name=singles,proto3" json:"singles,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -818,16 +818,16 @@ func (x *GetArtistPage_Response) GetAlbums() []*Playlist {
 	return nil
 }
 
-func (x *GetArtistPage_Response) GetSingles() []*SongBase {
+func (x *GetArtistPage_Response) GetFeatures() []*SongBase {
 	if x != nil {
-		return x.Singles
+		return x.Features
 	}
 	return nil
 }
 
-func (x *GetArtistPage_Response) GetFeatures() []*SongBase {
+func (x *GetArtistPage_Response) GetSingles() []*Playlist {
 	if x != nil {
-		return x.Features
+		return x.Singles
 	}
 	return nil
 }
@@ -997,16 +997,16 @@ const file_zpotify_service_artists_proto_rawDesc = "" +
 	"\bcan_edit\x18\x06 \x01(\bH\x02R\acanEdit\x88\x01\x01B\x13\n" +
 	"\x11_avatar_file_pathB\x1d\n" +
 	"\x1b_background_cover_file_pathB\v\n" +
-	"\t_can_edit\"\x88\x02\n" +
+	"\t_can_edit\"\x8e\x02\n" +
 	"\rGetArtistPage\x1a*\n" +
 	"\aRequest\x12\x1f\n" +
 	"\vartist_uuid\x18\x01 \x01(\tR\n" +
-	"artistUuid\x1a\xca\x01\n" +
+	"artistUuid\x1a\xd0\x01\n" +
 	"\bResponse\x12+\n" +
 	"\x06artist\x18\x01 \x01(\v2\x13.zpotify_api.ArtistR\x06artist\x12-\n" +
-	"\x06albums\x18\x02 \x03(\v2\x15.zpotify_api.PlaylistR\x06albums\x12/\n" +
-	"\asingles\x18\x03 \x03(\v2\x15.zpotify_api.SongBaseR\asingles\x121\n" +
-	"\bfeatures\x18\x04 \x03(\v2\x15.zpotify_api.SongBaseR\bfeatures\"\x9b\x03\n" +
+	"\x06albums\x18\x02 \x03(\v2\x15.zpotify_api.PlaylistR\x06albums\x121\n" +
+	"\bfeatures\x18\x04 \x03(\v2\x15.zpotify_api.SongBaseR\bfeatures\x12/\n" +
+	"\asingles\x18\x05 \x03(\v2\x15.zpotify_api.PlaylistR\asinglesJ\x04\b\x03\x10\x04\"\x9b\x03\n" +
 	"\fUpdateArtist\x1a\xd8\x01\n" +
 	"\aRequest\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x17\n" +
@@ -1079,8 +1079,8 @@ var file_zpotify_service_artists_proto_depIdxs = []int32{
 	21, // 3: zpotify_api.CreateArtist.Response.artist:type_name -> zpotify_api.ArtistBase
 	4,  // 4: zpotify_api.GetArtistPage.Response.artist:type_name -> zpotify_api.Artist
 	22, // 5: zpotify_api.GetArtistPage.Response.albums:type_name -> zpotify_api.Playlist
-	23, // 6: zpotify_api.GetArtistPage.Response.singles:type_name -> zpotify_api.SongBase
-	23, // 7: zpotify_api.GetArtistPage.Response.features:type_name -> zpotify_api.SongBase
+	23, // 6: zpotify_api.GetArtistPage.Response.features:type_name -> zpotify_api.SongBase
+	22, // 7: zpotify_api.GetArtistPage.Response.singles:type_name -> zpotify_api.Playlist
 	7,  // 8: zpotify_api.ArtistsAPI.ListArtist:input_type -> zpotify_api.ListArtist.Request
 	10, // 9: zpotify_api.ArtistsAPI.CreateArtist:input_type -> zpotify_api.CreateArtist.Request
 	12, // 10: zpotify_api.ArtistsAPI.LikeArtist:input_type -> zpotify_api.LikeArtist.Request

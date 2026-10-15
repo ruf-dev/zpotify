@@ -55,6 +55,10 @@ func (p *PlaylistService) Create(ctx context.Context, req domain.CreatePlaylistP
 		return "", rerrors.Wrap(err, "error validating album tags")
 	}
 
+	if req.Kind == "" {
+		req.Kind = generated.PlaylistKindPLAYLIST
+	}
+
 	var playlistUuid string
 
 	err = p.txManager.Execute(
@@ -265,6 +269,11 @@ func (p *PlaylistService) AddSong(ctx context.Context, req domain.AddSongToPlayl
 		return rerrors.Wrap(service_errors.ErrUnauthorized, "user is missing can_add_song permission on playlist")
 	}
 
+	err = p.ensureSongsFitPlaylistKind(ctx, userCtx.UserId, req.PlaylistUuid, 1)
+	if err != nil {
+		return rerrors.Wrap(err)
+	}
+
 	songFile, err := p.fileMetaStorage.GetBySongId(ctx, req.SongId)
 	if err != nil {
 		return rerrors.Wrap(err, "error getting song file from storage")
@@ -365,6 +374,11 @@ func (p *PlaylistService) AddSongs(ctx context.Context, req domain.AddSongsToPla
 		return rerrors.Wrap(service_errors.ErrUnauthorized, "user is missing can_add_song permission on playlist")
 	}
 
+	err = p.ensureSongsFitPlaylistKind(ctx, userCtx.UserId, req.PlaylistUuid, len(req.SongIds))
+	if err != nil {
+		return rerrors.Wrap(err)
+	}
+
 	for _, songId := range req.SongIds {
 		songFile, fileErr := p.fileMetaStorage.GetBySongId(ctx, songId)
 		if fileErr != nil {
@@ -394,6 +408,28 @@ func (p *PlaylistService) AddSongs(ctx context.Context, req domain.AddSongsToPla
 	})
 	if err != nil {
 		return rerrors.Wrap(err)
+	}
+
+	return nil
+}
+
+func (p *PlaylistService) ensureSongsFitPlaylistKind(ctx context.Context, userId int64, playlistUuid string, newSongs int) error {
+	playlist, err := p.playlistStorage.Get(ctx, userId, playlistUuid)
+	if err != nil {
+		return rerrors.Wrap(err, "error getting playlist")
+	}
+
+	if playlist.Kind != generated.PlaylistKindSINGLE {
+		return nil
+	}
+
+	var existing int
+	if playlist.SongCount != nil {
+		existing = int(*playlist.SongCount)
+	}
+
+	if existing+newSongs > 1 {
+		return rerrors.Wrap(service_errors.ErrSingleHoldsOneSong)
 	}
 
 	return nil

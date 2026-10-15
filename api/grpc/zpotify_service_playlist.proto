@@ -125,6 +125,7 @@ message CreatePlaylist {
     optional int64 cover_file_id = 5;
     optional int32 year = 6;
     repeated AlbumTag tags = 7;
+    PlaylistKind kind = 8;
   }
 
   message Response {

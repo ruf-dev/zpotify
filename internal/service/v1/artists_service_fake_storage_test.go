@@ -79,16 +79,21 @@ func (f *fakeArtistStorage) WithTx(_ *sql.Tx) storage.ArtistStorage {
 // Only List is exercised by ArtistsService tests; every other method is a
 // harmless no-op/zero-value implementation to satisfy the interface.
 type fakePlaylistStorage struct {
-	listFn   func(ctx context.Context, req domain.ListPlaylists) ([]domain.Playlist, error)
-	searchFn func(ctx context.Context, query string, limit, offset uint64) ([]domain.PlaylistSearchResult, error)
+	listFn    func(ctx context.Context, req domain.ListPlaylists) ([]domain.Playlist, error)
+	searchFn  func(ctx context.Context, query string, limit, offset uint64) ([]domain.PlaylistSearchResult, error)
+	getFn     func(ctx context.Context, userId int64, playlistUuid string) (domain.Playlist, error)
+	addSongFn func(ctx context.Context, playlistUuid string, songId int32) error
 }
 
 func (f *fakePlaylistStorage) Create(_ context.Context, _ domain.CreatePlaylistParams, _ int64) (string, error) {
 	return "", nil
 }
 
-func (f *fakePlaylistStorage) Get(_ context.Context, _ int64, _ string) (domain.Playlist, error) {
-	return domain.Playlist{}, nil
+func (f *fakePlaylistStorage) Get(ctx context.Context, userId int64, playlistUuid string) (domain.Playlist, error) {
+	if f.getFn == nil {
+		return domain.Playlist{}, nil
+	}
+	return f.getFn(ctx, userId, playlistUuid)
 }
 
 func (f *fakePlaylistStorage) Update(_ context.Context, _ domain.UpdatePlaylistParams) error {
@@ -131,8 +136,11 @@ func (f *fakePlaylistStorage) CountSongs(_ context.Context, _ domain.ListSongs) 
 	return 0, nil
 }
 
-func (f *fakePlaylistStorage) AddSong(_ context.Context, _ string, _ int32) error {
-	return nil
+func (f *fakePlaylistStorage) AddSong(ctx context.Context, playlistUuid string, songId int32) error {
+	if f.addSongFn == nil {
+		return nil
+	}
+	return f.addSongFn(ctx, playlistUuid, songId)
 }
 
 func (f *fakePlaylistStorage) RemoveSong(_ context.Context, _ string, _ int32) error {

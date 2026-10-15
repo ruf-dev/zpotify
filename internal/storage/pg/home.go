@@ -13,6 +13,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
+	generated "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 	"go.zpotify.ru/zpotify/internal/storage/pg/generated/home_q"
 	"go.zpotify.ru/zpotify/internal/utils"
 )
@@ -65,8 +66,9 @@ func (h *HomeStorage) ListPlaylistsByDays(ctx context.Context, days []time.Time)
 		"song_count",
 		"year",
 		"created_at",
+		"kind",
 	).
-		From("playlists_v4").
+		From("playlists_v5").
 		Where(sq.Eq{"is_public": true}).
 		Where(sq.Eq{createdAtDateColumn: days}).
 		PlaceholderFormat(sq.Dollar)
@@ -94,9 +96,10 @@ func (h *HomeStorage) ListPlaylistsByDays(ctx context.Context, days []time.Time)
 			songCount     int32
 			year          sql.NullInt32
 			createdAt     time.Time
+			kind          generated.PlaylistKind
 		)
 
-		err = rows.Scan(&id, &name, &description, &isPublic, &coverFileID, &coverFilePath, &songCount, &year, &createdAt)
+		err = rows.Scan(&id, &name, &description, &isPublic, &coverFileID, &coverFilePath, &songCount, &year, &createdAt, &kind)
 		if err != nil {
 			return nil, wrapPgErr(err)
 		}
@@ -108,6 +111,7 @@ func (h *HomeStorage) ListPlaylistsByDays(ctx context.Context, days []time.Time)
 			IsPublic:    isPublic,
 			SongCount:   &songCount,
 			CreatedAt:   createdAt,
+			Kind:        kind,
 		}
 
 		if coverFileID.Valid {

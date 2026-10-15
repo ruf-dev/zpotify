@@ -378,18 +378,18 @@
             "$ref": "#/definitions/zpotify_apiPlaylist"
           }
         },
-        "singles": {
+        "features": {
           "type": "array",
           "items": {
             "type": "object",
             "$ref": "#/definitions/zpotify_apiSongBase"
           }
         },
-        "features": {
+        "singles": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/zpotify_apiSongBase"
+            "$ref": "#/definitions/zpotify_apiPlaylist"
           }
         }
       }
@@ -489,8 +489,20 @@
         },
         "ownerUsername": {
           "type": "string"
+        },
+        "kind": {
+          "$ref": "#/definitions/zpotify_apiPlaylistKind"
         }
       }
+    },
+    "zpotify_apiPlaylistKind": {
+      "type": "string",
+      "enum": [
+        "PLAYLIST_KIND_UNSPECIFIED",
+        "PLAYLIST_KIND_PLAYLIST",
+        "PLAYLIST_KIND_SINGLE"
+      ],
+      "default": "PLAYLIST_KIND_UNSPECIFIED"
     },
     "zpotify_apiSongBase": {
       "type": "object",

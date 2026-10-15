@@ -74,11 +74,13 @@ export default function ArtistScreenWidget({ artistPage }: Props) {
                 )}
 
                 {singles.length > 0 && (
-                    <ArtistSongsRow
-                        title="Singles"
-                        songs={singles}
-                        queueSourceId={`artist-singles-${artist.uuid ?? ''}`}
-                    />
+                    <CardRow title="Singles">
+                        {singles.map((a) => (
+                            <div key={a.uuid} className={cls.AlbumCardWrapper}>
+                                <AlbumCard {...toAlbumCardProps(a)} />
+                            </div>
+                        ))}
+                    </CardRow>
                 )}
 
                 {features.length > 0 && (

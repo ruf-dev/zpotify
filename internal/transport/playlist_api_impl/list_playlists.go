@@ -9,6 +9,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/domain"
 	generated "go.zpotify.ru/zpotify/internal/storage/pg/generated"
+	"go.zpotify.ru/zpotify/internal/transport/kind_mapper"
 )
 
 var albumTagKindProtoToDomain = map[zpotify_api.AlbumTagKind]generated.AlbumTagKind{
@@ -122,6 +123,7 @@ func toPlaylist(pl domain.Playlist) *zpotify_api.Playlist {
 		CanEdit:       canEdit,
 		IsSaved:       isSaved,
 		OwnerUsername: ownerUsername,
+		Kind:          kind_mapper.PlaylistKindToProto(pl.Kind),
 	}
 }
 

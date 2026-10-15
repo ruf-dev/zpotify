@@ -115,8 +115,9 @@ message GetArtistPage {
   message Response {
     Artist artist = 1;
     repeated Playlist albums = 2;
-    repeated SongBase singles = 3;
+    reserved 3;
     repeated SongBase features = 4;
+    repeated Playlist singles = 5;
   }
 }
 

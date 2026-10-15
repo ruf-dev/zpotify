@@ -41,6 +41,7 @@ interface MultitrackUploadModalProps {
     existingFiles?: SongFile[];
     targetPlaylist?: TargetPlaylist;
     initialPlaylistName?: string;
+    isSingle?: boolean;
 }
 
 export default function MultitrackUploadModal({
@@ -49,6 +50,7 @@ export default function MultitrackUploadModal({
     existingFiles,
     targetPlaylist,
     initialPlaylistName,
+    isSingle = false,
 }: MultitrackUploadModalProps) {
     const { CloseDialog, OpenDialog, LockClosing, UnlockClosing } = useDialog();
     const refreshActive = useSongListRefresh((s) => s.refreshActive);
@@ -119,11 +121,16 @@ export default function MultitrackUploadModal({
         );
     }
 
+    const soleTrack = isSingle ? trackDrafts.tracks[0] : undefined;
+    const effectiveName = isSingle ? (soleTrack?.title ?? '') : playlistName;
+    const effectiveArtists = isSingle ? (soleTrack?.artists ?? []) : albumArtists;
+
     const submitState = useMultitrackSubmit({
         tracks: trackDrafts.tracks,
         playlistMode,
-        playlistName,
-        albumArtists,
+        playlistName: effectiveName,
+        isSingle,
+        albumArtists: effectiveArtists,
         year,
         tags,
         hasCover: cover !== undefined || existingCoverFile !== undefined,
@@ -139,8 +146,9 @@ export default function MultitrackUploadModal({
     const summary = useMultitrackSummary({
         tracks: trackDrafts.tracks,
         playlistMode,
-        playlistName,
-        albumArtists,
+        playlistName: effectiveName,
+        isSingle,
+        albumArtists: effectiveArtists,
         targetPlaylistUuid: targetPlaylist?.uuid,
     });
 
@@ -174,7 +182,9 @@ export default function MultitrackUploadModal({
             </div>
 
             <div className={cls.PanelBody}>
-                {!targetPlaylist && <PlaylistToggleRow checked={playlistMode} onChange={setPlaylistMode} />}
+                {!targetPlaylist && !isSingle && (
+                    <PlaylistToggleRow checked={playlistMode} onChange={setPlaylistMode} />
+                )}
 
                 {playlistMode && !targetPlaylist && (
                     <PlaylistDetailsPanel
@@ -192,6 +202,7 @@ export default function MultitrackUploadModal({
                         onYearChange={setYear}
                         loadArtistOptions={loadArtistOptions}
                         onCreateArtist={onCreateArtist}
+                        isSingle={isSingle}
                         tags={tags}
                         onTagsChange={setTags}
                     />
@@ -209,7 +220,7 @@ export default function MultitrackUploadModal({
                     onCleanNames={trackDrafts.handleCleanNumbers}
                     loadArtistOptions={loadArtistOptions}
                     onCreateArtist={onCreateArtist}
-                    showSearchBox={playlistMode}
+                    showSearchBox={playlistMode && !isSingle}
                     excludedSongIds={excludedSongIds}
                     onAddSong={trackDrafts.handleAddSong}
                     flatList={isSingleFolder}

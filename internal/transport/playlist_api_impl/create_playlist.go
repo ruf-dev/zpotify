@@ -7,6 +7,7 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/transport/kind_mapper"
 )
 
 func (impl *Impl) CreatePlaylist(ctx context.Context, req *zpotify_api.CreatePlaylist_Request) (*zpotify_api.CreatePlaylist_Response, error) {
@@ -16,6 +17,7 @@ func (impl *Impl) CreatePlaylist(ctx context.Context, req *zpotify_api.CreatePla
 		IsPublic:    req.GetIsPublic(),
 		ArtistUuids: req.GetArtistUuids(),
 		Tags:        protoTagsToDomain(req.GetTags()),
+		Kind:        kind_mapper.PlaylistKindFromProto(req.GetKind()),
 	}
 
 	if req.CoverFileId != nil {

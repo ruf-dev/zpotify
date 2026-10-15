@@ -30,6 +30,8 @@ var (
 
 	ErrSongAlreadyInPlaylist = rerrors.New("song is already in playlist", codes.AlreadyExists, rerrors.WithHttpStatus(http.StatusConflict))
 
+	ErrSingleHoldsOneSong = rerrors.New("a single holds exactly one song", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusConflict))
+
 	ErrFileAlreadyUsed = rerrors.New("file is already attached to a song", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusConflict))
 
 	ErrTelegramNotLinked = rerrors.New("telegram account is not linked", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusBadRequest))

@@ -9,6 +9,7 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/transport/kind_mapper"
 )
 
 func (impl *Impl) GetFeed(ctx context.Context, request *zpotify_api.GetFeed_Request) (*zpotify_api.GetFeed_Response, error) {
@@ -108,6 +109,7 @@ func toPbPlaylist(pl domain.Playlist) *zpotify_api.Playlist {
 		SongCount:     songCount,
 		CoverFilePath: coverFilePath,
 		Year:          pl.Year,
+		Kind:          kind_mapper.PlaylistKindToProto(pl.Kind),
 	}
 
 	return pbPlaylist

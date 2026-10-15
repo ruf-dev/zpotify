@@ -43,7 +43,7 @@ export default function PlaylistInfoSegment(props: PlaylistInfoSegmentProps) {
             />
 
             <div className={cls.TitleBlock}>
-                <span className={cls.TypeLabel}>{context.playlistIsAlbum ? 'album' : 'playlist'}</span>
+                <span className={cls.TypeLabel}>{context.typeLabel}</span>
 
                 <div className={cls.NameRow}>
                     <EditableAlbumName {...context.albumNameProps} />

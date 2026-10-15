@@ -5,6 +5,7 @@ export interface MultitrackSummaryParams {
     tracks: TrackDraft[];
     playlistMode: boolean;
     playlistName: string;
+    isSingle?: boolean;
     albumArtists: ArtistItem[];
     targetPlaylistUuid?: string;
 }
@@ -37,14 +38,16 @@ function buildValidationHint(
         !params.playlistName.trim() &&
         params.tracks.length > 0
     ) {
-        return 'name the playlist to continue';
+        return params.isSingle ? 'give the track a title to continue' : 'name the playlist to continue';
     }
     if (params.tracks.length === 0) return 'add at least one track';
+    if (params.isSingle && params.tracks.length > 1) return 'a single holds exactly one track';
     return '';
 }
 
 export function useMultitrackSummary(params: MultitrackSummaryParams): MultitrackSummary {
     const { tracks, playlistMode, playlistName, albumArtists, targetPlaylistUuid } = params;
+    const isSingle = params.isSingle ?? false;
 
     const linkedSongIds = new Set(tracks.map((t) => t.linkedSongId).filter((id): id is string => !!id));
     const totalDuration = tracks.reduce((s, t) => s + t.duration, 0);
@@ -53,23 +56,31 @@ export function useMultitrackSummary(params: MultitrackSummaryParams): Multitrac
     const hasUploadError = tracks.some((t) => t.uploadStatus === 'error');
     const isUploading =
         !hasUploadError && tracks.some((t) => t.uploadStatus === 'pending' || t.uploadStatus === 'uploading');
+    const hasSingleTrackCount = !isSingle || tracks.length === 1;
     const isValid =
-        tracks.length > 0 && (!!targetPlaylistUuid || !playlistMode || playlistName.trim().length > 0) && allUploaded;
+        hasSingleTrackCount &&
+        tracks.length > 0 &&
+        (!!targetPlaylistUuid || !playlistMode || playlistName.trim().length > 0) &&
+        allUploaded;
     const isAlbum = playlistMode && albumArtists.length > 0;
     const titleText = targetPlaylistUuid
         ? 'add tracks'
-        : playlistMode
-          ? isAlbum
-              ? 'new album'
-              : 'new playlist'
-          : 'upload tracks';
+        : isSingle
+          ? 'new single'
+          : playlistMode
+            ? isAlbum
+                ? 'new album'
+                : 'new playlist'
+            : 'upload tracks';
     const submitLabel = targetPlaylistUuid
         ? 'add tracks'
-        : playlistMode
-          ? isAlbum
-              ? 'create album'
-              : 'create playlist'
-          : 'upload tracks';
+        : isSingle
+          ? 'create single'
+          : playlistMode
+            ? isAlbum
+                ? 'create album'
+                : 'create playlist'
+            : 'upload tracks';
     const validationHint = buildValidationHint(params, hasUploadError, isUploading, isValid);
 
     return {

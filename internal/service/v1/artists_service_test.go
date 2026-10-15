@@ -9,6 +9,7 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
+	generated "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 )
 
 func contextWithPermissions(userId int64, permissions domain.UserPermissions) context.Context {
@@ -156,38 +157,69 @@ func TestArtistsService_GetArtistPage_PropagatesAlbumCoverFilePath(t *testing.T)
 		"expected PlaylistStorage.List's resolved CoverFilePath to propagate through GetArtistPage so the frontend can render the real album cover instead of falling back to a placeholder")
 }
 
-func TestArtistsService_GetArtistPage_UsesRoleAndStandaloneFiltersPerRow(t *testing.T) {
-	fakeArtist := &fakeArtistStorage{
+func newArtistPageFakeArtist() *fakeArtistStorage {
+	return &fakeArtistStorage{
 		getFn: func(_ context.Context, artistUuid string, _ int64) (domain.Artist, error) {
 			return domain.Artist{ArtistsBase: domain.ArtistsBase{Uuid: artistUuid}}, nil
 		},
 	}
+}
 
-	var albumsReq domain.ListPlaylists
+func TestArtistsService_GetArtistPage_SplitsAlbumsAndSinglesByPlaylistKind(t *testing.T) {
+	album := domain.Playlist{Uuid: testAlbumUuid, Name: testAlbumName, Kind: generated.PlaylistKindPLAYLIST}
+	single := domain.Playlist{Uuid: "single-uuid", Name: "Some Single", Kind: generated.PlaylistKindSINGLE}
+
+	var listReqs []domain.ListPlaylists
 	fakePlaylists := &fakePlaylistStorage{
 		listFn: func(_ context.Context, req domain.ListPlaylists) ([]domain.Playlist, error) {
-			albumsReq = req
-			return nil, nil
+			listReqs = append(listReqs, req)
+			if req.Filter.Kind.V == generated.PlaylistKindSINGLE {
+				return []domain.Playlist{single}, nil
+			}
+			return []domain.Playlist{album}, nil
 		},
 	}
 
-	var singlesReq, featuresReq domain.ListSongsByArtist
+	svc := &ArtistsService{
+		artistStorage:   newArtistPageFakeArtist(),
+		playlistStorage: fakePlaylists,
+		songStorage:     &fakeSongStorage{},
+	}
+
+	ctx := contextWithPermissions(7, domain.UserPermissions{})
+
+	page, err := svc.GetArtistPage(ctx, testArtistUuid)
+	require.NoError(t, err)
+
+	require.Len(t, listReqs, 2, "expected one playlist list call for albums and one for singles")
+	for _, req := range listReqs {
+		assert.True(t, req.Filter.ArtistUuid.Valid)
+		assert.Equal(t, testArtistUuid, req.Filter.ArtistUuid.V)
+		assert.True(t, req.Filter.Kind.Valid, "every artist page row must be scoped to an exact playlist kind")
+	}
+	assert.Equal(t, generated.PlaylistKindPLAYLIST, listReqs[0].Filter.Kind.V)
+	assert.Equal(t, generated.PlaylistKindSINGLE, listReqs[1].Filter.Kind.V)
+
+	require.Len(t, page.Albums, 1)
+	assert.Equal(t, testAlbumUuid, page.Albums[0].Uuid)
+	require.Len(t, page.Singles, 1)
+	assert.Equal(t, "single-uuid", page.Singles[0].Uuid)
+}
+
+func TestArtistsService_GetArtistPage_ListsFeaturesAsFeaturedSongs(t *testing.T) {
+	var featuresReq domain.ListSongsByArtist
 	callCount := 0
 	fakeSongs := &fakeSongStorage{
 		listByArtistFn: func(_ context.Context, req domain.ListSongsByArtist) ([]domain.Song, error) {
 			callCount++
-			if req.Role == domain.ArtistSongRolePrimary {
-				singlesReq = req
-			} else {
-				featuresReq = req
-			}
+			featuresReq = req
 			return nil, nil
 		},
 	}
 
 	svc := &ArtistsService{
-		artistStorage:   fakeArtist,
-		playlistStorage: fakePlaylists,
+		artistStorage:   newArtistPageFakeArtist(),
+		playlistStorage: &fakePlaylistStorage{},
 		songStorage:     fakeSongs,
 	}
 
@@ -196,16 +228,7 @@ func TestArtistsService_GetArtistPage_UsesRoleAndStandaloneFiltersPerRow(t *test
 	_, err := svc.GetArtistPage(ctx, testArtistUuid)
 	require.NoError(t, err)
 
-	require.Equal(t, 2, callCount, "expected ListByArtist to be called once for singles and once for features")
-
-	assert.True(t, albumsReq.Filter.ArtistUuid.Valid)
-	assert.Equal(t, testArtistUuid, albumsReq.Filter.ArtistUuid.V)
-
-	assert.Equal(t, domain.ArtistSongRolePrimary, singlesReq.Role)
-	assert.True(t, singlesReq.StandaloneOnly, "singles must be scoped to standalone tracks")
-	assert.Equal(t, testArtistUuid, singlesReq.ArtistUuid)
-
+	require.Equal(t, 1, callCount, "expected ListByArtist to be called once, for features only")
 	assert.Equal(t, domain.ArtistSongRoleFeatured, featuresReq.Role)
-	assert.False(t, featuresReq.StandaloneOnly, "features must not require standalone tracks")
 	assert.Equal(t, testArtistUuid, featuresReq.ArtistUuid)
 }

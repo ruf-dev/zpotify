@@ -68,6 +68,55 @@ func (SongTagKind) EnumDescriptor() ([]byte, []int) {
 	return file_zpotify_common_proto_rawDescGZIP(), []int{0}
 }
 
+type PlaylistKind int32
+
+const (
+	PlaylistKind_PLAYLIST_KIND_UNSPECIFIED PlaylistKind = 0
+	PlaylistKind_PLAYLIST_KIND_PLAYLIST    PlaylistKind = 1
+	PlaylistKind_PLAYLIST_KIND_SINGLE      PlaylistKind = 2
+)
+
+// Enum value maps for PlaylistKind.
+var (
+	PlaylistKind_name = map[int32]string{
+		0: "PLAYLIST_KIND_UNSPECIFIED",
+		1: "PLAYLIST_KIND_PLAYLIST",
+		2: "PLAYLIST_KIND_SINGLE",
+	}
+	PlaylistKind_value = map[string]int32{
+		"PLAYLIST_KIND_UNSPECIFIED": 0,
+		"PLAYLIST_KIND_PLAYLIST":    1,
+		"PLAYLIST_KIND_SINGLE":      2,
+	}
+)
+
+func (x PlaylistKind) Enum() *PlaylistKind {
+	p := new(PlaylistKind)
+	*p = x
+	return p
+}
+
+func (x PlaylistKind) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PlaylistKind) Descriptor() protoreflect.EnumDescriptor {
+	return file_zpotify_common_proto_enumTypes[1].Descriptor()
+}
+
+func (PlaylistKind) Type() protoreflect.EnumType {
+	return &file_zpotify_common_proto_enumTypes[1]
+}
+
+func (x PlaylistKind) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use PlaylistKind.Descriptor instead.
+func (PlaylistKind) EnumDescriptor() ([]byte, []int) {
+	return file_zpotify_common_proto_rawDescGZIP(), []int{1}
+}
+
 type AlbumTagKind int32
 
 const (
@@ -119,11 +168,11 @@ func (x AlbumTagKind) String() string {
 }
 
 func (AlbumTagKind) Descriptor() protoreflect.EnumDescriptor {
-	return file_zpotify_common_proto_enumTypes[1].Descriptor()
+	return file_zpotify_common_proto_enumTypes[2].Descriptor()
 }
 
 func (AlbumTagKind) Type() protoreflect.EnumType {
-	return &file_zpotify_common_proto_enumTypes[1]
+	return &file_zpotify_common_proto_enumTypes[2]
 }
 
 func (x AlbumTagKind) Number() protoreflect.EnumNumber {
@@ -132,7 +181,7 @@ func (x AlbumTagKind) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AlbumTagKind.Descriptor instead.
 func (AlbumTagKind) EnumDescriptor() ([]byte, []int) {
-	return file_zpotify_common_proto_rawDescGZIP(), []int{1}
+	return file_zpotify_common_proto_rawDescGZIP(), []int{2}
 }
 
 type AlbumVersionMetadata_VersionKind int32
@@ -177,11 +226,11 @@ func (x AlbumVersionMetadata_VersionKind) String() string {
 }
 
 func (AlbumVersionMetadata_VersionKind) Descriptor() protoreflect.EnumDescriptor {
-	return file_zpotify_common_proto_enumTypes[2].Descriptor()
+	return file_zpotify_common_proto_enumTypes[3].Descriptor()
 }
 
 func (AlbumVersionMetadata_VersionKind) Type() protoreflect.EnumType {
-	return &file_zpotify_common_proto_enumTypes[2]
+	return &file_zpotify_common_proto_enumTypes[3]
 }
 
 func (x AlbumVersionMetadata_VersionKind) Number() protoreflect.EnumNumber {
@@ -613,6 +662,7 @@ type Playlist struct {
 	CanEdit       *bool                  `protobuf:"varint,10,opt,name=can_edit,json=canEdit,proto3,oneof" json:"can_edit,omitempty"`
 	IsSaved       *bool                  `protobuf:"varint,11,opt,name=is_saved,json=isSaved,proto3,oneof" json:"is_saved,omitempty"`
 	OwnerUsername *string                `protobuf:"bytes,12,opt,name=owner_username,json=ownerUsername,proto3,oneof" json:"owner_username,omitempty"`
+	Kind          PlaylistKind           `protobuf:"varint,13,opt,name=kind,proto3,enum=zpotify_api.PlaylistKind" json:"kind,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -731,6 +781,13 @@ func (x *Playlist) GetOwnerUsername() string {
 	return ""
 }
 
+func (x *Playlist) GetKind() PlaylistKind {
+	if x != nil {
+		return x.Kind
+	}
+	return PlaylistKind_PLAYLIST_KIND_UNSPECIFIED
+}
+
 type SongFile struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -825,7 +882,7 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\tR\x05value\x12H\n" +
 	"\ralbum_version\x18\x03 \x01(\v2!.zpotify_api.AlbumVersionMetadataH\x00R\falbumVersionB\n" +
 	"\n" +
-	"\bmetadata\"\x93\x04\n" +
+	"\bmetadata\"\xc2\x04\n" +
 	"\bPlaylist\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
@@ -840,7 +897,8 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\bcan_edit\x18\n" +
 	" \x01(\bH\x04R\acanEdit\x88\x01\x01\x12\x1e\n" +
 	"\bis_saved\x18\v \x01(\bH\x05R\aisSaved\x88\x01\x01\x12*\n" +
-	"\x0eowner_username\x18\f \x01(\tH\x06R\rownerUsername\x88\x01\x01B\x0e\n" +
+	"\x0eowner_username\x18\f \x01(\tH\x06R\rownerUsername\x88\x01\x01\x12-\n" +
+	"\x04kind\x18\r \x01(\x0e2\x19.zpotify_api.PlaylistKindR\x04kindB\x0e\n" +
 	"\f_descriptionB\r\n" +
 	"\v_song_countB\x12\n" +
 	"\x10_cover_file_pathB\a\n" +
@@ -853,7 +911,11 @@ const file_zpotify_common_proto_rawDesc = "" +
 	"\x04path\x18\x02 \x01(\tR\x04path*F\n" +
 	"\vSongTagKind\x12\x1d\n" +
 	"\x19SONG_TAG_KIND_UNSPECIFIED\x10\x00\x12\x18\n" +
-	"\x14SONG_TAG_KIND_SINGLE\x10\x01*\x83\x02\n" +
+	"\x14SONG_TAG_KIND_SINGLE\x10\x01*c\n" +
+	"\fPlaylistKind\x12\x1d\n" +
+	"\x19PLAYLIST_KIND_UNSPECIFIED\x10\x00\x12\x1a\n" +
+	"\x16PLAYLIST_KIND_PLAYLIST\x10\x01\x12\x18\n" +
+	"\x14PLAYLIST_KIND_SINGLE\x10\x02*\x83\x02\n" +
 	"\fAlbumTagKind\x12\x1e\n" +
 	"\x1aALBUM_TAG_KIND_UNSPECIFIED\x10\x00\x12\x18\n" +
 	"\x14ALBUM_TAG_KIND_GENRE\x10\x01\x12\x17\n" +
@@ -878,35 +940,37 @@ func file_zpotify_common_proto_rawDescGZIP() []byte {
 	return file_zpotify_common_proto_rawDescData
 }
 
-var file_zpotify_common_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
+var file_zpotify_common_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
 var file_zpotify_common_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_zpotify_common_proto_goTypes = []any{
 	(SongTagKind)(0),                      // 0: zpotify_api.SongTagKind
-	(AlbumTagKind)(0),                     // 1: zpotify_api.AlbumTagKind
-	(AlbumVersionMetadata_VersionKind)(0), // 2: zpotify_api.AlbumVersionMetadata.VersionKind
-	(*Paging)(nil),                        // 3: zpotify_api.Paging
-	(*ArtistBase)(nil),                    // 4: zpotify_api.ArtistBase
-	(*SongTag)(nil),                       // 5: zpotify_api.SongTag
-	(*SongBase)(nil),                      // 6: zpotify_api.SongBase
-	(*AlbumVersionMetadata)(nil),          // 7: zpotify_api.AlbumVersionMetadata
-	(*AlbumTag)(nil),                      // 8: zpotify_api.AlbumTag
-	(*Playlist)(nil),                      // 9: zpotify_api.Playlist
-	(*SongFile)(nil),                      // 10: zpotify_api.SongFile
+	(PlaylistKind)(0),                     // 1: zpotify_api.PlaylistKind
+	(AlbumTagKind)(0),                     // 2: zpotify_api.AlbumTagKind
+	(AlbumVersionMetadata_VersionKind)(0), // 3: zpotify_api.AlbumVersionMetadata.VersionKind
+	(*Paging)(nil),                        // 4: zpotify_api.Paging
+	(*ArtistBase)(nil),                    // 5: zpotify_api.ArtistBase
+	(*SongTag)(nil),                       // 6: zpotify_api.SongTag
+	(*SongBase)(nil),                      // 7: zpotify_api.SongBase
+	(*AlbumVersionMetadata)(nil),          // 8: zpotify_api.AlbumVersionMetadata
+	(*AlbumTag)(nil),                      // 9: zpotify_api.AlbumTag
+	(*Playlist)(nil),                      // 10: zpotify_api.Playlist
+	(*SongFile)(nil),                      // 11: zpotify_api.SongFile
 }
 var file_zpotify_common_proto_depIdxs = []int32{
 	0, // 0: zpotify_api.SongTag.kind:type_name -> zpotify_api.SongTagKind
-	4, // 1: zpotify_api.SongBase.artists:type_name -> zpotify_api.ArtistBase
-	5, // 2: zpotify_api.SongBase.tags:type_name -> zpotify_api.SongTag
-	2, // 3: zpotify_api.AlbumVersionMetadata.version_kind:type_name -> zpotify_api.AlbumVersionMetadata.VersionKind
-	1, // 4: zpotify_api.AlbumTag.kind:type_name -> zpotify_api.AlbumTagKind
-	7, // 5: zpotify_api.AlbumTag.album_version:type_name -> zpotify_api.AlbumVersionMetadata
-	4, // 6: zpotify_api.Playlist.artists:type_name -> zpotify_api.ArtistBase
-	8, // 7: zpotify_api.Playlist.tags:type_name -> zpotify_api.AlbumTag
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	5, // 1: zpotify_api.SongBase.artists:type_name -> zpotify_api.ArtistBase
+	6, // 2: zpotify_api.SongBase.tags:type_name -> zpotify_api.SongTag
+	3, // 3: zpotify_api.AlbumVersionMetadata.version_kind:type_name -> zpotify_api.AlbumVersionMetadata.VersionKind
+	2, // 4: zpotify_api.AlbumTag.kind:type_name -> zpotify_api.AlbumTagKind
+	8, // 5: zpotify_api.AlbumTag.album_version:type_name -> zpotify_api.AlbumVersionMetadata
+	5, // 6: zpotify_api.Playlist.artists:type_name -> zpotify_api.ArtistBase
+	9, // 7: zpotify_api.Playlist.tags:type_name -> zpotify_api.AlbumTag
+	1, // 8: zpotify_api.Playlist.kind:type_name -> zpotify_api.PlaylistKind
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_common_proto_init() }
@@ -924,7 +988,7 @@ func file_zpotify_common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zpotify_common_proto_rawDesc), len(file_zpotify_common_proto_rawDesc)),
-			NumEnums:      3,
+			NumEnums:      4,
 			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,

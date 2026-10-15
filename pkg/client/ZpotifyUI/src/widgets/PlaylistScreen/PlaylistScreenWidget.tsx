@@ -13,6 +13,7 @@ import MainContent from '@/widgets/PlaylistScreen/components/MainContent/MainCon
 import cls from '@/widgets/PlaylistScreen/PlaylistScreenWidget.module.css';
 import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
 import { isAlbum } from '@/entities/playlist/isAlbum.ts';
+import { isSingle } from '@/entities/playlist/isSingle.ts';
 
 const COVER_COLLAPSE_THRESHOLD = 96; // px scrolled before the cover collapses to a banner
 const COVER_EXPAND_THRESHOLD = 32; // px — hysteresis band below the collapse threshold, avoids flicker near the boundary
@@ -190,6 +191,7 @@ export default function PlaylistScreenWidget({
                     playlistUuid={playlist?.uuid}
                     playlistName={playlist?.name}
                     playlistIsAlbum={playlist ? isAlbum(playlist) : false}
+                    playlistIsSingle={playlist ? isSingle(playlist) : false}
                     playlistArtists={playlist ? mapPlaylistArtists(playlist) : []}
                     isListEnded={isListEnded}
                     isLoadingMore={isLoadingMore}

@@ -46,9 +46,6 @@ func (f *fakeSongsQuerier) InsertSongTag(_ context.Context, _ songs_q.InsertSong
 func (f *fakeSongsQuerier) ListArtistFeaturedSongs(_ context.Context, _ songs_q.ListArtistFeaturedSongsParams) ([]songs_q.ListArtistFeaturedSongsRow, error) {
 	return nil, nil
 }
-func (f *fakeSongsQuerier) ListArtistPrimarySongs(_ context.Context, _ songs_q.ListArtistPrimarySongsParams) ([]songs_q.ListArtistPrimarySongsRow, error) {
-	return nil, nil
-}
 func (f *fakeSongsQuerier) UpdateSongTitle(_ context.Context, _ songs_q.UpdateSongTitleParams) error {
 	return nil
 }

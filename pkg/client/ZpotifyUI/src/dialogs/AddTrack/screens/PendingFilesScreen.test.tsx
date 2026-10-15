@@ -54,6 +54,8 @@ function makeContext(overrides: Partial<AddTrackContext>): AddTrackContext {
         handleManageTorrent: vi.fn(),
         handleCreatePlaylist: vi.fn(),
         handleCreatePlaylistFromFolder: vi.fn(),
+        handleCreatePlaylistFromFiles: vi.fn(),
+        handleCreateSingle: vi.fn(),
         handleDroppedGroups: vi.fn(),
         batchTracks: [],
         handleOpenBatchFolder: vi.fn(),
@@ -151,5 +153,37 @@ describe('PendingFilesScreen folder wiring', () => {
         fireEvent.click(screen.getAllByText('Create playlist')[0]);
 
         expect(handleCreatePlaylistFromFolderSpy).toHaveBeenCalledWith('The Wall', [nested, direct]);
+    });
+
+    it('offers Create single for one selected file and passes that file to handleCreateSingle', () => {
+        const first: SongFile = { id: 'a1', path: 'tmp/user1/a.mp3' };
+        const second: SongFile = { id: 'a2', path: 'tmp/user1/b.mp3' };
+        mockFiles = [first, second];
+        mockSelectedIds = new Set(['a2']);
+
+        const handleCreateSingleSpy = vi.fn();
+        const ctx = makeContext({ handleCreateSingle: handleCreateSingleSpy });
+        render(<PendingFilesScreen {...ctx} />);
+
+        fireEvent.click(screen.getByRole('button', { name: 'Create single' }));
+
+        expect(handleCreateSingleSpy).toHaveBeenCalledWith(second);
+        expect(screen.queryByRole('button', { name: 'Create playlist' })).toBeNull();
+    });
+
+    it('offers Create playlist for several selected files and passes them to handleCreatePlaylistFromFiles', () => {
+        const first: SongFile = { id: 'a1', path: 'tmp/user1/a.mp3' };
+        const second: SongFile = { id: 'a2', path: 'tmp/user1/b.mp3' };
+        mockFiles = [first, second];
+        mockSelectedIds = new Set(['a1', 'a2']);
+
+        const handleCreatePlaylistFromFilesSpy = vi.fn();
+        const ctx = makeContext({ handleCreatePlaylistFromFiles: handleCreatePlaylistFromFilesSpy });
+        render(<PendingFilesScreen {...ctx} />);
+
+        fireEvent.click(screen.getByRole('button', { name: 'Create playlist' }));
+
+        expect(handleCreatePlaylistFromFilesSpy).toHaveBeenCalledWith([first, second]);
+        expect(screen.queryByRole('button', { name: 'Create single' })).toBeNull();
     });
 });

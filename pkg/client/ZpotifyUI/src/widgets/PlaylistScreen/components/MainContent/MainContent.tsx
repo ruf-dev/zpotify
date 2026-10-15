@@ -37,6 +37,7 @@ export interface MainContentProps {
     playlistUuid?: string;
     playlistName?: string;
     playlistIsAlbum?: boolean;
+    playlistIsSingle?: boolean;
     playlistArtists?: ArtistItem[];
     isListEnded?: boolean;
     isLoadingMore?: boolean;
@@ -59,6 +60,7 @@ export default function MainContent({
     playlistUuid,
     playlistName,
     playlistIsAlbum,
+    playlistIsSingle,
     playlistArtists,
     isListEnded,
     isLoadingMore,
@@ -71,6 +73,7 @@ export default function MainContent({
     const [dropIdx, setDropIdx] = useState<number | null>(null);
     const commentsEnabled = useFeatureFlags((s) => selectFlagEnabled(s, 'IS_COMMENTS_ON_ALBUM_ENABLED'));
     const toaster = useToaster();
+    const canManageTracks = !!editMode && !!canEdit && !playlistIsSingle;
 
     const likedPlaylistId = useUser((s) => s.userData?.likedPlaylistId);
     const likedSongIds = useLikedSongs((s) => s.likedSongIds);
@@ -215,7 +218,7 @@ export default function MainContent({
 
     return (
         <div className={cls.MainContentContainer}>
-            {editMode && canEdit && playlistUuid && (
+            {canManageTracks && playlistUuid && (
                 <AddTracksPanel
                     playlistUuid={playlistUuid}
                     existingSongIds={songs.map((s) => s.id ?? '').filter(Boolean)}
@@ -233,7 +236,7 @@ export default function MainContent({
                     <ClockIcon />
                 </span>
                 <span />
-                {editMode && canEdit && <span />}
+                {canManageTracks && <span />}
             </div>
 
             <div className={cls.TrackList}>
@@ -256,7 +259,7 @@ export default function MainContent({
                             isHighlighted={blinkingTrackId === song.id}
                             onPlay={() => onPlaySong(song)}
                             onToggleLike={() => handleToggleLike(song.id ?? '')}
-                            canReorder={editMode && canEdit}
+                            canReorder={canManageTracks}
                             onHandlePointerDown={(e) => startDrag(id, i, e)}
                             dragStyle={getRowDragStyle(id, i)}
                             anyDragging={drag !== null}

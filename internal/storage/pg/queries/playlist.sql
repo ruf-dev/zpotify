@@ -1,7 +1,7 @@
 -- name: CreatePlaylist :one
 WITH created_playlist AS (
-    INSERT INTO playlists (name, description, is_public, owner_id, year)
-        VALUES ($1, $2, $3, $4, $5)
+    INSERT INTO playlists (name, description, is_public, owner_id, year, kind)
+        VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING uuid)
 INSERT INTO user_playlists (user_id, playlist_id, order_id, can_add_songs, can_delete_songs, can_edit)
 VALUES ($4,
@@ -22,6 +22,7 @@ SELECT playlists.uuid,
        fm.file_path AS cover_file_path,
        playlists.year,
        playlists.song_count,
+       playlists.kind,
        owner.username AS owner_username
 FROM playlists
          LEFT JOIN user_playlists AS up
@@ -106,9 +107,10 @@ SELECT uuid,
        cover_file_path,
        song_count,
        year,
+       kind,
        artist_info,
        ts_rank(name_tsv, to_tsquery('simple', @query::text)) AS score
-FROM playlist_search_view_v1
+FROM playlist_search_view_v2
 WHERE name_tsv @@ to_tsquery('simple', @query::text)
 ORDER BY ts_rank(name_tsv, to_tsquery('simple', @query::text)) DESC, uuid
 LIMIT @limit_ OFFSET @offset_;

@@ -27,6 +27,7 @@ interface PlaylistDetailsPanelProps {
     onYearChange: (year: number | undefined) => void;
     loadArtistOptions: (query: string) => Promise<ArtistItem[]>;
     onCreateArtist: (name: string) => Promise<ArtistItem>;
+    isSingle?: boolean;
     tags: ChipEntry[];
     onTagsChange: (tags: ChipEntry[]) => void;
 }
@@ -51,9 +52,11 @@ export default function PlaylistDetailsPanel(props: PlaylistDetailsPanelProps) {
             />
 
             <div className={cls.FieldsStack}>
-                <div className={cls.FieldGroup}>
-                    <Input value={props.playlistName} setValue={props.onNameChange} label="name *" />
-                </div>
+                {!props.isSingle && (
+                    <div className={cls.FieldGroup}>
+                        <Input value={props.playlistName} setValue={props.onNameChange} label="name *" />
+                    </div>
+                )}
 
                 <div className={cls.FieldGroup}>
                     <Input
@@ -64,21 +67,25 @@ export default function PlaylistDetailsPanel(props: PlaylistDetailsPanelProps) {
                     />
                 </div>
 
-                <div className={cls.FieldGroup}>
-                    <FieldLabelRow label="album artists" hint="appear on every track" />
-                    <ArtistChipsField
-                        artists={props.albumArtists}
-                        onChange={props.onAlbumArtistsChange}
-                        placeholder="add album artist…"
-                        loadOptions={props.loadArtistOptions}
-                        onCreateArtist={props.onCreateArtist}
-                    />
-                </div>
+                {!props.isSingle && (
+                    <div className={cls.FieldGroup}>
+                        <FieldLabelRow label="album artists" hint="appear on every track" />
+                        <ArtistChipsField
+                            artists={props.albumArtists}
+                            onChange={props.onAlbumArtistsChange}
+                            placeholder="add album artist…"
+                            loadOptions={props.loadArtistOptions}
+                            onCreateArtist={props.onCreateArtist}
+                        />
+                    </div>
+                )}
 
-                <div className={cls.FieldGroup}>
-                    <FieldLabelRow label="tags" hint="genre, mood, era…" />
-                    <ChipsField chips={props.tags} onChange={props.onTagsChange} />
-                </div>
+                {!props.isSingle && (
+                    <div className={cls.FieldGroup}>
+                        <FieldLabelRow label="tags" hint="genre, mood, era…" />
+                        <ChipsField chips={props.tags} onChange={props.onTagsChange} />
+                    </div>
+                )}
 
                 {props.totalDurationSec !== undefined && props.trackCount !== undefined && (
                     <div className={cls.MetaChipsRow}>
@@ -87,7 +94,9 @@ export default function PlaylistDetailsPanel(props: PlaylistDetailsPanelProps) {
                             label="total"
                             value={formatTotalDuration(props.totalDurationSec)}
                         />
-                        <DisabledChip icon={<MiniDiscIcon />} label="tracks" value={String(props.trackCount)} />
+                        {!props.isSingle && (
+                            <DisabledChip icon={<MiniDiscIcon />} label="tracks" value={String(props.trackCount)} />
+                        )}
                     </div>
                 )}
             </div>

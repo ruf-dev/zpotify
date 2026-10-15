@@ -18,6 +18,7 @@ import {
     ListPlaylistsRequest,
     ListPlaylistsResponse,
     type AlbumTag,
+    type PlaylistKind,
 } from '@/app/api/zpotify';
 import { BaseService } from '@/shared/api/BaseService.ts';
 import { buildCoverUrl } from '@/shared/lib/coverUrl.ts';
@@ -111,6 +112,7 @@ export interface IPlaylistService {
         coverFileId?: string,
         year?: number,
         tags?: AlbumTag[],
+        kind?: PlaylistKind,
     ): Promise<CreatePlaylistResponse>;
     UpdatePlaylist(
         uuid: string,
@@ -165,8 +167,9 @@ export class PlaylistService extends BaseService implements IPlaylistService {
         coverFileId?: string,
         year?: number,
         tags?: AlbumTag[],
+        kind?: PlaylistKind,
     ): Promise<CreatePlaylistResponse> {
-        const req: CreatePlaylistRequest = { name, artistUuids, coverFileId, year, tags };
+        const req: CreatePlaylistRequest = { name, artistUuids, coverFileId, year, tags, kind };
         return this.executeAuthApiCall(async (initReq) => {
             return PlaylistAPI.CreatePlaylist(req, initReq);
         });

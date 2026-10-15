@@ -13,6 +13,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/middleware/user_context"
 	"go.zpotify.ru/zpotify/internal/service/service_errors"
 	"go.zpotify.ru/zpotify/internal/storage"
+	generated "go.zpotify.ru/zpotify/internal/storage/pg/generated"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
 )
 
@@ -125,6 +126,7 @@ func (s *ArtistsService) GetArtistPage(ctx context.Context, artistUuid string) (
 		Limit: artistPageRowLimit,
 		Filter: domain.PlaylistFilter{
 			ArtistUuid: sql.Null[string]{V: artistUuid, Valid: true},
+			Kind:       sql.Null[generated.PlaylistKind]{V: generated.PlaylistKindPLAYLIST, Valid: true},
 		},
 	}
 
@@ -133,14 +135,15 @@ func (s *ArtistsService) GetArtistPage(ctx context.Context, artistUuid string) (
 		return domain.ArtistPage{}, rerrors.Wrap(err, "error listing artist albums")
 	}
 
-	listSinglesReq := domain.ListSongsByArtist{
-		ArtistUuid:     artistUuid,
-		Role:           domain.ArtistSongRolePrimary,
-		StandaloneOnly: true,
-		Limit:          artistPageRowLimit,
+	listSinglesReq := domain.ListPlaylists{
+		Limit: artistPageRowLimit,
+		Filter: domain.PlaylistFilter{
+			ArtistUuid: sql.Null[string]{V: artistUuid, Valid: true},
+			Kind:       sql.Null[generated.PlaylistKind]{V: generated.PlaylistKindSINGLE, Valid: true},
+		},
 	}
 
-	singles, err := s.songStorage.ListByArtist(ctx, listSinglesReq)
+	singles, err := s.playlistStorage.List(ctx, listSinglesReq)
 	if err != nil {
 		return domain.ArtistPage{}, rerrors.Wrap(err, "error listing artist singles")
 	}

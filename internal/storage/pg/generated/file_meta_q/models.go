@@ -234,6 +234,48 @@ func (ns NullLocale) Value() (driver.Value, error) {
 	return string(ns.Locale), nil
 }
 
+type PlaylistKind string
+
+const (
+	PlaylistKindPLAYLIST PlaylistKind = "PLAYLIST"
+	PlaylistKindSINGLE   PlaylistKind = "SINGLE"
+)
+
+func (e *PlaylistKind) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = PlaylistKind(s)
+	case string:
+		*e = PlaylistKind(s)
+	default:
+		return fmt.Errorf("unsupported scan type for PlaylistKind: %T", src)
+	}
+	return nil
+}
+
+type NullPlaylistKind struct {
+	PlaylistKind PlaylistKind
+	Valid        bool // Valid is true if PlaylistKind is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullPlaylistKind) Scan(value interface{}) error {
+	if value == nil {
+		ns.PlaylistKind, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.PlaylistKind.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullPlaylistKind) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.PlaylistKind), nil
+}
+
 type SongTagKind string
 
 const (
@@ -460,6 +502,7 @@ type Playlist struct {
 	SongCount   int32
 	CreatedAt   time.Time
 	NameTsv     interface{}
+	Kind        PlaylistKind
 }
 
 type PlaylistSearchViewV1 struct {
@@ -473,6 +516,21 @@ type PlaylistSearchViewV1 struct {
 	Year          sql.NullInt32
 	CreatedAt     time.Time
 	NameTsv       interface{}
+	ArtistInfo    json.RawMessage
+}
+
+type PlaylistSearchViewV2 struct {
+	Uuid          uuid.UUID
+	Name          string
+	Description   string
+	IsPublic      bool
+	CoverFileID   sql.NullInt64
+	CoverFilePath sql.NullString
+	SongCount     int32
+	Year          sql.NullInt32
+	CreatedAt     time.Time
+	NameTsv       interface{}
+	Kind          PlaylistKind
 	ArtistInfo    json.RawMessage
 }
 
@@ -561,6 +619,19 @@ type PlaylistsV4 struct {
 	SongCount     int32
 	Year          sql.NullInt32
 	CreatedAt     time.Time
+}
+
+type PlaylistsV5 struct {
+	Uuid          uuid.UUID
+	Name          string
+	Description   string
+	IsPublic      bool
+	CoverFileID   sql.NullInt64
+	CoverFilePath sql.NullString
+	SongCount     int32
+	Year          sql.NullInt32
+	CreatedAt     time.Time
+	Kind          PlaylistKind
 }
 
 type SearchHistory struct {

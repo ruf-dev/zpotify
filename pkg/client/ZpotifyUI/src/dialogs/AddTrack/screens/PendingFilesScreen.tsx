@@ -7,6 +7,7 @@ import FileItem from '@/dialogs/AddTrack/screens/components/FileItem/FileItem';
 import TorrentJobItem from '@/dialogs/AddTrack/screens/components/TorrentJobItem/TorrentJobItem';
 import PendingFolderNode from '@/dialogs/AddTrack/screens/components/PendingFolderNode/PendingFolderNode';
 import BatchUploadSection from '@/dialogs/AddTrack/screens/components/BatchUploadSection/BatchUploadSection';
+import CreateSelectionBar from '@/dialogs/AddTrack/screens/components/CreateSelectionBar/CreateSelectionBar';
 import Checkbox from '@/components/Checkbox/Checkbox';
 import { usePendingFiles } from '@/dialogs/AddTrack/screens/usePendingFiles.tsx';
 import { useTorrentJobs } from '@/dialogs/AddTrack/screens/useTorrentJobs.ts';
@@ -21,6 +22,8 @@ export default function PendingFilesScreen({
     batchTracks,
     handleOpenBatchFolder,
     handleCreatePlaylistFromFolder,
+    handleCreatePlaylistFromFiles,
+    handleCreateSingle,
 }: AddTrackContext) {
     const pendingFiles = usePendingFiles();
     const torrentJobs = useTorrentJobs();
@@ -29,6 +32,19 @@ export default function PendingFilesScreen({
         () => buildFolderTree(pendingFiles.files, (file) => parseSongFilePath(file.path).folderName),
         [pendingFiles.files],
     );
+
+    const selectedFiles = useMemo(
+        () => pendingFiles.files.filter((file) => pendingFiles.selectedIds.has(file.id ?? '')),
+        [pendingFiles.files, pendingFiles.selectedIds],
+    );
+
+    function handleCreateFromSelectionSingle() {
+        handleCreateSingle(selectedFiles[0]);
+    }
+
+    function handleCreateFromSelectionPlaylist() {
+        handleCreatePlaylistFromFiles(selectedFiles);
+    }
 
     function toggleFolder(path: string) {
         setExpandedPaths((prev) => {
@@ -47,6 +63,7 @@ export default function PendingFilesScreen({
                 selected={pendingFiles.selectedIds.has(file.id ?? '')}
                 onSelect={handleSelectFromLibrary}
                 onDelete={pendingFiles.handleDelete}
+                onCreateSingle={handleCreateSingle}
                 onToggleSelect={pendingFiles.handleToggleSelect}
             />
         );
@@ -118,6 +135,11 @@ export default function PendingFilesScreen({
                         ))}
                         {folderTree.items.map(renderFileItem)}
                     </div>
+                    <CreateSelectionBar
+                        selectedCount={selectedFiles.length}
+                        onCreateSingle={handleCreateFromSelectionSingle}
+                        onCreatePlaylist={handleCreateFromSelectionPlaylist}
+                    />
                 </>
             )}
         </div>

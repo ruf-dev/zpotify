@@ -22,7 +22,7 @@ type ArtistPage struct {
 	Artist Artist
 
 	Albums   []Playlist
-	Singles  []Song
+	Singles  []Playlist
 	Features []Song
 }
 
@@ -49,13 +49,12 @@ const (
 )
 
 // ListSongsByArtist selects songs where the given artist appears in the
-// given role. StandaloneOnly further restricts primary-artist results to
-// tracks not attached to any album playlist (i.e. singles).
+// given role. Only ArtistSongRoleFeatured is supported: primary-artist
+// standalone tracks are modelled as playlists of kind SINGLE.
 type ListSongsByArtist struct {
-	ArtistUuid     string
-	Role           ArtistSongRole
-	StandaloneOnly bool
-	Limit          uint64
+	ArtistUuid string
+	Role       ArtistSongRole
+	Limit      uint64
 }
 
 // ArtistSearchResult pairs an artist with its full-text search relevance

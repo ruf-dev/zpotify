@@ -219,6 +219,7 @@ func (p *PlaylistStorage) Get(ctx context.Context, userId int64, playlistUuid st
 		Description: row.Description,
 		IsPublic:    row.IsPublic,
 		SongCount:   &songCount,
+		Kind:        row.Kind,
 	}
 
 	if row.CoverFileID.Valid {
@@ -252,6 +253,7 @@ func (p *PlaylistStorage) Create(ctx context.Context, params domain.CreatePlayli
 		Description: params.Description,
 		IsPublic:    params.IsPublic,
 		UserID:      userId,
+		Kind:        params.Kind,
 	}
 
 	if params.Year != nil {
@@ -532,8 +534,9 @@ func (p *PlaylistStorage) List(ctx context.Context, req domain.ListPlaylists) ([
 			"fm.file_path AS cover_file_path",
 			"v.song_count",
 			"v.year",
+			"v.kind",
 		).
-			From("playlists_v2 v").
+			From("playlists_v5 v").
 			LeftJoin("files_meta fm ON fm.id = v.cover_file_id").
 			PlaceholderFormat(sq.Dollar),
 	}.
@@ -564,9 +567,10 @@ func (p *PlaylistStorage) List(ctx context.Context, req domain.ListPlaylists) ([
 			coverFilePath sql.NullString
 			songCount     int32
 			year          sql.NullInt32
+			kind          generated.PlaylistKind
 		)
 
-		err = rows.Scan(&id, &name, &description, &isPublic, &coverFileID, &coverFilePath, &songCount, &year)
+		err = rows.Scan(&id, &name, &description, &isPublic, &coverFileID, &coverFilePath, &songCount, &year, &kind)
 		if err != nil {
 			return nil, wrapPgErr(err)
 		}
@@ -577,6 +581,7 @@ func (p *PlaylistStorage) List(ctx context.Context, req domain.ListPlaylists) ([
 			Description: description,
 			IsPublic:    isPublic,
 			SongCount:   &songCount,
+			Kind:        kind,
 		}
 
 		if coverFileID.Valid {
@@ -617,6 +622,10 @@ func (b playlistsListBuilder) applyFilters(req domain.ListPlaylists) playlistsLi
 		b.SelectBuilder = b.Join(
 			"playlists_artists pa ON pa.playlist_uuid = v.uuid AND pa.artist_uuid = ? AND pa.order_id = 0",
 			req.Filter.ArtistUuid.V)
+	}
+
+	if req.Filter.Kind.Valid {
+		b.SelectBuilder = b.Where(sq.Eq{"v.kind": req.Filter.Kind.V})
 	}
 
 	if !req.Filter.UserId.Valid {
@@ -680,6 +689,7 @@ func (p *PlaylistStorage) Search(ctx context.Context, query string, limit, offse
 			IsPublic:    row.IsPublic,
 			Artists:     artists,
 			SongCount:   &songCount,
+			Kind:        row.Kind,
 		}
 
 		if row.CoverFileID.Valid {
@@ -706,7 +716,7 @@ func (p *PlaylistStorage) Search(ctx context.Context, query string, limit, offse
 func (p *PlaylistStorage) CountPlaylists(ctx context.Context, req domain.ListPlaylists) (uint32, error) {
 	builder := playlistsListBuilder{
 		sq.Select("COUNT(v.uuid)").
-			From("playlists_v2 v").
+			From("playlists_v5 v").
 			PlaceholderFormat(sq.Dollar),
 	}.applyFilters(req)
 

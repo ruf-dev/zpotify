@@ -39,6 +39,7 @@ export type CreatePlaylistRequest = {
   coverFileId?: string;
   year?: number;
   tags?: ZpotifyApiZpotifyCommon.AlbumTag[];
+  kind?: ZpotifyApiZpotifyCommon.PlaylistKind;
 };
 
 export type CreatePlaylistResponse = {

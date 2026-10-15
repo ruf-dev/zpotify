@@ -8,6 +8,7 @@ import (
 
 	"go.zpotify.ru/zpotify/internal/api/server/zpotify_api"
 	"go.zpotify.ru/zpotify/internal/domain"
+	"go.zpotify.ru/zpotify/internal/transport/kind_mapper"
 )
 
 func (impl *Impl) GetArtistPage(ctx context.Context, request *zpotify_api.GetArtistPage_Request) (*zpotify_api.GetArtistPage_Response, error) {
@@ -27,9 +28,9 @@ func toPbArtistPage(page domain.ArtistPage) *zpotify_api.GetArtistPage_Response 
 		albums = append(albums, toPbPlaylist(pl))
 	}
 
-	singles := make([]*zpotify_api.SongBase, 0, len(page.Singles))
-	for _, song := range page.Singles {
-		singles = append(singles, toPbSongBase(song))
+	singles := make([]*zpotify_api.Playlist, 0, len(page.Singles))
+	for _, pl := range page.Singles {
+		singles = append(singles, toPbPlaylist(pl))
 	}
 
 	features := make([]*zpotify_api.SongBase, 0, len(page.Features))
@@ -94,6 +95,7 @@ func toPbPlaylist(pl domain.Playlist) *zpotify_api.Playlist {
 		SongCount:     songCount,
 		CoverFilePath: coverFilePath,
 		Year:          pl.Year,
+		Kind:          kind_mapper.PlaylistKindToProto(pl.Kind),
 	}
 
 	return pbPlaylist

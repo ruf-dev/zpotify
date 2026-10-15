@@ -67,8 +67,8 @@ export type GetArtistPageRequest = {
 export type GetArtistPageResponse = {
   artist?: Artist;
   albums?: ZpotifyApiZpotifyCommon.Playlist[];
-  singles?: ZpotifyApiZpotifyCommon.SongBase[];
   features?: ZpotifyApiZpotifyCommon.SongBase[];
+  singles?: ZpotifyApiZpotifyCommon.Playlist[];
 };
 
 export type GetArtistPage = Record<string, never>;

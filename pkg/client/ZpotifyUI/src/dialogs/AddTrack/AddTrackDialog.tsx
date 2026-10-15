@@ -35,6 +35,8 @@ export interface AddTrackContext {
     handleManageTorrent: (job: TorrentJob) => void;
     handleCreatePlaylist: () => void;
     handleCreatePlaylistFromFolder: (folderName: string, files: SongFile[]) => void;
+    handleCreatePlaylistFromFiles: (files: SongFile[]) => void;
+    handleCreateSingle: (file: SongFile) => void;
     handleDroppedGroups: (groups: DroppedGroups) => void;
     batchTracks: TrackDraft[];
     handleOpenBatchFolder: (folderName: string) => void;
@@ -307,6 +309,16 @@ export default function AddTrackDialog({
         OpenDialog(<MultitrackUploadModal files={[]} existingFiles={files} initialPlaylistName={folderName} />);
     }
 
+    function handleCreatePlaylistFromFiles(files: SongFile[]) {
+        CloseDialog();
+        OpenDialog(<MultitrackUploadModal files={[]} existingFiles={files} />);
+    }
+
+    function handleCreateSingle(file: SongFile) {
+        CloseDialog();
+        OpenDialog(<MultitrackUploadModal files={[]} existingFiles={[file]} isSingle />);
+    }
+
     function handleSelectFromLibrary(songFile: SongFile) {
         const id = songFile.id ?? '';
         const name = songFile.path?.split('/').pop() ?? '';
@@ -330,6 +342,8 @@ export default function AddTrackDialog({
         handleManageTorrent,
         handleCreatePlaylist,
         handleCreatePlaylistFromFolder,
+        handleCreatePlaylistFromFiles,
+        handleCreateSingle,
         handleDroppedGroups,
         batchTracks: batchUpload.tracks,
         handleOpenBatchFolder,

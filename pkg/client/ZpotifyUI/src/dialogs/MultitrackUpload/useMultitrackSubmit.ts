@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
 import { songsService } from '@/shared/api/Songs.ts';
+import { PlaylistKind } from '@/shared/api/PlaylistKind.ts';
 import { playlistService } from '@/shared/api/PlaylistService.ts';
 import { useFeedRefresh } from '@/entities/feed/useFeedRefresh.ts';
 import type { ArtistItem } from '@/widgets/ArtistField/ArtistChipsField';
@@ -17,6 +18,7 @@ export interface MultitrackSubmitParams {
     tracks: TrackDraft[];
     playlistMode: boolean;
     playlistName: string;
+    isSingle?: boolean;
     albumArtists: ArtistItem[];
     year: number | undefined;
     tags: ChipEntry[];
@@ -77,7 +79,8 @@ export function useMultitrackSubmit(params: MultitrackSubmitParams): MultitrackS
                     albumArtistUuids.length > 0 ? albumArtistUuids : undefined,
                     coverFileId,
                     params.year,
-                    params.tags.length > 0 ? params.tags : undefined,
+                    !params.isSingle && params.tags.length > 0 ? params.tags : undefined,
+                    params.isSingle ? PlaylistKind.PLAYLIST_KIND_SINGLE : undefined,
                 )
                 .then((playlist) => {
                     const playlistUuid = playlist.uuid ?? '';
@@ -99,6 +102,7 @@ export function useMultitrackSubmit(params: MultitrackSubmitParams): MultitrackS
 
     function handleSubmit() {
         if (submitting || params.tracks.length === 0) return;
+        if (params.isSingle && params.tracks.length !== 1) return;
         if (!params.targetPlaylistUuid && params.playlistMode && !params.playlistName.trim()) return;
 
         setSubmitting(true);

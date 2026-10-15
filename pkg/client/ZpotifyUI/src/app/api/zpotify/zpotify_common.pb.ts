@@ -20,6 +20,12 @@ export enum SongTagKind {
   SONG_TAG_KIND_SINGLE = "SONG_TAG_KIND_SINGLE",
 }
 
+export enum PlaylistKind {
+  PLAYLIST_KIND_UNSPECIFIED = "PLAYLIST_KIND_UNSPECIFIED",
+  PLAYLIST_KIND_PLAYLIST = "PLAYLIST_KIND_PLAYLIST",
+  PLAYLIST_KIND_SINGLE = "PLAYLIST_KIND_SINGLE",
+}
+
 export enum AlbumTagKind {
   ALBUM_TAG_KIND_UNSPECIFIED = "ALBUM_TAG_KIND_UNSPECIFIED",
   ALBUM_TAG_KIND_GENRE = "ALBUM_TAG_KIND_GENRE",
@@ -97,6 +103,7 @@ export type Playlist = {
   canEdit?: boolean;
   isSaved?: boolean;
   ownerUsername?: string;
+  kind?: PlaylistKind;
 };
 
 export type SongFile = {
