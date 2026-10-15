@@ -1,0 +1,354 @@
+package gdrive
+
+import (
+	"context"
+	"encoding/json"
+	"io"
+	"mime"
+	"mime/multipart"
+	"net/http"
+	"net/http/httptest"
+	"net/url"
+	"regexp"
+	"strconv"
+	"strings"
+	"sync"
+	"testing"
+
+	"github.com/stretchr/testify/require"
+
+	"go.zpotify.ru/zpotify/internal/domain"
+)
+
+const (
+	fakeAccessToken  = "fake-access"
+	fakeRefreshToken = "fake-refresh"
+)
+
+var nameQuery = regexp.MustCompile(`^name = '(.*)' and '(.*)' in parents and trashed = false$`)
+
+type fakeFile struct {
+	name    string
+	parents []string
+	content []byte
+}
+
+type fakeDrive struct {
+	mu          sync.Mutex
+	files       map[string]*fakeFile
+	nextId      int
+	queries     []string
+	tokenCalls  int
+	isMultipart bool
+}
+
+func newFakeDrive() *fakeDrive {
+	return &fakeDrive{files: map[string]*fakeFile{}}
+}
+
+func (f *fakeDrive) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+
+	switch {
+	case r.URL.Path == "/token":
+		f.serveToken(w, r)
+	case r.URL.Path == "/drive/v3/files" && r.Method == http.MethodGet:
+		f.serveList(w, r)
+	case r.URL.Path == "/upload/drive/v3/files" && r.Method == http.MethodPost:
+		f.serveUpload(w, r)
+	case strings.HasPrefix(r.URL.Path, "/drive/v3/files/"):
+		f.serveFile(w, r)
+	default:
+		w.WriteHeader(http.StatusNotFound)
+	}
+}
+
+func (f *fakeDrive) serveToken(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+	if r.Form.Get("refresh_token") != fakeRefreshToken {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	f.tokenCalls++
+	w.Header().Set("Content-Type", "application/json")
+	_, _ = w.Write([]byte(`{"access_token":"` + fakeAccessToken + `","token_type":"Bearer","expires_in":3600}`))
+}
+
+func (f *fakeDrive) isAuthorized(w http.ResponseWriter, r *http.Request) bool {
+	if r.Header.Get("Authorization") != "Bearer "+fakeAccessToken {
+		w.WriteHeader(http.StatusUnauthorized)
+		return false
+	}
+
+	return true
+}
+
+func (f *fakeDrive) serveList(w http.ResponseWriter, r *http.Request) {
+	if !f.isAuthorized(w, r) {
+		return
+	}
+
+	query := r.URL.Query().Get("q")
+	f.queries = append(f.queries, query)
+
+	match := nameQuery.FindStringSubmatch(query)
+	if match == nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	name := strings.NewReplacer(`\'`, `'`, `\\`, `\`).Replace(match[1])
+
+	list := fileList{Files: []fileRef{}}
+	for id, file := range f.files {
+		if file.name == name && file.parents[0] == match[2] {
+			list.Files = append(list.Files, fileRef{Id: id})
+		}
+	}
+
+	_ = json.NewEncoder(w).Encode(list)
+}
+
+func (f *fakeDrive) serveUpload(w http.ResponseWriter, r *http.Request) {
+	if !f.isAuthorized(w, r) {
+		return
+	}
+
+	mediaType, params, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
+	if err != nil || mediaType != "multipart/related" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	f.isMultipart = true
+
+	reader := multipart.NewReader(r.Body, params["boundary"])
+
+	metaPart, err := reader.NextPart()
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	var meta fileMetadata
+	err = json.NewDecoder(metaPart).Decode(&meta)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	mediaPart, err := reader.NextPart()
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	content, _ := io.ReadAll(mediaPart)
+
+	id := f.newFile(meta, content)
+	_ = json.NewEncoder(w).Encode(fileRef{Id: id})
+}
+
+func (f *fakeDrive) serveFile(w http.ResponseWriter, r *http.Request) {
+	if !f.isAuthorized(w, r) {
+		return
+	}
+
+	rest := strings.TrimPrefix(r.URL.Path, "/drive/v3/files/")
+	id, isCopy := strings.CutSuffix(rest, "/copy")
+
+	file, ok := f.files[id]
+	if !ok {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	switch {
+	case isCopy && r.Method == http.MethodPost:
+		var meta fileMetadata
+		_ = json.NewDecoder(r.Body).Decode(&meta)
+		copyId := f.newFile(meta, file.content)
+		_ = json.NewEncoder(w).Encode(fileRef{Id: copyId})
+	case r.Method == http.MethodGet && r.URL.Query().Get("alt") == "media":
+		_, _ = w.Write(file.content)
+	case r.Method == http.MethodDelete:
+		delete(f.files, id)
+		w.WriteHeader(http.StatusNoContent)
+	default:
+		w.WriteHeader(http.StatusBadRequest)
+	}
+}
+
+func (f *fakeDrive) newFile(meta fileMetadata, content []byte) string {
+	f.nextId++
+	id := "id" + strconv.Itoa(f.nextId)
+	f.files[id] = &fakeFile{name: meta.Name, parents: meta.Parents, content: content}
+
+	return id
+}
+
+func newTestStorage(t *testing.T, refreshToken string) (*Storage, *fakeDrive) {
+	t.Helper()
+
+	fake := newFakeDrive()
+	server := httptest.NewServer(fake)
+	t.Cleanup(server.Close)
+
+	cfg := domain.GoogleDriveConfig{
+		ClientId:     "client-id",
+		ClientSecret: "client-secret",
+		RootFolderId: "folder1",
+		RefreshToken: refreshToken,
+	}
+
+	st := newWithEndpoints(
+		context.Background(),
+		cfg,
+		server.URL+"/drive/v3",
+		server.URL+"/upload/drive/v3",
+		server.URL+"/token",
+	)
+
+	return st, fake
+}
+
+func Test_Storage_RoundTrip(t *testing.T) {
+	ctx := context.Background()
+	st, fake := newTestStorage(t, fakeRefreshToken)
+
+	err := st.Put(ctx, "Artist_Name/Title-1a2b3c4d.mp3", strings.NewReader("audio"))
+	require.NoError(t, err)
+	require.True(t, fake.isMultipart)
+
+	reader, err := st.Get(ctx, "Artist_Name/Title-1a2b3c4d.mp3")
+	require.NoError(t, err)
+	got, err := io.ReadAll(reader)
+	require.NoError(t, err)
+	require.NoError(t, reader.Close())
+	require.Equal(t, "audio", string(got))
+
+	err = st.Copy(ctx, "Artist_Name/Title-1a2b3c4d.mp3", "other/copy.mp3")
+	require.NoError(t, err)
+	require.Len(t, fake.files, 2)
+
+	err = st.Delete(ctx, "Artist_Name/Title-1a2b3c4d.mp3")
+	require.NoError(t, err)
+	require.Len(t, fake.files, 1)
+
+	_, err = st.Get(ctx, "Artist_Name/Title-1a2b3c4d.mp3")
+	require.ErrorIs(t, err, ErrNotFound)
+}
+
+func Test_Put_ReplacesExistingFileWithSameName(t *testing.T) {
+	ctx := context.Background()
+	st, fake := newTestStorage(t, fakeRefreshToken)
+
+	require.NoError(t, st.Put(ctx, "a/b.mp3", strings.NewReader("old")))
+	require.NoError(t, st.Put(ctx, "a/b.mp3", strings.NewReader("new")))
+	require.Len(t, fake.files, 1)
+
+	reader, err := st.Get(ctx, "a/b.mp3")
+	require.NoError(t, err)
+	got, err := io.ReadAll(reader)
+	require.NoError(t, err)
+	require.NoError(t, reader.Close())
+	require.Equal(t, "new", string(got))
+}
+
+func Test_Copy_OverwritesDestination(t *testing.T) {
+	ctx := context.Background()
+	st, fake := newTestStorage(t, fakeRefreshToken)
+
+	require.NoError(t, st.Put(ctx, "src.mp3", strings.NewReader("src")))
+	require.NoError(t, st.Put(ctx, "dst.mp3", strings.NewReader("dst")))
+	require.NoError(t, st.Copy(ctx, "src.mp3", "dst.mp3"))
+	require.Len(t, fake.files, 2)
+}
+
+func Test_Lookup_EscapesQuotesAndBackslashes(t *testing.T) {
+	ctx := context.Background()
+	st, fake := newTestStorage(t, fakeRefreshToken)
+
+	path := `O'Brien/Song\1's.mp3`
+	require.NoError(t, st.Put(ctx, path, strings.NewReader("x")))
+	require.Contains(t, fake.queries[0], `name = 'O\'Brien/Song\\1\'s.mp3'`)
+
+	st.forget(path)
+	reader, err := st.Get(ctx, path)
+	require.NoError(t, err)
+	require.NoError(t, reader.Close())
+}
+
+func Test_Delete_MissingIsNil(t *testing.T) {
+	st, _ := newTestStorage(t, fakeRefreshToken)
+
+	err := st.Delete(context.Background(), "nope.mp3")
+	require.NoError(t, err)
+}
+
+func Test_Resolve_ReturnsBearerAndMediaUrl(t *testing.T) {
+	ctx := context.Background()
+	st, _ := newTestStorage(t, fakeRefreshToken)
+
+	require.NoError(t, st.Put(ctx, "a.mp3", strings.NewReader("x")))
+
+	target, err := st.Resolve(ctx, "a.mp3")
+	require.NoError(t, err)
+	require.Equal(t, "Bearer "+fakeAccessToken, target.AuthorizationHeader)
+	require.Contains(t, target.Url, "/drive/v3/files/id1?alt=media")
+}
+
+func Test_Resolve_MissingFileIsNotFound(t *testing.T) {
+	st, _ := newTestStorage(t, fakeRefreshToken)
+
+	_, err := st.Resolve(context.Background(), "nope.mp3")
+	require.ErrorIs(t, err, ErrNotFound)
+}
+
+func Test_Probe_Succeeds(t *testing.T) {
+	st, fake := newTestStorage(t, fakeRefreshToken)
+
+	err := st.Probe(context.Background())
+	require.NoError(t, err)
+	require.Empty(t, fake.files)
+}
+
+func Test_Methods_NotConnectedWithoutRefreshToken(t *testing.T) {
+	ctx := context.Background()
+	st, _ := newTestStorage(t, "")
+
+	err := st.Put(ctx, "a.mp3", strings.NewReader("x"))
+	require.ErrorIs(t, err, ErrNotConnected)
+
+	_, err = st.Get(ctx, "a.mp3")
+	require.ErrorIs(t, err, ErrNotConnected)
+
+	err = st.Copy(ctx, "a.mp3", "b.mp3")
+	require.ErrorIs(t, err, ErrNotConnected)
+
+	err = st.Delete(ctx, "a.mp3")
+	require.ErrorIs(t, err, ErrNotConnected)
+
+	_, err = st.Resolve(ctx, "a.mp3")
+	require.ErrorIs(t, err, ErrNotConnected)
+
+	err = st.Probe(ctx)
+	require.ErrorIs(t, err, ErrNotConnected)
+}
+
+func Test_AuthCodeUrl_RequestsOfflineAccess(t *testing.T) {
+	cfg := domain.GoogleDriveConfig{ClientId: "client-id", ClientSecret: "client-secret"}
+
+	raw := AuthCodeUrl(cfg, "https://zpotify.example/callback", "state-123")
+
+	parsed, err := url.Parse(raw)
+	require.NoError(t, err)
+
+	query := parsed.Query()
+	require.Equal(t, "offline", query.Get("access_type"))
+	require.Equal(t, "consent", query.Get("prompt"))
+	require.Equal(t, "state-123", query.Get("state"))
+	require.Equal(t, "client-id", query.Get("client_id"))
+	require.Equal(t, "https://zpotify.example/callback", query.Get("redirect_uri"))
+}
