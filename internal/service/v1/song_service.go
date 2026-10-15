@@ -44,7 +44,7 @@ type AudioService struct {
 	fileMetaStorage storage.FileMetaStorage
 	playlistStorage storage.PlaylistStorage
 	artistStorage   storage.ArtistStorage
-	binaryStorage   storage.BinaryFileStorage
+	registry        storage.StorageRegistry
 	jobStorage      storage.JobStorage
 
 	telegramIdentityStorage storage.TelegramIdentityStorage
@@ -62,7 +62,7 @@ type AudioService struct {
 func NewAudioService(
 	dataStorage storage.Storage,
 	filesCache files_cache.FilesCache,
-	binaryStorage storage.BinaryFileStorage,
+	registry storage.StorageRegistry,
 	telegramSender TelegramSender,
 	telegramRelayChatId int64,
 ) *AudioService {
@@ -73,7 +73,7 @@ func NewAudioService(
 		fileMetaStorage: dataStorage.FileMeta(),
 		playlistStorage: dataStorage.PlaylistStorage(),
 		artistStorage:   dataStorage.ArtistStorage(),
-		binaryStorage:   binaryStorage,
+		registry:        registry,
 		jobStorage:      dataStorage.Jobs(),
 
 		telegramIdentityStorage: dataStorage.TelegramIdentity(),
@@ -214,14 +214,15 @@ func (s *AudioService) finalizeSong(
 	ext := path.Ext(fileMeta.FilePath)
 	newPath := fmt.Sprintf("%s/%s-%s%s", artists[0].Name, req.Title, hashSuffix, ext)
 	newPath = strings.ReplaceAll(newPath, " ", "_")
-	oldPath := fileMeta.FilePath
+
+	jobStorage := s.jobStorage.WithTx(tx)
+	err = placeFileInDefaultStorage(ctx, s.registry, fileMetaStorage, jobStorage, fileMeta, newPath)
+	if err != nil {
+		return rerrors.Wrap(err, "error placing file in permanent storage")
+	}
+
 	fileMeta.FilePath = newPath
 	fileMeta.Verified = true
-
-	err = s.binaryStorage.Copy(ctx, oldPath, newPath)
-	if err != nil {
-		return rerrors.Wrap(err, "error copying file to permanent storage")
-	}
 
 	err = fileMetaStorage.Update(ctx, req.FileID, fileMeta.File)
 	if err != nil {
@@ -240,12 +241,6 @@ func (s *AudioService) finalizeSong(
 		if err != nil {
 			return rerrors.Wrap(err, "error adding tag to song")
 		}
-	}
-
-	jobStorage := s.jobStorage.WithTx(tx)
-	err = jobStorage.EnqueueGarbageFile(ctx, oldPath)
-	if err != nil {
-		return rerrors.Wrap(err, "error enqueueing old file path for deletion")
 	}
 
 	return nil
@@ -389,7 +384,7 @@ func (s *AudioService) GetCoverImage(ctx context.Context, songId int64) (io.Read
 		return nil, "", false, nil
 	}
 
-	stream, err := s.binaryStorage.GetFile(ctx, song.CoverFilePath)
+	stream, err := openStoredFileByPath(ctx, s.registry, s.fileMetaStorage, song.CoverFilePath)
 	if err != nil {
 		return nil, "", false, rerrors.Wrap(err, "error getting song cover file")
 	}
@@ -403,7 +398,7 @@ func (s *AudioService) GetCoverImage(ctx context.Context, songId int64) (io.Read
 // when song has no cover or it could not be read (sent without a thumbnail
 // rather than failing the whole send).
 func (s *AudioService) buildTrackAudioForSend(ctx context.Context, song domain.Song) (tgclient.TrackAudio, io.ReadCloser, io.ReadCloser, error) {
-	file, err := s.binaryStorage.GetFile(ctx, song.FilePath)
+	file, err := openStoredFileByPath(ctx, s.registry, s.fileMetaStorage, song.FilePath)
 	if err != nil {
 		return tgclient.TrackAudio{}, nil, nil, rerrors.Wrap(err, "error getting song file")
 	}
@@ -426,7 +421,7 @@ func (s *AudioService) buildTrackAudioForSend(ctx context.Context, song domain.S
 		return audio, file, nil, nil
 	}
 
-	cover, err := s.binaryStorage.GetFile(ctx, song.CoverFilePath)
+	cover, err := openStoredFileByPath(ctx, s.registry, s.fileMetaStorage, song.CoverFilePath)
 	if err != nil {
 		log.Warn().Err(err).Str("cover_file_path", song.CoverFilePath).Msg("error getting song cover file, sending without thumbnail")
 		return audio, file, nil, nil

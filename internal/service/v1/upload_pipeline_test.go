@@ -9,6 +9,7 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -23,6 +24,8 @@ type fakeJobStorage struct {
 	audioParseFileId []int64
 	audioParsePath   []string
 	garbagePaths     []string
+
+	garbageStorageIds []uuid.UUID
 }
 
 func newFakeJobStorage() *fakeJobStorage {
@@ -37,11 +40,12 @@ func (f *fakeJobStorage) Enqueue(_ context.Context, _ string, _ any, _ int32) er
 	return nil
 }
 
-func (f *fakeJobStorage) EnqueueGarbageFile(_ context.Context, filePath string) error {
+func (f *fakeJobStorage) EnqueueGarbageFile(_ context.Context, storageId uuid.UUID, filePath string) error {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 
 	f.garbagePaths = append(f.garbagePaths, filePath)
+	f.garbageStorageIds = append(f.garbageStorageIds, storageId)
 
 	return nil
 }

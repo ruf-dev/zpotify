@@ -459,7 +459,7 @@ func (s *TorrentService) deleteImportedFiles(ctx context.Context, row domain.Tor
 			return rerrors.Wrap(err, "error deleting imported file meta")
 		}
 
-		err = s.jobs.EnqueueGarbageFile(ctx, fileMeta.FilePath)
+		err = s.jobs.EnqueueGarbageFile(ctx, fileMeta.StorageId, fileMeta.FilePath)
 		if err != nil {
 			return rerrors.Wrap(err, "error enqueueing imported file for deletion")
 		}

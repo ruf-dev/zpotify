@@ -93,42 +93,17 @@ func (f *fakeReadCloser) Close() error {
 	return nil
 }
 
-// fakeBinaryFileStorage is an in-memory test double for
-// storage.BinaryFileStorage. Only GetFile is exercised by AudioService
-// tests.
-type fakeBinaryFileStorage struct {
-	getFileFn func(ctx context.Context, path string) (io.ReadCloser, error)
-}
+func newTestAudioServiceFileStorage(t *testing.T, filePath string, content storage.ContentStorage) (storage.FileMetaStorage, storage.StorageRegistry) {
+	t.Helper()
 
-func (f *fakeBinaryFileStorage) SaveToTempFolder(_ context.Context, _ int64, _ string, _ io.Reader) (string, error) {
-	return "", nil
-}
+	fileMetaStorage := newFakeFileMetaStorage()
+	meta := domain.FileMeta{}
+	meta.FilePath = filePath
+	meta.StorageId = domain.LocalStorageUuid
+	_, err := fileMetaStorage.Add(context.Background(), meta)
+	require.NoError(t, err)
 
-func (f *fakeBinaryFileStorage) ListFiles(_ context.Context, _ int64) ([]string, error) {
-	return nil, nil
-}
-
-func (f *fakeBinaryFileStorage) Move(_ context.Context, _ string, _ string) error {
-	return nil
-}
-
-func (f *fakeBinaryFileStorage) Copy(_ context.Context, _ string, _ string) error {
-	return nil
-}
-
-func (f *fakeBinaryFileStorage) Delete(_ context.Context, _ string) error {
-	return nil
-}
-
-func (f *fakeBinaryFileStorage) GetFile(ctx context.Context, path string) (io.ReadCloser, error) {
-	if f.getFileFn == nil {
-		return io.NopCloser(strings.NewReader("")), nil
-	}
-	return f.getFileFn(ctx, path)
-}
-
-func (f *fakeBinaryFileStorage) DeleteTempFile(_ context.Context, _ string) error {
-	return nil
+	return fileMetaStorage, newFakeStorageRegistry(content)
 }
 
 func TestAudioService_SendToTelegram_NoUserContext(t *testing.T) {
@@ -215,19 +190,21 @@ func TestAudioService_SendToTelegram_HappyPath(t *testing.T) {
 		},
 	}
 
-	binaryStorage := &fakeBinaryFileStorage{
-		getFileFn: func(_ context.Context, path string) (io.ReadCloser, error) {
+	contentStorage := &fakeContentStorage{
+		getFn: func(_ context.Context, path string) (io.ReadCloser, error) {
 			assert.Equal(t, "artist/Test_Track-abcd1234.mp3", path)
 			return fileContent, nil
 		},
 	}
+	fileMetaStorage, registry := newTestAudioServiceFileStorage(t, "artist/Test_Track-abcd1234.mp3", contentStorage)
 
 	sender := &fakeTelegramSender{}
 	svc := &AudioService{
 		telegramIdentityStorage: identityStorage,
 		telegramSender:          sender,
 		songsStorage:            songStorage,
-		binaryStorage:           binaryStorage,
+		fileMetaStorage:         fileMetaStorage,
+		registry:                registry,
 	}
 
 	ctx := contextWithPermissions(7, domain.UserPermissions{})
@@ -261,7 +238,7 @@ func TestAudioService_SendToTelegram_SendTrackError(t *testing.T) {
 			return song, nil
 		},
 	}
-	binaryStorage := &fakeBinaryFileStorage{}
+	fileMetaStorage, registry := newTestAudioServiceFileStorage(t, "artist/Test_Track-abcd1234.mp3", &fakeContentStorage{})
 	sender := &fakeTelegramSender{
 		sendTrackFn: func(_ int64, _ tgclient.TrackAudio) error {
 			return errors.New("telegram is down")
@@ -272,7 +249,8 @@ func TestAudioService_SendToTelegram_SendTrackError(t *testing.T) {
 		telegramIdentityStorage: identityStorage,
 		telegramSender:          sender,
 		songsStorage:            songStorage,
-		binaryStorage:           binaryStorage,
+		fileMetaStorage:         fileMetaStorage,
+		registry:                registry,
 	}
 
 	ctx := contextWithPermissions(7, domain.UserPermissions{})

@@ -27,6 +27,7 @@ type Service interface {
 	FileService() FileService
 	FeatureFlagsService() FeatureFlagsService
 	StorageService() StorageService
+	MediaService() MediaService
 	HomeService() HomeService
 	NotificationService() NotificationService
 	SearchService() SearchService
@@ -44,6 +45,7 @@ type service struct {
 	fileService          FileService
 	featureFlagsService  FeatureFlagsService
 	storageService       StorageService
+	mediaService         MediaService
 	homeService          HomeService
 	notificationService  NotificationService
 	searchService        SearchService
@@ -85,9 +87,9 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 		return nil, rerrors.Wrap(err, "error initializing auth service")
 	}
 
-	audioService := v1.NewAudioService(dataStorage, cache, fileStorage, telegramSender, int64(cfg.Environment.TelegramNotificationsChatID))
-	playlistService := v1.NewPlaylistService(dataStorage, fileStorage)
-	artistsService := v1.NewArtistsService(dataStorage, fileStorage)
+	audioService := v1.NewAudioService(dataStorage, cache, registry, telegramSender, int64(cfg.Environment.TelegramNotificationsChatID))
+	playlistService := v1.NewPlaylistService(dataStorage, registry)
+	artistsService := v1.NewArtistsService(dataStorage, registry)
 
 	return &service{
 		audioService:        audioService,
@@ -95,7 +97,7 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 		authService:         authSvc,
 		playlistService:     playlistService,
 		artistsService:      artistsService,
-		fileService:         v1.NewFileService(dataStorage, fileStorage),
+		fileService:         v1.NewFileService(dataStorage, fileStorage, registry),
 		featureFlagsService: v1.NewFeatureFlagsService(dataStorage),
 		storageService: v1.NewStorageService(
 			dataStorage,
@@ -103,6 +105,7 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 			cfg.Environment.StorageSecretsKey,
 			cfg.Environment.PublicBaseURL,
 		),
+		mediaService:         v1.NewMediaService(dataStorage, registry),
 		homeService:          v1.NewHomeService(dataStorage),
 		notificationService:  v1.NewNotificationService(dataStorage),
 		searchService:        v1.NewSearchService(audioService, artistsService, playlistService),
@@ -142,6 +145,10 @@ func (s *service) FeatureFlagsService() FeatureFlagsService {
 
 func (s *service) StorageService() StorageService {
 	return s.storageService
+}
+
+func (s *service) MediaService() MediaService {
+	return s.mediaService
 }
 
 func (s *service) HomeService() HomeService {
@@ -353,6 +360,12 @@ type StorageService interface {
 	Test(ctx context.Context, id uuid.UUID) error
 	StartGoogleDriveAuth(ctx context.Context, id uuid.UUID) (consentUrl string, err error)
 	CompleteGoogleDriveAuth(ctx context.Context, state, code string) error
+}
+
+// MediaService resolves where a stored media file lives for the unauthenticated media edge.
+type MediaService interface {
+	// Resolve returns the remote target serving filePath; ErrNotFound for unknown files and files kept on local disk.
+	Resolve(ctx context.Context, filePath string) (domain.RemoteTarget, error)
 }
 
 type HomeService interface {

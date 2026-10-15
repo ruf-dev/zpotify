@@ -152,6 +152,21 @@ func (s *FileMetaStorage) Update(ctx context.Context, fileId int64, file domain.
 	return nil
 }
 
+func (s *FileMetaStorage) UpdateLocation(ctx context.Context, fileId int64, storageId uuid.UUID, filePath string) error {
+	params := file_meta_q.UpdateFileMetaLocationParams{
+		ID:        fileId,
+		StorageID: storageId,
+		FilePath:  filePath,
+	}
+
+	err := s.fmq.UpdateFileMetaLocation(ctx, params)
+	if err != nil {
+		return wrapPgErr(err)
+	}
+
+	return nil
+}
+
 //func (s *FileMetaStorage) scan(rs scanner) (file domain.FileMeta, err error) {
 //	return file, rs.Scan(
 //		&file.UniqueFileId,

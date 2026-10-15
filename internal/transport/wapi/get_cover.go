@@ -53,7 +53,7 @@ func (s *Server) GetCover(writer http.ResponseWriter, req *http.Request) {
 func imageMIMEType(ext string) string {
 	switch strings.ToLower(ext) {
 	case ".jpg", ".jpeg":
-		return "image/jpeg"
+		return jpegMIMEType
 	case ".png":
 		return "image/png"
 	case ".webp":

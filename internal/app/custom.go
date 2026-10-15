@@ -207,7 +207,7 @@ func (c *Custom) Init(app *App) (err error) {
 		torrent_search_health.New(torrentSearchService),
 	)
 
-	gcHandler := gc_handler.New(c.binaryStorage)
+	gcHandler := gc_handler.New(c.storageRegistry)
 	gcProvider := pgqueue.New[storage.GarbageFilePayload](
 		app.Cfg.DataSources.Postgres.ConnectionString(),
 		c.dataStorage.Jobs(),
@@ -299,10 +299,17 @@ func (c *Custom) Init(app *App) (err error) {
 	audioService := c.Service.AudioService()
 	fileService := c.Service.FileService()
 
-	wapiHandler := wapi.New(audioService, fileService, torrentService)
+	mediaService := c.Service.MediaService()
+	storageService := c.Service.StorageService()
+
+	wapiHandler := wapi.New(
+		audioService, fileService, torrentService,
+		mediaService, storageService, app.Cfg.Environment.PublicBaseURL,
+	)
 	wapiHandler = middleware.HttpAuthMiddleware(
 		c.Service,
-		middleware.WithIgnoredPathAuthOption("/wapi/song/cover"),
+		middleware.WithIgnoredPathAuthOption("/wapi/song/cover", "/wapi/storage/google_drive/callback"),
+		middleware.WithIgnoredPathPrefixAuthOption("/wapi/media/"),
 		middleware.WithDebug(app.Cfg.Environment.DebugAuth),
 	)(wapiHandler)
 	wapiHandler = middleware.CorsMiddleware(app.Cfg.Environment.CorsAllowedOrigins)(wapiHandler)

@@ -24,18 +24,18 @@ type PlaylistService struct {
 	playlistStorage storage.PlaylistStorage
 	userStorage     storage.UserStorage
 	fileMetaStorage storage.FileMetaStorage
-	binaryStorage   storage.BinaryFileStorage
+	registry        storage.StorageRegistry
 	jobStorage      storage.JobStorage
 }
 
-func NewPlaylistService(data storage.Storage, binaryStorage storage.BinaryFileStorage) *PlaylistService {
+func NewPlaylistService(data storage.Storage, registry storage.StorageRegistry) *PlaylistService {
 	return &PlaylistService{
 		txManager: data.TxManager(),
 
 		playlistStorage: data.PlaylistStorage(),
 		userStorage:     data.User(),
 		fileMetaStorage: data.FileMeta(),
-		binaryStorage:   binaryStorage,
+		registry:        registry,
 		jobStorage:      data.Jobs(),
 	}
 }
@@ -600,22 +600,9 @@ func (p *PlaylistService) moveCoverFile(
 		newPath = fmt.Sprintf("%d/%s/cover%s", userId, playlistUuid, ext)
 	}
 
-	oldPath := coverMeta.FilePath
-
-	err = p.binaryStorage.Copy(ctx, oldPath, newPath)
+	err = placeFileInDefaultStorage(ctx, p.registry, fileMetaStorage, jobStorage, coverMeta, newPath)
 	if err != nil {
-		return "", rerrors.Wrap(err, "error copying cover file")
-	}
-
-	coverMeta.FilePath = newPath
-	err = fileMetaStorage.Update(ctx, coverFileId, coverMeta.File)
-	if err != nil {
-		return "", rerrors.Wrap(err, "error updating cover file meta")
-	}
-
-	err = jobStorage.EnqueueGarbageFile(ctx, oldPath)
-	if err != nil {
-		return "", rerrors.Wrap(err, "error enqueueing old cover file for deletion")
+		return "", rerrors.Wrap(err, "error placing cover file in permanent storage")
 	}
 
 	err = playlistStorage.UpdateCoverFileId(ctx, playlistUuid, coverFileId)

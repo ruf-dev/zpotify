@@ -26,8 +26,9 @@ const (
 )
 
 type authMiddleware struct {
-	ignoredPaths   map[string]struct{}
-	isDebugEnabled bool
+	ignoredPaths    map[string]struct{}
+	ignoredPrefixes []string
+	isDebugEnabled  bool
 
 	authService service.AuthService
 	userService service.UserService
@@ -35,7 +36,17 @@ type authMiddleware struct {
 
 func (ac *authMiddleware) isIgnored(path string) bool {
 	_, isIgnore := ac.ignoredPaths[path]
-	return isIgnore
+	if isIgnore {
+		return true
+	}
+
+	for _, prefix := range ac.ignoredPrefixes {
+		if strings.HasPrefix(path, prefix) {
+			return true
+		}
+	}
+
+	return false
 }
 
 type authOption func(*authMiddleware)
@@ -46,6 +57,12 @@ func WithIgnoredPathAuthOption(p ...string) authOption {
 		for _, p := range p {
 			a.ignoredPaths[p] = struct{}{}
 		}
+	}
+}
+
+func WithIgnoredPathPrefixAuthOption(prefixes ...string) authOption {
+	return func(a *authMiddleware) {
+		a.ignoredPrefixes = append(a.ignoredPrefixes, prefixes...)
 	}
 }
 

@@ -7,6 +7,8 @@ package file_meta_q
 
 import (
 	"context"
+
+	"github.com/google/uuid"
 )
 
 const updateFileMeta = `-- name: UpdateFileMeta :exec
@@ -37,5 +39,23 @@ func (q *Queries) UpdateFileMeta(ctx context.Context, arg UpdateFileMetaParams) 
 		arg.ContentHash,
 		arg.ID,
 	)
+	return err
+}
+
+const updateFileMetaLocation = `-- name: UpdateFileMetaLocation :exec
+UPDATE files_meta
+SET storage_id = $2,
+    file_path  = $3
+WHERE id = $1
+`
+
+type UpdateFileMetaLocationParams struct {
+	ID        int64
+	StorageID uuid.UUID
+	FilePath  string
+}
+
+func (q *Queries) UpdateFileMetaLocation(ctx context.Context, arg UpdateFileMetaLocationParams) error {
+	_, err := q.db.ExecContext(ctx, updateFileMetaLocation, arg.ID, arg.StorageID, arg.FilePath)
 	return err
 }

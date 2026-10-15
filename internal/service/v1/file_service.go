@@ -198,14 +198,16 @@ type FileService struct {
 	songStorage storage.SongStorage
 
 	binaryStorage storage.BinaryFileStorage
+	registry      storage.StorageRegistry
 	jobs          storage.JobStorage
 }
 
-func NewFileService(s storage.Storage, binaryStorage storage.BinaryFileStorage) *FileService {
+func NewFileService(s storage.Storage, binaryStorage storage.BinaryFileStorage, registry storage.StorageRegistry) *FileService {
 	return &FileService{
 		storage:       s.FileMeta(),
 		songStorage:   s.SongsStorage(),
 		binaryStorage: binaryStorage,
+		registry:      registry,
 		jobs:          s.Jobs(),
 	}
 }
@@ -373,7 +375,7 @@ func (s *FileService) GetFile(ctx context.Context, fileId int64) (domain.FileMet
 		return file, nil
 	}
 
-	rc, err := s.binaryStorage.GetFile(ctx, file.FilePath)
+	rc, err := openStoredFile(ctx, s.registry, file.StorageId, file.FilePath)
 	if err != nil {
 		return domain.FileMeta{}, rerrors.Wrap(err, "error opening file for parsing")
 	}

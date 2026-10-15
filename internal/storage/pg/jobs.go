@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 
+	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
@@ -48,8 +49,8 @@ func (s *jobsStorage) Enqueue(ctx context.Context, queueName string, payload any
 	return nil
 }
 
-func (s *jobsStorage) EnqueueGarbageFile(ctx context.Context, filePath string) error {
-	p := storage.GarbageFilePayload{FilePath: filePath}
+func (s *jobsStorage) EnqueueGarbageFile(ctx context.Context, storageId uuid.UUID, filePath string) error {
+	p := storage.GarbageFilePayload{StorageId: storageId.String(), FilePath: filePath}
 	err := s.Enqueue(ctx, storage.QueueNameGarbageCollector, p, 3)
 	if err != nil {
 		return rerrors.Wrap(err)

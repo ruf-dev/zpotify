@@ -10,6 +10,7 @@ import (
 
 type Querier interface {
 	UpdateFileMeta(ctx context.Context, arg UpdateFileMetaParams) error
+	UpdateFileMetaLocation(ctx context.Context, arg UpdateFileMetaLocationParams) error
 }
 
 var _ Querier = (*Queries)(nil)

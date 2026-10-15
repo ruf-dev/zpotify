@@ -29,11 +29,11 @@ type ArtistsService struct {
 	playlistStorage storage.PlaylistStorage
 	songStorage     storage.SongStorage
 	fileMetaStorage storage.FileMetaStorage
-	binaryStorage   storage.BinaryFileStorage
+	registry        storage.StorageRegistry
 	jobStorage      storage.JobStorage
 }
 
-func NewArtistsService(data storage.Storage, binaryStorage storage.BinaryFileStorage) *ArtistsService {
+func NewArtistsService(data storage.Storage, registry storage.StorageRegistry) *ArtistsService {
 	return &ArtistsService{
 		txManager: data.TxManager(),
 
@@ -41,7 +41,7 @@ func NewArtistsService(data storage.Storage, binaryStorage storage.BinaryFileSto
 		playlistStorage: data.PlaylistStorage(),
 		songStorage:     data.SongsStorage(),
 		fileMetaStorage: data.FileMeta(),
-		binaryStorage:   binaryStorage,
+		registry:        registry,
 		jobStorage:      data.Jobs(),
 	}
 }
@@ -290,22 +290,10 @@ func (s *ArtistsService) moveArtistImageFile(
 
 	ext := path.Ext(meta.FilePath)
 	newPath := fmt.Sprintf("%s/%s%s", artistUuid, fileName, ext)
-	oldPath := meta.FilePath
 
-	err = s.binaryStorage.Copy(ctx, oldPath, newPath)
+	err = placeFileInDefaultStorage(ctx, s.registry, fileMetaStorage, jobStorage, meta, newPath)
 	if err != nil {
-		return "", rerrors.Wrap(err, "error copying artist image file")
-	}
-
-	meta.FilePath = newPath
-	err = fileMetaStorage.Update(ctx, fileId, meta.File)
-	if err != nil {
-		return "", rerrors.Wrap(err, "error updating artist image file meta")
-	}
-
-	err = jobStorage.EnqueueGarbageFile(ctx, oldPath)
-	if err != nil {
-		return "", rerrors.Wrap(err, "error enqueueing old artist image file for deletion")
+		return "", rerrors.Wrap(err, "error placing artist image file in permanent storage")
 	}
 
 	err = persist(ctx, artistUuid, fileId)

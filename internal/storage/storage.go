@@ -142,6 +142,8 @@ type FileMetaStorage interface {
 	ExistingIds(ctx context.Context, ids []int64) (map[int64]bool, error)
 
 	Update(ctx context.Context, fileId int64, file domain.File) error
+	// UpdateLocation - moves the file record to another storage and/or path in one statement.
+	UpdateLocation(ctx context.Context, fileId int64, storageId uuid.UUID, filePath string) error
 
 	List(ctx context.Context, listReq domain.ListFileMeta) ([]domain.FileMeta, error)
 	Delete(ctx context.Context, fileId int64) error
@@ -319,7 +321,9 @@ const QueueNameGarbageCollector = "garbage_collector"
 
 // GarbageFilePayload is the JSONB payload for garbage_collector queue jobs.
 type GarbageFilePayload struct {
-	FilePath string `json:"file_path"`
+	// StorageId - empty for jobs queued before multi-storage; means local disk.
+	StorageId string `json:"storage_id,omitempty"`
+	FilePath  string `json:"file_path"`
 }
 
 const QueueNameAudioParser = "audio_parser"
@@ -344,7 +348,7 @@ type JobStorage interface {
 	WithTx(tx *sql.Tx) JobStorage
 
 	Enqueue(ctx context.Context, queueName string, payload any, maxAttempts int32) error
-	EnqueueGarbageFile(ctx context.Context, filePath string) error
+	EnqueueGarbageFile(ctx context.Context, storageId uuid.UUID, filePath string) error
 	EnqueueAudioParseJob(ctx context.Context, fileId int64, filePath string) error
 	Claim(ctx context.Context, queueName string, limit int32) ([]Job, error)
 	Complete(ctx context.Context, jobID int64) error

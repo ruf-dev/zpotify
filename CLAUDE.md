@@ -93,6 +93,13 @@ everything else (`/`, `/api`) to `zpotify-api`; `template/media-server.conf` is 
 `AudioService.Get` in `internal/service/v1/song_service.go` is intentionally a stub (body commented out) — do not
 "restore" it. Anything that changes where content lives must be reflected in these nginx configs.
 
+Multi-storage: files are local-first. The edge asks the media nginx (local disk) first; on a 404 it falls back
+(`error_page 404 = @remote_media`) to the Go endpoint `GET|HEAD /wapi/media/<path>` (unauthenticated, resolved by
+`MediaService` through `files_meta.storage_id` + `StorageRegistry`). For a file on S3/WebDAV/Google Drive Go answers an
+empty 200 with `X-Accel-Redirect: /_remote`, `X-Remote-Url` and `X-Remote-Authorization`; nginx then streams the remote
+object itself from the internal `/_remote` location (client `Range` is forwarded), so bytes never pass through Go.
+Go owns resolving a path to a remote target; nginx owns fetching and streaming it.
+
 ### Key Layers
 
 **`internal/app/`** — App wiring: initializes config, database, gRPC/HTTP listeners, services, and background workers.

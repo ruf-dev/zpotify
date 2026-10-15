@@ -17,6 +17,7 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -195,6 +196,24 @@ func (f *fakeFileMetaStorage) Update(_ context.Context, fileId int64, file domai
 	}
 	meta.File = file
 	f.byId[fileId] = meta
+	return nil
+}
+
+func (f *fakeFileMetaStorage) UpdateLocation(_ context.Context, fileId int64, storageId uuid.UUID, filePath string) error {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+
+	meta, ok := f.byId[fileId]
+	if !ok {
+		return storage.ErrNotFound
+	}
+
+	delete(f.byPath, meta.FilePath)
+	meta.StorageId = storageId
+	meta.FilePath = filePath
+	f.byId[fileId] = meta
+	f.byPath[filePath] = fileId
+
 	return nil
 }
 
