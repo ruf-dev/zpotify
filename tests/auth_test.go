@@ -9,7 +9,7 @@ import (
 type AuthTestSuite struct {
 	suite.Suite
 
-	env TestEnv
+	env *TestEnv
 }
 
 func (s *AuthTestSuite) SetupSuite() {

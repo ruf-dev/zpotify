@@ -146,10 +146,14 @@ func (c *Custom) Init(app *App) (err error) {
 		return rerrors.Wrap(err, "error creating torrent client")
 	}
 
-	if app.Cfg.Environment.TelegramProxyURL != "" {
+	switch {
+	case app.Cfg.Environment.TelegramToken == "":
+		log.Warn().Msg("telegram token is empty, running with no-op bot")
+		c.tgConn = tgclient.NewNoopBot()
+	case app.Cfg.Environment.TelegramProxyURL != "":
 		c.tgConn, err = go_tg.NewBot(app.Cfg.Environment.TelegramToken,
 			go_tg.WithProxy(app.Cfg.Environment.TelegramProxyURL))
-	} else {
+	default:
 		c.tgConn, err = go_tg.NewBot(app.Cfg.Environment.TelegramToken)
 	}
 	if err != nil {

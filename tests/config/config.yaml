@@ -12,11 +12,27 @@ data_sources:
     name: zpotify_db
     ssl_mode: disable
 servers:
-  80:
+  18087:
     /{GRPC}:
       module: go.zpotify.ru/zpotify
       gateway: /api
+    name: MASTER
 environment:
+  - name: debug_auth
+    type: bool
+    value: false
+  - name: enable_health_probes
+    type: bool
+    value: true
+  - name: public_base_url
+    type: string
+    value: http://localhost:18087
+  - name: storage_secrets_key
+    type: string
+    value: zpotify-e2e-storage-secrets-key-0123456789
+  - name: telegram_token
+    type: string
+    value: ""
   - name: local_storage_path
     type: string
     value: ./data

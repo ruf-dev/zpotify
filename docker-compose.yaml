@@ -22,3 +22,20 @@ services:
     volumes:
       - ./data/angie:/data/nginx
       - ./.verv/template/local-ingress.conf:/etc/nginx/nginx.conf:ro
+
+  test-garage:
+    image: dxflrs/garage:v2.3.0
+    container_name: zpotify-test-garage
+    volumes:
+      - ./tests/garage.toml:/etc/garage.toml:ro
+    tmpfs:
+      - /var/lib/garage/meta
+      - /var/lib/garage/data
+    ports:
+      - "${TEST_GARAGE_PORT:-19100}:3900"
+    healthcheck:
+      test: ["CMD", "/garage", "status"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+      start_period: 5s

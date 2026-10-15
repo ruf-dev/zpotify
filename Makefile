@@ -16,6 +16,11 @@ lint:
 custom-gcl:
 	golangci-lint custom -v
 
+# Starts the e2e Garage S3 container and provisions its layout and fixed access key.
+setup-e2e-env:
+	docker compose up -d --wait test-garage
+	./scripts/setup_test_garage.sh
+
 reload-webserver:
 	docker compose exec -it nginx nginx -s reload
 
