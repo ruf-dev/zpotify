@@ -1,6 +1,6 @@
 app_info:
     name: go.zpotify.ru/zpotify
-    version: v1.2.2
+    version: v1.2.8
     startup_duration: 10s
 data_sources:
     - resource_name: postgres
@@ -53,6 +53,9 @@ environment:
       type: string
       value: ""
     - name: public_base_url
+      type: string
+      value: ""
+    - name: storage_secrets_key
       type: string
       value: ""
     - name: telegram_client_id

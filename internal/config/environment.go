@@ -15,6 +15,7 @@ type EnvironmentConfig struct {
 	ProwlarrAPIKey                string
 	ProwlarrURL                   string
 	PublicBaseURL                 string
+	StorageSecretsKey             string
 	TelegramClientID              string
 	TelegramNotificationsChatID   int
 	TelegramProxyURL              string

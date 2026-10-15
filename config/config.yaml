@@ -55,6 +55,9 @@ environment:
     - name: public_base_url
       type: string
       value: ""
+    - name: storage_secrets_key
+      type: string
+      value: ""
     - name: telegram_client_id
       type: string
       value: ""

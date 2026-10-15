@@ -84,6 +84,15 @@ Client → gRPC or HTTP/REST (:80)
 REST is provided by **grpc-gateway** mounted at `/api`. The frontend is served by the Go backend from
 `internal/transport/web/`.
 
+### Media Serving (not the Go backend)
+
+Audio and image bytes are served by nginx, never streamed by the Go binary. Config lives in `.verv/`:
+`resources.yaml` declares the `media-server` nginx (serves the shared `/data` volume, root `/data/nginx`, with `Range`
+support); `template/ingress.conf` routes `*.mp3|ogg|flac|m4a|...` and `*.jpg|png|webp|...` to `zpotify-media` and
+everything else (`/`, `/api`) to `zpotify-api`; `template/media-server.conf` is the media nginx config.
+`AudioService.Get` in `internal/service/v1/song_service.go` is intentionally a stub (body commented out) — do not
+"restore" it. Anything that changes where content lives must be reflected in these nginx configs.
+
 ### Key Layers
 
 **`internal/app/`** — App wiring: initializes config, database, gRPC/HTTP listeners, services, and background workers.
