@@ -33,6 +33,7 @@ export type StorageInfo = {
   isConnected?: boolean;
   usedBytes?: string;
   quotaBytes?: string;
+  config?: StorageConfig;
 };
 
 export type S3Config = {

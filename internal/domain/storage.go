@@ -61,6 +61,7 @@ type StorageInfo struct {
 	IsConnected bool
 	UsedBytes   int64
 	QuotaBytes  *int64
+	Config      StorageConfig
 }
 
 type CreateStorage struct {

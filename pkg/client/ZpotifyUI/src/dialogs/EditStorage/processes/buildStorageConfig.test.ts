@@ -3,9 +3,11 @@ import { describe, expect, it } from 'vitest';
 import {
     buildStorageConfig,
     EMPTY_STORAGE_FORM,
+    toStorageFormValues,
     validateStorageName,
 } from '@/dialogs/EditStorage/processes/buildStorageConfig.ts';
 import type { StorageFormValues } from '@/dialogs/EditStorage/processes/buildStorageConfig.ts';
+import type { StorageItem } from '@/shared/model/Storage.ts';
 
 function form(overrides: Partial<StorageFormValues>): StorageFormValues {
     return { ...EMPTY_STORAGE_FORM, ...overrides };
@@ -53,10 +55,17 @@ describe('buildStorageConfig', () => {
     });
 
     it('does not require s3 secrets on edit so the stored ones are kept', () => {
-        const result = buildStorageConfig('s3', form({ endpoint: 'e', bucket: 'b' }), true);
+        const result = buildStorageConfig('s3', form({ endpoint: 'e', bucket: 'b', accessKeyId: 'ak' }), true);
 
         expect(result.errors).toEqual([]);
         expect(result.config?.s3?.secretAccessKey).toBe('');
+    });
+
+    it('requires the s3 access key id on edit because it is prefilled', () => {
+        const result = buildStorageConfig('s3', form({ endpoint: 'e', bucket: 'b' }), true);
+
+        expect(result.config).toBeNull();
+        expect(result.errors).toEqual(['Access key id is required']);
     });
 
     it('populates only the webdav variant when the kind is webdav', () => {
@@ -92,6 +101,58 @@ describe('buildStorageConfig', () => {
 
         expect(result.config).toBeNull();
         expect(result.errors).toHaveLength(1);
+    });
+});
+
+describe('toStorageFormValues', () => {
+    const base: StorageItem = {
+        id: 'st',
+        name: 'Backup',
+        kind: 's3',
+        isDefault: false,
+        isConnected: true,
+        usedBytes: 0,
+    };
+
+    it('returns an empty form when no storage is passed', () => {
+        expect(toStorageFormValues()).toEqual(EMPTY_STORAGE_FORM);
+    });
+
+    it('prefills the non-secret s3 fields and leaves the secret empty', () => {
+        const storage: StorageItem = {
+            ...base,
+            config: {
+                s3: { endpoint: 'https://s3.example.com', bucket: 'music', accessKeyId: 'ak', isPathStyle: true },
+            },
+        };
+
+        expect(toStorageFormValues(storage)).toEqual(
+            form({
+                name: 'Backup',
+                endpoint: 'https://s3.example.com',
+                bucket: 'music',
+                accessKeyId: 'ak',
+                isPathStyle: true,
+            }),
+        );
+    });
+
+    it('prefills the non-secret webdav and google drive fields', () => {
+        const webdav: StorageItem = {
+            ...base,
+            kind: 'webdav',
+            config: { webdav: { url: 'https://dav.example.com', username: 'u', rootPath: '/m' } },
+        };
+        const drive: StorageItem = {
+            ...base,
+            kind: 'google_drive',
+            config: { googleDrive: { clientId: 'cid', rootFolderId: 'folder' } },
+        };
+
+        expect(toStorageFormValues(webdav)).toEqual(
+            form({ name: 'Backup', url: 'https://dav.example.com', username: 'u', rootPath: '/m' }),
+        );
+        expect(toStorageFormValues(drive)).toEqual(form({ name: 'Backup', clientId: 'cid', rootFolderId: 'folder' }));
     });
 });
 

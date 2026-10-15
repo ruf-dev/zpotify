@@ -379,27 +379,74 @@ func (s *StorageService) isConnected(row storage.StorageRow) (bool, error) {
 		return false, rerrors.Wrap(err, "error decoding storage config")
 	}
 
-	return cfg.GoogleDrive != nil && cfg.GoogleDrive.RefreshToken != "", nil
+	return isConfigConnected(row.Kind, cfg), nil
 }
 
 func (s *StorageService) toStorageInfo(ctx context.Context, row storage.StorageRow) domain.StorageInfo {
-	isConnected, err := s.isConnected(row)
+	info := domain.StorageInfo{
+		Uuid:       row.Uuid,
+		Name:       row.Name,
+		Kind:       row.Kind,
+		IsDefault:  row.IsDefault,
+		UsedBytes:  row.UsedBytes,
+		QuotaBytes: row.QuotaBytes,
+	}
+
+	if row.Kind == domain.StorageKindLocal {
+		info.IsConnected = true
+
+		return info
+	}
+
+	cfg, err := storage_config.Decode(s.secretsKey, row.ConfigEnc)
 	if err != nil {
 		log.Ctx(ctx).Warn().
 			Str("storage_uuid", row.Uuid.String()).
 			Err(err).
-			Msg("error resolving storage connection state")
+			Msg("error decoding storage config")
+
+		info.IsConnected = row.Kind != domain.StorageKindGoogleDrive
+
+		return info
 	}
 
-	return domain.StorageInfo{
-		Uuid:        row.Uuid,
-		Name:        row.Name,
-		Kind:        row.Kind,
-		IsDefault:   row.IsDefault,
-		IsConnected: isConnected,
-		UsedBytes:   row.UsedBytes,
-		QuotaBytes:  row.QuotaBytes,
+	info.IsConnected = isConfigConnected(row.Kind, cfg)
+	info.Config = redactSecrets(cfg)
+
+	return info
+}
+
+func isConfigConnected(kind domain.StorageKind, cfg domain.StorageConfig) bool {
+	if kind != domain.StorageKindGoogleDrive {
+		return true
 	}
+
+	return cfg.GoogleDrive != nil && cfg.GoogleDrive.RefreshToken != ""
+}
+
+func redactSecrets(cfg domain.StorageConfig) domain.StorageConfig {
+	var redacted domain.StorageConfig
+
+	if cfg.S3 != nil {
+		s3Cfg := *cfg.S3
+		s3Cfg.SecretAccessKey = ""
+		redacted.S3 = &s3Cfg
+	}
+
+	if cfg.Webdav != nil {
+		webdavCfg := *cfg.Webdav
+		webdavCfg.Password = ""
+		redacted.Webdav = &webdavCfg
+	}
+
+	if cfg.GoogleDrive != nil {
+		driveCfg := *cfg.GoogleDrive
+		driveCfg.ClientSecret = ""
+		driveCfg.RefreshToken = ""
+		redacted.GoogleDrive = &driveCfg
+	}
+
+	return redacted
 }
 
 func kindOfConfig(cfg domain.StorageConfig) (domain.StorageKind, bool) {

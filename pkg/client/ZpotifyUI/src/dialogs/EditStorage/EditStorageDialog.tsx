@@ -9,7 +9,7 @@ import S3Fields from '@/dialogs/EditStorage/components/S3Fields/S3Fields.tsx';
 import WebdavFields from '@/dialogs/EditStorage/components/WebdavFields/WebdavFields.tsx';
 import {
     buildStorageConfig,
-    EMPTY_STORAGE_FORM,
+    toStorageFormValues,
     validateStorageName,
 } from '@/dialogs/EditStorage/processes/buildStorageConfig.ts';
 import type { StorageFormValues } from '@/dialogs/EditStorage/processes/buildStorageConfig.ts';
@@ -33,7 +33,7 @@ export default function EditStorageDialog({ storage, onSubmit }: Props) {
 
     const isEdit = storage !== undefined;
     const [kind, setKind] = useState<StorageKindName>(storage?.kind ?? CREATABLE_KINDS[0]);
-    const [values, setValues] = useState<StorageFormValues>({ ...EMPTY_STORAGE_FORM, name: storage?.name ?? '' });
+    const [values, setValues] = useState<StorageFormValues>(() => toStorageFormValues(storage));
     const [isSaving, setIsSaving] = useState(false);
 
     const built = buildStorageConfig(kind, values, isEdit);

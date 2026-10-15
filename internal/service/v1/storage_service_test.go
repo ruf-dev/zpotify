@@ -19,6 +19,7 @@ import (
 const (
 	storageTestKey = "storage-test-key"
 	testDriveName  = "drive"
+	testFolderId   = "folder"
 )
 
 type fakeStoragesRepo struct {
@@ -356,7 +357,7 @@ func Test_StorageService_UpdateDrivePreservesRefreshToken(t *testing.T) {
 
 	incoming := newDriveConfig("client-supplied")
 	incoming.GoogleDrive.ClientSecret = ""
-	incoming.GoogleDrive.RootFolderId = "folder"
+	incoming.GoogleDrive.RootFolderId = testFolderId
 
 	err := fixture.svc.Update(adminStorageCtx(), domain.UpdateStorage{Uuid: row.Uuid, Name: testDriveName, Config: incoming})
 	require.NoError(t, err)
@@ -364,7 +365,7 @@ func Test_StorageService_UpdateDrivePreservesRefreshToken(t *testing.T) {
 	stored := fixture.decodeStored(t, row.Uuid)
 	require.Equal(t, "refresh", stored.GoogleDrive.RefreshToken)
 	require.Equal(t, "csecret", stored.GoogleDrive.ClientSecret)
-	require.Equal(t, "folder", stored.GoogleDrive.RootFolderId)
+	require.Equal(t, testFolderId, stored.GoogleDrive.RootFolderId)
 }
 
 func Test_StorageService_UpdateDriveClientIdChangeClearsRefreshToken(t *testing.T) {
@@ -451,6 +452,87 @@ func Test_StorageService_ListReportsDriveConnection(t *testing.T) {
 	require.True(t, byId[connected.Uuid].IsConnected)
 	require.False(t, byId[pending.Uuid].IsConnected)
 	require.True(t, byId[local.Uuid].IsConnected)
+}
+
+func Test_StorageService_ListReturnsConfigWithoutSecrets(t *testing.T) {
+	fixture := newStorageFixture()
+	s3Row := fixture.addRow(t, domain.StorageKindS3, "s3", newS3Config())
+	webdavCfg := domain.StorageConfig{Webdav: &domain.WebdavConfig{
+		Url:      "https://dav.example.com",
+		Username: "user",
+		Password: "pass",
+		RootPath: "/music",
+	}}
+	webdavRow := fixture.addRow(t, domain.StorageKindWebdav, "webdav", webdavCfg)
+	driveCfg := newDriveConfig("refresh")
+	driveCfg.GoogleDrive.RootFolderId = testFolderId
+	driveRow := fixture.addRow(t, domain.StorageKindGoogleDrive, "drive", driveCfg)
+	local := fixture.addRow(t, domain.StorageKindLocal, "local", domain.StorageConfig{})
+
+	infos, err := fixture.svc.List(adminStorageCtx())
+	require.NoError(t, err)
+
+	byId := make(map[uuid.UUID]domain.StorageInfo, len(infos))
+	for _, info := range infos {
+		byId[info.Uuid] = info
+	}
+
+	wantS3 := domain.S3Config{Endpoint: "https://s3.example.com", Bucket: "music", AccessKeyId: "ak"}
+	require.Equal(t, wantS3, *byId[s3Row.Uuid].Config.S3)
+
+	wantWebdav := domain.WebdavConfig{Url: "https://dav.example.com", Username: "user", RootPath: "/music"}
+	require.Equal(t, wantWebdav, *byId[webdavRow.Uuid].Config.Webdav)
+
+	wantDrive := domain.GoogleDriveConfig{ClientId: "cid", RootFolderId: testFolderId}
+	require.Equal(t, wantDrive, *byId[driveRow.Uuid].Config.GoogleDrive)
+
+	require.Equal(t, domain.StorageConfig{}, byId[local.Uuid].Config)
+}
+
+func Test_StorageService_CreateReturnsConfigWithoutSecrets(t *testing.T) {
+	fixture := newStorageFixture()
+
+	req := domain.CreateStorage{Name: "s3", Config: newS3Config()}
+	info, err := fixture.svc.Create(adminStorageCtx(), req)
+	require.NoError(t, err)
+
+	require.Equal(t, "ak", info.Config.S3.AccessKeyId)
+	require.Equal(t, "music", info.Config.S3.Bucket)
+	require.Empty(t, info.Config.S3.SecretAccessKey)
+	require.Equal(t, "sk", fixture.decodeStored(t, info.Uuid).S3.SecretAccessKey)
+}
+
+func Test_StorageService_ListKeepsUndecryptableDriveDisconnectedWithEmptyConfig(t *testing.T) {
+	fixture := newStorageFixture()
+	row := fixture.addRow(t, domain.StorageKindGoogleDrive, "drive", newDriveConfig("refresh"))
+	row.ConfigEnc = []byte("garbage")
+	fixture.repo.rows[row.Uuid] = row
+
+	infos, err := fixture.svc.List(adminStorageCtx())
+	require.NoError(t, err)
+	require.Len(t, infos, 1)
+
+	require.False(t, infos[0].IsConnected)
+	require.Equal(t, domain.StorageConfig{}, infos[0].Config)
+}
+
+func Test_RedactSecrets_DoesNotMutateInput(t *testing.T) {
+	cfg := domain.StorageConfig{
+		S3:          &domain.S3Config{SecretAccessKey: "sk"},
+		Webdav:      &domain.WebdavConfig{Password: "pass"},
+		GoogleDrive: &domain.GoogleDriveConfig{ClientSecret: "cs", RefreshToken: "rt"},
+	}
+
+	redacted := redactSecrets(cfg)
+
+	require.Empty(t, redacted.S3.SecretAccessKey)
+	require.Empty(t, redacted.Webdav.Password)
+	require.Empty(t, redacted.GoogleDrive.ClientSecret)
+	require.Empty(t, redacted.GoogleDrive.RefreshToken)
+	require.Equal(t, "sk", cfg.S3.SecretAccessKey)
+	require.Equal(t, "pass", cfg.Webdav.Password)
+	require.Equal(t, "cs", cfg.GoogleDrive.ClientSecret)
+	require.Equal(t, "rt", cfg.GoogleDrive.RefreshToken)
 }
 
 func Test_StorageService_SetDefaultRequiresConnectedDrive(t *testing.T) {

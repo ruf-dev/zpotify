@@ -79,14 +79,16 @@ func (StorageKind) EnumDescriptor() ([]byte, []int) {
 }
 
 type StorageInfo struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Kind          StorageKind            `protobuf:"varint,3,opt,name=kind,proto3,enum=zpotify_api.StorageKind" json:"kind,omitempty"`
-	IsDefault     bool                   `protobuf:"varint,4,opt,name=is_default,json=isDefault,proto3" json:"is_default,omitempty"`
-	IsConnected   bool                   `protobuf:"varint,5,opt,name=is_connected,json=isConnected,proto3" json:"is_connected,omitempty"`
-	UsedBytes     int64                  `protobuf:"varint,6,opt,name=used_bytes,json=usedBytes,proto3" json:"used_bytes,omitempty"`
-	QuotaBytes    *int64                 `protobuf:"varint,7,opt,name=quota_bytes,json=quotaBytes,proto3,oneof" json:"quota_bytes,omitempty"`
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	Id          string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name        string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Kind        StorageKind            `protobuf:"varint,3,opt,name=kind,proto3,enum=zpotify_api.StorageKind" json:"kind,omitempty"`
+	IsDefault   bool                   `protobuf:"varint,4,opt,name=is_default,json=isDefault,proto3" json:"is_default,omitempty"`
+	IsConnected bool                   `protobuf:"varint,5,opt,name=is_connected,json=isConnected,proto3" json:"is_connected,omitempty"`
+	UsedBytes   int64                  `protobuf:"varint,6,opt,name=used_bytes,json=usedBytes,proto3" json:"used_bytes,omitempty"`
+	QuotaBytes  *int64                 `protobuf:"varint,7,opt,name=quota_bytes,json=quotaBytes,proto3,oneof" json:"quota_bytes,omitempty"`
+	// secrets are always empty
+	Config        *StorageConfig `protobuf:"bytes,8,opt,name=config,proto3" json:"config,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -168,6 +170,13 @@ func (x *StorageInfo) GetQuotaBytes() int64 {
 		return *x.QuotaBytes
 	}
 	return 0
+}
+
+func (x *StorageInfo) GetConfig() *StorageConfig {
+	if x != nil {
+		return x.Config
+	}
+	return nil
 }
 
 type S3Config struct {
@@ -1337,7 +1346,7 @@ var File_zpotify_service_storage_proto protoreflect.FileDescriptor
 
 const file_zpotify_service_storage_proto_rawDesc = "" +
 	"\n" +
-	"\x1dzpotify_service_storage.proto\x12\vzpotify_api\x1a\tnpm.proto\x1a\x1cgoogle/api/annotations.proto\"\xf6\x01\n" +
+	"\x1dzpotify_service_storage.proto\x12\vzpotify_api\x1a\tnpm.proto\x1a\x1cgoogle/api/annotations.proto\"\xaa\x02\n" +
 	"\vStorageInfo\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12,\n" +
@@ -1348,7 +1357,8 @@ const file_zpotify_service_storage_proto_rawDesc = "" +
 	"\n" +
 	"used_bytes\x18\x06 \x01(\x03R\tusedBytes\x12$\n" +
 	"\vquota_bytes\x18\a \x01(\x03H\x00R\n" +
-	"quotaBytes\x88\x01\x01B\x0e\n" +
+	"quotaBytes\x88\x01\x01\x122\n" +
+	"\x06config\x18\b \x01(\v2\x1a.zpotify_api.StorageConfigR\x06configB\x0e\n" +
 	"\f_quota_bytes\"\xca\x01\n" +
 	"\bS3Config\x12\x1a\n" +
 	"\bendpoint\x18\x01 \x01(\tR\bendpoint\x12\x16\n" +
@@ -1471,32 +1481,33 @@ var file_zpotify_service_storage_proto_goTypes = []any{
 }
 var file_zpotify_service_storage_proto_depIdxs = []int32{
 	0,  // 0: zpotify_api.StorageInfo.kind:type_name -> zpotify_api.StorageKind
-	2,  // 1: zpotify_api.StorageConfig.s3:type_name -> zpotify_api.S3Config
-	3,  // 2: zpotify_api.StorageConfig.webdav:type_name -> zpotify_api.WebdavConfig
-	4,  // 3: zpotify_api.StorageConfig.google_drive:type_name -> zpotify_api.GoogleDriveConfig
-	1,  // 4: zpotify_api.ListStorages.Response.storages:type_name -> zpotify_api.StorageInfo
-	5,  // 5: zpotify_api.CreateStorage.Request.config:type_name -> zpotify_api.StorageConfig
-	1,  // 6: zpotify_api.CreateStorage.Response.storage:type_name -> zpotify_api.StorageInfo
-	5,  // 7: zpotify_api.UpdateStorage.Request.config:type_name -> zpotify_api.StorageConfig
-	13, // 8: zpotify_api.StorageAPI.ListStorages:input_type -> zpotify_api.ListStorages.Request
-	15, // 9: zpotify_api.StorageAPI.CreateStorage:input_type -> zpotify_api.CreateStorage.Request
-	17, // 10: zpotify_api.StorageAPI.UpdateStorage:input_type -> zpotify_api.UpdateStorage.Request
-	19, // 11: zpotify_api.StorageAPI.DeleteStorage:input_type -> zpotify_api.DeleteStorage.Request
-	21, // 12: zpotify_api.StorageAPI.SetDefaultStorage:input_type -> zpotify_api.SetDefaultStorage.Request
-	23, // 13: zpotify_api.StorageAPI.TestStorage:input_type -> zpotify_api.TestStorage.Request
-	25, // 14: zpotify_api.StorageAPI.StartGoogleDriveAuth:input_type -> zpotify_api.StartGoogleDriveAuth.Request
-	14, // 15: zpotify_api.StorageAPI.ListStorages:output_type -> zpotify_api.ListStorages.Response
-	16, // 16: zpotify_api.StorageAPI.CreateStorage:output_type -> zpotify_api.CreateStorage.Response
-	18, // 17: zpotify_api.StorageAPI.UpdateStorage:output_type -> zpotify_api.UpdateStorage.Response
-	20, // 18: zpotify_api.StorageAPI.DeleteStorage:output_type -> zpotify_api.DeleteStorage.Response
-	22, // 19: zpotify_api.StorageAPI.SetDefaultStorage:output_type -> zpotify_api.SetDefaultStorage.Response
-	24, // 20: zpotify_api.StorageAPI.TestStorage:output_type -> zpotify_api.TestStorage.Response
-	26, // 21: zpotify_api.StorageAPI.StartGoogleDriveAuth:output_type -> zpotify_api.StartGoogleDriveAuth.Response
-	15, // [15:22] is the sub-list for method output_type
-	8,  // [8:15] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	5,  // 1: zpotify_api.StorageInfo.config:type_name -> zpotify_api.StorageConfig
+	2,  // 2: zpotify_api.StorageConfig.s3:type_name -> zpotify_api.S3Config
+	3,  // 3: zpotify_api.StorageConfig.webdav:type_name -> zpotify_api.WebdavConfig
+	4,  // 4: zpotify_api.StorageConfig.google_drive:type_name -> zpotify_api.GoogleDriveConfig
+	1,  // 5: zpotify_api.ListStorages.Response.storages:type_name -> zpotify_api.StorageInfo
+	5,  // 6: zpotify_api.CreateStorage.Request.config:type_name -> zpotify_api.StorageConfig
+	1,  // 7: zpotify_api.CreateStorage.Response.storage:type_name -> zpotify_api.StorageInfo
+	5,  // 8: zpotify_api.UpdateStorage.Request.config:type_name -> zpotify_api.StorageConfig
+	13, // 9: zpotify_api.StorageAPI.ListStorages:input_type -> zpotify_api.ListStorages.Request
+	15, // 10: zpotify_api.StorageAPI.CreateStorage:input_type -> zpotify_api.CreateStorage.Request
+	17, // 11: zpotify_api.StorageAPI.UpdateStorage:input_type -> zpotify_api.UpdateStorage.Request
+	19, // 12: zpotify_api.StorageAPI.DeleteStorage:input_type -> zpotify_api.DeleteStorage.Request
+	21, // 13: zpotify_api.StorageAPI.SetDefaultStorage:input_type -> zpotify_api.SetDefaultStorage.Request
+	23, // 14: zpotify_api.StorageAPI.TestStorage:input_type -> zpotify_api.TestStorage.Request
+	25, // 15: zpotify_api.StorageAPI.StartGoogleDriveAuth:input_type -> zpotify_api.StartGoogleDriveAuth.Request
+	14, // 16: zpotify_api.StorageAPI.ListStorages:output_type -> zpotify_api.ListStorages.Response
+	16, // 17: zpotify_api.StorageAPI.CreateStorage:output_type -> zpotify_api.CreateStorage.Response
+	18, // 18: zpotify_api.StorageAPI.UpdateStorage:output_type -> zpotify_api.UpdateStorage.Response
+	20, // 19: zpotify_api.StorageAPI.DeleteStorage:output_type -> zpotify_api.DeleteStorage.Response
+	22, // 20: zpotify_api.StorageAPI.SetDefaultStorage:output_type -> zpotify_api.SetDefaultStorage.Response
+	24, // 21: zpotify_api.StorageAPI.TestStorage:output_type -> zpotify_api.TestStorage.Response
+	26, // 22: zpotify_api.StorageAPI.StartGoogleDriveAuth:output_type -> zpotify_api.StartGoogleDriveAuth.Response
+	16, // [16:23] is the sub-list for method output_type
+	9,  // [9:16] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_zpotify_service_storage_proto_init() }

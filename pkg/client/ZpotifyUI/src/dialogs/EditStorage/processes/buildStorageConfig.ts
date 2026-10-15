@@ -1,5 +1,5 @@
 import type { StorageConfig } from '@/app/api/zpotify';
-import type { StorageKindName } from '@/shared/model/Storage.ts';
+import type { StorageItem, StorageKindName } from '@/shared/model/Storage.ts';
 
 export type StorageFormValues = {
     name: string;
@@ -40,6 +40,27 @@ export const EMPTY_STORAGE_FORM: StorageFormValues = {
     rootFolderId: '',
 };
 
+export function toStorageFormValues(storage?: StorageItem): StorageFormValues {
+    const s3 = storage?.config?.s3;
+    const webdav = storage?.config?.webdav;
+    const googleDrive = storage?.config?.googleDrive;
+
+    return {
+        ...EMPTY_STORAGE_FORM,
+        name: storage?.name ?? '',
+        endpoint: s3?.endpoint ?? '',
+        region: s3?.region ?? '',
+        bucket: s3?.bucket ?? '',
+        accessKeyId: s3?.accessKeyId ?? '',
+        isPathStyle: s3?.isPathStyle ?? false,
+        url: webdav?.url ?? '',
+        username: webdav?.username ?? '',
+        rootPath: webdav?.rootPath ?? '',
+        clientId: googleDrive?.clientId ?? '',
+        rootFolderId: googleDrive?.rootFolderId ?? '',
+    };
+}
+
 type RequiredField = { value: string; message: string };
 
 function collectMissing(fields: RequiredField[]): string[] {
@@ -69,12 +90,8 @@ function buildS3(v: StorageFormValues, isEdit: boolean): StorageFormResult {
     const errors = collectMissing([
         { value: v.endpoint, message: 'Endpoint is required' },
         { value: v.bucket, message: 'Bucket is required' },
-        ...(isEdit
-            ? []
-            : [
-                  { value: v.accessKeyId, message: 'Access key id is required' },
-                  { value: v.secretAccessKey, message: 'Secret access key is required' },
-              ]),
+        { value: v.accessKeyId, message: 'Access key id is required' },
+        ...(isEdit ? [] : [{ value: v.secretAccessKey, message: 'Secret access key is required' }]),
     ]);
 
     const config: StorageConfig = {

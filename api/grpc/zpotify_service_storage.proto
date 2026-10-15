@@ -76,6 +76,8 @@ message StorageInfo {
   bool is_connected           = 5;
   int64 used_bytes            = 6;
   optional int64 quota_bytes  = 7;
+  // secrets are always empty
+  StorageConfig config        = 8;
 }
 
 message S3Config {

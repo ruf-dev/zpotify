@@ -51,7 +51,42 @@ func toProtoStorageInfo(info domain.StorageInfo) *zpotify_api.StorageInfo {
 		IsConnected: info.IsConnected,
 		UsedBytes:   info.UsedBytes,
 		QuotaBytes:  info.QuotaBytes,
+		Config:      toProtoStorageConfig(info.Config),
 	}
+}
+
+func toProtoStorageConfig(config domain.StorageConfig) *zpotify_api.StorageConfig {
+	out := &zpotify_api.StorageConfig{}
+
+	if config.S3 != nil {
+		out.Config = &zpotify_api.StorageConfig_S3{S3: &zpotify_api.S3Config{
+			Endpoint:        config.S3.Endpoint,
+			Region:          config.S3.Region,
+			Bucket:          config.S3.Bucket,
+			AccessKeyId:     config.S3.AccessKeyId,
+			SecretAccessKey: config.S3.SecretAccessKey,
+			IsPathStyle:     config.S3.IsPathStyle,
+		}}
+	}
+
+	if config.Webdav != nil {
+		out.Config = &zpotify_api.StorageConfig_Webdav{Webdav: &zpotify_api.WebdavConfig{
+			Url:      config.Webdav.Url,
+			Username: config.Webdav.Username,
+			Password: config.Webdav.Password,
+			RootPath: config.Webdav.RootPath,
+		}}
+	}
+
+	if config.GoogleDrive != nil {
+		out.Config = &zpotify_api.StorageConfig_GoogleDrive{GoogleDrive: &zpotify_api.GoogleDriveConfig{
+			ClientId:     config.GoogleDrive.ClientId,
+			ClientSecret: config.GoogleDrive.ClientSecret,
+			RootFolderId: config.GoogleDrive.RootFolderId,
+		}}
+	}
+
+	return out
 }
 
 func toProtoStorageKind(kind domain.StorageKind) zpotify_api.StorageKind {

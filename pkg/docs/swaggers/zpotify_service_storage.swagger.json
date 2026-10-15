@@ -418,6 +418,10 @@
         "quotaBytes": {
           "type": "string",
           "format": "int64"
+        },
+        "config": {
+          "$ref": "#/definitions/zpotify_apiStorageConfig",
+          "title": "secrets are always empty"
         }
       }
     },

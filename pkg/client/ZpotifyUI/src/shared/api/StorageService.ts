@@ -25,6 +25,7 @@ function toStorageItem(info: StorageInfo): StorageItem {
         isConnected: info.isConnected ?? false,
         usedBytes: Number(info.usedBytes ?? 0),
         quotaBytes: info.quotaBytes ? Number(info.quotaBytes) : undefined,
+        config: info.config,
     };
 }
 
