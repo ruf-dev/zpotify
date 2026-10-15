@@ -6,6 +6,8 @@ import (
 	"io"
 	"time"
 
+	"github.com/google/uuid"
+
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage/pg/generated/songs_q"
 	"go.zpotify.ru/zpotify/internal/storage/tx_manager"
@@ -24,6 +26,7 @@ type Storage interface {
 	PlaylistStorage() PlaylistStorage
 	ArtistStorage() ArtistStorage
 	FileMeta() FileMetaStorage
+	Storages() StoragesStorage
 	Jobs() JobStorage
 	FeatureFlags() FeatureFlagsStorage
 	Home() HomeStorage
@@ -32,6 +35,58 @@ type Storage interface {
 	TorrentDownloads() TorrentDownloadStorage
 
 	TxManager() *tx_manager.TxManager
+}
+
+// StorageRow is a storages row with its config blob left encrypted; the
+// service layer owns encryption and decoding.
+type StorageRow struct {
+	Uuid        uuid.UUID
+	Name        string
+	Kind        domain.StorageKind
+	ConfigEnc   []byte
+	IsDefault   bool
+	OwnerUserId *int64
+	QuotaBytes  *int64
+	UsedBytes   int64
+}
+
+// ContentStorage - one concrete place where file bytes live (local disk, S3 bucket, WebDAV, Google Drive).
+type ContentStorage interface {
+	Put(ctx context.Context, path string, content io.Reader) error
+	Get(ctx context.Context, path string) (io.ReadCloser, error)
+	// Copy - copies within this storage.
+	Copy(ctx context.Context, fromPath, toPath string) error
+	// Delete - idempotent.
+	Delete(ctx context.Context, path string) error
+	// Resolve - returns ErrNotRemote for local storage.
+	Resolve(ctx context.Context, path string) (domain.RemoteTarget, error)
+	// Probe - write+read+delete probe for admin Test.
+	Probe(ctx context.Context) error
+}
+
+// StorageRegistry resolves a ContentStorage by storages.id; builds and caches providers.
+type StorageRegistry interface {
+	Get(ctx context.Context, storageId uuid.UUID) (ContentStorage, error)
+	Default(ctx context.Context) (uuid.UUID, ContentStorage, error)
+	Invalidate(storageId uuid.UUID)
+	// Transfer - same id means Copy, otherwise Get + Put stream.
+	Transfer(ctx context.Context, fromId uuid.UUID, fromPath string, toId uuid.UUID, toPath string) error
+}
+
+type StoragesStorage interface {
+	WithTx(tx *sql.Tx) StoragesStorage
+
+	// List - includes UsedBytes.
+	List(ctx context.Context) ([]StorageRow, error)
+	Get(ctx context.Context, id uuid.UUID) (sql.Null[StorageRow], error)
+	GetDefault(ctx context.Context) (StorageRow, error)
+	Create(ctx context.Context, name string, kind domain.StorageKind, configEnc []byte) (StorageRow, error)
+	Update(ctx context.Context, id uuid.UUID, name string, configEnc []byte) error
+	Delete(ctx context.Context, id uuid.UUID) error
+	// SetDefault - clears the previous default and sets the new one; callers wrap it in a transaction.
+	SetDefault(ctx context.Context, id uuid.UUID) error
+	CountFiles(ctx context.Context, id uuid.UUID) (int64, error)
+	GetUsedBytes(ctx context.Context, id uuid.UUID) (int64, error)
 }
 
 type FeatureFlagsStorage interface {

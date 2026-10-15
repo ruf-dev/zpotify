@@ -5,7 +5,8 @@ SELECT id,
        added_by_id,
        size_bytes,
        verified,
-       content_hash
+       content_hash,
+       storage_id
 FROM files_meta
 WHERE id = $1;
 
@@ -16,14 +17,15 @@ SELECT fm.id,
        fm.added_by_id,
        fm.size_bytes,
        fm.verified,
-       fm.content_hash
+       fm.content_hash,
+       fm.storage_id
 FROM files_meta fm
 JOIN songs s ON s.file_id = fm.id
 WHERE s.id = $1;
 
 -- name: CreateFile :one
-INSERT INTO files_meta (file_path, duration_sec, added_by_id, size_bytes, verified, content_hash)
-VALUES ($1, $2, $3, $4, $5, $6)
+INSERT INTO files_meta (file_path, duration_sec, added_by_id, size_bytes, verified, content_hash, storage_id)
+VALUES ($1, $2, $3, $4, $5, $6, $7)
 RETURNING id;
 
 -- name: GetFileByPath :one
@@ -33,7 +35,8 @@ SELECT id,
        added_by_id,
        size_bytes,
        verified,
-       content_hash
+       content_hash,
+       storage_id
 FROM files_meta
 WHERE file_path = $1;
 
@@ -44,7 +47,8 @@ SELECT id,
        added_by_id,
        size_bytes,
        verified,
-       content_hash
+       content_hash,
+       storage_id
 FROM files_meta
 WHERE content_hash = $1
   AND added_by_id = $2;

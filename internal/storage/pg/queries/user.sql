@@ -29,8 +29,8 @@ ON CONFLICT (user_id)
 
 -- name: SaveUserPermissions :exec
 INSERT INTO user_permissions
-    (user_id, can_upload, early_access, can_create_playlist, max_pending_tracks, max_song_size_bytes, max_total_upload_bytes)
-VALUES ($1, $2, $3, $4, $5, $6, $7)
+    (user_id, can_upload, early_access, can_create_playlist, max_pending_tracks, max_song_size_bytes, max_total_upload_bytes, is_administrator)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 ON CONFLICT (user_id) DO UPDATE SET can_upload             = EXCLUDED.can_upload,
                                     early_access           = EXCLUDED.early_access,
                                     can_create_playlist    = EXCLUDED.can_create_playlist,

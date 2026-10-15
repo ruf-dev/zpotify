@@ -18,6 +18,8 @@ message Permissions {
   bool can_create_playlist = 3;
   // Max number of tracks allowed in temp storage; 0 = no uploads allowed
   int64 max_pending_tracks = 4;
+  // User can manage storages and other admin-only settings
+  bool is_administrator = 5;
 }
 
 enum AuthMethods {

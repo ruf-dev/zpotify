@@ -3,6 +3,8 @@ package domain
 import (
 	"time"
 
+	"github.com/google/uuid"
+
 	"go.zpotify.ru/zpotify/internal/storage/pg/generated/songs_q"
 )
 
@@ -19,6 +21,7 @@ type FileMeta struct {
 	Id int64
 	File
 	AddedById int64
+	StorageId uuid.UUID
 }
 
 type SaveFileCode int64

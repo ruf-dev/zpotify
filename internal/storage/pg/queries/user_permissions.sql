@@ -6,6 +6,7 @@ SELECT user_id,
        max_pending_tracks,
        max_song_size_bytes,
        max_total_upload_bytes,
-       can_edit_artists
+       can_edit_artists,
+       is_administrator
 FROM user_permissions
 WHERE user_id = $1;

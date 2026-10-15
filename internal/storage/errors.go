@@ -11,3 +11,5 @@ var (
 	ErrAlreadyExists = rerrors.New("already exists", codes.AlreadyExists, rerrors.WithHttpStatus(http.StatusConflict))
 	ErrNotFound      = rerrors.New("record not found", codes.NotFound, rerrors.WithHttpStatus(http.StatusNotFound))
 )
+
+var ErrNotRemote = rerrors.New("storage is not remote")

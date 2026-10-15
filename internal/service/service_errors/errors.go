@@ -105,4 +105,14 @@ var (
 	// paths are empty, or do not each match a real, audio-supported file in
 	// the torrent.
 	ErrTorrentInvalidSelection = rerrors.New("invalid torrent file selection", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
+
+	ErrStorageNotFound = rerrors.New("storage not found", codes.NotFound, rerrors.WithHttpStatus(http.StatusNotFound))
+
+	ErrStorageNotEmpty = rerrors.New("storage still holds files", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusConflict))
+
+	ErrStorageCannotDeleteLocal = rerrors.New("local storage cannot be deleted", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusConflict))
+
+	ErrStorageCannotDeleteDefault = rerrors.New("default storage cannot be deleted", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusConflict))
+
+	ErrStorageInvalidConfig = rerrors.New("invalid storage config", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
 )

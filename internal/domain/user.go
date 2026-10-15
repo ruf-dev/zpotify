@@ -52,6 +52,8 @@ type UserPermissions struct {
 	MaxSongSizeBytes int64
 
 	MaxTotalUploadBytes int64
+
+	IsAdministrator bool
 }
 
 type UserSession struct {

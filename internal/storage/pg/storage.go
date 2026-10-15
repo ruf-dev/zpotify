@@ -28,6 +28,7 @@ type dataStorage struct {
 	playlistStorage         *PlaylistStorage
 	artistStorage           *ArtistsStorage
 	fileMetaStorage         *FileMetaStorage
+	storagesStorage         *StoragesStorage
 	jobsStorage             *jobsStorage
 	featureFlagsStorage     *FeatureFlagsStorage
 	homeStorage             *HomeStorage
@@ -51,6 +52,7 @@ func NewStorage(conn *sql.DB) storage.Storage {
 		playlistStorage:         playlistStorage,
 		artistStorage:           NewArtistsStorage(conn),
 		fileMetaStorage:         NewFileMetaStorage(conn),
+		storagesStorage:         NewStoragesStorage(conn),
 		jobsStorage:             newJobsStorage(conn),
 		featureFlagsStorage:     NewFeatureFlagsStorage(conn),
 		homeStorage:             NewHomeStorage(conn, playlistStorage),
@@ -95,6 +97,10 @@ func (d *dataStorage) ArtistStorage() storage.ArtistStorage {
 
 func (d *dataStorage) FileMeta() storage.FileMetaStorage {
 	return d.fileMetaStorage
+}
+
+func (d *dataStorage) Storages() storage.StoragesStorage {
+	return d.storagesStorage
 }
 
 func (d *dataStorage) Jobs() storage.JobStorage {

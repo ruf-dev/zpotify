@@ -8,12 +8,13 @@ package querier
 import (
 	"context"
 
+	"github.com/google/uuid"
 	"github.com/lib/pq"
 )
 
 const createFile = `-- name: CreateFile :one
-INSERT INTO files_meta (file_path, duration_sec, added_by_id, size_bytes, verified, content_hash)
-VALUES ($1, $2, $3, $4, $5, $6)
+INSERT INTO files_meta (file_path, duration_sec, added_by_id, size_bytes, verified, content_hash, storage_id)
+VALUES ($1, $2, $3, $4, $5, $6, $7)
 RETURNING id
 `
 
@@ -24,6 +25,7 @@ type CreateFileParams struct {
 	SizeBytes   int64
 	Verified    bool
 	ContentHash string
+	StorageID   uuid.UUID
 }
 
 func (q *Queries) CreateFile(ctx context.Context, arg CreateFileParams) (int64, error) {
@@ -34,6 +36,7 @@ func (q *Queries) CreateFile(ctx context.Context, arg CreateFileParams) (int64, 
 		arg.SizeBytes,
 		arg.Verified,
 		arg.ContentHash,
+		arg.StorageID,
 	)
 	var id int64
 	err := row.Scan(&id)
@@ -57,7 +60,8 @@ SELECT id,
        added_by_id,
        size_bytes,
        verified,
-       content_hash
+       content_hash,
+       storage_id
 FROM files_meta
 WHERE content_hash = $1
   AND added_by_id = $2
@@ -79,6 +83,7 @@ func (q *Queries) GetFileByHash(ctx context.Context, arg GetFileByHashParams) (F
 		&i.SizeBytes,
 		&i.Verified,
 		&i.ContentHash,
+		&i.StorageID,
 	)
 	return i, err
 }
@@ -90,7 +95,8 @@ SELECT id,
        added_by_id,
        size_bytes,
        verified,
-       content_hash
+       content_hash,
+       storage_id
 FROM files_meta
 WHERE id = $1
 `
@@ -106,6 +112,7 @@ func (q *Queries) GetFileById(ctx context.Context, id int64) (FilesMetum, error)
 		&i.SizeBytes,
 		&i.Verified,
 		&i.ContentHash,
+		&i.StorageID,
 	)
 	return i, err
 }
@@ -117,7 +124,8 @@ SELECT id,
        added_by_id,
        size_bytes,
        verified,
-       content_hash
+       content_hash,
+       storage_id
 FROM files_meta
 WHERE file_path = $1
 `
@@ -133,6 +141,7 @@ func (q *Queries) GetFileByPath(ctx context.Context, filePath string) (FilesMetu
 		&i.SizeBytes,
 		&i.Verified,
 		&i.ContentHash,
+		&i.StorageID,
 	)
 	return i, err
 }
@@ -144,7 +153,8 @@ SELECT fm.id,
        fm.added_by_id,
        fm.size_bytes,
        fm.verified,
-       fm.content_hash
+       fm.content_hash,
+       fm.storage_id
 FROM files_meta fm
 JOIN songs s ON s.file_id = fm.id
 WHERE s.id = $1
@@ -161,6 +171,7 @@ func (q *Queries) GetFileBySongId(ctx context.Context, id int64) (FilesMetum, er
 		&i.SizeBytes,
 		&i.Verified,
 		&i.ContentHash,
+		&i.StorageID,
 	)
 	return i, err
 }

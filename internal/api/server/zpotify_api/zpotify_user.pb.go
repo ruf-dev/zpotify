@@ -7,13 +7,12 @@
 package zpotify_api
 
 import (
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
-
 	_ "go.redsock.ru/protoc-gen-npm/npmplugin"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
 )
 
 const (
@@ -82,8 +81,10 @@ type Permissions struct {
 	CanCreatePlaylist bool `protobuf:"varint,3,opt,name=can_create_playlist,json=canCreatePlaylist,proto3" json:"can_create_playlist,omitempty"`
 	// Max number of tracks allowed in temp storage; 0 = no uploads allowed
 	MaxPendingTracks int64 `protobuf:"varint,4,opt,name=max_pending_tracks,json=maxPendingTracks,proto3" json:"max_pending_tracks,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// User can manage storages and other admin-only settings
+	IsAdministrator bool `protobuf:"varint,5,opt,name=is_administrator,json=isAdministrator,proto3" json:"is_administrator,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Permissions) Reset() {
@@ -144,17 +145,25 @@ func (x *Permissions) GetMaxPendingTracks() int64 {
 	return 0
 }
 
+func (x *Permissions) GetIsAdministrator() bool {
+	if x != nil {
+		return x.IsAdministrator
+	}
+	return false
+}
+
 var File_zpotify_user_proto protoreflect.FileDescriptor
 
 const file_zpotify_user_proto_rawDesc = "" +
 	"\n" +
-	"\x12zpotify_user.proto\x12\vzpotify_api\x1a\tnpm.proto\"\xad\x01\n" +
+	"\x12zpotify_user.proto\x12\vzpotify_api\x1a\tnpm.proto\"\xd8\x01\n" +
 	"\vPermissions\x12\x1d\n" +
 	"\n" +
 	"can_upload\x18\x01 \x01(\bR\tcanUpload\x12!\n" +
 	"\fearly_access\x18\x02 \x01(\bR\vearlyAccess\x12.\n" +
 	"\x13can_create_playlist\x18\x03 \x01(\bR\x11canCreatePlaylist\x12,\n" +
-	"\x12max_pending_tracks\x18\x04 \x01(\x03R\x10maxPendingTracks*[\n" +
+	"\x12max_pending_tracks\x18\x04 \x01(\x03R\x10maxPendingTracks\x12)\n" +
+	"\x10is_administrator\x18\x05 \x01(\bR\x0fisAdministrator*[\n" +
 	"\vAuthMethods\x12\x1b\n" +
 	"\x17AuthMethod_NotSpecified\x10\x00\x12\x16\n" +
 	"\x12AuthMethod_Offline\x10\x01\x12\x17\n" +

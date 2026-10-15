@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/google/uuid"
+
 	"go.zpotify.ru/zpotify/internal/clients/sqldb"
 	"go.zpotify.ru/zpotify/internal/domain"
 	"go.zpotify.ru/zpotify/internal/storage"
@@ -27,6 +29,11 @@ func NewFileMetaStorage(db sqldb.DB) *FileMetaStorage {
 }
 
 func (s *FileMetaStorage) Add(ctx context.Context, req domain.FileMeta) (int64, error) {
+	storageId := req.StorageId
+	if storageId == uuid.Nil {
+		storageId = domain.LocalStorageUuid
+	}
+
 	params := querier.CreateFileParams{
 		FilePath:    req.FilePath,
 		DurationSec: int64(req.Duration.Seconds()),
@@ -34,6 +41,7 @@ func (s *FileMetaStorage) Add(ctx context.Context, req domain.FileMeta) (int64, 
 		SizeBytes:   req.SizeBytes,
 		Verified:    req.Verified,
 		ContentHash: req.ContentHash,
+		StorageID:   storageId,
 	}
 
 	id, err := s.q.CreateFile(ctx, params)
@@ -165,6 +173,7 @@ func toFileDomain(f querier.FilesMetum) domain.FileMeta {
 			ContentHash: f.ContentHash,
 		},
 		AddedById: f.AddedByID,
+		StorageId: f.StorageID,
 	}
 }
 

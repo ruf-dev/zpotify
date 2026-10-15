@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/google/uuid"
 	"go.redsock.ru/rerrors"
 
 	"go.zpotify.ru/zpotify/internal/clients/telegram"
@@ -25,6 +26,7 @@ type Service interface {
 	ArtistsService() ArtistsService
 	FileService() FileService
 	FeatureFlagsService() FeatureFlagsService
+	StorageService() StorageService
 	HomeService() HomeService
 	NotificationService() NotificationService
 	SearchService() SearchService
@@ -41,6 +43,7 @@ type service struct {
 	artistsService       ArtistsService
 	fileService          FileService
 	featureFlagsService  FeatureFlagsService
+	storageService       StorageService
 	homeService          HomeService
 	notificationService  NotificationService
 	searchService        SearchService
@@ -54,7 +57,7 @@ type service struct {
 // background task needs the concrete type - its import entry point is
 // deliberately not part of the TorrentService interface below.
 func New(dataStorage storage.Storage, cache files_cache.FilesCache,
-	fileStorage storage.BinaryFileStorage, adminNotifier auth.AdminNotifier,
+	fileStorage storage.BinaryFileStorage, registry storage.StorageRegistry, adminNotifier auth.AdminNotifier,
 	telegramSender v1.TelegramSender,
 	torrentService *v1.TorrentService,
 	torrentSearchService *v1.TorrentSearchService,
@@ -87,13 +90,19 @@ func New(dataStorage storage.Storage, cache files_cache.FilesCache,
 	artistsService := v1.NewArtistsService(dataStorage, fileStorage)
 
 	return &service{
-		audioService:         audioService,
-		userService:          v1.NewUserService(dataStorage, torrentSearchService),
-		authService:          authSvc,
-		playlistService:      playlistService,
-		artistsService:       artistsService,
-		fileService:          v1.NewFileService(dataStorage, fileStorage),
-		featureFlagsService:  v1.NewFeatureFlagsService(dataStorage),
+		audioService:        audioService,
+		userService:         v1.NewUserService(dataStorage, torrentSearchService),
+		authService:         authSvc,
+		playlistService:     playlistService,
+		artistsService:      artistsService,
+		fileService:         v1.NewFileService(dataStorage, fileStorage),
+		featureFlagsService: v1.NewFeatureFlagsService(dataStorage),
+		storageService: v1.NewStorageService(
+			dataStorage,
+			registry,
+			cfg.Environment.StorageSecretsKey,
+			cfg.Environment.PublicBaseURL,
+		),
 		homeService:          v1.NewHomeService(dataStorage),
 		notificationService:  v1.NewNotificationService(dataStorage),
 		searchService:        v1.NewSearchService(audioService, artistsService, playlistService),
@@ -129,6 +138,10 @@ func (s *service) FileService() FileService {
 
 func (s *service) FeatureFlagsService() FeatureFlagsService {
 	return s.featureFlagsService
+}
+
+func (s *service) StorageService() StorageService {
+	return s.storageService
 }
 
 func (s *service) HomeService() HomeService {
@@ -329,6 +342,17 @@ type TorrentSearchService interface {
 
 type FeatureFlagsService interface {
 	GetAll(ctx context.Context) ([]domain.FeatureFlag, error)
+}
+
+type StorageService interface {
+	List(ctx context.Context) ([]domain.StorageInfo, error)
+	Create(ctx context.Context, req domain.CreateStorage) (domain.StorageInfo, error)
+	Update(ctx context.Context, req domain.UpdateStorage) error
+	Delete(ctx context.Context, id uuid.UUID) error
+	SetDefault(ctx context.Context, id uuid.UUID) error
+	Test(ctx context.Context, id uuid.UUID) error
+	StartGoogleDriveAuth(ctx context.Context, id uuid.UUID) (consentUrl string, err error)
+	CompleteGoogleDriveAuth(ctx context.Context, state, code string) error
 }
 
 type HomeService interface {

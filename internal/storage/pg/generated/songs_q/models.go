@@ -317,6 +317,50 @@ func (ns NullSongTagKind) Value() (driver.Value, error) {
 	return string(ns.SongTagKind), nil
 }
 
+type StorageKind string
+
+const (
+	StorageKindLocal       StorageKind = "local"
+	StorageKindS3          StorageKind = "s3"
+	StorageKindWebdav      StorageKind = "webdav"
+	StorageKindGoogleDrive StorageKind = "google_drive"
+)
+
+func (e *StorageKind) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = StorageKind(s)
+	case string:
+		*e = StorageKind(s)
+	default:
+		return fmt.Errorf("unsupported scan type for StorageKind: %T", src)
+	}
+	return nil
+}
+
+type NullStorageKind struct {
+	StorageKind StorageKind
+	Valid       bool // Valid is true if StorageKind is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullStorageKind) Scan(value interface{}) error {
+	if value == nil {
+		ns.StorageKind, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.StorageKind.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullStorageKind) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.StorageKind), nil
+}
+
 type TorrentDownloadStatus string
 
 const (
@@ -448,6 +492,7 @@ type FilesMetum struct {
 	SizeBytes   int64
 	Verified    bool
 	ContentHash string
+	StorageID   uuid.UUID
 }
 
 type IdentityTelegram struct {
@@ -721,6 +766,17 @@ type SongsArtist struct {
 	OrderID    int64
 }
 
+type Storage struct {
+	ID          uuid.UUID
+	Name        string
+	Kind        StorageKind
+	ConfigEnc   []byte
+	IsDefault   bool
+	OwnerUserID sql.NullInt64
+	QuotaBytes  sql.NullInt64
+	CreatedAt   time.Time
+}
+
 type TorrentDownload struct {
 	ID              int64
 	UserID          int64
@@ -766,6 +822,7 @@ type UserPermission struct {
 	MaxSongSizeBytes    int64
 	MaxTotalUploadBytes int64
 	CanEditArtists      bool
+	IsAdministrator     bool
 }
 
 type UserPlaylist struct {

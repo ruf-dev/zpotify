@@ -94,6 +94,7 @@ func (s *UserStorage) SavePermissions(ctx context.Context, userId int64, permiss
 		MaxPendingTracks:    permissions.MaxPendingTracks,
 		MaxSongSizeBytes:    permissions.MaxSongSizeBytes,
 		MaxTotalUploadBytes: permissions.MaxTotalUploadBytes,
+		IsAdministrator:     permissions.IsAdministrator,
 	}
 
 	err := s.querier.SaveUserPermissions(ctx, params)
@@ -264,6 +265,7 @@ func toDomainUserPermissions(p querier.UserPermission) domain.UserPermissions {
 		MaxPendingTracks:    p.MaxPendingTracks,
 		MaxSongSizeBytes:    p.MaxSongSizeBytes,
 		MaxTotalUploadBytes: p.MaxTotalUploadBytes,
+		IsAdministrator:     p.IsAdministrator,
 	}
 }
 

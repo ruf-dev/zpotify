@@ -1,0 +1,166 @@
+syntax = "proto3";
+package zpotify_api;
+
+import "npm.proto";
+import "google/api/annotations.proto";
+
+option go_package = "/zpotify_api;zpotify_api";
+option (npm_package) = "@zpotify/api";
+option java_package = "ru.zpotify.api.grpc";
+option java_multiple_files = true;
+
+service StorageAPI {
+  rpc ListStorages(ListStorages.Request) returns (ListStorages.Response) {
+    option (google.api.http) = {
+      post: "/api/admin/storage/list"
+      body: "*"
+    };
+  };
+
+  rpc CreateStorage(CreateStorage.Request) returns (CreateStorage.Response) {
+    option (google.api.http) = {
+      post: "/api/admin/storage/create"
+      body: "*"
+    };
+  };
+
+  rpc UpdateStorage(UpdateStorage.Request) returns (UpdateStorage.Response) {
+    option (google.api.http) = {
+      post: "/api/admin/storage/update"
+      body: "*"
+    };
+  };
+
+  rpc DeleteStorage(DeleteStorage.Request) returns (DeleteStorage.Response) {
+    option (google.api.http) = {
+      post: "/api/admin/storage/delete"
+      body: "*"
+    };
+  };
+
+  rpc SetDefaultStorage(SetDefaultStorage.Request) returns (SetDefaultStorage.Response) {
+    option (google.api.http) = {
+      post: "/api/admin/storage/set_default"
+      body: "*"
+    };
+  };
+
+  rpc TestStorage(TestStorage.Request) returns (TestStorage.Response) {
+    option (google.api.http) = {
+      post: "/api/admin/storage/test"
+      body: "*"
+    };
+  };
+
+  rpc StartGoogleDriveAuth(StartGoogleDriveAuth.Request) returns (StartGoogleDriveAuth.Response) {
+    option (google.api.http) = {
+      post: "/api/admin/storage/google_drive/auth"
+      body: "*"
+    };
+  };
+}
+
+enum StorageKind {
+  STORAGE_KIND_UNSPECIFIED  = 0;
+  STORAGE_KIND_LOCAL        = 1;
+  STORAGE_KIND_S3           = 2;
+  STORAGE_KIND_WEBDAV       = 3;
+  STORAGE_KIND_GOOGLE_DRIVE = 4;
+}
+
+message StorageInfo {
+  string id                   = 1;
+  string name                 = 2;
+  StorageKind kind            = 3;
+  bool is_default             = 4;
+  bool is_connected           = 5;
+  int64 used_bytes            = 6;
+  optional int64 quota_bytes  = 7;
+}
+
+message S3Config {
+  string endpoint          = 1;
+  string region            = 2;
+  string bucket            = 3;
+  string access_key_id     = 4;
+  string secret_access_key = 5;
+  bool is_path_style       = 6;
+}
+
+message WebdavConfig {
+  string url       = 1;
+  string username  = 2;
+  string password  = 3;
+  string root_path = 4;
+}
+
+message GoogleDriveConfig {
+  string client_id      = 1;
+  string client_secret  = 2;
+  string root_folder_id = 3;
+}
+
+message StorageConfig {
+  oneof config {
+    S3Config s3                       = 1;
+    WebdavConfig webdav               = 2;
+    GoogleDriveConfig google_drive    = 3;
+  }
+}
+
+message ListStorages {
+  message Request {}
+  message Response {
+    repeated StorageInfo storages = 1;
+  }
+}
+
+message CreateStorage {
+  message Request {
+    string name           = 1;
+    StorageConfig config  = 2;
+  }
+  message Response {
+    StorageInfo storage = 1;
+  }
+}
+
+message UpdateStorage {
+  message Request {
+    string id             = 1;
+    string name           = 2;
+    // Empty secret fields keep the stored value.
+    StorageConfig config  = 3;
+  }
+  message Response {}
+}
+
+message DeleteStorage {
+  message Request {
+    string id = 1;
+  }
+  message Response {}
+}
+
+message SetDefaultStorage {
+  message Request {
+    string id = 1;
+  }
+  message Response {}
+}
+
+message TestStorage {
+  message Request {
+    string id = 1;
+  }
+  message Response {}
+}
+
+message StartGoogleDriveAuth {
+  message Request {
+    string id = 1;
+  }
+  message Response {
+    string consent_url = 1;
+  }
+}

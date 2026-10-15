@@ -1,0 +1,482 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "zpotify_service_storage.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "StorageAPI"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/admin/storage/create": {
+      "post": {
+        "operationId": "StorageAPI_CreateStorage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiCreateStorageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiCreateStorageRequest"
+            }
+          }
+        ],
+        "tags": [
+          "StorageAPI"
+        ]
+      }
+    },
+    "/api/admin/storage/delete": {
+      "post": {
+        "operationId": "StorageAPI_DeleteStorage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiDeleteStorageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiDeleteStorageRequest"
+            }
+          }
+        ],
+        "tags": [
+          "StorageAPI"
+        ]
+      }
+    },
+    "/api/admin/storage/google_drive/auth": {
+      "post": {
+        "operationId": "StorageAPI_StartGoogleDriveAuth",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiStartGoogleDriveAuthResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiStartGoogleDriveAuthRequest"
+            }
+          }
+        ],
+        "tags": [
+          "StorageAPI"
+        ]
+      }
+    },
+    "/api/admin/storage/list": {
+      "post": {
+        "operationId": "StorageAPI_ListStorages",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiListStoragesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiListStoragesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "StorageAPI"
+        ]
+      }
+    },
+    "/api/admin/storage/set_default": {
+      "post": {
+        "operationId": "StorageAPI_SetDefaultStorage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiSetDefaultStorageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiSetDefaultStorageRequest"
+            }
+          }
+        ],
+        "tags": [
+          "StorageAPI"
+        ]
+      }
+    },
+    "/api/admin/storage/test": {
+      "post": {
+        "operationId": "StorageAPI_TestStorage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiTestStorageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiTestStorageRequest"
+            }
+          }
+        ],
+        "tags": [
+          "StorageAPI"
+        ]
+      }
+    },
+    "/api/admin/storage/update": {
+      "post": {
+        "operationId": "StorageAPI_UpdateStorage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiUpdateStorageResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiUpdateStorageRequest"
+            }
+          }
+        ],
+        "tags": [
+          "StorageAPI"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "zpotify_apiCreateStorageRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "config": {
+          "$ref": "#/definitions/zpotify_apiStorageConfig"
+        }
+      }
+    },
+    "zpotify_apiCreateStorageResponse": {
+      "type": "object",
+      "properties": {
+        "storage": {
+          "$ref": "#/definitions/zpotify_apiStorageInfo"
+        }
+      }
+    },
+    "zpotify_apiDeleteStorageRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiDeleteStorageResponse": {
+      "type": "object"
+    },
+    "zpotify_apiGoogleDriveConfig": {
+      "type": "object",
+      "properties": {
+        "clientId": {
+          "type": "string"
+        },
+        "clientSecret": {
+          "type": "string"
+        },
+        "rootFolderId": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiListStoragesRequest": {
+      "type": "object"
+    },
+    "zpotify_apiListStoragesResponse": {
+      "type": "object",
+      "properties": {
+        "storages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zpotify_apiStorageInfo"
+          }
+        }
+      }
+    },
+    "zpotify_apiS3Config": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "bucket": {
+          "type": "string"
+        },
+        "accessKeyId": {
+          "type": "string"
+        },
+        "secretAccessKey": {
+          "type": "string"
+        },
+        "isPathStyle": {
+          "type": "boolean"
+        }
+      }
+    },
+    "zpotify_apiSetDefaultStorageRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiSetDefaultStorageResponse": {
+      "type": "object"
+    },
+    "zpotify_apiStartGoogleDriveAuthRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiStartGoogleDriveAuthResponse": {
+      "type": "object",
+      "properties": {
+        "consentUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiStorageConfig": {
+      "type": "object",
+      "properties": {
+        "s3": {
+          "$ref": "#/definitions/zpotify_apiS3Config"
+        },
+        "webdav": {
+          "$ref": "#/definitions/zpotify_apiWebdavConfig"
+        },
+        "googleDrive": {
+          "$ref": "#/definitions/zpotify_apiGoogleDriveConfig"
+        }
+      }
+    },
+    "zpotify_apiStorageInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/definitions/zpotify_apiStorageKind"
+        },
+        "isDefault": {
+          "type": "boolean"
+        },
+        "isConnected": {
+          "type": "boolean"
+        },
+        "usedBytes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "quotaBytes": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "zpotify_apiStorageKind": {
+      "type": "string",
+      "enum": [
+        "STORAGE_KIND_UNSPECIFIED",
+        "STORAGE_KIND_LOCAL",
+        "STORAGE_KIND_S3",
+        "STORAGE_KIND_WEBDAV",
+        "STORAGE_KIND_GOOGLE_DRIVE"
+      ],
+      "default": "STORAGE_KIND_UNSPECIFIED"
+    },
+    "zpotify_apiTestStorageRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "zpotify_apiTestStorageResponse": {
+      "type": "object"
+    },
+    "zpotify_apiUpdateStorageRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "config": {
+          "$ref": "#/definitions/zpotify_apiStorageConfig",
+          "description": "Empty secret fields keep the stored value."
+        }
+      }
+    },
+    "zpotify_apiUpdateStorageResponse": {
+      "type": "object"
+    },
+    "zpotify_apiWebdavConfig": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "rootPath": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

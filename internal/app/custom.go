@@ -47,6 +47,7 @@ import (
 	"go.zpotify.ru/zpotify/internal/transport/playlist_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/search_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/song_api_impl"
+	"go.zpotify.ru/zpotify/internal/transport/storage_api_impl"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/grant_access"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/grant_creator_access"
 	"go.zpotify.ru/zpotify/internal/transport/telegram/inline"
@@ -60,10 +61,11 @@ import (
 )
 
 type Custom struct {
-	dataStorage   storage.Storage
-	binaryStorage storage.BinaryFileStorage
-	tgConn        go_tg.TgApi
-	torrentClient *torrent.Client
+	dataStorage     storage.Storage
+	binaryStorage   storage.BinaryFileStorage
+	storageRegistry storage.StorageRegistry
+	tgConn          go_tg.TgApi
+	torrentClient   *torrent.Client
 
 	listenAddr          string
 	notificationsChatId int64
@@ -78,6 +80,7 @@ type Custom struct {
 	AuthApiImpl      *auth_api_impl.Impl
 	FeatureFlagsImpl *feature_flags_api_impl.Impl
 	FileApiImpl      *file_api_impl.Impl
+	StorageApiImpl   *storage_api_impl.Impl
 	UserApiImpl      *user_api_impl.Impl
 	PlaylistApiImpl  *playlist_api_impl.Impl
 	SongApiImpl      *song_api_impl.Impl
@@ -120,6 +123,17 @@ func (c *Custom) Init(app *App) (err error) {
 	if err != nil {
 		return rerrors.Wrap(err, "error creating local file storage provider")
 	}
+
+	localContent, err := file_storage_providers.NewLocalContentStorage(app.Cfg.Environment.LocalStoragePath)
+	if err != nil {
+		return rerrors.Wrap(err, "error creating local content storage")
+	}
+
+	c.storageRegistry = file_storage_providers.NewRegistry(
+		c.dataStorage.Storages(),
+		localContent,
+		app.Cfg.Environment.StorageSecretsKey,
+	)
 
 	torrentClientCfg := v1.TorrentClientConfig{
 		DownloadDir: app.Cfg.Environment.TorrentDownloadDir,
@@ -170,7 +184,7 @@ func (c *Custom) Init(app *App) (err error) {
 		return rerrors.Wrap(err, "error creating torrent search service")
 	}
 
-	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, adminNotifier, trackSender, torrentService, torrentSearchService, app.Cfg)
+	c.Service, err = service.New(c.dataStorage, fc, c.binaryStorage, c.storageRegistry, adminNotifier, trackSender, torrentService, torrentSearchService, app.Cfg)
 	if err != nil {
 		return rerrors.Wrap(err, "error creating service")
 	}
@@ -217,6 +231,7 @@ func (c *Custom) Init(app *App) (err error) {
 	c.AuthApiImpl = auth_api_impl.New(c.Service, app.Cfg.Environment.TelegramClientID)
 	c.FeatureFlagsImpl = feature_flags_api_impl.New(c.Service)
 	c.FileApiImpl = file_api_impl.New(c.Service)
+	c.StorageApiImpl = storage_api_impl.New(c.Service)
 	c.UserApiImpl = user_api_impl.New(c.Service)
 	c.PlaylistApiImpl = playlist_api_impl.New(c.Service)
 	c.SongApiImpl = song_api_impl.New(c.Service)
@@ -268,6 +283,7 @@ func (c *Custom) Init(app *App) (err error) {
 		c.AuthApiImpl,
 		c.FeatureFlagsImpl,
 		c.FileApiImpl,
+		c.StorageApiImpl,
 		c.UserApiImpl,
 		c.SongApiImpl,
 		c.PlaylistApiImpl,

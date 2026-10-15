@@ -17,4 +17,5 @@ export type Permissions = {
   earlyAccess?: boolean;
   canCreatePlaylist?: boolean;
   maxPendingTracks?: string;
+  isAdministrator?: boolean;
 };
