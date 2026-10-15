@@ -95,13 +95,13 @@
     "semantic_hash": "ab0421501f17be730b39b16d70b9bda2"
   },
   "tests/auth_test.go": {
-    "mtime": 1783198635.5418067,
-    "ast_hash": "7ba10ce763de8ad70eefafccf9dcfa78",
+    "mtime": 1792093051.6285465,
+    "ast_hash": "ea13854fba2d537daea244e24ef02324",
     "semantic_hash": ""
   },
   "tests/main_test.go": {
-    "mtime": 1789653310.0146198,
-    "ast_hash": "f0a4241fed98c5c19bf4eedcd7ca64d6",
+    "mtime": 1792093237.4539704,
+    "ast_hash": "4482348f5b144662fc6a67aba33f2225",
     "semantic_hash": ""
   },
   "internal/background/worker.go": {
@@ -400,8 +400,8 @@
     "semantic_hash": "e026a6674f2341a67053118987f91db7"
   },
   "internal/app/custom.go": {
-    "mtime": 1792088471.9248722,
-    "ast_hash": "6efb0d95a9664c5a2c78bf1e472ecf27",
+    "mtime": 1792092972.824394,
+    "ast_hash": "1fcbafe9385c7694784b2d5d4c40ff59",
     "semantic_hash": ""
   },
   "internal/app/config.go": {
@@ -1205,8 +1205,8 @@
     "semantic_hash": "75ade9372a601ba41c67bfaa7bea947b"
   },
   "docker-compose.yaml": {
-    "mtime": 1783938720.110045,
-    "ast_hash": "89b54bffa60e9268cda6a97ae59b77ec",
+    "mtime": 1792093204.688098,
+    "ast_hash": "1bf1abb7301a9e20105e6dade68c2c2e",
     "semantic_hash": ""
   },
   "sqlc.yaml": {
@@ -1245,8 +1245,8 @@
     "semantic_hash": ""
   },
   "tests/config/config.yaml": {
-    "mtime": 1791720021.1504412,
-    "ast_hash": "91a21b8b5989702278f92360932b9a17",
+    "mtime": 1792092988.5513554,
+    "ast_hash": "50a1b2fdec84af4d520cd1522fe31e24",
     "semantic_hash": ""
   },
   "tests/load/load.yaml": {
@@ -1265,13 +1265,13 @@
     "semantic_hash": ""
   },
   ".verv/resources.yaml": {
-    "mtime": 1782983767.890052,
-    "ast_hash": "bf3d4dff26a03e0d157e33f93d1b2ac0",
+    "mtime": 1792092683.4493961,
+    "ast_hash": "1b0f146f375df083b2df7d3d9ca80364",
     "semantic_hash": ""
   },
   ".verv/vervonomicon.yaml": {
-    "mtime": 1789646257.5933523,
-    "ast_hash": "52be4e867631df1663a3c2fb9c073cf7",
+    "mtime": 1792092683.443766,
+    "ast_hash": "8b6adb1492fad3c651bcbe6e9e71d907",
     "semantic_hash": ""
   },
   ".verv/auth.yaml": {
@@ -4920,8 +4920,8 @@
     "semantic_hash": ""
   },
   "internal/service/v1/storage_service_test.go": {
-    "mtime": 1792092547.389018,
-    "ast_hash": "3a842bd28a1db047b7ddc920ecc1b39c",
+    "mtime": 1792092661.408646,
+    "ast_hash": "4f92a160659c3c37bc49d2edd03c08f0",
     "semantic_hash": ""
   },
   "internal/storage/file_storage_providers/gdrive/errors.go": {
@@ -5120,13 +5120,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/EditStorage/EditStorageDialog.test.tsx": {
-    "mtime": 1792088795.1265485,
-    "ast_hash": "8077b5607bf7fd87699a7d7596bddf1c",
+    "mtime": 1792092598.650844,
+    "ast_hash": "76ef1fa86f7e477072a7ac34a4db599b",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/EditStorage/EditStorageDialog.tsx": {
-    "mtime": 1792088441.8133414,
-    "ast_hash": "41d1c469a856bfe5ebfb9b0004a2b1f8",
+    "mtime": 1792092598.6497126,
+    "ast_hash": "fb5f211d54470ea67c340cf6317f496f",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/EditStorage/components/GoogleDriveFields/GoogleDriveFields.tsx": {
@@ -5135,8 +5135,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/EditStorage/components/S3Fields/S3Fields.tsx": {
-    "mtime": 1792088441.7969418,
-    "ast_hash": "617a3d0e415ef86a332a5d83bfe8784e",
+    "mtime": 1792092599.1593268,
+    "ast_hash": "2589c2ae1bbe1882b713edd0744ebaae",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/EditStorage/components/WebdavFields/WebdavFields.tsx": {
@@ -5145,13 +5145,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/EditStorage/processes/buildStorageConfig.test.ts": {
-    "mtime": 1792088795.1266637,
-    "ast_hash": "54db8bf835a96f61910faf5f0072ddae",
+    "mtime": 1792092599.2207656,
+    "ast_hash": "6542c41af61392696e973ae90303afb3",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/EditStorage/processes/buildStorageConfig.ts": {
-    "mtime": 1792088795.1266727,
-    "ast_hash": "a3c7172d6067494c339df5e061876fa8",
+    "mtime": 1792092598.6492043,
+    "ast_hash": "79fc0a81a7d2dac5ff82b53f3923daae",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/storages/StoragesPage.tsx": {
@@ -5190,13 +5190,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/api/StorageService.ts": {
-    "mtime": 1792088795.1265805,
-    "ast_hash": "fd724b451785522ed65e20dd193db5cf",
+    "mtime": 1792092598.6487827,
+    "ast_hash": "62f5567329555da0d1977e686646f729",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/shared/model/Storage.ts": {
-    "mtime": 1792088441.7935781,
-    "ast_hash": "3c7f46d264051ed9d4208aa0bc49d9c8",
+    "mtime": 1792092598.6482868,
+    "ast_hash": "71202026d9f652df5e59a437574a3143",
     "semantic_hash": ""
   },
   "pkg/docs/swaggers/zpotify_service_storage.swagger.json": {
@@ -5207,6 +5207,46 @@
   "internal/service/v1/file_placement_test.go": {
     "mtime": 1792089179.0500424,
     "ast_hash": "61819ad5f0a82fa2e8319d8dee6957c9",
+    "semantic_hash": ""
+  },
+  "internal/clients/telegram/noop.go": {
+    "mtime": 1792092972.790251,
+    "ast_hash": "3fee9988eefb1762d7f899f23fea2b41",
+    "semantic_hash": ""
+  },
+  "scripts/setup_test_garage.sh": {
+    "mtime": 1792093204.687768,
+    "ast_hash": "ac35f6bbed64f29ee6aa31a1c52bb4d4",
+    "semantic_hash": ""
+  },
+  "tests/s3_test_env.go": {
+    "mtime": 1792093204.68861,
+    "ast_hash": "55594288361bcb878f1aaca6eaccbfb3",
+    "semantic_hash": ""
+  },
+  "tests/storage_s3_helpers_test.go": {
+    "mtime": 1792093442.6819606,
+    "ast_hash": "2f0e151aaceec09bfe986637edc2e77c",
+    "semantic_hash": ""
+  },
+  "tests/storage_s3_test.go": {
+    "mtime": 1792093442.6822996,
+    "ast_hash": "81c9e47cbbafd72537d913b9d1b09dc0",
+    "semantic_hash": ""
+  },
+  ".github/workflows/deploy.yaml": {
+    "mtime": 1792092683.4620564,
+    "ast_hash": "1782da385c440d911a04b19cbfb1478b",
+    "semantic_hash": ""
+  },
+  ".verv/deployment.yaml": {
+    "mtime": 1792092683.4465325,
+    "ast_hash": "70ca36f3aba433553b3e96c66d6c15e8",
+    "semantic_hash": ""
+  },
+  ".verv/ingress.yaml": {
+    "mtime": 1792092683.457743,
+    "ast_hash": "4a4b28a5ac38d357657d778b152bfbc6",
     "semantic_hash": ""
   }
 }
