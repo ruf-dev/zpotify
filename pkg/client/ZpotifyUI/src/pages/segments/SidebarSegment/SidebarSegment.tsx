@@ -14,20 +14,23 @@ import AddTrackDialog from '@/dialogs/AddTrack/AddTrackDialog.tsx';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useBackGuard } from '@/shared/lib/useBackGuard';
 import { useIsMobile } from '@/shared/lib/useIsMobile.ts';
+import useUser from '@/entities/user/useUser.ts';
 
-type navIdentity = 'home' | 'search' | 'downloads' | 'my_uploads';
+type navIdentity = 'home' | 'search' | 'downloads' | 'my_uploads' | 'storages';
 
 const NAV_ITEMS = [
     { id: 'home', label: 'Home', active: true, hideOnDesktop: true },
     { id: 'search', label: 'Search', active: false, hideOnDesktop: true },
     { id: 'downloads', label: 'Downloads', active: false },
     { id: 'my_uploads', label: 'My Uploads', active: false, disabled: true },
+    { id: 'storages', label: 'Storages', active: false },
 ] as const;
 
 export default function SidebarSegment() {
     const isCollapsed = useSidebarUI((state) => state.isCollapsed);
     const toggleCollapse = useSidebarUI((state) => state.toggleCollapsed);
     const isDrawerOpen = useSidebarUI((state) => state.isDrawerOpen);
+    const isAdministrator = useUser((state) => state.userData?.permissions?.isAdministrator === true);
     const closeDrawer = useSidebarUI((state) => state.closeDrawer);
 
     const navigate = useNavigate();
@@ -48,6 +51,9 @@ export default function SidebarSegment() {
                     break;
                 case 'downloads':
                     navigate(Path.DownloadsPage);
+                    break;
+                case 'storages':
+                    navigate(Path.StoragesPage);
                     break;
             }
         };
@@ -82,7 +88,7 @@ export default function SidebarSegment() {
                 />
 
                 <nav className={cls.NavSection}>
-                    {NAV_ITEMS.map((item) => (
+                    {NAV_ITEMS.filter((item) => item.id !== 'storages' || isAdministrator).map((item) => (
                         <NavItem
                             key={item.id}
                             {...item}

@@ -1,0 +1,63 @@
+.EditStorageDialogContainer {
+    display: flex;
+    flex-direction: column;
+    width: 28rem;
+    max-width: 100%;
+    max-height: var(--dialog-max-height-desktop);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--color-border-light);
+    overflow: hidden;
+    position: relative;
+
+    @media (orientation: portrait) {
+        width: var(--dialog-max-width-mobile);
+        max-height: var(--dialog-max-height-mobile);
+    }
+
+    & .Header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--space-md) var(--space-lg);
+        border-bottom: 1px solid var(--color-border);
+        flex-shrink: 0;
+    }
+
+    & .Title {
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        color: var(--color-fg-primary);
+    }
+
+    & .Body {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        padding: var(--space-lg);
+    }
+
+    & .KindLabel {
+        font-size: var(--font-size-md);
+        color: var(--color-fg-secondary);
+    }
+
+    & .Footer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: var(--space-md);
+        padding: var(--space-md) var(--space-lg);
+        border-top: 1px solid var(--color-border);
+        flex-shrink: 0;
+    }
+
+    & .Hint {
+        flex: 1;
+        font-size: var(--font-size-md);
+        color: var(--color-fg-tertiary);
+    }
+}

@@ -1,0 +1,62 @@
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.StorageRowSkeletonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+    padding: var(--space-md) var(--space-lg);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+
+    & .Info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+
+    & .NameBlock,
+    & .MetaBlock,
+    & .ActionsBlock {
+        background: linear-gradient(
+            90deg,
+            var(--color-bg-accent) 25%,
+            var(--color-bg-hover-mid) 50%,
+            var(--color-bg-accent) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite linear;
+        border-radius: var(--border-radius-sm);
+    }
+
+    & .NameBlock {
+        width: 10rem;
+        height: 1.1rem;
+    }
+
+    & .MetaBlock {
+        width: 14rem;
+        height: 0.8rem;
+    }
+
+    & .ActionsBlock {
+        width: 14rem;
+        height: 2rem;
+    }
+
+    @media (orientation: portrait) {
+        & .MetaBlock,
+        & .ActionsBlock {
+            width: 100%;
+        }
+    }
+}

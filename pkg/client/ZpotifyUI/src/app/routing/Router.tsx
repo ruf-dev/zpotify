@@ -15,6 +15,7 @@ import useUser from '@/entities/user/useUser.ts';
 import HomePage from '@/pages/main/home/HomePage.tsx';
 import SearchPage from '@/pages/main/search/SearchPage.tsx';
 import DownloadsPage from '@/pages/downloads/DownloadsPage.tsx';
+import StoragesPage from '@/pages/storages/StoragesPage.tsx';
 import Dialog from '@/pages/dialog/Dialog.tsx';
 import MainLayout from '@/app/layouts/MainLayout.tsx';
 import ServerStatusBanner from '@/pages/segments/ServerStatusBanner/ServerStatusBanner.tsx';
@@ -52,6 +53,7 @@ export default function Router() {
                         <Route path={Path.AlbumPage} element={<AlbumPage />} errorElement={<ErrorPage />} />
                         <Route path={Path.ArtistPage} element={<ArtistPage />} errorElement={<ErrorPage />} />
                         <Route path={Path.DownloadsPage} element={<DownloadsPage />} errorElement={<ErrorPage />} />
+                        <Route path={Path.StoragesPage} element={<StoragesPage />} errorElement={<ErrorPage />} />
                     </Route>
 
                     <Route path={Path.EarlyAccessPage} element={<EarlyAccessPage />} errorElement={<ErrorPage />} />
