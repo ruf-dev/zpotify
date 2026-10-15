@@ -1,0 +1,8 @@
+domains:
+  - host: zpotify.ru
+    ssl: enabled
+    listen: 443
+    upstreams:
+      api: {app: true}
+      media: {resource: media-server}
+    config: ingress.conf

@@ -1,0 +1,5 @@
+app:
+  ports:
+    - port: 80
+      protocol: tcp
+  restart: unless_stopped

@@ -1,0 +1,35 @@
+name: deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Velez environment to deploy to
+        required: true
+        default: prod
+
+jobs:
+  deploy:
+    runs-on: ${{ vars.UBUNTU_IMAGE }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Prepare buildx for cross-platform builds
+        run: |
+          docker run --privileged --rm tonistiigi/binfmt --install arm64
+          docker buildx create --use --name zpotify --driver docker-container
+
+      - name: Install verv
+        run: |
+          curl -fsSL https://github.com/vervstack/verv/releases/latest/download/verv_linux_amd64 -o /usr/local/bin/verv
+          chmod +x /usr/local/bin/verv
+
+      - name: Deploy
+        env:
+          VERV_NODE_URL: ${{ secrets.VERV_NODE_URL }}
+          VERV_NODE_SECRET: ${{ secrets.VERV_NODE_SECRET }}
+          DEPLOY_ENVIRONMENT: ${{ inputs.environment }}
+        run: verv deploy --environment "$DEPLOY_ENVIRONMENT"

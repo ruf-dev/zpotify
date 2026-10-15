@@ -1,1 +1,7 @@
-name: go.zpotify.ru/zpotify
+version: "1"
+
+service:
+  name: zpotify
+  repo: https://github.com/ruf-dev/zpotify
+
+box: small

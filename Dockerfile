@@ -38,6 +38,7 @@ LABEL MATRESHKA_CONFIG_ENABLED=true
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /deploy/server/ /app/
+COPY .verv /verv
 
 WORKDIR /app
 

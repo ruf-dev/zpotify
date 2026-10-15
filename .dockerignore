@@ -10,3 +10,4 @@ proto_modules
 tests/load/tank_errors.log
 tests/logs
 tests/data
+.verv/nodes.local.yaml
