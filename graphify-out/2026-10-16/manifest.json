@@ -5135,8 +5135,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/storages/components/StorageRow/StorageRow.tsx": {
-    "mtime": 1792171682.8699093,
-    "ast_hash": "664974aed95fe326490866d05ad8158d",
+    "mtime": 1792171726.2029603,
+    "ast_hash": "cb92ae6b3cf5323d7b0f61b79fb13d28",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/storages/components/StorageRowSkeleton/StorageRowSkeleton.tsx": {
@@ -5237,6 +5237,11 @@
   "tests/e2e_isolation_test.go": {
     "mtime": 1792159911.5134294,
     "ast_hash": "31c69f0e73339041546906ed76afcd02",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/storages/components/StorageRow/components/TestSpinner/TestSpinner.tsx": {
+    "mtime": 1792171726.2028441,
+    "ast_hash": "7088452d13d3799ea3491bc7e30d55bd",
     "semantic_hash": ""
   }
 }
