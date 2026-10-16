@@ -63,6 +63,17 @@ make codegen # Runs code gen (proto + sql + client side proto)
 
 Look for CLAUDE.md inside pkg/client/ZpotifyUI
 
+### Run modes (one at a time, both on :8087)
+
+```bash
+make serve    # desktop: Go API + Vite dev server with HMR on :5173 (proxies /api and /wapi to :8087)
+make serve-rc # rc: production UI bundle embedded in the Go binary, served on :8087
+```
+
+A `SessionStart` hook (`.claude/hooks/check-service-restart.sh`, wired in the untracked
+`.claude/settings.local.json`) reports whether :8087 is busy and asks which mode to start. Nothing
+auto-starts or auto-restarts; free :8087 (and :5173 for desktop) before switching modes.
+
 ### Docker / Local Dev
 
 ```bash
