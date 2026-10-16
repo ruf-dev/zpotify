@@ -2285,8 +2285,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/UISettings/UISettingsWidget.tsx": {
-    "mtime": 1783269069.4722812,
-    "ast_hash": "2e668093bd7f8ef6ae2ea930a87ca531",
+    "mtime": 1792160373.6042054,
+    "ast_hash": "115ff04ffe1e10b6f08db078a07588be",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/AudioScreen/AudioScreen.tsx": {
@@ -2297,11 +2297,6 @@
   "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/AppearanceScreen/AppearanceScreen.tsx": {
     "mtime": 1791705915.5728154,
     "ast_hash": "a90c26a2201f91bec2ecfae209ed186e",
-    "semantic_hash": ""
-  },
-  "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/ServerScreen/ServerScreen.tsx": {
-    "mtime": 1782541067.107038,
-    "ast_hash": "6cc0aeef2246eab813e29bbdb9d126cc",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/UISettings/components/SettingsRow/SettingsRow.tsx": {

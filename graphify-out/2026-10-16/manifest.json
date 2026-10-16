@@ -100,8 +100,8 @@
     "semantic_hash": ""
   },
   "tests/main_test.go": {
-    "mtime": 1792093237.4539704,
-    "ast_hash": "4482348f5b144662fc6a67aba33f2225",
+    "mtime": 1792159911.513982,
+    "ast_hash": "e6afa6b89df66dfbd57cfefc1c53d520",
     "semantic_hash": ""
   },
   "internal/background/worker.go": {
@@ -1205,8 +1205,8 @@
     "semantic_hash": "75ade9372a601ba41c67bfaa7bea947b"
   },
   "docker-compose.yaml": {
-    "mtime": 1792093204.688098,
-    "ast_hash": "1bf1abb7301a9e20105e6dade68c2c2e",
+    "mtime": 1792159874.7613988,
+    "ast_hash": "934f587cc3161e4530e6f50a802d6dee",
     "semantic_hash": ""
   },
   "sqlc.yaml": {
@@ -1245,8 +1245,8 @@
     "semantic_hash": ""
   },
   "tests/config/config.yaml": {
-    "mtime": 1792092988.5513554,
-    "ast_hash": "50a1b2fdec84af4d520cd1522fe31e24",
+    "mtime": 1792159874.7618163,
+    "ast_hash": "c753d03e708184f2c43d1d0cd3bcd922",
     "semantic_hash": ""
   },
   "tests/load/load.yaml": {
@@ -5237,6 +5237,11 @@
   ".claude/hooks/check-service-restart.sh": {
     "mtime": 1792158173.845217,
     "ast_hash": "deb6e94b143408497d756da50251fd7e",
+    "semantic_hash": ""
+  },
+  "tests/e2e_isolation_test.go": {
+    "mtime": 1792159911.5134294,
+    "ast_hash": "31c69f0e73339041546906ed76afcd02",
     "semantic_hash": ""
   }
 }
