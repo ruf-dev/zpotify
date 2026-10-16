@@ -17,10 +17,18 @@ export default function S3Fields({ values, isEdit, onChange }: Props) {
             <Input label="Endpoint" value={values.endpoint} setValue={(v) => onChange('endpoint', v)} />
             <Input label="Region" value={values.region} setValue={(v) => onChange('region', v)} />
             <Input label="Bucket" value={values.bucket} setValue={(v) => onChange('bucket', v)} />
-            <Input label="Access key id" value={values.accessKeyId} setValue={(v) => onChange('accessKeyId', v)} />
+            <Input
+                label="Access key id"
+                value={values.accessKeyId}
+                setValue={(v) => onChange('accessKeyId', v)}
+                autoComplete="off"
+                data-1p-ignore
+                data-lpignore="true"
+            />
             <Input
                 label="Secret access key"
                 type="password"
+                autoComplete="new-password"
                 value={values.secretAccessKey}
                 setValue={(v) => onChange('secretAccessKey', v)}
                 placeholder={isEdit ? KEEP_CURRENT : undefined}

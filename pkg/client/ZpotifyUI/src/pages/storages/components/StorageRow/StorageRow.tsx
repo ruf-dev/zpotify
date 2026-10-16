@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@vervstack/chures';
 
 import cls from '@/pages/storages/components/StorageRow/StorageRow.module.css';
+import TestSpinner from '@/pages/storages/components/StorageRow/components/TestSpinner/TestSpinner.tsx';
 import { formatBytes } from '@/pages/storages/processes/formatBytes.ts';
 import { STORAGE_KIND_LABELS } from '@/shared/model/Storage.ts';
 import type { StorageItem } from '@/shared/model/Storage.ts';
@@ -67,6 +68,7 @@ export default function StorageRow({ storage, actions, isLocked }: Props) {
 
             <div className={cls.Actions}>
                 <Button variant="ghost" disabled={isTesting || isLocked} onClick={handleTest}>
+                    <TestSpinner isActive={isTesting} />
                     Test
                 </Button>
                 <Button variant="ghost" disabled={storage.isDefault || isNotConnected} onClick={handleSetDefault}>

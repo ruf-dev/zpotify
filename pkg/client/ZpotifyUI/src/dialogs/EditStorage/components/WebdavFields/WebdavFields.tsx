@@ -15,10 +15,18 @@ export default function WebdavFields({ values, isEdit, onChange }: Props) {
     return (
         <div className={cls.WebdavFieldsContainer}>
             <Input label="URL" value={values.url} setValue={(v) => onChange('url', v)} />
-            <Input label="Username" value={values.username} setValue={(v) => onChange('username', v)} />
+            <Input
+                label="Username"
+                value={values.username}
+                setValue={(v) => onChange('username', v)}
+                autoComplete="off"
+                data-1p-ignore
+                data-lpignore="true"
+            />
             <Input
                 label="Password"
                 type="password"
+                autoComplete="new-password"
                 value={values.password}
                 setValue={(v) => onChange('password', v)}
                 placeholder={isEdit ? KEEP_CURRENT : undefined}
