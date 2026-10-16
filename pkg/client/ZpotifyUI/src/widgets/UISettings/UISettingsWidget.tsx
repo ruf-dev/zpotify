@@ -8,7 +8,6 @@ import SettingsTabButton, { Tab } from '@/widgets/UISettings/components/Settings
 const TABS: Tab[] = [
     { id: 'appearance', label: 'Appearance' },
     { id: 'audio', label: 'Audio' },
-    { id: 'server', label: 'Server', disabled: true },
 ];
 
 export default function UISettingsWidget() {
