@@ -1230,8 +1230,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1792158185.4346702,
-    "ast_hash": "01825fff076f3eb545f7e91e1b114b97",
+    "mtime": 1792173879.1025898,
+    "ast_hash": "9b4f678ba6bfdbb018ec0fb675e937a7",
     "semantic_hash": ""
   },
   "config/config.yaml": {
@@ -2245,8 +2245,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/components/NavItem/NavItem.tsx": {
-    "mtime": 1792088501.9606674,
-    "ast_hash": "32f26f6f63aac52600198367b089de5a",
+    "mtime": 1792174175.9358592,
+    "ast_hash": "b733ec17ed2311a16f7efd6ab7b273b8",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/PlaylistScreenWidget.tsx": {
@@ -5242,6 +5242,11 @@
   "pkg/client/ZpotifyUI/src/pages/storages/components/StorageRow/components/TestSpinner/TestSpinner.tsx": {
     "mtime": 1792171726.2028441,
     "ast_hash": "7088452d13d3799ea3491bc7e30d55bd",
+    "semantic_hash": ""
+  },
+  ".claude/hooks/rebuild-restart-on-stop.sh": {
+    "mtime": 1792173827.6633239,
+    "ast_hash": "b6ffa43c1f507527d1251e01e469f779",
     "semantic_hash": ""
   }
 }

@@ -1230,8 +1230,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1792173879.1025898,
-    "ast_hash": "9b4f678ba6bfdbb018ec0fb675e937a7",
+    "mtime": 1792174784.5451396,
+    "ast_hash": "a8fd62dd13ce431156dcc65b89e371ec",
     "semantic_hash": ""
   },
   "config/config.yaml": {
@@ -1455,8 +1455,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/vite.config.ts": {
-    "mtime": 1792158598.5710208,
-    "ast_hash": "0a5fbc40bed1e72553b3784993e631d6",
+    "mtime": 1792174784.54472,
+    "ast_hash": "c93d070e1fe2cf6a9d4ea6ffaa522cd7",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/stylelint.config.js": {
@@ -5230,8 +5230,8 @@
     "semantic_hash": ""
   },
   ".claude/hooks/check-service-restart.sh": {
-    "mtime": 1792158173.845217,
-    "ast_hash": "deb6e94b143408497d756da50251fd7e",
+    "mtime": 1792174784.5455377,
+    "ast_hash": "3153f302715363dba6a354fb386c61b4",
     "semantic_hash": ""
   },
   "tests/e2e_isolation_test.go": {
@@ -5245,8 +5245,8 @@
     "semantic_hash": ""
   },
   ".claude/hooks/rebuild-restart-on-stop.sh": {
-    "mtime": 1792173827.6633239,
-    "ast_hash": "b6ffa43c1f507527d1251e01e469f779",
+    "mtime": 1792174788.3833737,
+    "ast_hash": "364421d89a82c082e6df27253b5fc2b3",
     "semantic_hash": ""
   }
 }
