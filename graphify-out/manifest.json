@@ -5105,13 +5105,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/EditStorage/components/S3Fields/S3Fields.tsx": {
-    "mtime": 1792092599.1593268,
-    "ast_hash": "2589c2ae1bbe1882b713edd0744ebaae",
+    "mtime": 1792171682.8711991,
+    "ast_hash": "72cc84bdf52d5ea7f2123ac7ed29ea91",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/EditStorage/components/WebdavFields/WebdavFields.tsx": {
-    "mtime": 1792088441.8026702,
-    "ast_hash": "16687ca771a37bf0b9059ecf0c5f2a7e",
+    "mtime": 1792171682.8717964,
+    "ast_hash": "855e840f99b379c97db8954aa7820475",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/EditStorage/processes/buildStorageConfig.test.ts": {
@@ -5135,8 +5135,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/storages/components/StorageRow/StorageRow.tsx": {
-    "mtime": 1792156026.1723862,
-    "ast_hash": "4c01aee5675a0cde7cb6e0e246750eaf",
+    "mtime": 1792171726.2029603,
+    "ast_hash": "cb92ae6b3cf5323d7b0f61b79fb13d28",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/storages/components/StorageRowSkeleton/StorageRowSkeleton.tsx": {
@@ -5237,6 +5237,11 @@
   "tests/e2e_isolation_test.go": {
     "mtime": 1792159911.5134294,
     "ast_hash": "31c69f0e73339041546906ed76afcd02",
+    "semantic_hash": ""
+  },
+  "pkg/client/ZpotifyUI/src/pages/storages/components/StorageRow/components/TestSpinner/TestSpinner.tsx": {
+    "mtime": 1792171726.2028441,
+    "ast_hash": "7088452d13d3799ea3491bc7e30d55bd",
     "semantic_hash": ""
   }
 }

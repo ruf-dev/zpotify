@@ -2285,8 +2285,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/UISettings/UISettingsWidget.tsx": {
-    "mtime": 1783269069.4722812,
-    "ast_hash": "2e668093bd7f8ef6ae2ea930a87ca531",
+    "mtime": 1792160373.6042054,
+    "ast_hash": "115ff04ffe1e10b6f08db078a07588be",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/AudioScreen/AudioScreen.tsx": {
@@ -2297,11 +2297,6 @@
   "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/AppearanceScreen/AppearanceScreen.tsx": {
     "mtime": 1791705915.5728154,
     "ast_hash": "a90c26a2201f91bec2ecfae209ed186e",
-    "semantic_hash": ""
-  },
-  "pkg/client/ZpotifyUI/src/widgets/UISettings/screens/ServerScreen/ServerScreen.tsx": {
-    "mtime": 1782541067.107038,
-    "ast_hash": "6cc0aeef2246eab813e29bbdb9d126cc",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/UISettings/components/SettingsRow/SettingsRow.tsx": {
@@ -5110,13 +5105,13 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/EditStorage/components/S3Fields/S3Fields.tsx": {
-    "mtime": 1792092599.1593268,
-    "ast_hash": "2589c2ae1bbe1882b713edd0744ebaae",
+    "mtime": 1792171682.8711991,
+    "ast_hash": "72cc84bdf52d5ea7f2123ac7ed29ea91",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/EditStorage/components/WebdavFields/WebdavFields.tsx": {
-    "mtime": 1792088441.8026702,
-    "ast_hash": "16687ca771a37bf0b9059ecf0c5f2a7e",
+    "mtime": 1792171682.8717964,
+    "ast_hash": "855e840f99b379c97db8954aa7820475",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/dialogs/EditStorage/processes/buildStorageConfig.test.ts": {
@@ -5140,8 +5135,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/storages/components/StorageRow/StorageRow.tsx": {
-    "mtime": 1792156026.1723862,
-    "ast_hash": "4c01aee5675a0cde7cb6e0e246750eaf",
+    "mtime": 1792171682.8699093,
+    "ast_hash": "664974aed95fe326490866d05ad8158d",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/storages/components/StorageRowSkeleton/StorageRowSkeleton.tsx": {
