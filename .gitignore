@@ -38,6 +38,8 @@ tests/data/*
 # Claude serve-session hook runtime state
 /.claude/hooks/.last-serve-restart
 /.claude/hooks/serve.log
+/.claude/hooks/serve.stamp
+/.claude/hooks/serve.restart.lock
 
 # /brag skill scratch output — moved out of the repo, see CLAUDE.local.md
 /brag-output/

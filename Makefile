@@ -35,9 +35,10 @@ build-ui:
 	rm -rf internal/transport/ui/dist
 	cp -r pkg/client/ZpotifyUI/dist internal/transport/ui/dist
 
-# Desktop mode: Go binary (API only, :8087) + Vite dev server (HMR, :5173, proxies /api and /wapi
+# Desktop mode: Go binary (API only, :8087) + Vite dev server (HMR, :15173, proxies /api and /wapi
 # to :8087), run concurrently. Shares :8087 with serve-rc, so run one or the other.
 serve:
+	@./.claude/hooks/rebuild-restart-on-stop.sh --stamp
 	docker compose up -d db nginx
 	@trap 'kill 0' EXIT INT TERM; \
 	(cd pkg/client/ZpotifyUI && bun run dev) & \
@@ -47,6 +48,7 @@ serve:
 # Remote-control mode: build the UI, embed it into the Go binary, run the binary alone on :8087.
 # Shares :8087 with serve (desktop mode), so run one or the other.
 serve-rc: build-ui
+	@./.claude/hooks/rebuild-restart-on-stop.sh --stamp
 	docker compose up -d db nginx
 	go run ./cmd/service -dev
 
