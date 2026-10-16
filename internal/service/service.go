@@ -360,6 +360,7 @@ type StorageService interface {
 	Test(ctx context.Context, id uuid.UUID) error
 	StartGoogleDriveAuth(ctx context.Context, id uuid.UUID) (consentUrl string, err error)
 	CompleteGoogleDriveAuth(ctx context.Context, state, code string) error
+	IsSecretsKeyConfigured() bool
 }
 
 // MediaService resolves where a stored media file lives for the unauthenticated media edge.

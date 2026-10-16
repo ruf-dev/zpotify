@@ -5,6 +5,7 @@ import { Button, ConfirmDialog } from '@vervstack/chures';
 import cls from '@/pages/storages/StoragesPage.module.css';
 import StorageRow from '@/pages/storages/components/StorageRow/StorageRow.tsx';
 import type { StorageRowActions } from '@/pages/storages/components/StorageRow/StorageRow.tsx';
+import SecretsKeyNotice from '@/pages/storages/components/SecretsKeyNotice/SecretsKeyNotice.tsx';
 import StorageRowSkeleton from '@/pages/storages/components/StorageRowSkeleton/StorageRowSkeleton.tsx';
 import { useStorages } from '@/pages/storages/useStorages.ts';
 import EditStorageDialog from '@/dialogs/EditStorage/EditStorageDialog.tsx';
@@ -97,14 +98,18 @@ export default function StoragesPage() {
         onDelete: handleDelete,
     };
 
+    const isLocked = !storages.isSecretsKeyConfigured;
+
     return (
         <div className={cls.StoragesPageContainer}>
             <div className={cls.Header}>
                 <h1 className={cls.Title}>Storages</h1>
-                <Button variant="primary" onClick={handleAdd}>
+                <Button variant="primary" disabled={isLocked} onClick={handleAdd}>
                     Add storage
                 </Button>
             </div>
+
+            {isLocked && !storages.isLoading && <SecretsKeyNotice />}
 
             {storages.isLoading && (
                 <ul className={cls.List}>
@@ -126,7 +131,7 @@ export default function StoragesPage() {
             {!storages.isLoading && !storages.isError && (
                 <ul className={cls.List}>
                     {storages.storages.map((storage) => (
-                        <StorageRow key={storage.id} storage={storage} actions={rowActions} />
+                        <StorageRow key={storage.id} storage={storage} actions={rowActions} isLocked={isLocked} />
                     ))}
                 </ul>
             )}

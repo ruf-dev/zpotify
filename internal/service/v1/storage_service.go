@@ -49,6 +49,18 @@ func NewStorageService(
 	}
 }
 
+func (s *StorageService) IsSecretsKeyConfigured() bool {
+	return s.secretsKey != ""
+}
+
+func (s *StorageService) requireSecretsKey() error {
+	if s.secretsKey == "" {
+		return rerrors.Wrap(service_errors.ErrStorageSecretsKeyMissing)
+	}
+
+	return nil
+}
+
 func (s *StorageService) List(ctx context.Context) ([]domain.StorageInfo, error) {
 	err := requireAdministrator(ctx)
 	if err != nil {
@@ -71,6 +83,11 @@ func (s *StorageService) List(ctx context.Context) ([]domain.StorageInfo, error)
 
 func (s *StorageService) Create(ctx context.Context, req domain.CreateStorage) (domain.StorageInfo, error) {
 	err := requireAdministrator(ctx)
+	if err != nil {
+		return domain.StorageInfo{}, rerrors.Wrap(err)
+	}
+
+	err = s.requireSecretsKey()
 	if err != nil {
 		return domain.StorageInfo{}, rerrors.Wrap(err)
 	}
@@ -107,6 +124,11 @@ func (s *StorageService) Create(ctx context.Context, req domain.CreateStorage) (
 
 func (s *StorageService) Update(ctx context.Context, req domain.UpdateStorage) error {
 	err := requireAdministrator(ctx)
+	if err != nil {
+		return rerrors.Wrap(err)
+	}
+
+	err = s.requireSecretsKey()
 	if err != nil {
 		return rerrors.Wrap(err)
 	}
@@ -229,6 +251,11 @@ func (s *StorageService) Test(ctx context.Context, id uuid.UUID) error {
 		return rerrors.Wrap(err)
 	}
 
+	err = s.requireSecretsKey()
+	if err != nil {
+		return rerrors.Wrap(err)
+	}
+
 	content, err := s.registry.Get(ctx, id)
 	if err != nil {
 		return rerrors.Wrap(err, "error resolving storage")
@@ -244,6 +271,11 @@ func (s *StorageService) Test(ctx context.Context, id uuid.UUID) error {
 
 func (s *StorageService) StartGoogleDriveAuth(ctx context.Context, id uuid.UUID) (string, error) {
 	err := requireAdministrator(ctx)
+	if err != nil {
+		return "", rerrors.Wrap(err)
+	}
+
+	err = s.requireSecretsKey()
 	if err != nil {
 		return "", rerrors.Wrap(err)
 	}

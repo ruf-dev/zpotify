@@ -13,6 +13,11 @@ export type StorageItem = {
     config?: StorageConfig;
 };
 
+export type StorageList = {
+    storages: StorageItem[];
+    isSecretsKeyConfigured: boolean;
+};
+
 export const STORAGE_KIND_LABELS: Record<StorageKindName, string> = {
     local: 'Local disk',
     s3: 'S3-compatible',

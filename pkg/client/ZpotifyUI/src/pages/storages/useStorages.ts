@@ -4,7 +4,7 @@ import type { StorageConfig } from '@/app/api/zpotify';
 import useUser from '@/entities/user/useUser.ts';
 import { storageService } from '@/shared/api/StorageService.ts';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
-import type { StorageItem } from '@/shared/model/Storage.ts';
+import type { StorageItem, StorageList } from '@/shared/model/Storage.ts';
 
 const STORAGES_KEY = ['storages'];
 
@@ -13,7 +13,7 @@ export function useStorages() {
     const queryClient = useQueryClient();
     const toaster = useToaster();
 
-    const query = useQuery<StorageItem[]>({
+    const query = useQuery<StorageList>({
         queryKey: STORAGES_KEY,
         queryFn: () => storageService.ListStorages(),
         enabled: isAdministrator,
@@ -61,7 +61,8 @@ export function useStorages() {
     }
 
     return {
-        storages: query.data ?? [],
+        storages: query.data?.storages ?? [],
+        isSecretsKeyConfigured: query.data?.isSecretsKeyConfigured ?? true,
         isLoading: query.isLoading,
         isError: query.isError,
         refetch: query.refetch,

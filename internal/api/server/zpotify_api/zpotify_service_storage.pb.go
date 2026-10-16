@@ -778,10 +778,11 @@ func (*ListStorages_Request) Descriptor() ([]byte, []int) {
 }
 
 type ListStorages_Response struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Storages      []*StorageInfo         `protobuf:"bytes,1,rep,name=storages,proto3" json:"storages,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"open.v1"`
+	Storages               []*StorageInfo         `protobuf:"bytes,1,rep,name=storages,proto3" json:"storages,omitempty"`
+	IsSecretsKeyConfigured bool                   `protobuf:"varint,2,opt,name=is_secrets_key_configured,json=isSecretsKeyConfigured,proto3" json:"is_secrets_key_configured,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *ListStorages_Response) Reset() {
@@ -819,6 +820,13 @@ func (x *ListStorages_Response) GetStorages() []*StorageInfo {
 		return x.Storages
 	}
 	return nil
+}
+
+func (x *ListStorages_Response) GetIsSecretsKeyConfigured() bool {
+	if x != nil {
+		return x.IsSecretsKeyConfigured
+	}
+	return false
 }
 
 type CreateStorage_Request struct {
@@ -1380,11 +1388,12 @@ const file_zpotify_service_storage_proto_rawDesc = "" +
 	"\x02s3\x18\x01 \x01(\v2\x15.zpotify_api.S3ConfigH\x00R\x02s3\x123\n" +
 	"\x06webdav\x18\x02 \x01(\v2\x19.zpotify_api.WebdavConfigH\x00R\x06webdav\x12C\n" +
 	"\fgoogle_drive\x18\x03 \x01(\v2\x1e.zpotify_api.GoogleDriveConfigH\x00R\vgoogleDriveB\b\n" +
-	"\x06config\"[\n" +
+	"\x06config\"\x96\x01\n" +
 	"\fListStorages\x1a\t\n" +
-	"\aRequest\x1a@\n" +
+	"\aRequest\x1a{\n" +
 	"\bResponse\x124\n" +
-	"\bstorages\x18\x01 \x03(\v2\x18.zpotify_api.StorageInfoR\bstorages\"\xa2\x01\n" +
+	"\bstorages\x18\x01 \x03(\v2\x18.zpotify_api.StorageInfoR\bstorages\x129\n" +
+	"\x19is_secrets_key_configured\x18\x02 \x01(\bR\x16isSecretsKeyConfigured\"\xa2\x01\n" +
 	"\rCreateStorage\x1aQ\n" +
 	"\aRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x122\n" +

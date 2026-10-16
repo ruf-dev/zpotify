@@ -17,9 +17,10 @@ export interface StorageRowActions {
 interface Props {
     storage: StorageItem;
     actions: StorageRowActions;
+    isLocked: boolean;
 }
 
-export default function StorageRow({ storage, actions }: Props) {
+export default function StorageRow({ storage, actions, isLocked }: Props) {
     const [isTesting, setIsTesting] = useState(false);
 
     const isLocal = storage.kind === 'local';
@@ -65,19 +66,19 @@ export default function StorageRow({ storage, actions }: Props) {
             </div>
 
             <div className={cls.Actions}>
-                <Button variant="ghost" disabled={isTesting} onClick={handleTest}>
+                <Button variant="ghost" disabled={isTesting || isLocked} onClick={handleTest}>
                     Test
                 </Button>
                 <Button variant="ghost" disabled={storage.isDefault || isNotConnected} onClick={handleSetDefault}>
                     Set default
                 </Button>
                 {!isLocal && (
-                    <Button variant="ghost" onClick={handleEdit}>
+                    <Button variant="ghost" disabled={isLocked} onClick={handleEdit}>
                         Edit
                     </Button>
                 )}
                 {isDrive && (
-                    <Button variant="ghost" onClick={handleConnectGoogle}>
+                    <Button variant="ghost" disabled={isLocked} onClick={handleConnectGoogle}>
                         {isNotConnected ? 'Connect Google' : 'Reconnect'}
                     </Button>
                 )}

@@ -2,7 +2,7 @@ import { StorageAPI, StorageKind } from '@/app/api/zpotify';
 import type { InitReq, StorageConfig, StorageInfo } from '@/app/api/zpotify';
 import { BaseService } from '@/shared/api/BaseService.ts';
 import { ServiceError, WithTitle } from '@/shared/api/Errors.ts';
-import type { StorageItem, StorageKindName } from '@/shared/model/Storage.ts';
+import type { StorageItem, StorageKindName, StorageList } from '@/shared/model/Storage.ts';
 
 const KIND_NAMES: Partial<Record<StorageKind, StorageKindName>> = {
     [StorageKind.STORAGE_KIND_LOCAL]: 'local',
@@ -30,10 +30,11 @@ function toStorageItem(info: StorageInfo): StorageItem {
 }
 
 export default class StorageService extends BaseService {
-    public async ListStorages(): Promise<StorageItem[]> {
-        return this.executeAuthApiCall((initReq: InitReq) => StorageAPI.ListStorages({}, initReq)).then((r) =>
-            (r.storages ?? []).map(toStorageItem),
-        );
+    public async ListStorages(): Promise<StorageList> {
+        return this.executeAuthApiCall((initReq: InitReq) => StorageAPI.ListStorages({}, initReq)).then((r) => ({
+            storages: (r.storages ?? []).map(toStorageItem),
+            isSecretsKeyConfigured: r.isSecretsKeyConfigured ?? false,
+        }));
     }
 
     public async CreateStorage(name: string, config: StorageConfig): Promise<StorageItem> {

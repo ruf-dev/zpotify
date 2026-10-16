@@ -20,7 +20,8 @@ func (impl *Impl) ListStorages(ctx context.Context, _ *zpotify_api.ListStorages_
 	}
 
 	resp := &zpotify_api.ListStorages_Response{
-		Storages: protoStorages,
+		Storages:               protoStorages,
+		IsSecretsKeyConfigured: impl.storageService.IsSecretsKeyConfigured(),
 	}
 
 	return resp, nil

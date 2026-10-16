@@ -326,6 +326,9 @@
             "type": "object",
             "$ref": "#/definitions/zpotify_apiStorageInfo"
           }
+        },
+        "isSecretsKeyConfigured": {
+          "type": "boolean"
         }
       }
     },

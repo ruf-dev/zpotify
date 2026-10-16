@@ -72,6 +72,7 @@ export type ListStoragesRequest = Record<string, never>;
 
 export type ListStoragesResponse = {
   storages?: StorageInfo[];
+  isSecretsKeyConfigured?: boolean;
 };
 
 export type ListStorages = Record<string, never>;

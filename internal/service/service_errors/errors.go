@@ -115,4 +115,6 @@ var (
 	ErrStorageCannotDeleteDefault = rerrors.New("default storage cannot be deleted", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusConflict))
 
 	ErrStorageInvalidConfig = rerrors.New("invalid storage config", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
+
+	ErrStorageSecretsKeyMissing = rerrors.New("storage secrets key is not configured: set ENVIRONMENT_STORAGE_SECRETS_KEY and restart", codes.FailedPrecondition, rerrors.WithHttpStatus(http.StatusPreconditionFailed))
 )

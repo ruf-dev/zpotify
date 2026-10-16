@@ -5,7 +5,7 @@ import StorageRow from '@/pages/storages/components/StorageRow/StorageRow.tsx';
 import type { StorageRowActions } from '@/pages/storages/components/StorageRow/StorageRow.tsx';
 import type { StorageItem } from '@/shared/model/Storage.ts';
 
-function renderRow(overrides: Partial<StorageItem>) {
+function renderRow(overrides: Partial<StorageItem>, isLocked = false) {
     const actions: StorageRowActions = {
         onTest: vi.fn().mockResolvedValue(undefined),
         onSetDefault: vi.fn(),
@@ -25,7 +25,7 @@ function renderRow(overrides: Partial<StorageItem>) {
 
     render(
         <ul>
-            <StorageRow storage={storage} actions={actions} />
+            <StorageRow storage={storage} actions={actions} isLocked={isLocked} />
         </ul>,
     );
 
@@ -73,6 +73,14 @@ describe('StorageRow', () => {
         renderRow({ kind: 'google_drive', isConnected: true });
 
         expect(screen.getByRole('button', { name: 'Reconnect' })).not.toBeNull();
+    });
+
+    it('disables Test, Edit and Connect when locked', () => {
+        renderRow({ kind: 'google_drive', isConnected: false }, true);
+
+        expect((screen.getByRole('button', { name: 'Test' }) as HTMLButtonElement).disabled).toBe(true);
+        expect((screen.getByRole('button', { name: 'Edit' }) as HTMLButtonElement).disabled).toBe(true);
+        expect((screen.getByRole('button', { name: 'Connect Google' }) as HTMLButtonElement).disabled).toBe(true);
     });
 
     it('calls delete with the storage when Delete is clicked', () => {

@@ -114,6 +114,7 @@ message ListStorages {
   message Request {}
   message Response {
     repeated StorageInfo storages = 1;
+    bool is_secrets_key_configured = 2;
   }
 }
 

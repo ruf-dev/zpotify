@@ -619,3 +619,30 @@ func Test_StorageService_StartGoogleDriveAuthRejections(t *testing.T) {
 	_, err = fixture.svc.StartGoogleDriveAuth(adminStorageCtx(), driveRow.Uuid)
 	require.ErrorIs(t, err, service_errors.ErrStorageInvalidConfig)
 }
+
+func Test_StorageService_MutationsRequireSecretsKey(t *testing.T) {
+	fixture := newStorageFixture()
+	fixture.svc.secretsKey = ""
+	id := uuid.New()
+	ctx := adminStorageCtx()
+
+	require.False(t, fixture.svc.IsSecretsKeyConfigured())
+
+	_, err := fixture.svc.Create(ctx, domain.CreateStorage{Name: "s3", Config: newS3Config()})
+	require.ErrorIs(t, err, service_errors.ErrStorageSecretsKeyMissing)
+
+	err = fixture.svc.Update(ctx, domain.UpdateStorage{Uuid: id, Name: "s3", Config: newS3Config()})
+	require.ErrorIs(t, err, service_errors.ErrStorageSecretsKeyMissing)
+
+	err = fixture.svc.Test(ctx, id)
+	require.ErrorIs(t, err, service_errors.ErrStorageSecretsKeyMissing)
+
+	_, err = fixture.svc.StartGoogleDriveAuth(ctx, id)
+	require.ErrorIs(t, err, service_errors.ErrStorageSecretsKeyMissing)
+}
+
+func Test_StorageService_IsSecretsKeyConfigured(t *testing.T) {
+	fixture := newStorageFixture()
+
+	require.True(t, fixture.svc.IsSecretsKeyConfigured())
+}
