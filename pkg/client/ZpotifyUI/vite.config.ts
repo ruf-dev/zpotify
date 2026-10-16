@@ -45,7 +45,11 @@ export default ({ mode }: { mode: string }) => {
         host: true, // allows access from network IPs
         port: 5173,
         strictPort: true,
-        allowedHosts: ['.loca.lt', 'localhost', '127.0.0.1', ''],
+        proxy: {
+            '/api': 'http://localhost:8087',
+            '/wapi': 'http://localhost:8087',
+        },
+        allowedHosts: ['.loca.lt', '.zpotify.ru', 'localhost', '127.0.0.1', ''],
     };
 
     return uc;
