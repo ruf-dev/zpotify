@@ -63,6 +63,11 @@ func NewTestEnv(t *testing.T) *TestEnv {
 }
 
 func startSharedApp() (*TestEnv, error) {
+	err := requireE2eDatabase()
+	if err != nil {
+		return nil, rerrors.Wrap(err)
+	}
+
 	application, err := app.New()
 	if err != nil {
 		return nil, rerrors.Wrap(err, "error creating app")
@@ -145,6 +150,9 @@ func stopSharedApp() {
 	case <-time.After(shutdownTimeout):
 		log.Warn().Msg("test app did not stop in time")
 	}
+
+	connectionString := sharedEnv.App.Cfg.DataSources.Postgres.ConnectionString()
+	resetE2eState(connectionString, sharedEnv.App.Cfg.Environment.LocalStoragePath)
 }
 
 // CreateAdminUser inserts a user with every permission, including is_administrator, and a live session.

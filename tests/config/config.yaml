@@ -6,10 +6,10 @@ data_sources:
   - resource_name: postgres
     migrations_folder: ../migrations
     host: localhost
-    port: 15432
+    port: 15433
     user: zpotify
     pwd: ""
-    name: zpotify_db
+    name: zpotify_e2e
     ssl_mode: disable
 servers:
   18087:

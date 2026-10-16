@@ -23,6 +23,24 @@ services:
       - ./data/angie:/data/nginx
       - ./.verv/template/local-ingress.conf:/etc/nginx/nginx.conf:ro
 
+  test-db:
+    image: postgres:18
+    container_name: zpotify-test-db
+    environment:
+      POSTGRES_USER: zpotify
+      POSTGRES_PASSWORD:
+      POSTGRES_DB: zpotify_e2e
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "${TEST_DB_PORT:-15433}:5432"
+    tmpfs:
+      - /var/lib/postgresql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "zpotify", "-d", "zpotify_e2e"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
   test-garage:
     image: dxflrs/garage:v2.3.0
     container_name: zpotify-test-garage
