@@ -148,7 +148,7 @@
       "label": "listeners()",
       "file_type": "code",
       "source_file": ".claude/hooks/rebuild-restart-on-stop.sh",
-      "source_location": "L37",
+      "source_location": "L38",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
@@ -255,7 +255,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_common_pb",
-      "community": 572,
+      "community": 74,
       "norm_label": "zpotify_common.pb.go"
     },
     {
@@ -365,7 +365,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "zpotify_api_playlistkind",
-      "community": 9,
+      "community": 216,
       "norm_label": "playlistkind"
     },
     {
@@ -375,7 +375,7 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "zpotify_api_playlistkind_enum",
-      "community": 9,
+      "community": 216,
       "norm_label": ".enum()"
     },
     {
@@ -415,7 +415,7 @@
       "source_location": "L111",
       "_origin": "ast",
       "id": "zpotify_api_playlistkind_number",
-      "community": 9,
+      "community": 216,
       "norm_label": ".number()"
     },
     {
@@ -425,7 +425,7 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "zpotify_api_playlistkind_enumdescriptor",
-      "community": 9,
+      "community": 216,
       "norm_label": ".enumdescriptor()"
     },
     {
@@ -505,7 +505,7 @@
       "source_location": "L187",
       "_origin": "ast",
       "id": "zpotify_api_albumversionmetadata_versionkind",
-      "community": 216,
+      "community": 74,
       "norm_label": "albumversionmetadata_versionkind"
     },
     {
@@ -515,7 +515,7 @@
       "source_location": "L218",
       "_origin": "ast",
       "id": "zpotify_api_albumversionmetadata_versionkind_enum",
-      "community": 216,
+      "community": 74,
       "norm_label": ".enum()"
     },
     {
@@ -555,7 +555,7 @@
       "source_location": "L236",
       "_origin": "ast",
       "id": "zpotify_api_albumversionmetadata_versionkind_number",
-      "community": 216,
+      "community": 74,
       "norm_label": ".number()"
     },
     {
@@ -565,7 +565,7 @@
       "source_location": "L241",
       "_origin": "ast",
       "id": "zpotify_api_albumversionmetadata_versionkind_enumdescriptor",
-      "community": 216,
+      "community": 74,
       "norm_label": ".enumdescriptor()"
     },
     {
@@ -695,7 +695,7 @@
       "source_location": "L297",
       "_origin": "ast",
       "id": "zpotify_api_artistbase",
-      "community": 526,
+      "community": 103,
       "norm_label": "artistbase"
     },
     {
@@ -705,7 +705,7 @@
       "source_location": "L307",
       "_origin": "ast",
       "id": "zpotify_api_artistbase_reset",
-      "community": 526,
+      "community": 103,
       "norm_label": ".reset()"
     },
     {
@@ -715,7 +715,7 @@
       "source_location": "L314",
       "_origin": "ast",
       "id": "zpotify_api_artistbase_string",
-      "community": 526,
+      "community": 103,
       "norm_label": ".string()"
     },
     {
@@ -725,7 +725,7 @@
       "source_location": "L318",
       "_origin": "ast",
       "id": "zpotify_api_artistbase_protomessage",
-      "community": 526,
+      "community": 103,
       "norm_label": ".protomessage()"
     },
     {
@@ -755,7 +755,7 @@
       "source_location": "L337",
       "_origin": "ast",
       "id": "zpotify_api_artistbase_getuuid",
-      "community": 526,
+      "community": 103,
       "norm_label": ".getuuid()"
     },
     {
@@ -765,7 +765,7 @@
       "source_location": "L344",
       "_origin": "ast",
       "id": "zpotify_api_artistbase_getname",
-      "community": 526,
+      "community": 103,
       "norm_label": ".getname()"
     },
     {
@@ -775,7 +775,7 @@
       "source_location": "L351",
       "_origin": "ast",
       "id": "zpotify_api_artistbase_getliked",
-      "community": 526,
+      "community": 103,
       "norm_label": ".getliked()"
     },
     {
@@ -785,7 +785,7 @@
       "source_location": "L358",
       "_origin": "ast",
       "id": "zpotify_api_artistbase_getavatarfilepath",
-      "community": 526,
+      "community": 103,
       "norm_label": ".getavatarfilepath()"
     },
     {
@@ -795,7 +795,7 @@
       "source_location": "L365",
       "_origin": "ast",
       "id": "zpotify_api_songtag",
-      "community": 103,
+      "community": 549,
       "norm_label": "songtag"
     },
     {
@@ -805,7 +805,7 @@
       "source_location": "L373",
       "_origin": "ast",
       "id": "zpotify_api_songtag_reset",
-      "community": 103,
+      "community": 549,
       "norm_label": ".reset()"
     },
     {
@@ -815,7 +815,7 @@
       "source_location": "L380",
       "_origin": "ast",
       "id": "zpotify_api_songtag_string",
-      "community": 103,
+      "community": 549,
       "norm_label": ".string()"
     },
     {
@@ -825,7 +825,7 @@
       "source_location": "L384",
       "_origin": "ast",
       "id": "zpotify_api_songtag_protomessage",
-      "community": 103,
+      "community": 549,
       "norm_label": ".protomessage()"
     },
     {
@@ -845,7 +845,7 @@
       "source_location": "L399",
       "_origin": "ast",
       "id": "zpotify_api_songtag_descriptor",
-      "community": 103,
+      "community": 555,
       "norm_label": ".descriptor()"
     },
     {
@@ -865,7 +865,7 @@
       "source_location": "L410",
       "_origin": "ast",
       "id": "zpotify_api_songtag_getvalue",
-      "community": 103,
+      "community": 549,
       "norm_label": ".getvalue()"
     },
     {
@@ -955,7 +955,7 @@
       "source_location": "L475",
       "_origin": "ast",
       "id": "zpotify_api_songbase_getartists",
-      "community": 526,
+      "community": 103,
       "norm_label": ".getartists()"
     },
     {
@@ -995,7 +995,7 @@
       "source_location": "L503",
       "_origin": "ast",
       "id": "zpotify_api_songbase_gettags",
-      "community": 103,
+      "community": 549,
       "norm_label": ".gettags()"
     },
     {
@@ -1015,7 +1015,7 @@
       "source_location": "L517",
       "_origin": "ast",
       "id": "zpotify_api_albumversionmetadata",
-      "community": 549,
+      "community": 74,
       "norm_label": "albumversionmetadata"
     },
     {
@@ -1025,7 +1025,7 @@
       "source_location": "L525",
       "_origin": "ast",
       "id": "zpotify_api_albumversionmetadata_reset",
-      "community": 549,
+      "community": 74,
       "norm_label": ".reset()"
     },
     {
@@ -1035,7 +1035,7 @@
       "source_location": "L532",
       "_origin": "ast",
       "id": "zpotify_api_albumversionmetadata_string",
-      "community": 549,
+      "community": 74,
       "norm_label": ".string()"
     },
     {
@@ -1045,7 +1045,7 @@
       "source_location": "L536",
       "_origin": "ast",
       "id": "zpotify_api_albumversionmetadata_protomessage",
-      "community": 549,
+      "community": 74,
       "norm_label": ".protomessage()"
     },
     {
@@ -1065,7 +1065,7 @@
       "source_location": "L551",
       "_origin": "ast",
       "id": "zpotify_api_albumversionmetadata_descriptor",
-      "community": 555,
+      "community": 74,
       "norm_label": ".descriptor()"
     },
     {
@@ -1075,7 +1075,7 @@
       "source_location": "L555",
       "_origin": "ast",
       "id": "zpotify_api_albumversionmetadata_getversionkind",
-      "community": 216,
+      "community": 74,
       "norm_label": ".getversionkind()"
     },
     {
@@ -1085,7 +1085,7 @@
       "source_location": "L562",
       "_origin": "ast",
       "id": "zpotify_api_albumversionmetadata_getparentplaylistuuid",
-      "community": 549,
+      "community": 74,
       "norm_label": ".getparentplaylistuuid()"
     },
     {
@@ -1185,7 +1185,7 @@
       "source_location": "L632",
       "_origin": "ast",
       "id": "zpotify_api_albumtag_getalbumversion",
-      "community": 572,
+      "community": 74,
       "norm_label": ".getalbumversion()"
     },
     {
@@ -1205,7 +1205,7 @@
       "source_location": "L645",
       "_origin": "ast",
       "id": "zpotify_api_albumtag_albumversion",
-      "community": 572,
+      "community": 74,
       "norm_label": "albumtag_albumversion"
     },
     {
@@ -1215,7 +1215,7 @@
       "source_location": "L649",
       "_origin": "ast",
       "id": "zpotify_api_albumtag_albumversion_isalbumtag_metadata",
-      "community": 572,
+      "community": 74,
       "norm_label": ".isalbumtag_metadata()"
     },
     {
@@ -1325,7 +1325,7 @@
       "source_location": "L728",
       "_origin": "ast",
       "id": "zpotify_api_playlist_getartists",
-      "community": 526,
+      "community": 103,
       "norm_label": ".getartists()"
     },
     {
@@ -1405,7 +1405,7 @@
       "source_location": "L784",
       "_origin": "ast",
       "id": "zpotify_api_playlist_getkind",
-      "community": 9,
+      "community": 216,
       "norm_label": ".getkind()"
     },
     {
@@ -1505,7 +1505,7 @@
       "source_location": "L976",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_common_pb_init",
-      "community": 572,
+      "community": 74,
       "norm_label": "init()"
     },
     {
@@ -1515,7 +1515,7 @@
       "source_location": "L977",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_common_pb_file_zpotify_common_proto_init",
-      "community": 572,
+      "community": 74,
       "norm_label": "file_zpotify_common_proto_init()"
     },
     {
@@ -2165,7 +2165,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_artists_pb",
-      "community": 688,
+      "community": 413,
       "norm_label": "zpotify_service_artists.pb.go"
     },
     {
@@ -2255,7 +2255,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_artists_pb_go_message",
-      "community": 413,
+      "community": 530,
       "norm_label": "message"
     },
     {
@@ -2315,7 +2315,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "zpotify_api_createartist_protoreflect",
-      "community": 413,
+      "community": 530,
       "norm_label": ".protoreflect()"
     },
     {
@@ -2325,7 +2325,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "zpotify_api_createartist_descriptor",
-      "community": 530,
+      "community": 526,
       "norm_label": ".descriptor()"
     },
     {
@@ -2375,7 +2375,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "zpotify_api_likeartist_protoreflect",
-      "community": 413,
+      "community": 530,
       "norm_label": ".protoreflect()"
     },
     {
@@ -2385,7 +2385,7 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "zpotify_api_likeartist_descriptor",
-      "community": 530,
+      "community": 526,
       "norm_label": ".descriptor()"
     },
     {
@@ -2435,7 +2435,7 @@
       "source_location": "L154",
       "_origin": "ast",
       "id": "zpotify_api_unlikeartist_protoreflect",
-      "community": 427,
+      "community": 530,
       "norm_label": ".protoreflect()"
     },
     {
@@ -2445,7 +2445,7 @@
       "source_location": "L167",
       "_origin": "ast",
       "id": "zpotify_api_unlikeartist_descriptor",
-      "community": 427,
+      "community": 526,
       "norm_label": ".descriptor()"
     },
     {
@@ -2495,7 +2495,7 @@
       "source_location": "L196",
       "_origin": "ast",
       "id": "zpotify_api_artist_protoreflect",
-      "community": 413,
+      "community": 530,
       "norm_label": ".protoreflect()"
     },
     {
@@ -2635,7 +2635,7 @@
       "source_location": "L291",
       "_origin": "ast",
       "id": "zpotify_api_updateartist",
-      "community": 1129,
+      "community": 427,
       "norm_label": "updateartist"
     },
     {
@@ -2645,7 +2645,7 @@
       "source_location": "L297",
       "_origin": "ast",
       "id": "zpotify_api_updateartist_reset",
-      "community": 1129,
+      "community": 427,
       "norm_label": ".reset()"
     },
     {
@@ -2655,7 +2655,7 @@
       "source_location": "L304",
       "_origin": "ast",
       "id": "zpotify_api_updateartist_string",
-      "community": 1129,
+      "community": 427,
       "norm_label": ".string()"
     },
     {
@@ -2665,7 +2665,7 @@
       "source_location": "L308",
       "_origin": "ast",
       "id": "zpotify_api_updateartist_protomessage",
-      "community": 1129,
+      "community": 427,
       "norm_label": ".protomessage()"
     },
     {
@@ -2675,7 +2675,7 @@
       "source_location": "L310",
       "_origin": "ast",
       "id": "zpotify_api_updateartist_protoreflect",
-      "community": 1129,
+      "community": 427,
       "norm_label": ".protoreflect()"
     },
     {
@@ -2685,7 +2685,7 @@
       "source_location": "L323",
       "_origin": "ast",
       "id": "zpotify_api_updateartist_descriptor",
-      "community": 1129,
+      "community": 427,
       "norm_label": ".descriptor()"
     },
     {
@@ -3165,7 +3165,7 @@
       "source_location": "L607",
       "_origin": "ast",
       "id": "zpotify_api_likeartist_response",
-      "community": 427,
+      "community": 526,
       "norm_label": "likeartist_response"
     },
     {
@@ -3175,7 +3175,7 @@
       "source_location": "L613",
       "_origin": "ast",
       "id": "zpotify_api_likeartist_response_reset",
-      "community": 427,
+      "community": 526,
       "norm_label": ".reset()"
     },
     {
@@ -3185,7 +3185,7 @@
       "source_location": "L620",
       "_origin": "ast",
       "id": "zpotify_api_likeartist_response_string",
-      "community": 427,
+      "community": 526,
       "norm_label": ".string()"
     },
     {
@@ -3195,7 +3195,7 @@
       "source_location": "L624",
       "_origin": "ast",
       "id": "zpotify_api_likeartist_response_protomessage",
-      "community": 427,
+      "community": 526,
       "norm_label": ".protomessage()"
     },
     {
@@ -3205,7 +3205,7 @@
       "source_location": "L626",
       "_origin": "ast",
       "id": "zpotify_api_likeartist_response_protoreflect",
-      "community": 413,
+      "community": 526,
       "norm_label": ".protoreflect()"
     },
     {
@@ -3215,7 +3215,7 @@
       "source_location": "L639",
       "_origin": "ast",
       "id": "zpotify_api_likeartist_response_descriptor",
-      "community": 530,
+      "community": 526,
       "norm_label": ".descriptor()"
     },
     {
@@ -3725,7 +3725,7 @@
       "source_location": "L1041",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_artists_pb_file_zpotify_service_artists_proto_rawdescgzip",
-      "community": 530,
+      "community": 526,
       "norm_label": "file_zpotify_service_artists_proto_rawdescgzip()"
     },
     {
@@ -3735,7 +3735,7 @@
       "source_location": "L1103",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_artists_pb_init",
-      "community": 688,
+      "community": 413,
       "norm_label": "init()"
     },
     {
@@ -3745,7 +3745,7 @@
       "source_location": "L1104",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_artists_pb_file_zpotify_service_artists_proto_init",
-      "community": 688,
+      "community": 413,
       "norm_label": "file_zpotify_service_artists_proto_init()"
     },
     {
@@ -4445,7 +4445,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "zpotify_api_getauthmethods",
-      "community": 57,
+      "community": 29,
       "norm_label": "getauthmethods"
     },
     {
@@ -4485,7 +4485,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "zpotify_api_getauthmethods_reset",
-      "community": 57,
+      "community": 29,
       "norm_label": ".reset()"
     },
     {
@@ -4495,7 +4495,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "zpotify_api_getauthmethods_string",
-      "community": 57,
+      "community": 29,
       "norm_label": ".string()"
     },
     {
@@ -4505,7 +4505,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "zpotify_api_getauthmethods_protomessage",
-      "community": 57,
+      "community": 29,
       "norm_label": ".protomessage()"
     },
     {
@@ -4515,7 +4515,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "zpotify_api_getauthmethods_protoreflect",
-      "community": 57,
+      "community": 29,
       "norm_label": ".protoreflect()"
     },
     {
@@ -4535,7 +4535,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "zpotify_api_getauthmethods_descriptor",
-      "community": 57,
+      "community": 29,
       "norm_label": ".descriptor()"
     },
     {
@@ -4545,7 +4545,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "zpotify_api_authviaasync",
-      "community": 166,
+      "community": 57,
       "norm_label": "authviaasync"
     },
     {
@@ -4555,7 +4555,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "zpotify_api_authviaasync_reset",
-      "community": 166,
+      "community": 57,
       "norm_label": ".reset()"
     },
     {
@@ -4565,7 +4565,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "zpotify_api_authviaasync_string",
-      "community": 166,
+      "community": 57,
       "norm_label": ".string()"
     },
     {
@@ -4575,7 +4575,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "zpotify_api_authviaasync_protomessage",
-      "community": 166,
+      "community": 57,
       "norm_label": ".protomessage()"
     },
     {
@@ -4585,7 +4585,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "zpotify_api_authviaasync_protoreflect",
-      "community": 166,
+      "community": 57,
       "norm_label": ".protoreflect()"
     },
     {
@@ -4595,7 +4595,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "zpotify_api_authviaasync_descriptor",
-      "community": 166,
+      "community": 57,
       "norm_label": ".descriptor()"
     },
     {
@@ -4665,7 +4665,7 @@
       "source_location": "L135",
       "_origin": "ast",
       "id": "zpotify_api_refresh",
-      "community": 29,
+      "community": 1176,
       "norm_label": "refresh"
     },
     {
@@ -4675,7 +4675,7 @@
       "source_location": "L141",
       "_origin": "ast",
       "id": "zpotify_api_refresh_reset",
-      "community": 29,
+      "community": 1176,
       "norm_label": ".reset()"
     },
     {
@@ -4685,7 +4685,7 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "zpotify_api_refresh_string",
-      "community": 29,
+      "community": 1176,
       "norm_label": ".string()"
     },
     {
@@ -4695,7 +4695,7 @@
       "source_location": "L152",
       "_origin": "ast",
       "id": "zpotify_api_refresh_protomessage",
-      "community": 29,
+      "community": 1176,
       "norm_label": ".protomessage()"
     },
     {
@@ -4705,7 +4705,7 @@
       "source_location": "L154",
       "_origin": "ast",
       "id": "zpotify_api_refresh_protoreflect",
-      "community": 29,
+      "community": 1176,
       "norm_label": ".protoreflect()"
     },
     {
@@ -4715,7 +4715,7 @@
       "source_location": "L167",
       "_origin": "ast",
       "id": "zpotify_api_refresh_descriptor",
-      "community": 29,
+      "community": 1176,
       "norm_label": ".descriptor()"
     },
     {
@@ -4835,7 +4835,7 @@
       "source_location": "L239",
       "_origin": "ast",
       "id": "zpotify_api_logout",
-      "community": 1161,
+      "community": 166,
       "norm_label": "logout"
     },
     {
@@ -4845,7 +4845,7 @@
       "source_location": "L245",
       "_origin": "ast",
       "id": "zpotify_api_logout_reset",
-      "community": 1161,
+      "community": 166,
       "norm_label": ".reset()"
     },
     {
@@ -4855,7 +4855,7 @@
       "source_location": "L252",
       "_origin": "ast",
       "id": "zpotify_api_logout_string",
-      "community": 1161,
+      "community": 166,
       "norm_label": ".string()"
     },
     {
@@ -4865,7 +4865,7 @@
       "source_location": "L256",
       "_origin": "ast",
       "id": "zpotify_api_logout_protomessage",
-      "community": 1161,
+      "community": 166,
       "norm_label": ".protomessage()"
     },
     {
@@ -4875,7 +4875,7 @@
       "source_location": "L258",
       "_origin": "ast",
       "id": "zpotify_api_logout_protoreflect",
-      "community": 1161,
+      "community": 166,
       "norm_label": ".protoreflect()"
     },
     {
@@ -4885,7 +4885,7 @@
       "source_location": "L271",
       "_origin": "ast",
       "id": "zpotify_api_logout_descriptor",
-      "community": 1161,
+      "community": 166,
       "norm_label": ".descriptor()"
     },
     {
@@ -7485,7 +7485,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_files_pb",
-      "community": 1005,
+      "community": 566,
       "norm_label": "zpotify_service_files.pb.go"
     },
     {
@@ -7505,7 +7505,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_files_pb_go_messagestate",
-      "community": 566,
+      "community": 956,
       "norm_label": "messagestate"
     },
     {
@@ -7575,7 +7575,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_files_pb_go_message",
-      "community": 190,
+      "community": 1005,
       "norm_label": "message"
     },
     {
@@ -7635,7 +7635,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "zpotify_api_getfile_protoreflect",
-      "community": 956,
+      "community": 1005,
       "norm_label": ".protoreflect()"
     },
     {
@@ -7645,7 +7645,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "zpotify_api_getfile_descriptor",
-      "community": 956,
+      "community": 254,
       "norm_label": ".descriptor()"
     },
     {
@@ -7805,7 +7805,7 @@
       "source_location": "L198",
       "_origin": "ast",
       "id": "zpotify_api_checkfilesbyhashes_descriptor",
-      "community": 956,
+      "community": 190,
       "norm_label": ".descriptor()"
     },
     {
@@ -7865,7 +7865,7 @@
       "source_location": "L234",
       "_origin": "ast",
       "id": "zpotify_api_checksongsbyfileids_descriptor",
-      "community": 956,
+      "community": 566,
       "norm_label": ".descriptor()"
     },
     {
@@ -7975,7 +7975,7 @@
       "source_location": "L293",
       "_origin": "ast",
       "id": "zpotify_api_batchdeletefiles_protoreflect",
-      "community": 609,
+      "community": 1005,
       "norm_label": ".protoreflect()"
     },
     {
@@ -7985,7 +7985,7 @@
       "source_location": "L306",
       "_origin": "ast",
       "id": "zpotify_api_batchdeletefiles_descriptor",
-      "community": 956,
+      "community": 254,
       "norm_label": ".descriptor()"
     },
     {
@@ -8975,7 +8975,7 @@
       "source_location": "L917",
       "_origin": "ast",
       "id": "zpotify_api_batchdeletefiles_response_protoreflect",
-      "community": 409,
+      "community": 1005,
       "norm_label": ".protoreflect()"
     },
     {
@@ -8985,7 +8985,7 @@
       "source_location": "L930",
       "_origin": "ast",
       "id": "zpotify_api_batchdeletefiles_response_descriptor",
-      "community": 956,
+      "community": 254,
       "norm_label": ".descriptor()"
     },
     {
@@ -8995,7 +8995,7 @@
       "source_location": "L1000",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_files_pb_file_zpotify_service_files_proto_rawdescgzip",
-      "community": 956,
+      "community": 254,
       "norm_label": "file_zpotify_service_files_proto_rawdescgzip()"
     },
     {
@@ -9005,7 +9005,7 @@
       "source_location": "L1056",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_files_pb_init",
-      "community": 1005,
+      "community": 566,
       "norm_label": "init()"
     },
     {
@@ -9015,7 +9015,7 @@
       "source_location": "L1057",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_files_pb_file_zpotify_service_files_proto_init",
-      "community": 1005,
+      "community": 566,
       "norm_label": "file_zpotify_service_files_proto_init()"
     },
     {
@@ -10475,7 +10475,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_notification_pb",
-      "community": 1062,
+      "community": 1020,
       "norm_label": "zpotify_service_notification.pb.go"
     },
     {
@@ -10665,7 +10665,7 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "zpotify_api_getnotificationsummary",
-      "community": 1062,
+      "community": 142,
       "norm_label": "getnotificationsummary"
     },
     {
@@ -10675,7 +10675,7 @@
       "source_location": "L125",
       "_origin": "ast",
       "id": "zpotify_api_getnotificationsummary_reset",
-      "community": 1062,
+      "community": 142,
       "norm_label": ".reset()"
     },
     {
@@ -10685,7 +10685,7 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "zpotify_api_getnotificationsummary_string",
-      "community": 1062,
+      "community": 142,
       "norm_label": ".string()"
     },
     {
@@ -10695,7 +10695,7 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "zpotify_api_getnotificationsummary_protomessage",
-      "community": 1062,
+      "community": 142,
       "norm_label": ".protomessage()"
     },
     {
@@ -10705,7 +10705,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "zpotify_api_getnotificationsummary_protoreflect",
-      "community": 1062,
+      "community": 448,
       "norm_label": ".protoreflect()"
     },
     {
@@ -10715,7 +10715,7 @@
       "source_location": "L151",
       "_origin": "ast",
       "id": "zpotify_api_getnotificationsummary_descriptor",
-      "community": 1062,
+      "community": 446,
       "norm_label": ".descriptor()"
     },
     {
@@ -11265,7 +11265,7 @@
       "source_location": "L483",
       "_origin": "ast",
       "id": "zpotify_api_marknotificationread_response",
-      "community": 142,
+      "community": 1172,
       "norm_label": "marknotificationread_response"
     },
     {
@@ -11275,7 +11275,7 @@
       "source_location": "L489",
       "_origin": "ast",
       "id": "zpotify_api_marknotificationread_response_reset",
-      "community": 142,
+      "community": 1172,
       "norm_label": ".reset()"
     },
     {
@@ -11285,7 +11285,7 @@
       "source_location": "L496",
       "_origin": "ast",
       "id": "zpotify_api_marknotificationread_response_string",
-      "community": 142,
+      "community": 1172,
       "norm_label": ".string()"
     },
     {
@@ -11295,7 +11295,7 @@
       "source_location": "L500",
       "_origin": "ast",
       "id": "zpotify_api_marknotificationread_response_protomessage",
-      "community": 142,
+      "community": 1172,
       "norm_label": ".protomessage()"
     },
     {
@@ -11305,7 +11305,7 @@
       "source_location": "L502",
       "_origin": "ast",
       "id": "zpotify_api_marknotificationread_response_protoreflect",
-      "community": 448,
+      "community": 1172,
       "norm_label": ".protoreflect()"
     },
     {
@@ -11315,7 +11315,7 @@
       "source_location": "L515",
       "_origin": "ast",
       "id": "zpotify_api_marknotificationread_response_descriptor",
-      "community": 446,
+      "community": 1172,
       "norm_label": ".descriptor()"
     },
     {
@@ -11465,7 +11465,7 @@
       "source_location": "L689",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_notification_pb_init",
-      "community": 1062,
+      "community": 1020,
       "norm_label": "init()"
     },
     {
@@ -11475,7 +11475,7 @@
       "source_location": "L690",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_notification_pb_file_zpotify_service_notification_proto_init",
-      "community": 1062,
+      "community": 1020,
       "norm_label": "file_zpotify_service_notification_proto_init()"
     },
     {
@@ -12025,7 +12025,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb",
-      "community": 179,
+      "community": 518,
       "norm_label": "zpotify_service_playlist.pb.go"
     },
     {
@@ -12045,7 +12045,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb_go_messagestate",
-      "community": 454,
+      "community": 957,
       "norm_label": "messagestate"
     },
     {
@@ -12055,7 +12055,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb_go_unknownfields",
-      "community": 948,
+      "community": 454,
       "norm_label": "unknownfields"
     },
     {
@@ -12065,7 +12065,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb_go_sizecache",
-      "community": 1092,
+      "community": 948,
       "norm_label": "sizecache"
     },
     {
@@ -12315,7 +12315,7 @@
       "source_location": "L170",
       "_origin": "ast",
       "id": "zpotify_api_getplaylist",
-      "community": 454,
+      "community": 957,
       "norm_label": "getplaylist"
     },
     {
@@ -12325,7 +12325,7 @@
       "source_location": "L176",
       "_origin": "ast",
       "id": "zpotify_api_getplaylist_reset",
-      "community": 454,
+      "community": 957,
       "norm_label": ".reset()"
     },
     {
@@ -12335,7 +12335,7 @@
       "source_location": "L183",
       "_origin": "ast",
       "id": "zpotify_api_getplaylist_string",
-      "community": 454,
+      "community": 957,
       "norm_label": ".string()"
     },
     {
@@ -12345,7 +12345,7 @@
       "source_location": "L187",
       "_origin": "ast",
       "id": "zpotify_api_getplaylist_protomessage",
-      "community": 454,
+      "community": 957,
       "norm_label": ".protomessage()"
     },
     {
@@ -12365,7 +12365,7 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "zpotify_api_getplaylist_descriptor",
-      "community": 957,
+      "community": 179,
       "norm_label": ".descriptor()"
     },
     {
@@ -12375,7 +12375,7 @@
       "source_location": "L206",
       "_origin": "ast",
       "id": "zpotify_api_changesongsorder",
-      "community": 948,
+      "community": 454,
       "norm_label": "changesongsorder"
     },
     {
@@ -12385,7 +12385,7 @@
       "source_location": "L212",
       "_origin": "ast",
       "id": "zpotify_api_changesongsorder_reset",
-      "community": 948,
+      "community": 454,
       "norm_label": ".reset()"
     },
     {
@@ -12395,7 +12395,7 @@
       "source_location": "L219",
       "_origin": "ast",
       "id": "zpotify_api_changesongsorder_string",
-      "community": 948,
+      "community": 454,
       "norm_label": ".string()"
     },
     {
@@ -12405,7 +12405,7 @@
       "source_location": "L223",
       "_origin": "ast",
       "id": "zpotify_api_changesongsorder_protomessage",
-      "community": 948,
+      "community": 454,
       "norm_label": ".protomessage()"
     },
     {
@@ -12425,7 +12425,7 @@
       "source_location": "L238",
       "_origin": "ast",
       "id": "zpotify_api_changesongsorder_descriptor",
-      "community": 957,
+      "community": 179,
       "norm_label": ".descriptor()"
     },
     {
@@ -12495,7 +12495,7 @@
       "source_location": "L278",
       "_origin": "ast",
       "id": "zpotify_api_addsongstoplaylist",
-      "community": 1092,
+      "community": 948,
       "norm_label": "addsongstoplaylist"
     },
     {
@@ -12505,7 +12505,7 @@
       "source_location": "L284",
       "_origin": "ast",
       "id": "zpotify_api_addsongstoplaylist_reset",
-      "community": 1092,
+      "community": 948,
       "norm_label": ".reset()"
     },
     {
@@ -12515,7 +12515,7 @@
       "source_location": "L291",
       "_origin": "ast",
       "id": "zpotify_api_addsongstoplaylist_string",
-      "community": 1092,
+      "community": 948,
       "norm_label": ".string()"
     },
     {
@@ -12525,7 +12525,7 @@
       "source_location": "L295",
       "_origin": "ast",
       "id": "zpotify_api_addsongstoplaylist_protomessage",
-      "community": 1092,
+      "community": 948,
       "norm_label": ".protomessage()"
     },
     {
@@ -12545,7 +12545,7 @@
       "source_location": "L310",
       "_origin": "ast",
       "id": "zpotify_api_addsongstoplaylist_descriptor",
-      "community": 957,
+      "community": 179,
       "norm_label": ".descriptor()"
     },
     {
@@ -14495,7 +14495,7 @@
       "source_location": "L1645",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb_file_zpotify_service_playlist_proto_rawdescgzip",
-      "community": 957,
+      "community": 179,
       "norm_label": "file_zpotify_service_playlist_proto_rawdescgzip()"
     },
     {
@@ -14505,7 +14505,7 @@
       "source_location": "L1731",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb_init",
-      "community": 179,
+      "community": 518,
       "norm_label": "init()"
     },
     {
@@ -14515,7 +14515,7 @@
       "source_location": "L1732",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_playlist_pb_file_zpotify_service_playlist_proto_init",
-      "community": 179,
+      "community": 518,
       "norm_label": "file_zpotify_service_playlist_proto_init()"
     },
     {
@@ -15555,7 +15555,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_search_pb",
-      "community": 932,
+      "community": 614,
       "norm_label": "zpotify_service_search.pb.go"
     },
     {
@@ -15635,7 +15635,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "zpotify_api_search_protoreflect",
-      "community": 537,
+      "community": 932,
       "norm_label": ".protoreflect()"
     },
     {
@@ -15645,7 +15645,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_search_pb_go_message",
-      "community": 537,
+      "community": 932,
       "norm_label": "message"
     },
     {
@@ -15655,7 +15655,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "zpotify_api_search_descriptor",
-      "community": 614,
+      "community": 537,
       "norm_label": ".descriptor()"
     },
     {
@@ -15965,7 +15965,7 @@
       "source_location": "L241",
       "_origin": "ast",
       "id": "zpotify_api_searchhistoryentry_protoreflect",
-      "community": 537,
+      "community": 932,
       "norm_label": ".protoreflect()"
     },
     {
@@ -15975,7 +15975,7 @@
       "source_location": "L254",
       "_origin": "ast",
       "id": "zpotify_api_searchhistoryentry_descriptor",
-      "community": 614,
+      "community": 537,
       "norm_label": ".descriptor()"
     },
     {
@@ -17025,7 +17025,7 @@
       "source_location": "L879",
       "_origin": "ast",
       "id": "zpotify_api_recordsearchfinding_response_protoreflect",
-      "community": 537,
+      "community": 932,
       "norm_label": ".protoreflect()"
     },
     {
@@ -17035,7 +17035,7 @@
       "source_location": "L892",
       "_origin": "ast",
       "id": "zpotify_api_recordsearchfinding_response_descriptor",
-      "community": 614,
+      "community": 537,
       "norm_label": ".descriptor()"
     },
     {
@@ -17085,7 +17085,7 @@
       "source_location": "L915",
       "_origin": "ast",
       "id": "zpotify_api_listsearchhistory_request_protoreflect",
-      "community": 537,
+      "community": 932,
       "norm_label": ".protoreflect()"
     },
     {
@@ -17095,7 +17095,7 @@
       "source_location": "L928",
       "_origin": "ast",
       "id": "zpotify_api_listsearchhistory_request_descriptor",
-      "community": 614,
+      "community": 537,
       "norm_label": ".descriptor()"
     },
     {
@@ -17175,7 +17175,7 @@
       "source_location": "L1050",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_search_pb_file_zpotify_service_search_proto_rawdescgzip",
-      "community": 614,
+      "community": 537,
       "norm_label": "file_zpotify_service_search_proto_rawdescgzip()"
     },
     {
@@ -17185,7 +17185,7 @@
       "source_location": "L1113",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_search_pb_init",
-      "community": 932,
+      "community": 614,
       "norm_label": "init()"
     },
     {
@@ -17195,7 +17195,7 @@
       "source_location": "L1114",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_search_pb_file_zpotify_service_search_proto_init",
-      "community": 932,
+      "community": 614,
       "norm_label": "file_zpotify_service_search_proto_init()"
     },
     {
@@ -17825,7 +17825,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "zpotify_api_createsong_protoreflect",
-      "community": 1001,
+      "community": 540,
       "norm_label": ".protoreflect()"
     },
     {
@@ -17835,7 +17835,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_song_pb_go_message",
-      "community": 1001,
+      "community": 540,
       "norm_label": "message"
     },
     {
@@ -17845,7 +17845,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "zpotify_api_createsong_descriptor",
-      "community": 540,
+      "community": 1001,
       "norm_label": ".descriptor()"
     },
     {
@@ -17895,7 +17895,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "zpotify_api_batchcreatesong_protoreflect",
-      "community": 1001,
+      "community": 540,
       "norm_label": ".protoreflect()"
     },
     {
@@ -17905,7 +17905,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "zpotify_api_batchcreatesong_descriptor",
-      "community": 540,
+      "community": 1001,
       "norm_label": ".descriptor()"
     },
     {
@@ -18015,7 +18015,7 @@
       "source_location": "L153",
       "_origin": "ast",
       "id": "zpotify_api_getsong_protoreflect",
-      "community": 1001,
+      "community": 540,
       "norm_label": ".protoreflect()"
     },
     {
@@ -18025,7 +18025,7 @@
       "source_location": "L166",
       "_origin": "ast",
       "id": "zpotify_api_getsong_descriptor",
-      "community": 540,
+      "community": 1001,
       "norm_label": ".descriptor()"
     },
     {
@@ -19075,7 +19075,7 @@
       "source_location": "L870",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_song_pb_file_zpotify_service_song_proto_rawdescgzip",
-      "community": 540,
+      "community": 1001,
       "norm_label": "file_zpotify_service_song_proto_rawdescgzip()"
     },
     {
@@ -19975,7 +19975,7 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "zpotify_api_storageinfo_protoreflect",
-      "community": 916,
+      "community": 580,
       "norm_label": ".protoreflect()"
     },
     {
@@ -19985,7 +19985,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_storage_pb_go_message",
-      "community": 916,
+      "community": 1085,
       "norm_label": "message"
     },
     {
@@ -19995,7 +19995,7 @@
       "source_location": "L122",
       "_origin": "ast",
       "id": "zpotify_api_storageinfo_descriptor",
-      "community": 580,
+      "community": 928,
       "norm_label": ".descriptor()"
     },
     {
@@ -20625,7 +20625,7 @@
       "source_location": "L528",
       "_origin": "ast",
       "id": "zpotify_api_createstorage",
-      "community": 439,
+      "community": 1129,
       "norm_label": "createstorage"
     },
     {
@@ -20635,7 +20635,7 @@
       "source_location": "L534",
       "_origin": "ast",
       "id": "zpotify_api_createstorage_reset",
-      "community": 439,
+      "community": 1129,
       "norm_label": ".reset()"
     },
     {
@@ -20645,7 +20645,7 @@
       "source_location": "L541",
       "_origin": "ast",
       "id": "zpotify_api_createstorage_string",
-      "community": 439,
+      "community": 1129,
       "norm_label": ".string()"
     },
     {
@@ -20655,7 +20655,7 @@
       "source_location": "L545",
       "_origin": "ast",
       "id": "zpotify_api_createstorage_protomessage",
-      "community": 439,
+      "community": 1129,
       "norm_label": ".protomessage()"
     },
     {
@@ -20665,7 +20665,7 @@
       "source_location": "L547",
       "_origin": "ast",
       "id": "zpotify_api_createstorage_protoreflect",
-      "community": 439,
+      "community": 1129,
       "norm_label": ".protoreflect()"
     },
     {
@@ -20675,7 +20675,7 @@
       "source_location": "L560",
       "_origin": "ast",
       "id": "zpotify_api_createstorage_descriptor",
-      "community": 439,
+      "community": 1129,
       "norm_label": ".descriptor()"
     },
     {
@@ -20745,7 +20745,7 @@
       "source_location": "L600",
       "_origin": "ast",
       "id": "zpotify_api_deletestorage",
-      "community": 439,
+      "community": 1155,
       "norm_label": "deletestorage"
     },
     {
@@ -20755,7 +20755,7 @@
       "source_location": "L606",
       "_origin": "ast",
       "id": "zpotify_api_deletestorage_reset",
-      "community": 439,
+      "community": 1155,
       "norm_label": ".reset()"
     },
     {
@@ -20765,7 +20765,7 @@
       "source_location": "L613",
       "_origin": "ast",
       "id": "zpotify_api_deletestorage_string",
-      "community": 439,
+      "community": 1155,
       "norm_label": ".string()"
     },
     {
@@ -20775,7 +20775,7 @@
       "source_location": "L617",
       "_origin": "ast",
       "id": "zpotify_api_deletestorage_protomessage",
-      "community": 439,
+      "community": 1155,
       "norm_label": ".protomessage()"
     },
     {
@@ -20785,7 +20785,7 @@
       "source_location": "L619",
       "_origin": "ast",
       "id": "zpotify_api_deletestorage_protoreflect",
-      "community": 439,
+      "community": 1155,
       "norm_label": ".protoreflect()"
     },
     {
@@ -20795,7 +20795,7 @@
       "source_location": "L632",
       "_origin": "ast",
       "id": "zpotify_api_deletestorage_descriptor",
-      "community": 439,
+      "community": 1155,
       "norm_label": ".descriptor()"
     },
     {
@@ -20845,7 +20845,7 @@
       "source_location": "L655",
       "_origin": "ast",
       "id": "zpotify_api_setdefaultstorage_protoreflect",
-      "community": 916,
+      "community": 1085,
       "norm_label": ".protoreflect()"
     },
     {
@@ -20855,7 +20855,7 @@
       "source_location": "L668",
       "_origin": "ast",
       "id": "zpotify_api_setdefaultstorage_descriptor",
-      "community": 1084,
+      "community": 928,
       "norm_label": ".descriptor()"
     },
     {
@@ -20905,7 +20905,7 @@
       "source_location": "L691",
       "_origin": "ast",
       "id": "zpotify_api_teststorage_protoreflect",
-      "community": 916,
+      "community": 1085,
       "norm_label": ".protoreflect()"
     },
     {
@@ -20915,7 +20915,7 @@
       "source_location": "L704",
       "_origin": "ast",
       "id": "zpotify_api_teststorage_descriptor",
-      "community": 1084,
+      "community": 928,
       "norm_label": ".descriptor()"
     },
     {
@@ -21025,7 +21025,7 @@
       "source_location": "L763",
       "_origin": "ast",
       "id": "zpotify_api_liststorages_request_protoreflect",
-      "community": 916,
+      "community": 439,
       "norm_label": ".protoreflect()"
     },
     {
@@ -21035,7 +21035,7 @@
       "source_location": "L776",
       "_origin": "ast",
       "id": "zpotify_api_liststorages_request_descriptor",
-      "community": 1084,
+      "community": 439,
       "norm_label": ".descriptor()"
     },
     {
@@ -21495,7 +21495,7 @@
       "source_location": "L1069",
       "_origin": "ast",
       "id": "zpotify_api_deletestorage_response",
-      "community": 916,
+      "community": 439,
       "norm_label": "deletestorage_response"
     },
     {
@@ -21505,7 +21505,7 @@
       "source_location": "L1075",
       "_origin": "ast",
       "id": "zpotify_api_deletestorage_response_reset",
-      "community": 916,
+      "community": 439,
       "norm_label": ".reset()"
     },
     {
@@ -21515,7 +21515,7 @@
       "source_location": "L1082",
       "_origin": "ast",
       "id": "zpotify_api_deletestorage_response_string",
-      "community": 916,
+      "community": 439,
       "norm_label": ".string()"
     },
     {
@@ -21525,7 +21525,7 @@
       "source_location": "L1086",
       "_origin": "ast",
       "id": "zpotify_api_deletestorage_response_protomessage",
-      "community": 916,
+      "community": 439,
       "norm_label": ".protomessage()"
     },
     {
@@ -21535,7 +21535,7 @@
       "source_location": "L1088",
       "_origin": "ast",
       "id": "zpotify_api_deletestorage_response_protoreflect",
-      "community": 916,
+      "community": 439,
       "norm_label": ".protoreflect()"
     },
     {
@@ -21545,7 +21545,7 @@
       "source_location": "L1101",
       "_origin": "ast",
       "id": "zpotify_api_deletestorage_response_descriptor",
-      "community": 916,
+      "community": 439,
       "norm_label": ".descriptor()"
     },
     {
@@ -21625,7 +21625,7 @@
       "source_location": "L1149",
       "_origin": "ast",
       "id": "zpotify_api_setdefaultstorage_response",
-      "community": 1096,
+      "community": 439,
       "norm_label": "setdefaultstorage_response"
     },
     {
@@ -21635,7 +21635,7 @@
       "source_location": "L1155",
       "_origin": "ast",
       "id": "zpotify_api_setdefaultstorage_response_reset",
-      "community": 1096,
+      "community": 439,
       "norm_label": ".reset()"
     },
     {
@@ -21645,7 +21645,7 @@
       "source_location": "L1162",
       "_origin": "ast",
       "id": "zpotify_api_setdefaultstorage_response_string",
-      "community": 1096,
+      "community": 439,
       "norm_label": ".string()"
     },
     {
@@ -21655,7 +21655,7 @@
       "source_location": "L1166",
       "_origin": "ast",
       "id": "zpotify_api_setdefaultstorage_response_protomessage",
-      "community": 1096,
+      "community": 439,
       "norm_label": ".protomessage()"
     },
     {
@@ -21665,7 +21665,7 @@
       "source_location": "L1168",
       "_origin": "ast",
       "id": "zpotify_api_setdefaultstorage_response_protoreflect",
-      "community": 1096,
+      "community": 1085,
       "norm_label": ".protoreflect()"
     },
     {
@@ -21675,7 +21675,7 @@
       "source_location": "L1181",
       "_origin": "ast",
       "id": "zpotify_api_setdefaultstorage_response_descriptor",
-      "community": 1096,
+      "community": 928,
       "norm_label": ".descriptor()"
     },
     {
@@ -21955,7 +21955,7 @@
       "source_location": "L1453",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_storage_pb_file_zpotify_service_storage_proto_rawdescgzip",
-      "community": 1084,
+      "community": 928,
       "norm_label": "file_zpotify_service_storage_proto_rawdescgzip()"
     },
     {
@@ -22885,7 +22885,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_torrents_pb_go_unknownfields",
-      "community": 1125,
+      "community": 1097,
       "norm_label": "unknownfields"
     },
     {
@@ -22895,7 +22895,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_torrents_pb_go_sizecache",
-      "community": 1032,
+      "community": 1088,
       "norm_label": "sizecache"
     },
     {
@@ -22945,7 +22945,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_torrents_pb_go_message",
-      "community": 1053,
+      "community": 1125,
       "norm_label": "message"
     },
     {
@@ -23265,7 +23265,7 @@
       "source_location": "L331",
       "_origin": "ast",
       "id": "zpotify_api_listtorrentjobs",
-      "community": 1032,
+      "community": 1088,
       "norm_label": "listtorrentjobs"
     },
     {
@@ -23275,7 +23275,7 @@
       "source_location": "L337",
       "_origin": "ast",
       "id": "zpotify_api_listtorrentjobs_reset",
-      "community": 1032,
+      "community": 1088,
       "norm_label": ".reset()"
     },
     {
@@ -23285,7 +23285,7 @@
       "source_location": "L344",
       "_origin": "ast",
       "id": "zpotify_api_listtorrentjobs_string",
-      "community": 1032,
+      "community": 1088,
       "norm_label": ".string()"
     },
     {
@@ -23295,7 +23295,7 @@
       "source_location": "L348",
       "_origin": "ast",
       "id": "zpotify_api_listtorrentjobs_protomessage",
-      "community": 1032,
+      "community": 1088,
       "norm_label": ".protomessage()"
     },
     {
@@ -23305,7 +23305,7 @@
       "source_location": "L350",
       "_origin": "ast",
       "id": "zpotify_api_listtorrentjobs_protoreflect",
-      "community": 1053,
+      "community": 1125,
       "norm_label": ".protoreflect()"
     },
     {
@@ -23315,7 +23315,7 @@
       "source_location": "L363",
       "_origin": "ast",
       "id": "zpotify_api_listtorrentjobs_descriptor",
-      "community": 1115,
+      "community": 372,
       "norm_label": ".descriptor()"
     },
     {
@@ -23325,7 +23325,7 @@
       "source_location": "L367",
       "_origin": "ast",
       "id": "zpotify_api_gettorrentjob",
-      "community": 1053,
+      "community": 616,
       "norm_label": "gettorrentjob"
     },
     {
@@ -23335,7 +23335,7 @@
       "source_location": "L373",
       "_origin": "ast",
       "id": "zpotify_api_gettorrentjob_reset",
-      "community": 1053,
+      "community": 616,
       "norm_label": ".reset()"
     },
     {
@@ -23345,7 +23345,7 @@
       "source_location": "L380",
       "_origin": "ast",
       "id": "zpotify_api_gettorrentjob_string",
-      "community": 1053,
+      "community": 616,
       "norm_label": ".string()"
     },
     {
@@ -23355,7 +23355,7 @@
       "source_location": "L384",
       "_origin": "ast",
       "id": "zpotify_api_gettorrentjob_protomessage",
-      "community": 1053,
+      "community": 616,
       "norm_label": ".protomessage()"
     },
     {
@@ -23365,7 +23365,7 @@
       "source_location": "L386",
       "_origin": "ast",
       "id": "zpotify_api_gettorrentjob_protoreflect",
-      "community": 1053,
+      "community": 616,
       "norm_label": ".protoreflect()"
     },
     {
@@ -23375,7 +23375,7 @@
       "source_location": "L399",
       "_origin": "ast",
       "id": "zpotify_api_gettorrentjob_descriptor",
-      "community": 1053,
+      "community": 616,
       "norm_label": ".descriptor()"
     },
     {
@@ -23445,7 +23445,7 @@
       "source_location": "L439",
       "_origin": "ast",
       "id": "zpotify_api_pausetorrentjob",
-      "community": 1032,
+      "community": 332,
       "norm_label": "pausetorrentjob"
     },
     {
@@ -23455,7 +23455,7 @@
       "source_location": "L445",
       "_origin": "ast",
       "id": "zpotify_api_pausetorrentjob_reset",
-      "community": 1032,
+      "community": 332,
       "norm_label": ".reset()"
     },
     {
@@ -23465,7 +23465,7 @@
       "source_location": "L452",
       "_origin": "ast",
       "id": "zpotify_api_pausetorrentjob_string",
-      "community": 1032,
+      "community": 332,
       "norm_label": ".string()"
     },
     {
@@ -23475,7 +23475,7 @@
       "source_location": "L456",
       "_origin": "ast",
       "id": "zpotify_api_pausetorrentjob_protomessage",
-      "community": 1032,
+      "community": 332,
       "norm_label": ".protomessage()"
     },
     {
@@ -23485,7 +23485,7 @@
       "source_location": "L458",
       "_origin": "ast",
       "id": "zpotify_api_pausetorrentjob_protoreflect",
-      "community": 1032,
+      "community": 332,
       "norm_label": ".protoreflect()"
     },
     {
@@ -23495,7 +23495,7 @@
       "source_location": "L471",
       "_origin": "ast",
       "id": "zpotify_api_pausetorrentjob_descriptor",
-      "community": 1032,
+      "community": 332,
       "norm_label": ".descriptor()"
     },
     {
@@ -23895,7 +23895,7 @@
       "source_location": "L720",
       "_origin": "ast",
       "id": "zpotify_api_gettorrentfile",
-      "community": 616,
+      "community": 1125,
       "norm_label": "gettorrentfile"
     },
     {
@@ -23905,7 +23905,7 @@
       "source_location": "L726",
       "_origin": "ast",
       "id": "zpotify_api_gettorrentfile_reset",
-      "community": 616,
+      "community": 1125,
       "norm_label": ".reset()"
     },
     {
@@ -23915,7 +23915,7 @@
       "source_location": "L733",
       "_origin": "ast",
       "id": "zpotify_api_gettorrentfile_string",
-      "community": 616,
+      "community": 1125,
       "norm_label": ".string()"
     },
     {
@@ -23925,7 +23925,7 @@
       "source_location": "L737",
       "_origin": "ast",
       "id": "zpotify_api_gettorrentfile_protomessage",
-      "community": 616,
+      "community": 1125,
       "norm_label": ".protomessage()"
     },
     {
@@ -23935,7 +23935,7 @@
       "source_location": "L739",
       "_origin": "ast",
       "id": "zpotify_api_gettorrentfile_protoreflect",
-      "community": 616,
+      "community": 1125,
       "norm_label": ".protoreflect()"
     },
     {
@@ -23945,7 +23945,7 @@
       "source_location": "L752",
       "_origin": "ast",
       "id": "zpotify_api_gettorrentfile_descriptor",
-      "community": 616,
+      "community": 1125,
       "norm_label": ".descriptor()"
     },
     {
@@ -23955,7 +23955,7 @@
       "source_location": "L756",
       "_origin": "ast",
       "id": "zpotify_api_submittorrentfile",
-      "community": 1115,
+      "community": 1097,
       "norm_label": "submittorrentfile"
     },
     {
@@ -23965,7 +23965,7 @@
       "source_location": "L762",
       "_origin": "ast",
       "id": "zpotify_api_submittorrentfile_reset",
-      "community": 1115,
+      "community": 1097,
       "norm_label": ".reset()"
     },
     {
@@ -23975,7 +23975,7 @@
       "source_location": "L769",
       "_origin": "ast",
       "id": "zpotify_api_submittorrentfile_string",
-      "community": 1115,
+      "community": 1097,
       "norm_label": ".string()"
     },
     {
@@ -23985,7 +23985,7 @@
       "source_location": "L773",
       "_origin": "ast",
       "id": "zpotify_api_submittorrentfile_protomessage",
-      "community": 1115,
+      "community": 1097,
       "norm_label": ".protomessage()"
     },
     {
@@ -23995,7 +23995,7 @@
       "source_location": "L775",
       "_origin": "ast",
       "id": "zpotify_api_submittorrentfile_protoreflect",
-      "community": 1115,
+      "community": 1097,
       "norm_label": ".protoreflect()"
     },
     {
@@ -24005,7 +24005,7 @@
       "source_location": "L788",
       "_origin": "ast",
       "id": "zpotify_api_submittorrentfile_descriptor",
-      "community": 1115,
+      "community": 1097,
       "norm_label": ".descriptor()"
     },
     {
@@ -24055,7 +24055,7 @@
       "source_location": "L811",
       "_origin": "ast",
       "id": "zpotify_api_addtorrentmagnet_protoreflect",
-      "community": 1053,
+      "community": 1125,
       "norm_label": ".protoreflect()"
     },
     {
@@ -24065,7 +24065,7 @@
       "source_location": "L824",
       "_origin": "ast",
       "id": "zpotify_api_addtorrentmagnet_descriptor",
-      "community": 1115,
+      "community": 372,
       "norm_label": ".descriptor()"
     },
     {
@@ -24205,7 +24205,7 @@
       "source_location": "L914",
       "_origin": "ast",
       "id": "zpotify_api_searchtorrents",
-      "community": 1125,
+      "community": 1177,
       "norm_label": "searchtorrents"
     },
     {
@@ -24215,7 +24215,7 @@
       "source_location": "L920",
       "_origin": "ast",
       "id": "zpotify_api_searchtorrents_reset",
-      "community": 1125,
+      "community": 1177,
       "norm_label": ".reset()"
     },
     {
@@ -24225,7 +24225,7 @@
       "source_location": "L927",
       "_origin": "ast",
       "id": "zpotify_api_searchtorrents_string",
-      "community": 1125,
+      "community": 1177,
       "norm_label": ".string()"
     },
     {
@@ -24235,7 +24235,7 @@
       "source_location": "L931",
       "_origin": "ast",
       "id": "zpotify_api_searchtorrents_protomessage",
-      "community": 1125,
+      "community": 1177,
       "norm_label": ".protomessage()"
     },
     {
@@ -24245,7 +24245,7 @@
       "source_location": "L933",
       "_origin": "ast",
       "id": "zpotify_api_searchtorrents_protoreflect",
-      "community": 1125,
+      "community": 1177,
       "norm_label": ".protoreflect()"
     },
     {
@@ -24255,7 +24255,7 @@
       "source_location": "L946",
       "_origin": "ast",
       "id": "zpotify_api_searchtorrents_descriptor",
-      "community": 1125,
+      "community": 1177,
       "norm_label": ".descriptor()"
     },
     {
@@ -24265,7 +24265,7 @@
       "source_location": "L950",
       "_origin": "ast",
       "id": "zpotify_api_addtorrentsearchresult",
-      "community": 1032,
+      "community": 1097,
       "norm_label": "addtorrentsearchresult"
     },
     {
@@ -24275,7 +24275,7 @@
       "source_location": "L956",
       "_origin": "ast",
       "id": "zpotify_api_addtorrentsearchresult_reset",
-      "community": 1032,
+      "community": 1097,
       "norm_label": ".reset()"
     },
     {
@@ -24285,7 +24285,7 @@
       "source_location": "L963",
       "_origin": "ast",
       "id": "zpotify_api_addtorrentsearchresult_string",
-      "community": 1032,
+      "community": 1097,
       "norm_label": ".string()"
     },
     {
@@ -24295,7 +24295,7 @@
       "source_location": "L967",
       "_origin": "ast",
       "id": "zpotify_api_addtorrentsearchresult_protomessage",
-      "community": 1032,
+      "community": 1097,
       "norm_label": ".protomessage()"
     },
     {
@@ -24305,7 +24305,7 @@
       "source_location": "L969",
       "_origin": "ast",
       "id": "zpotify_api_addtorrentsearchresult_protoreflect",
-      "community": 1032,
+      "community": 1125,
       "norm_label": ".protoreflect()"
     },
     {
@@ -24315,7 +24315,7 @@
       "source_location": "L982",
       "_origin": "ast",
       "id": "zpotify_api_addtorrentsearchresult_descriptor",
-      "community": 1032,
+      "community": 372,
       "norm_label": ".descriptor()"
     },
     {
@@ -24325,7 +24325,7 @@
       "source_location": "L986",
       "_origin": "ast",
       "id": "zpotify_api_discardtorrentfile",
-      "community": 1155,
+      "community": 1088,
       "norm_label": "discardtorrentfile"
     },
     {
@@ -24335,7 +24335,7 @@
       "source_location": "L992",
       "_origin": "ast",
       "id": "zpotify_api_discardtorrentfile_reset",
-      "community": 1155,
+      "community": 1088,
       "norm_label": ".reset()"
     },
     {
@@ -24345,7 +24345,7 @@
       "source_location": "L999",
       "_origin": "ast",
       "id": "zpotify_api_discardtorrentfile_string",
-      "community": 1155,
+      "community": 1088,
       "norm_label": ".string()"
     },
     {
@@ -24355,7 +24355,7 @@
       "source_location": "L1003",
       "_origin": "ast",
       "id": "zpotify_api_discardtorrentfile_protomessage",
-      "community": 1155,
+      "community": 1088,
       "norm_label": ".protomessage()"
     },
     {
@@ -24365,7 +24365,7 @@
       "source_location": "L1005",
       "_origin": "ast",
       "id": "zpotify_api_discardtorrentfile_protoreflect",
-      "community": 1155,
+      "community": 1088,
       "norm_label": ".protoreflect()"
     },
     {
@@ -24375,7 +24375,7 @@
       "source_location": "L1018",
       "_origin": "ast",
       "id": "zpotify_api_discardtorrentfile_descriptor",
-      "community": 1155,
+      "community": 1088,
       "norm_label": ".descriptor()"
     },
     {
@@ -25125,7 +25125,7 @@
       "source_location": "L1482",
       "_origin": "ast",
       "id": "zpotify_api_deletetorrentjob_response",
-      "community": 332,
+      "community": 1161,
       "norm_label": "deletetorrentjob_response"
     },
     {
@@ -25135,7 +25135,7 @@
       "source_location": "L1488",
       "_origin": "ast",
       "id": "zpotify_api_deletetorrentjob_response_reset",
-      "community": 332,
+      "community": 1161,
       "norm_label": ".reset()"
     },
     {
@@ -25145,7 +25145,7 @@
       "source_location": "L1495",
       "_origin": "ast",
       "id": "zpotify_api_deletetorrentjob_response_string",
-      "community": 332,
+      "community": 1161,
       "norm_label": ".string()"
     },
     {
@@ -25155,7 +25155,7 @@
       "source_location": "L1499",
       "_origin": "ast",
       "id": "zpotify_api_deletetorrentjob_response_protomessage",
-      "community": 332,
+      "community": 1161,
       "norm_label": ".protomessage()"
     },
     {
@@ -25165,7 +25165,7 @@
       "source_location": "L1501",
       "_origin": "ast",
       "id": "zpotify_api_deletetorrentjob_response_protoreflect",
-      "community": 332,
+      "community": 1161,
       "norm_label": ".protoreflect()"
     },
     {
@@ -25175,7 +25175,7 @@
       "source_location": "L1514",
       "_origin": "ast",
       "id": "zpotify_api_deletetorrentjob_response_descriptor",
-      "community": 332,
+      "community": 1161,
       "norm_label": ".descriptor()"
     },
     {
@@ -26305,7 +26305,7 @@
       "source_location": "L2211",
       "_origin": "ast",
       "id": "zpotify_api_discardtorrentfile_response_protoreflect",
-      "community": 1053,
+      "community": 1125,
       "norm_label": ".protoreflect()"
     },
     {
@@ -26325,7 +26325,7 @@
       "source_location": "L2382",
       "_origin": "ast",
       "id": "internal_api_server_zpotify_api_zpotify_service_torrents_pb_file_zpotify_service_torrents_proto_rawdescgzip",
-      "community": 1115,
+      "community": 372,
       "norm_label": "file_zpotify_service_torrents_proto_rawdescgzip()"
     },
     {
@@ -29265,7 +29265,7 @@
       "source_location": "L235",
       "_origin": "ast",
       "id": "zpotify_api_homepagesegment_librarysegment",
-      "community": 1031,
+      "community": 375,
       "norm_label": "homepagesegment_librarysegment_"
     },
     {
@@ -29305,7 +29305,7 @@
       "source_location": "L248",
       "_origin": "ast",
       "id": "zpotify_api_homepagesegment_librarysegment_ishomepagesegment_segment",
-      "community": 1031,
+      "community": 375,
       "norm_label": ".ishomepagesegment_segment()"
     },
     {
@@ -29325,7 +29325,7 @@
       "source_location": "L252",
       "_origin": "ast",
       "id": "zpotify_api_uisettings",
-      "community": 375,
+      "community": 1032,
       "norm_label": "uisettings"
     },
     {
@@ -29335,7 +29335,7 @@
       "source_location": "L259",
       "_origin": "ast",
       "id": "zpotify_api_uisettings_reset",
-      "community": 375,
+      "community": 1032,
       "norm_label": ".reset()"
     },
     {
@@ -29345,7 +29345,7 @@
       "source_location": "L266",
       "_origin": "ast",
       "id": "zpotify_api_uisettings_string",
-      "community": 375,
+      "community": 1032,
       "norm_label": ".string()"
     },
     {
@@ -29355,7 +29355,7 @@
       "source_location": "L270",
       "_origin": "ast",
       "id": "zpotify_api_uisettings_protomessage",
-      "community": 375,
+      "community": 1032,
       "norm_label": ".protomessage()"
     },
     {
@@ -29365,7 +29365,7 @@
       "source_location": "L272",
       "_origin": "ast",
       "id": "zpotify_api_uisettings_protoreflect",
-      "community": 323,
+      "community": 1032,
       "norm_label": ".protoreflect()"
     },
     {
@@ -29375,7 +29375,7 @@
       "source_location": "L285",
       "_origin": "ast",
       "id": "zpotify_api_uisettings_descriptor",
-      "community": 1094,
+      "community": 1032,
       "norm_label": ".descriptor()"
     },
     {
@@ -29385,7 +29385,7 @@
       "source_location": "L289",
       "_origin": "ast",
       "id": "zpotify_api_uisettings_getlocale",
-      "community": 375,
+      "community": 1032,
       "norm_label": ".getlocale()"
     },
     {
@@ -29425,7 +29425,7 @@
       "source_location": "L316",
       "_origin": "ast",
       "id": "zpotify_api_homepagesegment_playlistsegment_protoreflect",
-      "community": 952,
+      "community": 323,
       "norm_label": ".protoreflect()"
     },
     {
@@ -29435,7 +29435,7 @@
       "source_location": "L329",
       "_origin": "ast",
       "id": "zpotify_api_homepagesegment_playlistsegment_descriptor",
-      "community": 1094,
+      "community": 952,
       "norm_label": ".descriptor()"
     },
     {
@@ -29515,7 +29515,7 @@
       "source_location": "L382",
       "_origin": "ast",
       "id": "zpotify_api_homepagesegment_librarysegment_reset",
-      "community": 1031,
+      "community": 375,
       "norm_label": ".reset()"
     },
     {
@@ -29525,7 +29525,7 @@
       "source_location": "L389",
       "_origin": "ast",
       "id": "zpotify_api_homepagesegment_librarysegment_string",
-      "community": 1031,
+      "community": 375,
       "norm_label": ".string()"
     },
     {
@@ -29535,7 +29535,7 @@
       "source_location": "L393",
       "_origin": "ast",
       "id": "zpotify_api_homepagesegment_librarysegment_protomessage",
-      "community": 1031,
+      "community": 375,
       "norm_label": ".protomessage()"
     },
     {
@@ -29545,7 +29545,7 @@
       "source_location": "L395",
       "_origin": "ast",
       "id": "zpotify_api_homepagesegment_librarysegment_protoreflect",
-      "community": 1031,
+      "community": 323,
       "norm_label": ".protoreflect()"
     },
     {
@@ -29555,7 +29555,7 @@
       "source_location": "L408",
       "_origin": "ast",
       "id": "zpotify_api_homepagesegment_librarysegment_descriptor",
-      "community": 1031,
+      "community": 1094,
       "norm_label": ".descriptor()"
     },
     {
@@ -29695,7 +29695,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "app_app_start",
-      "community": 172,
+      "community": 337,
       "norm_label": ".start()"
     },
     {
@@ -32015,7 +32015,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "prowlarr_release",
-      "community": 6,
+      "community": 51,
       "norm_label": "release"
     },
     {
@@ -32025,7 +32025,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_clients_prowlarr_client_go_time",
-      "community": 6,
+      "community": 51,
       "norm_label": "time"
     },
     {
@@ -32475,7 +32475,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_clients_telegram_api",
-      "community": 98,
+      "community": 916,
       "norm_label": "api.go"
     },
     {
@@ -32485,7 +32485,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "telegram_tgapiclient",
-      "community": 98,
+      "community": 916,
       "norm_label": "tgapiclient"
     },
     {
@@ -32495,7 +32495,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "telegram_tgapi",
-      "community": 98,
+      "community": 916,
       "norm_label": "tgapi"
     },
     {
@@ -32505,7 +32505,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "internal_clients_telegram_api_newtgapiclient",
-      "community": 98,
+      "community": 916,
       "norm_label": "newtgapiclient()"
     },
     {
@@ -32515,7 +32515,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "telegram_tgapi_getfile",
-      "community": 98,
+      "community": 916,
       "norm_label": ".getfile()"
     },
     {
@@ -32525,7 +32525,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_clients_telegram_api_go_context",
-      "community": 98,
+      "community": 916,
       "norm_label": "context"
     },
     {
@@ -32535,7 +32535,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_clients_telegram_api_go_file",
-      "community": 98,
+      "community": 916,
       "norm_label": "file"
     },
     {
@@ -32545,7 +32545,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "telegram_tgapi_openfile",
-      "community": 98,
+      "community": 916,
       "norm_label": ".openfile()"
     },
     {
@@ -32555,7 +32555,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_clients_telegram_api_go_readcloser",
-      "community": 98,
+      "community": 916,
       "norm_label": "readcloser"
     },
     {
@@ -33925,7 +33925,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "domain_changesongsorderparams",
-      "community": 59,
+      "community": 167,
       "norm_label": "changesongsorderparams"
     },
     {
@@ -34025,7 +34025,7 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "domain_deletesongfromplaylist",
-      "community": 59,
+      "community": 167,
       "norm_label": "deletesongfromplaylist"
     },
     {
@@ -35005,7 +35005,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "internal_log_log_withcontext",
-      "community": 172,
+      "community": 337,
       "norm_label": "withcontext()"
     },
     {
@@ -35115,7 +35115,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "middleware_authmiddleware",
-      "community": 405,
+      "community": 1048,
       "norm_label": "authmiddleware"
     },
     {
@@ -35125,7 +35125,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_middleware_auth_interceptor_go_authservice",
-      "community": 405,
+      "community": 1048,
       "norm_label": "authservice"
     },
     {
@@ -35135,7 +35135,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_middleware_auth_interceptor_go_userservice",
-      "community": 405,
+      "community": 1048,
       "norm_label": "userservice"
     },
     {
@@ -35145,7 +35145,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "middleware_authmiddleware_isignored",
-      "community": 405,
+      "community": 1048,
       "norm_label": ".isignored()"
     },
     {
@@ -35195,7 +35195,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "internal_middleware_auth_interceptor_grpcauthinterceptor",
-      "community": 405,
+      "community": 1048,
       "norm_label": "grpcauthinterceptor()"
     },
     {
@@ -35205,7 +35205,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_middleware_auth_interceptor_go_service",
-      "community": 405,
+      "community": 1048,
       "norm_label": "service"
     },
     {
@@ -35215,7 +35215,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_middleware_auth_interceptor_go_serveroption",
-      "community": 405,
+      "community": 1048,
       "norm_label": "serveroption"
     },
     {
@@ -35225,7 +35225,7 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "internal_middleware_auth_interceptor_httpauthmiddleware",
-      "community": 405,
+      "community": 1048,
       "norm_label": "httpauthmiddleware()"
     },
     {
@@ -35235,7 +35235,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_middleware_auth_interceptor_go_handler",
-      "community": 405,
+      "community": 1048,
       "norm_label": "handler"
     },
     {
@@ -35265,7 +35265,7 @@
       "source_location": "L176",
       "_origin": "ast",
       "id": "middleware_authmiddleware_authwithsession",
-      "community": 405,
+      "community": 1048,
       "norm_label": ".authwithsession()"
     },
     {
@@ -35275,7 +35275,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_middleware_auth_interceptor_go_context",
-      "community": 405,
+      "community": 1048,
       "norm_label": "context"
     },
     {
@@ -35285,7 +35285,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_middleware_auth_interceptor_go_md",
-      "community": 405,
+      "community": 1048,
       "norm_label": "md"
     },
     {
@@ -35295,7 +35295,7 @@
       "source_location": "L207",
       "_origin": "ast",
       "id": "middleware_authmiddleware_authwithdebugheaders",
-      "community": 405,
+      "community": 1048,
       "norm_label": ".authwithdebugheaders()"
     },
     {
@@ -35555,7 +35555,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_middleware_cors",
-      "community": 1048,
+      "community": 1178,
       "norm_label": "cors.go"
     },
     {
@@ -35565,7 +35565,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "internal_middleware_cors_corsmiddleware",
-      "community": 1048,
+      "community": 1178,
       "norm_label": "corsmiddleware()"
     },
     {
@@ -35575,7 +35575,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_middleware_cors_go_handler",
-      "community": 1048,
+      "community": 1178,
       "norm_label": "handler"
     },
     {
@@ -35585,7 +35585,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "internal_middleware_cors_buildoriginset",
-      "community": 1048,
+      "community": 1178,
       "norm_label": "buildoriginset()"
     },
     {
@@ -36005,7 +36005,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_middleware_user_context_context",
-      "community": 405,
+      "community": 1048,
       "norm_label": "context.go"
     },
     {
@@ -36015,7 +36015,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "user_context_tguserid",
-      "community": 405,
+      "community": 1048,
       "norm_label": "tguserid"
     },
     {
@@ -36025,7 +36025,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "user_context_usercontext",
-      "community": 405,
+      "community": 1048,
       "norm_label": "usercontext"
     },
     {
@@ -36035,7 +36035,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_middleware_user_context_context_go_userpermissions",
-      "community": 405,
+      "community": 1048,
       "norm_label": "userpermissions"
     },
     {
@@ -36045,7 +36045,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "internal_middleware_user_context_context_withusercontext",
-      "community": 405,
+      "community": 1048,
       "norm_label": "withusercontext()"
     },
     {
@@ -36055,7 +36055,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_middleware_user_context_context_go_context",
-      "community": 405,
+      "community": 1048,
       "norm_label": "context"
     },
     {
@@ -36065,7 +36065,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "internal_middleware_user_context_context_getusercontext",
-      "community": 272,
+      "community": 59,
       "norm_label": "getusercontext()"
     },
     {
@@ -36245,7 +36245,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "internal_service_service_new",
-      "community": 1074,
+      "community": 137,
       "norm_label": "new()"
     },
     {
@@ -36255,7 +36255,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_service_service_go_storage",
-      "community": 1074,
+      "community": 137,
       "norm_label": "storage"
     },
     {
@@ -36265,7 +36265,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "adminnotifier",
-      "community": 1074,
+      "community": 137,
       "norm_label": "adminnotifier"
     },
     {
@@ -37395,7 +37395,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_service_v1_artists_service_test",
-      "community": 83,
+      "community": 410,
       "norm_label": "artists_service_test.go"
     },
     {
@@ -37405,7 +37405,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "internal_service_v1_artists_service_test_contextwithpermissions",
-      "community": 83,
+      "community": 410,
       "norm_label": "contextwithpermissions()"
     },
     {
@@ -37415,7 +37415,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_service_v1_artists_service_test_go_userpermissions",
-      "community": 83,
+      "community": 410,
       "norm_label": "userpermissions"
     },
     {
@@ -37425,7 +37425,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_service_v1_artists_service_test_go_context",
-      "community": 83,
+      "community": 410,
       "norm_label": "context"
     },
     {
@@ -37435,7 +37435,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "internal_service_v1_artists_service_test_testartistsservice_update_requirescaneditartists",
-      "community": 83,
+      "community": 410,
       "norm_label": "testartistsservice_update_requirescaneditartists()"
     },
     {
@@ -37445,7 +37445,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_service_v1_artists_service_test_go_t",
-      "community": 83,
+      "community": 410,
       "norm_label": "t"
     },
     {
@@ -37455,7 +37455,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "internal_service_v1_artists_service_test_testartistsservice_update_requiresauthentication",
-      "community": 83,
+      "community": 410,
       "norm_label": "testartistsservice_update_requiresauthentication()"
     },
     {
@@ -37465,7 +37465,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "internal_service_v1_artists_service_test_testartistsservice_getartistpage_setscaneditfromuserpermissions",
-      "community": 83,
+      "community": 410,
       "norm_label": "testartistsservice_getartistpage_setscaneditfromuserpermissions()"
     },
     {
@@ -37475,7 +37475,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "internal_service_v1_artists_service_test_testartistsservice_search_delegatestostorage",
-      "community": 83,
+      "community": 410,
       "norm_label": "testartistsservice_search_delegatestostorage()"
     },
     {
@@ -37485,7 +37485,7 @@
       "source_location": "L113",
       "_origin": "ast",
       "id": "internal_service_v1_artists_service_test_testartistsservice_search_propagatesstorageerror",
-      "community": 83,
+      "community": 410,
       "norm_label": "testartistsservice_search_propagatesstorageerror()"
     },
     {
@@ -37495,7 +37495,7 @@
       "source_location": "L126",
       "_origin": "ast",
       "id": "internal_service_v1_artists_service_test_testartistsservice_getartistpage_propagatesalbumcoverfilepath",
-      "community": 83,
+      "community": 410,
       "norm_label": "testartistsservice_getartistpage_propagatesalbumcoverfilepath()"
     },
     {
@@ -37505,7 +37505,7 @@
       "source_location": "L160",
       "_origin": "ast",
       "id": "internal_service_v1_artists_service_test_newartistpagefakeartist",
-      "community": 83,
+      "community": 410,
       "norm_label": "newartistpagefakeartist()"
     },
     {
@@ -37515,7 +37515,7 @@
       "source_location": "L168",
       "_origin": "ast",
       "id": "internal_service_v1_artists_service_test_testartistsservice_getartistpage_splitsalbumsandsinglesbyplaylistkind",
-      "community": 83,
+      "community": 410,
       "norm_label": "testartistsservice_getartistpage_splitsalbumsandsinglesbyplaylistkind()"
     },
     {
@@ -37525,7 +37525,7 @@
       "source_location": "L209",
       "_origin": "ast",
       "id": "internal_service_v1_artists_service_test_testartistsservice_getartistpage_listsfeaturesasfeaturedsongs",
-      "community": 83,
+      "community": 410,
       "norm_label": "testartistsservice_getartistpage_listsfeaturesasfeaturedsongs()"
     },
     {
@@ -38115,7 +38115,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_service_v1_feature_flags_service",
-      "community": 1074,
+      "community": 1031,
       "norm_label": "feature_flags_service.go"
     },
     {
@@ -38125,7 +38125,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "v1_featureflagsservice",
-      "community": 1074,
+      "community": 1031,
       "norm_label": "featureflagsservice"
     },
     {
@@ -38135,7 +38135,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_service_v1_feature_flags_service_go_featureflagsstorage",
-      "community": 1074,
+      "community": 1031,
       "norm_label": "featureflagsstorage"
     },
     {
@@ -38145,7 +38145,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "internal_service_v1_feature_flags_service_newfeatureflagsservice",
-      "community": 1074,
+      "community": 1031,
       "norm_label": "newfeatureflagsservice()"
     },
     {
@@ -38155,7 +38155,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_service_v1_feature_flags_service_go_storage",
-      "community": 1074,
+      "community": 1031,
       "norm_label": "storage"
     },
     {
@@ -38165,7 +38165,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "v1_featureflagsservice_getall",
-      "community": 1074,
+      "community": 1031,
       "norm_label": ".getall()"
     },
     {
@@ -38175,7 +38175,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_service_v1_feature_flags_service_go_context",
-      "community": 1074,
+      "community": 1031,
       "norm_label": "context"
     },
     {
@@ -38185,7 +38185,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_service_v1_feature_flags_service_go_featureflag",
-      "community": 1074,
+      "community": 1031,
       "norm_label": "featureflag"
     },
     {
@@ -38905,7 +38905,7 @@
       "source_location": "L272",
       "_origin": "ast",
       "id": "internal_service_v1_file_service_test_uploadpermissions",
-      "community": 28,
+      "community": 428,
       "norm_label": "uploadpermissions()"
     },
     {
@@ -38915,7 +38915,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_service_v1_file_service_test_go_userpermissions",
-      "community": 28,
+      "community": 428,
       "norm_label": "userpermissions"
     },
     {
@@ -38965,7 +38965,7 @@
       "source_location": "L404",
       "_origin": "ast",
       "id": "internal_service_v1_file_service_test_sha256hex",
-      "community": 428,
+      "community": 405,
       "norm_label": "sha256hex()"
     },
     {
@@ -40995,7 +40995,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_service_v1_song_service",
-      "community": 1074,
+      "community": 88,
       "norm_label": "song_service.go"
     },
     {
@@ -41005,7 +41005,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "v1_telegramsender",
-      "community": 1074,
+      "community": 88,
       "norm_label": "telegramsender"
     },
     {
@@ -41035,7 +41035,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_service_v1_song_service_go_playliststorage",
-      "community": 1074,
+      "community": 88,
       "norm_label": "playliststorage"
     },
     {
@@ -41065,7 +41065,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "internal_service_v1_song_service_newaudioservice",
-      "community": 1074,
+      "community": 88,
       "norm_label": "newaudioservice()"
     },
     {
@@ -41075,7 +41075,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_service_v1_song_service_go_storage",
-      "community": 1074,
+      "community": 88,
       "norm_label": "storage"
     },
     {
@@ -44605,7 +44605,7 @@
       "source_location": "L141",
       "_origin": "ast",
       "id": "v1_searchedrelease",
-      "community": 6,
+      "community": 51,
       "norm_label": "searchedrelease"
     },
     {
@@ -44625,7 +44625,7 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "v1_torrentsearchservice_filterreleases",
-      "community": 6,
+      "community": 51,
       "norm_label": ".filterreleases()"
     },
     {
@@ -45665,7 +45665,7 @@
       "source_location": "L899",
       "_origin": "ast",
       "id": "internal_service_v1_torrent_service_test_testtorrentservice_getjob_marksfiledeletedforstaleimportedfiles",
-      "community": 28,
+      "community": 521,
       "norm_label": "testtorrentservice_getjob_marksfiledeletedforstaleimportedfiles()"
     },
     {
@@ -45895,7 +45895,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_service_v1_upload_pipeline_test",
-      "community": 428,
+      "community": 405,
       "norm_label": "upload_pipeline_test.go"
     },
     {
@@ -45935,7 +45935,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "internal_service_v1_upload_pipeline_test_newfakejobstorage",
-      "community": 428,
+      "community": 28,
       "norm_label": "newfakejobstorage()"
     },
     {
@@ -46055,7 +46055,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "internal_service_v1_upload_pipeline_test_newtestuploadpipeline",
-      "community": 428,
+      "community": 405,
       "norm_label": "newtestuploadpipeline()"
     },
     {
@@ -46065,7 +46065,7 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "internal_service_v1_upload_pipeline_test_testuploadrequest",
-      "community": 428,
+      "community": 405,
       "norm_label": "testuploadrequest()"
     },
     {
@@ -46075,7 +46075,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "internal_service_v1_upload_pipeline_test_testuploadpipeline_store_plainnameskeptwhennocollision",
-      "community": 428,
+      "community": 405,
       "norm_label": "testuploadpipeline_store_plainnameskeptwhennocollision()"
     },
     {
@@ -46085,7 +46085,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_service_v1_upload_pipeline_test_go_t",
-      "community": 428,
+      "community": 405,
       "norm_label": "t"
     },
     {
@@ -46095,7 +46095,7 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "internal_service_v1_upload_pipeline_test_testuploadpipeline_store_samenamedifferentcontentgetshashsuffix",
-      "community": 428,
+      "community": 405,
       "norm_label": "testuploadpipeline_store_samenamedifferentcontentgetshashsuffix()"
     },
     {
@@ -46105,7 +46105,7 @@
       "source_location": "L169",
       "_origin": "ast",
       "id": "internal_service_v1_upload_pipeline_test_testuploadpipeline_store_identicalcontentisdeduplicated",
-      "community": 428,
+      "community": 405,
       "norm_label": "testuploadpipeline_store_identicalcontentisdeduplicated()"
     },
     {
@@ -46115,7 +46115,7 @@
       "source_location": "L191",
       "_origin": "ast",
       "id": "internal_service_v1_upload_pipeline_test_testuploadpipeline_store_folderreldirisincludedinstoredpath",
-      "community": 428,
+      "community": 405,
       "norm_label": "testuploadpipeline_store_folderreldirisincludedinstoredpath()"
     },
     {
@@ -46125,7 +46125,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "internal_service_v1_upload_pipeline_test_testuploadpipeline_store_audioenqueuesparsejob",
-      "community": 428,
+      "community": 405,
       "norm_label": "testuploadpipeline_store_audioenqueuesparsejob()"
     },
     {
@@ -46135,7 +46135,7 @@
       "source_location": "L224",
       "_origin": "ast",
       "id": "internal_service_v1_upload_pipeline_test_testuploadpipeline_store_oversizedcontentisrejected",
-      "community": 428,
+      "community": 405,
       "norm_label": "testuploadpipeline_store_oversizedcontentisrejected()"
     },
     {
@@ -46145,7 +46145,7 @@
       "source_location": "L242",
       "_origin": "ast",
       "id": "internal_service_v1_upload_pipeline_test_testuploadpipeline_resolvetargetpath_extendshashprefixonrepeatedcollision",
-      "community": 428,
+      "community": 405,
       "norm_label": "testuploadpipeline_resolvetargetpath_extendshashprefixonrepeatedcollision()"
     },
     {
@@ -46155,7 +46155,7 @@
       "source_location": "L280",
       "_origin": "ast",
       "id": "internal_service_v1_upload_pipeline_test_testuploadpipeline_resolvetargetpath_freepathreturnedasis",
-      "community": 428,
+      "community": 405,
       "norm_label": "testuploadpipeline_resolvetargetpath_freepathreturnedasis()"
     },
     {
@@ -48805,7 +48805,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_storage_files_cache_files_cache",
-      "community": 1074,
+      "community": 538,
       "norm_label": "files_cache.go"
     },
     {
@@ -48815,7 +48815,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "files_cache_filescache",
-      "community": 1074,
+      "community": 538,
       "norm_label": "filescache"
     },
     {
@@ -48825,7 +48825,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "cache",
-      "community": 1074,
+      "community": 538,
       "norm_label": "cache"
     },
     {
@@ -48835,7 +48835,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_storage_files_cache_files_cache_go_file",
-      "community": 1074,
+      "community": 538,
       "norm_label": "file"
     },
     {
@@ -48845,7 +48845,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_storage_files_cache_files_cache_go_mutex",
-      "community": 1074,
+      "community": 538,
       "norm_label": "mutex"
     },
     {
@@ -48855,7 +48855,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "internal_storage_files_cache_files_cache_new",
-      "community": 1074,
+      "community": 538,
       "norm_label": "new()"
     },
     {
@@ -48865,7 +48865,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "files_cache_filescache_getorcreate",
-      "community": 1074,
+      "community": 538,
       "norm_label": ".getorcreate()"
     },
     {
@@ -48875,7 +48875,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "files_cache_filescache_set",
-      "community": 1074,
+      "community": 538,
       "norm_label": ".set()"
     },
     {
@@ -52325,7 +52325,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "file_meta_q_albumtagkind",
-      "community": 593,
+      "community": 275,
       "norm_label": "albumtagkind"
     },
     {
@@ -52335,7 +52335,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "file_meta_q_albumtagkind_scan",
-      "community": 593,
+      "community": 275,
       "norm_label": ".scan()"
     },
     {
@@ -52345,7 +52345,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "file_meta_q_nullalbumtagkind",
-      "community": 593,
+      "community": 275,
       "norm_label": "nullalbumtagkind"
     },
     {
@@ -52355,7 +52355,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "file_meta_q_nullalbumtagkind_scan",
-      "community": 593,
+      "community": 275,
       "norm_label": ".scan()"
     },
     {
@@ -52365,7 +52365,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "file_meta_q_nullalbumtagkind_value",
-      "community": 593,
+      "community": 275,
       "norm_label": ".value()"
     },
     {
@@ -52485,7 +52485,7 @@
       "source_location": "L151",
       "_origin": "ast",
       "id": "file_meta_q_jobstatus",
-      "community": 582,
+      "community": 970,
       "norm_label": "jobstatus"
     },
     {
@@ -52495,7 +52495,7 @@
       "source_location": "L160",
       "_origin": "ast",
       "id": "file_meta_q_jobstatus_scan",
-      "community": 582,
+      "community": 970,
       "norm_label": ".scan()"
     },
     {
@@ -52505,7 +52505,7 @@
       "source_location": "L172",
       "_origin": "ast",
       "id": "file_meta_q_nulljobstatus",
-      "community": 275,
+      "community": 970,
       "norm_label": "nulljobstatus"
     },
     {
@@ -52515,7 +52515,7 @@
       "source_location": "L178",
       "_origin": "ast",
       "id": "file_meta_q_nulljobstatus_scan",
-      "community": 275,
+      "community": 970,
       "norm_label": ".scan()"
     },
     {
@@ -52525,7 +52525,7 @@
       "source_location": "L188",
       "_origin": "ast",
       "id": "file_meta_q_nulljobstatus_value",
-      "community": 275,
+      "community": 970,
       "norm_label": ".value()"
     },
     {
@@ -52535,7 +52535,7 @@
       "source_location": "L195",
       "_origin": "ast",
       "id": "file_meta_q_locale",
-      "community": 275,
+      "community": 1051,
       "norm_label": "locale"
     },
     {
@@ -52545,7 +52545,7 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "file_meta_q_locale_scan",
-      "community": 275,
+      "community": 1051,
       "norm_label": ".scan()"
     },
     {
@@ -52555,7 +52555,7 @@
       "source_location": "L214",
       "_origin": "ast",
       "id": "file_meta_q_nulllocale",
-      "community": 275,
+      "community": 1051,
       "norm_label": "nulllocale"
     },
     {
@@ -52565,7 +52565,7 @@
       "source_location": "L220",
       "_origin": "ast",
       "id": "file_meta_q_nulllocale_scan",
-      "community": 275,
+      "community": 1051,
       "norm_label": ".scan()"
     },
     {
@@ -52575,7 +52575,7 @@
       "source_location": "L230",
       "_origin": "ast",
       "id": "file_meta_q_nulllocale_value",
-      "community": 275,
+      "community": 1051,
       "norm_label": ".value()"
     },
     {
@@ -52635,7 +52635,7 @@
       "source_location": "L279",
       "_origin": "ast",
       "id": "file_meta_q_songtagkind",
-      "community": 275,
+      "community": 1059,
       "norm_label": "songtagkind"
     },
     {
@@ -52645,7 +52645,7 @@
       "source_location": "L285",
       "_origin": "ast",
       "id": "file_meta_q_songtagkind_scan",
-      "community": 275,
+      "community": 1059,
       "norm_label": ".scan()"
     },
     {
@@ -52655,7 +52655,7 @@
       "source_location": "L297",
       "_origin": "ast",
       "id": "file_meta_q_nullsongtagkind",
-      "community": 275,
+      "community": 1059,
       "norm_label": "nullsongtagkind"
     },
     {
@@ -52665,7 +52665,7 @@
       "source_location": "L303",
       "_origin": "ast",
       "id": "file_meta_q_nullsongtagkind_scan",
-      "community": 275,
+      "community": 1059,
       "norm_label": ".scan()"
     },
     {
@@ -52675,7 +52675,7 @@
       "source_location": "L313",
       "_origin": "ast",
       "id": "file_meta_q_nullsongtagkind_value",
-      "community": 275,
+      "community": 1059,
       "norm_label": ".value()"
     },
     {
@@ -52735,7 +52735,7 @@
       "source_location": "L364",
       "_origin": "ast",
       "id": "file_meta_q_torrentdownloadstatus",
-      "community": 1051,
+      "community": 275,
       "norm_label": "torrentdownloadstatus"
     },
     {
@@ -52745,7 +52745,7 @@
       "source_location": "L377",
       "_origin": "ast",
       "id": "file_meta_q_torrentdownloadstatus_scan",
-      "community": 1051,
+      "community": 275,
       "norm_label": ".scan()"
     },
     {
@@ -52755,7 +52755,7 @@
       "source_location": "L389",
       "_origin": "ast",
       "id": "file_meta_q_nulltorrentdownloadstatus",
-      "community": 1051,
+      "community": 275,
       "norm_label": "nulltorrentdownloadstatus"
     },
     {
@@ -52765,7 +52765,7 @@
       "source_location": "L395",
       "_origin": "ast",
       "id": "file_meta_q_nulltorrentdownloadstatus_scan",
-      "community": 1051,
+      "community": 275,
       "norm_label": ".scan()"
     },
     {
@@ -52775,7 +52775,7 @@
       "source_location": "L405",
       "_origin": "ast",
       "id": "file_meta_q_nulltorrentdownloadstatus_value",
-      "community": 1051,
+      "community": 275,
       "norm_label": ".value()"
     },
     {
@@ -52965,7 +52965,7 @@
       "source_location": "L511",
       "_origin": "ast",
       "id": "file_meta_q_job",
-      "community": 582,
+      "community": 970,
       "norm_label": "job"
     },
     {
@@ -52975,7 +52975,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_storage_pg_generated_file_meta_q_models_go_nulltime",
-      "community": 582,
+      "community": 970,
       "norm_label": "nulltime"
     },
     {
@@ -52995,7 +52995,7 @@
       "source_location": "L532",
       "_origin": "ast",
       "id": "file_meta_q_notificationrecipient",
-      "community": 582,
+      "community": 970,
       "norm_label": "notificationrecipient"
     },
     {
@@ -53215,7 +53215,7 @@
       "source_location": "L755",
       "_origin": "ast",
       "id": "file_meta_q_songtag",
-      "community": 275,
+      "community": 1059,
       "norm_label": "songtag"
     },
     {
@@ -53245,7 +53245,7 @@
       "source_location": "L780",
       "_origin": "ast",
       "id": "file_meta_q_torrentdownload",
-      "community": 1051,
+      "community": 275,
       "norm_label": "torrentdownload"
     },
     {
@@ -53315,7 +53315,7 @@
       "source_location": "L845",
       "_origin": "ast",
       "id": "file_meta_q_usersetting",
-      "community": 275,
+      "community": 1051,
       "norm_label": "usersetting"
     },
     {
@@ -55055,7 +55055,7 @@
       "source_location": "L172",
       "_origin": "ast",
       "id": "jobs_q_nulljobstatus",
-      "community": 968,
+      "community": 1008,
       "norm_label": "nulljobstatus"
     },
     {
@@ -55065,7 +55065,7 @@
       "source_location": "L178",
       "_origin": "ast",
       "id": "jobs_q_nulljobstatus_scan",
-      "community": 968,
+      "community": 1008,
       "norm_label": ".scan()"
     },
     {
@@ -55075,7 +55075,7 @@
       "source_location": "L188",
       "_origin": "ast",
       "id": "jobs_q_nulljobstatus_value",
-      "community": 968,
+      "community": 1008,
       "norm_label": ".value()"
     },
     {
@@ -55255,7 +55255,7 @@
       "source_location": "L341",
       "_origin": "ast",
       "id": "jobs_q_nullstoragekind",
-      "community": 1067,
+      "community": 1008,
       "norm_label": "nullstoragekind"
     },
     {
@@ -55265,7 +55265,7 @@
       "source_location": "L347",
       "_origin": "ast",
       "id": "jobs_q_nullstoragekind_scan",
-      "community": 1067,
+      "community": 1008,
       "norm_label": ".scan()"
     },
     {
@@ -55275,7 +55275,7 @@
       "source_location": "L357",
       "_origin": "ast",
       "id": "jobs_q_nullstoragekind_value",
-      "community": 1067,
+      "community": 1008,
       "norm_label": ".value()"
     },
     {
@@ -55285,7 +55285,7 @@
       "source_location": "L364",
       "_origin": "ast",
       "id": "jobs_q_torrentdownloadstatus",
-      "community": 1008,
+      "community": 1011,
       "norm_label": "torrentdownloadstatus"
     },
     {
@@ -55295,7 +55295,7 @@
       "source_location": "L377",
       "_origin": "ast",
       "id": "jobs_q_torrentdownloadstatus_scan",
-      "community": 1008,
+      "community": 1011,
       "norm_label": ".scan()"
     },
     {
@@ -55795,7 +55795,7 @@
       "source_location": "L780",
       "_origin": "ast",
       "id": "jobs_q_torrentdownload",
-      "community": 1008,
+      "community": 1011,
       "norm_label": "torrentdownload"
     },
     {
@@ -55905,7 +55905,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "generated_albumtagkind",
-      "community": 594,
+      "community": 333,
       "norm_label": "albumtagkind"
     },
     {
@@ -55915,7 +55915,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "generated_albumtagkind_scan",
-      "community": 594,
+      "community": 333,
       "norm_label": ".scan()"
     },
     {
@@ -55925,7 +55925,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "generated_nullalbumtagkind",
-      "community": 594,
+      "community": 333,
       "norm_label": "nullalbumtagkind"
     },
     {
@@ -55935,7 +55935,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "generated_nullalbumtagkind_scan",
-      "community": 594,
+      "community": 333,
       "norm_label": ".scan()"
     },
     {
@@ -55945,7 +55945,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "generated_nullalbumtagkind_value",
-      "community": 594,
+      "community": 333,
       "norm_label": ".value()"
     },
     {
@@ -56065,7 +56065,7 @@
       "source_location": "L151",
       "_origin": "ast",
       "id": "generated_jobstatus",
-      "community": 319,
+      "community": 1003,
       "norm_label": "jobstatus"
     },
     {
@@ -56075,7 +56075,7 @@
       "source_location": "L160",
       "_origin": "ast",
       "id": "generated_jobstatus_scan",
-      "community": 319,
+      "community": 1003,
       "norm_label": ".scan()"
     },
     {
@@ -56085,7 +56085,7 @@
       "source_location": "L172",
       "_origin": "ast",
       "id": "generated_nulljobstatus",
-      "community": 333,
+      "community": 1003,
       "norm_label": "nulljobstatus"
     },
     {
@@ -56095,7 +56095,7 @@
       "source_location": "L178",
       "_origin": "ast",
       "id": "generated_nulljobstatus_scan",
-      "community": 333,
+      "community": 1003,
       "norm_label": ".scan()"
     },
     {
@@ -56105,7 +56105,7 @@
       "source_location": "L188",
       "_origin": "ast",
       "id": "generated_nulljobstatus_value",
-      "community": 333,
+      "community": 1003,
       "norm_label": ".value()"
     },
     {
@@ -56115,7 +56115,7 @@
       "source_location": "L195",
       "_origin": "ast",
       "id": "generated_locale",
-      "community": 333,
+      "community": 1062,
       "norm_label": "locale"
     },
     {
@@ -56125,7 +56125,7 @@
       "source_location": "L202",
       "_origin": "ast",
       "id": "generated_locale_scan",
-      "community": 333,
+      "community": 1062,
       "norm_label": ".scan()"
     },
     {
@@ -56135,7 +56135,7 @@
       "source_location": "L214",
       "_origin": "ast",
       "id": "generated_nulllocale",
-      "community": 333,
+      "community": 1062,
       "norm_label": "nulllocale"
     },
     {
@@ -56145,7 +56145,7 @@
       "source_location": "L220",
       "_origin": "ast",
       "id": "generated_nulllocale_scan",
-      "community": 333,
+      "community": 1062,
       "norm_label": ".scan()"
     },
     {
@@ -56155,7 +56155,7 @@
       "source_location": "L230",
       "_origin": "ast",
       "id": "generated_nulllocale_value",
-      "community": 333,
+      "community": 1062,
       "norm_label": ".value()"
     },
     {
@@ -56215,7 +56215,7 @@
       "source_location": "L279",
       "_origin": "ast",
       "id": "generated_songtagkind",
-      "community": 333,
+      "community": 1096,
       "norm_label": "songtagkind"
     },
     {
@@ -56225,7 +56225,7 @@
       "source_location": "L285",
       "_origin": "ast",
       "id": "generated_songtagkind_scan",
-      "community": 333,
+      "community": 1096,
       "norm_label": ".scan()"
     },
     {
@@ -56235,7 +56235,7 @@
       "source_location": "L297",
       "_origin": "ast",
       "id": "generated_nullsongtagkind",
-      "community": 333,
+      "community": 1096,
       "norm_label": "nullsongtagkind"
     },
     {
@@ -56245,7 +56245,7 @@
       "source_location": "L303",
       "_origin": "ast",
       "id": "generated_nullsongtagkind_scan",
-      "community": 333,
+      "community": 1096,
       "norm_label": ".scan()"
     },
     {
@@ -56255,7 +56255,7 @@
       "source_location": "L313",
       "_origin": "ast",
       "id": "generated_nullsongtagkind_value",
-      "community": 333,
+      "community": 1096,
       "norm_label": ".value()"
     },
     {
@@ -56315,7 +56315,7 @@
       "source_location": "L364",
       "_origin": "ast",
       "id": "generated_torrentdownloadstatus",
-      "community": 1059,
+      "community": 333,
       "norm_label": "torrentdownloadstatus"
     },
     {
@@ -56325,7 +56325,7 @@
       "source_location": "L377",
       "_origin": "ast",
       "id": "generated_torrentdownloadstatus_scan",
-      "community": 1059,
+      "community": 333,
       "norm_label": ".scan()"
     },
     {
@@ -56335,7 +56335,7 @@
       "source_location": "L389",
       "_origin": "ast",
       "id": "generated_nulltorrentdownloadstatus",
-      "community": 1059,
+      "community": 333,
       "norm_label": "nulltorrentdownloadstatus"
     },
     {
@@ -56345,7 +56345,7 @@
       "source_location": "L395",
       "_origin": "ast",
       "id": "generated_nulltorrentdownloadstatus_scan",
-      "community": 1059,
+      "community": 333,
       "norm_label": ".scan()"
     },
     {
@@ -56355,7 +56355,7 @@
       "source_location": "L405",
       "_origin": "ast",
       "id": "generated_nulltorrentdownloadstatus_value",
-      "community": 1059,
+      "community": 333,
       "norm_label": ".value()"
     },
     {
@@ -56545,7 +56545,7 @@
       "source_location": "L511",
       "_origin": "ast",
       "id": "generated_job",
-      "community": 319,
+      "community": 1003,
       "norm_label": "job"
     },
     {
@@ -56555,7 +56555,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_storage_pg_generated_models_go_nulltime",
-      "community": 319,
+      "community": 1003,
       "norm_label": "nulltime"
     },
     {
@@ -56575,7 +56575,7 @@
       "source_location": "L532",
       "_origin": "ast",
       "id": "generated_notificationrecipient",
-      "community": 319,
+      "community": 1003,
       "norm_label": "notificationrecipient"
     },
     {
@@ -56795,7 +56795,7 @@
       "source_location": "L755",
       "_origin": "ast",
       "id": "generated_songtag",
-      "community": 333,
+      "community": 1096,
       "norm_label": "songtag"
     },
     {
@@ -56825,7 +56825,7 @@
       "source_location": "L780",
       "_origin": "ast",
       "id": "generated_torrentdownload",
-      "community": 1059,
+      "community": 333,
       "norm_label": "torrentdownload"
     },
     {
@@ -56895,7 +56895,7 @@
       "source_location": "L845",
       "_origin": "ast",
       "id": "generated_usersetting",
-      "community": 333,
+      "community": 1062,
       "norm_label": "usersetting"
     },
     {
@@ -57165,7 +57165,7 @@
       "source_location": "L172",
       "_origin": "ast",
       "id": "notification_q_nulljobstatus",
-      "community": 1090,
+      "community": 449,
       "norm_label": "nulljobstatus"
     },
     {
@@ -57175,7 +57175,7 @@
       "source_location": "L178",
       "_origin": "ast",
       "id": "notification_q_nulljobstatus_scan",
-      "community": 1090,
+      "community": 449,
       "norm_label": ".scan()"
     },
     {
@@ -57185,7 +57185,7 @@
       "source_location": "L188",
       "_origin": "ast",
       "id": "notification_q_nulljobstatus_value",
-      "community": 1090,
+      "community": 449,
       "norm_label": ".value()"
     },
     {
@@ -57365,7 +57365,7 @@
       "source_location": "L341",
       "_origin": "ast",
       "id": "notification_q_nullstoragekind",
-      "community": 1099,
+      "community": 449,
       "norm_label": "nullstoragekind"
     },
     {
@@ -57375,7 +57375,7 @@
       "source_location": "L347",
       "_origin": "ast",
       "id": "notification_q_nullstoragekind_scan",
-      "community": 1099,
+      "community": 449,
       "norm_label": ".scan()"
     },
     {
@@ -57385,7 +57385,7 @@
       "source_location": "L357",
       "_origin": "ast",
       "id": "notification_q_nullstoragekind_value",
-      "community": 1099,
+      "community": 449,
       "norm_label": ".value()"
     },
     {
@@ -57395,7 +57395,7 @@
       "source_location": "L364",
       "_origin": "ast",
       "id": "notification_q_torrentdownloadstatus",
-      "community": 449,
+      "community": 102,
       "norm_label": "torrentdownloadstatus"
     },
     {
@@ -57405,7 +57405,7 @@
       "source_location": "L377",
       "_origin": "ast",
       "id": "notification_q_torrentdownloadstatus_scan",
-      "community": 449,
+      "community": 102,
       "norm_label": ".scan()"
     },
     {
@@ -57905,7 +57905,7 @@
       "source_location": "L780",
       "_origin": "ast",
       "id": "notification_q_torrentdownload",
-      "community": 449,
+      "community": 102,
       "norm_label": "torrentdownload"
     },
     {
@@ -60735,7 +60735,7 @@
       "source_location": "L172",
       "_origin": "ast",
       "id": "songs_q_nulljobstatus",
-      "community": 492,
+      "community": 1002,
       "norm_label": "nulljobstatus"
     },
     {
@@ -60745,7 +60745,7 @@
       "source_location": "L178",
       "_origin": "ast",
       "id": "songs_q_nulljobstatus_scan",
-      "community": 492,
+      "community": 1002,
       "norm_label": ".scan()"
     },
     {
@@ -60755,7 +60755,7 @@
       "source_location": "L188",
       "_origin": "ast",
       "id": "songs_q_nulljobstatus_value",
-      "community": 492,
+      "community": 1002,
       "norm_label": ".value()"
     },
     {
@@ -60935,7 +60935,7 @@
       "source_location": "L341",
       "_origin": "ast",
       "id": "songs_q_nullstoragekind",
-      "community": 492,
+      "community": 1071,
       "norm_label": "nullstoragekind"
     },
     {
@@ -60945,7 +60945,7 @@
       "source_location": "L347",
       "_origin": "ast",
       "id": "songs_q_nullstoragekind_scan",
-      "community": 492,
+      "community": 1071,
       "norm_label": ".scan()"
     },
     {
@@ -60955,7 +60955,7 @@
       "source_location": "L357",
       "_origin": "ast",
       "id": "songs_q_nullstoragekind_value",
-      "community": 492,
+      "community": 1071,
       "norm_label": ".value()"
     },
     {
@@ -60965,7 +60965,7 @@
       "source_location": "L364",
       "_origin": "ast",
       "id": "songs_q_torrentdownloadstatus",
-      "community": 574,
+      "community": 492,
       "norm_label": "torrentdownloadstatus"
     },
     {
@@ -60975,7 +60975,7 @@
       "source_location": "L377",
       "_origin": "ast",
       "id": "songs_q_torrentdownloadstatus_scan",
-      "community": 574,
+      "community": 492,
       "norm_label": ".scan()"
     },
     {
@@ -61475,7 +61475,7 @@
       "source_location": "L780",
       "_origin": "ast",
       "id": "songs_q_torrentdownload",
-      "community": 574,
+      "community": 492,
       "norm_label": "torrentdownload"
     },
     {
@@ -63465,7 +63465,7 @@
       "source_location": "L172",
       "_origin": "ast",
       "id": "torrent_downloads_q_nulljobstatus",
-      "community": 229,
+      "community": 420,
       "norm_label": "nulljobstatus"
     },
     {
@@ -63475,7 +63475,7 @@
       "source_location": "L178",
       "_origin": "ast",
       "id": "torrent_downloads_q_nulljobstatus_scan",
-      "community": 229,
+      "community": 420,
       "norm_label": ".scan()"
     },
     {
@@ -63485,7 +63485,7 @@
       "source_location": "L188",
       "_origin": "ast",
       "id": "torrent_downloads_q_nulljobstatus_value",
-      "community": 229,
+      "community": 420,
       "norm_label": ".value()"
     },
     {
@@ -63665,7 +63665,7 @@
       "source_location": "L341",
       "_origin": "ast",
       "id": "torrent_downloads_q_nullstoragekind",
-      "community": 229,
+      "community": 1101,
       "norm_label": "nullstoragekind"
     },
     {
@@ -63675,7 +63675,7 @@
       "source_location": "L347",
       "_origin": "ast",
       "id": "torrent_downloads_q_nullstoragekind_scan",
-      "community": 229,
+      "community": 1101,
       "norm_label": ".scan()"
     },
     {
@@ -63685,7 +63685,7 @@
       "source_location": "L357",
       "_origin": "ast",
       "id": "torrent_downloads_q_nullstoragekind_value",
-      "community": 229,
+      "community": 1101,
       "norm_label": ".value()"
     },
     {
@@ -63695,7 +63695,7 @@
       "source_location": "L364",
       "_origin": "ast",
       "id": "torrent_downloads_q_torrentdownloadstatus",
-      "community": 522,
+      "community": 229,
       "norm_label": "torrentdownloadstatus"
     },
     {
@@ -63705,7 +63705,7 @@
       "source_location": "L377",
       "_origin": "ast",
       "id": "torrent_downloads_q_torrentdownloadstatus_scan",
-      "community": 522,
+      "community": 229,
       "norm_label": ".scan()"
     },
     {
@@ -64205,7 +64205,7 @@
       "source_location": "L780",
       "_origin": "ast",
       "id": "torrent_downloads_q_torrentdownload",
-      "community": 522,
+      "community": 229,
       "norm_label": "torrentdownload"
     },
     {
@@ -69455,7 +69455,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "internal_transport_artists_api_impl_list_artist_go_artists_api_impl_impl",
-      "community": 1003,
+      "community": 59,
       "norm_label": "impl"
     },
     {
@@ -69465,7 +69465,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "artists_api_impl_impl_listartist",
-      "community": 1003,
+      "community": 59,
       "norm_label": ".listartist()"
     },
     {
@@ -69475,7 +69475,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_transport_artists_api_impl_list_artist_go_context",
-      "community": 1003,
+      "community": 59,
       "norm_label": "context"
     },
     {
@@ -69485,7 +69485,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_transport_artists_api_impl_list_artist_go_listartist_request",
-      "community": 1003,
+      "community": 59,
       "norm_label": "listartist_request"
     },
     {
@@ -69495,7 +69495,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_transport_artists_api_impl_list_artist_go_listartist_response",
-      "community": 1003,
+      "community": 59,
       "norm_label": "listartist_response"
     },
     {
@@ -71475,7 +71475,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "transport_serversmanager_start",
-      "community": 172,
+      "community": 337,
       "norm_label": ".start()"
     },
     {
@@ -77135,7 +77135,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "internal_transport_wapi_server",
-      "community": 130,
+      "community": 768,
       "norm_label": "server.go"
     },
     {
@@ -77145,7 +77145,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "internal_transport_wapi_server_go_wapi_server",
-      "community": 130,
+      "community": 768,
       "norm_label": "server"
     },
     {
@@ -77155,7 +77155,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_transport_wapi_server_go_audioservice",
-      "community": 130,
+      "community": 768,
       "norm_label": "audioservice"
     },
     {
@@ -77165,7 +77165,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_transport_wapi_server_go_fileservice",
-      "community": 130,
+      "community": 768,
       "norm_label": "fileservice"
     },
     {
@@ -77175,7 +77175,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_transport_wapi_server_go_torrentservice",
-      "community": 130,
+      "community": 768,
       "norm_label": "torrentservice"
     },
     {
@@ -77185,7 +77185,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_transport_wapi_server_go_mediaservice",
-      "community": 130,
+      "community": 768,
       "norm_label": "mediaservice"
     },
     {
@@ -77195,7 +77195,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_transport_wapi_server_go_storageservice",
-      "community": 130,
+      "community": 768,
       "norm_label": "storageservice"
     },
     {
@@ -77205,7 +77205,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_transport_wapi_server_go_servemux",
-      "community": 130,
+      "community": 768,
       "norm_label": "servemux"
     },
     {
@@ -77215,7 +77215,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "internal_transport_wapi_server_new",
-      "community": 130,
+      "community": 768,
       "norm_label": "new()"
     },
     {
@@ -77225,7 +77225,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "internal_transport_wapi_server_go_handler",
-      "community": 130,
+      "community": 768,
       "norm_label": "handler"
     },
     {
@@ -81155,7 +81155,7 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_app_api_zpotify_zpotify_service_search_pb_searchapi_search",
-      "community": 169,
+      "community": 174,
       "norm_label": ".search()"
     },
     {
@@ -81895,7 +81895,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_app_api_zpotify_zpotify_service_torrents_pb_importedfile",
-      "community": 74,
+      "community": 54,
       "norm_label": "importedfile"
     },
     {
@@ -84535,7 +84535,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_components_editabletitle_editabletitle",
-      "community": 1172,
+      "community": 136,
       "norm_label": "editabletitle.tsx"
     },
     {
@@ -84545,7 +84545,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_components_editabletitle_editabletitle_editabletitleprops",
-      "community": 1172,
+      "community": 136,
       "norm_label": "editabletitleprops"
     },
     {
@@ -84555,7 +84555,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_components_editabletitle_editabletitle_editabletitle",
-      "community": 1172,
+      "community": 136,
       "norm_label": "editabletitle()"
     },
     {
@@ -84565,7 +84565,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_components_editabletitle_editabletitle_rationale_59",
-      "community": 1172,
+      "community": 136,
       "norm_label": "todo: switch to chures input once it supports ref/onkeydown"
     },
     {
@@ -87165,7 +87165,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_addtrack_usebatchupload_batchuploadstate",
-      "community": 99,
+      "community": 377,
       "norm_label": "batchuploadstate"
     },
     {
@@ -87805,7 +87805,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_multitrackupload_multitrackuploadmodal_targetplaylist",
-      "community": 136,
+      "community": 65,
       "norm_label": "targetplaylist"
     },
     {
@@ -87815,7 +87815,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_multitrackupload_multitrackuploadmodal_multitrackuploadmodalprops",
-      "community": 99,
+      "community": 377,
       "norm_label": "multitrackuploadmodalprops"
     },
     {
@@ -87965,7 +87965,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_multitrackupload_trackrow_trackrowprops",
-      "community": 136,
+      "community": 65,
       "norm_label": "trackrowprops"
     },
     {
@@ -88385,7 +88385,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_multitrackupload_usetrackdrafts_trackdraftsstate",
-      "community": 136,
+      "community": 65,
       "norm_label": "trackdraftsstate"
     },
     {
@@ -89005,7 +89005,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_torrentmanage_components_torrentfilestatuslist_torrentfilestatuslist",
-      "community": 74,
+      "community": 54,
       "norm_label": "torrentfilestatuslist.tsx"
     },
     {
@@ -89015,7 +89015,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_torrentmanage_components_torrentfilestatuslist_torrentfilestatuslist_torrentfilestatuslistprops",
-      "community": 74,
+      "community": 54,
       "norm_label": "torrentfilestatuslistprops"
     },
     {
@@ -89025,7 +89025,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_torrentmanage_components_torrentfilestatuslist_torrentfilestatuslist_torrentfilestatuslist",
-      "community": 74,
+      "community": 54,
       "norm_label": "torrentfilestatuslist()"
     },
     {
@@ -89035,7 +89035,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_torrentmanage_components_torrentfilestatuslist_components_torrentfilestatusrow_torrentfilestatusrow_test",
-      "community": 74,
+      "community": 54,
       "norm_label": "torrentfilestatusrow.test.tsx"
     },
     {
@@ -89045,7 +89045,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_torrentmanage_components_torrentfilestatuslist_components_torrentfilestatusrow_torrentfilestatusrow_test_makefile",
-      "community": 74,
+      "community": 54,
       "norm_label": "makefile()"
     },
     {
@@ -89055,7 +89055,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_torrentmanage_components_torrentfilestatuslist_components_torrentfilestatusrow_torrentfilestatusrow",
-      "community": 74,
+      "community": 54,
       "norm_label": "torrentfilestatusrow.tsx"
     },
     {
@@ -89065,7 +89065,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_torrentmanage_components_torrentfilestatuslist_components_torrentfilestatusrow_torrentfilestatusrow_torrentfilestatusrowprops",
-      "community": 74,
+      "community": 54,
       "norm_label": "torrentfilestatusrowprops"
     },
     {
@@ -89085,7 +89085,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_torrentmanage_processes_mergetorrentfiles_test",
-      "community": 74,
+      "community": 54,
       "norm_label": "mergetorrentfiles.test.ts"
     },
     {
@@ -89095,7 +89095,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_torrentmanage_processes_mergetorrentfiles",
-      "community": 74,
+      "community": 54,
       "norm_label": "mergetorrentfiles.ts"
     },
     {
@@ -89105,7 +89105,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_torrentmanage_processes_mergetorrentfiles_torrentfilerow",
-      "community": 74,
+      "community": 54,
       "norm_label": "torrentfilerow"
     },
     {
@@ -89115,7 +89115,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_dialogs_torrentmanage_processes_mergetorrentfiles_mergetorrentfiles",
-      "community": 74,
+      "community": 54,
       "norm_label": "mergetorrentfiles()"
     },
     {
@@ -90125,7 +90125,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_features_upload_resolvedroppedentries_droppedfolder",
-      "community": 99,
+      "community": 377,
       "norm_label": "droppedfolder"
     },
     {
@@ -90645,7 +90645,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_pages_main_search_searchpage_test",
-      "community": 970,
+      "community": 169,
       "norm_label": "searchpage.test.tsx"
     },
     {
@@ -90655,7 +90655,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_pages_main_search_searchpage_test_navigatespy",
-      "community": 970,
+      "community": 169,
       "norm_label": "navigatespy"
     },
     {
@@ -90665,7 +90665,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_pages_main_search_searchpage_test_playspy",
-      "community": 970,
+      "community": 169,
       "norm_label": "playspy"
     },
     {
@@ -90675,7 +90675,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_pages_main_search_searchpage_test_setsonginfospy",
-      "community": 970,
+      "community": 169,
       "norm_label": "setsonginfospy"
     },
     {
@@ -90685,7 +90685,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_pages_main_search_searchpage_test_recordfindingspy",
-      "community": 970,
+      "community": 169,
       "norm_label": "recordfindingspy"
     },
     {
@@ -90695,7 +90695,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_pages_main_search_searchpage_test_visibletracks",
-      "community": 970,
+      "community": 169,
       "norm_label": "visibletracks"
     },
     {
@@ -90705,7 +90705,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_pages_main_search_searchpage_test_maketrack",
-      "community": 970,
+      "community": 169,
       "norm_label": "maketrack()"
     },
     {
@@ -91965,7 +91965,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_shared_api_api",
-      "community": 386,
+      "community": 203,
       "norm_label": "api.ts"
     },
     {
@@ -91975,7 +91975,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_shared_api_api_initreq",
-      "community": 386,
+      "community": 203,
       "norm_label": "initreq"
     },
     {
@@ -91995,7 +91995,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_shared_api_api_options",
-      "community": 386,
+      "community": 203,
       "norm_label": "options"
     },
     {
@@ -96005,7 +96005,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_widgets_artistfield_artistchipsfield_artistitem",
-      "community": 136,
+      "community": 65,
       "norm_label": "artistitem"
     },
     {
@@ -97375,7 +97375,7 @@
       "source_location": "L386",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_widgets_musicplayer_useplayer_audioplayerimpl_maybeadvancebeforeend",
-      "community": 193,
+      "community": 1174,
       "norm_label": ".maybeadvancebeforeend()"
     },
     {
@@ -97505,7 +97505,7 @@
       "source_location": "L554",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_widgets_musicplayer_useplayer_audioplayerimpl_playnext",
-      "community": 193,
+      "community": 1174,
       "norm_label": ".playnext()"
     },
     {
@@ -98495,7 +98495,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "pkg_client_zpotifyui_src_widgets_playlistscreen_widgets_addtrackspanel_addtrackspanel_addtrackspanelprops",
-      "community": 136,
+      "community": 65,
       "norm_label": "addtrackspanelprops"
     },
     {
@@ -111651,7 +111651,7 @@
       "contributor": null,
       "community": 374,
       "norm_label": "runtime application config",
-      "id": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml"
+      "id": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml"
     },
     {
       "label": "Application Config Template",
@@ -111949,7 +111949,7 @@
       "relation": "defines",
       "confidence": "EXTRACTED",
       "source_file": ".claude/hooks/rebuild-restart-on-stop.sh",
-      "source_location": "L37",
+      "source_location": "L38",
       "weight": 1.0,
       "source": "claude_hooks_rebuild_restart_on_stop",
       "target": "claude_hooks_rebuild_restart_on_stop_listeners",
@@ -111979,7 +111979,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": ".claude/hooks/rebuild-restart-on-stop.sh",
-      "source_location": "L45",
+      "source_location": "L52",
       "weight": 1.0,
       "context": "call",
       "source": "claude_hooks_rebuild_restart_on_stop_sh__entry",
@@ -331291,7 +331291,7 @@
       "source_location": null,
       "weight": 0.75,
       "source": "docker_compose_yaml",
-      "target": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml"
+      "target": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml"
     },
     {
       "relation": "implements",
@@ -331331,7 +331331,7 @@
       "source_location": null,
       "weight": 0.75,
       "source": "verv_resources_yaml",
-      "target": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml"
+      "target": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml"
     },
     {
       "relation": "references",
@@ -331360,7 +331360,7 @@
       "source_file": "config/config.yaml",
       "source_location": null,
       "weight": 0.85,
-      "source": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml",
+      "source": "config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_config_yaml",
       "target": "config_config_template_yaml"
     },
     {
@@ -331516,5 +331516,5 @@
       "source_file": "pkg/web/ZpotifyUI/src/assets/icons/github.svg"
     }
   ],
-  "built_at_commit": "0f7794df804228504e0d1d91e027595c09f58025"
+  "built_at_commit": "7f9fadcc4e7379cfadf055e6f9025166688c00e2"
 }

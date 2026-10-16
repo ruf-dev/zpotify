@@ -1455,8 +1455,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/vite.config.ts": {
-    "mtime": 1792174784.54472,
-    "ast_hash": "c93d070e1fe2cf6a9d4ea6ffaa522cd7",
+    "mtime": 1792175081.554643,
+    "ast_hash": "23465fc205e2d11c13ce1eaa3d926e96",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/stylelint.config.js": {
