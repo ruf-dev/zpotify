@@ -32,6 +32,7 @@ export default function NavItem(props: NavItemProps) {
                 [cls.active]: props.active,
                 [cls.NavItemCollapsed]: props.isCollapsed,
                 [cls.NavItemHiddenDesktop]: props.hideOnDesktop,
+                [cls.NavItemDisabled]: props.disabled,
             })}
             onClick={props.onClick}
             data-tooltip-id={props.disabled ? 'root-tooltip' : undefined}
