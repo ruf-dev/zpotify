@@ -1440,8 +1440,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/package.json": {
-    "mtime": 1791896018.356958,
-    "ast_hash": "75174a933f3f8f4cd530929105001bc6",
+    "mtime": 1792176096.1243007,
+    "ast_hash": "f499c5a058a649accd909c702a81440a",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/tsconfig.json": {
