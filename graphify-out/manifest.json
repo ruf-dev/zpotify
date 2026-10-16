@@ -2245,8 +2245,8 @@
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/pages/segments/SidebarSegment/components/NavItem/NavItem.tsx": {
-    "mtime": 1792088501.9606674,
-    "ast_hash": "32f26f6f63aac52600198367b089de5a",
+    "mtime": 1792174175.9358592,
+    "ast_hash": "b733ec17ed2311a16f7efd6ab7b273b8",
     "semantic_hash": ""
   },
   "pkg/client/ZpotifyUI/src/widgets/PlaylistScreen/PlaylistScreenWidget.tsx": {
