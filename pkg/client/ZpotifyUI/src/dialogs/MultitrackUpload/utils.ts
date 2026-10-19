@@ -16,11 +16,11 @@ export function cleanTitle(filename: string): string {
         .trim();
 }
 
-// Matches "01 Title" and "01 02 Title" (a disc/session tag plus track number) alike. When a
-// second number is present, it's the incrementing track index checked against track order and
-// the first is a constant tag dropped along with it; with only one number, that one is the
-// track index.
-const TRACK_NUMBER_PREFIX = /^(\d{1,3})(?:\s+(\d{1,3}))?\s+(.+)$/;
+// Matches "01 Title", "1. Title" and "01 02 Title" (a disc/session tag plus track number) alike.
+// Each number may carry a trailing dot. When a second number is present, it's the incrementing
+// track index checked against track order and the first is a constant tag dropped along with
+// it; with only one number, that one is the track index.
+const TRACK_NUMBER_PREFIX = /^(\d{1,3})\.?(?:\s+(\d{1,3})\.?)?\s+(.+)$/;
 
 function orderNumber(match: RegExpExecArray): number {
     return Number(match[2] ?? match[1]);

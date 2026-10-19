@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { isSingleFolderInput } from '@/dialogs/MultitrackUpload/utils';
+import { canCleanTrackNumbers, cleanTrackNumber, isSingleFolderInput } from '@/dialogs/MultitrackUpload/utils';
 import type { SongFile } from '@/app/api/zpotify';
 
 describe('isSingleFolderInput', () => {
@@ -29,5 +29,24 @@ describe('isSingleFolderInput', () => {
         ];
 
         expect(isSingleFolderInput([], files)).toBe(false);
+    });
+});
+
+describe('track number prefix', () => {
+    it('cleans "number. title" prefixes', () => {
+        expect(cleanTrackNumber('1. title')).toBe('title');
+        expect(cleanTrackNumber('02. second title')).toBe('second title');
+    });
+
+    it('still cleans "number title" prefixes', () => {
+        expect(cleanTrackNumber('01 title')).toBe('title');
+    });
+
+    it('allows cleaning when dotted numbers follow track order', () => {
+        expect(canCleanTrackNumbers(['1. title', '2. second title'])).toBe(true);
+    });
+
+    it('forbids cleaning when dotted numbers break track order', () => {
+        expect(canCleanTrackNumbers(['1. title', '3. second title'])).toBe(false);
     });
 });
