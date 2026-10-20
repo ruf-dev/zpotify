@@ -782,6 +782,9 @@
             "type": "object",
             "$ref": "#/definitions/zpotify_apiTorrentFileProgress"
           }
+        },
+        "isPrivate": {
+          "type": "boolean"
         }
       }
     },

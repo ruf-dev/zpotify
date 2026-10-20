@@ -84,6 +84,7 @@ func toTorrentJob(row domain.TorrentDownload) *zpotify_api.TorrentJob {
 		ImportedFiles:   apiFiles,
 		Error:           row.Error,
 		Files:           apiFileProgress,
+		IsPrivate:       row.IsPrivate,
 	}
 
 	return job

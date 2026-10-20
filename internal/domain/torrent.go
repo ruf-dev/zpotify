@@ -43,6 +43,7 @@ type TorrentDownload struct {
 	ImportedFiles   []string
 	Files           []TorrentFileProgress
 	Trackers        []string
+	IsPrivate       bool
 	Error           string
 	CreatedAt       time.Time
 	UpdatedAt       time.Time

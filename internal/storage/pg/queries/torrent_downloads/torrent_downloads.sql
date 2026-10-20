@@ -1,19 +1,19 @@
 -- name: InsertTorrentDownload :one
-INSERT INTO torrent_downloads (user_id, folder_name, info_hash, torrent_name, trackers)
-VALUES (@user_id, @folder_name, @info_hash, @torrent_name, @trackers::TEXT[])
+INSERT INTO torrent_downloads (user_id, folder_name, info_hash, torrent_name, trackers, is_private)
+VALUES (@user_id, @folder_name, @info_hash, @torrent_name, @trackers::TEXT[], @is_private)
 RETURNING id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers;
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers, is_private;
 
 -- name: GetTorrentDownloadByID :one
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers, is_private
 FROM torrent_downloads
 WHERE id = @id
   AND user_id = @user_id;
 
 -- name: GetTorrentDownloadByUserAndInfoHash :one
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers, is_private
 FROM torrent_downloads
 WHERE user_id = @user_id
   AND info_hash = @info_hash
@@ -21,7 +21,7 @@ WHERE user_id = @user_id
 
 -- name: ListTorrentDownloadsByUser :many
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers, is_private
 FROM torrent_downloads
 WHERE user_id = @user_id
   AND (@folder_name::text = '' OR folder_name = @folder_name::text)
@@ -29,7 +29,7 @@ ORDER BY created_at DESC;
 
 -- name: ListActiveTorrentDownloads :many
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers, is_private
 FROM torrent_downloads
 WHERE status IN ('queued', 'downloading', 'importing')
 ORDER BY created_at;

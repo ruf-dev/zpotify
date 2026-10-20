@@ -108,3 +108,53 @@ func Test_TrackersOf_CapturesTorrentFileAnnounceList(t *testing.T) {
 
 	require.Equal(t, []string{testTrackerA, testTrackerB}, got)
 }
+
+func Test_IsPrivateTorrent_ReadsInfoDictFlag(t *testing.T) {
+	isPrivate := true
+	isPublic := false
+
+	cases := []struct {
+		name    string
+		private *bool
+		want    bool
+	}{
+		{"private flag set", &isPrivate, true},
+		{"private flag false", &isPublic, false},
+		{"private flag absent", nil, false},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			client := newLocalClient(t, newLocalClientConfig(t, t.TempDir()))
+
+			info := metainfo.Info{
+				PieceLength: 16384,
+				Name:        "flagged",
+				Length:      1024,
+				Pieces:      make([]byte, 20),
+				Private:     tc.private,
+			}
+			infoBytes, err := bencode.Marshal(info)
+			require.NoError(t, err)
+
+			mi := metainfo.MetaInfo{InfoBytes: infoBytes}
+
+			tor, err := client.AddTorrent(&mi)
+			require.NoError(t, err)
+
+			require.Equal(t, tc.want, isPrivateTorrent(tor))
+		})
+	}
+}
+
+func Test_IsPrivateTorrent_FalseWithoutMetadata(t *testing.T) {
+	client := newLocalClient(t, newLocalClientConfig(t, t.TempDir()))
+
+	spec, err := torrent.TorrentSpecFromMagnetUri("magnet:?xt=urn:btih:" + testMagnetInfoHash)
+	require.NoError(t, err)
+
+	tor, _, err := client.AddTorrentSpec(spec)
+	require.NoError(t, err)
+
+	require.False(t, isPrivateTorrent(tor))
+}

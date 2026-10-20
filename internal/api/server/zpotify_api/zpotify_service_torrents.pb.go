@@ -87,6 +87,7 @@ type TorrentJob struct {
 	ImportedFiles   []*ImportedFile        `protobuf:"bytes,7,rep,name=imported_files,json=importedFiles,proto3" json:"imported_files,omitempty"`
 	Error           string                 `protobuf:"bytes,8,opt,name=error,proto3" json:"error,omitempty"`
 	Files           []*TorrentFileProgress `protobuf:"bytes,9,rep,name=files,proto3" json:"files,omitempty"`
+	IsPrivate       bool                   `protobuf:"varint,10,opt,name=is_private,json=isPrivate,proto3" json:"is_private,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -182,6 +183,13 @@ func (x *TorrentJob) GetFiles() []*TorrentFileProgress {
 		return x.Files
 	}
 	return nil
+}
+
+func (x *TorrentJob) GetIsPrivate() bool {
+	if x != nil {
+		return x.IsPrivate
+	}
+	return false
 }
 
 type ImportedFile struct {
@@ -2353,7 +2361,7 @@ var File_zpotify_service_torrents_proto protoreflect.FileDescriptor
 
 const file_zpotify_service_torrents_proto_rawDesc = "" +
 	"\n" +
-	"\x1ezpotify_service_torrents.proto\x12\vzpotify_api\x1a\tnpm.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\"\xd4\x02\n" +
+	"\x1ezpotify_service_torrents.proto\x12\vzpotify_api\x1a\tnpm.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\"\xf3\x02\n" +
 	"\n" +
 	"TorrentJob\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12!\n" +
@@ -2366,7 +2374,10 @@ const file_zpotify_service_torrents_proto_rawDesc = "" +
 	"\x10downloaded_bytes\x18\x06 \x01(\x03R\x0fdownloadedBytes\x12@\n" +
 	"\x0eimported_files\x18\a \x03(\v2\x19.zpotify_api.ImportedFileR\rimportedFiles\x12\x14\n" +
 	"\x05error\x18\b \x01(\tR\x05error\x126\n" +
-	"\x05files\x18\t \x03(\v2 .zpotify_api.TorrentFileProgressR\x05files\"\xb8\x01\n" +
+	"\x05files\x18\t \x03(\v2 .zpotify_api.TorrentFileProgressR\x05files\x12\x1d\n" +
+	"\n" +
+	"is_private\x18\n" +
+	" \x01(\bR\tisPrivate\"\xb8\x01\n" +
 	"\fImportedFile\x12!\n" +
 	"\ftorrent_path\x18\x01 \x01(\tR\vtorrentPath\x12\x17\n" +
 	"\afile_id\x18\x02 \x01(\x03R\x06fileId\x12\x16\n" +

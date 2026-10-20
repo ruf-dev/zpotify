@@ -31,7 +31,7 @@ func (q *Queries) DeleteTorrentDownload(ctx context.Context, arg DeleteTorrentDo
 
 const getTorrentDownloadByID = `-- name: GetTorrentDownloadByID :one
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers, is_private
 FROM torrent_downloads
 WHERE id = $1
   AND user_id = $2
@@ -60,13 +60,14 @@ func (q *Queries) GetTorrentDownloadByID(ctx context.Context, arg GetTorrentDown
 		&i.UpdatedAt,
 		&i.FileProgress,
 		pq.Array(&i.Trackers),
+		&i.IsPrivate,
 	)
 	return i, err
 }
 
 const getTorrentDownloadByUserAndInfoHash = `-- name: GetTorrentDownloadByUserAndInfoHash :one
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers, is_private
 FROM torrent_downloads
 WHERE user_id = $1
   AND info_hash = $2
@@ -96,15 +97,16 @@ func (q *Queries) GetTorrentDownloadByUserAndInfoHash(ctx context.Context, arg G
 		&i.UpdatedAt,
 		&i.FileProgress,
 		pq.Array(&i.Trackers),
+		&i.IsPrivate,
 	)
 	return i, err
 }
 
 const insertTorrentDownload = `-- name: InsertTorrentDownload :one
-INSERT INTO torrent_downloads (user_id, folder_name, info_hash, torrent_name, trackers)
-VALUES ($1, $2, $3, $4, $5::TEXT[])
+INSERT INTO torrent_downloads (user_id, folder_name, info_hash, torrent_name, trackers, is_private)
+VALUES ($1, $2, $3, $4, $5::TEXT[], $6)
 RETURNING id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers, is_private
 `
 
 type InsertTorrentDownloadParams struct {
@@ -113,6 +115,7 @@ type InsertTorrentDownloadParams struct {
 	InfoHash    string
 	TorrentName string
 	Trackers    []string
+	IsPrivate   bool
 }
 
 func (q *Queries) InsertTorrentDownload(ctx context.Context, arg InsertTorrentDownloadParams) (TorrentDownload, error) {
@@ -122,6 +125,7 @@ func (q *Queries) InsertTorrentDownload(ctx context.Context, arg InsertTorrentDo
 		arg.InfoHash,
 		arg.TorrentName,
 		pq.Array(arg.Trackers),
+		arg.IsPrivate,
 	)
 	var i TorrentDownload
 	err := row.Scan(
@@ -139,13 +143,14 @@ func (q *Queries) InsertTorrentDownload(ctx context.Context, arg InsertTorrentDo
 		&i.UpdatedAt,
 		&i.FileProgress,
 		pq.Array(&i.Trackers),
+		&i.IsPrivate,
 	)
 	return i, err
 }
 
 const listActiveTorrentDownloads = `-- name: ListActiveTorrentDownloads :many
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers, is_private
 FROM torrent_downloads
 WHERE status IN ('queued', 'downloading', 'importing')
 ORDER BY created_at
@@ -175,6 +180,7 @@ func (q *Queries) ListActiveTorrentDownloads(ctx context.Context) ([]TorrentDown
 			&i.UpdatedAt,
 			&i.FileProgress,
 			pq.Array(&i.Trackers),
+			&i.IsPrivate,
 		); err != nil {
 			return nil, err
 		}
@@ -221,7 +227,7 @@ func (q *Queries) ListImportedTorrentInfoHashes(ctx context.Context, infoHashes 
 
 const listTorrentDownloadsByUser = `-- name: ListTorrentDownloadsByUser :many
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers, is_private
 FROM torrent_downloads
 WHERE user_id = $1
   AND ($2::text = '' OR folder_name = $2::text)
@@ -257,6 +263,7 @@ func (q *Queries) ListTorrentDownloadsByUser(ctx context.Context, arg ListTorren
 			&i.UpdatedAt,
 			&i.FileProgress,
 			pq.Array(&i.Trackers),
+			&i.IsPrivate,
 		); err != nil {
 			return nil, err
 		}

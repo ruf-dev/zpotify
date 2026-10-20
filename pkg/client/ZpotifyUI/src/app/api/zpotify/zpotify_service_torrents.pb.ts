@@ -35,6 +35,7 @@ export type TorrentJob = {
   importedFiles?: ImportedFile[];
   error?: string;
   files?: TorrentFileProgress[];
+  isPrivate?: boolean;
 };
 
 export type ImportedFile = {

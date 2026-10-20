@@ -50,6 +50,7 @@ func (s *TorrentDownloadsStorage) Add(ctx context.Context, download domain.Torre
 		InfoHash:    download.InfoHash,
 		TorrentName: download.TorrentName,
 		Trackers:    trackers,
+		IsPrivate:   download.IsPrivate,
 	}
 
 	row, err := s.q.InsertTorrentDownload(ctx, params)
@@ -283,6 +284,7 @@ func toTorrentDownloadDomain(row torrent_downloads_q.TorrentDownload) (domain.To
 		ImportedFiles:   importedFiles,
 		Files:           fileProgress,
 		Trackers:        row.Trackers,
+		IsPrivate:       row.IsPrivate,
 		Error:           row.Error.String,
 		CreatedAt:       row.CreatedAt,
 		UpdatedAt:       row.UpdatedAt,

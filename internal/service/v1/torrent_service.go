@@ -215,6 +215,7 @@ func (s *TorrentService) finalizeTorrentSubmission(
 		InfoHash:    infoHash,
 		TorrentName: tor.Name(),
 		Trackers:    trackersOf(tor),
+		IsPrivate:   isPrivateTorrent(tor),
 	}
 
 	row, err := s.torrentStorage.Add(ctx, newDownload)

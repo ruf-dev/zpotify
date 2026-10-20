@@ -16,6 +16,16 @@ func trackersOf(tor *torrent.Torrent) []string {
 	return flattenAnnounceList(info.UpvertedAnnounceList())
 }
 
+// isPrivateTorrent reports the BEP 27 private flag; false while metadata is unknown.
+func isPrivateTorrent(tor *torrent.Torrent) bool {
+	info := tor.Info()
+	if info == nil || info.Private == nil {
+		return false
+	}
+
+	return *info.Private
+}
+
 func flattenAnnounceList(tiers [][]string) []string {
 	trackers := []string{}
 	seen := make(map[string]struct{})

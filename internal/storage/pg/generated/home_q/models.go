@@ -792,6 +792,7 @@ type TorrentDownload struct {
 	UpdatedAt       time.Time
 	FileProgress    json.RawMessage
 	Trackers        []string
+	IsPrivate       bool
 }
 
 type User struct {

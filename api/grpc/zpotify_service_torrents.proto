@@ -116,6 +116,7 @@ message TorrentJob {
   repeated ImportedFile imported_files = 7;
   string error = 8;
   repeated TorrentFileProgress files = 9;
+  bool is_private = 10;
 }
 
 message ImportedFile {

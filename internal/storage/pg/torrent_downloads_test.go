@@ -330,3 +330,32 @@ func TestTorrentDownloadsStorage_ListByUser_FiltersByFolder(t *testing.T) {
 	require.Len(t, filtered, 1)
 	assert.Equal(t, "folder-a", filtered[0].FolderName)
 }
+
+func Test_TorrentDownloadsStorage_Add_IsPrivateRoundTrip(t *testing.T) {
+	cases := []struct {
+		name      string
+		userId    int64
+		isPrivate bool
+	}{
+		{"private torrent", 900020, true},
+		{"public torrent", 900021, false},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			store := newTorrentDownloadsTestStore(t)
+			ctx := context.Background()
+
+			dl := newTestTorrentDownload(tc.userId)
+			dl.IsPrivate = tc.isPrivate
+
+			created, err := store.Add(ctx, dl)
+			require.NoError(t, err)
+			require.Equal(t, tc.isPrivate, created.IsPrivate)
+
+			fetched, err := store.Get(ctx, created.Id, tc.userId)
+			require.NoError(t, err)
+			require.Equal(t, tc.isPrivate, fetched.IsPrivate)
+		})
+	}
+}
