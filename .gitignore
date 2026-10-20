@@ -13,6 +13,9 @@ config/dev.yaml
 /data
 examples/data
 dist
+!internal/transport/ui/dist/
+internal/transport/ui/dist/*
+!internal/transport/ui/dist/.gitkeep
 node_modules
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
