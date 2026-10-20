@@ -19,7 +19,6 @@ function makeContext(overrides: Partial<AddTrackContext>): AddTrackContext {
         handleFiles: vi.fn(),
         handleTorrentFile: vi.fn(),
         handleSelectFromLibrary: vi.fn(),
-        handleManageTorrent: vi.fn(),
         handleCreatePlaylist: vi.fn(),
         handleCreatePlaylistFromFolder: vi.fn(),
         handleCreatePlaylistFromFiles: vi.fn(),

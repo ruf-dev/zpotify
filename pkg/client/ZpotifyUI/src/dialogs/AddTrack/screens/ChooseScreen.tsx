@@ -59,6 +59,7 @@ export default function ChooseScreen({
                     pendingCount={pendingCount}
                     onClick={() => goTo('pending')}
                     disabled={pendingCount === 0 && !hasActiveTorrentJob}
+                    isLoading={loading}
                 />
                 <UploadCard
                     atLimit={atLimit}

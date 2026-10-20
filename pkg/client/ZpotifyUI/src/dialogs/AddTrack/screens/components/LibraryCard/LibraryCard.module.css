@@ -1,3 +1,13 @@
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
 .LibraryCardContainer {
     padding: 1.25rem 1rem;
     border-radius: var(--border-radius-md);
@@ -9,43 +19,73 @@
     gap: 0.75rem;
     text-align: center;
     cursor: pointer;
-    transition: background 0.15s ease, border-color 0.15s ease;
-}
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease;
 
-.LibraryCardContainer:hover {
-    background: var(--color-bg-hover);
-    border-color: var(--color-border-bright);
-}
+    &:hover {
+        background: var(--color-bg-hover);
+        border-color: var(--color-border-bright);
+    }
 
-.CardDisabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-    pointer-events: none;
-}
+    &.CardDisabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
 
-.IconCircle {
-    width: var(--icon-circle-md);
-    height: var(--icon-circle-md);
-    border-radius: var(--border-radius-circle);
-    background: var(--color-bg-accent);
-    border: 0.0625rem solid var(--color-border-light);
-    color: var(--color-fg-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
+    &.CardLoading {
+        cursor: default;
+        pointer-events: none;
+    }
 
-.CardTitle {
-    font-size: var(--font-size-base);
-    font-weight: 700;
-    color: var(--color-fg-primary);
-}
+    & .IconCircle {
+        width: var(--icon-circle-md);
+        height: var(--icon-circle-md);
+        border-radius: var(--border-radius-circle);
+        background: var(--color-bg-accent);
+        border: 0.0625rem solid var(--color-border-light);
+        color: var(--color-fg-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
 
-.CardSubtitle {
-    font-size: var(--font-size-xs);
-    color: var(--color-fg-tertiary);
-    line-height: 1.4;
+    & .CardTitle {
+        font-size: var(--font-size-base);
+        font-weight: 700;
+        color: var(--color-fg-primary);
+    }
+
+    & .CardSubtitle {
+        font-size: var(--font-size-xs);
+        color: var(--color-fg-tertiary);
+        line-height: 1.4;
+    }
+
+    & .TitleSkeleton,
+    & .SubtitleSkeleton {
+        background: linear-gradient(
+            90deg,
+            var(--color-bg-accent) 25%,
+            var(--color-bg-hover-mid) 50%,
+            var(--color-bg-accent) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite linear;
+        border-radius: var(--border-radius-sm);
+    }
+
+    & .TitleSkeleton {
+        width: 70%;
+        height: 1.25rem;
+    }
+
+    & .SubtitleSkeleton {
+        width: 90%;
+        height: 0.875rem;
+    }
 }
 
 @media (orientation: portrait) {

@@ -4,19 +4,19 @@
     display: grid;
     grid-template-rows: 0fr;
     opacity: 0;
-    transform: translateY(var(--space-sm));
+    margin-top: calc(-1 * var(--space-sm));
     background: var(--color-bg-secondary);
     transition:
         grid-template-rows var(--ease-default),
         opacity var(--ease-default),
-        transform var(--ease-default),
+        margin-top var(--ease-default),
         visibility var(--ease-default);
     visibility: hidden;
 
     &.Visible {
         grid-template-rows: 1fr;
         opacity: 1;
-        transform: translateY(0);
+        margin-top: 0;
         visibility: visible;
     }
 

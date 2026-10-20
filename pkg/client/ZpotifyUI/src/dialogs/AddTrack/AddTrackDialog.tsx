@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ComponentType } from 'react';
 
-import type { SongFile, TorrentJob, TorrentSearchResult } from '@/app/api/zpotify';
+import type { SongFile, TorrentSearchResult } from '@/app/api/zpotify';
 import cls from '@/dialogs/AddTrack/AddTrackDialog.module.css';
 import PanelHeader from '@/dialogs/AddTrack/components/PanelHeader/PanelHeader';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
@@ -32,7 +32,6 @@ export interface AddTrackContext {
     handleFiles: (files: File[]) => void;
     handleTorrentFile: (file: File) => void;
     handleSelectFromLibrary: (song: SongFile) => void;
-    handleManageTorrent: (job: TorrentJob) => void;
     handleCreatePlaylist: () => void;
     handleCreatePlaylistFromFolder: (folderName: string, files: SongFile[]) => void;
     handleCreatePlaylistFromFiles: (files: SongFile[]) => void;
@@ -271,10 +270,6 @@ export default function AddTrackDialog({
             .catch((err: unknown) => toaster.catch(err as ServiceError));
     }
 
-    function handleManageTorrent(job: TorrentJob) {
-        OpenDialog(<TorrentManageDialog job={job} previousScreen={<AddTrackDialog initialStep="pending" />} />);
-    }
-
     function handleDroppedGroups(groups: DroppedGroups) {
         const soleFolder =
             groups.folders.length === 1 && groups.looseFiles.length === 0 ? groups.folders[0] : undefined;
@@ -339,7 +334,6 @@ export default function AddTrackDialog({
         handleFiles,
         handleTorrentFile,
         handleSelectFromLibrary,
-        handleManageTorrent,
         handleCreatePlaylist,
         handleCreatePlaylistFromFolder,
         handleCreatePlaylistFromFiles,

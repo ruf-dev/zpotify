@@ -4,7 +4,7 @@ import { Button } from '@vervstack/chures';
 import cls from '@/dialogs/AddTrack/screens/PendingFilesScreen.module.css';
 import { AddTrackContext } from '@/dialogs/AddTrack/AddTrackDialog';
 import FileItem from '@/dialogs/AddTrack/screens/components/FileItem/FileItem';
-import TorrentJobItem from '@/dialogs/AddTrack/screens/components/TorrentJobItem/TorrentJobItem';
+import PendingFilesSkeleton from '@/dialogs/AddTrack/screens/components/PendingFilesSkeleton/PendingFilesSkeleton';
 import PendingFolderNode from '@/dialogs/AddTrack/screens/components/PendingFolderNode/PendingFolderNode';
 import BatchUploadSection from '@/dialogs/AddTrack/screens/components/BatchUploadSection/BatchUploadSection';
 import CreateSelectionBar from '@/dialogs/AddTrack/screens/components/CreateSelectionBar/CreateSelectionBar';
@@ -18,7 +18,6 @@ import type { SongFile } from '@/app/api/zpotify';
 
 export default function PendingFilesScreen({
     handleSelectFromLibrary,
-    handleManageTorrent,
     batchTracks,
     handleOpenBatchFolder,
     handleCreatePlaylistFromFolder,
@@ -69,22 +68,10 @@ export default function PendingFilesScreen({
         );
     }
 
-    function renderTorrentJobs() {
-        if (torrentJobs.jobs.length === 0) return null;
-        return (
-            <div className={cls.TorrentJobList}>
-                {torrentJobs.jobs.map((job) => (
-                    <TorrentJobItem key={job.id} job={job} onManage={handleManageTorrent} />
-                ))}
-            </div>
-        );
-    }
-
     if (pendingFiles.loading) {
         return (
             <div className={cls.PendingFilesScreenContainer}>
-                {renderTorrentJobs()}
-                <div className={cls.Loading}>loading files…</div>
+                <PendingFilesSkeleton />
             </div>
         );
     }
@@ -93,7 +80,6 @@ export default function PendingFilesScreen({
 
     return (
         <div className={cls.PendingFilesScreenContainer}>
-            {renderTorrentJobs()}
             {batchTracks.length > 0 && <BatchUploadSection tracks={batchTracks} onOpenFolder={handleOpenBatchFolder} />}
             {pendingFiles.files.length === 0 ? (
                 <div className={cls.Empty}>

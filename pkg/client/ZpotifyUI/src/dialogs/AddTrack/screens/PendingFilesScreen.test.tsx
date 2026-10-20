@@ -51,7 +51,6 @@ function makeContext(overrides: Partial<AddTrackContext>): AddTrackContext {
         handleFiles: vi.fn(),
         handleTorrentFile: vi.fn(),
         handleSelectFromLibrary: vi.fn(),
-        handleManageTorrent: vi.fn(),
         handleCreatePlaylist: vi.fn(),
         handleCreatePlaylistFromFolder: vi.fn(),
         handleCreatePlaylistFromFiles: vi.fn(),
@@ -111,19 +110,15 @@ describe('PendingFilesScreen folder wiring', () => {
         expect(handleCreatePlaylistFromFolderSpy).toHaveBeenCalledWith('MyFolder', files);
     });
 
-    it('renders a torrent job row and calls handleManageTorrent with the job when Manage is clicked', () => {
-        const job = makeJob({});
-        mockJobs = [job];
+    it('does not render torrent jobs when a job exists', () => {
+        mockJobs = [makeJob({})];
 
-        const handleManageTorrentSpy = vi.fn();
-        const ctx = makeContext({ handleManageTorrent: handleManageTorrentSpy });
+        const ctx = makeContext({});
         render(<PendingFilesScreen {...ctx} />);
 
-        expect(screen.getByText('ubuntu.torrent')).not.toBeNull();
-
-        fireEvent.click(screen.getByText('Manage'));
-
-        expect(handleManageTorrentSpy).toHaveBeenCalledWith(job);
+        expect(screen.queryByText('ubuntu.torrent')).toBeNull();
+        expect(screen.queryByText('Manage')).toBeNull();
+        expect(screen.getByText('track will be downloaded soon')).not.toBeNull();
     });
 
     it('shows nested folder headers after expanding each level', () => {
