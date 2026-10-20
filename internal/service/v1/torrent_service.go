@@ -214,6 +214,7 @@ func (s *TorrentService) finalizeTorrentSubmission(
 		FolderName:  folderRelDir,
 		InfoHash:    infoHash,
 		TorrentName: tor.Name(),
+		Trackers:    trackersOf(tor),
 	}
 
 	row, err := s.torrentStorage.Add(ctx, newDownload)
@@ -305,6 +306,34 @@ func (s *TorrentService) GetJob(ctx context.Context, jobID int64) (domain.Torren
 	}
 
 	return row, nil
+}
+
+// GetMagnet builds a magnet link for one of the caller's torrent jobs.
+func (s *TorrentService) GetMagnet(ctx context.Context, jobID int64) (string, error) {
+	uCtx, ok := user_context.GetUserContext(ctx)
+	if !ok {
+		return "", rerrors.Wrap(user_errors.ErrUnauthenticated)
+	}
+
+	row, err := s.torrentStorage.Get(ctx, jobID, uCtx.UserId)
+	if err != nil {
+		return "", rerrors.Wrap(err, "error getting torrent job")
+	}
+
+	trackers := row.Trackers
+	if len(trackers) == 0 && s.torrentClient != nil {
+		tor, isFound := s.lookupTorrent(row.InfoHash)
+		if isFound {
+			trackers = trackersOf(tor)
+		}
+	}
+
+	magnetUri, err := buildMagnetUri(row.InfoHash, row.TorrentName, trackers)
+	if err != nil {
+		return "", rerrors.Wrap(err, "error building magnet uri")
+	}
+
+	return magnetUri, nil
 }
 
 // ListJobs returns the caller's torrent jobs, optionally narrowed to a single

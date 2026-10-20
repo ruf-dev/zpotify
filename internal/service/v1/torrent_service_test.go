@@ -648,6 +648,64 @@ func TestTorrentService_GetJob_IsScopedToCaller(t *testing.T) {
 	assert.Zero(t, row.Id)
 }
 
+func Test_TorrentService_GetMagnet_IncludesStoredTrackers(t *testing.T) {
+	svc, torrentStorage := newQuotaTestService(0, 3)
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	mine := domain.TorrentDownload{
+		UserId:      1,
+		InfoHash:    testMagnetInfoHash,
+		TorrentName: testMineTorrentName,
+		Trackers:    []string{testTrackerA, testTrackerB},
+	}
+	added, err := torrentStorage.Add(ctx, mine)
+	require.NoError(t, err)
+
+	got, err := svc.GetMagnet(ctx, added.Id)
+	require.NoError(t, err)
+
+	want, err := buildMagnetUri(testMagnetInfoHash, testMineTorrentName, []string{testTrackerA, testTrackerB})
+	require.NoError(t, err)
+	require.Equal(t, want, got)
+}
+
+func Test_TorrentService_GetMagnet_WithoutTrackersAndClientHasHashAndNameOnly(t *testing.T) {
+	svc, torrentStorage := newQuotaTestService(0, 3)
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	mine := domain.TorrentDownload{UserId: 1, InfoHash: testMagnetInfoHash, TorrentName: testMineTorrentName}
+	added, err := torrentStorage.Add(ctx, mine)
+	require.NoError(t, err)
+
+	got, err := svc.GetMagnet(ctx, added.Id)
+	require.NoError(t, err)
+
+	want, err := buildMagnetUri(testMagnetInfoHash, testMineTorrentName, nil)
+	require.NoError(t, err)
+	require.Equal(t, want, got)
+}
+
+func Test_TorrentService_GetMagnet_IsScopedToCaller(t *testing.T) {
+	svc, torrentStorage := newQuotaTestService(0, 3)
+	ctx := contextWithPermissions(1, uploadPermissions())
+
+	othersRow := domain.TorrentDownload{UserId: 2, InfoHash: testMagnetInfoHash, TorrentName: testSomeoneElsesTorrentName}
+	added, err := torrentStorage.Add(ctx, othersRow)
+	require.NoError(t, err)
+
+	got, err := svc.GetMagnet(ctx, added.Id)
+	require.ErrorIs(t, err, storage.ErrNotFound)
+	require.Empty(t, got)
+}
+
+func Test_TorrentService_GetMagnet_RequiresAuthentication(t *testing.T) {
+	svc, _ := newQuotaTestService(0, 3)
+
+	got, err := svc.GetMagnet(context.Background(), 1)
+	require.ErrorIs(t, err, user_errors.ErrUnauthenticated)
+	require.Empty(t, got)
+}
+
 func TestTorrentService_ListJobs_ReturnsOnlyCallersJobs(t *testing.T) {
 	svc, torrentStorage := newQuotaTestService(0, 3)
 

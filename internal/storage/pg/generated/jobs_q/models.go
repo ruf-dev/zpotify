@@ -791,6 +791,7 @@ type TorrentDownload struct {
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
 	FileProgress    json.RawMessage
+	Trackers        []string
 }
 
 type User struct {

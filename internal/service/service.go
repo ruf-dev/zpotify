@@ -304,6 +304,8 @@ type TorrentService interface {
 	SubmitTorrent(ctx context.Context, torrentFileBytes []byte, folderName string) (int64, error)
 	// GetJob returns one of the caller's torrent jobs.
 	GetJob(ctx context.Context, jobID int64) (domain.TorrentDownload, error)
+	// GetMagnet builds a magnet link for one of the caller's torrent jobs.
+	GetMagnet(ctx context.Context, jobID int64) (string, error)
 	// ListJobs returns the caller's torrent jobs, optionally narrowed to one
 	// upload folder (empty folderName returns all folders).
 	ListJobs(ctx context.Context, folderName string) ([]domain.TorrentDownload, error)

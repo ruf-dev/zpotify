@@ -42,6 +42,7 @@ type TorrentDownload struct {
 	DownloadedBytes int64
 	ImportedFiles   []string
 	Files           []TorrentFileProgress
+	Trackers        []string
 	Error           string
 	CreatedAt       time.Time
 	UpdatedAt       time.Time

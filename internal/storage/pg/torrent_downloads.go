@@ -39,11 +39,17 @@ func (s *TorrentDownloadsStorage) WithTx(tx *sql.Tx) storage.TorrentDownloadStor
 }
 
 func (s *TorrentDownloadsStorage) Add(ctx context.Context, download domain.TorrentDownload) (domain.TorrentDownload, error) {
+	trackers := download.Trackers
+	if trackers == nil {
+		trackers = []string{}
+	}
+
 	params := torrent_downloads_q.InsertTorrentDownloadParams{
 		UserID:      download.UserId,
 		FolderName:  download.FolderName,
 		InfoHash:    download.InfoHash,
 		TorrentName: download.TorrentName,
+		Trackers:    trackers,
 	}
 
 	row, err := s.q.InsertTorrentDownload(ctx, params)
@@ -276,6 +282,7 @@ func toTorrentDownloadDomain(row torrent_downloads_q.TorrentDownload) (domain.To
 		DownloadedBytes: row.DownloadedBytes,
 		ImportedFiles:   importedFiles,
 		Files:           fileProgress,
+		Trackers:        row.Trackers,
 		Error:           row.Error.String,
 		CreatedAt:       row.CreatedAt,
 		UpdatedAt:       row.UpdatedAt,

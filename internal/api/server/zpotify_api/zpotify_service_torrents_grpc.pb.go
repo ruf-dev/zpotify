@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	TorrentAPI_ListTorrentJobs_FullMethodName        = "/zpotify_api.TorrentAPI/ListTorrentJobs"
 	TorrentAPI_GetTorrentJob_FullMethodName          = "/zpotify_api.TorrentAPI/GetTorrentJob"
+	TorrentAPI_GetTorrentMagnet_FullMethodName       = "/zpotify_api.TorrentAPI/GetTorrentMagnet"
 	TorrentAPI_CancelTorrentJob_FullMethodName       = "/zpotify_api.TorrentAPI/CancelTorrentJob"
 	TorrentAPI_PauseTorrentJob_FullMethodName        = "/zpotify_api.TorrentAPI/PauseTorrentJob"
 	TorrentAPI_ResumeTorrentJob_FullMethodName       = "/zpotify_api.TorrentAPI/ResumeTorrentJob"
@@ -40,6 +41,7 @@ const (
 type TorrentAPIClient interface {
 	ListTorrentJobs(ctx context.Context, in *ListTorrentJobs_Request, opts ...grpc.CallOption) (*ListTorrentJobs_Response, error)
 	GetTorrentJob(ctx context.Context, in *GetTorrentJob_Request, opts ...grpc.CallOption) (*GetTorrentJob_Response, error)
+	GetTorrentMagnet(ctx context.Context, in *GetTorrentMagnet_Request, opts ...grpc.CallOption) (*GetTorrentMagnet_Response, error)
 	CancelTorrentJob(ctx context.Context, in *CancelTorrentJob_Request, opts ...grpc.CallOption) (*CancelTorrentJob_Response, error)
 	PauseTorrentJob(ctx context.Context, in *PauseTorrentJob_Request, opts ...grpc.CallOption) (*PauseTorrentJob_Response, error)
 	ResumeTorrentJob(ctx context.Context, in *ResumeTorrentJob_Request, opts ...grpc.CallOption) (*ResumeTorrentJob_Response, error)
@@ -75,6 +77,16 @@ func (c *torrentAPIClient) GetTorrentJob(ctx context.Context, in *GetTorrentJob_
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetTorrentJob_Response)
 	err := c.cc.Invoke(ctx, TorrentAPI_GetTorrentJob_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *torrentAPIClient) GetTorrentMagnet(ctx context.Context, in *GetTorrentMagnet_Request, opts ...grpc.CallOption) (*GetTorrentMagnet_Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetTorrentMagnet_Response)
+	err := c.cc.Invoke(ctx, TorrentAPI_GetTorrentMagnet_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -206,6 +218,7 @@ func (c *torrentAPIClient) DiscardTorrentFile(ctx context.Context, in *DiscardTo
 type TorrentAPIServer interface {
 	ListTorrentJobs(context.Context, *ListTorrentJobs_Request) (*ListTorrentJobs_Response, error)
 	GetTorrentJob(context.Context, *GetTorrentJob_Request) (*GetTorrentJob_Response, error)
+	GetTorrentMagnet(context.Context, *GetTorrentMagnet_Request) (*GetTorrentMagnet_Response, error)
 	CancelTorrentJob(context.Context, *CancelTorrentJob_Request) (*CancelTorrentJob_Response, error)
 	PauseTorrentJob(context.Context, *PauseTorrentJob_Request) (*PauseTorrentJob_Response, error)
 	ResumeTorrentJob(context.Context, *ResumeTorrentJob_Request) (*ResumeTorrentJob_Response, error)
@@ -232,6 +245,9 @@ func (UnimplementedTorrentAPIServer) ListTorrentJobs(context.Context, *ListTorre
 }
 func (UnimplementedTorrentAPIServer) GetTorrentJob(context.Context, *GetTorrentJob_Request) (*GetTorrentJob_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetTorrentJob not implemented")
+}
+func (UnimplementedTorrentAPIServer) GetTorrentMagnet(context.Context, *GetTorrentMagnet_Request) (*GetTorrentMagnet_Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTorrentMagnet not implemented")
 }
 func (UnimplementedTorrentAPIServer) CancelTorrentJob(context.Context, *CancelTorrentJob_Request) (*CancelTorrentJob_Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method CancelTorrentJob not implemented")
@@ -319,6 +335,24 @@ func _TorrentAPI_GetTorrentJob_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TorrentAPIServer).GetTorrentJob(ctx, req.(*GetTorrentJob_Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TorrentAPI_GetTorrentMagnet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTorrentMagnet_Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TorrentAPIServer).GetTorrentMagnet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TorrentAPI_GetTorrentMagnet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TorrentAPIServer).GetTorrentMagnet(ctx, req.(*GetTorrentMagnet_Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -528,6 +562,10 @@ var TorrentAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetTorrentJob",
 			Handler:    _TorrentAPI_GetTorrentJob_Handler,
+		},
+		{
+			MethodName: "GetTorrentMagnet",
+			Handler:    _TorrentAPI_GetTorrentMagnet_Handler,
 		},
 		{
 			MethodName: "CancelTorrentJob",

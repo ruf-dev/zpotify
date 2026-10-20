@@ -382,6 +382,37 @@
         ]
       }
     },
+    "/api/torrents/{jobId}/magnet": {
+      "get": {
+        "operationId": "TorrentAPI_GetTorrentMagnet",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zpotify_apiGetTorrentMagnetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TorrentAPI"
+        ]
+      }
+    },
     "/api/torrents/{jobId}/pause": {
       "post": {
         "operationId": "TorrentAPI_PauseTorrentJob",
@@ -538,6 +569,14 @@
       "properties": {
         "job": {
           "$ref": "#/definitions/zpotify_apiTorrentJob"
+        }
+      }
+    },
+    "zpotify_apiGetTorrentMagnetResponse": {
+      "type": "object",
+      "properties": {
+        "magnetUri": {
+          "type": "string"
         }
       }
     },

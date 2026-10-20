@@ -78,6 +78,41 @@ func TestTorrentDownloadsStorage_AddAndGet_RoundTrip(t *testing.T) {
 	assert.Equal(t, created, fetched)
 }
 
+func Test_TorrentDownloadsStorage_Add_TrackersRoundTrip(t *testing.T) {
+	store := newTorrentDownloadsTestStore(t)
+	ctx := context.Background()
+
+	userId := int64(900010)
+	dl := newTestTorrentDownload(userId)
+	dl.Trackers = []string{"udp://tracker-a.example:6969/announce", "http://tracker-b.example/announce"}
+
+	created, err := store.Add(ctx, dl)
+	require.NoError(t, err)
+	require.Equal(t, dl.Trackers, created.Trackers)
+
+	fetched, err := store.Get(ctx, created.Id, userId)
+	require.NoError(t, err)
+	require.Equal(t, dl.Trackers, fetched.Trackers)
+}
+
+func Test_TorrentDownloadsStorage_Add_NilTrackersBecomeEmptySlice(t *testing.T) {
+	store := newTorrentDownloadsTestStore(t)
+	ctx := context.Background()
+
+	userId := int64(900011)
+	dl := newTestTorrentDownload(userId)
+
+	created, err := store.Add(ctx, dl)
+	require.NoError(t, err)
+	require.NotNil(t, created.Trackers)
+	require.Empty(t, created.Trackers)
+
+	fetched, err := store.Get(ctx, created.Id, userId)
+	require.NoError(t, err)
+	require.NotNil(t, fetched.Trackers)
+	require.Empty(t, fetched.Trackers)
+}
+
 func TestTorrentDownloadsStorage_Get_WrongUserNotFound(t *testing.T) {
 	store := newTorrentDownloadsTestStore(t)
 	ctx := context.Background()

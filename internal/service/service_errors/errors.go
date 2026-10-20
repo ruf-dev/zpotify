@@ -60,6 +60,10 @@ var (
 	// an xt=urn:btih (BitTorrent v1) magnet.
 	ErrInvalidMagnet = rerrors.New("invalid magnet link", codes.InvalidArgument, rerrors.WithHttpStatus(http.StatusBadRequest))
 
+	// ErrInvalidInfoHash is returned when a stored torrent info hash is not a
+	// 40-character hex BitTorrent v1 hash.
+	ErrInvalidInfoHash = rerrors.New("invalid torrent info hash", codes.Internal, rerrors.WithHttpStatus(http.StatusInternalServerError))
+
 	// ErrTorrentMetadataTimeout is returned when a magnet's metadata could not
 	// be fetched from peers within the configured timeout.
 	ErrTorrentMetadataTimeout = rerrors.New("could not fetch torrent metadata from peers", codes.DeadlineExceeded, rerrors.WithHttpStatus(http.StatusGatewayTimeout))

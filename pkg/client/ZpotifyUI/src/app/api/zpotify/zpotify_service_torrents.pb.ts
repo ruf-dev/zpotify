@@ -72,6 +72,16 @@ export type GetTorrentJobResponse = {
 
 export type GetTorrentJob = Record<string, never>;
 
+export type GetTorrentMagnetRequest = {
+  jobId?: string;
+};
+
+export type GetTorrentMagnetResponse = {
+  magnetUri?: string;
+};
+
+export type GetTorrentMagnet = Record<string, never>;
+
 export type CancelTorrentJobRequest = {
   jobId?: string;
 };
@@ -214,6 +224,9 @@ export class TorrentAPI {
   }
   static GetTorrentJob(this:void, req: GetTorrentJobRequest, initReq?: fm.InitReq): Promise<GetTorrentJobResponse> {
     return fm.fetchRequest<GetTorrentJobResponse>(`/api/torrents/${req.jobId}?${fm.renderURLSearchParams(req, ["jobId"])}`, {...initReq, method: "GET"});
+  }
+  static GetTorrentMagnet(this:void, req: GetTorrentMagnetRequest, initReq?: fm.InitReq): Promise<GetTorrentMagnetResponse> {
+    return fm.fetchRequest<GetTorrentMagnetResponse>(`/api/torrents/${req.jobId}/magnet?${fm.renderURLSearchParams(req, ["jobId"])}`, {...initReq, method: "GET"});
   }
   static CancelTorrentJob(this:void, req: CancelTorrentJobRequest, initReq?: fm.InitReq): Promise<CancelTorrentJobResponse> {
     return fm.fetchRequest<CancelTorrentJobResponse>(`/api/torrents/${req.jobId}/cancel`, {...initReq, method: "POST"});

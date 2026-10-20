@@ -31,7 +31,7 @@ func (q *Queries) DeleteTorrentDownload(ctx context.Context, arg DeleteTorrentDo
 
 const getTorrentDownloadByID = `-- name: GetTorrentDownloadByID :one
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers
 FROM torrent_downloads
 WHERE id = $1
   AND user_id = $2
@@ -59,13 +59,14 @@ func (q *Queries) GetTorrentDownloadByID(ctx context.Context, arg GetTorrentDown
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.FileProgress,
+		pq.Array(&i.Trackers),
 	)
 	return i, err
 }
 
 const getTorrentDownloadByUserAndInfoHash = `-- name: GetTorrentDownloadByUserAndInfoHash :one
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers
 FROM torrent_downloads
 WHERE user_id = $1
   AND info_hash = $2
@@ -94,15 +95,16 @@ func (q *Queries) GetTorrentDownloadByUserAndInfoHash(ctx context.Context, arg G
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.FileProgress,
+		pq.Array(&i.Trackers),
 	)
 	return i, err
 }
 
 const insertTorrentDownload = `-- name: InsertTorrentDownload :one
-INSERT INTO torrent_downloads (user_id, folder_name, info_hash, torrent_name)
-VALUES ($1, $2, $3, $4)
+INSERT INTO torrent_downloads (user_id, folder_name, info_hash, torrent_name, trackers)
+VALUES ($1, $2, $3, $4, $5::TEXT[])
 RETURNING id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers
 `
 
 type InsertTorrentDownloadParams struct {
@@ -110,6 +112,7 @@ type InsertTorrentDownloadParams struct {
 	FolderName  string
 	InfoHash    string
 	TorrentName string
+	Trackers    []string
 }
 
 func (q *Queries) InsertTorrentDownload(ctx context.Context, arg InsertTorrentDownloadParams) (TorrentDownload, error) {
@@ -118,6 +121,7 @@ func (q *Queries) InsertTorrentDownload(ctx context.Context, arg InsertTorrentDo
 		arg.FolderName,
 		arg.InfoHash,
 		arg.TorrentName,
+		pq.Array(arg.Trackers),
 	)
 	var i TorrentDownload
 	err := row.Scan(
@@ -134,13 +138,14 @@ func (q *Queries) InsertTorrentDownload(ctx context.Context, arg InsertTorrentDo
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.FileProgress,
+		pq.Array(&i.Trackers),
 	)
 	return i, err
 }
 
 const listActiveTorrentDownloads = `-- name: ListActiveTorrentDownloads :many
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers
 FROM torrent_downloads
 WHERE status IN ('queued', 'downloading', 'importing')
 ORDER BY created_at
@@ -169,6 +174,7 @@ func (q *Queries) ListActiveTorrentDownloads(ctx context.Context) ([]TorrentDown
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.FileProgress,
+			pq.Array(&i.Trackers),
 		); err != nil {
 			return nil, err
 		}
@@ -215,7 +221,7 @@ func (q *Queries) ListImportedTorrentInfoHashes(ctx context.Context, infoHashes 
 
 const listTorrentDownloadsByUser = `-- name: ListTorrentDownloadsByUser :many
 SELECT id, user_id, folder_name, info_hash, torrent_name, status, total_bytes,
-    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress
+    downloaded_bytes, imported_files, error, created_at, updated_at, file_progress, trackers
 FROM torrent_downloads
 WHERE user_id = $1
   AND ($2::text = '' OR folder_name = $2::text)
@@ -250,6 +256,7 @@ func (q *Queries) ListTorrentDownloadsByUser(ctx context.Context, arg ListTorren
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.FileProgress,
+			pq.Array(&i.Trackers),
 		); err != nil {
 			return nil, err
 		}

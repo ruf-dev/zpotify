@@ -27,6 +27,12 @@ service TorrentAPI {
     };
   }
 
+  rpc GetTorrentMagnet(GetTorrentMagnet.Request) returns (GetTorrentMagnet.Response) {
+    option (google.api.http) = {
+      get: "/api/torrents/{job_id}/magnet"
+    };
+  }
+
   rpc CancelTorrentJob(CancelTorrentJob.Request) returns (CancelTorrentJob.Response) {
     option (google.api.http) = {
       post: "/api/torrents/{job_id}/cancel"
@@ -144,6 +150,16 @@ message GetTorrentJob {
 
   message Response {
     TorrentJob job = 1;
+  }
+}
+
+message GetTorrentMagnet {
+  message Request {
+    int64 job_id = 1;
+  }
+
+  message Response {
+    string magnet_uri = 1;
   }
 }
 
