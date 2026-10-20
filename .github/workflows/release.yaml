@@ -5,9 +5,28 @@ on:
     branches:
       - "master"
 
+concurrency:
+  group: release
+
 jobs:
+  unit-test:
+    runs-on: ${{ vars.UBUNTU_IMAGE }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Test
+        run: go test $(go list ./... | grep -v /tests)
+
   image-build:
     runs-on: ${{ vars.UBUNTU_IMAGE }}
+    needs:
+      - unit-test
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -39,90 +58,42 @@ jobs:
             echo "No new buildx cache generated."
           fi
 
+  # release_image reads the image version from the latest git tag, so the tag must exist before the image build.
   tag-release:
     runs-on: ${{ vars.UBUNTU_IMAGE }}
     needs:
+      - unit-test
       - image-build
-    steps:
-      - name: Release tag
-        id: release
-        uses: RedSockActions/release_tag@v1.1.7
-        with:
-          token: ${{ github.token }}
+    permissions:
+      contents: write
     outputs:
-      tag: ${{ steps.release.outputs.tag }}
+      tag: ${{ steps.next-tag.outputs.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Resolve rc tag
+        id: next-tag
+        run: |
+          git fetch --tags --force
+          TAG=$(sh .github/scripts/next-version.sh rc)
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Create release and tag
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.next-tag.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          generate_release_notes: true
+          prerelease: true
 
   docker-registry-release:
-    if: ${{ needs.tag-release.outputs.tag != '' }}
+    # A release candidate is never tagged :latest - release-minor promotes it.
     runs-on: ${{ vars.UBUNTU_IMAGE }}
     needs:
       - tag-release
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          ref: ${{ github.ref }}
-          fetch-depth: 0
-
-      - name: Restore cache
-        uses: actions/cache@v5
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.ref_name }}-${{ hashFiles('**/Dockerfile', '**/go.sum', '**/bun.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-${{ github.ref_name }}-
-            ${{ runner.os }}-buildx-
-
-      - name: Release image
-        uses: RedSockActions/release_image@v1.0.40
-        with:
-          REGISTRY_USER: redsockruf
-          REGISTRY_PWD: ${{ secrets.REGISTRY_PWD }}
-          DISABLE_CHECKOUT: true
-          REGISTRY_URL: ${{ vars.REGISTRY_URL }}
-          IMAGE_NAME: ${{ vars.IMAGE_NAME }}
-
-  auto-patch-tag:
-    # Skipped when this push already carried an official version bump (tag-release fired) -
-    # one push gets one tag, never both.
-    if: ${{ needs.tag-release.outputs.tag == '' }}
-    runs-on: ${{ vars.UBUNTU_IMAGE }}
-    needs:
-      - tag-release
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: Compute next patch tag
-        id: next_tag
-        run: |
-          LATEST_TAG=$(git tag --sort=-creatordate | head -1)
-          VERSION=${LATEST_TAG#v}
-          MAJOR=$(echo "$VERSION" | cut -d. -f1)
-          MINOR=$(echo "$VERSION" | cut -d. -f2)
-          PATCH=$(echo "$VERSION" | cut -d. -f3)
-          NEW_TAG="v${MAJOR}.${MINOR}.$((PATCH + 1))"
-          echo "tag=${NEW_TAG}" >> "$GITHUB_OUTPUT"
-
-      - name: Create tag
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh api "repos/${{ github.repository }}/git/refs" \
-            -f ref="refs/tags/${{ steps.next_tag.outputs.tag }}" \
-            -f sha="${{ github.sha }}"
-    outputs:
-      tag: ${{ steps.next_tag.outputs.tag }}
-
-  docker-registry-dev-release:
-    # Per-push patch build for manual pulls on your own stand. Never tagged :latest on
-    # Docker Hub - that stays reserved for an official release-tag push.
-    if: ${{ needs.auto-patch-tag.outputs.tag != '' }}
-    runs-on: ${{ vars.UBUNTU_IMAGE }}
-    needs:
-      - auto-patch-tag
     steps:
       - name: Checkout
         uses: actions/checkout@v7
