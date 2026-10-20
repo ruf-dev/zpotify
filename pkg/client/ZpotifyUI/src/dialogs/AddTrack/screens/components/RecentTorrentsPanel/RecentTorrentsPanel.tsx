@@ -6,6 +6,7 @@ import cls from '@/dialogs/AddTrack/screens/components/RecentTorrentsPanel/Recen
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import TorrentManageDialog from '@/dialogs/TorrentManage/TorrentManageDialog.tsx';
 import TorrentJobRow from '@/dialogs/AddTrack/screens/components/RecentTorrentsPanel/components/TorrentJobRow/TorrentJobRow.tsx';
+import { useCopyTorrentMagnet } from '@/shared/lib/useCopyTorrentMagnet.ts';
 import { DownloadIcon } from '@/assets/icons/DownloadIcon';
 import { TORRENT_EXTENSION } from '@/features/upload/torrentFile.ts';
 
@@ -19,6 +20,7 @@ const SKELETON_ROW_KEYS = ['skeleton-1', 'skeleton-2', 'skeleton-3'];
 
 export default function RecentTorrentsPanel({ jobs, loading, onFile }: RecentTorrentsPanelProps) {
     const { OpenDialog } = useDialog();
+    const { copyMagnet } = useCopyTorrentMagnet();
     const inputRef = useRef<HTMLInputElement>(null);
 
     const displayedJobs = useMemo(() => {
@@ -95,7 +97,9 @@ export default function RecentTorrentsPanel({ jobs, loading, onFile }: RecentTor
                         ))}
                     </>
                 ) : displayedJobs.length > 0 ? (
-                    displayedJobs.map((job) => <TorrentJobRow key={job.id} job={job} onClick={handleRowClick} />)
+                    displayedJobs.map((job) => (
+                        <TorrentJobRow key={job.id} job={job} onClick={handleRowClick} onCopyMagnet={copyMagnet} />
+                    ))
                 ) : (
                     <div
                         className={cls.EmptyState}

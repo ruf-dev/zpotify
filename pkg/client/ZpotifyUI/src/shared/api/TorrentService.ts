@@ -13,6 +13,8 @@ import {
     GetTorrentFileResponse,
     GetTorrentJobRequest,
     GetTorrentJobResponse,
+    GetTorrentMagnetRequest,
+    GetTorrentMagnetResponse,
     ListTorrentJobsRequest,
     ListTorrentJobsResponse,
     NotifyStreamEntityArrival,
@@ -33,6 +35,7 @@ import { BaseService } from '@/shared/api/BaseService.ts';
 export interface ITorrentService {
     ListTorrentJobs(req: ListTorrentJobsRequest): Promise<ListTorrentJobsResponse>;
     GetTorrentJob(req: GetTorrentJobRequest): Promise<GetTorrentJobResponse>;
+    GetTorrentMagnet(req: GetTorrentMagnetRequest): Promise<GetTorrentMagnetResponse>;
     CancelTorrentJob(req: CancelTorrentJobRequest): Promise<CancelTorrentJobResponse>;
     PauseTorrentJob(req: PauseTorrentJobRequest): Promise<PauseTorrentJobResponse>;
     ResumeTorrentJob(req: ResumeTorrentJobRequest): Promise<ResumeTorrentJobResponse>;
@@ -60,6 +63,12 @@ export class TorrentService extends BaseService implements ITorrentService {
     async GetTorrentJob(req: GetTorrentJobRequest): Promise<GetTorrentJobResponse> {
         return this.executeAuthApiCall(async (initReq) => {
             return TorrentAPI.GetTorrentJob(req, initReq);
+        });
+    }
+
+    async GetTorrentMagnet(req: GetTorrentMagnetRequest): Promise<GetTorrentMagnetResponse> {
+        return this.executeAuthApiCall(async (initReq) => {
+            return TorrentAPI.GetTorrentMagnet(req, initReq);
         });
     }
 

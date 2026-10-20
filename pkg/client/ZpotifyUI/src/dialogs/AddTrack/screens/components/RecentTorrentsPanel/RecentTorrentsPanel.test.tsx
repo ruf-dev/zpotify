@@ -11,6 +11,10 @@ vi.mock('@/app/hooks/Dialog.tsx', () => ({
     useDialog: () => useDialogMock,
 }));
 
+vi.mock('@/shared/lib/useCopyTorrentMagnet.ts', () => ({
+    useCopyTorrentMagnet: () => ({ copyMagnet: vi.fn() }),
+}));
+
 function makeJob(overrides: Partial<TorrentJob>): TorrentJob {
     return {
         id: '1',

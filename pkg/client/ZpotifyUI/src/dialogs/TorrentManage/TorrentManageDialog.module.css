@@ -1,14 +1,23 @@
 @keyframes scaleIn {
-    from { transform: scale(0.95) translateY(0.75rem); opacity: 0; }
-    to   { transform: scale(1) translateY(0); opacity: 1; }
+    from {
+        transform: scale(0.95) translateY(0.75rem);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
 }
 
 .TorrentManageDialogContainer {
     background: var(--color-bg-secondary);
     border: 0.0625rem solid var(--color-border-light);
     border-radius: var(--border-radius);
-    box-shadow: 0 1.5rem 4rem var(--color-shadow-deep), 0 0 0 0.0625rem var(--color-bg-hover);
-    animation: scaleIn 0.25s cubic-bezier(0.4,0,0.2,1) both;
+    box-shadow:
+        0 1.5rem 4rem var(--color-shadow-deep),
+        0 0 0 0.0625rem var(--color-bg-hover);
+    animation: scaleIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
     max-height: var(--dialog-max-height-desktop);
     display: flex;
     flex-direction: column;
@@ -130,6 +139,27 @@
 }
 
 .CreatePlaylistButton:disabled {
+    background: var(--color-bg-secondary);
+    border-color: var(--color-border-light);
+    color: var(--color-fg-disabled);
+    cursor: default;
+}
+
+.CopyMagnetButton {
+    flex: 2;
+    padding: 0.7rem 1rem;
+    border-radius: var(--border-radius-pill);
+    text-align: center;
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    background: var(--color-bg-secondary);
+    border: 0.0625rem solid var(--color-border-light);
+    color: var(--color-fg-primary);
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+}
+
+.CopyMagnetButton:disabled {
     background: var(--color-bg-secondary);
     border-color: var(--color-border-light);
     color: var(--color-fg-disabled);

@@ -1,13 +1,16 @@
-import { type KeyboardEvent } from 'react';
+import { type KeyboardEvent, type MouseEvent } from 'react';
 import cn from 'classnames';
+import { Button } from '@vervstack/chures';
 
 import type { TorrentJob } from '@/app/api/zpotify';
 import cls from '@/dialogs/AddTrack/screens/components/RecentTorrentsPanel/components/TorrentJobRow/TorrentJobRow.module.css';
 import { formatFileSize } from '@/shared/lib/files.ts';
+import MagnetIcon from '@/assets/icons/MagnetIcon';
 
 interface TorrentJobRowProps {
     job: TorrentJob;
     onClick: (job: TorrentJob) => void;
+    onCopyMagnet: (job: TorrentJob) => void;
 }
 
 function getStatusDotColor(status?: string): string {
@@ -17,7 +20,7 @@ function getStatusDotColor(status?: string): string {
     return cls.StatusDefault;
 }
 
-export default function TorrentJobRow({ job, onClick }: TorrentJobRowProps) {
+export default function TorrentJobRow({ job, onClick, onCopyMagnet }: TorrentJobRowProps) {
     const total = Number(job.totalBytes ?? 0);
     const downloaded = Number(job.downloadedBytes ?? 0);
     const progress = total > 0 ? Math.min(1, downloaded / total) : 0;
@@ -28,6 +31,15 @@ export default function TorrentJobRow({ job, onClick }: TorrentJobRowProps) {
             e.preventDefault();
             onClick(job);
         }
+    }
+
+    function handleCopyMagnetClick(e: MouseEvent) {
+        e.stopPropagation();
+        onCopyMagnet(job);
+    }
+
+    function handleCopyMagnetKeyDown(e: KeyboardEvent) {
+        e.stopPropagation();
     }
 
     return (
@@ -48,6 +60,16 @@ export default function TorrentJobRow({ job, onClick }: TorrentJobRowProps) {
             <div className={cls.FilesInfo}>
                 <span className={cls.FilesLabel}>{job.importedFiles?.length ?? 0} files</span>
             </div>
+
+            <Button
+                variant="ghost"
+                className={cls.CopyMagnetButton}
+                onClick={handleCopyMagnetClick}
+                onKeyDown={handleCopyMagnetKeyDown}
+                aria-label="copy magnet"
+            >
+                <MagnetIcon width={16} height={16} />
+            </Button>
         </div>
     );
 }

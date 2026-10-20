@@ -26,6 +26,11 @@ vi.mock('@/app/hooks/Dialog.tsx', () => ({
     }),
 }));
 
+const copyMagnetMock = vi.fn();
+vi.mock('@/shared/lib/useCopyTorrentMagnet.ts', () => ({
+    useCopyTorrentMagnet: () => ({ copyMagnet: copyMagnetMock }),
+}));
+
 const toasterCatchSpy = vi.fn();
 vi.mock('@/shared/lib/toaster/ToasterZ.ts', () => ({
     useToaster: () => ({
@@ -140,5 +145,16 @@ describe('TorrentManageDialog', () => {
 
         expect(deleteTorrentJobMock).toHaveBeenCalledWith({ jobId: 'job1' });
         expect(closeDialogMock).toHaveBeenCalled();
+    });
+
+    it('copies the magnet link of the job when the copy magnet button is clicked', () => {
+        const job = makeJob({ status: 'downloading' });
+        getTorrentJobMock.mockResolvedValue({ job });
+
+        render(<TorrentManageDialog job={job} />);
+
+        fireEvent.click(screen.getByText('copy magnet'));
+
+        expect(copyMagnetMock).toHaveBeenCalledWith(job);
     });
 });

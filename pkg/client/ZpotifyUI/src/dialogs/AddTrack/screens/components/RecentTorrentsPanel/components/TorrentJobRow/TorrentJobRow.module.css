@@ -89,3 +89,13 @@
 .FilesLabel {
     display: block;
 }
+
+.CopyMagnetButton {
+    flex-shrink: 0;
+    color: var(--color-fg-tertiary);
+    transition: color 0.15s ease;
+
+    &:hover {
+        color: var(--color-fg-primary);
+    }
+}

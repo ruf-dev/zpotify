@@ -7,6 +7,7 @@ import cls from '@/dialogs/TorrentManage/TorrentManageDialog.module.css';
 import modalCloseCls from '@/shared/ui/ModalCloseButton.module.css';
 import { useDialog } from '@/app/hooks/Dialog.tsx';
 import { useToaster } from '@/shared/lib/toaster/ToasterZ.ts';
+import { useCopyTorrentMagnet } from '@/shared/lib/useCopyTorrentMagnet.ts';
 import { torrentService } from '@/shared/api/TorrentService.ts';
 import { formatFileSize } from '@/shared/lib/files.ts';
 import { isPausedTorrentStatus, isTerminalTorrentStatus } from '@/shared/lib/torrentStatus.ts';
@@ -25,6 +26,7 @@ interface TorrentManageDialogProps {
 export default function TorrentManageDialog({ job: initialJob, previousScreen }: TorrentManageDialogProps) {
     const { OpenDialog, CloseDialog } = useDialog();
     const toaster = useToaster();
+    const { copyMagnet } = useCopyTorrentMagnet();
 
     const [job, setJob] = useState<TorrentJob>(initialJob);
     const [toggling, setToggling] = useState(false);
@@ -151,6 +153,11 @@ export default function TorrentManageDialog({ job: initialJob, previousScreen }:
                             label: 'create playlist',
                             onClick: handleCreatePlaylist,
                             className: cls.CreatePlaylistButton,
+                        },
+                        {
+                            label: 'copy magnet',
+                            onClick: () => copyMagnet(job),
+                            className: cls.CopyMagnetButton,
                         },
                         {
                             label: 'delete',
